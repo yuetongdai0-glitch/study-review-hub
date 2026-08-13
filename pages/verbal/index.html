@@ -1,0 +1,1597 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>花生十三 言语理解与表达 · 复习笔记</title>
+<style>
+  :root {
+    --bg: #f5f0e8;
+    --card-bg: #ffffff;
+    --primary: #c8792d;
+    --primary-light: #f0d9b5;
+    --primary-dark: #8b5a1a;
+    --accent: #d4576a;
+    --text: #2d2418;
+    --text-light: #6b5d4f;
+    --border: #e0d0b8;
+    --code-bg: #faf6f0;
+    --green: #5a8a3a;
+    --blue: #3a6b8a;
+    --shadow: 0 2px 12px rgba(139,90,26,0.08);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.8;
+    font-size: 15px;
+  }
+
+  /* ===== Navigation ===== */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 260px;
+    height: 100vh;
+    background: var(--card-bg);
+    border-right: 1px solid var(--border);
+    padding: 24px 0;
+    overflow-y: auto;
+    z-index: 100;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.03);
+  }
+
+  nav .logo {
+    text-align: center;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--primary);
+    padding: 0 20px 20px;
+    border-bottom: 2px solid var(--primary-light);
+    margin-bottom: 16px;
+  }
+
+  nav .logo span { font-size: 14px; color: var(--text-light); display: block; font-weight: 400; margin-top: 4px; }
+
+  nav a {
+    display: block;
+    padding: 10px 24px;
+    color: var(--text-light);
+    text-decoration: none;
+    font-size: 14px;
+    transition: all 0.2s;
+    border-left: 3px solid transparent;
+  }
+
+  nav a:hover {
+    color: var(--primary);
+    background: var(--primary-light);
+    border-left-color: var(--primary);
+  }
+
+  nav a.sub { padding-left: 40px; font-size: 13px; }
+
+  /* ===== Main Content ===== */
+  main {
+    margin-left: 260px;
+    padding: 40px 48px 80px;
+    max-width: 900px;
+  }
+
+  /* ===== Hero ===== */
+  .hero {
+    background: linear-gradient(135deg, #c8792d, #d4576a);
+    color: #fff;
+    padding: 48px 40px;
+    border-radius: 16px;
+    margin-bottom: 40px;
+    box-shadow: 0 4px 20px rgba(200,121,45,0.25);
+  }
+
+  .hero h1 { font-size: 32px; margin-bottom: 8px; }
+  .hero p { font-size: 16px; opacity: 0.92; }
+  .hero .tags { margin-top: 16px; display: flex; gap: 8px; flex-wrap: wrap; }
+  .hero .tag {
+    background: rgba(255,255,255,0.2);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    backdrop-filter: blur(4px);
+  }
+
+  /* ===== Section ===== */
+  section {
+    margin-bottom: 48px;
+    scroll-margin-top: 20px;
+  }
+
+  section > h2 {
+    font-size: 24px;
+    color: var(--primary-dark);
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid var(--primary-light);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  section > h2 .icon { font-size: 28px; }
+
+  section > h3 {
+    font-size: 18px;
+    color: var(--text);
+    margin: 24px 0 12px;
+    padding-left: 12px;
+    border-left: 4px solid var(--primary);
+  }
+
+  section > h4 {
+    font-size: 16px;
+    color: var(--text);
+    margin: 16px 0 8px;
+  }
+
+  p { margin-bottom: 10px; }
+
+  /* ===== Card ===== */
+  .card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: var(--shadow);
+    margin-bottom: 16px;
+    border: 1px solid var(--border);
+  }
+
+  .card-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin-bottom: 12px;
+  }
+
+  /* ===== Framework Box ===== */
+  .framework-box {
+    background: var(--card-bg);
+    border: 2px solid var(--primary);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    position: relative;
+  }
+
+  .framework-box::before {
+    content: attr(data-label);
+    position: absolute;
+    top: -12px;
+    left: 20px;
+    background: var(--primary);
+    color: #fff;
+    padding: 2px 14px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  /* ===== Number Grid ===== */
+  .num-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+    margin: 12px 0;
+  }
+
+  .num-item {
+    background: var(--code-bg);
+    border-radius: 8px;
+    padding: 16px;
+    border-left: 4px solid var(--primary);
+  }
+
+  .num-item .num {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--primary);
+    line-height: 1;
+  }
+
+  .num-item .label {
+    font-size: 13px;
+    color: var(--text-light);
+    margin-top: 4px;
+  }
+
+  .num-item .desc {
+    font-size: 13px;
+    color: var(--text);
+    margin-top: 8px;
+  }
+
+  /* ===== Table ===== */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 14px;
+    background: var(--card-bg);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+
+  th {
+    background: var(--primary);
+    color: #fff;
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 600;
+  }
+
+  td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+
+  tr:last-child td { border-bottom: none; }
+  tr:nth-child(even) td { background: var(--code-bg); }
+
+  /* ===== Badge ===== */
+  .badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    margin: 0 2px;
+  }
+
+  .badge-red { background: #fde8e8; color: #c0392b; }
+  .badge-green { background: #e8f5e9; color: var(--green); }
+  .badge-blue { background: #e3f2fd; color: var(--blue); }
+  .badge-orange { background: var(--primary-light); color: var(--primary-dark); }
+  .badge-purple { background: #f3e5f5; color: #7b1fa2; }
+
+  /* ===== Highlight Box ===== */
+  .highlight {
+    background: #fff8e1;
+    border-left: 4px solid #ffc107;
+    padding: 12px 16px;
+    border-radius: 0 8px 8px 0;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+
+  .highlight strong { color: var(--primary-dark); }
+
+  .danger {
+    background: #fde8e8;
+    border-left: 4px solid #e74c3c;
+    padding: 12px 16px;
+    border-radius: 0 8px 8px 0;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+
+  .tip {
+    background: #e8f5e9;
+    border-left: 4px solid var(--green);
+    padding: 12px 16px;
+    border-radius: 0 8px 8px 0;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+
+  /* ===== List ===== */
+  ul, ol {
+    padding-left: 24px;
+    margin-bottom: 10px;
+  }
+
+  li {
+    margin-bottom: 6px;
+  }
+
+  ul.check li {
+    list-style: none;
+    padding-left: 4px;
+  }
+
+  ul.check li::before {
+    content: "✓ ";
+    color: var(--green);
+    font-weight: 700;
+  }
+
+  ul.cross li {
+    list-style: none;
+    padding-left: 4px;
+  }
+
+  ul.cross li::before {
+    content: "✗ ";
+    color: #e74c3c;
+    font-weight: 700;
+  }
+
+  /* ===== Flow ===== */
+  .flow {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 12px 0;
+  }
+
+  .flow-step {
+    background: var(--primary-light);
+    color: var(--primary-dark);
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .flow-arrow {
+    color: var(--primary);
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  /* ===== Example Question ===== */
+  .example {
+    background: #f8f4ff;
+    border: 1px solid #d1c4e9;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 16px 0;
+  }
+
+  .example-tag {
+    display: inline-block;
+    background: #7b1fa2;
+    color: #fff;
+    padding: 2px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+
+  .example-q {
+    background: #fff;
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    line-height: 1.9;
+    border-left: 3px solid #7b1fa2;
+  }
+
+  .example-q .source {
+    font-size: 12px;
+    color: var(--text-light);
+    margin-bottom: 6px;
+  }
+
+  .example-opts {
+    list-style: none;
+    padding-left: 0;
+    margin: 8px 0;
+  }
+
+  .example-opts li {
+    padding: 4px 0;
+    font-size: 14px;
+  }
+
+  .example-answer {
+    background: #e8f5e9;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    margin-top: 8px;
+  }
+
+  .example-answer .ans-label {
+    font-weight: 700;
+    color: var(--green);
+  }
+
+  .example-analysis {
+    background: #fff3e0;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    margin-top: 6px;
+    line-height: 1.8;
+  }
+
+  .example-analysis .ana-label {
+    font-weight: 700;
+    color: var(--primary-dark);
+  }
+
+  /* ===== Collapse ===== */
+  details {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 8px;
+    cursor: pointer;
+  }
+
+  details summary {
+    font-weight: 600;
+    color: var(--primary-dark);
+    font-size: 14px;
+  }
+
+  details[open] summary { margin-bottom: 8px; }
+
+  /* ===== Scrollbar ===== */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 768px) {
+    nav { display: none; }
+    main { margin-left: 0; padding: 20px; }
+    .hero { padding: 28px 20px; }
+    .hero h1 { font-size: 24px; }
+  }
+</style>
+  <link data-study-hub-style rel="stylesheet" href="../../assets/hub-nav.css">
+</head>
+<body>
+
+<!-- ===== Navigation ===== -->
+<nav>
+  <div class="logo">🥜 花生十三<span>言语理解与表达</span></div>
+  <a href="#hero">首页</a>
+  <a href="#overview">整体概述</a>
+  <a href="#central">中心理解题</a>
+  <a href="#structure" class="sub">33555 结构分析</a>
+  <a href="#option" class="sub">264111 选项分析</a>
+  <a href="#logic-fill">逻辑填空</a>
+  <a href="#title">标题拟定</a>
+  <a href="#next">下文推断</a>
+  <a href="#fill-in">语句填入</a>
+  <a href="#sort">语句排序</a>
+  <a href="#detail">细节判断</a>
+  <a href="#review">复盘方法</a>
+  <a href="#summary">速记口诀</a>
+</nav>
+
+<main>
+  <!-- ===== Hero ===== -->
+  <div class="hero" id="hero">
+    <h1>🥜 花生十三 · 言语理解与表达</h1>
+    <p>全网搜索整理 · 核心方法论 + 解题技巧体系 · 完整复习笔记</p>
+    <div class="tags">
+      <span class="tag">33555 结构分析</span>
+      <span class="tag">264111 选项分析</span>
+      <span class="tag">五大题型</span>
+      <span class="tag">逻辑填空</span>
+    </div>
+  </div>
+
+  <!-- ===== 整体概述 ===== -->
+  <section id="overview">
+    <h2><span class="icon">📋</span> 整体概述</h2>
+
+    <div class="card">
+      <div class="card-title">做题顺序</div>
+      <div class="flow">
+        <span class="flow-step">先读问题</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-step">再读文段</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-step">分析选项</span>
+      </div>
+      <p style="font-size:13px;color:var(--text-light);margin-top:8px;">先读问题分辨题型和文段可能类型 → 再读文段分析结构和预想答案 → 分析选项利用选项提升做题速度与准确度</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">阅读文段方法</div>
+      <p>在<strong>句号处划斜线</strong>，再分层，<strong>宏观把握结构</strong>，不能"只见树木不见森林"。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">三大解题方法</div>
+      <table>
+        <tr><th>方法</th><th>说明</th></tr>
+        <tr><td><strong>结构分析</strong></td><td>套入五种文段结构，找文段主旨或重点</td></tr>
+        <tr><td><strong>选项分析</strong></td><td>264111，根据选项提示辅助做题</td></tr>
+        <tr><td><strong>抓关键信息</strong></td><td>秒杀或避免出现低级失误</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-title">三大做题原则</div>
+      <ul class="check">
+        <li>抓住关键信息或确定文段类型，选项干扰力度不强，则<strong>直接确定答案</strong></li>
+        <li>套入常见结构，找到文段主旨或重点，<strong>锁定正确选项</strong></li>
+        <li>二选一纠结时，利用选项分析，排除错误选项，让正确选项<strong>"跳出来"</strong></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ===== 中心理解题 ===== -->
+  <section id="central">
+    <h2><span class="icon">🎯</span> 中心理解题</h2>
+
+    <div class="highlight">
+      <strong>核心口诀：33555 + 264111</strong><br>
+      33555 = 3文段 + 3关键信息 + 5引出话题 + 5对策表达 + 5行文结构<br>
+      264111 = 2出处 + 6有误 + 4大类 + 1正确 + 1比较 + 1验证
+    </div>
+
+    <!-- 33555 -->
+    <h3 id="structure">33555 结构分析</h3>
+
+    <div class="num-grid">
+      <div class="num-item">
+        <div class="num">3</div>
+        <div class="label">三类文段</div>
+        <div class="desc">说理类 / 科普类 / 新闻类</div>
+      </div>
+      <div class="num-item">
+        <div class="num">3</div>
+        <div class="label">三个关键信息</div>
+        <div class="desc">高频词 / 主体 / 首句</div>
+      </div>
+      <div class="num-item">
+        <div class="num">5</div>
+        <div class="label">五种引出话题</div>
+        <div class="desc">开门见山 / 转折对比 / 背景引出 / 由大引小 / 设问引出</div>
+      </div>
+      <div class="num-item">
+        <div class="num">5</div>
+        <div class="label">五种对策表达</div>
+        <div class="desc">祈使建议 / 禁止型 / 逻辑关联词 / 必要条件 / 语义表对策</div>
+      </div>
+      <div class="num-item">
+        <div class="num">5</div>
+        <div class="label">五种行文结构</div>
+        <div class="desc">后对策 / 前对策 / 总分分总 / 并列大并列 / 二层结构</div>
+      </div>
+    </div>
+
+    <!-- 3文段 -->
+    <h4>① 三类文段及解题原则</h4>
+    <table>
+      <tr>
+        <th>文段类型</th>
+        <th>概念</th>
+        <th>常见问法</th>
+        <th>解题原则</th>
+      </tr>
+      <tr>
+        <td><span class="badge badge-orange">说理类</span></td>
+        <td>阐述作者观点、态度、对策</td>
+        <td>主旨是什么、意在说明/强调什么</td>
+        <td>原文有对策优先选对策；有观点选观点；有问题要体现问题（概括问题或给对策）</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-green">科普类</span></td>
+        <td>客观介绍现象、事件、知识</td>
+        <td>主要介绍/讲了什么、最适合的概括是</td>
+        <td>选<strong>中性、客观</strong>的概括选项，不选对策</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-blue">新闻类</span></td>
+        <td>介绍新事件/新突破/新发现</td>
+        <td>主要讲了什么、意在强调什么</td>
+        <td>突出一个<strong>"新"</strong>：重视新状况、新成绩、新突破</td>
+      </tr>
+    </table>
+
+    <!-- 3关键信息 -->
+    <h4>② 三个关键信息</h4>
+    <div class="card">
+      <table>
+        <tr><th>关键信息</th><th>说明</th><th>作用</th></tr>
+        <tr>
+          <td><strong>高频词</strong></td>
+          <td>文段中反复出现的词语</td>
+          <td>确定主题方向，正确选项应贴合高频词</td>
+        </tr>
+        <tr>
+          <td><strong>主体</strong></td>
+          <td>主语、对象（讲的是谁、说的是什么事）</td>
+          <td>选项主体必须与文段一致</td>
+        </tr>
+        <tr>
+          <td><strong>首句</strong></td>
+          <td>讲的是"谁"的"什么事"</td>
+          <td>首句往往引出话题，确定全文方向</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- 5引出话题 -->
+    <h4>③ 五种引出话题方式</h4>
+    <table>
+      <tr><th>方式</th><th>特征</th><th>注意</th></tr>
+      <tr><td>开门见山</td><td>直接确定话题范围</td><td>注意首句中的关键信息</td></tr>
+      <tr><td>转折对比引出</td><td>用转折或对比引出话题</td><td>常直接引出问题、观点、对策（"前对策"结构）</td></tr>
+      <tr><td>背景/背景知识引出</td><td>背景铺垫后引出正题</td><td><strong>背景不重要，可略读</strong></td></tr>
+      <tr><td>由大引小</td><td>从上级集合引到特定对象</td><td>谈论对象并非例子，是全文主体</td></tr>
+      <tr><td>设问引出</td><td>由问题引出话题</td><td>注意下文是否为对该问题的回答，答案需重点关注</td></tr>
+    </table>
+
+    <!-- 5对策 -->
+    <h4>④ 五种对策表达方式</h4>
+    <table>
+      <tr><th>类型</th><th>标志词</th><th>举例</th></tr>
+      <tr>
+        <td><span class="badge badge-red">祈使/建议</span></td>
+        <td>应该(应)、需要(要)、必须、要求、可以、不妨</td>
+        <td>古典名画、人人讲故事</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-red">禁止型</span></td>
+        <td>不能、禁止、要避免、如果……就不……</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-red">逻辑关联词</span></td>
+        <td>只有…才（只有后为对策重点）、必须…否则（必须后为对策重点）</td>
+        <td>交互互动剧</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-red">必要条件</span></td>
+        <td>基础、关键、前提、离不开、必不可少、不可或缺</td>
+        <td>宣传适老化改造</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-red">语义表对策</span></td>
+        <td>时代命题、重要议题、负有……义务、长远目标、必经之路、必然趋势、有助于</td>
+        <td>农业保险三农</td>
+      </tr>
+    </table>
+    <div class="tip"><strong>注意：</strong>不是有对策标志就一定是对策，只是"有可能是对策"，需结合文段判断。</div>
+
+    <!-- 5结构 -->
+    <h4>⑤ 五种行文结构</h4>
+
+    <details open>
+      <summary>结构一：后对策 / 后观点</summary>
+      <p><strong>行文脉络：</strong>引出话题/问题 → 分析论证 → 给出对策/观点</p>
+      <p><strong>正确选项：</strong>总结/针对问题的对策（完美选项包含问题和解决措施）</p>
+      <p><strong>举例：</strong>区块链基层治理、类型化审判</p>
+    </details>
+
+    <details open>
+      <summary>结构二：前对策 / 前观点</summary>
+      <p><strong>行文脉络：</strong>引出话题/问题 → 直接给出对策/观点 → 论证解释说明</p>
+      <p><strong>正确选项：</strong>针对问题的对策（完美选项包含问题和解决措施）</p>
+      <p><strong>举例：</strong>消费潜力高质量发展、数据重复研究、宣传适老化改造</p>
+    </details>
+
+    <details open>
+      <summary>结构三：总分 / 分总</summary>
+      <p><strong>总分：</strong>总概括 → 分论点展开。<strong>"总"重要</strong>，正确选项是总概括/总观点</p>
+      <p><strong>分总：</strong>分析介绍 → 总结。提示词有"这些""因此"等，正确选项是总结句</p>
+      <p><strong>举例：</strong>虚拟空间侦察情报（总分）、考古发现中华文明起源（分总）</p>
+    </details>
+
+    <details open>
+      <summary>结构四：并列 / 大并列</summary>
+      <p><strong>并列（分分）：</strong>关联词"一方面…另一方面、也、还、并且、同时、另外"或相同句式</p>
+      <p><strong>大并列（分分分）：</strong>根据时间、地区、人物等分类介绍，无总结性表述</p>
+      <p><strong>正确选项：</strong>概括全面！可考虑 A且B 类选项</p>
+      <p><strong>分堆法：</strong>找到并列标志词，把内容"分堆"概括</p>
+    </details>
+
+    <details open>
+      <summary>结构五：二层结构（A+B）</summary>
+      <table>
+        <tr><th>子类型</th><th>说明</th><th>正确选项</th></tr>
+        <tr><td>对比</td><td>时间对比、国别对比</td><td>"当今""我国"突出现在改变是重点</td></tr>
+        <tr><td>转折</td><td>可能转折后是重点，也可能转折前后均重要</td><td>需具体分析</td></tr>
+        <tr><td>因果/果因</td><td>原因类选项，可根据选项逆推</td><td>原因类</td></tr>
+        <tr><td>设问回答</td><td>由问题引出，下文为回答</td><td>重点关注答案</td></tr>
+        <tr><td>背景+正文</td><td>背景可略读，重点关注正文</td><td>我国+新（新突破、新成绩、新发现）</td></tr>
+      </table>
+    </details>
+
+    <!-- 264111 -->
+    <h3 id="option">264111 选项分析</h3>
+
+    <div class="num-grid">
+      <div class="num-item">
+        <div class="num">2</div>
+        <div class="label">两出处</div>
+        <div class="desc">出处有误的选项不选</div>
+      </div>
+      <div class="num-item">
+        <div class="num">6</div>
+        <div class="label">六有误</div>
+        <div class="desc">选项本身有错误</div>
+      </div>
+      <div class="num-item">
+        <div class="num">4</div>
+        <div class="label">四大类</div>
+        <div class="desc">四类正确选项特征</div>
+      </div>
+      <div class="num-item">
+        <div class="num">1</div>
+        <div class="label">一正确</div>
+        <div class="desc">A且B类概括全面</div>
+      </div>
+      <div class="num-item">
+        <div class="num">1</div>
+        <div class="label">一比较</div>
+        <div class="desc">具体优于宽泛</div>
+      </div>
+      <div class="num-item">
+        <div class="num">1</div>
+        <div class="label">一验证</div>
+        <div class="desc">反推文段</div>
+      </div>
+    </div>
+
+    <!-- 2出处 -->
+    <h4>① 两出处（出处有误 → 不选）</h4>
+    <div class="danger">
+      <p><strong>出处一：</strong>转折/"因此"之前 → 非重点部分提炼的选项</p>
+      <p><strong>出处二：</strong>"不是…而是…"的"不是"部分 → 被指代的部分</p>
+      <p><strong>出处三：</strong>例子、分析论证、背景中提炼的选项</p>
+    </div>
+
+    <!-- 6有误 -->
+    <h4>② 六有误（选项本身有误 → 不选）</h4>
+    <table>
+      <tr><th>错误类型</th><th>说明</th><th>识别要点</th></tr>
+      <tr>
+        <td><span class="badge badge-red">片面</span></td>
+        <td>并列结构只说一方面，概括不全面</td>
+        <td>对策类选项要宽容，非对策类必须全面</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-red">杂糅</span></td>
+        <td>从原文各句中提炼词语拼凑，非出自同一句</td>
+        <td>检查选项信息是否出自同一逻辑层次</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-red">下定义</span></td>
+        <td>中性表达，体现不出文段问题</td>
+        <td>说理类文段不选；"A是B"句式正确率低</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-red">绝对化</span></td>
+        <td>"最""首要""越来越"等，原文未说不能选</td>
+        <td>最高级、必要条件、比较级需原文支持</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-red">无中生有</span></td>
+        <td>选项关键信息原文未提及</td>
+        <td>尤其注意程度较重的词语或成语</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-red">本身有误</span></td>
+        <td>不符合事实，逻辑错误或不符合主流价值</td>
+        <td>选项本身就不成立</td>
+      </tr>
+    </table>
+
+    <!-- 4大类 -->
+    <h4>③ 四大类（正确选项特征）</h4>
+    <table>
+      <tr><th>类型</th><th>文段特征</th><th>选项特点</th></tr>
+      <tr>
+        <td><span class="badge badge-green">历程类</span></td>
+        <td>文段有清晰的时间轴</td>
+        <td>常见词语：发展流程、变迁等</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-green">区别比较联系类</span></td>
+        <td>双主语，地位相当、篇幅相当</td>
+        <td>选项体现比较或联系</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-green">原因类</span></td>
+        <td>果因/因果结构，原文是选项的原因</td>
+        <td>可根据原因类选项逆推文段</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-green">具体类</span></td>
+        <td>可概括出"12345"小点或展开"1→1.1/1.2/1.3"</td>
+        <td>选项具体、有层次</td>
+      </tr>
+    </table>
+
+    <!-- 1正确 -->
+    <h4>④ 一正确</h4>
+    <div class="tip">
+      <strong>A且B类选项：</strong>当文段是A+B类结构（如并列结构）时，正确选项往往同时包含A和B两方面内容，概括全面。
+    </div>
+
+    <!-- 1比较 -->
+    <h4>⑤ 一比较</h4>
+    <div class="tip">
+      <strong>具体 VS 宽泛：</strong>当两个选项都能对应文段时，选更<strong>具体</strong>的选项，而非过于宽泛的"万能选项"。
+    </div>
+
+    <!-- 1验证 -->
+    <h4>⑥ 一验证</h4>
+    <div class="tip">
+      <strong>反推验证：</strong>两个选项纠结时，根据选项反推文段应该讲什么，看哪个选项反推出的文段与实际文段更吻合。
+    </div>
+
+    <!-- 疑难点 -->
+    <h3>疑难点突破</h3>
+
+    <div class="card">
+      <div class="card-title">如何抓准对策？</div>
+      <ul>
+        <li>抓准对策句的<strong>关键做法</strong>（必要条件）："只有努力才能考上"→ 对策是"努力"</li>
+        <li>"必须…否则…"→ "必须"后是对策重点</li>
+        <li>借助<strong>问题和论证</strong>确定对策：文段提出问题，对策往往是针对该问题的解决方案</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-title">如何选择"对策"与"问题"？</div>
+      <ul class="check">
+        <li>原文<strong>有对策</strong> → 选针对性对策</li>
+        <li>原文<strong>只有问题</strong> → 概括问题 或 延伸对策（对策要贴合问题）</li>
+      </ul>
+      <div class="danger"><strong>注意：</strong>"有问题有对策时优先选对策"的说法是<strong>错误的</strong>！同时出现两个，必然有一个存在致命问题。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">如何体现作者态度？</div>
+      <p>文段结构不清晰时，从文段读懂作者态度（正面/负面），选择能体现作者态度的选项。</p>
+    </div>
+
+    <h3>实战例题</h3>
+
+    <div class="example">
+      <div class="example-tag">例题1 · 中心理解 · 后对策结构</div>
+      <div class="example-q">
+        <div class="source">【来源：花生十三技巧课】</div>
+        <p>在大数据时代之前，人们做出决策和构建制度，大多建立在匮乏的数据基础上。简单地说，在过去网络还不甚普及的时候，人们在做出一些决策行为和数据分析的过程中，更多的是凭借个人经验和直觉。而现在，大数据时代的来临，为人们提供了一种全新的思路，通过大量的数据分析得出的结果将更加现实和准确。<strong>但是</strong>，值得注意的是，过去，我们手头上仅有的一些数据都是相对准确的，有参考价值的。而大数据由于信息量更多更大，<strong>信息品质参差不齐</strong>，并非所有数据都有参考价值，相对过去来说，这些数据更加杂乱。</p>
+        <p style="margin-top:8px;font-weight:600;">这段文字意在强调：</p>
+        <ul class="example-opts">
+          <li>A. 大数据使得科学研究更加便捷和准确</li>
+          <li>B. 大数据时代人们的决策过程更加科学</li>
+          <li>C. 不同时期数据的准确性存在着巨大差别</li>
+          <li>D. 应注意信息品质对数据分析结果的影响</li>
+        </ul>
+      </div>
+      <div class="example-answer">
+        <span class="ans-label">【答案】D</span>
+      </div>
+      <div class="example-analysis">
+        <span class="ana-label">【花生解析】</span> 前两句说过去决策凭借经验和直觉，第三句说大数据让分析更准确——这是背景铺垫。第四句用"但是"转折，引出<strong>现在的缺陷</strong>：信息品质参差不齐。这是典型的<strong>"引出话题→分析→但是→问题"</strong>结构，转折后是重点。作者意图是提醒注意信息品质，故选D。A、B在"但是"之前，是出处有误；C只概括了表面现象，没体现作者意图。
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-tag">例题2 · 中心理解 · 前对策结构</div>
+      <div class="example-q">
+        <div class="source">【来源：花生十三系统班】</div>
+        <p>目前，我国自主选育品种播种面积占95%以上，良种对粮食增产贡献率已超过45%……<strong>然而</strong>，我国种业自主创新水平与发达国家还有差距，一些品种、领域和环节会影响农业发展速度、质量和效益。<strong>这就要求我们</strong>加强农业种质资源保护利用，加快推进关键核心技术攻关……让一粒粒好种子长成农民的致富希望。</p>
+        <p style="margin-top:8px;font-weight:600;">最适合做这段文字标题的是：</p>
+        <ul class="example-opts">
+          <li>A. 打造种子这枚农业"芯片"</li>
+          <li>B. 要让创新为中国农业赋能</li>
+          <li>C. 种出农民致富的新希望</li>
+          <li>D. 种业产业化发展的启示</li>
+        </ul>
+      </div>
+      <div class="example-answer">
+        <span class="ans-label">【答案】A</span>
+      </div>
+      <div class="example-analysis">
+        <span class="ana-label">【花生解析】</span> 转折引出问题→"这就要求我们"给出<strong>后对策</strong>。对策包含多个方面：种质资源保护、核心技术攻关、种源自主可控、打通各环节等。A选项"芯片"双引号选项，概括了种子的核心技术地位，是对策类标题且有力量。B没说种子（主体不一致）；C"种出"偏向果实；D是完成时，与"加快提升"不符。
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 逻辑填空 ===== -->
+  <section id="logic-fill">
+    <h2><span class="icon">✏️</span> 逻辑填空</h2>
+
+    <div class="highlight">
+      <strong>核心原则：</strong>"技巧"为法，"词语积累"才是根本！做逻辑填空题，不建议看解析，要去<strong>查</strong>！这个词什么意思？怎么用？
+    </div>
+
+    <h3>四大解题维度</h3>
+
+    <div class="framework-box" data-label="维度一">
+      <div class="card-title">词义辨析</div>
+      <table>
+        <tr><th>辨析角度</th><th>说明</th></tr>
+        <tr><td>固定用法</td><td>某些词语有固定的搭配习惯</td></tr>
+        <tr><td>程度轻重</td><td>近义词之间的程度差异，需与文段语境匹配</td></tr>
+        <tr><td>感情色彩</td><td>褒义/中性/贬义，要与文段感情色彩一致</td></tr>
+        <tr><td>语法正确</td><td>主谓宾搭配得当，缺少主语、主动/被动、使用主体是否正确</td></tr>
+        <tr><td>近义/反义</td><td>注意近义词的细微区别</td></tr>
+        <tr><td>成语主体数量</td><td>一个主体还是两个主体</td></tr>
+      </table>
+    </div>
+
+    <div class="framework-box" data-label="维度二">
+      <div class="card-title">词句对应（逻辑对应）</div>
+      <ul>
+        <li><strong>词语之间的逻辑对应：</strong>关联词提示（"甚至"表递进，顿号表并列）</li>
+        <li><strong>词句之间的对应：</strong>填空处与前后的句子、成语形成逻辑关系</li>
+        <li><strong>词与全文的对应：</strong>不要只在文章里找字面对应！一定是<strong>深刻的逻辑对应</strong>，而不是字面对应</li>
+      </ul>
+    </div>
+
+    <div class="framework-box" data-label="维度三">
+      <div class="card-title">揣摩意图与对象特征</div>
+      <ul>
+        <li><strong>揣摩作者意图：</strong>想表达什么思想？如果是你会怎么写？</li>
+        <li><strong>对象特征：</strong>作者描述的对象本身有什么属性与特征？选项要符合对象的本质属性</li>
+        <li><strong>跳出文段，高度把握：</strong>不能仅凭语感做题，重在理解而非读得顺不顺</li>
+        <li><strong>符合客观实际：</strong>选项填入要符合常识</li>
+      </ul>
+      <div class="tip"><strong>例：</strong>"中国文化是博大精深的"，不能说"推陈出新的"——因为"博大精深"表状态，"推陈出新"表动作。</div>
+    </div>
+
+    <div class="framework-box" data-label="维度四">
+      <div class="card-title">实用技巧</div>
+      <ul>
+        <li><strong>比喻一致：</strong>文段用比喻时，选项的喻体要与文段一致</li>
+        <li><strong>政治觉悟：</strong>涉及领导、干部等文段，注意使用积极类词汇，不要口语化</li>
+        <li><strong>成语提示：</strong>注意选词填空前后的成语提示、句子、对象、逻辑</li>
+        <li><strong>语法结构：</strong>注意这句话表一个状态还是一个动作</li>
+      </ul>
+    </div>
+
+    <h3>做题技巧总结</h3>
+    <div class="card">
+      <ul class="check">
+        <li>多个空时，从<strong>容易看得出的空</strong>入手</li>
+        <li>不能简单通过搭不搭配来排除选项，要联系全文</li>
+        <li>两个意思相近的选项，往往考你怎么<strong>区别</strong>这两个词</li>
+        <li>要看正确选项<strong>为什么对</strong>，不要看错误选项怎么错</li>
+        <li>记词不单是记住意思，还要记住用词所符合的<strong>语境</strong></li>
+        <li>做一道题不是选对了就行，不会的词<strong>一定要查</strong></li>
+      </ul>
+    </div>
+
+    <h3>常考近义词辨析（口诀速记）</h3>
+    <div class="card">
+      <table>
+        <tr><th>口诀</th><th>词组</th><th>辨析</th></tr>
+        <tr><td>主观要求用必须，客观需要用必需</td><td>必须 / 必需</td><td>主观要求 / 客观需要</td></tr>
+        <tr><td>没有尽力用不力，无益不顺用不利</td><td>不利 / 不力</td><td>没有尽力 / 无益不顺</td></tr>
+        <tr><td>不愿提及用不齿，不以为耻用不耻</td><td>不耻 / 不齿</td><td>不愿提及 / 不以为耻</td></tr>
+        <tr><td>品行不好用不肖，不敬父母用不孝</td><td>不肖 / 不孝</td><td>品行不好 / 不敬父母</td></tr>
+        <tr><td>考虑决定用裁决，法律判决用裁定</td><td>裁定 / 裁决</td><td>考虑决定 / 法律判决</td></tr>
+        <tr><td>管理财产用财务，钱财物资用财物</td><td>财务 / 财物</td><td>管理财产 / 钱财物资</td></tr>
+        <tr><td>调查案情用查访，公开访问用察访</td><td>查访 / 察访</td><td>调查案情 / 公开访问</td></tr>
+        <tr><td>人事交往用处世，处理事务用处事</td><td>处世 / 处事</td><td>人事交往 / 处理事务</td></tr>
+        <tr><td>独到见解用创见，创立建造用创建</td><td>创建 / 创见</td><td>独到见解 / 创立建造</td></tr>
+        <tr><td>参加会议用出席，无发言权用列席</td><td>列席 / 出席</td><td>参加会议 / 无发言权</td></tr>
+        <tr><td>一年到头用长年，经常终年用常年</td><td>长年 / 常年</td><td>一年到头 / 经常终年</td></tr>
+        <tr><td>过时规章用陈规，行之已久用成规</td><td>成规 / 陈规</td><td>过时规章 / 行之已久</td></tr>
+        <tr><td>恭敬送上用呈献，显露出来用呈现</td><td>呈献 / 呈现</td><td>恭敬送上 / 显露出来</td></tr>
+        <tr><td>先后顺序用次序，不规则用秩序</td><td>次序 / 秩序</td><td>先后顺序 / 不规则</td></tr>
+        <tr><td>四季叶绿用常青，生命旺盛用长青</td><td>长青 / 常青</td><td>生命旺盛 / 四季叶绿</td></tr>
+      </table>
+      <p style="font-size:13px;color:var(--text-light);margin-top:8px;">💡 更多近义词辨析建议平时积累，每天复盘，形成自己的词语库。</p>
+    </div>
+
+    <h3>实战例题</h3>
+
+    <div class="example">
+      <div class="example-tag">例题1 · 逻辑填空 · 词义辨析+语境</div>
+      <div class="example-q">
+        <div class="source">【2012国考真题 · 花生十三解析】</div>
+        <p>怀特海说：科学研究的概率是999个想法会没有任何结果，可是，第1000个想法也许会改变世界。可见，好想法的产生不是______的。</p>
+        <ul class="example-opts">
+          <li>A. 随心所欲</li>
+          <li>B. 轻而易举</li>
+          <li>C. 一蹴而就</li>
+          <li>D. 信手拈来</li>
+        </ul>
+      </div>
+      <div class="example-answer">
+        <span class="ans-label">【答案】C</span>
+      </div>
+      <div class="example-analysis">
+        <span class="ana-label">【花生解析】</span> <strong>感情色彩排除：</strong>"随心所欲"带贬义，"信手拈来"多形容写作诗文时驾驭语言随意自如，AD排除。<strong>揣摩意图：</strong>前面说999个想法没有结果，说明好想法的产生前面必然有大量挫折和积累，不是一下子就能成功的。"一蹴而就"强调踏一步就成功，与语境最匹配。B"轻而易举"程度太轻，没有体现"经过漫长过程"的含义。
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-tag">例题2 · 逻辑填空 · 对象特征+固定搭配</div>
+      <div class="example-q">
+        <div class="source">【2012国考真题 · 花生十三解析】</div>
+        <p>语言在代代相传的过程中会发生改变。在人口众多的族群中，语言倾向于保持______，原因很简单，因为有更多的人能记住上一辈说话的方式，然而在规模较小的族群中，语言有可能更快地发生变化，在世代交替中有些音素将会______。</p>
+        <ul class="example-opts">
+          <li>A. 稳定 流失</li>
+          <li>B. 传统 异化</li>
+          <li>C. 活力 消亡</li>
+          <li>D. 原貌 式微</li>
+        </ul>
+      </div>
+      <div class="example-answer">
+        <span class="ans-label">【答案】A</span>
+      </div>
+      <div class="example-analysis">
+        <span class="ana-label">【花生解析】</span> <strong>逻辑对应：</strong>前后对比——小族群"更快发生变化"，大族群则相反，即"不变化"→"稳定"。<strong>固定搭配：</strong>第二空"音素将会xx"，"流失"搭配最合适（音素流失是语言学常见表达）。"异化""式微"程度和语境不符，"消亡"太绝对。
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-tag">例题3 · 逻辑填空 · 程度轻重+递进关系</div>
+      <div class="example-q">
+        <div class="source">【2012国考真题 · 花生十三解析】</div>
+        <p>持之以恒的精神固然可贵，但如果我们所坚持，所固守的是______甚至错误的，那坚持到底的结果只能是一错再错。人生允许______，敢于放弃不切实际的理想，也是一种生存智慧。</p>
+        <ul class="example-opts">
+          <li>A. 消极 无功而返</li>
+          <li>B. 盲目 知错就改</li>
+          <li>C. 反面 偃旗息鼓</li>
+          <li>D. 偏颇 改弦易辙</li>
+        </ul>
+      </div>
+      <div class="example-answer">
+        <span class="ans-label">【答案】D</span>
+      </div>
+      <div class="example-analysis">
+        <span class="ana-label">【花生解析】</span> <strong>从第二空入手：</strong>"敢于放弃不切实际的理想"是一种改变。"无功而返""偃旗息鼓"不合语境；"知错就改"语义过重（不切实际的理想不算错误）。"改弦易辙"比喻改变方向做法，最合适。<strong>验证第一空：</strong>"偏颇"语义弱于"错误"，"偏颇甚至错误"形成<strong>递进关系</strong>，"甚至"前后程度递进，D完美匹配。
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 标题拟定 ===== -->
+  <section id="title">
+    <h2><span class="icon">📰</span> 标题拟定</h2>
+    <div class="highlight"><strong>核心：</strong>主旨"标题化"——标题是主旨的精炼表达。</div>
+
+    <div class="card">
+      <div class="card-title">正确选项特征</div>
+      <ul class="check">
+        <li>标题中需包含<strong>关键词</strong>（少见情况可做适当同义替换）</li>
+        <li><strong>主语正确</strong>（与文段主体一致）</li>
+        <li>体现作者<strong>观点或对策</strong></li>
+        <li>标题要有<strong>可读性、趣味性</strong>；对策类标题要有力量</li>
+        <li>特别关注<strong>带"双引号"</strong>的选项，正确概率很高</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-title">注意事项</div>
+      <ul>
+        <li>有些文段是"标题党"——开头引出问题吸引你，最后缩小范围提出相关对策</li>
+        <li>有并列结构的文段，标题要概括全面</li>
+        <li>读题要看整体，不能只盯某一段</li>
+      </ul>
+    </div>
+
+    <h3>实战例题</h3>
+
+    <div class="example">
+      <div class="example-tag">例题1 · 标题拟定 · 双引号选项</div>
+      <div class="example-q">
+        <div class="source">【2023辽宁省考 · 花生十三随堂笔记】</div>
+        <p>近年来，踏足荒野、悠然自得的露营生活受到追捧……其中露营过程中的一些不文明现象，也引发了大家的关注，一些资深的户外爱好者呼吁，要文明出游，露营结束后应把垃圾带走，做到<strong>"无痕露营"</strong>。</p>
+        <p style="margin-top:8px;font-weight:600;">最适合作这段文字标题的是：</p>
+        <ul class="example-opts">
+          <li>A. 游客出游请带上文明的行囊</li>
+          <li>B. 莫给自然环境再添"负担"</li>
+          <li>C. 践行"无痕露营"，做环保达人</li>
+          <li>D. "无痕露营"，当成文明出游标配</li>
+        </ul>
+      </div>
+      <div class="example-answer">
+        <span class="ans-label">【答案】D</span>
+      </div>
+      <div class="example-analysis">
+        <span class="ana-label">【花生解析】</span> 文段结构：引出话题→提出问题→后对策。好的标题=问题+对策。D选项"无痕露营"是对策关键词，带双引号（正确概率高），"当成文明出游标配"有力量感。A、B没体现"露营"主题词；C"环保达人"文段没体现，无中生有。
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-tag">例题2 · 标题拟定 · 并列结构概括</div>
+      <div class="example-q">
+        <div class="source">【2022国考 · 花生十三随堂笔记】</div>
+        <p>对于生活在浅海的硬骨鱼类来说，鱼鳔非常重要……但是对于深海鱼来说，充满气的鱼鳔像是脆弱的气球……很多深海鱼"舍弃"了鱼鳔（分1）。相比于浅海中的鱼，深海鱼的骨骼和肌肉含量都比较少，脂质和胶质相对较多（分2）。此外，深海鱼骨骼中软骨的比例也远高于浅海鱼（分3）。对于深海鱼来说，这些都是为了适应深海生活所作出的必要的"妥协"（总）。</p>
+        <p style="margin-top:8px;font-weight:600;">最适合做这段文字标题的是：</p>
+        <ul class="example-opts">
+          <li>A. 深海鱼竟是"软骨头"</li>
+          <li>B. 抗压，从鱼鳔的"断舍离"开始</li>
+          <li>C. 精通以柔克刚的深海鱼</li>
+          <li>D. 深海压力，无法承受之痛</li>
+        </ul>
+      </div>
+      <div class="example-answer">
+        <span class="ans-label">【答案】B</span>
+      </div>
+      <div class="example-analysis">
+        <span class="ana-label">【花生解析】</span> 文段是分总结构，分1讲舍弃鱼鳔，分2讲骨骼肌肉少，分3讲软骨多，总结是"适应深海生活的妥协"。A只对应分3（片面）；C"以柔克刚"无中生有；D只说问题没说对策。B"鱼鳔的断舍离"双引号选项，对应分1的核心内容，有可读性和趣味性，概括了深海鱼适应压力的关键做法。
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 下文推断 ===== -->
+  <section id="next">
+    <h2><span class="icon">⏭️</span> 下文推断</h2>
+    <div class="highlight"><strong>核心：</strong>把上文和下文看作一个整体，套入常见行文结构。</div>
+
+    <div class="card">
+      <div class="card-title">三种尾句模式</div>
+      <table>
+        <tr><th>模式</th><th>尾句特征</th><th>下文内容</th></tr>
+        <tr>
+          <td>尾句有新内容</td>
+          <td>文末提出新概念/新话题</td>
+          <td>下文重点解释新内容（尾句起承上启下作用）</td>
+        </tr>
+        <tr>
+          <td>尾句提出问题</td>
+          <td>文末抛出问题</td>
+          <td>下文分析问题（原因）→ 解决问题（若同时存在，先分析再解决）</td>
+        </tr>
+        <tr>
+          <td>尾句给出宏观对策</td>
+          <td>文末给出大的方向/原因/问题</td>
+          <td>下文具体展开</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-title">注意事项</div>
+      <ul class="cross">
+        <li>切忌只盯尾句！有时需看首句或理解整个文段</li>
+        <li>上文已谈过的内容，下文一般不再介绍</li>
+        <li>如果几个选项下文均可能谈论，注意<strong>顺序</strong>（先分析问题再解决）</li>
+      </ul>
+      <div class="tip">
+        <strong>不易识别的三种二层结构：</strong>
+        <ul>
+          <li>现在与过去对比：过去不行 → 现在有了新突破</li>
+          <li>总分：总+分1 → 下文是分2</li>
+          <li>转折：本身很好 → 问题（欲抑先扬）</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>实战例题</h3>
+
+    <div class="example">
+      <div class="example-tag">例题1 · 下文推断 · 提出问题→分析原因</div>
+      <div class="example-q">
+        <div class="source">【花生十三随堂笔记】</div>
+        <p>据统计数据显示，因心血管疾病死亡事件中约15.8%与天气寒冷相关，而仅有1.3%与天气炎热相关。心力衰竭、心肌梗死和脑卒中在寒冷季节的发病率和死亡率均高于温暖季节。</p>
+        <p style="margin-top:8px;font-weight:600;">这段文字接下来最有可能讲的是：</p>
+        <ul class="example-opts">
+          <li>A. 心血管疾病为何冬季高发</li>
+          <li>B. 心血管疾病的症状有哪些</li>
+          <li>C. 如何有效治疗心血管疾病</li>
+          <li>D. 如何预防冬季心血管疾病</li>
+        </ul>
+      </div>
+      <div class="example-answer">
+        <span class="ans-label">【答案】A</span>
+      </div>
+      <div class="example-analysis">
+        <span class="ana-label">【花生解析】</span> 文段<strong>提出问题</strong>：冬季心血管疾病高发。套入行文逻辑：提出问题→分析问题（原因）→解决问题。下文应先<strong>分析原因</strong>（A），再谈解决（D）。B选项"症状"上文已说完（不会再谈）；C"治疗"跳跃太大，应先分析再解决；D"预防"是解决问题，顺序应在分析原因之后。
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-tag">例题2 · 下文推断 · 尾句新内容</div>
+      <div class="example-q">
+        <div class="source">【2022四川省考 · 花生十三随堂笔记】</div>
+        <p>我们在阅读时，大脑左右半球的分工不同：左脑先理解后记忆……右脑则会将语言变成图像……因此，语言对大脑会有更进一步的刺激，所以<strong>听书有时比阅读还多出了一道工序——声音的符号化</strong>。</p>
+        <p style="margin-top:8px;font-weight:600;">这段文字接下来最可能讲的是：</p>
+        <ul class="example-opts">
+          <li>A. 听书比阅读对大脑的要求更高</li>
+          <li>B. 听书没有阅读容易集中注意力</li>
+          <li>C. 听书和阅读都是对信息的处理</li>
+          <li>D. 听书时大脑会将语言变成图像</li>
+        </ul>
+      </div>
+      <div class="example-answer">
+        <span class="ans-label">【答案】A</span>
+      </div>
+      <div class="example-analysis">
+        <span class="ana-label">【花生解析】</span> 尾句引出<strong>新内容</strong>："听书比阅读多一道工序——声音的符号化"。下文应重点解释这个新内容。A"对大脑要求更高"正是"多一道工序"的展开。B"无中生有"且违背常识；C、D说的是听书和阅读<strong>相同</strong>之处，但文段强调的是<strong>不同</strong>（多了一道工序），方向相反。
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 语句填入 ===== -->
+  <section id="fill-in">
+    <h2><span class="icon">📝</span> 语句填入</h2>
+    <div class="highlight"><strong>核心：</strong>既要关注细节，更要宏观把握。填入语句应为全文服务，承担该起到的作用。</div>
+
+    <div class="card">
+      <div class="card-title">按位置判断作用</div>
+      <table>
+        <tr><th>位置</th><th>作用</th><th>解题重点</th></tr>
+        <tr>
+          <td><strong>在开头</strong></td>
+          <td>总起 / 概括 / 引出话题（含主题词）/ 转折引出观点或对策</td>
+          <td>后文是什么 → 前文应与之衔接</td>
+        </tr>
+        <tr>
+          <td><strong>在中间</strong></td>
+          <td>承上启下 / 前对策（后文为论证）/ 提出问题（尾句为对策）</td>
+          <td>前后句关系正确，语法结构正确</td>
+        </tr>
+        <tr>
+          <td><strong>在结尾</strong></td>
+          <td>总结 / 概括 / 对策句</td>
+          <td>概括被总结部分，和首句呼应</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-title">微观盯细节</div>
+      <ul class="check">
+        <li><strong>语法结构正确：</strong>主谓宾搭配得当</li>
+        <li><strong>逻辑关联词运用得当：</strong>如果…那么、越来越…越、只有…才、只要…就、除非…否则</li>
+        <li><strong>全文主语一致：</strong>填入语句的主语要与文段一致</li>
+        <li><strong>后文指示代词指代正确：</strong>确保代词有明确指代对象</li>
+        <li>两个选项都可以时，考虑<strong>句式一致</strong></li>
+        <li>前句、后句未找到提示时，要关注<strong>首句</strong></li>
+      </ul>
+    </div>
+
+    <h3>实战例题</h3>
+
+    <div class="example">
+      <div class="example-tag">例题1 · 语句填入 · 填在开头（总起句）</div>
+      <div class="example-q">
+        <div class="source">【2023国考 · 花生十三随堂笔记】</div>
+        <p>______。我们要结合我国发展需要和可能，做好我国数字经济发展顶层设计和体制机制建设。要加强形势研判，抓住机遇，赢得主动。各级领导干部要提高数字经济思维能力和专业素质……要提高全民全社会数字素养和技能，夯实我国数字经济发展社会基础。</p>
+        <p style="margin-top:8px;font-weight:600;">填入文中画横线部分最恰当的一项是：</p>
+        <ul class="example-opts">
+          <li>A. 数字经济事关国家发展大局</li>
+          <li>B. 要把发展数字经济自主权牢牢掌握在自己手中</li>
+          <li>C. 数字经济影响程度之深前所未有</li>
+          <li>D. 数字经济有利于推动各级资源要素快速流动</li>
+        </ul>
+      </div>
+      <div class="example-answer">
+        <span class="ans-label">【答案】A</span>
+      </div>
+      <div class="example-analysis">
+        <span class="ana-label">【花生解析】</span> 填入句在段首，后文是<strong>具体做法</strong>（前对策结构）。首句应是<strong>总起/引出话题</strong>，包含主题词"数字经济"。A"事关国家发展大局"是意义/重要性表述，后文讲怎么做，衔接得当。B是对策句，侧重点在"自主权"，后文应讲怎么掌握主动权，不匹配；C侧重"影响"，后文该讲怎么影响；D侧重"资源流动"，后文该讲怎么让资源流动——均与后文不衔接。
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-tag">例题2 · 语句填入 · 填在结尾（总结句）</div>
+      <div class="example-q">
+        <div class="source">【2020江苏 · 花生十三随堂笔记】</div>
+        <p>群体免疫力是一种保护整个社区免受疾病侵害的手段……但是，这个模式要真正起作用，社区中接种疫苗的人必须足够多。接种疫苗的人数必须高于一个最小的百分值（学术界称之为"阈值"），群体免疫才会生效。<strong>接种的社区成员越多，______。</strong></p>
+        <p style="margin-top:8px;font-weight:600;">填入文中画横线部分最恰当的一项是：</p>
+        <ul class="example-opts">
+          <li>A. 整个社区就越能够避免疾病的爆发</li>
+          <li>B. 才能有效阻断疾病源感染整个社区</li>
+          <li>C. 越能保护少数拒绝接种疫苗的人群</li>
+          <li>D. 整个社区的免疫模式才能发生作用</li>
+        </ul>
+      </div>
+      <div class="example-answer">
+        <span class="ans-label">【答案】A</span>
+      </div>
+      <div class="example-analysis">
+        <span class="ana-label">【花生解析】</span> <strong>逻辑关联词：</strong>"越来……越……"表正相关。前文"接种的社区成员越多"，后面必须是"越……"。A"越能够避免"搭配正确。B"越……才能"不搭配（越和才矛盾）；D同样"越……才能"不搭配。C"保护少数拒绝接种的人群"——文段主体是<strong>保护整个社区</strong>，不是保护少数人，主体不一致。
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-tag">例题3 · 语句填入 · 填在中间（承上启下）</div>
+      <div class="example-q">
+        <div class="source">【2022国考 · 花生十三随堂笔记】</div>
+        <p>依托数字文化资源进行新文旅业态和产品的开发，是文物古迹焕发新活力、增强吸引力的重要手段。但科技应用应有边界，即______。一旦两者有冲突，理应遵循<strong>保护优先原则</strong>。</p>
+        <p style="margin-top:8px;font-weight:600;">填入文中画横线部分最恰当的一项是：</p>
+        <ul class="example-opts">
+          <li>A. 需坚持适度开发和可持续性发展策略</li>
+          <li>B. 要把握好真实性和娱乐性之间的尺度</li>
+          <li>C. 不能过度强调沉浸式体验而忽略文化内涵</li>
+          <li>D. 不能对资源本身及其价值造成破坏或产生不良影响</li>
+        </ul>
+      </div>
+      <div class="example-answer">
+        <span class="ans-label">【答案】D</span>
+      </div>
+      <div class="example-analysis">
+        <span class="ana-label">【花生解析】</span> "即"后面是解释"科技应用应有边界"。后文说"一旦两者有冲突，遵循保护优先"——"两者"指<strong>开发和保护</strong>。D"不能对资源本身造成破坏"正是"保护"的含义，与后文"保护优先"呼应。A"适度开发"在转折前已说完；B"娱乐性"无中生有；C"文化内涵"与后文"保护优先"不匹配。
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 语句排序 ===== -->
+  <section id="sort">
+    <h2><span class="icon">🔀</span> 语句排序</h2>
+    <div class="highlight"><strong>核心：</strong>整体把握 → 套入5种结构 → 判断首尾句 → 捆绑组合。</div>
+
+    <div class="card">
+      <div class="card-title">解题三步法</div>
+      <div class="flow">
+        <span class="flow-step">整体把握套结构</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-step">判断首尾句</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-step">捆绑组合</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">第一步：整体把握</div>
+      <p>套入五种行文结构（后对策/前对策/总分分总/并列大并列/二层结构），判断文段可能是什么结构。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">第二步：判断首尾句</div>
+      <table>
+        <tr><th></th><th>特征</th><th>说明</th></tr>
+        <tr>
+          <td><strong>首句特征</strong></td>
+          <td>"下定义"做首句（范围由大到小）</td>
+          <td>如"XX是指……""XX是……"适合做首句</td>
+        </tr>
+        <tr>
+          <td><strong>非首句特征</strong></td>
+          <td>有指代词的不会是首句</td>
+          <td>这、那、他、其、该、此等</td>
+        </tr>
+        <tr>
+          <td><strong>尾句特征</strong></td>
+          <td>总结、对策做尾句</td>
+          <td>因此、所以、总之等引导</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-title">第三步：捆绑组合</div>
+      <p>通过以下线索找到必须捆绑在一起的"组合句"：</p>
+      <ul class="check">
+        <li><strong>转折词：</strong>根据转折关系寻找上句（如"但是"前必有与之相对的内容）</li>
+        <li><strong>指代词：</strong>根据指示代词寻找上句（"这个""其""该"指代什么）</li>
+        <li><strong>相同词语：</strong>上下句有相同的关键词，可能需要相邻</li>
+        <li><strong>时间轴：</strong>按时间顺序排列</li>
+        <li><strong>逻辑顺序：</strong>观点+解释说明、提出问题+解决问题、A和B</li>
+      </ul>
+      <div class="tip"><strong>注意：</strong>选结尾句时要对比其他选项，确定不纠结了再选择！</div>
+    </div>
+
+    <h3>实战例题</h3>
+
+    <div class="example">
+      <div class="example-tag">例题1 · 语句排序 · 首句判断+捆绑组合</div>
+      <div class="example-q">
+        <div class="source">【花生十三随堂笔记】</div>
+        <p>将以下6个句子重新排列：</p>
+        <p>①缺少书籍的滋养，我们的精神世界会是一片荒芜和狼藉</p>
+        <p>②读书是门槛最低的高贵举动</p>
+        <p>③我们的文化也会缺乏不断向前发展的动力</p>
+        <p>④读书不仅仅是为了生存，更是为了充实我们的精神世界，提升我们的生命质量</p>
+        <p>⑤我想，这是对读书意义的深刻体悟和精辟总结</p>
+        <p>⑥我们的社会难以传承深邃的智慧、伟大的精神</p>
+        <ul class="example-opts" style="margin-top:8px;">
+          <li>A. ①⑥③④②⑤</li>
+          <li>B. ②④⑤①③⑥</li>
+          <li>C. ②⑤④①⑥③</li>
+          <li>D. ④⑤②①③⑥</li>
+        </ul>
+      </div>
+      <div class="example-answer">
+        <span class="ans-label">【答案】C</span>
+      </div>
+      <div class="example-analysis">
+        <span class="ana-label">【花生解析】</span> <strong>第一步·捆绑：</strong>①③⑥是并列的论证句（都说缺少书籍的后果），其中只有③有"也"字，并列中"也"一般放最后，所以③在⑥之后→排除B、D。<strong>第二步·判断首句：</strong>①是反面论证，②是<strong>下定义</strong>（"读书是……"），下定义适合做首句。⑤"这是对读书意义的精辟总结"，"这"指代②更合适。所以②⑤在前→答案C。
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-tag">例题2 · 语句排序 · 指代捆绑+逻辑顺序</div>
+      <div class="example-q">
+        <div class="source">【花生十三随堂笔记】</div>
+        <p>关于航空母舰的6个句子排序（摘要）：</p>
+        <p>④……航空母舰作为海上作战平台……</p>
+        <p>②它不仅能够……还能……</p>
+        <p>⑤因此，许多国家都在发展航母</p>
+        <p>⑥众多大国的实例，都已充分证明了这一点</p>
+        <p style="margin-top:8px;">A. ④②⑤⑥①③　B. ⑤④②⑥①③　C. ⑤⑥④②①③　D. ④②⑥⑤①③</p>
+      </div>
+      <div class="example-answer">
+        <span class="ans-label">【答案】A</span>
+      </div>
+      <div class="example-analysis">
+        <span class="ana-label">【花生解析】</span> <strong>指代捆绑：</strong>②有"它"，"它"指代④末尾的"航空母舰"→④②必须相连，排除B、D。<strong>验证指代：</strong>⑥"证明了这一点"，C选项⑤⑥相连，但⑤中没有明确指代对象，"这一点"无处可指→C排除。A选项④②（介绍航母）→⑤（因此发展航母）→⑥（大国实例证明），逻辑通顺。
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 细节判断 ===== -->
+  <section id="detail">
+    <h2><span class="icon">🔍</span> 细节判断</h2>
+    <div class="highlight"><strong>核心：</strong>无普适性解题方法。只需<strong>断句</strong>，不需要分析结构。先看选项，再回文段做对比。</div>
+
+    <div class="card">
+      <div class="card-title">错误选项特征</div>
+      <table>
+        <tr><th>错误类型</th><th>说明</th></tr>
+        <tr><td><span class="badge badge-red">偷换概念</span></td><td>替换、混搭概念</td></tr>
+        <tr><td><span class="badge badge-red">偷换时态</span></td><td>将来时、完成时、进行时混淆</td></tr>
+        <tr><td><span class="badge badge-red">偷换逻辑</span></td><td>强加因果、因果倒置</td></tr>
+        <tr><td><span class="badge badge-red">无中生有</span></td><td>选项信息原文未提及</td></tr>
+        <tr><td><span class="badge badge-red">绝对化</span></td><td>选项表述过于绝对</td></tr>
+        <tr><td><span class="badge badge-red">杂糅</span></td><td>拼凑原文信息</td></tr>
+        <tr><td><span class="badge badge-red">本身有误</span></td><td>不符合实际</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-title">难题处理</div>
+      <div class="tip">
+        正确率低的细节判断题，选项往往存在瑕疵。此时需<strong>抓住致命问题</strong>，而忽略其他（对比择优）。正确选项多少会有点瑕疵，不会太完美。
+      </div>
+    </div>
+
+    <h3>实战例题</h3>
+
+    <div class="example">
+      <div class="example-tag">例题1 · 细节判断 · 偷换概念</div>
+      <div class="example-q">
+        <div class="source">【花生十三随堂笔记】</div>
+        <p>文段大意：酒精可以酿酒。可食用酒精和工业酒精在酿造工艺上有区别……</p>
+        <p style="margin-top:8px;font-weight:600;">下列说法与文段意思相符的是：</p>
+        <ul class="example-opts">
+          <li>A. 酒精可以酿酒</li>
+          <li>B. 可食用酒精和工业酒精都可以酿酒</li>
+        </ul>
+      </div>
+      <div class="example-answer">
+        <span class="ans-label">【答案】A</span>
+      </div>
+      <div class="example-analysis">
+        <span class="ana-label">【花生解析】</span> 典型的<strong>偷换概念</strong>。原文说"酒精可以酿酒"，B选项把"酒精"偷换为"可食用酒精和工业酒精"——原文并未说工业酒精可以酿酒，B扩大了范围。细节判断题要一一比对，发现概念被替换即排除。
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-tag">例题2 · 细节判断 · 偷换时态</div>
+      <div class="example-q">
+        <div class="source">【花生十三随堂笔记】</div>
+        <p>文段大意：目前人脸识别技术已广泛应用于安防领域，未来还将在医疗、教育等领域拓展应用……</p>
+        <p style="margin-top:8px;font-weight:600;">下列说法与文段意思不相符的是：</p>
+        <ul class="example-opts">
+          <li>A. 人脸识别技术目前在安防领域已有应用</li>
+          <li>B. 人脸识别技术已在医疗和教育领域广泛应用</li>
+          <li>C. 人脸识别技术的应用范围将不断扩大</li>
+        </ul>
+      </div>
+      <div class="example-answer">
+        <span class="ans-label">【答案】B</span>
+      </div>
+      <div class="example-analysis">
+        <span class="ana-label">【花生解析】</span> 典型的<strong>偷换时态</strong>。原文说"未来还将在医疗、教育领域拓展"——是<strong>将来时</strong>。B选项"已在医疗和教育领域广泛应用"——变成了<strong>完成时</strong>。时态偷换是细节判断题的高频考点，要注意"将""已""正在"等时态标志词。
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 复盘方法 ===== -->
+  <section id="review">
+    <h2><span class="icon">🔁</span> 复盘方法</h2>
+
+    <div class="highlight">
+      <strong>做题与复盘时间比 = 1:2 ~ 1:3</strong>。不是选对了就行，要研究每道题的思路。
+    </div>
+
+    <div class="card">
+      <div class="card-title">片段阅读复盘</div>
+      <ul>
+        <li>分析语段结构，回想做题逻辑，总结</li>
+        <li>答案存疑查原文分析</li>
+        <li>认为题不好不用过于纠结</li>
+        <li>20题 → 30~60分钟</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-title">逻辑填空复盘</div>
+      <ul>
+        <li>不能只明白为什么选这个选项，要把<strong>所有选项</strong>都理解透了</li>
+        <li>近义词注意对比，完善思维导图</li>
+        <li>查阅适用该词的例句，琢磨例句适用于什么常见语境</li>
+        <li>20题 → 2小时左右</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-title">错题总结</div>
+      <ul>
+        <li>知道为什么错：马虎？知识点不牢？</li>
+        <li>经典题目当做<strong>母题</strong>记下来</li>
+        <li>对比思维导图，对应到知识点</li>
+        <li>正确率低（30%~60%）的题，大家的差距集中在这里，要着重研究</li>
+        <li>质量不好的题果断跳过，研究价值不大</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-title">做题练习方法</div>
+      <ul>
+        <li>做完第一遍对答案时，<strong>只需要知道哪几道题做错了</strong>，不需要知道正确答案</li>
+        <li>将做错的题换一种思路重新选择</li>
+        <li>如果第二次选对了，分析两次思路有何不同，为何第一次思路错误</li>
+        <li>强化对正确思路的记忆，在以后的练习中多使用</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ===== 速记口诀 ===== -->
+  <section id="summary">
+    <h2><span class="icon">🧠</span> 速记口诀</h2>
+
+    <div class="framework-box" data-label="中心理解·33555">
+      <table>
+        <tr><th>代号</th><th>内容</th><th>速记</th></tr>
+        <tr><td>3</td><td>三类文段</td><td>说理选对策、科普选中性、新闻突出"新"</td></tr>
+        <tr><td>3</td><td>三个关键信息</td><td>高频词定主题、主体要一致、首句定方向</td></tr>
+        <tr><td>5</td><td>五种引出话题</td><td>开门见山、转折对比、背景略读、由大引小、设问引出</td></tr>
+        <tr><td>5</td><td>五种对策表达</td><td>祈使建议、禁止型、逻辑关联词、必要条件、语义表对策</td></tr>
+        <tr><td>5</td><td>五种行文结构</td><td>后对策、前对策、总分分总、并列大并列、二层结构</td></tr>
+      </table>
+    </div>
+
+    <div class="framework-box" data-label="选项分析·264111">
+      <table>
+        <tr><th>代号</th><th>内容</th><th>速记</th></tr>
+        <tr><td>2</td><td>两出处</td><td>转折之前不选、例子背景不选</td></tr>
+        <tr><td>6</td><td>六有误</td><td>片面、杂糅、下定义、绝对化、无中生有、本身有误</td></tr>
+        <tr><td>4</td><td>四大类</td><td>历程有时间轴、区别双主语、原因果因、具体有层次</td></tr>
+        <tr><td>1</td><td>一正确</td><td>A且B概括全面</td></tr>
+        <tr><td>1</td><td>一比较</td><td>具体优于宽泛</td></tr>
+        <tr><td>1</td><td>一验证</td><td>反推文段验证</td></tr>
+      </table>
+    </div>
+
+    <div class="framework-box" data-label="逻辑填空·四维度">
+      <table>
+        <tr><th>维度</th><th>核心</th></tr>
+        <tr><td>词义辨析</td><td>固定用法 + 程度轻重 + 感情色彩 + 语法正确</td></tr>
+        <tr><td>词句对应</td><td>深刻逻辑对应，非字面对应</td></tr>
+        <tr><td>揣摩意图</td><td>作者想表达什么 + 对象有什么特征</td></tr>
+        <tr><td>实用技巧</td><td>比喻一致 + 政治觉悟 + 成语提示</td></tr>
+      </table>
+    </div>
+
+    <div class="framework-box" data-label="终极原则">
+      <ul class="check">
+        <li><strong>词语积累是根本，技巧只是辅助</strong></li>
+        <li><strong>重在理解，不是读得顺不顺</strong></li>
+        <li><strong>看正确选项为什么对，不要看错误选项怎么错</strong></li>
+        <li><strong>不会的词一定要查</strong>，不要只看解析</li>
+        <li><strong>保持客观！保持理性！保持有底线包容！对比择优！</strong></li>
+      </ul>
+    </div>
+
+    <div style="text-align:center; margin-top:40px; color:var(--text-light); font-size:13px;">
+      <p>🥜 本笔记基于全网公开资料整理，仅供学习复习使用</p>
+      <p>祝考试顺利，成功上岸！</p>
+    </div>
+  </section>
+</main>
+
+  <script data-study-hub-script src="../../assets/hub-nav.js"></script>
+</body>
+</html>

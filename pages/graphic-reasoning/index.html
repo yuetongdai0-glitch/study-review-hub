@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>刘义恒图推「3+3」复习手册</title>
+<style>
+  :root{
+    --bg:#f4f6fb; --card:#ffffff; --ink:#1f2937; --sub:#6b7280; --line:#e5e7eb;
+    --blue:#2563eb; --blue-bg:#eff6ff; --orange:#f59e0b; --orange-bg:#fffbeb;
+    --green:#10b981; --green-bg:#ecfdf5; --red:#ef4444; --red-bg:#fef2f2;
+    --purple:#7c3aed; --purple-bg:#f5f3ff; --teal:#0d9488; --teal-bg:#f0fdfa;
+    --radius:14px; --shadow:0 1px 3px rgba(15,23,42,.08),0 4px 14px rgba(15,23,42,.05);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth; scroll-padding-top:76px;}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.7; font-size:15px;
+  }
+  /* ===== 顶栏 ===== */
+  header{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    background:rgba(255,255,255,.92); backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line); padding:10px 20px;
+    display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  }
+  header .logo{font-weight:800; font-size:17px; display:flex; align-items:center; gap:8px;}
+  header .logo .badge{
+    background:var(--blue); color:#fff; font-size:11px; font-weight:700;
+    padding:2px 8px; border-radius:20px; letter-spacing:1px;
+  }
+  .progress-wrap{flex:1; min-width:180px; max-width:360px;}
+  .progress-bar{height:8px; background:#e5e7eb; border-radius:10px; overflow:hidden;}
+  .progress-fill{height:100%; width:0%; background:linear-gradient(90deg,#2563eb,#10b981); border-radius:10px; transition:width .4s;}
+  .progress-text{font-size:12px; color:var(--sub); margin-top:3px;}
+  .mode-switch{display:flex; background:#eef1f6; border-radius:10px; padding:3px;}
+  .mode-switch button{
+    border:none; background:transparent; padding:6px 14px; border-radius:8px;
+    font-size:13px; cursor:pointer; color:var(--sub); font-weight:600; transition:all .2s;
+  }
+  .mode-switch button.active{background:#fff; color:var(--blue); box-shadow:var(--shadow);}
+  /* ===== 侧边栏 ===== */
+  aside{
+    position:fixed; top:64px; bottom:0; left:0; width:250px; overflow-y:auto;
+    padding:18px 12px 40px; border-right:1px solid var(--line); background:#fbfcfe;
+  }
+  aside h4{font-size:12px; color:var(--sub); letter-spacing:2px; padding:0 10px 8px;}
+  aside nav a{
+    display:flex; align-items:center; gap:8px; padding:7px 10px; border-radius:9px;
+    color:var(--ink); text-decoration:none; font-size:13.5px; margin-bottom:2px; transition:all .15s;
+  }
+  aside nav a:hover{background:#eef2f9;}
+  aside nav a.active{background:var(--blue-bg); color:var(--blue); font-weight:700;}
+  aside nav a .dot{
+    width:8px; height:8px; border-radius:50%; flex-shrink:0;
+    background:#d1d5db; transition:background .3s;
+  }
+  aside nav a .dot.done{background:var(--green);}
+  aside nav a .num{font-size:11px; color:var(--sub); margin-left:auto;}
+  aside .sider-actions{padding:14px 10px 0; border-top:1px solid var(--line); margin-top:14px;}
+  aside .sider-actions button{
+    width:100%; padding:9px; border:none; border-radius:9px; font-size:13px;
+    cursor:pointer; margin-bottom:8px; font-weight:600;
+  }
+  .btn-reset{background:#fef2f2; color:var(--red);}
+  /* ===== 主内容 ===== */
+  main{margin-left:250px; padding:86px 28px 80px; max-width:960px;}
+  .hero{
+    background:linear-gradient(135deg,#1e3a8a,#2563eb 60%,#3b82f6);
+    color:#fff; border-radius:20px; padding:28px 30px; margin-bottom:26px;
+    box-shadow:0 10px 30px rgba(37,99,235,.25);
+  }
+  .hero h1{font-size:26px; margin-bottom:6px; letter-spacing:1px;}
+  .hero p{opacity:.92; font-size:14px; max-width:640px;}
+  .hero .chips{margin-top:14px; display:flex; gap:8px; flex-wrap:wrap;}
+  .hero .chip{
+    background:rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.3);
+    padding:4px 12px; border-radius:20px; font-size:12px; font-weight:600;
+  }
+  section{margin-bottom:44px;}
+  .sec-head{display:flex; align-items:center; gap:12px; margin-bottom:6px;}
+  .sec-head .idx{
+    width:34px; height:34px; border-radius:10px; display:flex; align-items:center; justify-content:center;
+    font-weight:800; font-size:16px; color:#fff; flex-shrink:0;
+  }
+  .sec-head h2{font-size:21px;}
+  .sec-sub{color:var(--sub); font-size:13.5px; margin:2px 0 16px 46px;}
+  .sec-progress{font-size:12px; color:var(--sub); margin-left:auto; background:#fff; padding:3px 10px; border-radius:20px; border:1px solid var(--line);}
+  /* ===== 知识点卡片（主动回忆） ===== */
+  .card{
+    background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+    box-shadow:var(--shadow); margin-bottom:14px; overflow:hidden; transition:all .25s;
+  }
+  .card.done{background:var(--green-bg); border-color:#a7f3d0;}
+  .card.q-head{
+    padding:15px 18px; cursor:pointer; display:flex; align-items:flex-start; gap:12px;
+  }
+  .card.q-head:hover{background:#fafbfe;}
+  .card.done .q-head{background:transparent;}
+  .tag{
+    flex-shrink:0; font-size:11px; font-weight:700; padding:3px 10px; border-radius:20px;
+    letter-spacing:1px; margin-top:4px;
+  }
+  .t-blue{background:var(--blue-bg); color:var(--blue);}
+  .t-orange{background:var(--orange-bg); color:#b45309;}
+  .t-green{background:var(--green-bg); color:#047857;}
+  .t-purple{background:var(--purple-bg); color:#6d28d9;}
+  .t-teal{background:var(--teal-bg); color:#0f766e;}
+  .t-red{background:var(--red-bg); color:#b91c1c;}
+  .card h3{font-size:16px; margin:0; flex:1;}
+  .q-arrow{color:#cbd5e1; font-size:18px; transition:transform .25s; margin-top:2px;}
+  .card.open .q-arrow{transform:rotate(90deg); color:var(--blue);}
+  .card-a{display:none; padding:4px 18px 16px 54px; border-top:1px dashed var(--line);}
+  .card.open .card-a{display:block;}
+  .card-a ul{padding-left:18px; margin-bottom:8px;}
+  .card-a li{margin-bottom:6px;}
+  .card-a .k-box{
+    background:#f8fafc; border-left:4px solid var(--blue); border-radius:8px;
+    padding:10px 14px; margin:8px 0; font-size:14px;
+  }
+  .card-a .k-box.orange{border-color:var(--orange); background:var(--orange-bg);}
+  .card-a .k-box.green{border-color:var(--green); background:var(--green-bg);}
+  .card-a .k-box.purple{border-color:var(--purple); background:var(--purple-bg);}
+  .card-a strong{color:var(--blue);}
+  .card-a .k-box strong{color:inherit;}
+  .card-actions{
+    display:none; padding:10px 18px 14px 54px; gap:8px;
+  }
+  .card.open .card-actions{display:flex;}
+  .card-actions button{
+    border:none; padding:7px 16px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; transition:all .15s;
+  }
+  .btn-known{background:var(--green); color:#fff;}
+  .btn-known:hover{background:#059669;}
+  .btn-again{background:#f3f4f6; color:var(--sub);}
+  .btn-again:hover{background:#e5e7eb;}
+  .card.done .q-head h3{color:#047857;}
+  .card.done .q-head .q-arrow{display:none;}
+  .card.done .done-flag{color:var(--green); font-weight:700; font-size:13px; margin-left:auto; flex-shrink:0; background:#d1fae5; padding:2px 10px; border-radius:20px;}
+  /* ===== 例题 ===== */
+  .ex{
+    margin-top:12px; border:1px dashed #cbd5e1; border-radius:10px;
+    background:#fff; padding:12px 14px;
+  }
+  .ex-head{font-size:13px; font-weight:800; color:#475569; margin-bottom:6px;}
+  .ex-head .ex-no{color:var(--blue); margin-right:4px;}
+  .ex-stem{font-size:14px; line-height:1.75;}
+  .ex-figs{display:flex; flex-wrap:wrap; gap:10px 14px; margin:8px 0 4px;}
+  .ex-fig-item{text-align:center;}
+  .ex-fig-item .fig-label{font-size:11px; color:var(--sub); margin-bottom:3px; font-weight:700;}
+  .ex-fig{
+    display:inline-block; background:#f8fafc; border:1px solid var(--line); border-radius:8px;
+    padding:7px 10px; font-family:Menlo,Consolas,"SF Mono",monospace; font-size:13px;
+    line-height:1.4; white-space:pre; text-align:left;
+  }
+  .ex-opts{margin-top:8px; font-size:13.5px; line-height:1.9; color:#374151;}
+  .ex-ans{
+    display:none; margin-top:10px; padding:10px 12px; border-radius:9px;
+    background:var(--green-bg); border-left:4px solid var(--green); font-size:13.5px;
+  }
+  .ex-ans.show{display:block;}
+  .ex-ans b{color:#047857;}
+  .ex-btn{
+    margin-top:10px; border:1px solid var(--blue); background:var(--blue-bg); color:var(--blue);
+    font-size:12.5px; font-weight:700; padding:5px 14px; border-radius:8px; cursor:pointer; transition:all .15s;
+  }
+  .ex-btn:hover{background:var(--blue); color:#fff;}
+  /* ===== 口诀卡 ===== */
+  .koujue{
+    background:var(--orange-bg); border:1px solid #fde68a; border-radius:var(--radius);
+    padding:14px 18px; margin-bottom:10px; display:flex; align-items:flex-start; gap:12px;
+  }
+  .koujue .k-icon{font-size:20px; flex-shrink:0;}
+  .koujue .k-text{flex:1; font-size:14.5px; font-weight:600; color:#92400e;}
+  .koujue .k-tag{font-size:11px; color:#b45309; background:#fff7ed; border:1px solid #fed7aa; padding:1px 8px; border-radius:20px; flex-shrink:0; margin-top:2px;}
+  /* ===== 自测 ===== */
+  .quiz-q{
+    background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+    box-shadow:var(--shadow); padding:18px 20px; margin-bottom:16px;
+  }
+  .quiz-q .q-title{font-weight:700; font-size:15.5px; margin-bottom:12px;}
+  .quiz-q .q-title .no{color:var(--blue); margin-right:6px;}
+  .quiz-q .opts{display:grid; grid-template-columns:1fr 1fr; gap:8px;}
+  .quiz-q .opt{
+    border:1.5px solid var(--line); border-radius:9px; padding:9px 14px; font-size:13.5px;
+    cursor:pointer; transition:all .15s; background:#fff;
+  }
+  .quiz-q .opt:hover{border-color:var(--blue); background:var(--blue-bg);}
+  .quiz-q .opt.right{border-color:var(--green); background:var(--green-bg); font-weight:700;}
+  .quiz-q .opt.wrong{border-color:var(--red); background:var(--red-bg);}
+  .quiz-q .opt.locked{pointer-events:none;}
+  .quiz-q .explain{display:none; margin-top:12px; padding:10px 14px; border-radius:9px; background:#f8fafc; font-size:13.5px; border-left:4px solid var(--blue);}
+  .quiz-q .explain.show{display:block;}
+  .quiz-q .explain b{color:var(--blue);}
+  .quiz-score{
+    position:sticky; bottom:16px; background:#1f2937; color:#fff; border-radius:14px;
+    padding:12px 20px; display:flex; align-items:center; gap:16px; box-shadow:0 8px 30px rgba(0,0,0,.25);
+    margin-top:10px; font-size:14px; flex-wrap:wrap;
+  }
+  .quiz-score .big{font-size:20px; font-weight:800; color:#34d399;}
+  .quiz-score button{margin-left:auto; background:var(--green); border:none; color:#fff; padding:8px 18px; border-radius:9px; font-weight:700; cursor:pointer; font-size:13px;}
+  /* ===== 实战块 ===== */
+  .flow{
+    background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+    padding:20px; box-shadow:var(--shadow);
+  }
+  .flow-step{display:flex; gap:14px; margin-bottom:14px; align-items:flex-start;}
+  .flow-step:last-child{margin-bottom:0;}
+  .flow-step .step-no{
+    width:30px; height:30px; border-radius:50%; background:var(--blue); color:#fff;
+    display:flex; align-items:center; justify-content:center; font-weight:800; font-size:14px; flex-shrink:0;
+  }
+  .flow-step .step-body{flex:1;}
+  .flow-step .step-body b{font-size:15px;}
+  .flow-step .step-body p{color:var(--sub); font-size:13.5px;}
+  .warn{
+    background:var(--red-bg); border:1px solid #fecaca; border-radius:var(--radius);
+    padding:14px 18px; margin:10px 0;
+  }
+  .warn b{color:var(--red);}
+  .tip{
+    background:var(--teal-bg); border:1px solid #99f6e4; border-radius:var(--radius);
+    padding:14px 18px; margin:10px 0;
+  }
+  .tip b{color:var(--teal);}
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+  @media(max-width:900px){.grid2{grid-template-columns:1fr;}}
+  /* ===== 背诵模式 ===== */
+  .mode-body{display:none;}
+  body.mode-browse .mode-browse, body.mode-recite .mode-recite, body.mode-quiz .mode-quiz{display:block;}
+  body.mode-recite .card{display:none;}
+  body.mode-quiz .card, body.mode-quiz .koujue{display:none;}
+  body.mode-quiz section:not(#quiz-sec){display:none;}
+  /* ===== 打印 ===== */
+  @media print{
+    header, aside, #menu-btn, #overlay, .card-actions, .mode-switch, .quiz-score button, .sider-actions{display:none !important;}
+    main{margin-left:0; padding:20px;}
+    .card-a{display:block !important;}
+    .ex-ans{display:block !important;}
+    .ex-btn{display:none !important;}
+    .card{break-inside:avoid;}
+    body{margin:0;}
+  }
+  .footer{text-align:center; color:var(--sub); font-size:12px; padding:30px 0 10px;}
+  /* ===== 汉堡菜单 + 遮罩 ===== */
+  #menu-btn{
+    display:none; border:none; background:#eef1f6; border-radius:9px;
+    width:38px; height:38px; font-size:18px; cursor:pointer; flex-shrink:0;
+    color:var(--ink); line-height:1; transition:background .2s;
+  }
+  #menu-btn:hover{background:#e2e8f0;}
+  #overlay{
+    display:none; position:fixed; inset:0; background:rgba(15,23,42,.45);
+    z-index:90; opacity:0; transition:opacity .25s; -webkit-tap-highlight-color:transparent;
+  }
+  body.menu-open #overlay{display:block; opacity:1;}
+  /* ===== 移动端适配（< 900px） ===== */
+  @media(max-width:900px){
+    #menu-btn{display:block;}
+    header{padding:8px 12px; gap:8px;}
+    header .logo{font-size:15px;}
+    .progress-wrap{min-width:0; max-width:none; order:3; flex-basis:100%;}
+    .progress-text{display:none;}
+    .mode-switch{margin-left:auto;}
+    .mode-switch button{padding:5px 12px; font-size:12px;}
+    aside{
+      top:0; height:100%; bottom:auto; width:264px; padding:72px 12px 40px;
+      transform:translateX(-105%); transition:transform .28s ease; z-index:110;
+      box-shadow:0 0 44px rgba(0,0,0,.22); -webkit-overflow-scrolling:touch;
+    }
+    body.menu-open aside{transform:translateX(0);}
+    aside nav a{padding:9px 12px; font-size:14px;}
+    main{margin-left:0; padding:78px 14px 64px;}
+    html{scroll-padding-top:64px;}
+    .hero{padding:20px 18px; border-radius:16px; margin-bottom:20px;}
+    .hero h1{font-size:20px;}
+    .hero p{font-size:13.5px;}
+    .hero .chip{font-size:11px; padding:3px 10px;}
+    .sec-sub{margin-left:0;}
+    .sec-head .idx{width:30px; height:30px; font-size:14px;}
+    .sec-head h2{font-size:18px;}
+    .card.q-head{padding:13px 14px; gap:10px;}
+    .card h3{font-size:15px;}
+    .card-a{padding:4px 16px 14px;}
+    .card-actions{padding:8px 16px 12px;}
+    .card-actions button{padding:8px 16px;}
+    .koujue{padding:12px 14px;}
+    .quiz-q{padding:15px 16px;}
+    .quiz-q .opts{grid-template-columns:1fr;}
+    .quiz-q .opt{padding:11px 14px; font-size:14px;}
+    .quiz-score{bottom:10px; left:10px; right:10px; padding:11px 16px; font-size:13px; border-radius:12px;}
+    .ex{padding:10px 12px;}
+    .ex-stem{font-size:13.5px;}
+    .ex-fig{font-size:12px; padding:6px 8px;}
+    .flow-step{gap:12px;}
+  }
+  @media(max-width:480px){
+    header .logo{font-size:14px;}
+    header .logo .badge{display:none;}
+    .mode-switch button{padding:5px 9px; font-size:11.5px;}
+    .progress-bar{height:6px;}
+    .card-a ul{padding-left:16px;}
+    .card-a li{font-size:14px;}
+    .quiz-q .q-title{font-size:14.5px;}
+    .hero h1{font-size:18px;}
+  }
+</style>
+  <link data-study-hub-style rel="stylesheet" href="../../assets/hub-nav.css">
+</head>
+<body class="mode-browse">
+
+<header>
+  <button id="menu-btn" aria-label="打开目录">☰</button>
+  <div class="logo">📐 刘义恒图推 <span class="badge">3+3</span></div>
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="pf"></div></div>
+    <div class="progress-text" id="pt">已掌握 0 / 0 个知识点</div>
+  </div>
+  <div class="mode-switch">
+    <button data-mode="browse" class="active">📖 学习</button>
+    <button data-mode="recite">🗣️ 背口诀</button>
+    <button data-mode="quiz">✍️ 自测</button>
+  </div>
+</header>
+
+<aside>
+  <h4>目录导航</h4>
+  <nav id="nav"></nav>
+  <div class="sider-actions">
+    <button class="btn-reset" onclick="resetAll()">↺ 重置全部进度</button>
+  </div>
+</aside>
+
+<div id="overlay"></div>
+<main>
+  <div class="hero">
+    <h1>图形推理「3+3」体系 · 复习手册</h1>
+    <p>源自刘义恒图推笔记 / 命题思维专项。核心心法：<b>先看图形像不像</b>——像的看「位置·样式·标记」，不像的看「属性·数量·图形间位置」。每个知识点卡默认隐藏答案，<b>先回忆、再点开核对</b>，这才是真复习。</p>
+    <div class="chips">
+      <span class="chip">位置规律</span><span class="chip">样式规律</span><span class="chip">标记规律</span>
+      <span class="chip">属性规律</span><span class="chip">数量规律</span><span class="chip">图形间位置</span>
+      <span class="chip">黑白块</span><span class="chip">空间重构</span>
+    </div>
+  </div>
+
+  <!-- ============ 框架总览 ============ -->
+  <section id="sec-framework">
+    <div class="sec-head"><span class="idx" style="background:var(--blue)">总</span><h2>解题总框架：3+3 体系</h2></div>
+    <p class="sec-sub">先看图形「像不像」，再进对应分支。这是刘义恒笔记的核心骨架，做题第一反应必须从这里出发。</p>
+    <div class="flow">
+      <div class="flow-step">
+        <div class="step-no">1</div>
+        <div class="step-body"><b>第一步：看整体像不像</b><p>图形间有没有「一样的图案」（完全相同 / 部分相同 / 带标记符号）？有 → 左侧三分支；没有 → 右侧三分支。</p></div>
+      </div>
+      <div class="flow-step">
+        <div class="step-no" style="background:var(--green)">像</div>
+        <div class="step-body"><b>有相同图案 → 三个方向</b>
+          <p>① <b>位置</b>：图形完全一样 → 平移、旋转、翻转<br>
+             ② <b>样式</b>：部分一样（黑白块、线条重复）→ 遍历、加减同异、黑白运算<br>
+             ③ <b>标记</b>：有黑点 / 箭头 / 小圈 → 看标在哪（上下左右、点线面角）</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-no" style="background:var(--orange)">不像</div>
+        <div class="step-body"><b>无相同图案 → 三个方向</b>
+          <p>① <b>属性</b>：整体特点 → 对称、曲直、开闭（先看属性，对称优先）<br>
+             ② <b>数量</b>：数 面 / 线 / 点 / 角 / 素 / 笔画<br>
+             ③ <b>图形间位置</b>：相离、相交（交面/交线/交点）、包含、相切</p>
+        </div>
+      </div>
+    </div>
+    <div class="tip"><b>💡 黄金顺序：</b>数量题先看属性（对称优先）；图形规整美观 → 先想对称；极端情况（如某图形非常特殊）→ 优先考虑图形间关系。</div>
+    <div class="koujue"><span class="k-icon">🎯</span><div class="k-text">先看像不像 → 像：位置·样式·标记；不像：属性·数量·图形间位置</div><span class="k-tag">总口诀</span></div>
+  </section>
+
+  <!-- ============ 位置规律 ============ -->
+  <section id="sec-position">
+    <div class="sec-head"><span class="idx" style="background:var(--green)">1</span><h2>位置规律</h2><span class="sec-progress sec-p" data-sec="sec-position">0/4</span></div>
+    <p class="sec-sub">特征：各图形构成<b>完全相同</b>（外形、数量完全一致），只变位置。口诀：基本相同看位置，再看元素往哪儿走。</p>
+
+    <div class="card" data-id="pos1">
+      <div class="q-head"><span class="tag t-green">位置</span><h3>平移：有哪两大考法方向？</h3><span class="q-arrow">▶</span></div>
+      <div class="card-a">
+        <ul>
+          <li><b>内外分开看</b>：图形分内外两层时，内外元素分别移动（内层走内层、外层走外层）——<b>高频易错点</b>。</li>
+          <li><b>常规平移</b>：上下、左右、斜向运动；步数可恒定 / 递增 / 循环。</li>
+          <li>技巧①<b>特殊图案优先</b>：锁定一个特殊小元素，追踪它的移动路径最省力；技巧②<b>数个数</b>：统计移动格数找规律。</li>
+        </ul>
+        <div class="k-box green">📌 特征词：图形完全相同 + 有格子/宫格 + 小元素在动</div>
+      </div>
+      <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
+    </div>
+
+    <div class="card" data-id="pos2">
+      <div class="q-head"><span class="tag t-green">位置</span><h3>旋转：怎么快速判断？</h3><span class="q-arrow">▶</span></div>
+      <div class="card-a">
+        <ul>
+          <li>看<b>顺/逆时针</b>方向，再看<b>旋转角度</b>（45° / 90° / 180° 等，常呈等差或循环）。</li>
+          <li>整体旋转不好观察时，盯住一条特征线或一个特征角。</li>
+        </ul>
+        <div class="k-box green">口诀：顺逆时针先绕圈，再看角度找答案。</div>
+      </div>
+      <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
+    </div>
+
+    <div class="card" data-id="pos3">
+      <div class="q-head"><span class="tag t-green">位置</span><h3>翻转：横竖轴怎么翻？和旋转怎么区分？</h3><span class="q-arrow">▶</span></div>
+      <div class="card-a">
+        <ul>
+          <li><b>横轴对称 → 上下翻</b>（图形上下颠倒）；<b>竖轴对称 → 左右翻</b>（左右镜像）。</li>
+          <li>区分技巧：在图形上画一个「带方向的箭头」，<b>旋转不改变手性、翻转改变手性</b>（镜像翻转后像照镜子，永远无法通过旋转重合）。</li>
+        </ul>
+        <div class="k-box green">口诀：横轴对称上下翻，竖轴对称左右翻。</div>
+      </div>
+      <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
+    </div>
+
+    <div class="card" data-id="pos4">
+      <div class="q-head"><span class="tag t-green">位置</span><h3>常见陷阱与观察技巧</h3><span class="q-arrow">▶</span></div>
+      <div class="card-a">
+        <ul>
+          <li>图形完全一样时优先位置，<b>别急着数数量</b>。</li>
+          <li>可用<b>相邻比较</b>：只看相邻两幅图的变化，快速锁定移动方向。</li>
+          <li>遇到「2、3」直接看两幅图即可判断是平移 / 旋转 / 翻转（翻转观察点：图案的左右/上下是否镜像）。</li>
+        </ul>
+        <div class="k-box green">心法：位置规律特征最明显——「一模一样，只动位置」。</div>
+      </div>
+      <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
+    </div>
+
+    <div class="koujue"><span class="k-icon">🧭</span><div class="k-text">基本相同看位置，再看元素往哪儿走 / 顺逆时针先绕圈，再看角度找答案 / 横轴对称上下翻，竖轴对称左右翻</div><span class="k-tag">位置3连</span></div>
+  </section>
+
+  <!-- ============ 样式规律 ============ -->
+  <section id="sec-style">
+    <div class="sec-head"><span class="idx" style="background:var(--teal)">2</span><h2>样式规律</h2><span class="sec-progress sec-p" data-sec="sec-style">0/3</span></div>
+    <p class="sec-sub">特征：图形<b>部分相似</b>（线条重复、黑白块、轮廓相同）。三大考法：遍历、加减同异、黑白运算。</p>
+
+    <div class="card" data-id="sty1">
+      <div class="q-head"><span class="tag t-teal">样式</span><h3>遍历：什么意思？</h3><span class="q-arrow">▶</span></div>
+      <div class="card-a">
+        <ul>
+          <li>相同元素反复出现，但每一行/每一组<b>缺一个</b> → 缺啥补啥（形状 / 颜色 / 方向都要看全）。</li>
+          <li>常与位置结合：元素种类齐全但摆放位置轮换。</li>
+        </ul>
+        <div class="k-box">口诀：元素重复看遍历，缺啥你就补个啥。</div>
+      </div>
+      <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
+    </div>
+
+    <div class="card" data-id="sty2">
+      <div class="q-head"><span class="tag t-teal">样式</span><h3>加减同异：三种运算是什么？</h3><span class="q-arrow">▶</span></div>
+      <div class="card-a">
+        <ul>
+          <li><b>求同</b>：保留两图相同线条；<b>求异</b>：去掉相同、保留不同；<b>叠加</b>：全部线条相加。</li>
+          <li>注意<b>结合位置</b>：先旋转/翻转再运算，或运算后整体移动（常考组合）。</li>
+        </ul>
+        <div class="k-box">口诀：线条重复求同异，结合位置别忘记。</div>
+      </div>
+      <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
+    </div>
+
+    <div class="card" data-id="sty3">
+      <div class="q-head"><span class="tag t-teal">样式</span><h3>黑白运算：什么时候用？怎么验证？</h3><span class="q-arrow">▶</span></div>
+      <div class="card-a">
+        <ul>
+          <li><b>特征</b>：轮廓完全相同、黑白颜色数量<b>不相同</b>（黑块数在变）→ 优先黑白运算。</li>
+          <li>规则如 黑+白=黑、白+黑=白、黑+黑=白、白+白=黑，<b>每道题规则都要现场推</b>，用第一组图形推、第二组验证、第三组应用。</li>
+          <li><b>相同位置做验证</b>：逐格对应，不能错位。</li>
+        </ul>
+        <div class="k-box">口诀：颜色数量不相同，轮廓相同看运算。<br>⚠️ 区分：黑块<b>数量相同</b> → 位置移动（平移）；黑块<b>数量不同</b> → 黑白运算。</div>
+      </div>
+      <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
+    </div>
+
+    <div class="koujue"><span class="k-icon">🧩</span><div class="k-text">元素重复看遍历，缺啥你就补个啥 / 线条重复求同异，结合位置别忘记 / 颜色数量不相同，轮廓相同看运算</div><span class="k-tag">样式3连</span></div>
+  </section>
+
+  <!-- ============ 标记规律 ============ -->
+  <section id="sec-marker">
+    <div class="sec-head"><span class="idx" style="background:var(--purple)">3</span><h2>标记规律（功能元素）</h2><span class="sec-progress sec-p" data-sec="sec-marker">0/2</span></div>
+    <p class="sec-sub">特征：图形里混着<b>小黑点、白圈、箭头、小三角</b>等与图形无关的小符号 —— 符号本身不重要，重要的是它<b>标在哪</b>。</p>
+
+    <div class="card" data-id="mar1">
+      <div class="q-head"><span class="tag t-purple">标记</span><h3>功能元素：重点看标记的哪些位置？</h3><span class="q-arrow">▶</span></div>
+      <div class="card-a">
+        <ul>
+          <li><b>标在点/线上</b>：交点（曲直交点、线线交点）、切点、边上 → 看交线特征、边的长短。</li>
+          <li><b>标在面里</b>：封闭面内/外 → 看面的大小（最大面/最小面）、形状、对称性、面积。</li>
+          <li><b>标在角里</b>：直角 / 锐角 / 钝角 → 分清角度类型。</li>
+          <li><b>标在上下左右</b>：图形本体的方位关系。</li>
+        </ul>
+        <div class="k-box purple">本质：把「标记」当探针，指向图形的点 / 线 / 面 / 角特征。</div>
+      </div>
+      <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
+    </div>
+
+    <div class="card" data-id="mar2">
+      <div class="q-head"><span class="tag t-purple">标记</span><h3>两个黑点 / 箭头型标记怎么考？</h3><span class="q-arrow">▶</span></div>
+      <div class="card-a">
+        <ul>
+          <li><b>两黑点</b>：看两点的<b>连线方向</b>（横/竖/斜）、连线经过什么（点/线/面/空白）、两点是否同面同区域。</li>
+          <li><b>箭头</b>：看指向（上/下/左/右）、与图形线条的关系（平行/垂直/重合）。</li>
+          <li>对称图形中，标记位置还常与<b>对称轴</b>结合（在轴上/不在轴上、两侧对称分布）。</li>
+        </ul>
+      </div>
+      <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
+    </div>
+
+    <div class="koujue"><span class="k-icon">📍</span><div class="k-text">相同元素每图有，看看标记在哪里 —— 点上标看交线，边上靠看长短，面里放看大小，角里搁看锐钝</div><span class="k-tag">标记口诀</span></div>
+  </section>
+
+  <!-- ============ 属性规律 ============ -->
+  <section id="sec-property">
+    <div class="sec-head"><span class="idx" style="background:var(--orange)">4</span><h2>属性规律</h2><span class="sec-progress sec-p" data-sec="sec-property">0/4</span></div>
+    <p class="sec-sub">特征：元素组成不同、不相似、数量特征不明显 → 先看属性。三大属性：对称性（最常考）、曲直性、开闭性。</p>
+
+    <div class="card" data-id="pro1">
+      <div class="q-head"><span class="tag t-orange">属性</span><h3>轴对称：考什么细节？</h3><span class="q-arrow">▶</span></div>
+      <div class="card-a">
+        <ul>
+          <li><b>识别</b>：等腰元素（等腰三角形、等边图形、箭头形）、规则图形 → 画出对称轴看。</li>
+          <li>细化考法：①<b>对称轴数量</b>（1条/2条/多条，递增或分组）；②<b>对称轴方向</b>（横/竖/斜，旋转变化）；③<b>对称轴与线条关系</b>（与图形线条重合 or 垂直）；④对称轴是否经过特定元素（点/面）。</li>
+        </ul>
+        <div class="k-box orange">口诀：规则图形看对称，轴和中心要分清；等腰元素别放过，轴画出来更清晰。</div>
+      </div>
+      <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
+    </div>
+
+    <div class="card" data-id="pro2">
+      <div class="q-head"><span class="tag t-orange">属性</span><h3>中心对称 &amp; 轴+中心：怎么判断？</h3><span class="q-arrow">▶</span></div>
+      <div class="card-a">
+        <ul>
+          <li><b>中心对称</b>：图形原地旋转 <b>180°</b> 能与原图重合。特征图形：<b>N、Z、S 形</b>、平行四边形。</li>
+          <li><b>轴对称 + 中心对称</b>：有<b>两条垂直的对称轴</b>（如正方形、正六边形、圆）→ 轴和中心都可行。</li>
+          <li>注意：某些图形只是轴对称（如正五边形），别误判。</li>
+        </ul>
+        <div class="k-box orange">口诀：N形Z形S形，还有平行四边形，原地旋转180，中心对称就是它；有种图形很贪心，两条垂直对称轴。</div>
+      </div>
+      <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
+    </div>
+
+    <div class="card" data-id="pro3">
+      <div class="q-head"><span class="tag t-orange">属性</span><h3>曲直性：三种情况 + 内外组合</h3><span class="q-arrow">▶</span></div>
+      <div class="card-a">
+        <ul>
+          <li><b>全直线</b>：单一直线多边形（属性不行可转数直线）；<b>全曲线</b>：圆、弧（优先考虑曲直性）；<b>曲直混合</b>：有曲有直。</li>
+          <li><b>内外曲直</b>：外直内曲 / 外曲内直 / 外直内直 / 外曲内曲 —— 分层看。</li>
+        </ul>
+        <div class="k-box orange">口诀：单一线条看曲直，曲直共存别忘记；单一直线多边形，全直是它的属性；单一曲线圆和弧，优先考虑曲直性。</div>
+      </div>
+      <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
+    </div>
+
+    <div class="card" data-id="pro4">
+      <div class="q-head"><span class="tag t-orange">属性</span><h3>开闭性：何时才考虑？</h3><span class="q-arrow">▶</span></div>
+      <div class="card-a">
+        <ul>
+          <li>全开放（大门敞开）、全封闭（全部关门）、半开半闭（有缺口的图形）。</li>
+          <li><b>重要</b>：半开半闭「很淘气」，<b>别的不行才考虑</b> —— 开闭性整体考频较低，作为兜底规律。</li>
+        </ul>
+        <div class="k-box orange">口诀：遇到开口看开闭，全开封闭都可行；半开半闭很淘气，别的不行才考虑。</div>
+      </div>
+      <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
+    </div>
+
+    <div class="koujue"><span class="k-icon">🪞</span><div class="k-text">规则图形看对称，轴和中心要分清 / 单一线条看曲直，曲直共存别忘记 / 遇到开口看开闭，全开封闭都可行</div><span class="k-tag">属性3连</span></div>
+  </section>
+
+  <!-- ============ 数量规律 ============ -->
+  <section id="sec-quantity">
+    <div class="sec-head"><span class="idx" style="background:var(--red)">5</span><h2>数量规律</h2><span class="sec-progress sec-p" data-sec="sec-quantity">0/7</span></div>
+    <p class="sec-sub">特征：元素凌乱、各不相同 → 数量类。六个数点：<b>面、线、点、角、素、笔画</b>。顺序：先属性后数量，用特征图锁定考点。</p>
+
+    <div class="card" data-id="qua1">
+      <div class="q-head"><span class="tag t-red">数量</span><h3>面的考点：「6+6」记忆口诀是什么？</h3><span class="q-arrow">▶</span></div>
+      <div class="card-a">
+        <div class="k-box"><b>6 + 6 口诀：所有，大小，相同　+　形状，属性，面积</b><br>三个角度 × 三个属性维度 = 面的全部考法</div>
+        <ul>
+          <li><b>所有面</b>：分割后每个面的形状（三角形、四边形……）。</li>
+          <li><b>大小面</b>：最大面 / 最小面 —— 看形状、属性（对称性）、面积。</li>
+          <li><b>相同面</b>：大小、形状都一样的面 —— 数个数、分组数。</li>
+        </ul>
+        <div class="k-box orange">口诀：多个窟窿入眼帘，数面考点灵光现；数完无解别放弃，面的形状全考虑；多胞胎面一出现，就要考虑相同面；图形明显大小面，关注形状和属性。</div>
+      </div>
+      <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
+    </div>
+
+    <div class="card" data-id="qua2">
+      <div class="q-head"><span class="tag t-red">数量</span><h3>线的考点：直线 / 曲线 / 平行线</h3><span class="q-arrow">▶</span></div>
+      <div class="card-a">
+        <ul>
+          <li><b>直线数</b>：单一直线多边形，属性不行数直线。</li>
+          <li><b>曲线数</b>：单一曲线圆和弧，属性不行数曲线。</li>
+          <li><b>平行线</b>：出现大量平行线段时数平行线组数；也考内外线条数、线条加减。</li>
+          <li><b>笔画数</b>：见下方专项（一笔画）。</li>
+        </ul>
+      </div>
+      <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
+    </div>
+
+    <div class="card" data-id="qua3">
+      <div class="q-head"><span class="tag t-red">数量</span><h3>点的考点：交点 / 切点 / 曲直交点 / 框上框内</h3><span class="q-arrow">▶</span></div>
+      <div class="card-a">
+        <ul>
+          <li><b>线条交叉多（大树杈）</b> → 优先数交点。</li>
+          <li><b>有曲有直、交叉明显</b> → 优先数<b>曲直交点</b>。</li>
+          <li>圆与直线相切多 → 数<b>切点</b>。</li>
+          <li>图形有外框（金刚罩）→ 数<b>框上、框内、框外</b>的交点。</li>
+        </ul>
+        <div class="k-box orange">口诀：大树杈子非常多，别忘交点数起来；图形有曲又有直，曲直交叉很明显；图形都有金刚罩，围绕外框想考点。</div>
+      </div>
+      <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
+    </div>
+
+    <div class="card" data-id="qua4">
+      <div class="q-head"><span class="tag t-red">数量</span><h3>角的考点：直角为主</h3><span class="q-arrow">▶</span></div>
+      <div class="card-a">
+        <ul>
+          <li>横平竖直、垂直结构多 → 数<b>直角</b>（最常见）。</li>
+          <li>折线折出多个角 / 留缺口 → 数角；也考锐角、钝角（较少，结合功能元素考）。</li>
+        </ul>
+        <div class="k-box orange">口诀：折线折出多个角，留了缺口别忘角；横平竖直多垂直，直角数量来试试。</div>
+      </div>
+      <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
+    </div>
+
+    <div class="card" data-id="qua5">
+      <div class="q-head"><span class="tag t-red">数量</span><h3>素的考点：种类 / 个数 / 部分数 / 换算</h3><span class="q-arrow">▶</span></div>
+      <div class="card-a">
+        <ul>
+          <li>多个小图形出现 → 先数<b>种类和数量</b>（两种元素优先分开数，两种以上一起数）。</li>
+          <li><b>生活化图形 / 粗线条 / 汉字</b> → 数<b>部分数</b>（连在一起的算一部分）。</li>
+          <li><b>元素换算</b>：两三种小元素数量没规律但排列整齐 → 常为换算关系（如 1 大 = 2 小）。</li>
+          <li>实在不行找相同：每幅图中相同元素的个数。</li>
+        </ul>
+        <div class="k-box orange">口诀：外框形状要牢记，多个小图形出现，先数种类和数量；生活化或粗线条，部分数量经常考。</div>
+      </div>
+      <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
+    </div>
+
+    <div class="card" data-id="qua6">
+      <div class="q-head"><span class="tag t-red">数量</span><h3>笔画数：奇点判定（必考高频易错）</h3><span class="q-arrow">▶</span></div>
+      <div class="card-a">
+        <div class="k-box"><b>奇点</b>：从该点引出的线条数为奇数的点。<br><b>连通图</b>中：奇点数 = 0 或 2 → <b>一笔画</b>；笔画数 = <b>奇点数 ÷ 2</b>。</div>
+        <ul>
+          <li>⚠️ <b>端点也是奇点，数的时候千万别漏</b>。</li>
+          <li>⚠️ 奇点一定成对出现（2、4、6…），数出奇数个说明数错了。</li>
+          <li><b>特征图</b>：五角星、日字及其变形、田字及其变形、切圆、多端点图形、汉字「中」。</li>
+          <li>多笔画一般不超过三笔，常考一笔 vs 两笔分组。</li>
+        </ul>
+        <div class="k-box orange">口诀：一根线条画到底，首尾特别要注意（端点即奇点）。</div>
+      </div>
+      <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
+    </div>
+
+    <div class="card" data-id="qua7">
+      <div class="q-head"><span class="tag t-red">数量</span><h3>数量规律怎么快速锁定考点？</h3><span class="q-arrow">▶</span></div>
+      <div class="card-a">
+        <ul>
+          <li><b>特征图 → 考点</b>：窟窿多→数面；线条交叉多→数点；有曲有直→曲直交点；多端点/五角星/日田→笔画；横平竖直→直角；生活化→部分数；单一直线/曲线→数线。</li>
+          <li><b>弱特征 vs 强特征</b>：特征明显（强）直接对应考点；特征弱时按 属性→数量 顺序试探，先对称再数数。</li>
+          <li>数量规律常考<b>等差、循环、恒定、和相等</b>（每行之和相等）。</li>
+        </ul>
+      </div>
+      <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
+    </div>
+
+    <div class="koujue"><span class="k-icon">🔢</span><div class="k-text">多个窟窿数面，交叉成堆数点，曲直交叉数曲直点，日田五角星数笔画，横平竖直数直角，生活图形数部分</div><span class="k-tag">特征图口诀</span></div>
+  </section>
+
+  <!-- ============ 图形间位置 ============ -->
+  <section id="sec-relation">
+    <div class="sec-head"><span class="idx" style="background:#0ea5e9">6</span><h2>图形间位置关系（特殊规律）</h2><span class="sec-progress sec-p" data-sec="sec-relation">0/3</span></div>
+    <p class="sec-sub">特征：多个独立图形 + 封闭空间明显；或图形间有明显「接触关系」。考频中上，记住分类即可得分。</p>
+
+    <div class="card" data-id="rel1">
+      <div class="q-head"><span class="tag" style="background:#e0f2fe;color:#0369a1">关系</span><h3>图形间五大关系是什么？</h3><span class="q-arrow">▶</span></div>
+      <div class="card-a">
+        <ul>
+          <li><b>相离</b>：多个图形独立站，互不接触 → 相离关系。</li>
+          <li><b>相交</b>：交于点 / 交于线 / 交于面（交面是重头戏）。</li>
+          <li><b>包含</b>：一个图形完全包住另一个。</li>
+          <li><b>相切</b>：内切 / 外切（圆与圆、圆与线切点）。</li>
+        </ul>
+        <div class="k-box">口诀：封闭空间很明显，图形关系成考点；多个图形独立站，相离关系是答案；多个图形交于点，或者彼此一线牵。</div>
+      </div>
+      <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
+    </div>
+
+    <div class="card" data-id="rel2">
+      <div class="q-head"><span class="tag" style="background:#e0f2fe;color:#0369a1">关系</span><h3>「相交」还能怎么细化？</h3><span class="q-arrow">▶</span></div>
+      <div class="card-a">
+        <ul>
+          <li><b>交于面</b>：看相交部分的<b>形状、大小、属性（对称）、面积</b>、边数 —— 相交面是重头戏。</li>
+          <li><b>交于线</b>：看相交线的<b>数量</b>（1条/2条）、长短。</li>
+          <li><b>交于点</b>：看交点数量、位置（内部/边缘）。</li>
+          <li>两个图形相交于面 → 优先看<b>面的特征属性</b>（对称性等）。</li>
+        </ul>
+        <div class="k-box">口诀：两个图形面交叉，相交面是重头戏；形状大小和属性，全部都是得分地。</div>
+      </div>
+      <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
+    </div>
+
+    <div class="card" data-id="rel3">
+      <div class="q-head"><span class="tag" style="background:#e0f2fe;color:#0369a1">关系</span><h3>图形拼接怎么考？</h3><span class="q-arrow">▶</span></div>
+      <div class="card-a">
+        <ul>
+          <li><b>连接方式</b>：点连接 vs 线连接（分类常考）。</li>
+          <li><b>公共边数量</b>：两个图形拼接有几条公共边（1条/2条……）。</li>
+          <li>拼接后看：整体边数、周长、封闭区域变化。</li>
+        </ul>
+        <div class="k-box">口诀：多个图形线相连，相交直线是关键；边长边短与边数，样样考虑拿分数。</div>
+      </div>
+      <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
+    </div>
+  </section>
+
+  <!-- ============ 黑白块专项 ============ -->
+  <section id="sec-blackwhite">
+    <div class="sec-head"><span class="idx" style="background:#18181b">7</span><h2>黑白块专项（26版）</h2><span class="sec-progress sec-p" data-sec="sec-blackwhite">0/4</span></div>
+    <p class="sec-sub">刘义恒黑白块完整框架：<b>对称 / 非对称 / 明显</b> 三大类。黑白块 = 换装的位置+样式+数量，先分类再定位考点。</p>
+
+    <div class="card" data-id="bw1">
+      <div class="q-head"><span class="tag" style="background:#27272a;color:#fff">黑白</span><h3>黑白块总框架：三大类怎么分？</h3><span class="q-arrow">▶</span></div>
+      <div class="card-a">
+        <ul>
+          <li><b>对称类</b>：图形整体明显对称 → 先识别对称类型，再细化对称轴。</li>
+          <li><b>非对称类</b>：看不出对称 → 位置移动 / 黑白运算 / 部分数（三大高频考法）。</li>
+          <li><b>明显类</b>：有明显特征（黑块占一半、连成线、分堆、黑块多且密）→ 图形关系 / 面积占比 / 相邻比较 / 笔画周长。</li>
+        </ul>
+        <div class="k-box">记忆钩子：先看<b>对不对称</b>，再问<b>数量变不变</b>（变→运算；不变→平移），都不行走「明显特征」路线。</div>
+      </div>
+      <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
+    </div>
+
+    <div class="card" data-id="bw2">
+      <div class="q-head"><span class="tag" style="background:#27272a;color:#fff">黑白</span><h3>对称类：怎么细化？</h3><span class="q-arrow">▶</span></div>
+      <div class="card-a">
+        <ul>
+          <li>先识别：轴对称 / 中心对称 / 轴+中心。</li>
+          <li>再细化：<b>对称轴数量、方向</b>；对称轴是否切割黑白块（左右/上下黑白分布是否一致）。</li>
+          <li><b>黑块排列成等腰 → 对称规律别忘记</b>；黑块不行看白块，白块也是重要的。</li>
+        </ul>
+        <div class="k-box">口诀：黑块排列成等腰，对称规律别忘记；黑块不行看白块，白块也是重要的。</div>
+      </div>
+      <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
+    </div>
+
+    <div class="card" data-id="bw3">
+      <div class="q-head"><span class="tag" style="background:#27272a;color:#fff">黑白</span><h3>非对称类：三选一怎么定？</h3><span class="q-arrow">▶</span></div>
+      <div class="card-a">
+        <ul>
+          <li><b>位置移动</b>：黑块<b>数量相同</b> → 平移（内外分开看、斜向移动、非常规移动路径）。</li>
+          <li><b>黑白运算</b>：黑块<b>数量不同</b>、轮廓相同 → 推导运算规则。</li>
+          <li><b>部分数</b>：黑球分堆 / 黑块连成片 → 数黑色部分数、白色部分数，甚至<b>部分数运算</b>（黑-白、黑÷白）与<b>个数变化</b>（每部分的小块数）。</li>
+        </ul>
+        <div class="k-box">口诀：黑球分堆图中现，部分数量来考虑；黑球白球都重要，实在不行做运算。</div>
+      </div>
+      <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
+    </div>
+
+    <div class="card" data-id="bw4">
+      <div class="q-head"><span class="tag" style="background:#27272a;color:#fff">黑白</span><h3>明显类：还有什么花活？</h3><span class="q-arrow">▶</span></div>
+      <div class="card-a">
+        <ul>
+          <li><b>面积占比</b>：黑块占整体一半 / 1/4 / 网格面积比较（黑块被分割有网格 → 看面积）。</li>
+          <li><b>相邻比较</b>：两图之间只有 1~2 处不同 → 逐对比。</li>
+          <li><b>笔画 / 周长</b>：所有黑块连成线 → 数笔画；黑块周长 10 / 12 分组。</li>
+          <li><b>图形间关系</b>：黑面与白面相交线数量、黑面与白面个数、黑面与外框的关系。</li>
+        </ul>
+        <div class="k-box">口诀：所有黑块连成线，笔画数量是考点；黑块图中占一半，先看黑块的面积；黑块形状较丰富，黑块种类数一数。</div>
+      </div>
+      <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
+    </div>
+
+    <div class="koujue"><span class="k-icon">⚫</span><div class="k-text">位置样式行不通，对称部分数笔画 / 黑块面积来比较，实在不行相邻比 / 黑球分堆数部分，占了一半看面积，连成一线数笔画</div><span class="k-tag">黑白口诀</span></div>
+  </section>
+
+  <!-- ============ 空间重构 ============ -->
+  <section id="sec-space">
+    <div class="sec-head"><span class="idx" style="background:#0d9488">8</span><h2>空间重构：六面体 + 四面体</h2><span class="sec-progress sec-p" data-sec="sec-space">0/6</span></div>
+    <p class="sec-sub">核心心法：<b>所有方法都是排除法</b>；技巧不是越多越好，越熟越好。最推荐组合：<b>箭头法（主）+ 公共边（辅）</b>。</p>
+
+    <div class="card" data-id="sp1">
+      <div class="q-head"><span class="tag t-teal">空间</span><h3>六面体解题「三步走」是什么？</h3><span class="q-arrow">▶</span></div>
+      <div class="card-a">
+        <div class="k-box">第一步：出现<b>相对面</b> → 直接排除<br>第二步：有<b>唯一边或唯一点</b> → 优先箭头法（备选画边法）<br>第三步：无唯一边/点 → 2个面近、1个面远 → <b>公共边</b>；3个面都近 → <b>公共点</b></div>
+        <ul><li>六面体四个基础模型：<b>1-4-1、2-3-1、3-3、2-2</b>。</li></ul>
+      </div>
+      <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
+    </div>
+
+    <div class="card" data-id="sp2">
+      <div class="q-head"><span class="tag t-teal">空间</span><h3>相对面：两条识别口诀？</h3><span class="q-arrow">▶</span></div>
+      <div class="card-a">
+        <ul>
+          <li><b>同行或同列，相隔一个面</b>（中间隔1个 / 隔1列都是相对面）。</li>
+          <li><b>Z字形两端</b>（紧邻 Z 字中线的两个面）。</li>
+          <li>相对面不能同时被看见 → 用于快速排除选项。</li>
+        </ul>
+        <div class="k-box">口诀：中间隔1个，或隔1列，都是相对面。</div>
+      </div>
+      <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
+    </div>
+
+    <div class="card" data-id="sp3">
+      <div class="q-head"><span class="tag t-teal">空间</span><h3>箭头法：口诀 + 操作步骤？</h3><span class="q-arrow">▶</span></div>
+      <div class="card-a">
+        <div class="k-box"><b>口诀：找唯一，定方向</b></div>
+        <ul>
+          <li>结合选项，找一个<b>唯一点或唯一边</b>作为参照物，画出箭头方向。</li>
+          <li><b>唯一点</b>：图形中独特的点；<b>唯一边</b>：公共边即唯一边；升级版 → <b>双箭头</b>（解决「都在右边忽略细节」问题）。</li>
+          <li>技巧：把试卷/讲义转过来，让箭头正上方，更好对比；优先看直接靠一起的、位置居中的面（好观察）。</li>
+          <li>能区分：上下左右大致方位；缺陷：无直接相邻需移动（用公共边补）。</li>
+        </ul>
+      </div>
+      <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
+    </div>
+
+    <div class="card" data-id="sp4">
+      <div class="q-head"><span class="tag t-teal">空间</span><h3>公共边：快速记忆三条？</h3><span class="q-arrow">▶</span></div>
+      <div class="card-a">
+        <ul>
+          <li>① <b>构成直角的两条边</b>，折合后是同一条边。</li>
+          <li>② <b>一列/行连着 4 个面，两端是同一条边</b>。</li>
+          <li>③ <b>「直角边」随便「滚」</b>（1-4-1 结构中，上下两个面沿一排面滚动）。</li>
+          <li>优点：公共边周边图案区分快；缺点：一样的图案左右易混淆（配箭头法解决）。</li>
+        </ul>
+        <div class="k-box">公共边 = 两个图形共同拥有的边。多个立方体组合时：公共边两边颜色保持一致。</div>
+      </div>
+      <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
+    </div>
+
+    <div class="card" data-id="sp5">
+      <div class="q-head"><span class="tag t-teal">空间</span><h3>公共点 &amp; 画边法：什么时候用？</h3><span class="q-arrow">▶</span></div>
+      <div class="card-a">
+        <ul>
+          <li><b>公共点</b>：相邻三个面的公共点是<b>唯一的</b>；折叠前后，公共点引出的线/图形保持不变。用于「无唯一 + 三面近」的情形。</li>
+          <li><b>画边法</b>：找唯一点/唯一边 → <b>顺时针描边标号</b>（描同一个面）→ 题干与选项对应面不一致即排除。</li>
+          <li>画边法关键：<b>同一个面、同一个点、同一方向</b>（或同边同方向）；缺点：偏慢，用来查方向细节。</li>
+        </ul>
+      </div>
+      <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
+    </div>
+
+    <div class="card" data-id="sp6">
+      <div class="q-head"><span class="tag t-teal">空间</span><h3>四面体 + 特殊题型怎么办？</h3><span class="q-arrow">▶</span></div>
+      <div class="card-a">
+        <ul>
+          <li><b>四面体流程</b>：有唯一边/点 → 箭头法（备选画边法）；无唯一 → 公共边。</li>
+          <li><b>四面体公共边两条规则</b>：①展开图中<b>构成一条直线的两条边</b>折合后是同一条边；②<b>平行四边形两端的两条边</b>是同一条边。</li>
+          <li><b>6个面都一样</b> → 找「特殊关系」（特殊图形/特殊线）。</li>
+          <li><b>同一立方体不同视角</b> → 位置关系不变，箭头法+公共边，代入选项。</li>
+          <li><b>组合展开图</b>（4部分拼成）→ 找「唯一」；<b>判断相对面</b> → 斜线/特征线与目标面相邻且出现多次。</li>
+          <li>⚠️ 极端情况：无限接近外表面 → 不考虑。</li>
+        </ul>
+        <div class="k-box">核心秘密：箭头法熟悉后 = 你有了「想象力」。</div>
+      </div>
+      <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
+    </div>
+
+    <div class="koujue"><span class="k-icon">🧊</span><div class="k-text">找唯一，定方向（箭头法）/ 相对面：同行同列隔一个、Z字两端 / 公共边：直角两条、四连两端、直角边随便滚</div><span class="k-tag">空间口诀</span></div>
+  </section>
+
+  <!-- ============ 实战策略 ============ -->
+  <section id="sec-strategy">
+    <div class="sec-head"><span class="idx" style="background:#f59e0b">9</span><h2>考场实战策略</h2><span class="sec-progress sec-p" data-sec="sec-strategy">0/3</span></div>
+    <p class="sec-sub">把知识变成分数，靠的是解题顺序和节奏。</p>
+
+    <div class="card" data-id="str1">
+      <div class="q-head"><span class="tag t-orange">实战</span><h3>万能破题顺序是什么？</h3><span class="q-arrow">▶</span></div>
+      <div class="card-a">
+        <div class="k-box">看元素组成 → 相同看位置；相似看样式；不同 → 先属性（对称→曲直→开闭）再数量（面线点角素笔画），最后图形间关系</div>
+        <ul>
+          <li><b>特征图优先</b>：对称图→对称；线条交叉→点；窟窿多→面；五角星日字田字→笔画。</li>
+          <li><b>简单规律不行</b> → 考虑复合考点（对称+曲直、数量+属性、位置+样式）。</li>
+          <li>空间重构：<b>用排除法，不硬想</b>。</li>
+        </ul>
+      </div>
+      <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
+    </div>
+
+    <div class="card" data-id="str2">
+      <div class="q-head"><span class="tag t-orange">实战</span><h3>四大高频易错点</h3><span class="q-arrow">▶</span></div>
+      <div class="card-a">
+        <div class="warn"><b>① 一笔画奇点判定</b>：端点也是奇点，别漏；奇点必成对。<br>
+        <b>② 对称轴考法</b>：数量 + 方向 + 是否与线条重合/垂直，全都要看。<br>
+        <b>③ 黑白叠加运算</b>：规则现场推，第一组推、第二组验证、第三组应用。<br>
+        <b>④ 内外平移</b>：内外层分开移动，别整体看。</div>
+      </div>
+      <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
+    </div>
+
+    <div class="card" data-id="str3">
+      <div class="q-head"><span class="tag t-orange">实战</span><h3>时间管理：30 秒原则</h3><span class="q-arrow">▶</span></div>
+      <div class="card-a">
+        <ul>
+          <li><b>30 秒没思路立刻跳过</b>，做完其他模块再回头看 —— 图推切忌死磕。</li>
+          <li>遇到难题：先排除明显错的选项（相对面、明显不对的），提升蒙对概率。</li>
+          <li>图推没有玄学只有规律，规律用熟了 80% 以上的题都能拿下。</li>
+        </ul>
+        <div class="k-box">考前提醒：熟记特征图 + 口诀，比刷更多题更重要。</div>
+      </div>
+      <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
+    </div>
+
+    <div class="koujue"><span class="k-icon">⚡</span><div class="k-text">像→位置样式标记；不像→属性数量关系；规整→对称；交叉→点；窟窿→面；五角星日田→笔画；30秒无解→跳过</div><span class="k-tag">考场速记</span></div>
+  </section>
+
+  <!-- ============ 背诵模式专块 ============ -->
+  <section class="mode-recite">
+    <div class="sec-head"><span class="idx" style="background:#7c3aed">背</span><h2>口诀背诵区</h2></div>
+    <p class="sec-sub">闭上眼睛先自己背，再点开核对。每天早上一遍，考前一遍。</p>
+    <div id="recite-list"></div>
+  </section>
+
+  <!-- ============ 自测 ============ -->
+  <section id="quiz-sec" class="mode-quiz">
+    <div class="sec-head"><span class="idx" style="background:#ef4444">测</span><h2>15 题自测</h2></div>
+    <p class="sec-sub">基于知识点出题，选完立即看解析。满分 15 分，≥12 分说明框架熟了。</p>
+    <div id="quiz-box"></div>
+    <div class="quiz-score" id="quiz-score"></div>
+  </section>
+
+  <div class="footer">刘义恒图推「3+3」复习手册 · 知识点整理自公开课程笔记 · 祝上岸 🚀</div>
+</main>
+
+<script>
+/* ================= 数据 ================= */
+var QUIZ = [
+  {q:"图形完全相同（外形数量都一致），第一反应看什么规律？", opts:["位置","数量","属性","笔画"], a:0, e:"完全相同 → 位置（平移/旋转/翻转）。数量规律看的是元素不同。"},
+  {q:"「颜色数量不相同，轮廓相同」时，看什么？", opts:["位置移动","黑白运算","遍历","部分数"], a:1, e:"黑块数量不同 + 轮廓相同 → 黑白运算；黑块数量相同 → 位置移动。"},
+  {q:"奇点数为 4 的连通图形，是几笔画？", opts:["1笔","2笔","3笔","4笔"], a:1, e:"笔画数 = 奇点数 ÷ 2 = 4÷2 = 2 笔。奇点数 0 或 2 才是一笔画。"},
+  {q:"下列哪个图形一定是中心对称图形？", opts:["正三角形","平行四边形","正五边形","等腰梯形"], a:1, e:"N/Z/S 形、平行四边形原地旋转 180° 能与原图重合 → 中心对称。"},
+  {q:"六面体展开图中，判断相对面的两条口诀是？", opts:["同行同列隔一个面、Z字两端","对角相邻、十字交叉","同边相连、T字结构","相邻两列、对角线两端"], a:0, e:"①同行或同列相隔一个面；②Z字形两端。相对面不能同时看见，用于排除。"},
+  {q:"面的考点「6+6」口诀是什么？", opts:["所有、大小、相同 + 形状、属性、面积","上下、左右、内外 + 大小、多少、长短","点线、面体、图形 + 数量、位置、样式","整体、部分、组合 + 直线、曲线、封闭"], a:0, e:"所有、大小、相同（三个角度）+ 形状、属性、面积（三个维度）。"},
+  {q:"图形规整、美观、像工艺品，优先看什么？", opts:["笔画","对称性","曲直","开闭"], a:1, e:"图形规整美观 → 优先对称。这是属性规律的第一个入口。"},
+  {q:"出现「五角星、日字、田字、切圆」等特征图，优先想什么考点？", opts:["面","点","一笔画","角"], a:2, e:"这些都是一笔画特征图，直接往笔画数想。"},
+  {q:"「半开半闭」的开闭性图形，什么时候才考虑开闭性？", opts:["一上来就看","别的不行才考虑","只看数量","只看对称"], a:1, e:"开闭性考频低，半开半闭「很淘气」，作为兜底规律，别的不行才考虑。"},
+  {q:"功能元素（小黑点/箭头）的核心考察点是？", opts:["标记的大小","标记的颜色","标记在图形中的位置","标记的数量"], a:2, e:"符号本身不重要，重要的是它标在哪：交点、边、面、角、上下左右。"},
+  {q:"箭头法解题的口诀是？", opts:["找唯一，定方向","看对称，画轴线","数奇点，判笔画","找相同，求同异"], a:0, e:"箭头法（六面体/四面体主方法）：找唯一（唯一点/唯一边），定方向。"},
+  {q:"平移规律里，图形有内外两层时优先怎么观察？", opts:["只看外层","内外分开看","整体平移看","数内部元素"], a:1, e:"内外分开看：内外层分别移动。这是高频易错点之一。"},
+  {q:"两个图形相交于面，优先看相交部分的什么？", opts:["颜色","位置","形状、大小、属性","方向"], a:2, e:"相交面是重头戏：看形状、大小、属性（对称）、面积、边数。"},
+  {q:"黑白块中，黑球「分堆」出现，优先考虑什么考法？", opts:["面积","部分数","对称","周长"], a:1, e:"黑球分堆 / 黑块连成片 → 数部分数（黑色部分数、白色部分数）。"},
+  {q:"考场做题，一道图推 30 秒没思路，正确做法是？", opts:["死磕到底","先跳过，做完其他再回头","蒙一个","多画几遍"], a:1, e:"30 秒原则：跳过，不浪费时间，回头再看。"}
+];
+
+var RECITE = [
+  {cat:"总框架", t:"先看像不像 → 像：位置·样式·标记；不像：属性·数量·图形间位置"},
+  {cat:"位置", t:"基本相同看位置，再看元素往哪儿走"},
+  {cat:"位置", t:"顺逆时针先绕圈，再看角度找答案"},
+  {cat:"位置", t:"横轴对称上下翻，竖轴对称左右翻"},
+  {cat:"样式", t:"元素重复看遍历，缺啥你就补个啥"},
+  {cat:"样式", t:"线条重复求同异，结合位置别忘记"},
+  {cat:"样式", t:"颜色数量不相同，轮廓相同看运算"},
+  {cat:"属性", t:"规则图形看对称，轴和中心要分清；等腰元素别放过，轴画出来更清晰"},
+  {cat:"属性", t:"N形Z形S形，还有平行四边形；原地旋转180，中心对称就是它；两条垂直对称轴，轴和中心都可行"},
+  {cat:"属性", t:"单一线条看曲直，曲直共存别忘记；单一曲线圆和弧，优先考虑曲直性"},
+  {cat:"属性", t:"遇到开口看开闭，全开封闭都可行；半开半闭很淘气，别的不行才考虑"},
+  {cat:"数量", t:"多个窟窿入眼帘，数面考点灵光现；数完无解别放弃，面的形状全考虑；多胞胎面一出现，就要考虑相同面"},
+  {cat:"数量", t:"图形明显大小面，关注形状和属性（面 6+6：所有、大小、相同 + 形状、属性、面积）"},
+  {cat:"数量", t:"大树杈子非常多，别忘交点数起来；图形有曲又有直，曲直交叉很明显，优先考虑曲直点"},
+  {cat:"数量", t:"横平竖直多垂直，直角数量来试试；折线折出多个角，留了缺口别忘角"},
+  {cat:"数量", t:"一根线条画到底，首尾特别要注意（端点即奇点）；奇点 0 或 2 一笔画，笔画数 = 奇点÷2"},
+  {cat:"数量", t:"生活化或粗线条，部分数量经常考；多个小图形出现，先数种类和数量"},
+  {cat:"关系", t:"封闭空间很明显，图形关系成考点；多个图形独立站，相离关系是答案；多个图形交于点，或者彼此一线牵"},
+  {cat:"关系", t:"两个图形面交叉，相交面是重头戏；形状大小和属性，全部都是得分地"},
+  {cat:"黑白", t:"位置样式行不通，对称部分数笔画；黑块面积来比较，实在不行相邻比"},
+  {cat:"黑白", t:"黑块排列成等腰，对称规律别忘记；黑块不行看白块，白块也是重要的"},
+  {cat:"黑白", t:"黑球分堆图中现，部分数量来考虑；黑球白球都重要，实在不行做运算"},
+  {cat:"黑白", t:"所有黑块连成线，笔画数量是考点；黑块图中占一半，先看黑块的面积"},
+  {cat:"空间", t:"找唯一，定方向（箭头法）"},
+  {cat:"空间", t:"相对面：同行同列隔一个、Z字两端；公共边：构成直角两条边、一列四连两端同边、直角边随便滚"},
+  {cat:"实战", t:"像→位置样式标记；不像→属性数量关系；规整→对称；交叉→点；窟窿→面；日田五角星→笔画；30秒无解→跳过"}
+];
+
+/* ================= 例题数据（每张知识点卡配题） ================= */
+var EXAMPLES = [
+  /* —— 位置规律 —— */
+  {id:"pos1", stem:"3×3 宫格中，黑点在内圈、三角在外圈分别移动。观察前 3 图，问第 4 图内圈黑点与外圈三角分别在哪？",
+   figs:[["图1","▲#.\n...\n..."],["图2",".#.\n▲..\n..."],["图3",".#.\n...\n▲.."]],
+   opts:"A. 黑点在左中、三角在下中　B. 黑点在上中、三角在左下　C. 黑点在左中、三角在右下　D. 黑点在下中、三角在左中",
+   ans:"A", exp:"内外分开看：内圈黑点顺时针走（上中→右中→下中→左中），外圈三角逆时针走（左上→左中→左下→下中）。内外层独立移动，切勿整体看。"},
+  {id:"pos1", stem:"做平移题时，第一眼锁定什么能最快破题？",
+   opts:"A. 数每个宫格里的元素总数　B. 锁定一个特殊小元素追踪它的移动路径　C. 先数封闭面　D. 先判断对称",
+   ans:"B", exp:"技巧①特殊图案优先：盯住一个特殊小元素追踪移动路径最省力；技巧②数个数：统计移动格数找规律。"},
+  {id:"pos2", stem:"图形为方向箭头，每次顺时针旋转 90°。问第 4 图是？",
+   figs:[["图1","↗"],["图2","↘"],["图3","↙"]],
+   opts:"A. ↗　B. ↖　C. →　D. ↓",
+   ans:"B", exp:"顺时针 90° 依次：↗→↘→↙→↖。旋转题先定顺/逆时针，再定角度（45°/90°/180°，常等差或循环）。"},
+  {id:"pos2", stem:"如何确定一组图形考的是「旋转」而不是「翻转」？",
+   opts:"A. 图形的左右手性发生改变　B. 图形的手性保持不变　C. 图形明显变大　D. 图形被拉伸变形",
+   ans:"B", exp:"旋转不改变手性（↖ 转成 ↙ 仍是同手性），翻转改变手性（像照镜子，永远无法通过旋转重合）。画个带方向的箭头即可区分。"},
+  {id:"pos3", stem:"左图为 3×3 的 L 形，沿竖直对称轴左右翻转后是哪幅？",
+   figs:[["原图","#..\n#..\n###"],["A","..#\n..#\n###"],["B","###\n#..\n#.."],["C","###\n..#\n..#"],["D","#..\n#..\n###"]],
+   opts:"A　B　C　D（选与翻转结果相同的一项）",
+   ans:"A", exp:"竖轴对称 → 左右翻（镜像），每行左右对调：原图每行反转后为 ..# / ..# / ###。B 是顺时针旋转 90°、C 是旋转 180° 的结果，D 是原图。"},
+  {id:"pos4", stem:"图1→图2、图2→图3 中只有一个黑点在移动，最快判断规律的方法是？",
+   figs:[["图1","●..\n...\n..."],["图2",".●.\n...\n..."],["图3","..●\n...\n..."]],
+   opts:"A. 数每幅图的元素总数　B. 相邻比较，只看相邻两图的变化　C. 数笔画　D. 看对称",
+   ans:"B", exp:"相邻比较：只看相邻两幅图的变化，快速锁定移动方向——黑点每步向右平移 1 格。位置规律特征：一模一样，只动位置。"},
+  /* —— 样式规律 —— */
+  {id:"sty1", stem:"九宫格每行都有 ○△□ 各一个（黑/白/灰也各出现一次），问右下缺什么？",
+   figs:[["○","△","□"],["△","□","○"],["□","○","?"]],
+   opts:"A. ○　B. △　C. □　D. 无法确定",
+   ans:"B", exp:"遍历：每行每列元素种类齐全。第三行已有 □、○，缺 △；列方向同样 ○△□ 各出现一次。缺啥补啥。"},
+  {id:"sty2", stem:"图1 与图2 求同（保留相同线条）得图3，下列哪个是图3？",
+   figs:[["图1","#..\n#..\n###"],["图2","..#\n..#\n###"],["A","#..\n..#\n###"],["B","...\n...\n###"],["C","#.#\n#.#\n###"],["D","###\n###\n###"]],
+   opts:"A　B　C　D",
+   ans:"B", exp:"求同 = 保留两图相同的线条。两图唯一相同的是底部横线 → 只剩 ###。若求异则保留两图各自的竖线。"},
+  {id:"sty3", stem:"3×3 轮廓相同，黑白运算规则：黑+黑=白、白+黑=黑、黑+白=黑、白+白=白。图1 + 图2 = ？",
+   figs:[["图1","##.\n#..\n..."],["图2","#..\n##.\n.#."],["A","###\n###\n###"],["B",".#.\n.#.\n.#."],["C","#.#\n#.#\n#.#"],["D","...\n...\n..."]],
+   opts:"A　B　C　D",
+   ans:"B", exp:"逐格对应运算：(1,1)黑+黑=白、(1,2)黑+白=黑、(2,2)白+黑=黑……推得答案 .#./.#./.#.。规则必须现场推：第一组推、第二组验证、第三组应用。"},
+  {id:"sty3", stem:"下面哪种特征应优先考虑「黑白运算」而不是「位置移动」？",
+   opts:"A. 每幅图黑块数量完全相同　B. 每幅图黑块数量不同、轮廓相同　C. 黑块连成一条线　D. 黑块明显对称",
+   ans:"B", exp:"黑块数量相同 → 平移；黑块数量不同 + 轮廓相同 → 黑白运算。这是黑白块题型的第一步分叉。"},
+  /* —— 标记规律 —— */
+  {id:"mar1", stem:"6 个图形各带一个小黑点：图①③⑤ 黑点标在曲直交点上，图②④⑥ 标在直线交点上。分组依据是？",
+   figs:[["① 曲直交点","○\n──●──"],["② 直线交点","──●──\n──┼──"]],
+   opts:"A. ①③⑤ / ②④⑥　B. ①②③ / ④⑤⑥　C. ①④⑥ / ②③⑤　D. 无法分组",
+   ans:"A", exp:"功能元素符号本身不重要，重要的是标在哪：曲直交点 vs 直线交点，考点完全不同。点、线、面、角都要会认。"},
+  {id:"mar2", stem:"每组图形有两个黑点：图①③⑤ 两点连线经过封闭面，图②④⑥ 连线不经过封闭面。判断依据是？",
+   opts:"A. 黑点大小　B. 两点连线是否经过面　C. 黑点颜色　D. 图形是否对称",
+   ans:"B", exp:"两黑点考法：看连线方向（横/竖/斜）、连线经过什么（点/线/面/空白）、两点是否同面同区域。"},
+  /* —— 属性规律 —— */
+  {id:"pro1", stem:"对称轴数量递增：图1 等腰三角形（1 条轴）→ 图2 长方形（2 条轴）→ 图3 等边三角形（3 条轴），问图4 是？",
+   opts:"A. 圆（无数条轴）　B. 正方形（4 条轴）　C. 正五边形（5 条轴）　D. 菱形（2 条轴）",
+   ans:"B", exp:"对称轴数量 1、2、3、4 等差递增 → 正方形。对称性细化考法：轴数量、轴方向、轴与线条关系。"},
+  {id:"pro1", stem:"每幅图对称轴依次旋转 45°：图1 竖轴 → 图2 斜 45° 轴 → 图3 横轴，问图4 对称轴方向？",
+   opts:"A. 竖轴　B. 斜 135° 轴　C. 斜 45° 轴　D. 横轴",
+   ans:"B", exp:"对称轴方向每步转 45°：竖→斜45°→横→斜135°。对称轴方向是高频细化考法，先画轴再比对。"},
+  {id:"pro2", stem:"下列哪个图形是中心对称，但不是轴对称？",
+   opts:"A. 正三角形　B. 平行四边形　C. 正五边形　D. 等腰梯形",
+   ans:"B", exp:"中心对称特征图形：N、Z、S 形、平行四边形（原地旋转 180° 能重合）。正三角形/正五边形只有轴对称。"},
+  {id:"pro3", stem:"6 个图形分两组：①④⑥ 外框是直线形、内部是曲线（外直内曲）；②③⑤ 外框是曲线形、内部是直线（外曲内直）。判断依据是？",
+   opts:"A. 直线数量　B. 内外曲直分层　C. 对称轴方向　D. 封闭面数量",
+   ans:"B", exp:"曲直性内外组合：外直内曲 / 外曲内直 / 外直内直 / 外曲内曲。分层看、先外后内。"},
+  {id:"pro4", stem:"①○　②⌣　③□　④∩　⑤△　⑥⊐ 六个图形分组，正确做法是？",
+   opts:"A. 按对称性分组　B. ①③⑤ 封闭 / ②④⑥ 开放　C. 按曲直分组　D. 按笔画分组",
+   ans:"B", exp:"开闭性：全封闭（○□△）vs 全开放（⌣∩⊐ 有缺口）。半开半闭很淘气，别的不行才考虑开闭。"},
+  /* —— 数量规律 —— */
+  {id:"qua1", stem:"图形封闭空间数依次为 3、4、5，问第 4 图应有多少个封闭面？",
+   figs:[["图1","▱ 3面"],["图2","▱ 4面"],["图3","▱ 5面"]],
+   opts:"A. 4　B. 5　C. 6　D. 7",
+   ans:"C", exp:"窟窿多 → 数面，面数等差递增 3、4、5、6。总面无规律时再用「6+6」：所有/大小/相同 + 形状/属性/面积。"},
+  {id:"qua1", stem:"图①③⑤ 最大面是三角形，图②④⑥ 最大面是四边形。这是什么考法？",
+   opts:"A. 面的数量　B. 大小面（最大/最小面的形状）　C. 相同面个数　D. 面的对称性",
+   ans:"B", exp:"「6+6」第二角度：大小面。看最大面/最小面的形状、属性（对称性）、面积。"},
+  {id:"qua2", stem:"三角形 3 条直线 → 四边形 4 条 → 五边形 5 条，问第 4 图？",
+   opts:"A. 六边形（6 条直线）　B. 五边形　C. 圆　D. 七边形",
+   ans:"A", exp:"单一直线多边形：属性不行数直线。直线数等差 +1。"},
+  {id:"qua3", stem:"圆与直线相交，曲直交点数依次为 1、2、3，问第 4 图曲直交点数？",
+   opts:"A. 2　B. 3　C. 4　D. 5",
+   ans:"C", exp:"有曲有直、交叉明显 → 数曲直交点。口诀：图形有曲又有直，曲直交叉很明显。"},
+  {id:"qua4", stem:"图形直角数依次为 1、2、3，问第 4 图直角数？",
+   figs:[["图1","└ 1个"],["图2","└┘ 2个"],["图3","阶梯折线 3个"]],
+   opts:"A. 3　B. 4　C. 5　D. 6",
+   ans:"B", exp:"横平竖直多垂直 → 数直角。直角是角考点中最常见的，锐角、钝角较少考。"},
+  {id:"qua5", stem:"「品」字形图形（3 部分）→「串」字形图形（2 部分）→ 全相连图形（1 部分），这是什么考法？",
+   opts:"A. 面的数量　B. 部分数　C. 对称性　D. 曲直性",
+   ans:"B", exp:"生活化图形 / 粗线条 / 汉字 → 数部分数：连在一起的算一部分。品=3、串=2、一体=1。"},
+  {id:"qua6", stem:"判断：「日」字和「田」字分别几笔画？",
+   figs:[["日","┌─┐\n│─│\n└─┘"],["田","┌─┐\n├─┤\n└─┘"]],
+   opts:"A. 日 1 笔、田 1 笔　B. 日 1 笔、田 2 笔　C. 日 2 笔、田 2 笔　D. 日 2 笔、田 1 笔",
+   ans:"B", exp:"日字：2 个奇点（中间横线两端）→ 1 笔。田字：4 个奇点（四边中点各引 3 条线）→ 4÷2=2 笔。笔画数 = 奇点数 ÷ 2。"},
+  {id:"qua6", stem:"「中」字（口+竖）是几笔画？为什么很多人会判错？",
+   opts:"A. 1 笔，多数了交点　B. 1 笔，端点也是奇点不能漏　C. 2 笔　D. 0 笔",
+   ans:"B", exp:"「中」字只有 2 个奇点（竖的上下两端）→ 1 笔。⚠️ 端点也是奇点，数的时候千万别漏；奇点一定成对出现。"},
+  {id:"qua7", stem:"看到「五角星、日字、田字、切圆」这类特征图，第一反应是什么考点？",
+   opts:"A. 数面　B. 一笔画　C. 数点　D. 数角",
+   ans:"B", exp:"五角星、日、田、切圆都是笔画数的特征图。特征图 → 考点，要练成第一反应式的肌肉记忆。"},
+  /* —— 图形间位置 —— */
+  {id:"rel1", stem:"图①③⑤ 两个图形「线连接」（共享一条边），图②④⑥「点连接」（仅端点接触）。这是什么考点？",
+   opts:"A. 对称性　B. 连接方式（点连 vs 线连）　C. 曲直性　D. 部分数",
+   ans:"B", exp:"图形间位置：相离 / 相交（点、线、面）/ 包含 / 相切。点连接 vs 线连接是拼接类高频考法。"},
+  {id:"rel2", stem:"两个图形相交于面：图①交面是四边形，图②交面是三角形。分组依据是？",
+   opts:"A. 相交面积大小　B. 相交面的形状　C. 交点数量　D. 图形颜色",
+   ans:"B", exp:"相交面是重头戏：看相交部分的形状、大小、属性（对称）、面积、边数。"},
+  {id:"rel3", stem:"两个正方形拼接：图①仅 1 条公共边，图②有 2 条公共边。考法是？",
+   opts:"A. 图形周长　B. 公共边数量　C. 封闭面数量　D. 对称轴数量",
+   ans:"B", exp:"拼接题三看：点连接 vs 线连接；公共边数量（1条/2条…）；拼接后整体边数、周长、封闭区域变化。"},
+  /* —— 黑白块 —— */
+  {id:"bw1", stem:"一组黑白块图形整体明显对称，第一步应优先考虑什么？",
+   figs:[["对称","■■■\n■□■\n■■■"],["非对称","■□■\n□■■\n■□□"],["明显特征","■■■\n■■□\n■□■"]],
+   opts:"A. 平移　B. 黑白运算　C. 对称规律　D. 部分数",
+   ans:"C", exp:"黑白块先分三类：对称 / 非对称 / 明显特征。对称类先识别对称类型，再细化对称轴。"},
+  {id:"bw2", stem:"图①③⑤ 黑白块图形对称轴为竖直方向，图②④⑥ 对称轴为水平方向。判断依据是？",
+   figs:[["① 竖轴对称","■□■\n■□■\n■□■"],["② 横轴对称","■■■\n□□□\n■■■"]],
+   opts:"A. 黑块数量　B. 对称轴方向　C. 对称轴数量　D. 面积占比",
+   ans:"B", exp:"对称类细化：先类型（轴/中心/轴+中心），再方向与数量；黑块不行看白块，白块也重要。"},
+  {id:"bw3", stem:"连续 3 幅 3×3 图黑块数都为 2、整体不对称，优先考虑什么考法？",
+   figs:[["图1","●··\n●··\n···"],["图2","·●·\n·●·\n···"],["图3","··●\n··●\n···"]],
+   opts:"A. 黑白运算　B. 位置移动（平移）　C. 部分数　D. 面积",
+   ans:"B", exp:"黑块数量不变 → 平移（排除黑白运算）。非对称类三选一：数量不变→平移、数量变→运算、分堆→部分数。"},
+  {id:"bw4", stem:"图①③⑤ 黑块面积占整体 1/2，图②④⑥ 占 1/4。这是什么考法？",
+   figs:[["① 占1/2","■■■■\n■■■■\n□□□□\n□□□□"],["② 占1/4","■□□□\n□□□□\n□□□□\n□□□□"]],
+   opts:"A. 部分数　B. 面积占比　C. 平移　D. 笔画",
+   ans:"B", exp:"明显类花活：面积占比（占一半 / 1/4）、相邻比较、笔画/周长、黑面白面关系。"},
+  /* —— 空间重构 —— */
+  {id:"sp1", stem:"展开图如下（1-4-1 结构），与面 A 相对的是哪个面？",
+   figs:[["展开图","  A\nB C D E\n  F"]],
+   opts:"A. 面 B　B. 面 C　C. 面 F　D. 面 E",
+   ans:"C", exp:"A 与 F 是 Z 字形两端 → 相对面，不能同时出现在立体图中。第一步永远是：出现相对面 → 直接排除。"},
+  {id:"sp2", stem:"同一展开图（B C D E 一排），下列哪两个面是相对面？",
+   figs:[["展开图","  A\nB C D E\n  F"]],
+   opts:"A. A 与 C　B. B 与 E　C. C 与 E　D. A 与 E",
+   ans:"C", exp:"同行同列相隔一个面：B 与 D 相对、C 与 E 相对；Z 字两端：A 与 F 相对。相对面不能同时被看见。"},
+  {id:"sp3", stem:"箭头法解题的核心操作顺序是？",
+   opts:"A. 找唯一，定方向　B. 数奇点，判笔画　C. 看对称，画轴线　D. 找相同，求同异",
+   ans:"A", exp:"箭头法：结合选项找唯一点或唯一边作参照，画出箭头方向后对比上下左右。升级版双箭头解决「都在右边」的细节问题。"},
+  {id:"sp4", stem:"展开图中「构成直角的两条边」，折合后是什么关系？",
+   opts:"A. 相对边　B. 同一条边　C. 相邻但不重合　D. 无法判断",
+   ans:"B", exp:"公共边三条：①构成直角的两条边折合后是同一条边；②一列/行连 4 个面，两端是同一条边；③直角边随便滚。"},
+  {id:"sp5", stem:"画边法描边标号时，最关键的是哪「三同」？",
+   opts:"A. 同一个面、同一个点、同一方向　B. 同颜色、同大小、同位置　C. 同图形、同数量、同方向　D. 任意描边即可",
+   ans:"A", exp:"画边法：找唯一点/唯一边 → 顺时针描边标号，题干与选项必须对应同一个面、同一个点、同一方向，否则标号就乱了。"},
+  {id:"sp6", stem:"四面体展开图中，「构成一条直线的两条边」折合后是？",
+   figs:[["四面体展开","  A\nB C\n  D"]],
+   opts:"A. 相对边　B. 同一条公共边　C. 相邻但不重合　D. 不存在",
+   ans:"B", exp:"四面体公共边两条规则：①构成一条直线的两条边折合后是同一条边；②平行四边形两端的两条边是同一条边。"},
+  /* —— 实战策略 —— */
+  {id:"str1", stem:"图形元素组成完全不同、无相似、摆放凌乱，第一步应该看？",
+   opts:"A. 位置　B. 样式　C. 属性（先对称）　D. 标记",
+   ans:"C", exp:"不同 → 先属性（对称→曲直→开闭）再数量（面线点角素笔画），最后图形间关系。特征图优先锁定考点。"},
+  {id:"str2", stem:"一笔画题最常见的失分点是？",
+   opts:"A. 忘记数面　B. 漏数端点（端点也是奇点）　C. 多画对称轴　D. 数错颜色",
+   ans:"B", exp:"端点也是奇点！数奇点时把每个线头端点都算上；奇点一定成对出现，数出奇数个说明数错了。"},
+  {id:"str3", stem:"考场上做图推，一道题 40 秒还没思路，应该？",
+   opts:"A. 死磕到底　B. 先跳过，做完其他模块再回头　C. 随便蒙　D. 换个规律继续试到对为止",
+   ans:"B", exp:"30 秒原则：没思路立刻跳过，回头再看。图推切忌死磕；蒙之前先排除明显错的选项。"}
+];
+
+/* ================= 例题渲染 ================= */
+EXAMPLES.forEach(function(ex){
+  var card = document.querySelector('.card[data-id="' + ex.id + '"]');
+  if(!card) return;
+  var box = card.querySelector(".card-a");
+  var figs = "";
+  if(ex.figs){
+    figs = '<div class="ex-figs">';
+    ex.figs.forEach(function(f){
+      figs += '<div class="ex-fig-item"><div class="fig-label">' + f[0] + '</div><div class="ex-fig">' + f[1] + '</div></div>';
+    });
+    figs += '</div>';
+  }
+  var d = document.createElement("div");
+  d.className = "ex";
+  d.innerHTML = '<div class="ex-head"><span class="ex-no">📝 例题</span>' + (ex.src || "经典考法") + '</div>' +
+    '<div class="ex-stem">' + ex.stem + '</div>' + figs +
+    '<div class="ex-opts">' + ex.opts + '</div>' +
+    '<div class="ex-ans"><b>✅ 答案：' + ex.ans + '</b><br>' + ex.exp + '</div>' +
+    '<button class="ex-btn">👁 看解析</button>';
+  box.appendChild(d);
+  d.querySelector(".ex-btn").addEventListener("click", function(){
+    d.querySelector(".ex-ans").classList.toggle("show");
+    this.textContent = d.querySelector(".ex-ans").classList.contains("show") ? "🙈 收起解析" : "👁 看解析";
+  });
+});
+
+/* ================= 状态 ================= */
+var KEY = "lyh-tutui-progress-v1";
+var state = {known:{}};
+try{ state = JSON.parse(localStorage.getItem(KEY)) || {known:{}}; }catch(e){}
+
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
+
+/* ================= 导航 ================= */
+var NAV = [
+  ["sec-framework","解题总框架",0],["sec-position","位置规律",1],["sec-style","样式规律",2],
+  ["sec-marker","标记规律",3],["sec-property","属性规律",4],["sec-quantity","数量规律",5],
+  ["sec-relation","图形间位置",6],["sec-blackwhite","黑白块专项",7],["sec-space","空间重构",8],
+  ["sec-strategy","实战策略",9],["quiz-sec","自测",10]
+];
+var nav = document.getElementById("nav");
+NAV.forEach(function(n){
+  var a = document.createElement("a");
+  a.href = "#" + n[0]; a.id = "nav-" + n[0];
+  a.innerHTML = '<span class="dot"></span>' + n[1] + '<span class="num">' + (n[2]?n[2]:"") + '</span>';
+  nav.appendChild(a);
+});
+
+/* ================= 卡片交互 ================= */
+var cards = document.querySelectorAll(".card");
+cards.forEach(function(c){
+  var q = c.querySelector(".q-head");
+  var id = c.getAttribute("data-id");
+  if(state.known[id]) c.classList.add("done");
+  q.addEventListener("click", function(e){
+    if(e.target.closest("button")) return;
+    c.classList.toggle("open");
+  });
+  c.querySelector(".btn-known").addEventListener("click", function(){
+    state.known[id] = true; save(); c.classList.add("done"); c.classList.remove("open"); updateAll();
+  });
+  c.querySelector(".btn-again").addEventListener("click", function(){
+    delete state.known[id]; save(); c.classList.remove("done"); updateAll();
+  });
+});
+
+/* ================= 进度 ================= */
+function updateAll(){
+  var total = cards.length, done = 0;
+  cards.forEach(function(c){ if(state.known[c.getAttribute("data-id")]) done++; });
+  document.getElementById("pf").style.width = (done/total*100) + "%";
+  document.getElementById("pt").textContent = "已掌握 " + done + " / " + total + " 个知识点";
+  /* 侧边栏 dots */
+  var secs = {};
+  cards.forEach(function(c){
+    var s = c.closest("section").id;
+    secs[s] = secs[s] || {t:0,d:0};
+    secs[s].t++; if(state.known[c.getAttribute("data-id")]) secs[s].d++;
+  });
+  Object.keys(secs).forEach(function(s){
+    var el = document.getElementById("nav-" + s); if(!el) return;
+    var dot = el.querySelector(".dot");
+    dot.className = "dot" + (secs[s].d===secs[s].t ? " done" : "");
+    var p = document.querySelector('.sec-p[data-sec="' + s + '"]');
+    if(p) p.textContent = secs[s].d + "/" + secs[s].t;
+  });
+}
+function resetAll(){
+  if(!confirm("确定重置全部掌握进度吗？")) return;
+  state = {known:{}}; save();
+  cards.forEach(function(c){ c.classList.remove("done","open"); });
+  document.querySelectorAll(".opt").forEach(function(o){ o.classList.remove("right","wrong","locked"); o.parentElement.querySelector(".explain").classList.remove("show"); });
+  document.getElementById("quiz-score").innerHTML = "";
+  updateAll();
+}
+
+/* ================= 模式切换 ================= */
+document.querySelectorAll(".mode-switch button").forEach(function(b){
+  b.addEventListener("click", function(){
+    document.querySelectorAll(".mode-switch button").forEach(function(x){x.classList.remove("active");});
+    b.classList.add("active");
+    document.body.className = "mode-" + b.getAttribute("data-mode");
+  });
+});
+
+/* ================= 背诵区 ================= */
+var rl = document.getElementById("recite-list");
+RECITE.forEach(function(r, i){
+  var d = document.createElement("div");
+  d.className = "koujue";
+  d.innerHTML = '<span class="k-icon">🗣️</span><div class="k-text">' + r.t + '</div><span class="k-tag">' + r.cat + '</span>';
+  rl.appendChild(d);
+});
+
+/* ================= 自测 ================= */
+var qb = document.getElementById("quiz-box");
+var scoreEl = document.getElementById("quiz-score");
+var answers = {};
+QUIZ.forEach(function(item, i){
+  var d = document.createElement("div"); d.className = "quiz-q";
+  var opts = "";
+  item.opts.forEach(function(o, j){
+    opts += '<div class="opt" data-q="' + i + '" data-opt="' + j + '">' + String.fromCharCode(65+j) + '. ' + o + '</div>';
+  });
+  d.innerHTML = '<div class="q-title"><span class="no">Q' + (i+1) + '</span>' + item.q + '</div><div class="opts">' + opts + '</div><div class="explain">💡 ' + item.e + '</div>';
+  qb.appendChild(d);
+});
+qb.addEventListener("click", function(e){
+  var opt = e.target.closest(".opt"); if(!opt) return;
+  var q = +opt.getAttribute("data-q"), o = +opt.getAttribute("data-opt");
+  var qq = QUIZ[q], box = qb.querySelectorAll('.opt[data-q="' + q + '"]');
+  if(answers[q] !== undefined) return;
+  answers[q] = (o === qq.a);
+  box.forEach(function(b){
+    b.classList.add("locked");
+    if(+b.getAttribute("data-opt") === qq.a) b.classList.add("right");
+  });
+  if(o !== qq.a) opt.classList.add("wrong");
+  opt.closest(".quiz-q").querySelector(".explain").classList.add("show");
+  var right = 0; Object.keys(answers).forEach(function(k){ if(answers[k]) right++; });
+  var total = Object.keys(answers).length;
+  var tip = "";
+  if(total === QUIZ.length){
+    tip = right >= 12 ? " 🎉 框架熟了！" : (right >= 8 ? " 还行，把错的知识点卡再看一遍。" : " 别急，回到学习模式重过一遍知识点卡。");
+  }
+  scoreEl.innerHTML = '<span>得分 <span class="big">' + right + '/' + total + '</span></span><span>共 ' + QUIZ.length + ' 题</span>' + (total===QUIZ.length?'<button onclick="reQuiz()">↺ 重测</button>':'') + '<span>' + tip + '</span>';
+});
+function reQuiz(){
+  answers = {};
+  document.querySelectorAll(".opt").forEach(function(o){ o.classList.remove("right","wrong","locked"); });
+  document.querySelectorAll(".quiz-q .explain").forEach(function(x){ x.classList.remove("show"); });
+  scoreEl.innerHTML = "";
+}
+
+/* ================= 移动端抽屉菜单 ================= */
+var menuBtn = document.getElementById("menu-btn");
+var overlay = document.getElementById("overlay");
+function toggleMenu(open){
+  document.body.classList.toggle("menu-open", open);
+}
+if(menuBtn){
+  menuBtn.addEventListener("click", function(){
+    toggleMenu(!document.body.classList.contains("menu-open"));
+  });
+}
+if(overlay){
+  overlay.addEventListener("click", function(){ toggleMenu(false); });
+}
+document.querySelectorAll("aside nav a").forEach(function(a){
+  a.addEventListener("click", function(){ toggleMenu(false); });
+});
+
+/* ================= 滚动高亮 ================= */
+window.addEventListener("scroll", function(){
+  var pos = window.scrollY + 100, cur = NAV[0][0];
+  NAV.forEach(function(n){
+    var el = document.getElementById(n[0]);
+    if(el && el.offsetTop <= pos) cur = n[0];
+  });
+  document.querySelectorAll("aside nav a").forEach(function(a){
+    a.classList.toggle("active", a.id === "nav-" + cur);
+  });
+});
+
+updateAll();
+</script>
+  <script data-study-hub-script src="../../assets/hub-nav.js"></script>
+</body>
+</html>

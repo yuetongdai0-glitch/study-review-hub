@@ -1,0 +1,349 @@
+:root {
+  --paper: #f6f7f9;
+  --surface: #ffffff;
+  --ink: #17191d;
+  --muted: #6c7179;
+  --line: #dfe2e7;
+  --red: #b33a32;
+  --blue: #2563eb;
+  --violet: #7c3aed;
+  --ochre: #c8792d;
+  --cornflower: #4f7cff;
+  --brick: #c0392b;
+  --teal: #0f8c82;
+  --content-width: 1180px;
+  --header-height: 74px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+  line-height: 1.5;
+}
+
+a {
+  color: inherit;
+}
+
+.skip-link {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  z-index: 10;
+  padding: 10px 14px;
+  background: var(--ink);
+  color: #fff;
+  transform: translateY(-150%);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+.site-header {
+  width: min(calc(100% - 48px), var(--content-width));
+  height: var(--header-height);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--line);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.brand-mark {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 4px;
+  background: var(--red);
+  color: #fff;
+  font-family: "Songti SC", SimSun, serif;
+  font-size: 18px;
+}
+
+.note-count {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+main {
+  width: min(calc(100% - 48px), var(--content-width));
+  margin: 0 auto;
+}
+
+.intro {
+  min-height: 360px;
+  padding: 76px 0 56px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.65fr) minmax(280px, 0.7fr);
+  gap: 72px;
+  align-items: end;
+}
+
+.intro-index {
+  margin: 0 0 26px;
+  color: var(--red);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.intro h1 {
+  max-width: 800px;
+  margin: 0;
+  font-family: "Songti SC", STSong, SimSun, serif;
+  font-size: clamp(44px, 5.2vw, 72px);
+  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: 0;
+}
+
+.intro-note {
+  margin: 0 0 8px;
+  padding-top: 18px;
+  border-top: 2px solid var(--ink);
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.subjects {
+  padding-bottom: 88px;
+}
+
+.section-heading {
+  min-height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--line);
+}
+
+.section-heading h2 {
+  margin: 0;
+  font-size: 15px;
+}
+
+.section-heading span {
+  color: var(--muted);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+}
+
+.subject-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.subject {
+  --subject-color: var(--red);
+  min-height: 168px;
+  padding: 27px 28px 27px 22px;
+  position: relative;
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: start;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink);
+  text-decoration: none;
+  transition: background-color 180ms ease, color 180ms ease;
+}
+
+.subject:nth-child(odd) {
+  border-right: 1px solid var(--line);
+}
+
+.subject::before {
+  content: "";
+  position: absolute;
+  top: 27px;
+  bottom: 27px;
+  left: 0;
+  width: 3px;
+  background: var(--subject-color);
+  transform: scaleY(0.22);
+  transform-origin: top;
+  transition: transform 180ms ease;
+}
+
+.subject:hover,
+.subject:focus-visible {
+  outline: none;
+  background: var(--surface);
+}
+
+.subject:hover::before,
+.subject:focus-visible::before {
+  transform: scaleY(1);
+}
+
+.subject-number {
+  color: var(--subject-color);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.subject-body {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.subject-source {
+  margin-bottom: 10px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.subject strong {
+  font-family: "Songti SC", STSong, SimSun, serif;
+  font-size: 24px;
+  line-height: 1.25;
+}
+
+.subject-description {
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.subject-action {
+  min-width: 28px;
+  color: var(--subject-color);
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.subject-featured {
+  grid-column: 1 / -1;
+  min-height: 196px;
+  grid-template-columns: 42px minmax(0, 1fr) auto;
+  align-items: center;
+  border-right: 0;
+  background: var(--surface);
+}
+
+.subject-featured::before {
+  transform: scaleY(1);
+}
+
+.subject-featured .subject-body {
+  max-width: 660px;
+}
+
+.subject-featured strong {
+  font-size: 36px;
+}
+
+.subject-blue { --subject-color: var(--blue); }
+.subject-violet { --subject-color: var(--violet); }
+.subject-ochre { --subject-color: var(--ochre); }
+.subject-cornflower { --subject-color: var(--cornflower); }
+.subject-brick { --subject-color: var(--brick); }
+.subject-teal { --subject-color: var(--teal); }
+
+.site-footer {
+  width: min(calc(100% - 48px), var(--content-width));
+  min-height: 120px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid var(--ink);
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.site-footer a {
+  text-decoration: none;
+}
+
+.site-footer a:hover,
+.site-footer a:focus-visible {
+  color: var(--red);
+}
+
+@media (max-width: 760px) {
+  .site-header,
+  main,
+  .site-footer {
+    width: min(calc(100% - 32px), var(--content-width));
+  }
+
+  .intro {
+    min-height: auto;
+    padding: 56px 0 46px;
+    grid-template-columns: 1fr;
+    gap: 42px;
+  }
+
+  .intro h1 {
+    font-size: 42px;
+  }
+
+  .subject-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .subject,
+  .subject-featured {
+    min-height: 150px;
+    grid-column: auto;
+    grid-template-columns: 34px minmax(0, 1fr) 26px;
+    padding: 24px 16px 24px 14px;
+    border-right: 0;
+  }
+
+  .subject-featured strong,
+  .subject strong {
+    font-size: 23px;
+  }
+
+  .subject-featured .subject-action {
+    font-size: 0;
+  }
+
+  .subject-featured .subject-action span {
+    font-size: 16px;
+  }
+
+  .site-footer {
+    min-height: 110px;
+    gap: 20px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .subject,
+  .subject::before {
+    transition: none;
+  }
+}

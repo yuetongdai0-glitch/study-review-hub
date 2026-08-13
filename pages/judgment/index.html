@@ -1,0 +1,1668 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>超格程意 · 判断推理全景知识图谱（2026）</title>
+<style>
+  :root{
+    --bg:#faf7f2;
+    --panel:#ffffff;
+    --ink:#2c3e50;
+    --ink-soft:#5d6d7e;
+    --primary:#c0392b;
+    --primary-deep:#96281b;
+    --primary-soft:#fdecea;
+    --gold:#b7791f;
+    --gold-soft:#fdf3e0;
+    --blue:#1f6f8b;
+    --blue-soft:#e6f4f9;
+    --green:#1e8449;
+    --green-soft:#e8f6ef;
+    --purple:#6c3483;
+    --purple-soft:#f3e8fa;
+    --line:#e8e0d5;
+    --shadow:0 2px 10px rgba(44,62,80,.08);
+    --radius:12px;
+    --side-w:268px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    line-height:1.75;
+    font-size:15px;
+  }
+  a{color:var(--primary);text-decoration:none;}
+
+  /* ===== 侧边栏 ===== */
+  .sidebar{
+    position:fixed;top:0;left:0;bottom:0;width:var(--side-w);
+    background:#2b2b33;color:#d8d8e0;overflow-y:auto;z-index:50;
+    padding:18px 0 60px;scrollbar-width:thin;
+  }
+  .sidebar::-webkit-scrollbar{width:5px;}
+  .sidebar::-webkit-scrollbar-thumb{background:#555;}
+  .sb-brand{padding:6px 20px 14px;border-bottom:1px solid #3a3a45;margin-bottom:10px;}
+  .sb-brand .t{font-size:17px;font-weight:800;color:#fff;letter-spacing:1px;}
+  .sb-brand .s{font-size:11px;color:#9b9ba8;margin-top:2px;}
+  .sb-search{margin:10px 14px;}
+  .sb-search input{
+    width:100%;padding:8px 12px;border-radius:8px;border:1px solid #4a4a58;
+    background:#22222a;color:#eee;font-size:13px;outline:none;
+  }
+  .sb-search input:focus{border-color:#e07b6a;}
+  .sb-search input::placeholder{color:#777;}
+  .nav-group{margin:8px 0;}
+  .nav-group .g-title{
+    font-size:11px;color:#8f8f9d;padding:6px 20px 4px;letter-spacing:2px;font-weight:700;
+  }
+  .nav-link{
+    display:block;padding:7px 20px 7px 26px;font-size:13.5px;color:#c6c6d2;cursor:pointer;
+    border-left:3px solid transparent;transition:.15s;
+  }
+  .nav-link:hover{background:#34343f;color:#fff;}
+  .nav-link.active{background:#3a2a28;color:#ffb3a8;border-left-color:#e07b6a;font-weight:600;}
+  .nav-link .tag{
+    display:inline-block;font-size:10px;padding:0 6px;border-radius:10px;margin-left:6px;
+    background:#4a4a58;color:#bbb;vertical-align:1px;
+  }
+
+  /* ===== 主体 ===== */
+  .main{margin-left:var(--side-w);max-width:1080px;padding:0 34px 80px;}
+  .topbar{
+    position:sticky;top:0;background:rgba(250,247,242,.94);backdrop-filter:blur(6px);
+    padding:14px 0 10px;z-index:40;border-bottom:1px solid var(--line);margin-bottom:8px;
+    display:flex;align-items:center;gap:14px;
+  }
+  .topbar .crumb{font-size:13px;color:var(--ink-soft);}
+  .topbar .progress-wrap{flex:1;text-align:right;font-size:12px;color:var(--ink-soft);}
+  .progress-bar{width:220px;height:6px;background:#e8e0d5;border-radius:4px;display:inline-block;vertical-align:middle;margin-left:8px;overflow:hidden;}
+  .progress-fill{height:100%;width:0;background:linear-gradient(90deg,#e07b6a,#c0392b);transition:.3s;}
+
+  /* Hero */
+  .hero{
+    background:linear-gradient(135deg,#2b2b33 0%,#3d2f2b 60%,#55352e 100%);
+    color:#fff;border-radius:16px;padding:38px 40px 32px;margin:18px 0 26px;
+    box-shadow:0 8px 30px rgba(44,30,20,.25);position:relative;overflow:hidden;
+  }
+  .hero::after{content:"";position:absolute;right:-60px;top:-60px;width:240px;height:240px;border-radius:50%;background:rgba(224,123,106,.14);}
+  .hero::before{content:"";position:absolute;right:60px;bottom:-80px;width:160px;height:160px;border-radius:50%;background:rgba(224,123,106,.10);}
+  .hero .kicker{font-size:13px;letter-spacing:3px;color:#f0b3a8;font-weight:700;}
+  .hero h1{font-size:30px;font-weight:900;margin:8px 0 10px;letter-spacing:1px;}
+  .hero .sub{color:#cfc8c2;font-size:14.5px;max-width:720px;}
+  .hero .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px;}
+  .hero .meta span{
+    background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);
+    padding:5px 14px;border-radius:20px;font-size:12.5px;color:#f0e9e4;
+  }
+
+  /* Section & cards */
+  section{margin:34px 0;scroll-margin-top:70px;}
+  .sec-head{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+  .sec-num{
+    flex:none;width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;
+    font-weight:900;font-size:17px;color:#fff;
+  }
+  .sec-head h2{font-size:23px;font-weight:800;}
+  .sec-head .en{font-size:12px;color:var(--ink-soft);letter-spacing:1px;}
+  .sec-desc{color:var(--ink-soft);font-size:14px;margin:-6px 0 16px;padding-left:50px;}
+
+  .card{
+    background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    padding:20px 24px;margin-bottom:16px;box-shadow:var(--shadow);
+  }
+  .card h3{
+    font-size:17.5px;font-weight:800;margin-bottom:10px;display:flex;align-items:center;gap:8px;
+  }
+  .card h3 .dot{width:8px;height:8px;border-radius:50%;flex:none;}
+  .card h4{font-size:15px;font-weight:700;margin:16px 0 8px;color:var(--ink);}
+  .card p{margin:6px 0;}
+  .card ul,.card ol{margin:6px 0 6px 22px;}
+  .card li{margin:4px 0;}
+  .card .lead{color:var(--ink-soft);font-size:13.5px;margin-bottom:6px;}
+
+  /* 标签 */
+  .pill{
+    display:inline-block;font-size:11px;font-weight:700;padding:2px 10px;border-radius:12px;margin-right:6px;vertical-align:2px;
+  }
+  .pill-hot{background:#fdecea;color:#c0392b;}
+  .pill-freq{background:#e6f4f9;color:#1f6f8b;}
+  .pill-low{background:#eef0f3;color:#7f8c8d;}
+  .pill-key{background:#fdf3e0;color:#b7791f;}
+
+  /* 口诀块 */
+  .jingle{
+    background:var(--gold-soft);border:1px solid #ecd9ae;border-left:5px solid var(--gold);
+    border-radius:10px;padding:12px 18px;margin:12px 0;font-size:14px;
+  }
+  .jingle .jt{font-weight:800;color:#8a5a12;font-size:13px;margin-bottom:4px;letter-spacing:1px;}
+  .jingle b{color:#6d4a0e;}
+
+  /* 流程步骤 */
+  .steps{margin:12px 0;}
+  .step{
+    display:flex;gap:12px;padding:9px 4px;border-bottom:1px dashed var(--line);
+  }
+  .step:last-child{border-bottom:none;}
+  .step .no{
+    flex:none;width:24px;height:24px;border-radius:50%;background:var(--primary);color:#fff;
+    font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;margin-top:2px;
+  }
+  .step .bd{flex:1;}
+  .step .bd b{color:var(--primary-deep);}
+
+  /* 表格 */
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13.5px;}
+  th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;vertical-align:top;}
+  th{background:#f3ece2;font-weight:700;white-space:nowrap;}
+  tr:nth-child(even) td{background:#fcf9f4;}
+  table.tight th,table.tight td{padding:6px 10px;}
+
+  /* 例题 */
+  .ex{
+    background:var(--blue-soft);border:1px solid #cfe4ee;border-radius:10px;padding:14px 18px;margin:12px 0;
+  }
+  .ex .ex-t{font-size:12px;font-weight:800;color:var(--blue);letter-spacing:1px;margin-bottom:6px;}
+  .ex .q{font-size:13.5px;}
+  .ex .a{font-size:13px;margin-top:6px;color:var(--blue);}
+  .ex .a b{color:var(--primary-deep);}
+
+  /* 易错 */
+  .warn{
+    background:var(--primary-soft);border:1px solid #f0c8c2;border-radius:10px;padding:12px 18px;margin:12px 0;
+    font-size:13.5px;
+  }
+  .warn .wt{font-weight:800;color:var(--primary-deep);margin-bottom:4px;}
+  .warn li{margin:3px 0;}
+
+  /* 两列 */
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  @media(max-width:860px){.grid2{grid-template-columns:1fr;}}
+
+  /* 折叠 */
+  details.kd{border:1px solid var(--line);border-radius:10px;margin:10px 0;background:#fff;overflow:hidden;}
+  details.kd summary{
+    cursor:pointer;padding:12px 18px;font-weight:700;font-size:14.5px;list-style:none;
+    display:flex;align-items:center;gap:8px;background:#faf6ef;
+  }
+  details.kd summary::before{content:"▸";transition:.2s;color:var(--primary);}
+  details.kd[open] summary::before{transform:rotate(90deg);}
+  details.kd summary:hover{background:#f4ecdf;}
+  details.kd .kdb{padding:12px 18px 16px;font-size:13.8px;}
+
+  /* 公式 */
+  .formula{
+    font-family:"SFMono-Regular",Consolas,"Courier New",monospace;
+    background:#2b2b33;color:#f2d3cf;border-radius:8px;padding:8px 14px;margin:8px 0;
+    font-size:13.5px;overflow-x:auto;white-space:nowrap;
+  }
+  .formula .hl{color:#ffd166;font-weight:700;}
+
+  /* 复习勾选 */
+  .chk{display:inline-flex;align-items:center;gap:7px;font-size:13px;color:var(--ink-soft);margin:10px 0 2px;cursor:pointer;user-select:none;}
+  .chk input{width:16px;height:16px;accent-color:var(--primary);cursor:pointer;}
+
+  /* 口诀卡网格 */
+  .mnemo-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  @media(max-width:860px){.mnemo-grid{grid-template-columns:1fr;}}
+  .mnemo{
+    background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;box-shadow:var(--shadow);
+  }
+  .mnemo .mt{font-size:12px;font-weight:800;color:var(--primary);letter-spacing:1px;margin-bottom:6px;}
+  .mnemo .mc{font-size:13.8px;}
+  .mnemo .mc b{color:var(--ink);}
+
+  /* 流程总览图(纯CSS) */
+  .flow{display:flex;flex-wrap:wrap;gap:8px;align-items:stretch;margin:14px 0;}
+  .flow .node{
+    background:#fff;border:1.5px solid var(--line);border-radius:10px;padding:10px 14px;font-size:13px;text-align:center;min-width:96px;
+  }
+  .flow .node b{display:block;font-size:13px;}
+  .flow .node small{color:var(--ink-soft);font-size:11px;}
+  .flow .node.q{background:var(--primary-soft);border-color:#e8a49a;}
+  .flow .node.s{background:var(--blue-soft);border-color:#bcdbe8;}
+  .flow .arrow{align-self:center;color:var(--primary);font-weight:900;font-size:16px;}
+
+  .foot{
+    margin-top:50px;padding-top:20px;border-top:1px solid var(--line);
+    color:var(--ink-soft);font-size:12.5px;text-align:center;
+  }
+  .backtop{
+    position:fixed;right:26px;bottom:26px;width:44px;height:44px;border-radius:50%;
+    background:var(--primary);color:#fff;border:none;font-size:20px;cursor:pointer;box-shadow:0 4px 14px rgba(192,57,43,.4);z-index:60;
+  }
+  .backtop:hover{background:var(--primary-deep);}
+
+  .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--ink-soft);margin:4px 0 10px;}
+  .legend i{font-style:normal;margin-right:4px;}
+
+  @media print{
+    .sidebar,.topbar,.backtop,.menu-btn,.mask{display:none!important;}
+    .main{margin-left:0;max-width:none;padding:0;}
+    .card{box-shadow:none;break-inside:avoid;}
+    details.kd{break-inside:avoid;}
+  }
+
+  /* ===== 移动端适配 ===== */
+  .menu-btn{
+    display:none;position:fixed;top:12px;left:12px;z-index:80;
+    width:42px;height:42px;border-radius:10px;border:none;
+    background:var(--primary);color:#fff;font-size:19px;cursor:pointer;
+    box-shadow:0 3px 12px rgba(192,57,43,.35);
+    align-items:center;justify-content:center;
+  }
+  .menu-btn:active{transform:scale(.94);}
+  .mask{display:none;position:fixed;inset:0;background:rgba(18,18,26,.52);z-index:65;}
+
+  @media(max-width:760px){
+    .menu-btn{display:flex;}
+    .sidebar{
+      width:min(80vw,268px);transform:translateX(-105%);
+      transition:transform .28s ease;z-index:70;
+      box-shadow:6px 0 26px rgba(0,0,0,.28);
+    }
+    body.menu-open .sidebar{transform:translateX(0);}
+    body.menu-open .mask{display:block;}
+    body.menu-open{overflow:hidden;}
+
+    .main{margin-left:0;max-width:none;padding:0 14px 60px;}
+    .topbar{padding:12px 4px 10px 62px;gap:8px;margin-bottom:4px;}
+    .topbar .crumb{display:none;}
+    .progress-bar{width:118px;}
+    .progress-wrap{text-align:right;}
+
+    body{font-size:14.5px;}
+    .hero{padding:24px 18px 22px;margin:14px 0 18px;border-radius:14px;}
+    .hero h1{font-size:22px;letter-spacing:.5px;}
+    .hero .sub{font-size:13.5px;}
+    .hero .meta{margin-top:16px;gap:8px;}
+    .hero .meta span{font-size:11.5px;padding:4px 10px;}
+
+    section{margin:26px 0;scroll-margin-top:62px;}
+    .sec-head{gap:10px;margin-bottom:12px;}
+    .sec-num{width:32px;height:32px;font-size:15px;border-radius:8px;}
+    .sec-head h2{font-size:19px;}
+    .sec-desc{padding-left:0;font-size:13px;margin:-4px 0 14px;}
+
+    .card{padding:15px 14px;}
+    .card h3{font-size:16px;margin-bottom:8px;}
+    .card h4{font-size:14px;margin:14px 0 6px;}
+    .card ul,.card ol{margin-left:18px;}
+
+    .card table{display:block;overflow-x:auto;white-space:nowrap;-webkit-overflow-scrolling:touch;}
+    table.tight th,table.tight td{padding:5px 8px;}
+
+    .jingle,.warn,.ex{padding:11px 13px;}
+    .jingle{font-size:13.5px;}
+    .ex .q{font-size:13px;}
+    .formula{font-size:12.5px;padding:8px 10px;}
+    .step{padding:8px 2px;}
+
+    .flow .node{min-width:0;flex:1 1 100%;padding:9px 12px;}
+    .flow .arrow{transform:rotate(90deg);margin:0;line-height:1;}
+    .mnemo{padding:14px 14px;}
+    .legend{gap:8px;font-size:11.5px;}
+    .foot{font-size:11.5px;margin-top:36px;}
+    .backtop{right:14px;bottom:16px;width:40px;height:40px;font-size:18px;}
+  }
+  @media(max-width:420px){
+    .hero h1{font-size:20px;}
+    .progress-wrap{font-size:11px;}
+    .progress-bar{width:88px;}
+    .sec-head h2{font-size:17.5px;}
+    .card p,.card li{font-size:13.8px;}
+  }
+</style>
+  <link data-study-hub-style rel="stylesheet" href="../../assets/hub-nav.css">
+</head>
+<body>
+
+<button class="menu-btn" id="menuBtn" aria-label="打开目录">☰</button>
+<div class="mask" id="mask"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sb-brand">
+    <div class="t">程意 · 判断推理</div>
+    <div class="s">全景知识图谱 · 2026 版</div>
+  </div>
+  <div class="sb-search">
+    <input type="text" id="navSearch" placeholder="搜索知识点…">
+  </div>
+
+  <div class="nav-group"><div class="g-title">开篇</div>
+    <a class="nav-link" data-kw="课程 总览 20次课 六大母题" href="#hero-top">课程总览与体系</a>
+    <a class="nav-link" data-kw="两个要求 严谨性 形式性 有些 核心词" href="#core">总纲 · 两个要求一个核心词</a>
+  </div>
+
+  <div class="nav-group"><div class="g-title">模块一 · 必然性推理</div>
+    <a class="nav-link" data-kw="直言命题 所有 有些 某个 矛盾" href="#zhiyan">1.1 直言命题</a>
+    <a class="nav-link" data-kw="联言命题 且 全真才真" href="#lianyan">1.2 联言命题</a>
+    <a class="nav-link" data-kw="选言命题 或 相容 不相容" href="#xuanyan">1.3 选言命题</a>
+    <a class="nav-link" data-kw="假言命题 翻译 逆否 前推后 后推前" href="#jiayan">1.4 假言命题</a>
+    <a class="nav-link" data-kw="综合推理 母题 确定信息 数量限定 假设法 二难" href="#zonghe">1.5 综合推理（母题三四五）</a>
+    <a class="nav-link" data-kw="三段论 中项 周延" href="#sanduan">1.6 三段论</a>
+    <a class="nav-link" data-kw="朴素逻辑 数独 3+2 4+3+2 最多最少" href="#pusu">1.7 朴素逻辑</a>
+    <a class="nav-link" data-kw="一拖N 有序 无序 代入 蒙猜" href="#yituo">1.8 一拖N</a>
+  </div>
+
+  <div class="nav-group"><div class="g-title">模块二 · 可能性推理</div>
+    <a class="nav-link" data-kw="加强削弱 基础 结构 迷惑选项 力度" href="#jx-base">2.1 加强削弱基础</a>
+    <a class="nav-link" data-kw="因果 因果倒置 另有他因 另有共因" href="#jx-yg">2.2 因果类题型</a>
+    <a class="nav-link" data-kw="论证模型 求异 双观点 实践 枚举 缺桥 数据" href="#jx-model">2.3 八大论证模型</a>
+    <a class="nav-link" data-kw="前提 搭桥 解释 结论 评价" href="#jx-other">2.4 前提 / 解释 / 结论 / 评价型</a>
+  </div>
+
+  <div class="nav-group"><div class="g-title">模块三 · 图形推理</div>
+    <a class="nav-link" data-kw="图形 总思维 有相同 无相同" href="#graph-fw">3.1 总思维框架</a>
+    <a class="nav-link" data-kw="位置规律 平移 旋转 翻转" href="#graph-wz">3.2 位置规律</a>
+    <a class="nav-link" data-kw="样式规律 加减同异 黑白运算 遍历" href="#graph-ys">3.3 样式规律</a>
+    <a class="nav-link" data-kw="属性规律 对称 曲直 开闭" href="#graph-sx">3.4 属性规律</a>
+    <a class="nav-link" data-kw="数量规律 面 线 点 角 素 笔画" href="#graph-sl">3.5 数量规律</a>
+    <a class="nav-link" data-kw="特殊规律 功能元素 图形间关系 空间 六面体" href="#graph-ts">3.6 特殊规律与空间类</a>
+  </div>
+
+  <div class="nav-group"><div class="g-title">模块四 · 类比推理</div>
+    <a class="nav-link" data-kw="类比 原则 先横后纵 两项式 三项式 括号式" href="#ana-pr">4.1 考查形式与核心原则</a>
+    <a class="nav-link" data-kw="类比 逻辑关系 全同 全异 种属 交叉 因果 条件" href="#ana-lj">4.2 逻辑关系</a>
+    <a class="nav-link" data-kw="类比 言语关系 近反义 主谓 动宾 偏正" href="#ana-yy">4.3 言语关系</a>
+    <a class="nav-link" data-kw="类比 造句法 常识 十二时辰 节气" href="#ana-cs">4.4 造句法与常识积累</a>
+  </div>
+
+  <div class="nav-group"><div class="g-title">模块五 · 定义判断</div>
+    <a class="nav-link" data-kw="定义判断 主体 客体 目的 方式 条件" href="#def-key">5.1 核心要点</a>
+    <a class="nav-link" data-kw="定义判断 解题流程 多定义 选项" href="#def-flow">5.2 解题流程与多定义</a>
+  </div>
+
+  <div class="nav-group"><div class="g-title">冲刺 · 复盘</div>
+    <a class="nav-link" data-kw="口诀 速记 汇总" href="#cheat">口诀速记卡</a>
+    <a class="nav-link" data-kw="考场 做题流程 时间" href="#workflow">考场做题流程</a>
+    <a class="nav-link" data-kw="备考 节奏 建议" href="#plan">备考节奏建议</a>
+    <a class="nav-link" data-kw="进度 掌握 清单 勾选" href="#progress">我的学习进度</a>
+  </div>
+</aside>
+
+<div class="main" id="main">
+  <div class="topbar">
+    <div class="crumb">超格程意 · 判断推理 · 2026</div>
+    <div class="progress-wrap">已掌握 <b id="doneNum">0</b>/<span id="totalNum">0</span> 个考点
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    </div>
+  </div>
+
+  <!-- ============ HERO ============ -->
+  <div class="hero" id="hero-top">
+    <div class="kicker">CHAOGE · 超格教育 · 判断推理理论实战班</div>
+    <h1>程意 · 判断推理全景知识图谱</h1>
+    <div class="sub">覆盖逻辑判断（必然性+可能性）、图形推理、类比推理、定义判断四大板块全部考点，还原程意老师的「标准化流程化解题」方法——先把考点背熟，再按固定流程做，固化解题反射，减少思考时间。适合小白打基础，也适合有基础查缺补漏。</div>
+    <div class="meta">
+      <span>📚 20 次课完整体系</span>
+      <span>⭐ 六大高频母题</span>
+      <span>🎯 两个要求 · 一个核心词</span>
+      <span>⚡ 口诀 + 秒杀 + 蒙猜</span>
+      <span>📝 考点勾选复习</span>
+    </div>
+  </div>
+
+  <!-- ============ 课程总览 ============ -->
+  <section id="overview">
+    <div class="sec-head">
+      <div class="sec-num" style="background:#c0392b;">0</div>
+      <h2>课程体系总览</h2>
+      <span class="en">COURSE MAP</span>
+    </div>
+    <div class="sec-desc">先看整体地图，再逐块攻破。判断推理 = 必然性推理 + 可能性推理 + 图形推理 + 类比推理 + 定义判断。</div>
+
+    <div class="card">
+      <h3><span class="dot" style="background:#c0392b;"></span>20 次课结构（程意 · 判断推理全家桶理论实战班）</h3>
+      <table>
+        <tr><th style="width:140px;">课次</th><th>主题</th><th style="width:120px;">所属板块</th></tr>
+        <tr><td>第 1 次课</td><td>开课说明 + <b>直言命题</b></td><td rowspan="11" style="vertical-align:middle;"><span class="pill pill-hot">逻辑判断</span><br>（第1-6课：必然性推理）</td></tr>
+        <tr><td>第 2 次课</td><td><b>联言命题、选言命题、假言命题</b></td></tr>
+        <tr><td>第 3 次课</td><td><b>综合推理</b> + 命题部分专项训练</td></tr>
+        <tr><td>第 4 次课</td><td><b>三段论</b> + 专项训练</td></tr>
+        <tr><td>第 5 次课</td><td><b>朴素逻辑</b>解题思路及秒杀技巧 + 专项训练</td></tr>
+        <tr><td>第 6 次课</td><td><b>一拖N</b> + 专项训练</td></tr>
+        <tr><td>第 7 次课</td><td><b>加强、削弱型</b>基础能力</td><td rowspan="5" style="vertical-align:middle;"><span class="pill pill-freq">逻辑判断</span><br>（可能性推理）</td></tr>
+        <tr><td>第 8 次课</td><td><b>因果类题型</b></td></tr>
+        <tr><td>第 9 次课</td><td><b>论证模型秒杀技巧</b></td></tr>
+        <tr><td>第 10 次课</td><td><b>前提、解释、结论、评价型</b></td></tr>
+        <tr><td>第 11 次课</td><td>可能性推理综合训练</td></tr>
+        <tr><td>第 12-17 次课</td><td><b>图形推理</b>（2026 由刘义恒主讲「图推命题思维」）</td><td><span class="pill pill-key">图形推理</span></td></tr>
+        <tr><td>第 18-19 次课</td><td><b>类比推理</b></td><td><span class="pill pill-freq">类比推理</span></td></tr>
+        <tr><td>第 20 次课</td><td><b>定义判断</b></td><td><span class="pill pill-low">定义判断</span></td></tr>
+      </table>
+      <div class="lead" style="margin-top:10px;">📌 学习顺序建议：逻辑判断（必然性）→ 图形推理 → 类比推理 → 定义判断 → 可能性推理（放在最后，难度最高）。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="dot" style="background:#b7791f;"></span>六大高频母题盘点（综合近 5 年国考 / 省考 / 事业单位命题趋势）</h3>
+      <p>程意把整套判断推理浓缩为<b>六类高频母题</b>——考国考、省考、全国事业单位联考的同学，学会这六类题型就够用；各地区独立命题的事业单位偶尔考「直言的知真求假/知假求真、联言选言的单独考查」等小考点，难度很低，跟课学过前几节基本都会。</p>
+      <table class="tight">
+        <tr><th>母题</th><th>内容</th><th>难度</th></tr>
+        <tr><td>母题一</td><td>命题推理知识（直言/联言/选言/假言）——提升底层能力</td><td>⭐</td></tr>
+        <tr><td>母题二</td><td>综合推理·知真求真（题干假言→选项事实）</td><td>⭐⭐</td></tr>
+        <tr><td>母题三</td><td>综合推理·有确定信息 / 有数量限定破题</td><td>⭐⭐⭐</td></tr>
+        <tr><td>母题四</td><td>综合推理·假设法 + 二难推理</td><td>⭐⭐⭐⭐</td></tr>
+        <tr><td>母题五</td><td>朴素逻辑 / 一拖N（确定性、关联性突破口）</td><td>⭐⭐⭐⭐</td></tr>
+        <tr><td>母题六</td><td>加强削弱（因果类 + 论证模型）</td><td>⭐⭐⭐</td></tr>
+      </table>
+      <div class="warn"><div class="wt">⚠️ 心态提示</div>
+        <ul>
+          <li>母题二、三、四难度较高，基础阶段学起来吃力是<b>正常</b>的，不必焦虑，学会多少都是进步；刷题阶段会重点攻克。</li>
+          <li>必然性推理「侧重知识点的记忆、识别、使用」——记住了、用熟了，正确率和速度会明显提升。</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><span class="dot" style="background:#1f6f8b;"></span>备考中常遇到的 4 个问题（对号入座）</h3>
+      <ol>
+        <li><b>生活与逻辑相混淆</b> → 用「两个要求」纠偏（见下）。</li>
+        <li><b>知识点太多记不清</b> → 背「口诀」+ 用「知识点复习表/默写表」定期默写。</li>
+        <li><b>看到题不知道用什么考点</b> → 背「图形特征/题干特征 → 考点」的对应关系。</li>
+        <li><b>边做题边回忆知识点，导致做题速度慢</b> → 用「标准化流程化解题」，把流程练成反射。</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ============ 核心总纲 ============ -->
+  <section id="core">
+    <div class="sec-head">
+      <div class="sec-num" style="background:#96281b;">★</div>
+      <h2>总纲 · 两个要求，一个核心词</h2>
+      <span class="en">THE GOLDEN RULES</span>
+    </div>
+    <div class="sec-desc">这是程意逻辑判断的第一节课内容，是整套必然性推理的底层操作系统——解决「生活与逻辑相混淆」的问题。</div>
+
+    <div class="grid2">
+      <div class="card">
+        <h3><span class="dot" style="background:#c0392b;"></span>要求一 · 严谨性</h3>
+        <p><b>说什么是什么，没说不知道。</b></p>
+        <ul>
+          <li>题干没说的，一律当作<b>不知道</b>，不脑补、不联想生活经验。</li>
+          <li>例：「如果你上岸了，我就给你买辆法拉利」——只说明「上岸→买法拉利」，没说上岸后买什么颜色、没说没上岸会怎样。</li>
+          <li>例：「程意是会跑的动物，所有会跑的动物是妖怪」→ 虽然荒诞，但只要形式正确，推出的「程意是妖怪」在逻辑上成立。</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3><span class="dot" style="background:#c0392b;"></span>要求二 · 形式性</h3>
+        <p><b>关注形式，只要符合推理规则，推出来的就是对的。</b></p>
+        <ul>
+          <li>逻辑只研究推理形式，不研究内容真伪。</li>
+          <li>例：A是B，所有B是C → 则A是C。形式对就对，内容多荒诞都成立。</li>
+          <li>做题时把题干「翻译成符号」，只在符号层面推理，摆脱生活直觉干扰。</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><span class="dot" style="background:#b7791f;"></span>核心词 · 有些（= 至少有一个）</h3>
+      <ul>
+        <li>逻辑学中「有些」= <b>至少有一个</b>，数量不限定，1 个也叫有些，<b>全部也是「有些」</b>（含于其中）。</li>
+        <li><b>「有些是」为真，「有些非」的真假不确定</b>；反之亦然——两者是下反对关系，可以同真，不能同假。</li>
+        <li>例：题干「有些同学考上了」为真，不能推出「有些同学没考上」，也不能推出「所有同学都考上了」。</li>
+      </ul>
+      <div class="jingle"><div class="jt">✏️ 记忆</div>「凡、都」都是「所有」的意思;「至少有一个」是「有些」的意思。「有些」很狡猾:<b>知道「有些是」真,别的都不确定</b>。</div>
+      <div class="ex">
+        <div class="ex-t">例 · 核心词「有些」</div>
+        <div class="q">已知「有的同学通过了考试」为真。据此,以下哪项<b>一定为假</b>?<br>A. 所有同学都通过了考试　B. 张同学通过了考试　C. 所有同学都没通过考试　D. 李同学没通过考试</div>
+        <div class="a"><b>思路(程意式):</b>「有些是」为真 → 只知道<b>至少有一个通过</b>,其余都不确定。一定为假 = 找矛盾:「有些是」的矛盾是「所有非」→ 选 C。A、B、D 都是「不确定真假」,不能选。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模块一 必然性推理 ============ -->
+  <section id="mod1">
+    <div class="sec-head">
+      <div class="sec-num" style="background:#1f6f8b;">一</div>
+      <h2>模块一 · 必然性推理（逻辑判断）</h2>
+      <span class="en">NECESSARY REASONING</span>
+    </div>
+    <div class="sec-desc">特点：侧重知识点的记忆、识别、使用；难易度中等，个别内容偏上。学会了用熟了，正确率和速度都能明显提升。通用流程：<b>识别题型 → 翻译符号 → 套用规则 → 选出答案</b>。</div>
+
+    <!-- 直言命题 -->
+    <div class="card" id="zhiyan">
+      <h3><span class="dot" style="background:#1f6f8b;"></span>1.1 直言命题（第 1 次课）</h3>
+      <p><b>含义：</b>直言命题就是含有一个断定的语句，类似汉语的单句。如「所有中国运动员都赢得了奖牌」。</p>
+
+      <h4>六种分类（量项 × 联项）</h4>
+      <table class="tight">
+        <tr><th>量项</th><th>联项</th><th>形式</th><th>示例</th></tr>
+        <tr><td rowspan="2">所有（全称）</td><td>是</td><td>所有A是B</td><td>所有学生都是党员</td></tr>
+        <tr><td>非</td><td>所有A非B</td><td>所有学生都不是党员</td></tr>
+        <tr><td rowspan="2">有些（特称）</td><td>是</td><td>有些A是B</td><td>有些学生是党员</td></tr>
+        <tr><td>非</td><td>有些A非B</td><td>有些学生不是党员</td></tr>
+        <tr><td rowspan="2">某个（单称）</td><td>是</td><td>某个A是B</td><td>张三（这个学生）是党员</td></tr>
+        <tr><td>非</td><td>某个A非B</td><td>张三（这个学生）不是党员</td></tr>
+      </table>
+      <p><span class="pill pill-key">注意</span>「凡、都」都是「所有」的意思；「至少有一个」是「有些」的意思。</p>
+
+      <h4>矛盾关系（重点）</h4>
+      <p>矛盾关系 = 针对相同事物的两个命题<b>永远满足一真一假</b>。</p>
+      <ul>
+        <li>找矛盾<b>方式一：加「并非」</b>（了解即可，考得少）。</li>
+        <li>找矛盾<b>方式二：变形式</b>——「所有 ↔ 有些」「是 ↔ 非」互换，<b>「某个」不变</b>。</li>
+      </ul>
+      <table class="tight">
+        <tr><th>原命题</th><th>矛盾命题</th></tr>
+        <tr><td>所有A是B</td><td><b>有些A非B</b></td></tr>
+        <tr><td>所有A非B</td><td><b>有些A是B</b></td></tr>
+        <tr><td>某个A是B</td><td><b>某个A非B</b></td></tr>
+      </table>
+
+      <h4>对当关系（补充：上反对 / 下反对 / 从属）</h4>
+      <table class="tight">
+        <tr><th>关系</th><th>双方</th><th>性质</th></tr>
+        <tr><td>矛盾</td><td>所有是 ↔ 有些非；所有非 ↔ 有些是；某个是 ↔ 某个非</td><td>一真一假，<b>必有一真一假</b></td></tr>
+        <tr><td>上反对</td><td>所有是 ↔ 所有非</td><td><b>不能同真，可以同假</b></td></tr>
+        <tr><td>下反对</td><td>有些是 ↔ 有些非</td><td><b>可以同真，不能同假</b></td></tr>
+        <tr><td>从属</td><td>所有是 → 某个是 → 有些是；所有非 → 某个非 → 有些非</td><td>全称真则单称/特称真；特称假则单称/全称假</td></tr>
+      </table>
+
+      <div class="ex">
+        <div class="ex-t">例 · 直言矛盾应用（知真求假）</div>
+        <div class="q">「有的运动员竞技状态不好。」根据上述断定为真，以下断定可以确定为假的是：<br>A. 有的运动员竞技状态好　B. 运动员甲竞技状态好　C. 所有运动员竞技状态都不好　D. 所有运动员竞技状态都好</div>
+        <div class="a"><b>思路（程意式）：</b>知真求假 → 直接找矛盾。「有些A非B」的矛盾是「所有A是B」→ 选 D。注意 A、B、C 都是「不确定真假」，不能选。</div>
+      </div>
+
+      <div class="steps">
+        <div class="step"><div class="no">1</div><div class="bd"><b>真假话问题四步走（找矛盾 → 定位置 → 变假为真 → 筛选答案）：</b>① 在题干几句话里找矛盾关系，确定真话/假话必在其中；② 由题目给的真话/假话数量，推出其余句子的真假；③ 把假的变真（取其矛盾/反面）；④ 代入选项选出答案。</div></div>
+      </div>
+      <div class="ex">
+        <div class="ex-t">例 · 真假话问题（四步走）</div>
+        <div class="q">某次税务检查后，四个工商管理人员有如下结论：<br>甲说：所有个体户都没纳税。　乙说：服装个体户陈老板没纳税。<br>丙说：个体户不都没纳税。　丁说：有的个体户没纳税。<br>如果四人中只有一人断定属实，则以下哪项为真？</div>
+        <div class="a"><b>思路（程意四步走）：</b>① 找矛盾：甲「所有个体户都没纳税」（所有非）与丙「个体户不都没纳税」=「有些个体户纳税了」（有些是）是矛盾关系，真话必在甲、丙之间；② 定位置：只有一真 → 乙、丁必假；③ 变假为真：丁假 →「有的个体户没纳税」为假 → 其矛盾「所有个体户都纳税了」为真；④ 筛选答案：所有人都纳税 → 陈老板纳税、甲假、丙真。答案选「个体户陈老板纳税了」。</div>
+      </div>
+    </div>
+
+    <!-- 联言命题 -->
+    <div class="card" id="lianyan">
+      <h3><span class="dot" style="background:#1f6f8b;"></span>1.2 联言命题：p 且 q（第 2 次课）</h3>
+      <p><b>含义：</b>断定多种情况<b>同时为真</b>的命题，表达为 p 且 q。</p>
+
+      <h4>提示信息（识别）</h4>
+      <table class="tight">
+        <tr><th>类型</th><th>连接词</th><th>例句</th></tr>
+        <tr><td>并列词</td><td>且、和、与、既……又……</td><td>小李学了资料和判断</td></tr>
+        <tr><td>递进词</td><td>而且</td><td>小李不但上课认真听讲，而且下课做作业</td></tr>
+        <tr><td>转折词</td><td>但是、然而、却</td><td>虽然学习很辛苦，但一定会有收获</td></tr>
+      </table>
+
+      <h4>真假性：全真才真，有假则假</h4>
+      <table class="tight">
+        <tr><th>p（米饭）</th><th>q（馒头）</th><th>p 且 q</th></tr>
+        <tr><td>✓</td><td>✓</td><td><b>✓</b></td></tr>
+        <tr><td>✓</td><td>✗</td><td>✗</td></tr>
+        <tr><td>✗</td><td>✓</td><td>✗</td></tr>
+        <tr><td>✗</td><td>✗</td><td>✗</td></tr>
+      </table>
+
+      <h4>推理规则</h4>
+      <ul>
+        <li>已知 p 且 q 为真 → <b>p 真，q 真</b>（分解）。</li>
+        <li>已知 p 且 q 为假 → <b>肯一推否一</b>：补充「p 真」可推出「q 假」；补充「q 真」可推出「p 假」。</li>
+      </ul>
+
+      <h4>矛盾命题（知真求假 / 知假求真直接找它）</h4>
+      <div class="formula">p 且 q 的矛盾 = 非p 或 非q</div>
+      <div class="ex">
+        <div class="ex-t">例 · 推理规则</div>
+        <div class="q">「小王是足球明星并且小李是网球明星。」如果上述判断为假，并且小李确实是网球明星，则以下哪项为真？</div>
+        <div class="a"><b>思路：</b>p 且 q 为假 + q 真 → 肯一推否一 → p 假，即「小王不是足球明星」。</div>
+      </div>
+      <div class="ex">
+        <div class="ex-t">例 · 联言矛盾（知假求真）</div>
+        <div class="q">「小王既会唱歌又会跳舞」这一判断为假。据此，以下哪项一定为真？</div>
+        <div class="a"><b>思路：</b>p 且 q 为假 → 找矛盾「非p 或 非q」→ 一定为真的是「小王不会唱歌 <b>或</b> 不会跳舞」。注意：不能推出「小王一定不会唱歌」或「一定不会跳舞」，只能推出「至少有一个不会」。</div>
+      </div>
+      <div class="jingle"><div class="jt">✏️ 口诀</div>联言「且」：<b>全真才真，有假则假；整体为假，肯一推否一</b>；找矛盾：<b>且变或、各加非</b>。</div>
+    </div>
+
+    <!-- 选言命题 -->
+    <div class="card" id="xuanyan">
+      <h3><span class="dot" style="background:#1f6f8b;"></span>1.3 选言命题：p 或 q（第 2 次课）</h3>
+
+      <h4>（一）相容选言命题（重点）</h4>
+      <ul>
+        <li><b>含义：</b>断定多种情况<b>至少有一真，可以同真</b>，表达为 p 或 q。</li>
+        <li><b>提示信息：</b>……或……；或者……或者……；至少有一种。</li>
+      </ul>
+      <table class="tight">
+        <tr><th>p（米饭）</th><th>q（馒头）</th><th>p 或 q</th></tr>
+        <tr><td>✓</td><td>✓</td><td>✓</td></tr>
+        <tr><td>✓</td><td>✗</td><td>✓</td></tr>
+        <tr><td>✗</td><td>✓</td><td>✓</td></tr>
+        <tr><td>✗</td><td>✗</td><td><b>✗</b></td></tr>
+      </table>
+      <ul>
+        <li>已知 p、q 独立情况 → 整体：<b>有真则真，全假才假</b>。</li>
+        <li>已知 p 或 q 整体为真 → p、q：<b>否一推肯一</b>（否定一个能推出另一个真，即「或」命题否定一个支命题，可以推出另一个支命题成立）。</li>
+      </ul>
+      <div class="formula">p 或 q 的矛盾 = 非p 且 非q　　等价转换：p 或 q = 非p → q = 非q → p</div>
+
+      <h4>（二）不相容选言命题（低频，了解即可）</h4>
+      <ul>
+        <li>要么 p，要么 q：<b>有且只有一个真</b>。</li>
+        <li>矛盾：要么 p 且 q，要么非p 且非q。</li>
+      </ul>
+      <div class="ex">
+        <div class="ex-t">例 · 相容选言推理（否一推肯一）</div>
+        <div class="q">已知「小明去 <b>或</b> 小红去参加志愿活动」为真，且小明不去。由此可以推出：</div>
+        <div class="a"><b>思路：</b>p 或 q 整体为真 + 否定 p → 否一推肯一 → q 真，即<b>小红一定去</b>。若题干把「或」换成「要么……要么……」（不相容），结论相同也是小红去，但推理依据是「有且只有一个真」。</div>
+      </div>
+      <div class="jingle"><div class="jt">✏️ 口诀</div>选言「或」：<b>有真则真，全假才假；整体为真，否一推肯一</b>；找矛盾：<b>或变且、各加非</b>。要么A要么B：<b>一真一假；同真同假才是矛盾</b>。</div>
+    </div>
+
+    <!-- 假言命题 -->
+    <div class="card" id="jiayan">
+      <h3><span class="dot" style="background:#1f6f8b;"></span>1.4 假言命题（第 2 次课 · 重中之重）</h3>
+      <p>翻译推理是整套逻辑的地基，后面的综合推理、朴素逻辑全都要用到。核心就两步：<b>先翻译，后推理</b>。</p>
+
+      <h4>第一步 · 翻译（背熟对应关系）</h4>
+      <table class="tight">
+        <tr><th>关联词</th><th>翻译</th><th>口诀</th></tr>
+        <tr><td>如果A，那么B；只要A，就B；A是B的充分条件</td><td><b>A → B</b></td><td>如果就，前推后</td></tr>
+        <tr><td>只有A，才B；除非A，否则不B；A是B的必要条件</td><td><b>B → A</b></td><td>只有才，后推前</td></tr>
+        <tr><td>除非A，否则B</td><td><b>非A → B</b></td><td>除非否则，否前推后</td></tr>
+        <tr><td>A当且仅当B</td><td>A ↔ B</td><td>充要互推</td></tr>
+      </table>
+      <div class="jingle"><div class="jt">✏️ 翻译口诀</div>「<b>如果就，前推后</b>；<b>只有才，后推前</b>；<b>除非否则不，后推前</b>；<b>除非否则，否前推后</b>；充分必要别搞混，<b>充前必后</b>记心间。」</div>
+
+      <h4>第二步 · 推理（三大规则）</h4>
+      <div class="formula">① 逆否等价：A → B = 非B → 非A（王道规则）</div>
+      <div class="formula">② 递推：A → B，B → C，可得 A → C</div>
+      <div class="formula">③ 有效形式：肯前必肯后，否后必否前；<span class="hl">否前、肯后推不出确定性结论</span></div>
+      <div class="ex">
+        <div class="ex-t">例 · 逆否等价</div>
+        <div class="q">古人云：「不到长城非好汉。」以下哪项与古人表达的意思一致？<br>① 到了长城的人就一定是好汉　② 如果是好汉，他一定到过长城　③ 只有好汉，才到过长城</div>
+        <div class="a"><b>思路：</b>翻译：「非长城 → 非好汉」。逆否等价 → 「好汉 → 长城」，即②。①③都翻译成「长城 → 好汉」，错了。选②。</div>
+      </div>
+
+      <h4>矛盾与等价（连接命题部分的关键）</h4>
+      <div class="formula">A → B 的矛盾 = A 且 非B（最强否定，反驳它直接找这个）</div>
+      <div class="formula">A → B 等价于 非A 或 B（「或」与「推」互转，为综合推理奠基）</div>
+      <div class="ex">
+        <div class="ex-t">例 · 假言矛盾（知假求真）</div>
+        <div class="q">「如果明天下雨，那么运动会取消」为假。据此可以推出：</div>
+        <div class="a"><b>思路：</b>A → B 的矛盾 = <b>A 且 非B</b> → 推出「明天下雨 <b>且</b> 运动会没有取消」。注意别选「明天不下雨」——那是「否前」，从假言为假推不出。</div>
+      </div>
+
+      <h4>知真求假 / 知假求真类：直接找矛盾（汇总）</h4>
+      <table class="tight">
+        <tr><th>命题</th><th>矛盾命题</th></tr>
+        <tr><td>联言：p 且 q</td><td>非p 或 非q</td></tr>
+        <tr><td>相容选言：p 或 q</td><td>非p 且 非q</td></tr>
+        <tr><td>不相容选言：要么p，要么q</td><td>要么p且q，要么非p且非q</td></tr>
+        <tr><td>假言：p → q</td><td><b>p 且 非q</b></td></tr>
+      </table>
+      <div class="jingle"><div class="jt">✏️ 口诀</div>「<b>逆否等价是王道，否后必否前</b>牢牢记」；「<b>真假判断看矛盾，A且非B一招毙</b>」；「<b>或且转化德摩根</b>，去括号时分负号」。德摩根：非(A且B) = 非A或非B；非(A或B) = 非A且非B。</div>
+    </div>
+
+    <!-- 综合推理 -->
+    <div class="card" id="zonghe">
+      <h3><span class="dot" style="background:#1f6f8b;"></span>1.5 综合推理（第 3 次课 · 母题三、四、五）</h3>
+      <p><b>识别：</b>题干涉及假言（→），问法「知真求真」，选项多为事实判断。<b>核心思想：母题三到母题五的思路是递进的——先用确定性，再数量限定，最后假设法、二难推理。</b></p>
+
+      <h4>母题三：有确定信息 → 从确定信息破题</h4>
+      <div class="steps">
+        <div class="step"><div class="no">1</div><div class="bd">找到题干中<b>确定的事实信息</b>（直接给的事实/算出的事实），把它作为推理起点。</div></div>
+        <div class="step"><div class="no">2</div><div class="bd">沿着与该信息<b>相关</b>的条件依次推理（找相关：跟它出现在同一条假言里的内容）。</div></div>
+        <div class="step"><div class="no">3</div><div class="bd">注意题目是<b>推结论（13-15 题式）</b>还是<b>推前提（16 题式）</b>，别推反方向。</div></div>
+      </div>
+
+      <h4>母题四：有数量限定 → 通过数量限定破题</h4>
+      <div class="steps">
+        <div class="step"><div class="no">1</div><div class="bd">题干出现数量限定（如「最多X个」「至少Y个」）→ <b>先把数量算出来</b>，可直接得到部分选项。</div></div>
+        <div class="step"><div class="no">2</div><div class="bd">把算出的数量当作<b>确定信息</b>，代入假言命题作「<b>肯前</b>」或「<b>否后</b>」触发推理。</div></div>
+      </div>
+
+      <h4>母题五：确定信息、数量限定都用不上 → 假设法 + 二难推理</h4>
+      <div class="steps">
+        <div class="step"><div class="no">1</div><div class="bd"><b>假设起点：</b>优先假设「前真（后假）」，即假设 A→B 中的 A 为真（或 B 为假）。</div></div>
+        <div class="step"><div class="no">2</div><div class="bd">推演找冲突：①看单条假言内部是否有冲突；②把多条假言「串串」找冲突。</div></div>
+        <div class="step"><div class="no">3</div><div class="bd"><b>冲突点常考：</b>(1) 与题干已有信息冲突（尤其数量限定）；(2) 推出相冲突的信息。</div></div>
+      </div>
+      <div class="formula">二难推理：A → B；非A → B 　⇒　 B 恒真</div>
+      <div class="ex">
+        <div class="ex-t">例 · 二难推理</div>
+        <div class="q">某教授说：「如果你们按时完成作业，我就给你们加平时分；如果你们没有按时完成作业，我也给你们加平时分。」由此可以推出：</div>
+        <div class="a"><b>思路（程意式）：</b>翻译：按时 → 加分；非按时 → 加分。无论「按时」还是「非按时」总有一个成立，而两者都能推出「加分」→ <b>教授一定会给你们加平时分</b>（B 恒真）。这就是「非黑即白，殊途同归」的二难推理。</div>
+      </div>
+      <div class="ex">
+        <div class="ex-t">例 · 综合推理（2024 广东）</div>
+        <div class="q">如果某地不禁止在鱼类繁衍季节捕鱼，当地的鱼类资源就会枯竭。如果鱼类资源枯竭了，当地渔民的渔业生涯就会终结。只有鱼类资源良性循环，渔民的收入才能得到保障。由此可以推出：</div>
+        <div class="a"><b>思路：</b>翻译：① 非禁止 → 枯竭；② 枯竭 → 生涯终结；③ 收入保障 → 良性循环。选项 C「渔业生涯没有终结 → 当地一定禁止在鱼类繁衍季节捕鱼」= ②逆否（非生涯终结 → 非枯竭）+ ①逆否（非枯竭 → 禁止），正确。其余选项都是「肯后/否前」的错误形式。</div>
+      </div>
+      <div class="warn"><div class="wt">⚠️ 易错点</div>
+        <ul>
+          <li><b>肯后推不出</b>：如「收入得到保障 → 资源良性循环」是③的肯后，推不出。</li>
+          <li><b>否前推不出</b>：「禁止捕鱼 → 收入有保障」是①的否前，推不出。</li>
+          <li>综合推理先整体翻译，再按「确定信息 → 数量限定 → 假设法/二难」顺序找破题口。</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 三段论 -->
+    <div class="card" id="sanduan">
+      <h3><span class="dot" style="background:#1f6f8b;"></span>1.6 三段论（第 4 次课）</h3>
+      <p><b>定义：</b>由包含着一个共同项的两个性质判断为前提，推出一个新的性质判断为结论的推理形式。</p>
+      <div class="formula">所有A是B，所有B是C 　⇒　 所有A是C</div>
+      <ul>
+        <li><b>结构：</b>大项 P（结论中的谓项）、中项 M（前提中出现、结论中不出现，起桥梁作用）、小项 S（结论中的主项）。</li>
+        <li><b>秒杀核心：</b>找中项 B——B 是连接 A 和 C 的桥梁，<b>在前提中出现两次</b>，与「所有」相连。</li>
+      </ul>
+      <h4>三段论规则（违反即错）</h4>
+      <table class="tight">
+        <tr><th>规则</th><th>内容</th></tr>
+        <tr><td>① 三个概念</td><td>一个三段论中只能有三个不同的项（防偷换概念）</td></tr>
+        <tr><td>② 中项周延</td><td>中项在前提中至少周延一次</td></tr>
+        <tr><td>③ 不周延不扩大</td><td>前提中不周延的项，在结论中也不得周延</td></tr>
+        <tr><td>④ 否定前提</td><td>两个否定前提不能得出结论</td></tr>
+        <tr><td>⑤ 否定与结论</td><td>前提中有一个否定，结论必否定；前提都肯定，结论必肯定</td></tr>
+      </table>
+      <div class="jingle"><div class="jt">✏️ 口诀</div>「<b>所有」和「否定」是周延的；「有的」和「肯定」是不周延的</b>。画图法：用集合关系（圆圈）验证，快速排除。</div>
+      <div class="ex">
+        <div class="ex-t">例 · 三段论补前提（找中项）</div>
+        <div class="q">有些导演留大胡子，因此，有些留大胡子的人是大嗓门。要使上述推理成立，必须补充以下哪项作为前提？</div>
+        <div class="a"><b>思路（程意秒杀）：</b>中项是「导演」（前提出现、结论不出现）。结论「有些留大胡子的人是大嗓门」= 有些B是C；已知前提「有些导演留大胡子」= 有些A是B → 缺的是「<b>所有A是C</b>」即「<b>所有导演都是大嗓门</b>」。口诀验证：中项「导演」要在前提中周延一次，只能由「所有」提供。</div>
+      </div>
+    </div>
+
+    <!-- 朴素逻辑 -->
+    <div class="card" id="pusu">
+      <h3><span class="dot" style="background:#1f6f8b;"></span>1.7 朴素逻辑（第 5 次课 · 解题思路及秒杀技巧）</h3>
+      <p><b>总思路：</b>先判断有序型（排序/位置）还是无序型（分组/对应），突破口永远两个词：<b>确定性、关联性</b>。</p>
+
+      <h4>（一）题型与突破口</h4>
+      <table class="tight">
+        <tr><th>类型</th><th>突破口</th><th>说明</th></tr>
+        <tr><td>有序型（排序）</td><td>占位多的条件（注意平铺与交叉）</td><td>被提及最多的元素先放</td></tr>
+        <tr><td>有序型（排序）</td><td>捆绑元素</td><td>「A紧挨B」整体处理</td></tr>
+        <tr><td>有序型（排序）</td><td>相对先后顺序</td><td>「A在B前」画箭头、标区间</td></tr>
+        <tr><td>无序型（分组）</td><td>二选一原则</td><td>条件只给两种可能时，分情况讨论</td></tr>
+        <tr><td>无序型（分组）</td><td>占位不定位</td><td>只确定在某组，不急着定具体位置</td></tr>
+        <tr><td>通用</td><td>确定性 + 关联性</td><td>先找最确定的，再找关联最多的</td></tr>
+      </table>
+
+      <h4>（二）秒杀技巧（程意课堂重点）</h4>
+      <div class="jingle"><div class="jt">⚡ 技巧 1 · 数独题型</div>解题思路：① <b>排除</b>；② 从<b>行、列、交集最多的格子</b>入手。</div>
+      <div class="jingle"><div class="jt">⚡ 技巧 2 · 3+2 分组</div>从 2 个角度把人分成 3+2：<b>相同归大，去排除</b>。</div>
+      <div class="jingle"><div class="jt">⚡ 技巧 3 · 4人中 4+3+2</div>① 找 3 人条件中<b>被孤立的那个人</b>；② 找他在 2 人条件中的<b>伙伴</b>。</div>
+      <div class="jingle"><div class="jt">⚡ 技巧 4 · 问最多、最少</div><b>最多：</b>两个分类做加和。<b>最少：</b>两个分类选数大的。<b>注意：去除包含的数量。</b></div>
+      <div class="jingle"><div class="jt">⚡ 技巧 5 · 不等式推理</div>A&gt;B；C&gt;D。AB 是矛盾的，CD 是矛盾的。<b>只可得 AC &gt; BD</b>（取各自较大/较小组合比较）。</div>
+
+      <div class="ex">
+        <div class="ex-t">例 · 最多最少</div>
+        <div class="q">某单位有 30 名党员，其中 18 人参加了党课培训，15 人参加了业务竞赛。问：两项都参加的最多有多少人？最少有多少人？</div>
+        <div class="a"><b>思路（程意口诀）：</b>最多 = 两个分类取小者 = 15 人（≤15 那个）。最少 = 两个分类加和减总数 = 18 + 15 − 30 = 3 人。（「选数大的」指两类人数中较小的重叠上限；本质用容斥原理：两项都参加 ≤ min(18,15)=15；最少 = 18+15−30=3。）</div>
+      </div>
+      <div class="ex">
+        <div class="ex-t">例 · 确定性 + 关联性（职业对应）</div>
+        <div class="q">甲、乙、丙三人中，一人是律师，一人是教师，一人是医生。已知：① 甲比医生的年龄大；② 教师比乙的年龄小；③ 丙和教师不同岁。问：三人各是什么职业？</div>
+        <div class="a"><b>思路（程意式）：</b>突破口 = 确定性 + 关联性。②「教师比乙小」→ 乙不是教师；③「丙和教师不同岁」→ 丙不是教师 → 剩下的<b>甲一定是教师</b>。再由②：教师（甲）比乙小，即甲比乙小；① 甲比医生大 → 甲比医生大又比乙小 → 乙不是医生 → <b>乙是律师，丙是医生</b>。推理链条：先确定唯一位置（教师），再顺藤摸瓜。</div>
+      </div>
+    </div>
+
+    <!-- 一拖N -->
+    <div class="card" id="yituo">
+      <h3><span class="dot" style="background:#1f6f8b;"></span>1.8 一拖N（第 6 次课）</h3>
+      <p><b>介绍：</b>一般由一个题干 + 多个小题组成，题干整体类似朴素逻辑。<b>用时目标：</b>一拖二 2-3 分钟（保 3 争 4）；一拖五 5 分钟（7-8 分钟内，保 4 争 5）。</p>
+
+      <h4>第一步 · 分析题干信息（一拖五约 1-2 分钟）</h4>
+      <div class="steps">
+        <div class="step"><div class="no">1</div><div class="bd"><b>分析背景：</b>明确题干属于<b>有序型</b>还是<b>无序型（分组型）</b>，有几类元素、每类几种。</div></div>
+        <div class="step"><div class="no">2</div><div class="bd"><b>题干信息整合：</b>突破口 = 确定性、关联性。排序中注意：占位多的条件、捆绑元素、相对先后顺序、间隔占位信息、数量限制。</div></div>
+        <div class="step"><div class="no">3</div><div class="bd"><b>符号表达：</b>形成自己的符号系统（见下），把文字翻译成符号。</div></div>
+      </div>
+      <table class="tight">
+        <tr><th>符号</th><th>含义</th></tr>
+        <tr><td><b>AB</b></td><td>A 在 B 左，且紧挨着</td></tr>
+        <tr><td><b>A B</b></td><td>A 在 B 左边，不确定是否紧挨</td></tr>
+        <tr><td><b>A□B</b></td><td>A 在 B 左，且 AB 之间有一个东西</td></tr>
+        <tr><td><b>⇄</b></td><td>位置可互换（箭头）</td></tr>
+      </table>
+
+      <h4>第二步 · 解题与代入判断</h4>
+      <ul>
+        <li>通过整合题干得到的信息，<b>可用于所有题目</b>（一拖N的第一价值）。</li>
+        <li><b>有补充条件：</b>从补充条件入手，结合已知条件推理，推完排除选项，不行再代入。</li>
+        <li><b>通过问法判断是否适合代入：</b>
+          <table class="tight">
+            <tr><th>问法</th><th>处理</th></tr>
+            <tr><td>可能为真</td><td><b>可以代入</b>：代入选项，若能满足题目所有已知信息，可选</td></tr>
+            <tr><td>不可能真</td><td><b>可以代入</b>：代入选项，若与题干已知确定信息冲突，可选</td></tr>
+            <tr><td>一定为真 / 可以推出</td><td><b>建议正推，不适合代入</b>；如必须代入，注意是「一定真」还是「可能真」</td></tr>
+          </table>
+        </li>
+      </ul>
+
+      <h4>秒解技巧 &amp; 蒙猜技巧</h4>
+      <div class="grid2">
+        <div class="card" style="box-shadow:none;margin:0;">
+          <h4 style="margin-top:0;">⚡ 秒解</h4>
+          <ul>
+            <li><b>关注选项信息异同</b>：选项全面的（直接列出完整安排），直接排除/验证。</li>
+            <li>最后 2 个题可能直接<b>运用之前题目的结论</b>。</li>
+            <li>代入时优先代入<b>能结合已知信息推理</b>的选项。</li>
+            <li>排序题：前有 N 个人，则不能在前 N；后有 N 个人，则不能在后 N。</li>
+          </ul>
+        </div>
+        <div class="card" style="box-shadow:none;margin:0;">
+          <h4 style="margin-top:0;">🎲 蒙猜（时间不够用）</h4>
+          <ul>
+            <li>问「<b>可能</b>」→ 优先选含有「题干限制信息中<b>未提及的元素</b>」的选项。</li>
+            <li>问「<b>不可能</b>」→ 排除出现「同质元素」的选项。</li>
+            <li>问 A 和 B <b>最多</b>隔几排 → 优先验证选项中的<b>最大数字</b>。</li>
+            <li>问 A 和 B <b>最少</b>隔几排 → 优先验证选项中的<b>最小数字</b>。</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="ex">
+        <div class="ex-t">例 · 排序型（2025 天津事业单位改编）</div>
+        <div class="q">某边防哨卡每日必须有士兵站岗，每天从 A、B、C、D、E、F、G 七位士兵中选择一位站岗，每位士兵每周只站岗一次。已知：① B 必须在周二，E 必须在周四；② A 在 D 前面站岗，且中间恰好隔一位；③ F 和 G 在相邻两天站岗。问：C 排在周一，则以下哪项一定为真？</div>
+        <div class="a"><b>思路（程意式）：</b>有补充条件（C 周一）→ 从补充条件入手。画 1-7 位置：周一C，周二B，周四E；A□D 占位 + F、G 相邻 → 逐步排除，推出结论。</div>
+      </div>
+      <div class="ex">
+        <div class="ex-t">例 · 代入判断（可能为真）</div>
+        <div class="q">某次会议有 5 位代表，分别来自浙江、江苏、山东、广东、四川。已知：① 浙江代表不在第 1 位；② 江苏和山东代表相邻；③ 广东代表在四川代表之前且中间恰好隔一位。问：以下哪项<b>可能</b>是五位代表的正确顺序？<br>A. 浙江 江苏 山东 广东 四川　B. 山东 江苏 广东 四川 浙江　C. 四川 广东 江苏 山东 浙江</div>
+        <div class="a"><b>思路（程意式）：</b>问「可能为真」→ 直接代入验证。A：浙在第 1 位，违反① ✗；B：苏鲁相邻 ✓、粤川中间隔一位 ✓、浙不在第 1 ✓ → <b>选 B</b>；C：粤在川前但紧挨（没隔一位），违反③ ✗。注意「可能为真」只找一个能满足所有条件的即可，不必是唯一排列。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模块二 可能性推理 ============ -->
+  <section id="mod2">
+    <div class="sec-head">
+      <div class="sec-num" style="background:#b7791f;">二</div>
+      <h2>模块二 · 可能性推理（加强削弱）</h2>
+      <span class="en">POSSIBLE REASONING</span>
+    </div>
+    <div class="sec-desc">特点：不考公式记忆，考「读题 → 理结构 → 预设答案 → 比选项」。基础能力（第7课）→ 因果类（第8课）→ 论证模型秒杀（第9课）→ 前提/解释/结论/评价（第10课）。</div>
+
+    <!-- 加强削弱基础 -->
+    <div class="card" id="jx-base">
+      <h3><span class="dot" style="background:#b7791f;"></span>2.1 加强削弱 · 基础能力（第 7 次课）</h3>
+
+      <h4>标准化流程：读问题 → 理结构 → 预设思路</h4>
+      <div class="steps">
+        <div class="step"><div class="no">1</div><div class="bd"><b>读问题，辨题型：</b>是加强还是削弱？是「最能加强/削弱」还是「不能加强/削弱」？看清再动笔。</div></div>
+        <div class="step"><div class="no">2</div><div class="bd"><b>理清题干结构：</b>找出<b>结论（标注 ☆）</b>和<b>论据</b>。问自己：论据是什么？结论是什么？中间缺了什么？</div></div>
+        <div class="step"><div class="no">3</div><div class="bd"><b>预设思路：</b>先想「正确选项大概长什么样」——加强/削弱的力度从强到弱排好，再去选项里找对应表达。</div></div>
+      </div>
+
+      <h4>常见迷惑选项（看见先警惕，往往不选）</h4>
+      <div class="grid2">
+        <div class="card" style="box-shadow:none;margin:0;">
+          <h4 style="margin-top:0;">🚫 与题干论证无关型</h4>
+          <ul>
+            <li><b>对象不一致</b>：偷换讨论对象/范围</li>
+            <li><b>概念不一致</b>：偷换核心概念</li>
+            <li><b>时间不一致</b>：时间点/段对不上</li>
+            <li>选项与<b>不相关事物</b>做比较</li>
+            <li>题干有趋势，选项<b>无趋势</b></li>
+            <li><b>诉诸无知</b>（注意：不是完全无关，但力度弱）：「尚不清楚」「无法证明」</li>
+            <li><b>表述不明确</b>：说得很模糊，无法判断影响方向</li>
+          </ul>
+        </div>
+        <div class="card" style="box-shadow:none;margin:0;">
+          <h4 style="margin-top:0;">🚫 因果类设错（题干讨论因果关系时）</h4>
+          <ul>
+            <li>选项<b>只有因 或 只有果</b>（不完整，不构成削弱）</li>
+            <li><b>因果关系错位</b>：把因说成果、果说成因方向不对</li>
+            <li><b>因导致其他果</b>：承认因存在但指向别的结果</li>
+            <li><b>果的果</b>：在结果上再叠结果</li>
+            <li><b>因的因</b>：在原因前再找原因（≠另有他因，小心区分）</li>
+          </ul>
+        </div>
+      </div>
+
+      <h4>力度比较（选答案时的优先序，要记住）</h4>
+      <div class="jingle"><div class="jt">✏️ 力度排序</div><b>本质 &gt; 现象；全面 &gt; 片面；确定 &gt; 可能；量大 &gt; 量小</b>（无需背，理解即可）。</div>
+      <div class="jingle"><div class="jt">✏️ 常见加强方法</div>解释因果、有因有果、无因无果（加强三件套）。</div>
+      <div class="ex">
+        <div class="ex-t">例 · 力度比较与迷惑选项</div>
+        <div class="q">某调查发现，坚持长期喝茶的老人更长寿。研究者据此认为：喝茶能延年益寿。以下哪项最能削弱上述结论？<br>A. 有些从不喝茶的老人也很长寿　B. 目前尚无法证明喝茶与长寿之间存在因果关系　C. 喜欢喝茶的老人大多注重饮食健康、经济条件也较好　D. 茶中含有茶多酚等有益物质</div>
+        <div class="a"><b>思路（程意式）：</b>结论「喝茶 → 长寿」，削弱依次比较：A 是反例（有因无果的反面），但样本个别、力度弱；B 是<b>诉诸无知</b>（「尚无法证明」），力度弱；C 提出「注重饮食健康」这一<b>另有他因</b>，从本质上解释长寿另有原因，<b>力度最强，选 C</b>；D 在加强。口诀：<b>本质 &gt; 现象，确定 &gt; 可能</b>。</div>
+      </div>
+    </div>
+
+    <!-- 因果类 -->
+    <div class="card" id="jx-yg">
+      <h3><span class="dot" style="background:#b7791f;"></span>2.2 因果类题型（第 8 次课）</h3>
+      <p>因果论证两大类题干形式，对应两套处理思路：</p>
+
+      <h4>形式一：题干给事实 A、B，推测 A、B 之间有因果关系</h4>
+      <div class="steps">
+        <div class="step"><div class="no">1</div><div class="bd"><b>普适性思路：</b>把题干<b>调整为一个实验</b>，看哪个选项能成为实验的「变量」。</div></div>
+        <div class="step"><div class="no">2</div><div class="bd"><b>简便方法：</b>① 正确选项的「因」常体现为<b>与题干已给的因同主体</b>；② 当题干论据以「同时发生」形式出现时，选项补充的「因」还要与论据中的 2 件事<b>同时间</b>。</div></div>
+      </div>
+
+      <h4>形式二：题干给事实 A，推测原因是 B</h4>
+      <div class="steps">
+        <div class="step"><div class="no">1</div><div class="bd">关注题干的<b>「果」是什么</b>。</div></div>
+        <div class="step"><div class="no">2</div><div class="bd">直接<b>给果找他因</b>即可（另有他因）。</div></div>
+      </div>
+      <ul>
+        <li><b>另有他因通用标准：</b>选项补充的「因」，要与题干的「果」<b>有一定的关系</b>。</li>
+        <li>另有他因的要求：引入的因<b>可能影响结果</b>（例：小郑跑步+游泳→瘦，A「小郑还常游泳，游泳能瘦」✓；B「小郑还常游泳」（没说能瘦）✗；C「小郑每天背5个单词」✗）。</li>
+      </ul>
+
+      <h4>常见削弱方法（因果类，按力度排列）</h4>
+      <table class="tight">
+        <tr><th>方法</th><th>含义</th><th>说明</th></tr>
+        <tr><td><b>因果倒置</b></td><td>颠倒因果关系/颠倒时序</td><td>力度强，出现直接选</td></tr>
+        <tr><td><b>另有共因</b></td><td>题干：A导致B；选项：C导致A和B</td><td>力度强，出现直接选</td></tr>
+        <tr><td><b>有因无果 / 无因有果</b></td><td>有因却无果；无因却有果</td><td>注意：无果 = 果的反面，无因 = 因的反面</td></tr>
+        <tr><td><b>否定此因</b></td><td>原因不成立 / 原因不起作用</td><td>力度强，出现直接选；<b>若论据已明确「因」是事实，别选「原因不成立」</b></td></tr>
+        <tr><td><b>另有他因</b></td><td>引入新原因，证明可能不是题干原因导致结果</td><td>最常考；引入的因要可能与结果相关</td></tr>
+      </table>
+      <div class="warn"><div class="wt">⚠️ 另有他因的两类题干</div>
+        <ul>
+          <li>给事实 A、B，推测 A、B 之间有因果（易出难题）：小郑跑步→瘦，小华不跑步→不瘦，推测跑步使人瘦。削弱 A：小郑还常游泳（同主体补他因）；B：游泳也能使人瘦（不同主体也能削弱，力度弱于同主体）。</li>
+          <li>给事实 A，推测原因是 B：小郑瘦了，推测因为跑步。削弱：他最近节食/生病等。</li>
+        </ul>
+      </div>
+      <div class="ex">
+        <div class="ex-t">例 · 因果倒置（力度最强，出现直接选）</div>
+        <div class="q">某调查发现，经常使用社交媒体的青少年更容易焦虑。研究者据此认为：使用社交媒体导致了青少年焦虑。以下哪项最能削弱上述结论？<br>A. 感到焦虑的青少年更倾向于通过刷社交媒体来缓解情绪　B. 使用社交媒体时间较少的青少年中也有焦虑者　C. 社交媒体上也有大量积极向上的内容　D. 该调查的样本主要集中在城市</div>
+        <div class="a"><b>思路（程意式）：</b>题干：社交媒体 → 焦虑。A 说其实是「焦虑 → 沉迷社交媒体」，把因和果<b>颠倒</b>了，是因果倒置，<b>力度最强，直接选</b>；B 是反例但样本个别；C 无关；D 质疑样本，力度弱。口诀：<b>因果倒置、另有共因，出现直接选</b>。</div>
+      </div>
+    </div>
+
+    <!-- 论证模型 -->
+    <div class="card" id="jx-model">
+      <h3><span class="dot" style="background:#b7791f;"></span>2.3 八大论证模型秒杀技巧（第 9 次课）</h3>
+      <p><b>核心思想：判断出模型 → 答案就已经预判出来了。</b>题干长相固定，答案形式固定。读完题干先判断模型，再按模型预判答案，最后到选项中找对应表达。</p>
+
+      <div class="grid2">
+        <div class="card" style="box-shadow:none;margin:0;">
+          <h4 style="margin-top:0;">模型 1 · 求异论证</h4>
+          <p class="lead">根据两组实验对象的差异，得出 A 是 B 的原因。</p>
+          <ul>
+            <li><b>加强：</b>两组实验对象的<b>相关相同点</b>；解释因果</li>
+            <li><b>削弱：</b>两组实验对象的<b>相关不同点</b></li>
+          </ul>
+        </div>
+        <div class="card" style="box-shadow:none;margin:0;">
+          <h4 style="margin-top:0;">模型 2 · 双观点</h4>
+          <p class="lead">原观点：A 是 B 的原因；反对者：C 是 B 的原因。</p>
+          <ul>
+            <li><b>削弱反对者：</b><b>A 是 C 的原因</b></li>
+            <li>削弱原观点：C 是 B 的原因（即支持反对者）</li>
+          </ul>
+        </div>
+        <div class="card" style="box-shadow:none;margin:0;">
+          <h4 style="margin-top:0;">模型 3 · 实践论证</h4>
+          <p class="lead">采取方案 A，达到目的 B。</p>
+          <ul>
+            <li><b>加强：</b>方案 A 可实现；采取方案 A 能达到目的 B</li>
+            <li><b>削弱：</b>方案 A 不可实现；采取方案 A 也达不到目的 B</li>
+          </ul>
+        </div>
+        <div class="card" style="box-shadow:none;margin:0;">
+          <h4 style="margin-top:0;">模型 4 · 类比论证</h4>
+          <p class="lead">由两个对象相似，推出某结论。</p>
+          <ul>
+            <li><b>加强：</b>找<b>根本相同</b>属性</li>
+            <li><b>削弱：</b>找<b>根本不同</b>属性</li>
+          </ul>
+        </div>
+        <div class="card" style="box-shadow:none;margin:0;">
+          <h4 style="margin-top:0;">模型 5 · 枚举归纳</h4>
+          <p class="lead">由部分样本推出整体结论。</p>
+          <ul>
+            <li><b>加强：</b>样本<b>具有代表性</b></li>
+            <li><b>削弱：</b>样本<b>不具有代表性</b></li>
+          </ul>
+        </div>
+        <div class="card" style="box-shadow:none;margin:0;">
+          <h4 style="margin-top:0;">模型 6 · 缺桥论证（搭桥/拆桥）</h4>
+          <p class="lead">论据说 B，结论说 C，中间缺桥。</p>
+          <ul>
+            <li><b>加强：</b>建立 B 和 C 之间的联系（<b>搭桥</b>）</li>
+            <li><b>削弱：</b>切断 B 和 C 之间的联系（<b>拆桥</b>）</li>
+          </ul>
+        </div>
+        <div class="card" style="box-shadow:none;margin:0;">
+          <h4 style="margin-top:0;">模型 7 · 数据论证</h4>
+          <p class="lead">论据往往包含数字（分子部分）。</p>
+          <ul>
+            <li>通过找到数字的<b>分母部分</b>（基数/总量），从而加强或削弱</li>
+          </ul>
+        </div>
+        <div class="card" style="box-shadow:none;margin:0;">
+          <h4 style="margin-top:0;">模型 8 · 结论有比较</h4>
+          <p class="lead">结论涉及比较关系（谁比谁强/多/快）。</p>
+          <ul>
+            <li><b>优先选有比较的选项</b>（选项也在做同类比较才扣题）</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="ex">
+        <div class="ex-t">例 · 求异论证（经典题）</div>
+        <div class="q">某研究将两组小鼠置于相同环境，实验组喂高脂饲料、对照组喂普通饲料，结果实验组更易肥胖。结论：高脂饲料导致肥胖。以下哪项最能削弱？</div>
+        <div class="a"><b>思路：</b>求异论证 → 削弱找「两组实验对象的相关不同点」，如「实验组小鼠本身携带肥胖基因」。</div>
+      </div>
+      <div class="ex">
+        <div class="ex-t">例 · 双观点</div>
+        <div class="q">原观点：全球变暖是二氧化碳排放导致。反对者：是太阳活动导致。以下哪项最能削弱反对者？</div>
+        <div class="a"><b>思路：</b>双观点削弱反对者 = 「A 是 C 的原因」= 「二氧化碳排放是太阳活动的原因」。</div>
+      </div>
+      <div class="ex">
+        <div class="ex-t">例 · 实践论证（方案与目的）</div>
+        <div class="q">某市为缓解市中心交通拥堵，计划向进入市中心的车辆征收拥堵费。以下哪项最能削弱该方案？<br>A. 征收拥堵费后，部分车主会改乘公共交通　B. 市中心公共交通运力严重不足，且该方案实施成本高昂　C. 其他城市征收拥堵费后，市民满意度有所下降　D. 拥堵费收入将用于改善公共交通</div>
+        <div class="a"><b>思路：</b>实践论证 = 「方案 A → 目的 B」。削弱 = 方案不可实现 / 达不到目的。B 同时指出<b>方案不可行</b>（成本高）<b>且达不到目的</b>（运力不足，收钱也缓解不了），力度最强，选 B；A、D 在加强；C 是无关比较（满意度≠拥堵），且「其他城市」类比力度弱。</div>
+      </div>
+      <div class="ex">
+        <div class="ex-t">例 · 枚举归纳（样本代表性）</div>
+        <div class="q">为了解全市市民对垃圾分类的看法，调查员只在某高档小区门口随机采访了 100 位居民，绝大多数表示支持。于是得出结论：全市市民普遍支持垃圾分类。以下哪项最能削弱该结论？<br>A. 高档小区居民的环保意识和收入水平较高　B. 支持者中年轻人居多　C. 采访时间都选在周末上午　D. 100 人的样本量偏小</div>
+        <div class="a"><b>思路：</b>枚举归纳（样本 → 整体）。削弱 = 样本<b>不具有代表性</b>。A 指出样本集中在高档小区、不能代表全市，<b>直接削弱，选 A</b>；D 虽提及样本量小，但没有说明样本偏差，力度弱于 A。</div>
+      </div>
+      <div class="ex">
+        <div class="ex-t">例 · 数据论证（找分母）</div>
+        <div class="q">某市去年共发生交通事故 5000 起，其中夜间发生的占 40%。据此有人认为：夜间行车比白天更危险。以下哪项最能削弱该结论？<br>A. 该市夜间通行的车辆约占全天总车流量的 40%　B. 夜间发生的多为轻微刮蹭事故　C. 白天事故数量为 3000 起　D. 夜间司机大多更加谨慎</div>
+        <div class="a"><b>思路：</b>数据论证 → 找到数字背后的<b>分母</b>。分子：夜间事故占 40%；A 给出分母：夜间车流量也占 40% → 事故率（事故数/车流量）与白天持平，<b>并无更危险，选 A</b>。这就是程意说的「数据题找分母，分子孤零零没有说服力」。</div>
+      </div>
+    </div>
+
+    <!-- 前提解释结论评价 -->
+    <div class="card" id="jx-other">
+      <h3><span class="dot" style="background:#b7791f;"></span>2.4 前提 / 解释 / 结论 / 评价型（第 10 次课）</h3>
+
+      <h4>① 前提型（假设/前提）</h4>
+      <ul>
+        <li><b>识别：</b>问「上述论证基于以下哪项前提/假设」「需要补充哪项」。</li>
+        <li><b>思路：</b>找论据与结论之间的<b>跳跃概念</b>，答案 = 把两者连起来（<b>搭桥</b>）。</li>
+        <li><b>验证法：</b>把选项否定后代入，若题干论证坍塌，则该选项是必要前提。</li>
+        <li><b>注意：</b>前提必须保证题干论证成立；搭桥是前提型最常考答案。</li>
+      </ul>
+
+      <h4>② 解释型</h4>
+      <ul>
+        <li><b>识别：</b>题干给出一个看似矛盾的现象，问「以下哪项最能解释」。</li>
+        <li><b>思路：</b>找一个条件/原因，让两个矛盾现象<b>同时成立、不再矛盾</b>（补充条件式解释）。</li>
+        <li><b>原则：</b>解释要能同时兼顾矛盾双方，不能只解释一半；优先选客观原因。</li>
+      </ul>
+
+      <h4>③ 结论型（日常结论）</h4>
+      <ul>
+        <li><b>识别：</b>问「由此可以推出」「可以得出以下哪项」。</li>
+        <li><b>思路：</b>严格依据题干，<b>能推出什么选什么</b>，不推理过度。</li>
+        <li><b>慎选：</b>绝对化表述（一定/必然/所有）、无中生有、偷换概念、与题干相反的选项。</li>
+        <li><b>优选：</b>语气较弱的「可能」「有些」「未必」等从题干能推出的表述。</li>
+      </ul>
+
+      <h4>④ 评价型</h4>
+      <ul>
+        <li><b>识别：</b>问「以下哪项与题干论证方式/逻辑错误最为相似」。</li>
+        <li><b>思路：</b>只看<b>论证形式</b>，不看内容。把题干翻译成符号（如 A→B），找选项里形式一致或错误类型一致的。</li>
+        <li>常见逻辑错误：偷换概念、以偏概全、诉诸权威、因果倒置、循环论证等。</li>
+      </ul>
+      <div class="ex">
+        <div class="ex-t">例 · 前提型（搭桥）</div>
+        <div class="q">某市号召市民多乘坐地铁，理由是：地铁能减少碳排放。要使该论证成立，必须基于以下哪项前提？<br>A. 市民愿意放弃私家车改乘地铁　B. 地铁运行本身产生的碳排放相对较低　C. 碳排放是导致气候变暖的主要原因　D. 私家车的碳排放高于公交车</div>
+        <div class="a"><b>思路（程意式）：</b>论据「坐地铁」→ 结论「减排」，中间有<b>跳跃</b>：坐地铁为什么能减排？需要搭桥「<b>地铁本身的碳排放低</b>」→ 选 B。A 是方案可行性（成立还需要它，但不是最核心的跳跃点）；验证法：否定 B（地铁碳排放很高），论证立刻坍塌，说明 B 是必要前提。</div>
+      </div>
+      <div class="ex">
+        <div class="ex-t">例 · 解释型（兼顾矛盾双方）</div>
+        <div class="q">某品牌牛奶今年的销量大幅增长，但该品牌的广告投放量却明显减少了。以下哪项最能解释这一看似矛盾的现象？<br>A. 该品牌口碑好，老顾客自发向亲友推荐　B. 广告减少后，该品牌节省了大量成本　C. 其他乳业品牌今年的销量普遍下滑　D. 该品牌今年更换了广告公司</div>
+        <div class="a"><b>思路：</b>要解释「广告少了但销量涨了」两个事实<b>同时成立</b>。A 用「口碑推荐」说明不靠广告也能拉动销量，<b>同时兼顾双方，选 A</b>；B 只解释成本、没解释销量；C 与题干无关；D 换广告公司 ≠ 投放量减少，解释不了。</div>
+      </div>
+      <div class="ex">
+        <div class="ex-t">例 · 评价型（只看形式）</div>
+        <div class="q">题干：所有爱看书的人都有耐心，小明很有耐心，因此，小明爱看书。以下哪项与题干的论证方式最为相似？</div>
+        <div class="a"><b>思路（程意式）：</b>把题干翻译成符号：A → B，B（小明有耐心），推 A。这是典型的<b>「肯后」错误形式</b>。选项里找同样「A→B，B ⇒ A」结构的——如「所有参加过培训的人都能通过考试，小李通过了考试，因此小李参加过培训」✓。评价型<b>只看形式不看内容</b>，把每个选项符号化再比对。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模块三 图形推理 ============ -->
+  <section id="mod3">
+    <div class="sec-head">
+      <div class="sec-num" style="background:#6c3483;">三</div>
+      <h2>模块三 · 图形推理（第 12-17 次课）</h2>
+      <span class="en">FIGURE REASONING</span>
+    </div>
+    <div class="sec-desc">图推不考理解，考观察。核心逻辑：<b>把规律背下来，做题时一个个套，总能套上</b>。做到「一看就定位考点」，形成条件反射。单题控制在 40-50 秒。</div>
+
+    <!-- 总思维框架 -->
+    <div class="card" id="graph-fw">
+      <h3><span class="dot" style="background:#6c3483;"></span>3.1 总思维框架（刘义恒「图推命题思维」）</h3>
+      <div class="flow">
+        <div class="node q"><b>观察图形</b><small>组成是否相同</small></div>
+        <div class="arrow">→</div>
+        <div class="node s"><b>有相同</b><small>位置 / 样式 / 标记</small></div>
+        <div class="arrow">→</div>
+        <div class="node s"><b>无相同</b><small>属性 → 数量 → 图形间关系</small></div>
+      </div>
+      <ul>
+        <li><b>元素组成相同</b> → 位置规律（平移/旋转/翻转）。</li>
+        <li><b>元素组成相似</b>（有重复元素）→ 样式规律（遍历/加减同异/黑白运算）。</li>
+        <li><b>元素组成不同</b> → 先属性（<b>对称性优先级最高</b>），后数量；属性数量都不行 → 特殊规律/图形间关系。</li>
+      </ul>
+      <div class="jingle"><div class="jt">✏️ 宏观思维（无相同）</div>① 先属性，后数量，且<b>对称性优先级最高</b>；② <b>背诵数量规律中的图形特征</b>，直接定位考点；③ 极端情况，优先考虑「图形关系」。作图特点决定大方向：规则图形→对称；有曲线→曲直；生活化→开闭/面；被分割→面；线条杂乱→点线笔画。</div>
+    </div>
+
+    <!-- 位置规律 -->
+    <div class="card" id="graph-wz">
+      <h3><span class="dot" style="background:#6c3483;"></span>3.2 位置规律（必考）</h3>
+      <p class="lead"><b>特征：</b>图形长得一模一样，只是位置在变。</p>
+      <table class="tight">
+        <tr><th>规律</th><th>要点</th></tr>
+        <tr><td><b>平移</b></td><td>方向（上下左右、斜对角线；绕圈顺/逆时针）＋ 步数（恒定/递增等差）。<br><b>宫格类看中间判方向：</b>中间黑块数量相同→可能绕圈走；中间黑块数量不同→可能走直线（循环走/走直线）。</td></tr>
+        <tr><td><b>旋转</b></td><td>方向（顺/逆时针）＋ 角度（30°、45°、60°、90°、180°）。<b>旋转不改变手性</b>（不会左右颠倒）。</td></tr>
+        <tr><td><b>翻转</b></td><td>左右翻转：左右变、上下不变；上下翻转：上下变、左右不变。<b>翻转改变手性</b>（左变右）。<br><b>判别金钥匙：盯住一个不对称细节看它左右反没反。</b></td></tr>
+      </table>
+      <div class="jingle"><div class="jt">✏️ 口诀</div>长得一样看位置，移转翻三选一。<b>顺逆时针绕圈圈，角度变化是关键；横轴对称上下翻，竖轴对称左右转。</b>翻转照镜子（手性反），旋转转圈圈（手性不变）。</div>
+      <div class="ex">
+        <div class="ex-t">例 · 平移（绕圈）</div>
+        <div class="q">3×3 宫格中有一个黑色圆点，按<b>顺时针沿外圈每次移动一格</b>：第 1 幅图黑点在外圈左上角，第 2 幅图在外圈上边中间，第 3 幅图在外圈右上角。问：第 6 幅图黑点应在什么位置？</div>
+        <div class="a"><b>思路（程意式）：</b>外圈 8 个位置顺时针编号：左上①→上中②→右上③→右中④→右下⑤→下中⑥→左下⑦→左中⑧→回到①。第 1 幅在①、第 2 幅在②、第 3 幅在③……第 6 幅在<b>⑥下边中间</b>。识别口诀：<b>宫格题先看中间黑块数量——黑块数不变 → 绕圈走</b>；变多/变少 → 可能走直线或看数量。</div>
+      </div>
+      <div class="ex">
+        <div class="ex-t">例 · 旋转（角度恒定）</div>
+        <div class="q">图 1 是一个开口向右的「∠」形，图 2 开口向下，图 3 开口向左，图 4 开口向上。问：图 5 的开口方向？</div>
+        <div class="a"><b>思路：</b>每个图形整体<b>顺时针旋转 90°</b>：右→下→左→上→右。图 5 开口应<b>向右</b>（回到图 1，形成周期）。旋转<b>不改变手性</b>——若题干图形有左右不对称细节（如「F」），旋转后仍是「正 F」，翻转才会变成「反 F」，以此区分旋转与翻转。</div>
+      </div>
+    </div>
+
+    <!-- 样式规律 -->
+    <div class="card" id="graph-ys">
+      <h3><span class="dot" style="background:#6c3483;"></span>3.3 样式规律（高频）</h3>
+      <p class="lead"><b>特征：</b>图形长得像，有重复元素。</p>
+      <table class="tight">
+        <tr><th>规律</th><th>要点</th></tr>
+        <tr><td><b>遍历</b></td><td>每种样式都出现一次，「缺什么补什么」（元素遍历/样式遍历/位置遍历）。</td></tr>
+        <tr><td><b>加减同异</b></td><td>前两幅图叠加 → 第三幅：<b>直接叠加、去同存异、去异存同</b>。<br><b>识别：</b>前两幅有明显一样的线条 → 优先运算；没有一样的线条 → 优先位置。</td></tr>
+        <tr><td><b>黑白运算</b></td><td>黑白块叠加有规律（黑+黑=白、黑+白=黑……）。<br><b>识别：</b>黑块数量相同 → 优先位置；黑块数量不同 → 优先黑白运算。</td></tr>
+      </table>
+      <div class="jingle"><div class="jt">✏️ 口诀</div>长得像看样式，遍历叠加和求异。<b>元素重复要遍历，缺啥补啥不费力；线条重复找同异，颜色数量不同时，轮廓相同看运算。</b></div>
+      <div class="ex">
+        <div class="ex-t">例 · 加减同异（去同存异）</div>
+        <div class="q">九宫格第一行：图 1 是「十」字形，图 2 是「一」字形（横线），图 3 是「丨」字形（竖线）。第二行：图 1 是「X」形，图 2 是「\」形（左上到右下的斜线），问：图 3 是什么？</div>
+        <div class="a"><b>思路（程意式）：</b>第一行「十」与「一」<b>去同存异</b>（去掉共有的横线）→ 得「丨」✓，确认运算规则。第二行「X」（两斜线）与「\」（左下到右上方向的斜线）去同存异 → 留下另一条斜线「/」<b>（右上到左下方向）</b>。识别口诀：<b>前两幅有明显一样的线条 → 优先想运算</b>。</div>
+      </div>
+      <div class="ex">
+        <div class="ex-t">例 · 黑白运算（识别：黑块数量变）</div>
+        <div class="q">两个 2×2 黑白块图形叠加，已知：黑+白=黑、白+黑=黑、黑+黑=白、白+白=白。图 1 左上黑、右下白；图 2 右上黑、左下白。问：叠加后 2×2 图形的黑白分布？</div>
+        <div class="a"><b>思路：</b>逐格运算：左上（黑+白）=黑；右上（白+黑）=黑；左下（白+黑）=黑；右下（白+白）=白 → 结果是「左上、右上、左下黑，右下白」。识别口诀：<b>黑块数量相同 → 优先位置；黑块数量不同 → 优先黑白运算</b>。</div>
+      </div>
+    </div>
+
+    <!-- 属性规律 -->
+    <div class="card" id="graph-sx">
+      <h3><span class="dot" style="background:#6c3483;"></span>3.4 属性规律（必考）</h3>
+      <p class="lead"><b>特征：</b>元素组成不相同、不相似，但一眼能看出某种属性。</p>
+      <table class="tight">
+        <tr><th>属性</th><th>考点细化</th></tr>
+        <tr><td><b>对称性</b><br>（优先级最高）</td><td>① 轴对称（等腰/等边特征：沿轴对折重合）；② 中心对称（N/Z/S形、平行四边形：旋转180°重合）；③ 轴对称+中心对称（有两条垂直对称轴）；④ 对称轴的数量和方向；⑤ 对称轴与图形线（是否重合）、点（是否相交）、面（数量）的关系；⑥ 两个图形挨着/分开时，分别看两图对称轴（垂直、数量、方向）。</td></tr>
+        <tr><td><b>曲直性</b></td><td>全直线（多边形、单一直线）；全曲线（圆、弧）；曲+直。<br><b>识别：</b>出现明显的圆、弧等全曲线图。</td></tr>
+        <tr><td><b>开闭性</b></td><td>全封闭（大门关门）、全开放（大门敞开）、半开半闭（别的不行才考虑）。<br><b>识别：</b>生活化图形（汉字、字母、数字）常考开闭。</td></tr>
+      </table>
+      <div class="jingle"><div class="jt">✏️ 口诀</div>一眼看去抓属性，对称曲直和开闭。<b>N形、Z形、S形、平行四边形，原地旋转180度就是中心对称；有两条垂直对称轴的是轴对称+中心对称。</b>单一线条看曲直，曲直共存别忘记；遇到开口看开闭，半开半闭最后想。</div>
+      <div class="ex">
+        <div class="ex-t">例 · 对称性（找不同）</div>
+        <div class="q">下列四个图形中，与众不同的一个是：<br>A. 正方形　B. 圆形　C. 等边三角形　D. 平行四边形</div>
+        <div class="a"><b>思路（程意式）：</b>对称性优先级最高，先看对称。A、B、C 都是<b>轴对称</b>（且正方形、圆形还是中心对称）；D 平行四边形<b>只有中心对称、不是轴对称</b> → 选 D。延伸：若图形出现「N、Z、S、平行四边形」→ 直接想到中心对称；有两条垂直对称轴 → 轴对称+中心对称。</div>
+      </div>
+    </div>
+
+    <!-- 数量规律 -->
+    <div class="card" id="graph-sl">
+      <h3><span class="dot" style="background:#6c3483;"></span>3.5 数量规律（常考，也最难）</h3>
+      <p class="lead"><b>特征：</b>元素组成不同，且属性无规律时，就数数。<b>数量题「没找到规律」，九成是「还没数到对的那一类」。</b>可数对象六类：点、线、角、面、素、笔画。</p>
+      <div class="jingle"><div class="jt">✏️ 口诀</div>乱七八糟数数量，<b>点线角面素挨个试</b>。数列规律：等差、等比、周期、平方、奇偶，还有最易被忽略的<b>「恒定」</b>。</div>
+
+      <h4>① 面数量【高频】</h4>
+      <ul>
+        <li><b>什么是面：</b>白色的封闭区域。<span class="pill pill-hot">黑色不是面</span></li>
+        <li><b>出题者作图特征：</b>图形被分割、封闭面明显、生活化（汉字/字母/数字）。</li>
+        <li><b>基础考法：</b>面的数量、面的运算（九宫格：一行相加/二行相加=三行等；如 2+3=5、2+3+5=10）。</li>
+        <li><b>细化考法：</b>
+          <ul>
+            <li>（1）<b>所有面</b>：分割后每一个面的形状（整体思想）——只有 2 种面时做三角形与四边形运算（相减/倍数/相加）；只数三角形（拆分思想，三角形-高频：单数、递增、运算）；「每个面的边长数相同」。</li>
+            <li>（2）<b>大小面</b>：最大面、最小面——难点在<b>与形状、属性、面积的结合</b>（形状：三角形/四边形；与外框关系：自己/邻居；属性：最大/小面对称性、曲直性；面积：占原图一半）。</li>
+          </ul>
+        </li>
+      </ul>
+
+      <h4>② 线数量</h4>
+      <ul>
+        <li>直线数（多边形、单一直线）、曲线数（圆、弧、单一曲线）、直曲线分别数。</li>
+        <li><b>笔画数（重点）：</b>图形笔画数 = 奇点数 ÷ 2（奇点：从某点出发的线段条数为奇数）。<b>奇点数为 0 或 2 → 一笔画；每多 2 个奇点，多一笔。</b></li>
+        <li><b>识别：</b>线条杂乱、端点日田领着头、交圆切圆傍地走 → 想笔画。</li>
+      </ul>
+
+      <h4>③ 点数量</h4>
+      <ul>
+        <li>交点（线条交叉明显）、切点（圆相切/相交多）、框上/框内交点（金钟罩外框）。</li>
+        <li><b>注意：切点属于交点，端点不属于交点。</b></li>
+        <li>图形有曲又有直 → 优先考虑曲直交点。</li>
+      </ul>
+
+      <h4>④ 角数量</h4>
+      <ul>
+        <li>折线折出多个角，留了缺口别忘角；横平竖直多垂直 → 直角数量。</li>
+        <li>考法：全部角数、直角数、锐角数、钝角数。</li>
+      </ul>
+
+      <h4>⑤ 素数量（元素）</h4>
+      <ul>
+        <li>独立小图形：元素种类数、元素个数、相同元素（个数）、部分数。</li>
+        <li>生活化/粗线条图形 → 常考部分数量。</li>
+        <li><b>注意：形状一样颜色不一样算不同元素；数面时空白区域都算，不管大小。</b></li>
+      </ul>
+
+      <h4>实战思维</h4>
+      <ul>
+        <li>背诵图形特征 → 直接定位考点；细化没规律 → 回到面。</li>
+        <li><b>相邻比较：</b>核心——相邻两幅图之间「有一样的部分」；易错——「不一样的部分」可以有规律，也可以没规律。</li>
+        <li>立体考查平面 → 面、点；生活化 → 面；九宫格 → 面运算。</li>
+      </ul>
+      <div class="jingle"><div class="jt">✏️ 数量口诀汇总</div><b>大树杈子多 → 数交点；曲直交叉明显 → 曲直点；圆与直线相切多 → 切点；横平竖直 → 分横竖数/数直角；线条乱 → 笔画（奇点法）；窟窿多 → 数面；面形状 → 三角形/四边形；明显大小面 → 看形状属性；小图形多 → 种类和数量；生活化粗线条 → 部分数。</b></div>
+      <div class="ex">
+        <div class="ex-t">例 · 笔画数（奇点法）</div>
+        <div class="q">下列图形中，<b>不能</b>一笔画成的是：<br>A. 五角星　B. 「日」字（外框+中间一横）　C. 圆形　D. 直线与圆相切（一条直线恰好与圆相切）</div>
+        <div class="a"><b>思路（程意式）：</b>笔画数 = 奇点数 ÷ 2。A 五角星：所有交点都连偶数条线，奇点 0 → 一笔 ✓；B「日」字：外框四个角各连 3 条线 → <b>4 个奇点 → 2 笔，不能一笔画</b>；C 圆：0 奇点 → 一笔 ✓；D 相切图：切点连 2 条（偶），直线两端各 1 个奇点 → 2 个奇点 → 一笔 ✓（从一端画到另一端）。答案选 B。识别：<b>线条杂乱、端点日田领着头 → 想笔画</b>。</div>
+      </div>
+      <div class="ex">
+        <div class="ex-t">例 · 面数量（白色封闭区域）</div>
+        <div class="q">汉字「日」有几个面？汉字「品」有几个面？汉字「田」有几个面？</div>
+        <div class="a"><b>思路（程意式）：</b>面 = <b>白色封闭区域，黑色不是面</b>。「日」：中间一横把口分成上下两块 → <b>2 个面</b>；「品」：三个口互不相连 → <b>3 个面</b>；「田」：横竖两线与外框交叉，形成 4 个小格 → <b>4 个面</b>。识别：<b>汉字/字母/数字、图形被分割、窟窿明显 → 数面</b>；细化再看面的形状（三角形/四边形）、大小面。</div>
+      </div>
+    </div>
+
+    <!-- 特殊规律与空间类 -->
+    <div class="card" id="graph-ts">
+      <h3><span class="dot" style="background:#6c3483;"></span>3.6 特殊规律与空间类</h3>
+
+      <h4>① 特殊规律（偶尔考）</h4>
+      <table class="tight">
+        <tr><th>考点</th><th>要点</th></tr>
+        <tr><td><b>功能元素</b></td><td>图上有黑点、小三角形、小圆、箭头等标记 → 看点与线/面的关系、标记之间的位置关系（同侧/异侧）。</td></tr>
+        <tr><td><b>图形间关系</b></td><td>只有两个图形：<b>相交</b>（相交部分相似、边数、面积大小）、<b>相接</b>（公共边、公共点）、<b>相离</b>；包含、外切内切。</td></tr>
+      </table>
+
+      <h4>② 空间重构（六面体）</h4>
+      <ul>
+        <li><b>相对面法：</b>一组相对面永远不相邻，排除含相对面相邻的选项。</li>
+        <li><b>相对位置法（公共边/公共点）：</b>通过公共边判断相邻面的位置关系。</li>
+        <li><b>画边法：</b>选定一个面，按同一方向标边，比对选项。</li>
+        <li><b>口诀：</b>复杂立体折叠，重点看选项相异部分<b>边长是否对齐</b>，不能对齐的就是错误选项。</li>
+      </ul>
+
+      <h4>③ 三视图 / 截面图 / 立体拼合</h4>
+      <ul>
+        <li><b>三视图：</b>正视图（从前往后）、侧视图（从左往右）、俯视图（从上往下）；注意遮挡关系、虚线表示不可见棱。</li>
+        <li><b>截面图：</b>判断截面形状时，先找平行/垂直切面，看切到的棱和面；正方体截面最多六边形。</li>
+        <li><b>立体拼合：</b>数小方块数量 + 分层比对（层数、每层形状），用「整体-已知=所求」。</li>
+      </ul>
+      <div class="ex">
+        <div class="ex-t">例 · 截面图（正方体）</div>
+        <div class="q">一个正方体被一个平面斜着切开，截面不可能是以下哪种形状？<br>A. 三角形　B. 四边形　C. 五边形　D. 七边形</div>
+        <div class="a"><b>思路（程意式）：</b>正方体有 6 个面，一个平面最多与 6 个面相交 → 截面<b>最多是六边形</b>，七边形不可能 → 选 D。三角形（切一个角）、四边形（平行于棱切）、五边形、六边形（斜切穿过 6 个面）都可能。考场速记：<b>正方体截面：三角到六边，多多益善看切法</b>。</div>
+      </div>
+      <div class="warn"><div class="wt">⚠️ 图推考场策略（程意建议）</div>
+        <ul>
+          <li>放在判断推理开头做：图推不费脑子，用来进入状态。</li>
+          <li><b>30 秒看不出规律，先蒙一个</b>并标记，做完回来再看，不恋战。</li>
+          <li>不要反复检查，相信第一感觉（改错的概率比改对的大）。</li>
+          <li>笔画数单独记：看到杂乱线条先想一笔画。</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模块四 类比推理 ============ -->
+  <section id="mod4">
+    <div class="sec-head">
+      <div class="sec-num" style="background:#1e8449;">四</div>
+      <h2>模块四 · 类比推理（第 18-19 次课）</h2>
+      <span class="en">ANALOGY</span>
+    </div>
+    <div class="sec-desc">题目短小易读、做得快，但考点复杂（碎）且常结合常识考查，实际难度不低。要突破：① 明确做题核心原则；② 弱化主观性想法，强化常考考点的记忆和使用；③ 边做题边积累常识。</div>
+
+    <div class="card" id="ana-pr">
+      <h3><span class="dot" style="background:#1e8449;"></span>4.1 考查形式与核心原则</h3>
+      <table class="tight">
+        <tr><th>形式</th><th>示例</th></tr>
+        <tr><td>两项式</td><td>龋齿 : 嗜食甜品　→　运动 : 增强体质</td></tr>
+        <tr><td>三项式</td><td>路由器 : 连接 : 网络　→　石英钟 : 显示 : 时间</td></tr>
+        <tr><td>括号式</td><td>桌子 之于（ ）相当于 车轮 之于（ ）</td></tr>
+      </table>
+      <h4>三大核心原则</h4>
+      <div class="steps">
+        <div class="step"><div class="no">1</div><div class="bd"><b>常态思维：</b>用普遍认可的关系理解题干，不钻牛角尖、不用冷门角度。</div></div>
+        <div class="step"><div class="no">2</div><div class="bd"><b>先横后纵：</b>先横向比较题干两个词的逻辑关系；横向无法区分时，再纵向比较选项与题干的相似性（字词结构、词性、感情色彩等）。</div></div>
+        <div class="step"><div class="no">3</div><div class="bd"><b>先整体后局部：</b>如「声东:击西」整体是成语对成语（围魏:救赵），不要拆开看字义（说东:道西）。</div></div>
+      </div>
+      <div class="ex">
+        <div class="ex-t">例 · 三项式造句法</div>
+        <div class="q">路由器 : 连接 : 网络 —— 以下哪项与题干逻辑关系最为相似？<br>A. 石英钟 : 显示 : 时间　B. 空调 : 制冷 : 房间　C. 铅笔 : 书写 : 汉字　D. 冰箱 : 保鲜 : 蔬菜</div>
+        <div class="a"><b>思路（程意式）：</b>造句：「路由器<b>用于</b>连接网络」（工具 : 功能 : 作用对象）。套选项：A「石英钟用于显示时间」句式完全一致，且「连接/显示」是核心功能、「网络/时间」是抽象对象 → 选 A。B、C、D 也说得通，需<b>纵向比较</b>：题干功能词「连接」是设备的核心功能，对象「网络」是抽象概念，B、C、D 的对象（房间/汉字/蔬菜）偏具体，A 最贴。</div>
+      </div>
+    </div>
+
+    <div class="card" id="ana-lj">
+      <h3><span class="dot" style="background:#1e8449;"></span>4.2 逻辑关系（重点）</h3>
+      <table class="tight">
+        <tr><th>关系</th><th>基础考点</th><th>二级辨析</th></tr>
+        <tr><td><b>全同关系</b></td><td>两个概念完全相同：麦克风:话筒；西红柿:番茄；纸鸢:风筝；南京:金陵；杜鹃花:映山红</td><td>称谓（古今/雅俗/中英译）/范围</td></tr>
+        <tr><td><b>全异关系</b></td><td>针对同一类事物的分类，两个概念没有交集：成年人:未成年人；香蕉:苹果</td><td><b>矛盾全异</b>（只有 2 种情况）：男:女、合法:非法、金属:非金属、曲:直、动:静；<b>反对全异</b>（有第 3 种情况）：少年:中年、小学生:大学生、手:足。其他：是否有顺序、是否紧密衔接、概念间存在内在转化（飞机:汽车）、不同层级全异（细菌:真菌）</td></tr>
+        <tr><td><b>种属关系</b></td><td>A 是 B（的一种/个）：单人床:床；白兰地:烟酒；长白山:火山</td><td>小概念为<b>特指/泛指</b>（常见特指：山名、河名、人名、名胜、地名、国名）；多层种属（劳动者:工人:瓦工）</td></tr>
+        <tr><td><b>交叉关系</b></td><td>（金标准）两个概念有交集：布鞋:童鞋；女性:作家</td><td><b>识别技巧</b>：① 尾缀相同，但从不同角度描述（酒杯:玻璃杯）；② 从不同角度描述人的身份（编剧:博士）；③ 不是前 3 种关系 → 大概率交叉，需验证</td></tr>
+        <tr><td><b>因果关系</b></td><td>原因与结果：下雨:地湿；缺铁:贫血；发炎:发烧</td><td>连锁因果（饮酒:神志不清:车祸）；多个原因均能导致结果；多个原因共同导致结果（放养过密+饲喂不当→鱼病）；原因是人为/天然；结果是好的/坏的；结果是否必然发生；主体是否一致</td></tr>
+        <tr><td><b>条件关系</b></td><td>充分条件 / 必要条件</td><td>题干出现「则、就、必」→ 充分；「不…不…、才」→ 必要；俗语隐含条件（如「不经一事，不长一智」）；科学常识条件</td></tr>
+        <tr><td><b>目的关系</b></td><td>行为方法与目的：治疗:康复；学习:掌握</td><td>目的能否实现</td></tr>
+        <tr><td><b>顺承关系</b></td><td>多个有顺序的行为：提交:审核:批准；学习菜谱:下厨烹饪:总结经验</td><td>时间先后、主体是否一致、是否必然衔接</td></tr>
+        <tr><td><b>对应关系</b></td><td>功能、工具、材料、特征、场所等对应</td><td>注意词的意义：抽象/具体</td></tr>
+      </table>
+      <div class="jingle"><div class="jt">✏️ 常考全同/称谓积累</div>属相:生肖｜刘彻:汉武帝｜朱棣:明成祖｜赵匡胤:宋太祖｜镇江:京口｜广州:羊城｜成都:蓉城｜合肥:庐州｜桂:广西｜牵牛花:喇叭花｜荷花:芙蕖/菡萏｜乞巧节:七夕节｜矮瓜:茄子｜犬子:儿子｜地瓜:甘薯｜考拉:树袋熊｜南京:金陵｜分母:除数｜银杏:公孙木｜马达:发动机｜引擎:发动机｜岳父:泰山｜夜宵:宵夜｜生日:生辰｜百分比:百分率｜牙婆:人贩子｜益母草:红花艾｜芝麻:脂麻</div>
+      <div class="jingle"><div class="jt">✏️ 矛盾关系积累</div><b>是/非：</b>合法收入:非法收入、常规问题:非常规问题、盈利:非盈利、金属:非金属｜<b>有/无：</b>有形损耗:无形损耗、有理数:无理数、有机物:无机物｜<b>硬/软：</b>软实力:硬实力、软件:硬件｜<b>阴/阳：</b>阴:阳、阴离子:阳离子｜<b>真/假：</b>真:伪、真分数:假分数｜<b>单字：</b>曲:直、动:静、生:死、男:女｜<b>自然/人造：</b>自然光源:人造光源｜<b>实/虚：</b>实体经济:虚拟经济</div>
+      <div class="ex">
+        <div class="ex-t">例 · 全同关系 + 二级辨析</div>
+        <div class="q">纸鸢 : 风筝 —— 以下哪项与题干关系最为相似？<br>A. 杜鹃花 : 映山红　B. 成年 : 未成年　C. 汽车 : 飞机　D. 白天 : 黑夜</div>
+        <div class="a"><b>思路（程意式）：</b>「纸鸢」与「风筝」是<b>全同关系</b>（同一事物的古今/雅俗两种叫法）。A「杜鹃花=映山红」同为全同 → 选 A；B、D 是矛盾全异（二选一）；C 是反对全异（还有轮船等）。二级辨析：题干是<b>雅称/俗名</b>（纸鸢偏雅），A 也符合「书面名/别名」的对应。</div>
+      </div>
+      <div class="ex">
+        <div class="ex-t">例 · 种属 vs 组成（易混淆）</div>
+        <div class="q">玫瑰 : 花 —— 以下哪项与题干逻辑关系最为相似？<br>A. 树木 : 森林　B. 苹果 : 水果　C. 轮胎 : 汽车　D. 水 : 河</div>
+        <div class="a"><b>思路：</b>「玫瑰是花的一种」= <b>种属关系</b>（个体属于类别）。B「苹果是水果的一种」同构 → 选 B。易错：A「树木组成森林」、C「轮胎组成汽车」都是<b>组成关系</b>（整体与部分），与种属不同——<b>种属可造句「A 是 B」；组成造句「A 是 B 的一部分」</b>。</div>
+      </div>
+    </div>
+
+    <div class="card" id="ana-yy">
+      <h3><span class="dot" style="background:#1e8449;"></span>4.3 言语关系（词语、成语、俗语、诗句）</h3>
+      <table class="tight">
+        <tr><th>关系</th><th>考点</th></tr>
+        <tr><td><b>近反义</b></td><td>近义（漂亮:美丽）、反义（吝啬:大方）。<b>二级辨析：</b>感情色彩（褒/贬/中）——近义词注意语义轻重、语义着重、范围大小、使用对象；反义词注意<b>绝对反义</b>（真:假，动:静，互相排斥）与<b>相对反义</b>（春:秋，黑:白，对比鲜明但非矛盾）。</td></tr>
+        <tr><td><b>主谓结构</b></td><td>主语+谓语：名+动（司机:驾驶）、名+形（阳光:灿烂）</td></tr>
+        <tr><td><b>动宾结构</b></td><td>动词+宾语：动+名（观赏:风景）</td></tr>
+        <tr><td><b>偏正结构</b></td><td>修饰+中心语：形+名（锦绣:山河）、副+动（认真:学习）</td></tr>
+      </table>
+      <div class="warn"><div class="wt">⚠️ 近义词细微差别（易错）</div>
+        <ul>
+          <li>意义：语义程度轻重（如「批评/批判」）、语义着重点不同、语义范围大小、使用对象不同。</li>
+          <li>色彩：感情色彩（褒/贬/中）、语体色彩（书面语/口语）。</li>
+          <li>用法：词语搭配、语法功能。</li>
+        </ul>
+      </div>
+      <div class="ex">
+        <div class="ex-t">例 · 言语结构（主谓 / 动宾）</div>
+        <div class="q">司机 : 驾驶 —— 以下哪项与题干逻辑关系最为相似？<br>A. 演员 : 表演　B. 观赏 : 风景　C. 老师 : 学生　D. 火车 : 轨道</div>
+        <div class="a"><b>思路（程意式）：</b>「司机驾驶」= <b>主语 + 谓语</b>（名+动，主谓结构）→ A「演员表演」同为主谓 → 选 A。易混：B「观赏风景」是<b>动宾结构</b>（动词+宾语），与题干主谓方向相反——<b>判断时看词性与顺序：名词在前动词在后为主谓，动词在前名词在后为动宾</b>。</div>
+      </div>
+    </div>
+
+    <div class="card" id="ana-cs">
+      <h3><span class="dot" style="background:#1e8449;"></span>4.4 造句法 &amp; 常考常识积累</h3>
+      <h4>造句法（三项式的利器）</h4>
+      <ul>
+        <li>用题干三个词造一个通顺句子，再用同样的句式套选项。<b>注意变化方向</b>（策略:销售:销量 → 思路:答题:得分）。</li>
+        <li>优先定位关系（通过词与词的关系），关系拿不准再靠造句辅助。</li>
+      </ul>
+      <h4>常考常识（必背）</h4>
+      <table class="tight">
+        <tr><th>常识</th><th>内容</th></tr>
+        <tr><td><b>十二时辰</b></td><td>子、丑、寅、卯、辰、巳、午、未、申、酉、戌、亥（酉时:戌时:亥时 为顺承并列）</td></tr>
+        <tr><td><b>二十四节气</b></td><td>春：立春、雨水、惊蛰、春分、清明、谷雨；夏：立夏、小满、芒种、夏至、小暑、大暑；秋：立秋、处暑、白露、秋分、寒露、霜降；冬：立冬、小雪、大雪、冬至、小寒、大寒</td></tr>
+        <tr><td><b>律诗四联</b></td><td>首联、颔联、颈联、尾联（颔联:颈联:尾联）</td></tr>
+        <tr><td><b>其他高频</b></td><td>七大洲四大洋、常见酒类（白兰地是蒸馏酒）、湖泊（巢湖是淡水湖）、人体骨骼（锁骨:肋骨:坐骨、颈椎:胸椎:腰椎）等</td></tr>
+      </table>
+      <div class="jingle"><div class="jt">✏️ 做题流程</div>① 先定关系（横向）；② 关系确定不了 → 造句法；③ 仍有多选 → 纵向比较（结构/词性/感情色彩）；④ 涉及常识的，靠积累，没见过就排除冷门生僻项。</div>
+      <div class="ex">
+        <div class="ex-t">例 · 常识 + 顺承（节气）</div>
+        <div class="q">白露 : 寒露 : 霜降 —— 以下哪项与题干逻辑关系最为相似？<br>A. 立春 : 雨水 : 惊蛰　B. 清明 : 谷雨 : 立夏　C. 芒种 : 小暑 : 大暑　D. 立秋 : 处暑 : 秋分</div>
+        <div class="a"><b>思路（程意式）：</b>题干三个节气<b>同属秋季且时间顺承</b>（白露→寒露→霜降）。A「立春、雨水、惊蛰」同属春季且顺承，结构完全一致 → 选 A。B 中「立夏」属于夏季，跨了季节 ✗；C 少了「夏至」（芒种→夏至→小暑→大暑，不连续）✗；D 中「秋分」在寒露之前，且处暑→秋分中间隔着白露 ✗。常考积累：<b>二十四节气按季节分组背熟</b>。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模块五 定义判断 ============ -->
+  <section id="mod5">
+    <div class="sec-head">
+      <div class="sec-num" style="background:#2c3e50;">五</div>
+      <h2>模块五 · 定义判断（第 20 次课）</h2>
+      <span class="en">DEFINITION</span>
+    </div>
+    <div class="sec-desc">题干字数多、阅读量大。做题核心：<b>「理解题干 + 对比选项」</b>。三大突破点：① 学会不同情况下的读题方法；② 学习多定义题目做题方法；③ 明确选项分析原则。</div>
+
+    <div class="card" id="def-key">
+      <h3><span class="dot" style="background:#2c3e50;"></span>5.1 底层能力 · 读懂定义，关注核心要点</h3>
+      <table class="tight">
+        <tr><th>要点</th><th>含义</th><th>提示词</th></tr>
+        <tr><td><b>主体</b></td><td>行为或事件的发起者（一般在定义内容最前面）</td><td>……的（机构/人/组织）</td></tr>
+        <tr><td><b>客体</b></td><td>行为或事件的承受者</td><td>对……；向……</td></tr>
+        <tr><td><b>目的</b></td><td>行为目标和预期结果</td><td>为了……；为达到……；确保……</td></tr>
+        <tr><td><b>方式/行为</b></td><td>所采取的方法和具体行为</td><td>以……为手段；采取……方法；通过……</td></tr>
+        <tr><td><b>条件</b></td><td>限制性信息</td><td>在……情况下；在……条件下；当……时</td></tr>
+        <tr><td><b>原因</b></td><td>行为发生的原因</td><td>由于……；因为……</td></tr>
+        <tr><td><b>结果</b></td><td>行为造成的结果（结果比原因更常考、更重要）</td><td>造成……；导致……；因而……</td></tr>
+        <tr><td><b>性质</b></td><td>定义的本质属性（一般在句尾）</td><td>……的（+名词）</td></tr>
+      </table>
+      <div class="jingle"><div class="jt">✏️ 核心原则</div>① 先读问题，优先找与问题相关的定义，看清楚「属于/不属于」；② <b>对关键词敏感</b>；③ <b>比较原则：优中选优</b>——排除最不像的，剩下的比细节；④ <b>补充说明（括号里的）必须读</b>，常常是考点；⑤ 「且/或」等和关系注意区分。</div>
+      <div class="ex">
+        <div class="ex-t">例 · 单定义（抓核心要点）</div>
+        <div class="q">工作记忆是指个体在执行认知任务的过程中，对信息进行暂时性加工和存储的记忆系统。根据上述定义，下列<b>属于</b>工作记忆的是：<br>A. 小明能熟练背诵小学时学过的古诗　B. 小红记下服务台电话号码后立即拨打，拨完就忘了　C. 老李清楚地记得自己年轻时支边的经历　D. 小张能复述出昨天会议的主要内容</div>
+        <div class="a"><b>思路（程意式）：</b>划关键词：<b>执行任务过程中 + 暂时性加工和存储</b>。A、C、D 都是长期记忆（永久存储），与「暂时性」矛盾 ✗；B「记下号码→立即拨打→拨完就忘」完全符合「暂时存储」→ 选 B。排除顺序：先排「长期记忆」这种明显违背性质的，再比对细节。</div>
+      </div>
+    </div>
+
+    <div class="card" id="def-flow">
+      <h3><span class="dot" style="background:#2c3e50;"></span>5.2 解题流程 &amp; 多定义题目 &amp; 选项分析</h3>
+      <h4>标准化流程</h4>
+      <div class="steps">
+        <div class="step"><div class="no">1</div><div class="bd"><b>读问题：</b>问的是「属于/不属于」「符合/不符合」，对应选项关注点不同。</div></div>
+        <div class="step"><div class="no">2</div><div class="bd"><b>读定义：</b>划出主体、方式、目的、条件、结果、性质等关键词；<b>括号补充信息必读</b>。</div></div>
+        <div class="step"><div class="no">3</div><div class="bd"><b>对比选项：</b>逐项与关键词比对，排除明显不符 → 剩两个比细节 → 优中选优。</div></div>
+        <div class="step"><div class="no">4</div><div class="bd"><b>不确定时：</b>回到定义本身用「常识 + 被定义项」（定义词本身的意思）辅助判断。</div></div>
+      </div>
+
+      <h4>题干设置的两种常见结构</h4>
+      <ul>
+        <li><b>一个定义有限分类：</b>定义给出后分了几个类别 → 选项与类别<b>一一对应</b>。</li>
+        <li><b>一个定义后重点解释关键词：</b>优先<b>通过关键词排除</b>，不必完全读懂定义。</li>
+      </ul>
+
+      <h4>多定义题目（题干给出 2 个及以上定义）</h4>
+      <ul>
+        <li><b>先读问题，锁定问的那个定义</b>，只读相关定义，其他定义可略读。</li>
+        <li>两个定义常是「对立/包含」关系，可通过对比记忆（如「亲社会行为 vs 反社会行为」）。</li>
+        <li>选项常「张冠李戴」：A 定义的行为套到 B 定义上，注意主体和行为匹配。</li>
+      </ul>
+
+      <h4>选项分析原则</h4>
+      <ul>
+        <li><b>主体不符 → 一定不选</b>（最优先排除）。</li>
+        <li><b>方式/目的/结果不符 → 不选</b>；只有个别细节不确定的，可以保留比较。</li>
+        <li>两个选项都像时：<b>哪个更全面地满足关键词，选哪个</b>（优中选优）。</li>
+        <li>不要因为选项「举的例子我没见过」就排除——比对的是结构不是内容。</li>
+      </ul>
+      <div class="ex">
+        <div class="ex-t">例 · 多定义（先锁定问的定义）</div>
+        <div class="q">亲社会行为是指个体做出的有利于他人和社会的行为；反社会行为是指危害他人和社会正常秩序的行为。根据上述定义，下列属于<b>反社会行为</b>的是：<br>A. 公交车上主动给老人让座　B. 在电影院里大声喧哗、随意走动　C. 同事生病时帮忙代班　D. 路见不平挺身而出</div>
+        <div class="a"><b>思路（程意式）：</b>先读问题，锁定「反社会行为」= <b>危害他人和社会秩序</b>。A、C、D 都是亲社会行为（利他）✗；B「大声喧哗、随意走动」扰乱公共秩序，符合危害性 → 选 B。多定义题技巧：两个定义常是对立关系，选项容易<b>张冠李戴</b>，注意「主体 + 行为」和定义严格对应。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 口诀速记卡 ============ -->
+  <section id="cheat">
+    <div class="sec-head">
+      <div class="sec-num" style="background:#c0392b;">⚡</div>
+      <h2>口诀速记卡</h2>
+      <span class="en">CHEAT SHEET</span>
+    </div>
+    <div class="sec-desc">全部口诀汇总，冲刺期每天过一遍。考前 10 分钟专背这一块。</div>
+    <div class="mnemo-grid">
+      <div class="mnemo"><div class="mt">总纲</div><div class="mc"><b>两个要求，一个核心词：</b>严谨性（说什么是什么，没说不知道）+ 形式性（符合规则就对）+ 核心词「有些」（=至少有一个，知道有些是真的，别的都不确定）。</div></div>
+      <div class="mnemo"><div class="mt">翻译口诀</div><div class="mc">如果就，前推后；只有才，后推前；除非否则不，后推前；除非否则，否前推后；充前必后别搞混。</div></div>
+      <div class="mnemo"><div class="mt">推理口诀</div><div class="mc"><b>逆否等价是王道，否后必否前</b>；肯前必肯后；否前、肯后推不出。递推：A→B，B→C ⇒ A→C。</div></div>
+      <div class="mnemo"><div class="mt">真假判断</div><div class="mc">知真求假/知假求真，<b>直接找矛盾</b>：且↔或、或↔且（各加非）；A→B 的矛盾是 <b>A 且非B</b>；要么A要么B ↔ 要么A且B，要么非A且非B。</div></div>
+      <div class="mnemo"><div class="mt">直言矛盾</div><div class="mc">所有↔有些，是↔非，某个不变：<b>所有是 ↔ 有些非；所有非 ↔ 有些是；某个是 ↔ 某个非</b>。上反对（所有是/所有非）不能同真；下反对（有些是/有些非）不能同假。</div></div>
+      <div class="mnemo"><div class="mt">三段论</div><div class="mc">找中项（前提出现两次的桥）；<b>「所有」和「否定」周延，「有的」和「肯定」不周延</b>；两个否定前提无结论；前提有否定，结论必否定。</div></div>
+      <div class="mnemo"><div class="mt">朴素逻辑</div><div class="mc">突破口：<b>确定性 + 关联性</b>。数独：排除 + 交集最多处入手；3+2：相同归大去排除；最多=加和、最少=取大（去包含）。</div></div>
+      <div class="mnemo"><div class="mt">一拖N</div><div class="mc">有序画箭头（紧挨/不紧挨/隔1），无序看分组。可能真→代入可行可选；不可能真→代入冲突可选；一定真→正推。问最多验证最大数、问最少验证最小数。</div></div>
+      <div class="mnemo"><div class="mt">加强削弱</div><div class="mc">读问题辨题型 → 理结构（结论☆论据）→ 预设答案。力度：<b>本质&gt;现象、全面&gt;片面、确定&gt;可能、量大&gt;量小</b>。因果削弱：因果倒置、另有共因、有因无果/无因有果、否定此因、另有他因。</div></div>
+      <div class="mnemo"><div class="mt">论证模型</div><div class="mc">求异（削：不同点；加：相同点）→ 双观点（削反对者=A是C的原因）→ 实践论证（方案可不可实现）→ 类比（根本同/异）→ 枚举（代表性）→ 缺桥（搭桥/拆桥）→ 数据（找分母）→ 有比较（选有比较的）。</div></div>
+      <div class="mnemo"><div class="mt">图推总纲</div><div class="mc"><b>有相同 → 位置/样式/标记；无相同 → 属性（对称优先）→ 数量 → 图形间关系。</b>长得一样看位置，长得像看样式，乱七八糟数数量（点线角面素笔画挨个试）。</div></div>
+      <div class="mnemo"><div class="mt">图推数量</div><div class="mc">一笔画：<b>奇点 0 或 2</b> 即一笔，奇点÷2=笔画。面=白色封闭区域（黑色不是面）。切点属交点、端点不算交点。形状一样颜色不同算不同元素。</div></div>
+      <div class="mnemo"><div class="mt">类比</div><div class="mc"><b>常态思维、先横后纵、先整体后局部。</b>全同→全异（矛盾/反对）→种属→交叉→因果→条件→目的→顺承；近反义看感情色彩和轻重；三项式用造句法。</div></div>
+      <div class="mnemo"><div class="mt">定义判断</div><div class="mc">主体（发起者）、客体（承受者）、方式（手段）、目的（为了）、条件（限制）、结果（导致）、性质（句尾）。<b>括号必读</b>；先排主体不符；多定义先锁定问的定义；优中选优。</div></div>
+    </div>
+  </section>
+
+  <!-- ============ 考场做题流程 ============ -->
+  <section id="workflow">
+    <div class="sec-head">
+      <div class="sec-num" style="background:#b7791f;">⌛</div>
+      <h2>考场做题流程</h2>
+      <span class="en">EXAM WORKFLOW</span>
+    </div>
+    <div class="card">
+      <h3><span class="dot" style="background:#b7791f;"></span>判断推理整体做题节奏</h3>
+      <div class="flow">
+        <div class="node q"><b>图形推理</b><small>开头做 · 进入状态<br>每题≤50秒 · 30秒无思路先蒙</small></div>
+        <div class="arrow">→</div>
+        <div class="node s"><b>定义判断</b><small>稳拿分 · 抓关键词<br>每题≤60秒</small></div>
+        <div class="arrow">→</div>
+        <div class="node s"><b>类比推理</b><small>最快 · 先横后纵<br>每题≤40秒</small></div>
+        <div class="arrow">→</div>
+        <div class="node s"><b>逻辑判断</b><small>最耗时间 · 放最后<br>必然性：翻译-套规则<br>可能性：理结构-预设</small></div>
+      </div>
+      <div class="steps">
+        <div class="step"><div class="no">1</div><div class="bd"><b>先图推后逻辑：</b>图推不费脑，用来进入状态；逻辑判断放最后，用最清醒的脑子啃最难的。</div></div>
+        <div class="step"><div class="no">2</div><div class="bd"><b>一拖N 的取舍：</b>一拖二 2-3 分钟（保 3 争 4），一拖五 5 分钟（保 4 争 5）——超时果断放弃剩余小题，蒙猜技巧顶上。</div></div>
+        <div class="step"><div class="no">3</div><div class="bd"><b>标准化流程：</b>每类题按固定步骤走（见各模块），练成反射，不边做边回忆考点。</div></div>
+        <div class="step"><div class="no">4</div><div class="bd"><b>不恋战：</b>超过时间预算先蒙一个并标记，全部做完后统一回看；改答案前想清楚，相信第一感觉。</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 备考节奏 ============ -->
+  <section id="plan">
+    <div class="sec-head">
+      <div class="sec-num" style="background:#1e8449;">📅</div>
+      <h2>备考节奏建议</h2>
+      <span class="en">STUDY PLAN</span>
+    </div>
+    <div class="card">
+      <h3><span class="dot" style="background:#1e8449;"></span>三阶段推进（程意式学习法）</h3>
+      <table class="tight">
+        <tr><th>阶段</th><th>任务</th><th>目标</th></tr>
+        <tr><td><b>基础阶段</b></td><td>跟课 + 背口诀 + 做课后作业；笔记当天整理（思维导图 + 题目解析 + 做题步骤）</td><td>打扎实基础，重点在「学会」</td></tr>
+        <tr><td><b>专项提升</b></td><td>按题型分类刷题（夸夸刷）：今天只刷图推位置，明天只刷样式……；错题记录，周末重做</td><td>看到题就能判断考点（不背答案）</td></tr>
+        <tr><td><b>套题冲刺</b></td><td>掐时间整套刷，复盘每道题的考点归属；用「知识点复习表 + 默写表」查缺补漏</td><td>固化解题反射，控制时间预算</td></tr>
+      </table>
+      <h4>每日复习小贴士</h4>
+      <ul>
+        <li><b>图推：</b>每天 10-15 道，只判断「考哪类规律」，45 秒/道，练识别速度。</li>
+        <li><b>逻辑：</b>每天把翻译口诀默写一遍，直到不用想就写出来。</li>
+        <li><b>类比：</b>边做题边积累常识，整理自己的「常识小本」（时辰、节气、别称等）。</li>
+        <li><b>定义：</b>练习划关键词，训练「一眼抓住主体、方式、结果」。</li>
+        <li><b>复盘：</b>错题不是看答案，是回看「我应该用哪个考点/哪一步想错了」。</li>
+      </ul>
+      <div class="jingle"><div class="jt">✏️ 程意寄语</div>「过程或许有点难，但结果会是好的。」母题二、三、四难，基础阶段学不会很正常——学会多少都是进步，刷题阶段会带你重点攻克。</div>
+    </div>
+  </section>
+
+  <!-- ============ 学习进度 ============ -->
+  <section id="progress">
+    <div class="sec-head">
+      <div class="sec-num" style="background:#1e8449;">✅</div>
+      <h2>我的学习进度</h2>
+      <span class="en">MY PROGRESS</span>
+    </div>
+    <div class="sec-desc">掌握一项勾一项，进度自动保存在本机浏览器，下次打开还在。</div>
+    <div class="card">
+      <h3><span class="dot" style="background:#1e8449;"></span>分块掌握清单</h3>
+      <label class="chk"><input type="checkbox"> 课程体系总览（20次课结构 / 六大母题）</label><br>
+      <label class="chk"><input type="checkbox"> 总纲：两个要求一个核心词（严谨性 / 形式性 / 有些）</label><br>
+      <label class="chk"><input type="checkbox"> 必然性推理：直言 / 联言 / 选言 / 假言（翻译+逆否+矛盾）</label><br>
+      <label class="chk"><input type="checkbox"> 综合推理：确定信息 → 数量限定 → 假设法 / 二难推理</label><br>
+      <label class="chk"><input type="checkbox"> 三段论：中项周延规则</label><br>
+      <label class="chk"><input type="checkbox"> 朴素逻辑：确定性关联性 + 数独 / 3+2 / 4+3+2 / 最多最少</label><br>
+      <label class="chk"><input type="checkbox"> 一拖N：有序无序 + 代入判断 + 秒解蒙猜</label><br>
+      <label class="chk"><input type="checkbox"> 可能性推理：因果类五种削弱 + 八大论证模型 + 前提解释结论评价</label><br>
+      <label class="chk"><input type="checkbox"> 图形推理：位置 / 样式 / 属性 / 数量（面线点角素笔画）/ 空间</label><br>
+      <label class="chk"><input type="checkbox"> 类比推理：逻辑关系 + 言语关系 + 造句法 + 常识积累</label><br>
+      <label class="chk"><input type="checkbox"> 定义判断：八大核心要点 + 多定义 + 选项分析</label><br>
+      <label class="chk"><input type="checkbox"> 口诀速记卡全部背熟（每天默写）</label><br>
+      <label class="chk"><input type="checkbox"> 考场流程 &amp; 时间预算已演练</label>
+    </div>
+  </section>
+
+  <div class="foot">
+    本资料根据网络公开的超格教育「判断推理全家桶理论实战班」（主讲：程意）、程意课堂笔记/思维导图、程意&刘义恒课件等整理，供个人学习复盘使用。<br>
+    标注「程意式」的流程与口诀均还原自其课程公开内容；部分通用考点按公考通行体系补充细化。
+  </div>
+</div>
+
+<button class="backtop" id="backtop" title="回到顶部">↑</button>
+
+<script>
+  /* 移动端抽屉：汉堡开关 */
+  const menuBtn=document.getElementById('menuBtn');
+  const mask=document.getElementById('mask');
+  function closeMenu(){document.body.classList.remove('menu-open');}
+  menuBtn.addEventListener('click',()=>document.body.classList.toggle('menu-open'));
+  mask.addEventListener('click',closeMenu);
+
+  /* 侧边栏高亮 + 搜索 */
+  const links=[...document.querySelectorAll('.nav-link')];
+  const search=document.getElementById('navSearch');
+  function filterNav(){
+    const kw=search.value.trim().toLowerCase();
+    links.forEach(l=>{
+      const hit=!kw || l.dataset.kw.toLowerCase().includes(kw) || l.textContent.toLowerCase().includes(kw);
+      l.style.display=hit?'block':'none';
+    });
+  }
+  search.addEventListener('input',filterNav);
+
+  /* 移动端：点击导航后收起抽屉 */
+  links.forEach(l=>l.addEventListener('click',()=>{ if(window.innerWidth<=760) closeMenu(); }));
+
+  const sections=[...document.querySelectorAll('section[id], .hero[id], .card[id]')];
+  function navActive(){
+    let cur=null;
+    sections.forEach(s=>{
+      if(window.scrollY>=s.offsetTop-90) cur=s.id;
+    });
+    links.forEach(l=>{
+      l.classList.toggle('active', l.getAttribute('href')==='#'+cur);
+    });
+  }
+  window.addEventListener('scroll',navActive);
+
+  /* 学习进度：勾选考点 */
+  const chkTotal=document.querySelectorAll('.chk input');
+  const doneNum=document.getElementById('doneNum');
+  const totalNum=document.getElementById('totalNum');
+  const fill=document.getElementById('progressFill');
+  totalNum.textContent=chkTotal.length;
+  function save(){
+    const done=[...chkTotal].filter(c=>c.checked).length;
+    doneNum.textContent=done;
+    fill.style.width=(chkTotal.length? done/chkTotal.length*100:0)+'%';
+    localStorage.setItem('cypd-progress',[...chkTotal].map((c,i)=>c.checked?1:0).join(''));
+  }
+  try{
+    const saved=localStorage.getItem('cypd-progress');
+    if(saved) chkTotal.forEach((c,i)=>{c.checked=saved[i]==='1';});
+  }catch(e){}
+  chkTotal.forEach(c=>c.addEventListener('change',save));
+  save();
+
+  /* 回到顶部 */
+  const bt=document.getElementById('backtop');
+  bt.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+</script>
+  <script data-study-hub-script src="../../assets/hub-nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,1487 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>综应D类 · 全考点复习手册（明哥体系）</title>
+<style>
+:root{
+  --bg:#f4f6fb; --card:#ffffff; --ink:#1e293b; --ink2:#475569; --ink3:#94a3b8;
+  --brand:#2563eb; --brand2:#7c3aed; --accent:#f59e0b; --line:#e2e8f0;
+  --chip:#eff6ff; --chip-ink:#1d4ed8; --ok:#16a34a; --warn:#ea580c; --red:#dc2626;
+  --radius:16px; --shadow:0 1px 3px rgba(15,23,42,.06),0 8px 24px -12px rgba(15,23,42,.12);
+}
+html[data-theme="dark"]{
+  --bg:#0f172a; --card:#1e293b; --ink:#e2e8f0; --ink2:#94a3b8; --ink3:#64748b;
+  --brand:#60a5fa; --brand2:#a78bfa; --accent:#fbbf24; --line:#334155;
+  --chip:#1e3a5f; --chip-ink:#bfdbfe; --shadow:0 1px 3px rgba(0,0,0,.3),0 8px 24px -12px rgba(0,0,0,.5);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth;scroll-padding-top:76px}
+body{background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;line-height:1.7;font-size:15px}
+.wrap{max-width:860px;margin:0 auto;padding:0 14px 90px}
+
+/* ===== 顶栏 ===== */
+header{position:sticky;top:0;z-index:50;background:linear-gradient(135deg,#1e3a8a,#4338ca 60%,#6d28d9);color:#fff;box-shadow:0 2px 12px rgba(30,58,138,.35)}
+.hd-inner{max-width:860px;margin:0 auto;padding:10px 14px;display:flex;align-items:center;gap:10px}
+.hd-title{flex:1;min-width:0}
+.hd-title h1{font-size:16.5px;font-weight:800;letter-spacing:.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hd-title p{font-size:11px;opacity:.85;margin-top:1px}
+.hd-btn{flex-shrink:0;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:999px;padding:6px 12px;font-size:12px;cursor:pointer;backdrop-filter:blur(4px);font-family:inherit}
+.hd-btn:active{transform:scale(.95)}
+.progress-bar{height:4px;background:rgba(255,255,255,.2)}
+.progress-fill{height:100%;width:0%;background:linear-gradient(90deg,#fbbf24,#34d399);transition:width .3s}
+
+/* ===== 封面 ===== */
+.hero{background:linear-gradient(135deg,#eff6ff,#f5f3ff);border:1px solid var(--line);border-radius:var(--radius);padding:20px 18px;margin:16px 0;position:relative;overflow:hidden}
+html[data-theme="dark"] .hero{background:linear-gradient(135deg,#172554,#2e1065);border-color:#334155}
+.hero::after{content:"D";position:absolute;right:-14px;top:-34px;font-size:130px;font-weight:900;color:var(--brand);opacity:.09;line-height:1}
+.hero h2{font-size:19px;font-weight:800;color:var(--brand)}
+.hero p{font-size:13px;color:var(--ink2);margin-top:6px}
+.hero .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.hero .tags span{font-size:11px;background:#fff;border:1px solid var(--line);color:var(--ink2);border-radius:999px;padding:2px 9px}
+html[data-theme="dark"] .hero .tags span{background:#1e293b}
+
+/* ===== 统计条 ===== */
+.stat{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:14px 0 4px}
+.stat div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 6px;text-align:center;box-shadow:var(--shadow)}
+.stat b{display:block;font-size:17px;color:var(--brand);font-weight:800}
+.stat span{font-size:10.5px;color:var(--ink3)}
+
+/* ===== 目录抽屉 ===== */
+.cat-btn{position:fixed;right:12px;bottom:16px;z-index:60;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff;border:none;font-size:20px;cursor:pointer;box-shadow:0 6px 20px rgba(37,99,235,.45);display:flex;align-items:center;justify-content:center}
+.cat-btn:active{transform:scale(.93)}
+.cat-mask{position:fixed;inset:0;background:rgba(15,23,42,.45);z-index:70;opacity:0;pointer-events:none;transition:opacity .25s}
+.cat-mask.show{opacity:1;pointer-events:auto}
+.cat-panel{position:fixed;top:0;right:0;height:100%;width:min(300px,82vw);background:var(--card);z-index:80;transform:translateX(105%);transition:transform .28s cubic-bezier(.4,0,.2,1);box-shadow:-8px 0 30px rgba(0,0,0,.15);display:flex;flex-direction:column}
+.cat-panel.show{transform:translateX(0)}
+.cat-head{padding:16px 16px 12px;font-weight:800;font-size:16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line)}
+.cat-head button{background:none;border:none;font-size:20px;color:var(--ink3);cursor:pointer}
+.cat-body{flex:1;overflow-y:auto;padding:10px 8px 20px}
+.cat-body a{display:flex;align-items:center;gap:8px;padding:9px 12px;border-radius:10px;text-decoration:none;color:var(--ink);font-size:13.5px;margin-bottom:2px}
+.cat-body a:active{background:var(--chip)}
+.cat-body a .no{width:22px;height:22px;border-radius:7px;background:var(--chip);color:var(--chip-ink);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.cat-body a.done{color:var(--ink3)}
+.cat-body a.done .no{background:#dcfce7;color:var(--ok)}
+.cat-body a.done .name{text-decoration:line-through}
+
+/* ===== 章节 ===== */
+section.ch{border:1px solid var(--line);border-radius:var(--radius);background:var(--card);margin:14px 0;overflow:hidden;box-shadow:var(--shadow)}
+.ch-head{display:flex;align-items:center;gap:10px;padding:13px 14px;cursor:pointer;user-select:none}
+.ch-head:active{background:rgba(37,99,235,.05)}
+.ch-no{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ch-title{flex:1;min-width:0}
+.ch-title b{font-size:15px;display:block;line-height:1.35}
+.ch-title span{font-size:11px;color:var(--ink3)}
+.ch-arrow{font-size:13px;color:var(--ink3);transition:transform .25s;flex-shrink:0}
+section.ch.open .ch-arrow{transform:rotate(180deg)}
+.ch-body{display:none;padding:4px 14px 16px;border-top:1px dashed var(--line)}
+section.ch.open .ch-body{display:block}
+
+/* ===== 知识点卡片 ===== */
+.kp{border:1px solid var(--line);border-radius:12px;padding:12px 12px 10px;margin-top:12px;background:#fff}
+html[data-theme="dark"] .kp{background:#16233b}
+.kp-t{display:flex;align-items:flex-start;gap:8px;font-weight:700;font-size:13.8px;color:var(--ink)}
+.kp-t .dot{width:7px;height:7px;border-radius:50%;background:var(--brand);margin-top:8px;flex-shrink:0}
+.kp-c{font-size:13px;color:var(--ink2);margin-top:6px;padding-left:15px}
+.kp-c ul{list-style:none}
+.kp-c li{position:relative;padding:2.5px 0 2.5px 16px}
+.kp-c li::before{content:"";position:absolute;left:2px;top:12px;width:5px;height:5px;border-radius:50%;background:var(--accent)}
+.kp-c li b,.kp-c p b{color:var(--brand)}
+.kp-c .sub{color:var(--ink);font-weight:600}
+.kl{display:inline-block;background:var(--chip);color:var(--chip-ink);border-radius:6px;padding:0 7px;font-size:11.5px;font-weight:700;margin:0 2px}
+.kt{background:#fff7ed;color:#9a3412;border:1px solid #fed7aa;border-radius:7px;padding:7px 10px;font-size:12.5px;margin-top:7px}
+html[data-theme="dark"] .kt{background:#451a03;color:#fdba74;border-color:#7c2d12}
+.kt b{color:var(--warn)}
+.km{background:#f0fdf4;color:#166534;border:1px solid #bbf7d0;border-radius:7px;padding:7px 10px;font-size:12.5px;margin-top:7px}
+html[data-theme="dark"] .km{background:#052e16;color:#86efac;border-color:#166534}
+.km b{color:var(--ok)}
+.kw{background:#fefce8;color:#854d0e;border:1px solid #fde68a;border-radius:7px;padding:7px 10px;font-size:12.5px;margin-top:7px}
+html[data-theme="dark"] .kw{background:#422006;color:#fde047;border-color:#713f12}
+.kw b{color:#ca8a04}
+.table-box{overflow-x:auto;margin-top:8px;border:1px solid var(--line);border-radius:10px}
+table{border-collapse:collapse;width:100%;font-size:12.5px;min-width:460px}
+th{background:var(--chip);color:var(--chip-ink);font-weight:700;padding:7px 9px;text-align:left;white-space:nowrap}
+td{padding:6.5px 9px;border-top:1px solid var(--line);color:var(--ink2);vertical-align:top}
+td b{color:var(--brand)}
+
+/* ===== 口诀 ===== */
+.mk{background:linear-gradient(135deg,#fef3c7,#ffedd5);border:1px dashed #f59e0b;border-radius:10px;padding:9px 12px;margin-top:8px;font-size:13px;color:#78350f}
+html[data-theme="dark"] .mk{background:#422006;color:#fde68a;border-color:#b45309}
+.mk b{color:#d97706}
+html[data-theme="dark"] .mk b{color:#fbbf24}
+
+/* ===== 完成勾选 ===== */
+.done-box{display:flex;align-items:center;gap:6px;margin-top:9px;font-size:12px;color:var(--ink3)}
+.done-box input{width:15px;height:15px;accent-color:var(--brand)}
+
+/* ===== 底部 ===== */
+.foot{text-align:center;color:var(--ink3);font-size:11.5px;margin-top:22px;line-height:1.8}
+.foot b{color:var(--brand)}
+
+/* ===== 例题 ===== */
+.q-tag{display:inline-block;background:linear-gradient(135deg,#1e3a8a,#4338ca);color:#fff;border-radius:6px;padding:1px 8px;font-size:11px;font-weight:700;margin-right:6px;vertical-align:1px;white-space:nowrap}
+.q-tag.bian{background:linear-gradient(135deg,#b45309,#d97706)}
+.q-tag.anli{background:linear-gradient(135deg,#065f46,#059669)}
+.q-tag.fangan{background:linear-gradient(135deg,#6b21a8,#9333ea)}
+.q-mat{background:#f8fafc;border-left:3px solid var(--brand);border-radius:0 10px 10px 0;padding:9px 12px;margin:8px 0 2px;font-size:12.8px;color:var(--ink2)}
+html[data-theme="dark"] .q-mat{background:#0f172a;border-left-color:#60a5fa}
+.q-ask{font-weight:700;color:var(--ink);font-size:13px;margin-top:8px}
+.q-ask span{color:var(--brand)}
+details.qa{margin-top:8px;border:1px dashed var(--brand);border-radius:10px;overflow:hidden}
+details.qa summary{list-style:none;cursor:pointer;padding:8px 12px;font-size:12.8px;font-weight:700;color:var(--brand);background:var(--chip);user-select:none;display:flex;align-items:center;justify-content:space-between}
+details.qa summary::-webkit-details-marker{display:none}
+details.qa summary::after{content:"▾ 展开";font-size:11px;font-weight:600;color:var(--ink3)}
+details.qa[open] summary::after{content:"▴ 收起"}
+details.qa[open] summary{background:linear-gradient(135deg,#dbeafe,#ede9fe);color:#1e3a8a}
+html[data-theme="dark"] details.qa[open] summary{background:#1e3a5f;color:#bfdbfe}
+.qa-in{padding:10px 12px;font-size:13px;color:var(--ink2);border-top:1px dashed var(--line)}
+.qa-in .ans-tag{display:inline-block;background:#f0fdf4;color:#166534;border:1px solid #bbf7d0;border-radius:6px;padding:0 7px;font-size:11px;font-weight:700;margin-bottom:6px}
+html[data-theme="dark"] .qa-in .ans-tag{background:#052e16;color:#86efac;border-color:#166534}
+.qa-in .pt{font-weight:800;color:var(--brand);margin:8px 0 2px}
+.qa-in .pt:first-of-type{margin-top:0}
+
+@media (min-width:720px){
+  body{font-size:16px}
+  .wrap{max-width:900px}
+  .ch-body{padding:6px 20px 20px}
+  .hd-title h1{font-size:19px}
+}
+</style>
+  <link data-study-hub-style rel="stylesheet" href="../../assets/hub-nav.css">
+</head>
+<body data-theme="light">
+
+<header>
+  <div class="hd-inner">
+    <div class="hd-title">
+      <h1>📚 综应D类 · 全考点复习手册</h1>
+      <p>事业单位联考 · 中小学教师类（明哥综应D体系梳理）</p>
+    </div>
+    <button class="hd-btn" onclick="toggleTheme()">🌓 深色</button>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progFill"></div></div>
+</header>
+
+<div class="wrap">
+
+  <div class="hero">
+    <h2>综合应用能力（D类）· 教师岗</h2>
+    <p>考试形式：<b>全主观题</b>，满分 150 分，作答时间 120 分钟。测查师德与职业认知、教育教学核心能力（学生发展指导 / 教学设计与实施 / 教育组织与管理 / 教育教学评价 / 沟通合作）、教师自主发展能力三大板块。</p>
+    <div class="tags"><span>✏️ 辨析题 ≈30-40分</span><span>📖 案例分析 ≈50-60分</span><span>📋 教育方案设计 ≈40-50分</span><span>🕐 建议时间分配 15' / 40' / 45'</span></div>
+  </div>
+
+  <div class="stat">
+    <div><b id="statSec">0</b><span>章节</span></div>
+    <div><b id="statKp">0</b><span>考点</span></div>
+    <div><b id="statMk">0</b><span>口诀</span></div>
+    <div><b id="statDone">0</b><span>已掌握</span></div>
+  </div>
+
+  <!-- ══════════ 第一章 ══════════ -->
+  <section class="ch open" id="sec1">
+    <div class="ch-head">
+      <div class="ch-no">1</div>
+      <div class="ch-title"><b>考试认知 · 题型与答题模板</b><span>必看 · 决定答题框架</span></div>
+      <div class="ch-arrow">▼</div>
+    </div>
+    <div class="ch-body">
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span>考试结构（考情总览）</div>
+        <div class="kp-c">
+          <ul>
+            <li><b>考查方向</b>：综合运用教育学、心理学等知识分析解决中小学教育教学实际问题的能力，<b>全主观题</b>，满分150分、120分钟。</li>
+            <li><b>三大能力板块</b>：① 师德与职业认知（教育观、职业道德、法律法规）② 教育教学核心能力（学生发展指导、教学设计与实施、教育组织与管理、评价、沟通合作）③ 教师自主发展能力（学习反思、专业规划、心理调适）。</li>
+            <li><b>题型分布</b>：辨析题（约30-40分）、案例分析题（约50-60分）、教育方案设计题（约40-50分）。</li>
+          </ul>
+          <div class="mk"><b>【时间分配】</b> 辨析题 ≤15分钟 → 案例分析题 每问15分钟（共约40分钟）→ 教育方案设计 留45分钟（含理论依据梳理）。</div>
+        </div>
+      </div>
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span>辨析题 · 三步答题模板</div>
+        <div class="kp-c">
+          <ul>
+            <li><b>第一步 · 表态</b>：明确判断「正确 / 错误 / 片面」，<b>不能模棱两可</b>（如"不全面、有待商榷"等表述慎用）。</li>
+            <li><b>第二步 · 论证</b>：正确观点→指出科学性+深入延伸分析；错误观点→指出错误之处+说明理由（用理论分析）+<b>给出正确观点</b>；双因素→分别论证两者定义与优劣。</li>
+            <li><b>第三步 · 总结</b>：回扣题目，落到教师启示——"作为一名教师应……践行……促进学生全面发展"。</li>
+          </ul>
+          <div class="kt"><b>⚠️ 字数控制：</b>约 280-350 字，超字数扣分。开头必写"根据××观/××原则"，结尾升华到学生发展。</div>
+          <div class="mk"><b>【高频角度】</b> 素质教育内涵、"双减"落实、教师角色定位、学生观辨析（如"容错≠不批评"）、"惩罚就是体罚"、"探究学习比接受学习更有效"。</div>
+        </div>
+      </div>
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span>案例分析题 · 总-分-总模板</div>
+        <div class="kp-c">
+          <ul>
+            <li><b>答题步骤</b>：① 读问题（分析题/概括题/措施题/开放题）→ ② 读材料，找关键行为，判断情境 → ③ 匹配理论（教师行为→职业理念/职业道德/班级管理；学生行为→身心发展特点/学生权利）→ ④ 组织答案分条列点。</li>
+            <li><b>作答结构</b>：<b>总</b>（判断该教师做法合理/不合理，践行/违背了××）+ <b>分</b>（理论点+一句话解释+结合材料，每条独立成点，3-4条）+ <b>总</b>（综上所述，教师应当/不应当……）。</li>
+          </ul>
+          <div class="kt"><b>⚠️ 避坑：</b>① 杜绝空谈理论，每条必须"理论+材料"结合；② 杜绝口语化大白话；③ 要点全面不重复，每个知识点只说一次；④ 字数 500-600 字/问。</div>
+          <div class="mk"><b>【提分关键】</b> 精准抓取案例核心问题本质 → 每个策略 = 理论依据 + 具体实操做法。</div>
+        </div>
+      </div>
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span>教育方案设计题 · 五要素模板</div>
+        <div class="kp-c">
+          <ul>
+            <li><b>必备要素</b>：<b>活动主题 → 设计依据 → 活动目标 → 活动内容与过程 → 预计效果与检验方法</b>（总字数800-1000字）。</li>
+            <li><b>常考类型</b>：主题班会（考查最多）、家长会、社会/校园实践活动、课程介绍（书信/短视频脚本）、发言稿、公开信。</li>
+            <li><b>活动目标三维度</b>：情感（价值观）、技能（能力）、认知（知识）——从这三方面写目标。</li>
+            <li><b>活动过程结构</b>：准备（班主任统筹+班委策划+物资）→ 导入（视频/图片/故事引入）→ 主体（案例讲解、讨论、游戏、朗诵、竞赛、表演等互动环节）→ 升华（全班性活动+班主任寄语小结）。</li>
+          </ul>
+          <div class="kt"><b>⚠️ 易失分点：</b>① 未标明学段；② 方案无针对性/不可操作；③ 缺少互动与评价环节；④ 未设效果检验方法（学生问卷/家长反馈/观察记录）。</div>
+          <div class="kw"><b>💡 设计依据怎么写：</b>学生身心发展特点（如××学段学生正处于……时期）+ 班集体状况 + 理论依据（皮亚杰/埃里克森/德育原则等），体现专业性。</div>
+        </div>
+      </div>
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span>答题总原则 & 高频规范用语</div>
+        <div class="kp-c">
+          <ul>
+            <li><b>多角度、分条列点</b>，语言精炼、用教育专业术语，避免大白话与模板化套话。</li>
+            <li><b>背诵是前提</b>：主观题靠理论积累，每天反复背诵高频考点，整理个人答题模板。</li>
+            <li><b>关注教育热点</b>：研学旅行、"双减"政策、五项管理、课后服务、教育信息化、教育家精神等常入题。</li>
+          </ul>
+          <div class="kw"><b>💡 常见升华句：</b>"贯彻素质教育观，促进全体学生全面而有个性的发展""建立民主平等的师生关系""坚持立德树人根本任务""做学生锤炼品格、学习知识、创新思维、奉献祖国的引路人"。</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════ 第二章 ══════════ -->
+  <section class="ch open" id="sec2">
+    <div class="ch-head">
+      <div class="ch-no">2</div>
+      <div class="ch-title"><b>素质教育与新课程改革</b><span>辨析、案例分析最高频考点</span></div>
+      <div class="ch-arrow">▼</div>
+    </div>
+    <div class="ch-body">
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span>素质教育的基本内涵（材料分析必背）</div>
+        <div class="kp-c">
+          <ul>
+            <li>素质教育是<b>以提高国民素质为根本宗旨</b>的教育。</li>
+            <li>素质教育是<b>面向全体学生</b>的教育。</li>
+            <li>素质教育是<b>促进学生全面发展</b>的教育（全面发展≠平均发展，是和谐的全面发展）。</li>
+            <li>素质教育是<b>促进学生个性发展</b>的教育。</li>
+            <li>素质教育是以培养<b>创新精神和实践能力为重点</b>的教育。</li>
+          </ul>
+          <div class="mk"><b>【口诀】提素、个性、创、两全</b> —— 提高国民素质 / 个性发展 / 创新精神实践能力 / 面向全体、全面发展。</div>
+          <div class="kt"><b>⚠️ 2006年《义务教育法》修订</b>明确"义务教育必须贯彻国家的教育方针，实施素质教育"，素质教育上升为<b>国家意志、法律层面</b>。</div>
+        </div>
+      </div>
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span>新课程改革的核心理念与具体目标</div>
+        <div class="kp-c">
+          <ul>
+            <li><b>核心理念</b>：教育以人为本，<b>"一切为了每一位学生的发展"</b>。</li>
+            <li><b>三维目标</b>：<b>知识与技能、过程与方法、情感态度与价值观</b>。</li>
+            <li><b>课程结构特点</b>：均衡性、综合性、选择性。</li>
+            <li><b>课程管理</b>：实行<b>国家、地方、学校三级课程管理</b>制度。</li>
+            <li><b>课程实施</b>：小学以综合课程为主；初中分科与综合相结合；高中以分科为主；从小学至高中设置<b>综合实践活动并作为必修课</b>（信息技术教育、研究性学习、社区服务与社会实践、劳动与技术教育）。</li>
+          </ul>
+          <div class="mk"><b>【口诀】方平关节有内功</b> —— 课程<b>功</b>能转变 / <b>均</b>衡性综合性选择性 / <b>关</b>系内容与生活时代联系 / 学习方<b>式</b>转变 / 评价<b>制</b>度转变 / 三级<b>管</b>理。</div>
+        </div>
+      </div>
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span>"以人为本"的学生观（两独一发）</div>
+        <div class="kp-c">
+          <ul>
+            <li><b>学生是发展的人</b>：身心发展有规律；有巨大发展潜能；处于发展过程中（允许犯错、容错教育）。</li>
+            <li><b>学生是独特的人</b>：是完整的人；每个学生有独特性（因材施教）；学生与成人有巨大差异（换位思考、儿童视角）。</li>
+            <li><b>学生是具有独立意义的人</b>：独立于教师头脑之外的客观存在；是学习的主体；是责权的主体。</li>
+          </ul>
+          <div class="mk"><b>【口诀】两独一发</b> —— 独特 / 独立意义 / 发展。</div>
+        </div>
+      </div>
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span>现代教师观（角色转变 + 行为转变）</div>
+        <div class="kp-c">
+          <p class="sub">① 角色转变</p>
+          <ul>
+            <li>从知识传授者 → 学生学习的<b>促进者</b>；</li>
+            <li>从"教书匠" → 教育教学的<b>研究者和反思的实践者</b>；</li>
+            <li>从课程忠实执行者 → 课程的<b>建设者和开发者</b>；</li>
+            <li>从学校教师 → <b>社区型开放教师</b>；同时是<b>终身学习的践行者</b>。</li>
+          </ul>
+          <p class="sub" style="margin-top:6px">② 行为转变</p>
+          <ul>
+            <li>对待<b>师生关系</b>：尊重、赞赏、民主、互动、教学相长；</li>
+            <li>对待<b>教学</b>：帮助、引导、启发；</li>
+            <li>对待<b>自我</b>：反思；对待<b>其他教育者</b>：合作。</li>
+          </ul>
+          <div class="mk"><b>【口诀】促进·研究·开发·开放（"盐放醋/见盐放醋"谐音：建研放促）</b>；行为转变 <b>"赞助盒饭"</b>（尊重赞赏/帮助引导/反思/合作）。</div>
+        </div>
+      </div>
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span>新课程教学观（学习过人）</div>
+        <div class="kp-c">
+          <ul>
+            <li>教学从"<b>教育者为中心</b>"转向"<b>学习者为中心</b>"；</li>
+            <li>教学从"<b>教会学生知识</b>"转向"<b>教会学生学习</b>"；</li>
+            <li>教学从"<b>重结论轻过程</b>"转向"<b>重结论更重过程</b>"；</li>
+            <li>教学从"<b>关注学科</b>"转向"<b>关注人</b>"。</li>
+          </ul>
+          <div class="mk"><b>【口诀】学习过人</b> —— 学习者中心 / 教会学习 / 重过程 / 关注人。</div>
+        </div>
+      </div>
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span>新课程学习方式 & 评价观</div>
+        <div class="kp-c">
+          <p class="sub">① 三大学习方式</p>
+          <ul>
+            <li><b>自主学习</b>：主动、独立、有元认知监控的学习，区别于被动接受。</li>
+            <li><b>探究学习</b>：问题性、过程性、开放性；步骤=问题→计划→研究→解释→反思。</li>
+            <li><b>合作学习</b>：互助性、互补性；培养合作意识、团队精神、沟通能力。</li>
+          </ul>
+          <p class="sub" style="margin-top:6px">② 新课程评价理念</p>
+          <ul>
+            <li>目的：<b>促进发展</b>而非甄别选拔；评价内容<b>综合化</b>；方式<b>多样化</b>（定性与定量结合）；主体<b>多元化</b>（师、生、家长、管理者共参与）；注重<b>过程</b>（形成性评价与终结性评价结合）。</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════ 第三章 ══════════ -->
+  <section class="ch open" id="sec3">
+    <div class="ch-head">
+      <div class="ch-no">3</div>
+      <div class="ch-title"><b>教育学基础原理</b><span>教育本质 · 目的 · 身心发展</span></div>
+      <div class="ch-arrow">▼</div>
+    </div>
+    <div class="ch-body">
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span>教育的本质与属性</div>
+        <div class="kp-c">
+          <ul>
+            <li><b>本质属性</b>：教育是有目的地培养人的社会活动（区别于其他社会现象的根本特征）。</li>
+            <li><b>社会属性</b>：永恒性、历史性、阶级性、相对独立性、生产性。</li>
+            <li><b>教育构成要素</b>：教育者（主导）、受教育者（主体）、教育影响（中介）。</li>
+            <li><b>教育功能</b>：个体功能（本体）与社会功能（派生）；正向/负向；显性/隐性。</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span>教育目的与全面发展教育</div>
+        <div class="kp-c">
+          <ul>
+            <li><b>教育目的层次</b>：国家教育目的 → 培养目标 → 课程目标 → 教学目标。</li>
+            <li><b>个人本位论</b>：教育为满足个人需要，代表：卢梭、裴斯泰洛齐、福禄贝尔；<b>社会本位论</b>：教育为社会培养公民，代表：柏拉图、涂尔干、凯兴斯泰纳、孔德。</li>
+            <li><b>我国教育目的理论依据</b>：马克思关于人的全面发展学说；<b>教育与生产劳动相结合</b>是实现全面发展的<b>唯一方法</b>。</li>
+            <li><b>全面发展教育构成</b>：德育（灵魂和统帅）、智育（前提和支持）、体育（物质基础）、美育（动力）、劳动技术教育（综合体现）——相互依存、相互促进。</li>
+            <li><b>我国教育目的</b>：培养德智体美劳全面发展的社会主义建设者和接班人（重点：创新精神+实践能力）。</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span>影响人身心发展的因素</div>
+        <div class="kp-c">
+          <ul>
+            <li><b>遗传</b>：物质前提、生理基础，<b>不起决定作用</b>；差异是个体差异的原因之一；成熟制约发展水平与阶段；具有可塑性。</li>
+            <li><b>环境</b>：提供多种可能（机遇、条件、对象）；影响有积极消极之分；人具有主观能动性，可改造环境。</li>
+            <li><b>学校教育</b>：在人的发展中起<b>主导作用</b>（有目的有计划有组织；专门训练教师；有效控制各种因素）。</li>
+            <li><b>个体主观能动性</b>：<b>决定性因素</b>、内因、动力。</li>
+          </ul>
+          <div class="mk"><b>【口诀】遗传提供可能，环境提供条件，学校主导，主观能动决定</b>。</div>
+        </div>
+      </div>
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span>个体身心发展规律及教育启示（必背）</div>
+        <div class="kp-c">
+          <div class="table-box"><table>
+            <tr><th>规律</th><th>含义</th><th>教育启示</th></tr>
+            <tr><td><b>顺序性</b></td><td>由低到高、由简到繁、不可逆</td><td>循序渐进，"拔苗助长""陵节而施"违背此规律</td></tr>
+            <tr><td><b>阶段性</b></td><td>不同年龄阶段有不同特征与任务</td><td>分阶段教育，不搞"一刀切、一锅煮"</td></tr>
+            <tr><td><b>不平衡性</b></td><td>同一方面不同速、不同方面不同时</td><td><b>抓住关键期</b>、适时而教</td></tr>
+            <tr><td><b>互补性</b></td><td>身与身、身与心互补</td><td>扬长避短、长善救失、培养自信</td></tr>
+            <tr><td><b>个别差异性</b></td><td>人与人之间存在差异</td><td><b>因材施教</b></td></tr>
+          </table></div>
+        </div>
+      </div>
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span>课程基础 & 学校教育制度</div>
+        <div class="kp-c">
+          <ul>
+            <li><b>课程类型</b>：学科课程（分科）/ 活动课程；必修/选修；显性/隐性；国家/地方/校本课程。</li>
+            <li><b>课程目标取向</b>：三维目标（知识与技能、过程与方法、情感态度价值观）。</li>
+            <li><b>学制</b>：学前教育、初等教育、中等教育、高等教育；我国现行学制为<b>分支型学制</b>（"六三三"为主）。</li>
+            <li><b>义务教育特点</b>：强制性、普及性、免费性。</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════ 第四章 ══════════ -->
+  <section class="ch open" id="sec4">
+    <div class="ch-head">
+      <div class="ch-no">4</div>
+      <div class="ch-title"><b>教学原理与教学实施</b><span>原则 · 方法 · 环节 · 好课标准</span></div>
+      <div class="ch-arrow">▼</div>
+    </div>
+    <div class="ch-body">
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span>教学过程的基本规律</div>
+        <div class="kp-c">
+          <ul>
+            <li><b>间接经验与直接经验相结合</b>（学生以学习间接经验为主，结合直接经验）。</li>
+            <li><b>掌握知识与发展智力相统一</b>（教学的发展性规律）。</li>
+            <li><b>掌握知识与提高思想相统一</b>（教学的教育性规律，"文以载道"）。</li>
+            <li><b>教师主导作用与学生主体作用相统一</b>。</li>
+          </ul>
+          <div class="mk"><b>【口诀】掌握知识是基础，发展智力是核心，教师主导学生主体</b>。</div>
+        </div>
+      </div>
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span>八大教学原则（结合案例分析必背）</div>
+        <div class="kp-c">
+          <div class="table-box"><table>
+            <tr><th>原则</th><th>关键词 / 材料对应</th></tr>
+            <tr><td><b>启发性原则</b></td><td>引导学生主动思考探究、提问启发，反对"填鸭式"灌输</td></tr>
+            <tr><td><b>循序渐进原则</b></td><td>由浅入深、由易到难、遵循认知规律，反对"超前教学、拔苗助长"</td></tr>
+            <tr><td><b>因材施教原则</b></td><td>针对学生差异（成绩、性格、兴趣）差异化教学，反对"一刀切"</td></tr>
+            <tr><td><b>直观性原则</b></td><td>实物、模型、图片、视频等直观手段（遵循感知规律）</td></tr>
+            <tr><td><b>巩固性原则</b></td><td>及时复习、强化练习、单元测试（防"学了就忘"）</td></tr>
+            <tr><td><b>理论联系实际原则</b></td><td>书本知识联系生活实际，学以致用</td></tr>
+            <tr><td><b>量力性原则</b></td><td>教学难度与进度要符合学生接受能力（可接受性）</td></tr>
+            <tr><td><b>科学性与教育性相结合</b></td><td>传授科学知识的同时进行思想品德教育</td></tr>
+          </table></div>
+          <div class="mk"><b>【口诀】冯巩找因，直发巩俐（谐音）—— 循（循序渐进）巩（巩固）找（因材施教）因 / 直（直观）发（启发）巩（巩固）理（理论联系实际）</b>。常记组合：<b>"启序因直巩"</b>。</div>
+        </div>
+      </div>
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span>常用教学方法</div>
+        <div class="kp-c">
+          <ul>
+            <li><b>以语言为主</b>：讲授法（最常用）、谈话法、讨论法、读书指导法。</li>
+            <li><b>以直观为主</b>：演示法、参观法。</li>
+            <li><b>以实践为主</b>：练习法、实验法、实习作业法、实践活动法。</li>
+            <li><b>选择依据</b>：教学目标、教学内容、学生特点、教师素质、时间设备等条件。</li>
+          </ul>
+          <div class="kt"><b>⚠️ 辨析常考：</b>讲授法 ≠ 注入式教学；任何方法都有利弊，关键是是否启发学生思维（注入式与启发式是教学指导思想，非具体方法）。</div>
+        </div>
+      </div>
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span>教学工作的基本环节 & 一堂好课标准</div>
+        <div class="kp-c">
+          <ul>
+            <li><b>基本环节</b>：<b>备课（前提）→ 上课（中心环节）→ 作业布置与批改 → 课外辅导 → 学业成绩检查与评定</b>。</li>
+            <li><b>备课三备</b>：备教材（钻研）、备学生、备教法；三种计划：学期、单元、课时（教案）。</li>
+            <li><b>一堂好课标准</b>：目标明确、重点突出、内容正确、方法得当、表达清晰、组织严密、气氛热烈。</li>
+            <li><b>教学组织形式</b>：班级授课制（基本形式）、个别教学、分组教学、特朗普制、道尔顿制。</li>
+            <li><b>教学评价类型</b>：按功能分诊断性、形成性、总结性；按标准分相对评价、绝对评价、个体内差异评价。</li>
+          </ul>
+          <div class="mk"><b>【口诀】好课七标准：目标·重点·内容·方法·表达·组织·气氛（"标重内方达组气"）</b>。</div>
+        </div>
+      </div>
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span>课堂管理与教学机智（案例分析常考）</div>
+        <div class="kp-c">
+          <ul>
+            <li><b>课堂问题行为处理</b>：预防为主，非言语暗示→冷处理→个别课后谈话，避免当众羞辱、正面冲突。</li>
+            <li><b>教学机智</b>：教师面对突发事件（学生捣乱、答非所问、意外事件）灵活应变的能力，体现教师劳动的<b>创造性</b>。</li>
+            <li><b>处理原则</b>：沉着冷静、因势利导、把教育事件转化为教育资源、事后个别教育。</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════ 第五章 ══════════ -->
+  <section class="ch open" id="sec5">
+    <div class="ch-head">
+      <div class="ch-no">5</div>
+      <div class="ch-title"><b>学生心理发展 · 个别差异</b><span>皮亚杰 · 埃里克森 · 认知过程 · 气质</span></div>
+      <div class="ch-arrow">▼</div>
+    </div>
+    <div class="ch-body">
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span>皮亚杰认知发展阶段理论（四阶段）</div>
+        <div class="kp-c">
+          <div class="table-box"><table>
+            <tr><th>阶段</th><th>年龄</th><th>核心特点</th></tr>
+            <tr><td><b>感知运动阶段</b></td><td>0-2岁</td><td>靠感觉动作认识世界；<b>客体永久性</b>；思维萌芽</td></tr>
+            <tr><td><b>前运算阶段</b></td><td>2-7岁</td><td>表象思维；<b>自我中心性</b>；<b>不可逆</b>；泛灵论；刻板；无守恒概念</td></tr>
+            <tr><td><b>具体运算阶段</b></td><td>7-11岁</td><td><b>守恒概念形成</b>；可逆；去自我中心；具体逻辑思维</td></tr>
+            <tr><td><b>形式运算阶段</b></td><td>11-15岁</td><td>抽象逻辑思维；假设-演绎推理；命题思维；可逆与补偿</td></tr>
+          </table></div>
+          <div class="kt"><b>⚠️ 高频易混点：</b>"守恒""去自我中心"出现在<b>具体运算阶段</b>；"自我中心、不可逆、泛灵论"是<b>前运算阶段</b>。"客体永久性"是感知运动阶段。</div>
+        </div>
+      </div>
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span>维果斯基 · 最近发展区</div>
+        <div class="kp-c">
+          <ul>
+            <li><b>最近发展区</b>：儿童现有水平与经过他人帮助可能达到的水平之间的差距。</li>
+            <li><b>教学启示</b>：教学应<b>走在发展前面</b>，"跳一跳，摘桃子"；倡导支架式教学。</li>
+            <li><b>内化学说</b>：高级心理机能源于社会交往，语言是思维工具。</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span>埃里克森人格发展八阶段（高频：学龄期与青春期）</div>
+        <div class="kp-c">
+          <div class="table-box"><table>
+            <tr><th>阶段</th><th>年龄</th><th>发展任务（危机）</th></tr>
+            <tr><td>婴儿期</td><td>0-1.5岁</td><td>信任感 vs 不信任感</td></tr>
+            <tr><td>儿童早期</td><td>1.5-3岁</td><td>自主感 vs 羞耻感与怀疑</td></tr>
+            <tr><td>学前期</td><td>3-6岁</td><td>主动感 vs 内疚感</td></tr>
+            <tr><td><b>学龄期</b></td><td>6-12岁</td><td><b>勤奋感 vs 自卑感</b>（小学，鼓励努力体验成功）</td></tr>
+            <tr><td><b>青春期</b></td><td>12-18岁</td><td><b>自我同一性 vs 角色混乱</b>（中学，高频考点）</td></tr>
+            <tr><td>成年早期</td><td>18-25岁</td><td>亲密感 vs 孤独感</td></tr>
+            <tr><td>成年中期</td><td>25-60岁</td><td>繁殖感 vs 停滞感</td></tr>
+            <tr><td>成年晚期</td><td>60岁+</td><td>自我整合 vs 绝望感</td></tr>
+          </table></div>
+        </div>
+      </div>
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span>认知过程（注意、感知、记忆、思维）</div>
+        <div class="kp-c">
+          <p class="sub">① 注意</p>
+          <ul>
+            <li><b>种类</b>：无意注意（无目的不需意志）、有意注意（需意志努力）、有意后注意（有目的不需意志）。</li>
+            <li><b>品质</b>：广度、稳定性（分散/起伏）、分配（一心二用）、转移。</li>
+          </ul>
+          <p class="sub" style="margin-top:6px">② 感知觉</p>
+          <ul>
+            <li><b>感觉规律</b>：适应、对比、补偿、联觉；<b>知觉特性</b>：选择性、整体性、理解性、恒常性。</li>
+          </ul>
+          <p class="sub" style="margin-top:6px">③ 记忆与遗忘</p>
+          <ul>
+            <li><b>分类</b>：按保持时间分<b>瞬时（感觉）记忆、短时记忆（7±2组块）、长时记忆</b>。</li>
+            <li><b>遗忘曲线</b>：艾宾浩斯——<b>先快后慢、呈负加速型</b>；<b>最佳复习时间：当天/及时复习</b>。</li>
+            <li><b>遗忘原因</b>：消退说、干扰说（前摄/倒摄抑制）、压抑说（动机）、同化说、提取失败说。</li>
+            <li><b>过度学习</b>：学习程度 <b>150%</b> 记忆效果最佳。</li>
+          </ul>
+          <p class="sub" style="margin-top:6px">④ 思维</p>
+          <ul>
+            <li><b>特征</b>：间接性、概括性；<b>过程</b>：分析综合、比较分类、抽象概括、具体化系统化。</li>
+            <li><b>问题解决影响因素</b>：问题情境、定势、功能固着、原型启发、动机情绪、已有知识经验。</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span>情绪、情感与意志</div>
+        <div class="kp-c">
+          <ul>
+            <li><b>情绪状态</b>：<b>心境</b>（弥散持久）、<b>激情</b>（强烈短暂爆发）、<b>应激</b>（突发紧急反应）。</li>
+            <li><b>高级情感</b>：道德感、理智感、美感。</li>
+            <li><b>意志品质</b>：自觉性、果断性、自制性、坚韧性（四个相反：盲从/武断、优柔寡断、任性、动摇）。</li>
+            <li><b>动机冲突</b>：双趋、双避、趋避、多重趋避。</li>
+            <li><b>中学生情绪特点</b>：丰富、强烈、不稳定、两极性明显、易激动、逆反性（案例分析常考）。</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span>气质类型与因材施教（案例分析必背）</div>
+        <div class="kp-c">
+          <div class="table-box"><table>
+            <tr><th>气质</th><th>特点</th><th>教育策略</th></tr>
+            <tr><td><b>胆汁质</b></td><td>热情直率、精力旺盛、易冲动、脾气急</td><td>直截了当、不宜激怒；培养自制力与坚持精神</td></tr>
+            <tr><td><b>多血质</b></td><td>活泼好动、反应快、兴趣易变、见异思迁</td><td>多种教育方式、定期提醒；培养专一、扎实精神</td></tr>
+            <tr><td><b>黏液质</b></td><td>安静稳重、反应慢、耐力强、固执</td><td>耐心教育、给足思考反应时间</td></tr>
+            <tr><td><b>抑郁质</b></td><td>敏感细腻、多愁善感、内向孤僻</td><td>委婉暗示、多关心爱护、<b>不在公开场合批评</b></td></tr>
+          </table></div>
+          <div class="kt"><b>⚠️ 答题要点：</b>气质无好坏之分，不决定成就高低，教师应尊重差异、扬长避短、因材施教。</div>
+        </div>
+      </div>
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span>能力与性格</div>
+        <div class="kp-c">
+          <ul>
+            <li><b>智力结构</b>：观察力、注意力、记忆力、思维力（核心）、想象力。</li>
+            <li><b>能力差异</b>：水平差异（正态分布）、类型差异、早晚差异——教育上因材施教、扬长补短。</li>
+            <li><b>性格培养</b>：加强三观教育、及时强化积极行为、榜样示范、利用集体力量、提高自我教育能力。</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════ 第六章 ══════════ -->
+  <section class="ch open" id="sec6">
+    <div class="ch-head">
+      <div class="ch-no">6</div>
+      <div class="ch-title"><b>学习心理 · 学习理论</b><span>学习动机 · 迁移 · 策略（案例分析必考）</span></div>
+      <div class="ch-arrow">▼</div>
+    </div>
+    <div class="ch-body">
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span>四大学习理论流派</div>
+        <div class="kp-c">
+          <div class="table-box"><table>
+            <tr><th>流派</th><th>代表人物</th><th>核心观点</th></tr>
+            <tr><td><b>行为主义</b></td><td>桑代克（试误说：准备/练习/效果律）、巴甫洛夫（经典条件反射）、斯金纳（操作性条件反射）、班杜拉（社会学习）</td><td>学习是刺激-反应联结；<b>强化/惩罚/消退</b>；观察学习</td></tr>
+            <tr><td><b>认知主义</b></td><td>布鲁纳（发现学习）、奥苏贝尔（有意义接受学习+先行组织者）</td><td>学习是主动形成认知结构；理解与意义</td></tr>
+            <tr><td><b>建构主义</b></td><td>皮亚杰、维果斯基等</td><td><b>知识观</b>（动态）、<b>学习观</b>（主动建构、社会互动、情境性）、<b>学生观</b>（经验丰富且有差异）；教学启示：情境式教学、合作学习、支架式教学</td></tr>
+            <tr><td><b>人本主义</b></td><td>罗杰斯、马斯洛</td><td>有意义的自由学习；教师做"促进者"，营造真诚和谐心理氛围</td></tr>
+          </table></div>
+          <div class="kt"><b>⚠️ 斯金纳强化区分：</b>正强化=呈现愉快刺激增行为（表扬）；负强化=撤销厌恶刺激增行为（撤销处分）；惩罚=呈现厌恶刺激减行为（批评）；消退=不予理睬减行为。</div>
+        </div>
+      </div>
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span>学习动机五大理论（案例分析重点）</div>
+        <div class="kp-c">
+          <ul>
+            <li><b>强化理论</b>（行为主义）：动机是强化的结果。</li>
+            <li><b>需要层次理论</b>（马斯洛）：生理→安全→<b>归属与爱→尊重</b>→自我实现（缺失性需要 vs 成长性需要；<b>求知需要</b>也属成长性）。</li>
+            <li><b>成就动机理论</b>（阿特金森）：力求成功者选中等难度任务；避免失败者选过难或过易任务。</li>
+            <li><b>成败归因理论</b>（韦纳）：三维度（内外/稳定/可控）六因素（能力、努力、运气、任务难度、身心状况、外界环境）。</li>
+            <li><b>自我效能感</b>（班杜拉）：对自身能否完成任务的判断；影响因素=成败经验（主要）、替代经验、言语劝说、情绪唤醒。</li>
+          </ul>
+          <div class="kw"><b>💡 归因答题要点：</b>引导学生将成败归因于<b>努力</b>（内部、不稳定、可控）→ 保护自尊、增强信心、持续努力；避免归因于能力（易习得性无助）。</div>
+        </div>
+      </div>
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span>学习动机的培养与激发（简答/案例分析）</div>
+        <div class="kp-c">
+          <p class="sub">培养</p>
+          <ul>
+            <li>了解和满足学生需要，促进动机产生；重视立志教育、成就动机训练；</li>
+            <li>帮助学生确立正确自我概念、获得自我效能感；培养"努力决定成败"的归因观。</li>
+          </ul>
+          <p class="sub" style="margin-top:6px">激发</p>
+          <ul>
+            <li><b>创设问题情境，实施启发式教学</b>（激发好奇心）；</li>
+            <li>根据作业难度<b>恰当控制动机水平</b>（耶克斯-多德森定律：<b>倒U型曲线</b>，中等强度动机效率最高，任务越难动机应越低）；</li>
+            <li>充分利用反馈信息，<b>妥善进行奖惩</b>（表扬为主、慎用惩罚）；</li>
+            <li>正确指导结果归因，促使学生继续努力。</li>
+          </ul>
+          <div class="mk"><b>【口诀】启发·难度·反馈·归因（"启难反归"）</b></div>
+        </div>
+      </div>
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span>学习迁移</div>
+        <div class="kp-c">
+          <ul>
+            <li><b>分类</b>：正/负迁移；顺向/逆向迁移；水平（横向）/垂直（纵向）迁移；一般/特殊迁移。</li>
+            <li><b>早期理论</b>：形式训练说、共同要素说（桑代克）、经验类化说（贾德，"水下击靶"）、关系转换说（苛勒）、认知结构说（奥苏贝尔）。</li>
+            <li><b>促进迁移教学</b>：精选教材、合理编排教学内容、合理安排教学程序、教授学习策略提高迁移意识性。</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span>学习策略</div>
+        <div class="kp-c">
+          <ul>
+            <li><b>认知策略</b>：复述策略（划线与复习）、精加工策略（记忆术、做笔记、提问）、组织策略（归类、纲要）。</li>
+            <li><b>元认知策略</b>：计划、监控、调节。</li>
+            <li><b>资源管理策略</b>：时间管理、环境管理、努力管理、寻求帮助。</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span>学习品质相关（明哥课程模块）</div>
+        <div class="kp-c">
+          <ul>
+            <li><b>学习习惯培养</b>：明确目标、制定计划、专注投入、及时复习、独立作业、勤思好问。</li>
+            <li><b>厌学应对</b>：了解原因（归因/兴趣/家庭/人际关系）→ 激发动机 → 体验成功 → 家校协同。</li>
+            <li><b>高原现象</b>：学习中期成绩停滞不前——调整心态与方法、加强动机、分解目标，坚持跨过。</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════ 第七章 ══════════ -->
+  <section class="ch open" id="sec7">
+    <div class="ch-head">
+      <div class="ch-no">7</div>
+      <div class="ch-title"><b>德育原理与方法</b><span>品德结构 · 规律 · 原则 · 方法（高频）</span></div>
+      <div class="ch-arrow">▼</div>
+    </div>
+    <div class="ch-body">
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span>品德心理结构（知情意行）</div>
+        <div class="kp-c">
+          <ul>
+            <li>道德<b>认知</b>（基础/核心）、道德<b>情感</b>（内部动力/催化剂）、道德<b>意志</b>（精神力量/调节）、道德<b>行为</b>（<b>衡量品德的重要标志</b>）。</li>
+            <li>德育过程一般以<b>知为开端</b>，也可晓之以理、动之以情、导之以行、持之以恒，<b>多端性</b>。</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span>儿童道德发展理论（皮亚杰 & 科尔伯格）</div>
+        <div class="kp-c">
+          <ul>
+            <li><b>皮亚杰</b>：对偶故事法；从他律到自律；<b>10岁</b>是分水岭。</li>
+            <li><b>科尔伯格</b>：道德两难故事法（海因茨偷药）；<b>三水平六阶段</b>——前习俗水平（惩罚服从定向、相对功利定向）、习俗水平（寻求认可"好孩子"定向、遵守法规定向）、后习俗水平（社会契约定向、普遍伦理定向）。</li>
+            <li><b>态度与品德形成过程</b>：依从（从众与服从）→ 认同 → 内化。</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span>德育过程基本规律</div>
+        <div class="kp-c">
+          <ul>
+            <li>学生的<b>知、情、意、行</b>诸因素统一发展的规律；</li>
+            <li>学生在<b>活动和交往</b>中形成思想品德的规律；</li>
+            <li>学生思想<b>内部矛盾转化</b>（教育与自我教育相结合）的规律；</li>
+            <li>学生思想品德形成的<b>长期性和反复性</b>规律（启示：反复抓、抓反复）。</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span>德育九大原则（案例分析必背）</div>
+        <div class="kp-c">
+          <div class="table-box"><table>
+            <tr><th>原则</th><th>要点</th></tr>
+            <tr><td><b>导向性原则</b></td><td>坚持正确方向，引导学生树立正确三观</td></tr>
+            <tr><td><b>疏导原则</b></td><td>循循善诱、以理服人，耐心倾听、不简单粗暴</td></tr>
+            <tr><td><b>尊重学生与严格要求相结合</b></td><td>爱护尊重人格 + 提出合理要求（严慈相济）</td></tr>
+            <tr><td><b>知行统一原则</b></td><td>理论教育 + 实践锻炼，言行一致</td></tr>
+            <tr><td><b>正面教育与纪律约束相结合</b></td><td>正面引导为主 + 必要纪律约束</td></tr>
+            <tr><td><b>长善救失（依靠积极因素克服消极因素）</b></td><td>一分为二看待学生，发扬闪光点</td></tr>
+            <tr><td><b>教育影响一致性与连贯性</b></td><td>学校、家庭、社会教育力量协调统一</td></tr>
+            <tr><td><b>因材施教原则</b></td><td>针对学生品德差异、年龄特点施教</td></tr>
+            <tr><td><b>集体教育与个别教育相结合</b></td><td>通过集体教育个人、通过个人影响集体</td></tr>
+          </table></div>
+          <div class="mk"><b>【口诀】陶行知正面疏导（导向/知行统一/正面教育/疏导）＋ 尊严（尊重严格要求）、长善、一致连贯、因材、集体个别</b>。</div>
+        </div>
+      </div>
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span>德育方法 & 途径</div>
+        <div class="kp-c">
+          <ul>
+            <li><b>说服教育法</b>（最基本最常用）、<b>榜样示范法</b>、<b>实际锻炼法</b>、<b>情感陶冶法</b>（环境/人格/艺术陶冶）、<b>品德评价法</b>（表扬奖励与批评处分）、<b>个人修养法</b>（自我教育）。</li>
+            <li><b>德育途径</b>：教学（<b>最基本、最经常、最有效的途径</b>）、社会实践活动、课外校外活动、团队活动、校会班会晨会时事学习、班主任工作。</li>
+          </ul>
+          <div class="mk"><b>【口诀】说服、榜样、锻炼、陶冶、评价、修养 ——"说榜锻陶评修"</b></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════ 第八章 ══════════ -->
+  <section class="ch open" id="sec8">
+    <div class="ch-head">
+      <div class="ch-no">8</div>
+      <div class="ch-title"><b>班级管理与班主任工作</b><span>班集体培养 · 后进生转化 · 突发事件</span></div>
+      <div class="ch-arrow">▼</div>
+    </div>
+    <div class="ch-body">
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span>班集体的形成与培养（简答/案例）</div>
+        <div class="kp-c">
+          <ul>
+            <li><b>1. 确定班集体的发展目标</b>（方向/动力）；</li>
+            <li><b>2. 建立班集体的核心队伍</b>（选拔培养班干部）；</li>
+            <li><b>3. 建立班集体的正常秩序</b>（班规班纪）；</li>
+            <li><b>4. 组织形式多样的教育活动</b>；</li>
+            <li><b>5. 培养正确的集体舆论和良好的班风</b>（班集体形成的重要标志）。</li>
+          </ul>
+          <div class="mk"><b>【口诀】目标·核心·秩序·活动·舆论班风</b></div>
+        </div>
+      </div>
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span>班主任工作的主要内容</div>
+        <div class="kp-c">
+          <ul>
+            <li><b>了解和研究学生</b>（前提和基础）；<b>组织和培养班集体</b>（<b>中心环节</b>）；</li>
+            <li>建立学生档案；<b>做好个别教育</b>（<b>后进生转化是首要任务</b>）；</li>
+            <li>开展班会活动；协调校内外各种教育影响（家校沟通）；</li>
+            <li>操行评定；撰写班主任工作计划与总结。</li>
+          </ul>
+          <div class="mk"><b>【口诀】计划开班会，协调评定班集体，个别学生档案</b></div>
+          <div class="kt"><b>⚠️ 辨析高频：</b>了解和研究学生是<b>前提基础</b>；组织和培养班集体是<b>中心环节</b>；"班主任是班级管理的核心、学校德育工作的主要实施者"。</div>
+        </div>
+      </div>
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span>班级管理模式</div>
+        <div class="kp-c">
+          <ul>
+            <li><b>常规管理</b>：制定执行规章制度；<b>平行管理</b>：班主任既管集体又管个人（马卡连柯）；</li>
+            <li><b>民主管理</b>：发挥学生主体作用；<b>目标管理</b>：以目标来管理班级（德鲁克）。</li>
+            <li>班级突发事件处理原则：冷静克制、及时果断、公平公正、善于引导、<b>把事件转化为教育契机</b>。</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span>后进生（问题学生）转化策略（案例分析高分要点）</div>
+        <div class="kp-c">
+          <ul>
+            <li>树立正确学生观，<b>关心爱护、尊重人格</b>，不歧视不放弃；</li>
+            <li>培养激发学习动机，引导<b>归因于努力</b>，提高自我效能感；</li>
+            <li>运用<b>长善救失</b>原则，一分为二看待，抓住"闪光点"；</li>
+            <li>创造成功机会，体验成功乐趣；</li>
+            <li>根据品德形成<b>长期性反复性</b>规律，坚持长期抓、反复抓；</li>
+            <li>家校协同、科任教师配合、同伴互助。</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span>师生关系与家校沟通</div>
+        <div class="kp-c">
+          <ul>
+            <li><b>良好师生关系特征</b>：民主平等、尊师爱生、教学相长、心理相容。</li>
+            <li><b>建立途径</b>：了解研究学生；树立正确学生观；提高自身修养；发扬教育民主；正确处理矛盾。</li>
+            <li><b>家校沟通原则</b>：尊重家长、平等协商、以诚相待；报喜也报忧；指导家庭教育；防止"告状式"沟通；注意场合与方式（家访、家长会、电话/微信、家长开放日）。</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════ 第九章 ══════════ -->
+  <section class="ch open" id="sec9">
+    <div class="ch-head">
+      <div class="ch-no">9</div>
+      <div class="ch-title"><b>师德与职业认知</b><span>教师劳动 · 素养 · 职业道德（三爱两人一终身）</span></div>
+      <div class="ch-arrow">▼</div>
+    </div>
+    <div class="ch-body">
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span>教师劳动的特点（辨析/案例）</div>
+        <div class="kp-c">
+          <ul>
+            <li><b>复杂性和创造性</b>：复杂性（目的全面、任务多样、对象差异）；创造性（<b>因材施教</b>、方法更新、<b>教育机智</b>）。</li>
+            <li><b>连续性和广延性</b>：时间上连续、空间上广延（"时空延续"）。</li>
+            <li><b>长期性和间接性</b>：人才培养周期长（"十年树木百年树人"）；劳动价值以学生为中介间接实现。</li>
+            <li><b>主体性和示范性</b>："身教重于言教"，教师是活教材。</li>
+            <li><b>劳动方式的个体性与成果的群体性</b>。</li>
+          </ul>
+          <div class="mk"><b>【口诀】创（创造性）复（复杂性）连（连续性）广（广延性）长（长期性）间（间接性）主（主体性）示（示范性）</b></div>
+        </div>
+      </div>
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span>教师的专业素养</div>
+        <div class="kp-c">
+          <ul>
+            <li><b>道德素养</b>：爱岗敬业、热爱学生、团结协作、为人师表。</li>
+            <li><b>知识素养</b>：<b>本体性知识</b>（学科专业知识）、<b>条件性知识</b>（教育学心理学等教育理论）、<b>实践性知识</b>（教学经验）、文化知识。</li>
+            <li><b>能力素养</b>：语言表达、组织教学、组织管理、教育科研、自我调控与反思。</li>
+            <li><b>心理素养</b>：良好情绪、意志品质、健全人格。</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span>教师专业发展</div>
+        <div class="kp-c">
+          <ul>
+            <li><b>发展阶段</b>（福勒&布朗）：<b>关注生存</b>（关注自我、同事领导评价）→ <b>关注情境</b>（关注教学任务）→ <b>关注学生</b>（最高阶段）。</li>
+            <li><b>成长途径</b>：观摩分析优秀教师、微格教学、教学反思（波斯纳公式：<b>成长=经验+反思</b>）、校本教研、终身学习。</li>
+            <li><b>教师反思内容</b>：教育理念、教学行为、学生发展、自我成长。</li>
+          </ul>
+          <div class="kw"><b>💡 辨析常考：</b>"教学反思只在课后进行"——错误，应贯穿课前、课中、课后全过程。</div>
+        </div>
+      </div>
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span>《中小学教师职业道德规范》（2008修订）——材料分析必背</div>
+        <div class="kp-c">
+          <div class="table-box"><table>
+            <tr><th>条目</th><th>地位</th><th>关键内容</th></tr>
+            <tr><td><b>爱国守法</b></td><td>基本要求</td><td>贯彻方针、依法执教，无违背方针政策言行</td></tr>
+            <tr><td><b>爱岗敬业</b></td><td>本质要求</td><td>勤恳敬业、认真备课上课批改作业、不敷衍塞责</td></tr>
+            <tr><td><b>关爱学生</b></td><td><b>师德的灵魂</b></td><td>尊重人格、平等公正、严慈相济；<b>不讽刺挖苦歧视，不体罚或变相体罚</b></td></tr>
+            <tr><td><b>教书育人</b></td><td>教师的天职</td><td>遵循规律、实施素质教育、因材施教；<b>不以分数作为评价学生的唯一标准</b></td></tr>
+            <tr><td><b>为人师表</b></td><td>内在要求</td><td>以身作则、廉洁奉公、尊重家长同事、<b>抵制有偿家教、不谋私利</b></td></tr>
+            <tr><td><b>终身学习</b></td><td>专业发展的不竭动力</td><td>拓宽视野、更新结构、钻研业务、探索创新</td></tr>
+          </table></div>
+          <div class="mk"><b>【口诀】三爱两人一终身</b> —— 爱国、爱岗、爱生 / 教书育人、为人师表 / 终身学习。</div>
+        </div>
+      </div>
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span>教师的权利与义务</div>
+        <div class="kp-c">
+          <ul>
+            <li><b>六大权利</b>：教育教学权、学术研究权、指导评价权、报酬待遇权、参与管理权、进修培训权。</li>
+            <li><b>六大义务</b>：遵纪守法、履行教育教学职责、对学生进行思想政治教育、爱护尊重学生、保护学生合法权益、不断提高水平。</li>
+            <li><b>教师角色</b>：教育教学的专业人员，承担教书育人、培养建设者和接班人、提高民族素质的使命。</li>
+            <li><b>解聘情形</b>：故意不完成教学任务造成重大损失；体罚学生经教育不改；品行不良、侮辱学生影响恶劣。</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════ 第十章 ══════════ -->
+  <section class="ch open" id="sec10">
+    <div class="ch-head">
+      <div class="ch-no">10</div>
+      <div class="ch-title"><b>教育法律法规</b><span>教育法 · 教师法 · 义务教育法 · 未成年人保护</span></div>
+      <div class="ch-arrow">▼</div>
+    </div>
+    <div class="ch-body">
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span>核心法律地位与高频考点（选择题为主）</div>
+        <div class="kp-c">
+          <div class="table-box"><table>
+            <tr><th>法律</th><th>地位</th><th>高频考点</th></tr>
+            <tr><td><b>《教育法》</b></td><td>教育的<b>根本大法</b>（"母法"）</td><td>教育方针；教育制度（学前/初等/中等/高等）；<b>受教育者权利</b>（受教育权、人身权、财产权）；学校设立四条件；教育法律责任</td></tr>
+            <tr><td><b>《义务教育法》</b></td><td>义务教育专门法（2006修订）</td><td><b>免试就近入学</b>；均衡发展、<b>不得分设重点班</b>；不收学费杂费；<b>教师工资不低于当地公务员</b>；实施素质教育入法</td></tr>
+            <tr><td><b>《教师法》</b></td><td>教师权利保障</td><td>教师六权利六义务；教师资格与任用；<b>解聘三种情形</b>；待遇保障</td></tr>
+            <tr><td><b>《未成年人保护法》</b></td><td>未成年人保护</td><td>四大保护：<b>家庭、学校、社会、司法</b>（+网络、政府保护）；学校不得体罚、不得变相开除；尊重未成年人尊严</td></tr>
+            <tr><td><b>《预防未成年人犯罪法》</b></td><td>预防犯罪</td><td>不良行为与严重不良行为的界定与干预、专门学校</td></tr>
+            <tr><td><b>《学生伤害事故处理办法》</b></td><td>事故责任</td><td>过错责任原则；学校责任/免责情形；及时救助与告知家长</td></tr>
+          </table></div>
+        </div>
+      </div>
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span>学生权利与保护（案例分析高频）</div>
+        <div class="kp-c">
+          <ul>
+            <li><b>受教育权</b>：参加教育教学活动权、使用设备权、获得公正评价权、获得学业证书权、申诉权。</li>
+            <li><b>人身权</b>：生命健康权、人格尊严权（<b>不得体罚/变相体罚、侮辱人格</b>）、人身自由权、隐私权（不得私拆信件、公开成绩排名需谨慎）、名誉权、肖像权。</li>
+            <li><b>财产权</b>：没收手机/财物、乱收费均可能侵权。</li>
+            <li><b>保护原则</b>：尊重人格、适应身心发展规律特点、教育与保护相结合；儿童权利公约四大原则（儿童利益最佳、尊重尊严、尊重观点意见、无歧视）。</li>
+          </ul>
+          <div class="kt"><b>⚠️ 易错点：</b>① 义务教育阶段<b>不得开除学生</b>；② 教师不得有偿补课；③ 体罚 vs 惩戒：合理惩戒（批评教育权）≠体罚；④ 未成年学生有隐私权，教师不得公开宣扬学生隐私。</div>
+        </div>
+      </div>
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span>法律责任类型</div>
+        <div class="kp-c">
+          <ul>
+            <li><b>行政法律责任</b>：违反行政法律规范（教师违纪，行政处分/解聘；学校违规，责令改正）。</li>
+            <li><b>民事法律责任</b>：侵权行为赔偿、补偿责任（教师体罚造成伤害→学校承担+追偿）。</li>
+            <li><b>刑事法律责任</b>：构成犯罪（严重体罚致伤、侮辱情节严重等，依法追究刑事责任）。</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════ 第十一章 ══════════ -->
+  <section class="ch open" id="sec11">
+    <div class="ch-head">
+      <div class="ch-no">11</div>
+      <div class="ch-title"><b>心理健康教育与沟通合作</b><span>心理辅导 · 青春期教育 · 家校沟通</span></div>
+      <div class="ch-arrow">▼</div>
+    </div>
+    <div class="ch-body">
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span>学校心理健康教育</div>
+        <div class="kp-c">
+          <ul>
+            <li><b>总目标</b>：提高全体学生心理素质、开发潜能、培养乐观向上心理品质、促进人格健全发展（<b>面向全体、以正常学生为主、发展辅导为主</b>）。</li>
+            <li><b>途径</b>：开设心理健康教育课程与辅导课；<b>学科教学渗透</b>；结合班级团队活动；个别咨询辅导；团体辅导；家庭心理辅导。</li>
+            <li><b>常见问题</b>：焦虑（考试焦虑）、厌学、人际关系困扰、网络成瘾、自卑、青春期困惑、逆反。</li>
+          </ul>
+          <div class="kt"><b>⚠️ 辨析常考：</b>"心理健康教育只是心理老师的事"——错误，应全员参与、全学科渗透、家校社协同。</div>
+        </div>
+      </div>
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span>心理辅导方法 & 青春期教育</div>
+        <div class="kp-c">
+          <ul>
+            <li><b>辅导方法</b>：倾听、共情、积极关注；认知疗法、行为矫正（强化、代币、系统脱敏）、理性情绪疗法（ABC理论：事件→信念→情绪结果）。</li>
+            <li><b>青春期特点</b>：自我意识发展<b>第二个飞跃期</b>；情绪两极性波动；逆反心理；异性交往需求。</li>
+            <li><b>异性交往指导</b>：正确认识、把握原则（自然、适度）、克服羞怯、真实坦诚、留有余地、区分友谊与爱情。</li>
+            <li><b>早恋问题处理</b>：尊重理解、疏导为主、不当众批评、不粗暴禁止，因势利导转化为成长教育。</li>
+          </ul>
+          <div class="kw"><b>💡 答题角度：</b>面对青春期逆反/早恋/情绪问题 → 理解发展规律（埃里克森同一性危机）→ 民主疏导 → 尊重与严格要求结合 → 家校协同 → 开展主题教育活动。</div>
+        </div>
+      </div>
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span>教师沟通合作能力（家校/师生/同事）</div>
+        <div class="kp-c">
+          <ul>
+            <li><b>沟通原则</b>：真诚尊重、平等双向、理解共情、就事论事、保护隐私、方式多样（语言+非语言）。</li>
+            <li><b>与家长沟通</b>：尊重信任、报喜也报忧、指导家庭教育、家访有目的、家长会要高效；<b>形成家校合力、家校共育</b>。</li>
+            <li><b>与学生沟通</b>：蹲下来倾听、换位思考、批评讲究艺术（对事不对人、私下进行、先扬后抑）；做良师益友。</li>
+            <li><b>与同事/领导</b>：团结协作、互相学习、服从领导但保留专业意见。</li>
+            <li><b>教师语言要求</b>：准确简练、发音标准、吐字清晰、无语病、有逻辑、得体。</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════ 第十二章 ══════════ -->
+  <section class="ch open" id="sec12">
+    <div class="ch-head">
+      <div class="ch-no">12</div>
+      <div class="ch-title"><b>教师自主发展 · 教育热点</b><span>专业成长 · 双减 · 五项管理 · 教育家精神</span></div>
+      <div class="ch-arrow">▼</div>
+    </div>
+    <div class="ch-body">
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span>教师自主发展能力（考纲板块）</div>
+        <div class="kp-c">
+          <ul>
+            <li><b>内涵</b>：主动学习和反思、自主进行专业发展规划、在压力情境下积极心理调适。</li>
+            <li><b>自我调适</b>：正确认识压力、合理宣泄（运动/倾诉）、时间管理、提升职业认同与幸福感、寻求支持系统。</li>
+            <li><b>职业倦怠应对</b>：认知调整 + 行为改变 + 组织支持。</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span>教育热点关键词（材料分析素材库）</div>
+        <div class="kp-c">
+          <div class="table-box"><table>
+            <tr><th>热点</th><th>核心要点</th></tr>
+            <tr><td><b>"双减"政策</b></td><td>减轻义务教育阶段学生作业负担和校外培训负担；作业管理（总量、分层、设计）；课后服务全覆盖</td></tr>
+            <tr><td><b>五项管理</b></td><td>手机、睡眠、读物、作业、体质健康管理</td></tr>
+            <tr><td><b>课后服务</b></td><td>"5+2"模式；学业辅导+兴趣社团，满足个性化需求</td></tr>
+            <tr><td><b>教育信息化2.0</b></td><td>信息技术与教学深度融合、智慧课堂、精准教学</td></tr>
+            <tr><td><b>五育并举</b></td><td>德智体美劳全面培养体系，劳动教育纳入必修</td></tr>
+            <tr><td><b>四有好老师</b></td><td>有理想信念、有道德情操、有扎实学识、有仁爱之心</td></tr>
+            <tr><td><b>教育家精神</b></td><td>心有大我、至诚报国的理想信念；言为士则、行为世范的道德情操等六个方面</td></tr>
+            <tr><td><b>学生核心素养</b></td><td>人文底蕴、科学精神、学会学习、健康生活、责任担当、实践创新（六大素养）</td></tr>
+            <tr><td><b>教育公平与均衡</b></td><td>集团化办学、教师轮岗、城乡一体化、控辍保学</td></tr>
+          </table></div>
+          <div class="kw"><b>💡 素材运用：</b>答题时热点 + 理论双轮驱动，体现对新时代教育政策的理解，如"双减"背景下谈作业设计、课后服务谈五育融合。</div>
+        </div>
+      </div>
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span>教育时政常识（职测常识也常考）</div>
+        <div class="kp-c">
+          <ul>
+            <li>2025年中央一号文件、政府工作报告中的教育表述；《教育强国建设规划纲要》——到2035年建成教育强国。</li>
+            <li>教师节主题、全国教育大会精神；新时代基础教育扩优提质行动计划。</li>
+            <li>心理健康教育专项行动；青少年读书行动；美育浸润行动。</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════ 第十三章 ══════════ -->
+  <section class="ch open" id="sec13">
+    <div class="ch-head">
+      <div class="ch-no">13</div>
+      <div class="ch-title"><b>记忆口诀速查总表</b><span>考前快速过一遍</span></div>
+      <div class="ch-arrow">▼</div>
+    </div>
+    <div class="ch-body">
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span>核心口诀一览</div>
+        <div class="kp-c">
+          <div class="table-box"><table>
+            <tr><th>口诀</th><th>对应考点</th></tr>
+            <tr><td><b>提素、个性、创、两全</b></td><td>素质教育内涵（提高国民素质/个性发展/创新精神实践能力/全体+全面）</td></tr>
+            <tr><td><b>方平关节有内功</b></td><td>新课改具体目标（功能/均衡/关系/方式/制度/管理）</td></tr>
+            <tr><td><b>两独一发</b></td><td>"以人为本"学生观（独特/独立意义/发展）</td></tr>
+            <tr><td><b>学习过人</b></td><td>新课程教学观（学习者中心/教会学习/重过程/关注人）</td></tr>
+            <tr><td><b>三爱两人一终身</b></td><td>教师职业道德规范六条</td></tr>
+            <tr><td><b>陶行知正面疏导</b></td><td>德育原则（导向/知行统一/正面教育/疏导等）</td></tr>
+            <tr><td><b>说榜锻陶评修</b></td><td>德育方法（说服/榜样/锻炼/陶冶/评价/修养）</td></tr>
+            <tr><td><b>计划开班会协调评定班集体个别学生档案</b></td><td>班主任工作内容</td></tr>
+            <tr><td><b>倒U型曲线</b></td><td>耶克斯-多德森定律：中等动机水平效率最高</td></tr>
+            <tr><td><b>成长=经验+反思</b></td><td>教师专业发展（波斯纳公式）</td></tr>
+            <tr><td><b>启难反归</b></td><td>学习动机激发（启发教学/控制难度/反馈奖惩/归因指导）</td></tr>
+            <tr><td><b>知情意行</b></td><td>品德心理结构；德育开端多端性</td></tr>
+            <tr><td><b>遗传可能·环境条件·学校主导·能动决定</b></td><td>影响身心发展四因素</td></tr>
+            <tr><td><b>循序渐进·抓住关键期·因材施教</b></td><td>身心发展规律启示</td></tr>
+          </table></div>
+        </div>
+      </div>
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span>易混点辨析（考前必看）</div>
+        <div class="kp-c">
+          <ul>
+            <li><b>前运算 vs 具体运算</b>：前运算（自我中心、不可逆、无守恒）；具体运算（可逆、守恒、去自我中心）。</li>
+            <li><b>负强化 vs 惩罚</b>：负强化撤销厌恶刺激→<b>增加</b>行为；惩罚呈现厌恶刺激→<b>减少</b>行为。</li>
+            <li><b>正迁移 vs 负迁移 / 顺向 vs 逆向</b>：按性质 vs 按方向。</li>
+            <li><b>形成性评价 vs 总结性评价</b>：教学过程中 vs 教学结束后。</li>
+            <li><b>因材施教（教学原则）vs 长善救失（德育原则）</b>：前者针对差异、后者针对优缺点。</li>
+            <li><b>疏导原则 vs 尊重与严格要求</b>：前者强调以理服人、循循善诱；后者强调严慈相济。</li>
+            <li><b>关心学生 vs 教书育人</b>：前者爱生护生不体罚；后者素质育人、不以分数为唯一标准。</li>
+            <li><b>教学机智 vs 常规处理</b>：突发事件→因势利导、化危为机。</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span>考前冲刺 7 天计划建议</div>
+        <div class="kp-c">
+          <ul>
+            <li>Day1-2：背熟口诀表 + 三观（教育观/学生观/教师观）+ 职业道德，能默写框架；</li>
+            <li>Day3：教学原则、德育原则与方法逐条过，配真题案例练"理论+材料"；</li>
+            <li>Day4：心理学理论（皮亚杰/埃里克森/动机五大理论/归因）；</li>
+            <li>Day5：教育方案设计——精练 1 班会 + 1 家长会 + 1 实践活动，形成个人模板；</li>
+            <li>Day6：真题限时整套（120分钟），对答案整理要点；</li>
+            <li>Day7：复盘错题 + 过易混点 + 背教育热点关键词，调整心态。</li>
+          </ul>
+          <div class="kw"><b>💡 核心心法：背诵是答好主观题的前提；真题至少刷 2 遍（掐时+对答案+整理要点）；模板必须内化为自己的语言。</b></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════ 第十四章 ══════════ -->
+  <section class="ch" id="sec14">
+    <div class="ch-head">
+      <div class="ch-no">14</div>
+      <div class="ch-title"><b>典型真题例题精讲</b><span>三大题型实战演练 · 先自测再对答案</span></div>
+      <div class="ch-arrow">▼</div>
+    </div>
+    <div class="ch-body">
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span>三大题型答题框架速览</div>
+        <div class="kp-c">
+          <div class="table-box"><table>
+            <tr><th>题型</th><th>参考分值</th><th>建议用时</th><th>答题框架</th></tr>
+            <tr><td><b>辨析题</b></td><td>约 30-40 分</td><td>15 分钟</td><td>①判断正误（正确/错误/片面）→ ②理论依据 → ③分析论证（正反说理）→ ④总结陈词</td></tr>
+            <tr><td><b>案例分析题</b></td><td>约 50-60 分</td><td>40 分钟</td><td>①读材料圈考点 → ②按问分条作答 → ③每一条"理论 + 结合材料" → ④结尾小结</td></tr>
+            <tr><td><b>教育方案设计</b></td><td>约 40-50 分</td><td>45 分钟</td><td>①主题 → ②目标（认知/情感/行为）→ ③准备 → ④过程（导入-展开-升华）→ ⑤依据理论</td></tr>
+          </table></div>
+          <div class="kw"><b>💡 万能句式：</b>"该老师的做法体现了……（理论），材料中……（结合材料）。因此，作为教师应当……（启示）。"案例题分条作答，先亮理论、再贴材料、最后给启示，一题 5-6 条最稳。</div>
+        </div>
+      </div>
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span><span class="q-tag bian">辨析题 1</span>「素质教育就是不要考试、不要分数，让学生自由发展。」</div>
+        <div class="kp-c">
+          <div class="q-ask"><span>作答提示：</span>先判断，再分层说理。围绕"素质教育与考试的关系""素质教育≠放任"展开。</div>
+          <details class="qa">
+            <summary>参考答案与解析</summary>
+            <div class="qa-in">
+              <span class="ans-tag">该观点错误（片面）</span>
+              <div class="pt">① 素质教育的内涵</div>
+              素质教育是以提高国民素质为根本宗旨，面向全体学生、促进学生全面发展和个性发展，以培养学生创新精神和实践能力为重点的教育。
+              <div class="pt">② 素质教育并不反对考试</div>
+              考试是检验教学效果、评价学生的重要手段，素质教育反对的不是考试本身，而是"唯分数论"——把分数作为评价学生的唯一标准。考试应作为综合评价的手段之一，关键在于如何正确使用考试结果。
+              <div class="pt">③ 素质教育≠让学生"自由发展"</div>
+              素质教育强调尊重学生身心发展规律和个性差异，但不是放任自流、不要纪律，而是有目的、有计划地引导学生全面发展、主动发展。
+              <div class="pt">④ 总结</div>
+              题目把素质教育与考试对立起来，是对素质教育的曲解。素质教育主张的是"全面发展 + 个性发展 + 综合评价"。
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span><span class="q-tag bian">辨析题 2</span>「教学是教师的教与学生的学相统一的双边活动，学生是学习的主体，因此教师的作用可有可无。」</div>
+        <div class="kp-c">
+          <div class="q-ask"><span>作答提示：</span>这是"部分正确、部分错误"型，先肯定前半句，再纠正后半句，落点在"主导与主体相统一"。</div>
+          <details class="qa">
+            <summary>参考答案与解析</summary>
+            <div class="qa-in">
+              <span class="ans-tag">前半句正确，后半句错误</span>
+              <div class="pt">① 正确之处</div>
+              教学确实是教师的教与学生的学共同组成的双边活动，学生在教学过程中处于主体地位。
+              <div class="pt">② 错误之处</div>
+              学生的主体地位并不否定教师的主导作用。教师是教学活动的组织者、设计者和引导者，决定着教学的方向、内容与进度，是学生学习的帮助者、促进者；学生主体性的充分发挥恰恰需要教师的科学引导。
+              <div class="pt">③ 二者关系</div>
+              教师的主导作用与学生的主体地位是辩证统一的：主导作用的实现必须以学生主体性的发挥为前提，而学生主体性的发挥也离不开教师的引导。
+              <div class="pt">④ 总结</div>
+              不能因为强调学生主体地位就否定教师的作用，正确的做法是"教师主导 + 学生主体"双主统一。
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span><span class="q-tag bian">辨析题 3</span>「班主任只要把班级管住、不出乱子，就是称职的班主任。」</div>
+        <div class="kp-c">
+          <div class="q-ask"><span>作答提示：</span>抓"管理"与"教育"的辩证关系，从班主任职责的多面性切入。</div>
+          <details class="qa">
+            <summary>参考答案与解析</summary>
+            <div class="qa-in">
+              <span class="ans-tag">该观点错误（片面）</span>
+              <div class="pt">① 管理只是班主任职责的一部分</div>
+              班主任是班级的组织者、领导者和教育者，组织管理是重要职责，但绝非唯一职责。
+              <div class="pt">② 班主任工作的完整内容</div>
+              了解研究学生、组织和培养班集体、做好个别教育（重点是后进生转化）、协调各方面教育力量（家校沟通）、评定学生操行、建立学生成长档案等。
+              <div class="pt">③ "管住"与"教育"的区别</div>
+              把班级管住、不出乱子只是班级管理的底线；称职的班主任更要做到管理与教育相结合、严格要求与尊重信任相结合，促进每个学生全面而有个性地发展，营造积极向上的班级文化。
+              <div class="pt">④ 总结</div>
+              班主任应以促进全体学生健康成长为出发点，既管住"事"，更要育好"人"。题目观点降低了班主任工作的标准，是片面的。
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span><span class="q-tag anli">案例分析 1</span>后进生转化 · 学生观与德育原则（高频考点）</div>
+        <div class="kp-c">
+          <div class="q-mat"><b>材料：</b>小刚是初二学生，上课捣乱、作业经常不交，成绩垫底，同学都不愿和他玩。班主任李老师没有放弃他：通过观察发现小刚体育好、爱帮同学干活，便在班会上推选他担任体育委员，经常在课堂上肯定他的点滴进步；还私下约小刚谈心，帮他分析学习困难，一起制定"先完成作业再打球"的小目标。一学期后，小刚上课守纪律了，成绩明显进步，还带领班级在校运动会拿了名次。</div>
+          <div class="q-ask"><span>问题：</span>（1）运用"以人为本"的学生观，评析李老师的做法。（2）结合案例，分析李老师运用了哪些德育原则。</div>
+          <details class="qa">
+            <summary>参考答案与解析</summary>
+            <div class="qa-in">
+              <span class="ans-tag">答题结构：理论 + 结合材料，分条作答</span>
+              <div class="pt">（1）"以人为本"的学生观（两独一发）</div>
+              ① <b>学生是发展中的人。</b>李老师用发展的眼光看待小刚，相信他有进步的可能，不因其暂时落后而放弃，帮他制定小目标逐步改进。<br>
+              ② <b>学生是独特的人。</b>李老师发现小刚体育好、爱助人的闪光点，因材施教，安排体育委员岗位，让他的特长有发挥平台。<br>
+              ③ <b>学生是独立意义的人。</b>李老师尊重小刚的主体性，通过谈心与他共同制定目标，调动他自我教育、自我管理的主动性。
+              <div class="pt">（2）运用的德育原则</div>
+              ① <b>长善救失原则：</b>利用小刚体育特长等积极因素，克服他纪律涣散、厌学的消极因素，"用其所长、补其所短"。<br>
+              ② <b>疏导原则：</b>私下谈心、以理服人、循循善诱，不简单粗暴地批评惩罚。<br>
+              ③ <b>尊重学生与严格要求相结合：</b>尊重小刚的人格尊严，同时提出明确要求（先完成作业再打球），严慈相济。<br>
+              ④ <b>正面教育与纪律约束相结合：</b>以表扬肯定为主，引导学生向善向上，同时以班级纪律规范其行为。<br>
+              <div class="pt">③ 答题小贴士</div>
+              答出"因材施教""教育影响的一致性与连贯性（家校协同）"等合理要点同样给分；学生观部分每条务必"理论＋材料"一一对应，只背理论不给高分。
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span><span class="q-tag anli">案例分析 2</span>课堂突发事件 · 教学机智（预设与生成）</div>
+        <div class="kp-c">
+          <div class="q-mat"><b>材料：</b>周三下午第一节语文课，张老师正讲朱自清的《春》。忽然一只麻雀从窗外飞进教室乱窜，顿时全班哄堂大笑，有的学生站起来去抓麻雀，课堂乱成一团。</div>
+          <div class="q-ask"><span>问题：</span>（1）如果你是张老师，会如何应对这一突发事件？（2）请运用教育学知识，分析你采取该做法的依据。</div>
+          <details class="qa">
+            <summary>参考答案与解析</summary>
+            <div class="qa-in">
+              <span class="ans-tag">答题结构：做法分步 + 理论支撑</span>
+              <div class="pt">（1）应对策略</div>
+              ① <b>冷静克制、稳定情绪，</b>不简单呵斥学生，避免激化课堂气氛；<br>
+              ② <b>因势利导、化危为机：</b>顺势把麻雀引入教学——"同学们，课文里的春天不仅有花草，还有飞进来的'不速之客'。请大家观察它，一会儿用课文中学过的语言来描写这只小鸟"，把干扰变成教学资源；<br>
+              ③ 若学生过度兴奋，可<b>先示意安静、把麻雀放出窗外，</b>用一两句话迅速把注意力拉回课堂；<br>
+              ④ <b>课后个别教育：</b>找带头哄闹的学生谈心，了解原因，进行纪律教育，避免课上正面冲突。
+              <div class="pt">（2）理论依据</div>
+              ① <b>教育机智：</b>教师面对突发情境能迅速、正确地作出判断并采取灵活有效措施的应变能力，是教师素养的综合体现；<br>
+              ② <b>教学是预设与生成的统一：</b>课堂具有动态生成性，教师应灵活调整教学进程，而非机械照搬教案；<br>
+              ③ <b>关爱学生、尊重学生：</b>用正面引导代替惩罚，保护学生的好奇心与参与热情；<br>
+              ④ <b>突发事件处理原则：</b>冷静克制、冷热处理、因势利导，把"坏事"变成教育的契机。
+              <div class="pt">③ 答题小贴士</div>
+              案例题中"如果你是老师"类问法，答案要具体可操作（分步骤写清怎么做），再上升到理论高度，避免只写空话套话。
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span><span class="q-tag fangan">方案设计 1</span>主题班会完整模板 ·「告别手机依赖」</div>
+        <div class="kp-c">
+          <div class="q-mat"><b>题目：</b>假如你是某中学初二（3）班班主任。班里不少同学沉迷手机：上课偷偷玩、晚上熬夜刷视频，作业质量下降，还有同学因"抢红包"与同学闹矛盾。请设计一次主题班会，写清<b>活动主题、活动目标、活动准备、活动过程、设计依据</b>。</div>
+          <details class="qa">
+            <summary>参考答案与解析（示范卷面）</summary>
+            <div class="qa-in">
+              <span class="ans-tag">方案设计 = 五要素齐全 + 过程有梯度 + 理论支撑</span>
+              <div class="pt">一、活动主题</div>
+              《告别手机依赖，做时间的主人》主题班会
+              <div class="pt">二、活动目标</div>
+              ① <b>认知目标：</b>认识过度使用手机的危害，了解合理使用手机的方法；<br>
+              ② <b>情感目标：</b>激发自我管理意愿，增强自律意识与责任意识；<br>
+              ③ <b>行为目标：</b>学会制定手机使用计划，养成健康作息与上网习惯。
+              <div class="pt">三、活动准备</div>
+              ① 问卷调查：摸清班级使用手机的时长、用途及影响；<br>
+              ② 素材收集：制作"手机依赖危害"短视频，排练情景剧《被手机偷走的一天》，收集真实案例；<br>
+              ③ 环境布置：张贴"自律""专注"标语，准备承诺书与时间规划表。
+              <div class="pt">四、活动过程（约 40 分钟）</div>
+              <b>环节一 · 情境导入（5 分钟）：</b>表演情景剧《被手机偷走的一天》，提问"剧中的'他'是不是身边的你？"引出主题。<br>
+              <b>环节二 · 直面危害（10 分钟）：</b>展示调查数据与案例（视力下降、睡眠不足、成绩下滑、亲子冲突），小组讨论"手机给我们带来了什么"，代表发言，教师归纳。<br>
+              <b>环节三 · 方法指导（15 分钟）：</b>①学习"三远离一约定"——远离手机进校园、远离睡前刷屏、远离课堂走神，与家长约定使用时长；②现场填写《我的手机使用计划表》（时长、时段、替代活动）；③同桌互签监督承诺。<br>
+              <b>环节四 · 总结升华（10 分钟）：</b>播放家长寄语视频，班主任寄语"手机是工具，不是主人；自律者出众，放纵者出局"；全班齐读班级公约，签署《合理使用手机承诺书》张贴上墙。
+              <div class="pt">五、后续延伸（跟踪评价）</div>
+              ① 设立每周三"班级无手机日"；② 开展"自律之星"评选，每周公示；③ 两周后召开反馈班会，对比变化、表彰进步。
+              <div class="pt">六、设计依据</div>
+              ① <b>德育过程规律：</b>知情意行统一，从晓之以理（认知危害）到导之以行（计划表、承诺书）循序渐进；<br>
+              ② <b>德育原则与方法：</b>正面教育、自我教育相结合，尊重学生主体性；<br>
+              ③ <b>中学生心理特点：</b>青春期自控力弱、易从众，需引导与监督结合，家校协同形成教育合力；<br>
+              ④ <b>新课程理念：</b>以学生为中心，活动贴近生活，具有实践性与可操作性。
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span><span class="q-tag fangan">方案设计 2</span>家长会简练模板 ·「家校同心」</div>
+        <div class="kp-c">
+          <div class="q-mat"><b>题目：</b>学校要求各班召开一次"家校同心"主题家长会。请写出家长会的基本流程。</div>
+          <details class="qa">
+            <summary>参考答案与解析</summary>
+            <div class="qa-in">
+              <span class="ans-tag">家长会 = 会前准备 + 会议流程 + 会后跟进</span>
+              <div class="pt">一、会前准备</div>
+              发放《致家长的一封信》与问卷（了解家长关注点）；布置教室（成长墙、作业展、学生写给家长的一封信）；培训学生志愿者负责接待引导。
+              <div class="pt">二、会议流程（约 50 分钟）</div>
+              ① <b>欢迎致辞（5 分钟）：</b>班主任介绍班级整体情况（班风、活动、进步）；<br>
+              ② <b>成果展示（10 分钟）：</b>学生代表汇报班级活动与成长，展示作品与综合表现；<br>
+              ③ <b>学科交流（15 分钟）：</b>任课教师轮流就学习要求、共性问题与家长沟通；<br>
+              ④ <b>专题分享（10 分钟）：</b>家庭教育微讲座（如"如何与青春期孩子沟通"）；<br>
+              ⑤ <b>互动答疑（10 分钟）：</b>家长提问、教师解答，收集意见与建议；<br>
+              ⑥ <b>个别交流：</b>会后与重点学生家长单独沟通，约定后续跟进方式。
+              <div class="pt">三、注意事项</div>
+              家长会不是"告状会"，要多报喜、巧报忧；保护学生隐私与自尊；会后及时整理意见，建立家校联系台账，落实跟进。
+              <div class="kw"><b>💡 方案设计保分要点：</b>目标必写"认知/情感/行为"三维；过程要有 4 个以上有名字的环节（如"情境导入—直面问题—方法指导—总结升华"）；结尾必写"设计依据"并引用 2-3 条教育学/心理学理论。</div>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <div class="kp">
+        <div class="kp-t"><span class="dot"></span>主观题常见失分点自查</div>
+        <div class="kp-c">
+          <ul>
+            <li><b>辨析题只判断不分析</b>：判断只占 1-2 分，重点是分层论证——为什么对/错/片面，务必"理论 + 说理 + 总结"三段式。</li>
+            <li><b>案例题只抄材料不亮理论</b>：每一条都要"先理论（关键词）→ 再材料（"材料中……"）→ 后启示（"作为教师应……"）"。</li>
+            <li><b>方案设计缺目标或缺依据</b>：五要素缺一扣分明显；活动目标不分维度、活动过程没有环节名称是硬伤。</li>
+            <li><b>不分条、无序号</b>：主观题卷面按 ①②③ 分条作答，条理清晰是隐性加分项。</li>
+            <li><b>时间失控</b>：大题写太多导致最后方案设计草草收尾——方案设计分值最重，至少留 40 分钟。</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</div>
+
+<button class="cat-btn" onclick="openCat()">☰</button>
+<div class="cat-mask" id="catMask" onclick="closeCat()"></div>
+<aside class="cat-panel" id="catPanel">
+  <div class="cat-head">📑 目录导航 <button onclick="closeCat()">✕</button></div>
+  <div class="cat-body" id="catBody"></div>
+</aside>
+
+<div class="foot" style="padding:0 14px 20px;max-width:860px;margin:0 auto">
+  <b>综应D类 · 全考点复习手册</b><br>
+  内容整理自明哥综应D课程体系及事业单位联考D类公开考情资料<br>
+  重点背诵 + 真题实战 + 模板内化 = 高分上岸 💪
+</div>
+
+<script>
+/* ===== 数据统计与目录生成 ===== */
+function buildNav(){
+  var secs=document.querySelectorAll('section.ch');
+  var body=document.getElementById('catBody'),html='';
+  secs.forEach(function(s,i){
+    var t=s.querySelector('.ch-title b').textContent;
+    html+='<a href="#sec'+(i+1)+'" onclick="closeCat()"><span class="no">'+(i+1)+'</span><span class="name">'+t+'</span></a>';
+  });
+  body.innerHTML=html;
+  document.getElementById('statSec').textContent=secs.length;
+  document.getElementById('statKp').textContent=document.querySelectorAll('.kp').length;
+  document.getElementById('statMk').textContent=document.querySelectorAll('.mk').length;
+  refreshDone();
+}
+/* 为每个知识点卡片动态生成"掌握勾选" */
+function addChecks(){
+  var idx=1;
+  document.querySelectorAll('section.ch').forEach(function(s){
+    var secNo=s.id.replace('sec','');
+    s.querySelectorAll('.kp').forEach(function(kp){
+      var box=document.createElement('div');
+      box.className='done-box';
+      box.innerHTML='<input type="checkbox" class="ck" data-id="k'+idx+'" id="k'+idx+'"><label for="k'+idx+'">我已掌握该考点</label>';
+      kp.appendChild(box);
+      idx++;
+    });
+  });
+}
+function openCat(){document.getElementById('catPanel').classList.add('show');document.getElementById('catMask').classList.add('show');}
+function closeCat(){document.getElementById('catPanel').classList.remove('show');document.getElementById('catMask').classList.remove('show');}
+
+/* ===== 章节折叠 ===== */
+document.addEventListener('click',function(e){
+  var h=e.target.closest('.ch-head');
+  if(h){
+    var s=h.parentElement;
+    s.classList.toggle('open');
+    try{localStorage.setItem('ch-'+s.id, s.classList.contains('open')?'1':'0');}catch(err){}
+  }
+});
+function restoreOpen(){
+  document.querySelectorAll('section.ch').forEach(function(s){
+    try{
+      var v=localStorage.getItem('ch-'+s.id);
+      if(v!=='0') s.classList.add('open');
+    }catch(err){s.classList.add('open');}
+  });
+}
+
+/* ===== 掌握进度 ===== */
+function refreshDone(){
+  var c=document.querySelectorAll('.done-box input:checked').length;
+  document.getElementById('statDone').textContent=c;
+  var total=document.querySelectorAll('.done-box input').length||1;
+  document.getElementById('progFill').style.width=Math.round(c/total*100)+'%';
+}
+document.addEventListener('change',function(e){
+  if(e.target.classList.contains('ck')){
+    try{localStorage.setItem('kp-'+e.target.dataset.id, e.target.checked?'1':'0');}catch(err){}
+    refreshDone();
+  }
+});
+function restoreDone(){
+  document.querySelectorAll('.ck').forEach(function(i){
+    try{if(localStorage.getItem('kp-'+i.dataset.id)==='1') i.checked=true;}catch(err){}
+  });
+  refreshDone();
+}
+
+/* ===== 主题切换 ===== */
+function toggleTheme(){
+  var h=document.documentElement;
+  var dark=h.getAttribute('data-theme')==='dark';
+  h.setAttribute('data-theme',dark?'light':'dark');
+  try{localStorage.setItem('theme',dark?'light':'dark');}catch(err){}
+  document.querySelector('.hd-btn').textContent=dark?'🌓 深色':'☀️ 浅色';
+}
+(function(){
+  try{var t=localStorage.getItem('theme');if(t==='dark'){document.documentElement.setAttribute('data-theme','dark');document.querySelector('.hd-btn').textContent='☀️ 浅色';}}catch(err){}
+  addChecks();restoreOpen();buildNav();restoreDone();
+})();
+</script>
+  <script data-study-hub-script src="../../assets/hub-nav.js"></script>
+</body>
+</html>
