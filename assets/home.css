@@ -265,6 +265,7 @@ main {
 .subject-cornflower { --subject-color: var(--cornflower); }
 .subject-brick { --subject-color: var(--brick); }
 .subject-teal { --subject-color: var(--teal); }
+.subject-a { --subject-color: #1f5fd6; }
 
 .site-footer {
   width: min(calc(100% - 48px), var(--content-width));
