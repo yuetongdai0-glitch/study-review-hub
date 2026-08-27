@@ -61,7 +61,7 @@ test('每个复习页接入共享导航且保留完整源文件内容', async ()
   }
 })
 
-test('共享导航声明六个科目，并支持返回总览', async () => {
+test('共享导航声明七个科目，并支持返回总览', async () => {
   const navigation = await readText(new URL('../assets/hub-nav.js', import.meta.url))
 
   assert.ok(navigation.includes('../../index.html'), '共享导航缺少返回总览链接')
