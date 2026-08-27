@@ -1,0 +1,196 @@
+/* 综应 A 页面移动端覆写：保留原有内容与视觉，仅调整窄屏排版和滚动边界。 */
+@media (max-width: 720px) {
+  html,
+  body {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  body {
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  .wrap {
+    width: 100%;
+    max-width: none;
+    padding: 0 12px 74px;
+  }
+
+  .hero {
+    margin-bottom: 16px;
+    padding: 30px 14px 26px;
+    border-radius: 0 0 16px 16px;
+  }
+
+  .hero .tag {
+    max-width: 100%;
+    padding: 3px 10px;
+    font-size: 11px;
+    letter-spacing: 1px;
+    line-height: 1.6;
+  }
+
+  .hero h1 {
+    font-size: clamp(22px, 7vw, 28px);
+    line-height: 1.4;
+    word-break: break-word;
+  }
+
+  .hero p {
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+  .hero .stats {
+    gap: 8px;
+    margin-top: 16px;
+  }
+
+  .hero .stat {
+    min-width: 0;
+    padding: 6px 9px;
+    font-size: 12px;
+  }
+
+  .hero .stat b {
+    font-size: 15px;
+  }
+
+  .toc,
+  section {
+    margin-bottom: 16px;
+    border-radius: 10px;
+  }
+
+  .toc {
+    padding: 14px 12px;
+  }
+
+  .toc h3 {
+    margin-bottom: 8px;
+    font-size: 13px;
+  }
+
+  .toc ul {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+
+  .toc a {
+    padding: 5px 6px;
+    font-size: 13px;
+    overflow-wrap: anywhere;
+  }
+
+  section {
+    padding: 18px 14px;
+  }
+
+  .sec-head {
+    gap: 8px;
+    align-items: flex-start;
+    padding-bottom: 8px;
+    margin-bottom: 14px;
+  }
+
+  .sec-num {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    font-size: 14px;
+  }
+
+  .sec-head h2 {
+    font-size: 18px;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+  }
+
+  .sec-head .sub {
+    font-size: 12px;
+    line-height: 1.6;
+  }
+
+  h3 {
+    margin: 18px 0 8px;
+    padding-left: 8px;
+    font-size: 16px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+  }
+
+  h4 {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  p,
+  li,
+  .muted {
+    overflow-wrap: anywhere;
+  }
+
+  .grid,
+  .cols {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .card,
+  .kp,
+  .ex-body {
+    padding: 12px;
+  }
+
+  .card p,
+  .card li,
+  .kp p,
+  .kp li,
+  .step p {
+    font-size: 13px;
+  }
+
+  /* 表格保持完整列信息，在自身区域横向滑动，不撑破页面视口。 */
+  table {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    font-size: 12.5px;
+  }
+
+  table tr {
+    white-space: nowrap;
+  }
+
+  th,
+  td {
+    padding: 7px 8px;
+  }
+
+  .tpl {
+    padding: 12px;
+    font-size: 12.5px;
+    overflow-wrap: anywhere;
+  }
+
+  .ex-block {
+    font-size: 13px;
+    overflow-wrap: anywhere;
+  }
+
+  .step {
+    gap: 9px;
+  }
+
+  .go-top {
+    right: 14px;
+    bottom: 76px;
+    width: 42px;
+    height: 42px;
+    z-index: 2147482990;
+  }
+}

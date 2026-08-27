@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link data-study-hub-style rel="stylesheet" href="../../assets/hub-nav.css">
+<title>综应A全知识点精讲 · 例题带学版｜事业单位联考综合应用能力(A类)</title>
+<style>
+  :root{
+    --bg:#f5f6fa; --card:#ffffff; --ink:#1c2333; --ink2:#5a6478; --line:#e3e7f0;
+    --blue:#1f5fd6; --blue-soft:#e8f0fd; --gold:#b07a1f; --gold-soft:#faf3e3;
+    --teal:#0f6e56; --teal-soft:#e1f5ee; --red:#a32d2d; --red-soft:#fcebeb;
+    --purple:#534ab7; --purple-soft:#eeedfe; --radius:14px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif; background:var(--bg); color:var(--ink); line-height:1.78; font-size:15px;}
+  .wrap{max-width:980px; margin:0 auto; padding:0 20px 80px;}
+
+  .hero{background:linear-gradient(135deg,#123c8c 0%,#1f5fd6 60%,#3b82f6 100%); color:#fff; border-radius:0 0 24px 24px; padding:44px 24px 36px; text-align:center; margin-bottom:26px;}
+  .hero .tag{display:inline-block; background:rgba(255,255,255,.16); border:1px solid rgba(255,255,255,.35); padding:4px 14px; border-radius:999px; font-size:13px; letter-spacing:2px; margin-bottom:14px;}
+  .hero h1{font-size:29px; letter-spacing:1px; font-weight:700;}
+  .hero p{color:#dbe7ff; margin-top:10px; font-size:15px; max-width:680px; margin-left:auto; margin-right:auto;}
+  .hero .stats{display:flex; justify-content:center; gap:12px; flex-wrap:wrap; margin-top:20px;}
+  .hero .stat{background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.25); border-radius:12px; padding:8px 16px; font-size:13px;}
+  .hero .stat b{font-size:17px; display:block; color:#fff;}
+
+  .toc{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:18px 22px; margin-bottom:26px;}
+  .toc h3{font-size:14px; color:var(--ink2); letter-spacing:2px; margin-bottom:10px;}
+  .toc ul{list-style:none; display:grid; grid-template-columns:repeat(auto-fill,minmax(215px,1fr)); gap:6px 18px;}
+  .toc a{color:var(--ink2); text-decoration:none; font-size:14px; display:block; padding:4px 8px; border-radius:8px;}
+  .toc a:hover{background:var(--blue-soft); color:var(--blue);}
+  .toc a b{color:var(--blue); margin-right:6px; font-weight:600;}
+
+  section{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:26px 28px; margin-bottom:24px;}
+  .sec-head{display:flex; align-items:center; gap:12px; border-bottom:2px solid var(--blue); padding-bottom:10px; margin-bottom:18px;}
+  .sec-num{background:var(--blue); color:#fff; width:36px; height:36px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:16px; flex:none;}
+  .sec-head h2{font-size:21px; font-weight:700;}
+  .sec-head .sub{color:var(--ink2); font-size:13px; margin-top:2px;}
+  h3{font-size:16.5px; margin:24px 0 10px; padding-left:10px; border-left:4px solid var(--blue);}
+  h4{font-size:15px; margin:16px 0 8px;}
+  p{margin:8px 0; color:var(--ink);}
+  .muted{color:var(--ink2); font-size:14px;}
+
+  .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(255px,1fr)); gap:12px; margin:14px 0;}
+  .card{border:1px solid var(--line); border-radius:12px; padding:14px 16px; background:#fbfcfe;}
+  .card h4{font-size:14.5px; margin-bottom:6px; display:flex; align-items:center; gap:8px;}
+  .card h4 .dot{width:9px;height:9px;border-radius:50%; flex:none;}
+  .card p{font-size:13.5px; color:var(--ink2); margin:4px 0;}
+  .card ul{list-style:none; margin-top:4px;}
+  .card li{font-size:13.5px; color:var(--ink2); padding:2px 0 2px 16px; position:relative;}
+  .card li::before{content:""; position:absolute; left:2px; top:10px; width:6px; height:6px; border-radius:2px; background:var(--blue);}
+
+  table{width:100%; border-collapse:collapse; margin:14px 0; font-size:13.8px;}
+  th{background:var(--blue-soft); color:#14408f; text-align:left; padding:9px 11px; border:1px solid var(--line); font-weight:600; white-space:nowrap;}
+  td{padding:9px 11px; border:1px solid var(--line); vertical-align:top;}
+  tr:nth-child(even) td{background:#f8fafd;}
+
+  .tpl{background:#0f1b33; color:#e8eefc; border-radius:12px; padding:16px 18px; margin:12px 0; font-size:13.5px; line-height:1.8; overflow-x:auto;}
+  .tpl .hl{color:#ffd27a;}
+  .tpl .cm{color:#7f92b8;}
+  .tpl .tag{display:inline-block; background:rgba(255,210,122,.15); color:#ffd27a; border:1px solid rgba(255,210,122,.4); border-radius:6px; padding:0 8px; font-size:12px; margin-bottom:6px;}
+
+  .steps{counter-reset:step; margin:14px 0;}
+  .step{display:flex; gap:14px; padding:12px 0; border-bottom:1px dashed var(--line);}
+  .step:last-child{border-bottom:none;}
+  .step .no{flex:none; width:30px; height:30px; border-radius:50%; background:var(--blue); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:14px; margin-top:2px;}
+  .step b{font-size:15px;}
+  .step p{font-size:13.5px; color:var(--ink2); margin:4px 0 0;}
+
+  .chips{display:flex; flex-wrap:wrap; gap:8px; margin:10px 0;}
+  .chip{border:1px solid var(--line); background:#f8fafd; border-radius:999px; padding:3px 12px; font-size:13px; color:var(--ink2);}
+  .chip.blue{background:var(--blue-soft); border-color:#c9dcf7; color:#14408f;}
+  .chip.gold{background:var(--gold-soft); border-color:#eed9ac; color:#8a5c14;}
+  .chip.teal{background:var(--teal-soft); border-color:#bfe6d8; color:#0b5c48;}
+  .chip.red{background:var(--red-soft); border-color:#f2c8c8; color:#8a2626;}
+
+  .callout{border-radius:12px; padding:14px 16px; margin:14px 0; font-size:14px; border:1px solid;}
+  .callout.blue{background:var(--blue-soft); border-color:#c9dcf7; color:#14408f;}
+  .callout.gold{background:var(--gold-soft); border-color:#eed9ac; color:#7a5210;}
+  .callout.red{background:var(--red-soft); border-color:#f2c8c8; color:#8a2626;}
+  .callout.teal{background:var(--teal-soft); border-color:#bfe6d8; color:#0b5c48;}
+  .callout b{font-weight:600;}
+
+  .cols{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:12px 0;}
+  @media(max-width:720px){.cols{grid-template-columns:1fr;}}
+
+  /* 例题块 */
+  .ex{border:1px solid var(--line); border-radius:12px; margin:16px 0; overflow:hidden;}
+  .ex-head{background:#0f1b33; color:#ffd27a; font-size:13.5px; font-weight:600; padding:9px 14px; letter-spacing:.5px;}
+  .ex-body{padding:14px 16px;}
+  .ex-label{font-size:13px; font-weight:700; color:#fff; border-radius:6px; padding:1px 9px; display:inline-block; margin-bottom:6px; letter-spacing:1px;}
+  .ex-q .ex-label{background:var(--blue);}
+  .ex-m .ex-label{background:var(--purple);}
+  .ex-a .ex-label{background:var(--teal);}
+  .ex-s .ex-label{background:var(--gold);}
+  .ex-q,.ex-m,.ex-a,.ex-s{padding:9px 0;}
+  .ex-block{padding:10px 12px; border-radius:10px; background:#f8fafd; border:1px solid var(--line); font-size:13.8px; margin-top:4px;}
+  .ex-q .ex-block{background:var(--blue-soft); border-color:#c9dcf7;}
+  .ex-m .ex-block{background:var(--purple-soft); border-color:#d8d6f6;}
+  .ex-a .ex-block{background:var(--teal-soft); border-color:#bfe6d8;}
+  .ex-s .ex-block{background:var(--gold-soft); border-color:#eed9ac;}
+  .ex-block b{font-weight:600;}
+  .ex-block .pt{display:inline-block; background:rgba(31,95,214,.12); color:#14408f; border:1px solid #c9dcf7; border-radius:6px; padding:0 7px; font-size:12.5px; margin:1px 2px;}
+
+  .kp{background:#fbfcfe; border:1px solid var(--line); border-left:4px solid var(--blue); border-radius:10px; padding:12px 16px; margin:12px 0;}
+  .kp .kp-t{font-weight:700; font-size:14.5px; color:#14408f; display:flex; gap:8px; align-items:center;}
+  .kp .kp-t .no{background:var(--blue); color:#fff; border-radius:7px; font-size:12.5px; padding:1px 8px; flex:none;}
+  .kp p{font-size:13.8px; margin:6px 0;}
+  .kp ul{list-style:none; margin:6px 0;}
+  .kp li{font-size:13.8px; padding:3px 0 3px 18px; position:relative;}
+  .kp li::before{content:"▸"; position:absolute; left:2px; color:var(--blue);}
+
+  .goal{display:flex; gap:10px; background:var(--gold-soft); border:1px dashed #e3c27a; border-radius:10px; padding:10px 14px; margin:10px 0; font-size:13.8px; color:#7a5210;}
+  .goal b{color:#8a5c14;}
+
+  .go-top{position:fixed; right:22px; bottom:22px; background:var(--blue); color:#fff; border:none; border-radius:50%; width:44px; height:44px; font-size:18px; cursor:pointer; box-shadow:0 4px 14px rgba(31,95,214,.35);}
+  footer{text-align:center; color:var(--ink2); font-size:13px; padding:30px 0 0;}
+  @media print{.go-top,.toc{display:none;} body{background:#fff;} section{page-break-inside:avoid;}}
+</style>
+  <link data-study-hub-mobile rel="stylesheet" href="../../assets/comprehensive-a-mobile.css">
+</head>
+<body>
+
+<div class="hero">
+  <span class="tag">事业单位联考 · 综合应用能力（A类·综合管理）</span>
+  <h1>综应A 全知识点精讲 · 例题带学版</h1>
+  <p>考试介绍讲透 · 题型分布看全 · 每个知识点配真题例题 + 示范作答 + 采分点解析。<br>不堆规划、不灌鸡汤，按课一节一节学，学完就能上手做题。</p>
+  <div class="stats">
+    <div class="stat"><b>120分钟</b>考试时限</div>
+    <div class="stat"><b>150分</b>满分 · 4题</div>
+    <div class="stat"><b>6000~8000字</b>材料体量</div>
+    <div class="stat"><b>11课</b>完整课程</div>
+  </div>
+</div>
+
+<div class="wrap">
+
+<div class="toc">
+  <h3>课程目录 · 按顺序学，也可跳转</h3>
+  <ul>
+    <li><a href="#s0"><b>第0课</b>考试介绍：综应A到底考什么</a></li>
+    <li><a href="#s1"><b>第1课</b>题型分布：历年真题全表</a></li>
+    <li><a href="#s2"><b>第2课</b>通用逻辑：万能四步答题法</a></li>
+    <li><a href="#s3"><b>第3课</b>归纳概括（要素提炼）</a></li>
+    <li><a href="#s4"><b>第4课</b>提出对策（常态处理）</a></li>
+    <li><a href="#s5"><b>第5课</b>应急处理</a></li>
+    <li><a href="#s6"><b>第6课</b>沟通协调（沟通谈话）</a></li>
+    <li><a href="#s7"><b>第7课</b>会务安排</a></li>
+    <li><a href="#s8"><b>第8课</b>公文写作（应用文·文种全解）</a></li>
+    <li><a href="#s9"><b>第9课</b>规范表达素材库</a></li>
+    <li><a href="#s10"><b>第10课</b>考场实战技巧</a></li>
+  </ul>
+</div>
+
+<!-- ============ 第0课 考试介绍 ============ -->
+<section id="s0">
+  <div class="sec-head"><div class="sec-num">0</div><div><h2>考试介绍：综应A到底考什么</h2><div class="sub">先把"游戏规则"彻底搞清楚，后面的方法才有意义</div></div></div>
+
+  <h3>0.1 科目定位：这门考试为什么存在</h3>
+  <p>事业单位公开招聘分类考试中，<b>A类（综合管理类）</b>适用于事业单位中以<b>行政性、事务性和业务管理为主</b>的岗位。笔试考两科：</p>
+  <table>
+    <tr><th>科目</th><th>时长</th><th>满分</th><th>性质</th></tr>
+    <tr><td>《职业能力倾向测验》</td><td>90分钟</td><td>150分</td><td>客观题（常识、言语、数量、判断、资料分析）</td></tr>
+    <tr><td><b>《综合应用能力(A类)》</b></td><td><b>120分钟</b></td><td><b>150分</b></td><td><b>主观题（本次课程目标）</b></td></tr>
+  </table>
+  <div class="callout blue"><b>一句话本质：</b>综应A不是考写作，是考<b>"办事"</b>——给你一个事业单位真实工作场景，让你代入某个具体岗位（如"市图书馆工作人员""街道办办公室主任助理"），完成概括、分析、对策、沟通、办会、写公文等真实工作任务。</div>
+
+  <h3>0.2 试卷结构：一份卷子长什么样</h3>
+  <p>试卷由三部分组成：<b>① 注意事项 → ② 背景材料 → ③ 试题</b>，全部是主观性试题。</p>
+  <table>
+    <tr><th>组成</th><th>具体内容</th><th>备考要点</th></tr>
+    <tr><td><b>注意事项</b></td><td>作答说明（用黑色签字笔、在答题卡指定位置作答等）</td><td>考前不用细看，年年一样</td></tr>
+    <tr><td><b>背景材料</b></td><td>一般 2~5 则，总量 6000~8000 字；以案例型材料为主，场景化叙事、人物对话多，口语化表达多、规范词少</td><td>材料是"答案的唯一来源"——这是全卷最重要的规律</td></tr>
+    <tr><td><b>试题</b></td><td>一般 4 道题，每道 30~50 分；题目围绕<b>同一场景</b>层层推进（同一单位、同一工作线）</td><td>先通读材料把握全局，再逐题作答</td></tr>
+  </table>
+  <div class="callout gold"><b>近年趋势：</b>材料字数在增长（2024年11月联考考生普遍反映"读不完、时间紧"），且呈现方式更多元——展板内容、组织架构图、项目介绍、会议发言、群众访谈等载体都出现过。速读+详读结合是刚需。</div>
+
+  <h3>0.3 大纲五大能力：命题的底层逻辑（必背）</h3>
+  <p>考试大纲（2022年版）规定，综应A主要测查五方面能力。所有题目都是从这五个能力里"长"出来的，先把它们吃透，就等于拿到了整个考试的说明书：</p>
+  <table>
+    <tr><th>能力</th><th>大纲原文（规范表述）</th><th>人话解读</th><th>主要对应题型</th></tr>
+    <tr><td><b>① 管理角色意识</b></td><td>对管理岗位的职责权限有清晰认识，能够从管理者的角度理解、思考和解决问题，具有服务意识</td><td>时刻问自己："我是谁？我的权限到哪？"既不能越权，也不能失职；对群众要有服务意识</td><td>所有题目（贯穿全卷）</td></tr>
+    <tr><td><b>② 分析判断能力</b></td><td>面对工作情境，能够发现和界定问题，分析问题原因及影响因素，做出恰当的评估和判断</td><td>能从材料里"看穿"问题：有什么问题、什么原因、影响多大、谁的责任</td><td>归纳概括、综合分析、词句理解</td></tr>
+    <tr><td><b>③ 计划与控制能力</b></td><td>能够根据岗位职责和工作要求，利用可支配的资源，设想可以解决问题的方式方法，使工作按预想的进程和方向发展，以获得期望的结果</td><td>能把事情"办成"：定目标、排步骤、调资源、控进度、防意外</td><td>提出对策、应急处理、会务安排</td></tr>
+    <tr><td><b>④ 沟通协调能力</b></td><td>能够在管理工作中向有关人员征询意见，传递信息，施加影响，获得支持与配合</td><td>会"说话"：能说服别人、化解矛盾、协调各方，把事情往前推</td><td>沟通协调（沟通谈话）</td></tr>
+    <tr><td><b>⑤ 文字表达能力</b></td><td>能够根据管理工作需要撰写文稿，准确和清晰地进行书面表达</td><td>能"写"：格式规范、内容完整、语言得体，该有感染力时有感染力</td><td>公文写作（应用文）</td></tr>
+  </table>
+  <div class="callout teal"><b>记忆方法：</b>一句话串起来——<b>"我是谁（角色）→ 看出问题（分析）→ 办成事情（计划）→ 说服别人（沟通）→ 写好东西（表达）"</b>。考的就是一个合格事业单位管理人员的完整工作链路。</div>
+
+  <h3>0.4 综应A ≠ 申论（最容易搞混，必须分清）</h3>
+  <div class="cols">
+    <div class="card"><h4><span class="dot" style="background:var(--blue)"></span>申论（公务员）</h4><ul><li>话题宏观：政策、治理、文化等大主题</li><li>最后大题是<b>议论文</b>，重论证、讲文采</li><li>身份较虚，重"观点表达"</li><li>答案可适当升华、拔高立意</li></ul></div>
+    <div class="card"><h4><span class="dot" style="background:var(--gold)"></span>综应A（事业单位）</h4><ul><li>话题微观：一个单位的具体事务（图书馆预约、街道市集、大喇叭扰民）</li><li>最后大题是<b>应用文/事务文书</b>，重办事、重格式</li><li>身份是<b>具体岗位工作人员</b>，权限清晰</li><li>答案务实落地，措施要"能执行"，忌空话</li></ul></div>
+  </div>
+  <div class="callout gold"><b>口诀：</b>申论是"议"，综应是"办"；申论重"理"，综应重"事"。用申论文笔答综应 = 严重跑偏。</div>
+
+  <h3>0.5 命题规律：出题人怎么出题</h3>
+  <table>
+    <tr><th>维度</th><th>规律</th></tr>
+    <tr><td><b>主题特征</b></td><td>紧扣民生基层服务：停车管理(2022)、图书馆服务(2023)、疾控宣传(2023)、融媒体中心(2024上)、街道综合服务中心(2024下)、未成年人保护中心(2025)……都是"基层一线公共服务单位"</td></tr>
+    <tr><td><b>岗位贴合</b></td><td>"人岗匹配"是核心命题逻辑——考的就是"你能不能胜任这个岗位的日常事务"</td></tr>
+    <tr><td><b>材料特点</b></td><td>案例型为主、场景多、人物对话多、口语化重、规范词少 → 对概括提炼能力要求高；难度中等偏上</td></tr>
+    <tr><td><b>题目关系</b></td><td>4道题通常<b>围绕同一单位的一条工作主线</b>展开，前一题的答案可能是后一题的背景</td></tr>
+    <tr><td><b>创新趋势</b></td><td>题型融合（如"发言稿+沟通"）、新问法（2023年秋"以××为题撰写文章"实为应用文）、新题型（词句理解只考过1次）、材料载体多元化</td></tr>
+  </table>
+  <div class="callout red"><b>心态定心丸：</b>无论题型怎么创新，都跑不出"五大能力"+"六大题型"的框架。遇到新问法，第一反应永远是"先审题判断它其实考的是哪类能力"。</div>
+</section>
+
+<!-- ============ 第1课 题型分布 ============ -->
+<section id="s1">
+  <div class="sec-head"><div class="sec-num">1</div><div><h2>题型分布：历年真题全表 + 权重分析</h2><div class="sub">用2020—2025年真实考情说话，知道重点在哪</div></div></div>
+
+  <h3>1.1 历年联考真题题型分布全表（据华图/粉笔考情整理）</h3>
+  <table>
+    <tr><th>联考时间</th><th>单位主题</th><th>第1题</th><th>第2题</th><th>第3题</th><th>第4题</th></tr>
+    <tr><td>2025年3月</td><td>未成年人保护中心</td><td>要素提炼</td><td>常态处理</td><td>沟通谈话</td><td>应用文—公开信</td></tr>
+    <tr><td>2024年11月</td><td>街道综合服务中心</td><td>要素提炼</td><td>常态处理</td><td>应用文—简介</td><td>应用文—学习小结</td></tr>
+    <tr><td>2024年3月</td><td>融媒体中心</td><td>要素提炼</td><td>常态处理</td><td>沟通谈话</td><td>应用文—讲述稿</td></tr>
+    <tr><td>2023年8月</td><td>疾病预防控制中心</td><td>要素提炼</td><td>应用文—健康提示</td><td>沟通谈话</td><td>应用文—宣传稿</td></tr>
+    <tr><td>2023年5月</td><td>图书馆</td><td>要素提炼</td><td>常态处理</td><td>应用文—发言稿</td><td>应用文—前言</td></tr>
+    <tr><td>2022年9月</td><td>中小学卫生保健所</td><td>要素提炼</td><td>常态处理</td><td>应用文—发言稿</td><td>应用文—推荐材料</td></tr>
+    <tr><td>2022年5月</td><td>停车管理中心</td><td>要素提炼</td><td>应用文—调研报告</td><td>应用文—简报</td><td>沟通谈话</td></tr>
+    <tr><td>2021年10月</td><td>公园管理中心</td><td>应用文—发言稿</td><td>词句理解+应用文—注意事项</td><td>常态处理</td><td>应用文—报告</td></tr>
+    <tr><td>2021年5月</td><td>调解中心</td><td>要素提炼</td><td>常态处理</td><td>沟通谈话</td><td>应用文—宣传稿</td></tr>
+    <tr><td>2020年10月</td><td>博物馆</td><td>常态处理</td><td>要素提炼</td><td>常态处理</td><td>应用文—报告</td></tr>
+    <tr><td>2020年7月</td><td>文化馆</td><td>应用文—请示</td><td>常态处理</td><td>应用文—公开信</td><td>应用文—方案、计划</td></tr>
+  </table>
+
+  <h3>1.2 题型权重：谁是必考，谁是偶考</h3>
+  <table>
+    <tr><th>题型</th><th>出现频次（近11场）</th><th>地位</th><th>备考优先级</th></tr>
+    <tr><td><b>归纳概括（要素提炼）</b></td><td>10+ 次（几乎每场第1题）</td><td><b>必考·常驻第1题</b></td><td>★★★★★ 最先学、学最透</td></tr>
+    <tr><td><b>公文写作（应用文）</b></td><td>11 场全考，每场1~2题</td><td><b>必考·分值最重</b>（常占2题）</td><td>★★★★★ 文种逐个过</td></tr>
+    <tr><td><b>提出对策（常态处理/解决问题）</b></td><td>7+ 次</td><td><b>高频</b>（常驻第2题）</td><td>★★★★☆</td></tr>
+    <tr><td><b>沟通协调（沟通谈话）</b></td><td>6 次</td><td><b>高频</b>（常驻第3题）</td><td>★★★★☆</td></tr>
+    <tr><td><b>应急处理</b></td><td>约3次（常与"常态处理"并列考查）</td><td>中频</td><td>★★★☆☆ 框架要熟</td></tr>
+    <tr><td><b>会务安排</b></td><td>零星出现（会务知识常融入公文/方案考查）</td><td>低频但必会</td><td>★★★☆☆ 流程要背</td></tr>
+    <tr><td><b>综合分析/词句理解</b></td><td>1次（2021年10月）</td><td>低频·见过即可</td><td>★★☆☆☆ 会"是什么—为什么—怎么办"即可</td></tr>
+  </table>
+  <div class="callout teal"><b>结论：</b>① 归纳概括 + 提出对策 + 公文写作三类合计占比超 70%，是绝对主力；② 沟通谈话近年高频出现在第3题；③ 应急处理融合进"常态处理"考查是常态。6类题型框架全掌握，才能覆盖所有考法。</div>
+
+  <h3>1.3 三种组合套路（把握试卷节奏）</h3>
+  <div class="grid">
+    <div class="card"><h4><span class="dot" style="background:var(--blue)"></span>套路一·标准组合</h4><p>概括 → 对策 → 沟通 → 公文（2024上、2025上）</p></div>
+    <div class="card"><h4><span class="dot" style="background:var(--teal)"></span>套路二·双公文组合</h4><p>概括 → 对策 → 公文 → 公文（2024下、2023上、2022下）</p></div>
+    <div class="card"><h4><span class="dot" style="background:var(--gold)"></span>套路三·办事导向组合</h4><p>概括/公文 → 应急/对策 → 沟通/应急 → 公文（2020—2021年）</p></div>
+  </div>
+  <div class="callout gold"><b>启示：</b>公文写作几乎每场≥1题、且常放在第3~4题（分值35~45分）——它是决定你上不上一百分的最大分水岭。冲刺期务必把高频文种写熟。</div>
+</section>
+
+<!-- ============ 第2课 通用逻辑 ============ -->
+<section id="s2">
+  <div class="sec-head"><div class="sec-num">2</div><div><h2>通用底层逻辑：万能四步答题法</h2><div class="sub">所有题型共用的一套骨架，先刻进脑子再学题型</div></div></div>
+
+  <div class="steps">
+    <div class="step"><div class="no">1</div><div><b>审题（30秒定生死）</b><p>逐字划出题干要素：<b>题型</b>（概括/对策/应急/沟通/公文）、<b>作答范围</b>（根据材料几）、<b>作答对象</b>（概括什么/解决什么）、<b>身份</b>（你是谁、权限到哪）、<b>问数</b>（一问还是两问）、<b>字数与要求</b>。审错题 = 全盘皆输。</p></div></div>
+    <div class="step"><div class="no">2</div><div><b>析点（找全要点）</b><p>带着问题回材料找点：高频词、权威表述（领导/文件/专家）、案例细节、数据、转折词后的内容。能直接摘的摘，不能摘的用自己的话提炼。<b>宁多勿漏</b>。</p></div></div>
+    <div class="step"><div class="no">3</div><div><b>加工（合并归类+规范表达）</b><p>把散乱要点按逻辑分类（主体法/维度法/时间法）；把口语翻译成机关话（"没人管"→"监管缺位"）；每条提炼<b>段旨句（核心词前置）</b>，形成"总—分"结构。</p></div></div>
+    <div class="step"><div class="no">4</div><div><b>书写（让阅卷人一眼看到分）</b><p>分条列项（一、二、三 / 1.2.3.），每条"核心词+展开"；字迹工整、卷面干净；字数贴近上限但不超格；关键词尽量用材料原词。</p></div></div>
+  </div>
+
+  <h3>2.1 三大铁律（全题型通用）</h3>
+  <div class="grid">
+    <div class="card"><h4><span class="dot" style="background:var(--blue)"></span>铁律一 · 答案源于材料</h4><p>90%的要点在材料里。抛弃"我认为/我觉得"，忠于原文、不主观臆断、不过度推断。材料没提的（比如罚款、上法院），不要自己加戏。</p></div>
+    <div class="card"><h4><span class="dot" style="background:var(--teal)"></span>铁律二 · 时刻代入身份</h4><p>审清"你是谁"。街道办助理 vs 政府工作人员，权限完全不同。权限不足就先"请示汇报、协调上级"，再谈"落实"。</p></div>
+    <div class="card"><h4><span class="dot" style="background:var(--gold)"></span>铁律三 · 分类清晰不堆砌</h4><p>要点必须分类呈现。两把分类刀：<b>主体法</b>（政府/单位/个人/社会/媒体）、<b>维度法</b>（思想/制度/监管/执行/资源/技术）。</p></div>
+  </div>
+
+  <h3>2.2 材料阅读法："词句段篇"四层递进</h3>
+  <table>
+    <tr><th>层级</th><th>看什么</th><th>怎么用</th></tr>
+    <tr><td><b>词</b></td><td>高频词、转折词（但是/然而/却）、观点词（认为/建议/必须/亟需）</td><td>高频词≈得分点；转折后常是"问题"</td></tr>
+    <tr><td><b>句</b></td><td>首尾句、总结句、权威句（专家/领导/文件/群众原话）</td><td>总结句可直接概括成要点；群众原话往往是"问题线索"</td></tr>
+    <tr><td><b>段</b></td><td>段落结构：总分、分总、并列、递进</td><td>理清层次，方便合并归类</td></tr>
+    <tr><td><b>篇</b></td><td>材料整体逻辑 + 命题意图（这条工作线要"办"什么事）</td><td>判断每道题在整条工作线中的位置，答案更完整</td></tr>
+  </table>
+
+  <h3>2.3 身份定位速查表（管理角色意识落地）</h3>
+  <table>
+    <tr><th>你的身份</th><th>能做什么</th><th>不能做什么</th></tr>
+    <tr><td>单位普通工作人员/助理</td><td>调研、梳理、提建议、草拟方案、组织协调、跟进落实</td><td>做重大决定、审批资金、跨部门发号施令</td></tr>
+    <tr><td>科室负责人/主任</td><td>安排任务、明确分工、内部协调、向领导汇报请示</td><td>超出科室职权的事不能直接定</td></tr>
+    <tr><td>政府机关人员</td><td>政策宣传、执法监管、联合多部门整治</td><td>侵犯公民合法权益、乱设处罚</td></tr>
+    <tr><td>面对群众</td><td>耐心倾听、解释政策、解决合理诉求、反馈回访</td><td>推诿搪塞、态度生硬、承诺办不到的事</td></tr>
+  </table>
+  <div class="callout red"><b>典型扣分：</b>身份是"社区工作人员"，却答出"建议修改《××法》"——越权。正确做法是"建议上级部门/向领导反映，推动相关法规完善"。</div>
+</section>
+
+<!-- ============ 第3课 归纳概括 ============ -->
+<section id="s3">
+  <div class="sec-head"><div class="sec-num">3</div><div><h2>第3课 归纳概括（要素提炼）</h2><div class="sub">必考题型 · 几乎每场都是第1题 · 全场最简单也最容易丢分</div></div></div>
+
+  <div class="goal"><div>🎯 <b>本课目标：</b>学完能准确判断"概括对象"（问题/原因/做法/经验/特点/意见/变化），能用"找点—合并—规范"三动作，把散乱材料整理成有段旨句、有层次的答案。</div></div>
+
+  <h3>3.1 题型识别：一看到这些词就是它</h3>
+  <div class="chips">
+    <span class="chip blue">概括……问题</span><span class="chip blue">总结……经验做法</span><span class="chip blue">提炼……要点</span>
+    <span class="chip blue">归纳……原因</span><span class="chip blue">梳理……意见/观点</span><span class="chip blue">分类整理……</span>
+    <span class="chip blue">分析……特点/变化</span><span class="chip blue">整理……情况</span>
+  </div>
+  <p class="muted">常见变体：<b>资料分类题</b>（2022年9月"分类整理网友各种意见"）——本质也是概括，只是要求按类别呈现。</p>
+
+  <h3>3.2 知识点①：审题四要素（答偏的根源在这里）</h3>
+  <div class="kp"><div class="kp-t"><span class="no">K1</span>概括对象：到底让你概括什么</div>
+    <ul>
+      <li><b>问题类</b>：找"毛病"——设施差、管理乱、服务弱……（标志词：存在哪些问题/不足/短板）</li>
+      <li><b>原因类</b>：找"为什么"——客观原因、主观原因（标志词：分析原因/为何）</li>
+      <li><b>做法/经验类</b>：找"别人怎么干成的"——措施、办法（标志词：经验做法/具体做法/成功经验）</li>
+      <li><b>特点类</b>：找"它和别人不一样在哪"——快、细、全、新（标志词：有哪些特点/特征）</li>
+      <li><b>变化类</b>：找"从…到…"——前后对比（标志词：发生了哪些变化）</li>
+      <li><b>意见/观点类</b>：找"各方怎么说"——支持/反对/建议（标志词：分类整理各方意见）</li>
+    </ul>
+    <p><b>审错对象的后果：</b>要你概括"做法"，你答成"意义"——整题0分。所以第一笔就是圈出概括对象。</p>
+  </div>
+
+  <div class="kp"><div class="kp-t"><span class="no">K2</span>作答范围与字数：范围定了别越界</div>
+    <ul>
+      <li>范围："根据材料2"→ 只在材料2里找；"结合给定材料"→ 全卷找</li>
+      <li>字数：≤300字一般4~6个点；≤350字一般5~7个点。按"每个点40~60字"倒推分条数量</li>
+      <li>要求词："全面、准确、条理清晰"——全面=点全，准确=忠于原文，条理=分类分条</li>
+    </ul>
+  </div>
+
+  <h3>3.3 知识点②：找点三招（保证不丢点）</h3>
+  <div class="kp"><div class="kp-t"><span class="no">K3</span>找点三招：摘抄 / 提炼 / 推导</div>
+    <ul>
+      <li><b>第一招·直接摘抄</b>：材料里的规范表述直接搬（"设立专窗""推出线上预约"）。关键词必须用原词。</li>
+      <li><b>第二招·提炼压缩</b>：口语/长句变短句。例："有的居民反映，周末去办事，大厅里人挤人，排两个多小时都轮不到"→"高峰时段办事排队时间长"。→ 规范词："服务效率低，等候时间长"。</li>
+      <li><b>第三招·归纳推导</b>：多个案例指向同一问题，归纳成一句。例：3个摊位都说"不知道政策"→"政策宣传覆盖面不足，知晓度低"。</li>
+    </ul>
+    <p><b>标记法：</b>读材料时边读边圈，同一类要点用同一种符号（△问题、○做法、☆原因），加工时按符号合并，又快又不漏。</p>
+  </div>
+
+  <h3>3.4 知识点③：合并分类（决定档次）</h3>
+  <div class="kp"><div class="kp-t"><span class="no">K4</span>两把分类刀 + 一种时间线</div>
+    <ul>
+      <li><b>主体法</b>：政府/单位/工作人员/群众/社会/媒体——谁的问题归谁</li>
+      <li><b>维度法</b>：思想观念 / 制度机制 / 监督管理 / 设施设备 / 队伍人才 / 技术手段 / 资金保障 / 宣传服务</li>
+      <li><b>时间线</b>：事前—事中—事后（适用于流程类、变化类）</li>
+    </ul>
+    <p><b>合并原则：</b>同义合并、就近合并、不重复不遗漏。合并后每个大类给一个<b>总括词</b>（如"监管缺位"），再展开具体表现。</p>
+  </div>
+
+  <h3>3.5 知识点④：书写规范（"节点+表述"是阅卷人最爱）</h3>
+  <div class="kp"><div class="kp-t"><span class="no">K5</span>"节点+表述"两步式书写</div>
+    <p>这是华图/粉笔都强调的标准写法：每条先给<b>节点（总括词/段旨句）</b>，再给<b>具体表述（展开内容）</b>。</p>
+    <div class="tpl"><span class="tag">示范</span><br>一、<span class="hl">站点规划不足</span>：车辆配备不足，站点分布不均，覆盖范围有限。<br>二、<span class="hl">运营维护滞后</span>：维修不及时，故障车辆多，损坏率高。<br>三、<span class="hl">使用秩序混乱</span>：乱停乱放普遍，占道现象严重。</div>
+    <p>阅卷人看的就是每一条开头的"节点词"——它决定了你能不能"一眼被看到分"。</p>
+  </div>
+
+  <h3>3.6 例题精讲①：2024年11月联考真题（街道综合服务中心·第1题·30分）</h3>
+  <div class="ex">
+    <div class="ex-head">真题 · 2024年11月2日联考 · C街道综合服务中心</div>
+    <div class="ex-body">
+      <div class="ex-q"><span class="ex-label">题目</span><div class="ex-block">假如你是C街道综合服务中心办公室主任助理小张，请根据背景材料完成下列任务。<br>实地调研结束后，你将向赵主任汇报C街道<b>农产品促销行动推进情况</b>，根据材料2，<b>提炼汇报要点</b>。<br>要求：全面、准确，分条作答，字数不超过300字。</div></div>
+      <div class="ex-m"><span class="ex-label">材料概要（材料2）</span><div class="ex-block">街道在便民服务大厅设<b>销售专区</b>，贴招牌、列清单，摆放本地特色农副产品；引入<b>产品质量追溯系统</b>，扫码可查商品信息；组织供货方召开<b>沟通协调会</b>，保障价格实惠和农户利益；支持小程序和现场<b>线上线下购买</b>，送货上门。街道联合社区举办<b>展销会</b>，精选农产品，现场检查质量，启动仪式上农企推介产品并与企事业单位<b>签订战略合作协议</b>；持续开展"五进行动"，引领绿色消费。设置<b>临时摊点</b>，精简审批办证流程，挂摊点证公开商户信息；不定期抽查摊位；制定管理办法，合理设置位置，根据实际情况动态调整，兼顾农户利益、市民需求和道路通行。</div></div>
+      <div class="ex-a"><span class="ex-label">示范作答</span><div class="ex-block">农产品促销行动推进情况汇报要点：<br>一、<b>设置销售专区。</b>在便民服务大厅设专区，张贴招牌和清单，摆放特色农副产品；引入质量追溯系统，扫码可查放心购买；组织供货方协调会，保障价格实惠和农户利益；线上线下结合，送货上门，提升销售额。<br>二、<b>举办展销会。</b>联合社区集中展销，现场检查保障质量；农企推介产品，与企事业单位签订战略合作协议；持续开展"五进行动"，引领绿色消费。<br>三、<b>设置临时摊点。</b>精简审批办证，挂摊点证公开商户信息；不定期抽查摊位；制定管理办法，合理动态调整位置，兼顾农户利益、市民需求和道路通行。</div></div>
+      <div class="ex-s"><span class="ex-label">采分点解析</span><div class="ex-block">① 本题是<b>"做法类"概括</b>，对象是"推进情况"，即"都做了哪些事"——每件事的第一个动作就是节点词（设置专区/举办展销会/设置摊点）。<br>② 每个节点下把材料的<b>关键细节全部保留</b>（追溯系统、协议、抽查、动态调整），细节=采分点。<br>③ 字数紧，用<b>压缩式表达</b>（"扫码可查放心购买"把两层意思压进半句），不写废话。<br>④ <b>格式上"总分"</b>：开头一句总起（汇报要点），再分条，符合"条理清晰"要求。</div></div>
+    </div>
+  </div>
+
+  <h3>3.7 例题精讲②：2024年3月联考真题（融媒体中心·第1题·35分）</h3>
+  <div class="ex">
+    <div class="ex-head">真题 · 2024年3月30日联考 · Y县融媒体中心</div>
+    <div class="ex-body">
+      <div class="ex-q"><span class="ex-label">题目</span><div class="ex-block">业务分享会后，Y县融媒体中心拟编发一期工作简报。根据材料2，<b>总结县级融媒体中心做好主题报道的经验做法</b>，供编写简报时使用。<br>要求：全面、准确，条理清晰，字数不超过300字。</div></div>
+      <div class="ex-m"><span class="ex-label">解题提示</span><div class="ex-block">这也是"做法类"概括。做法类的核心动作：<b>把"他们是怎么做的"拆成动词短语</b>（如：提前策划/深入一线/联动平台/创新形式/多元呈现）。材料中出现的每一件具体动作，都要收进答案，一个都别漏。</div></div>
+      <div class="ex-a"><span class="ex-label">示范作答框架（结构示范）</span><div class="ex-block">一、<b>强化顶层策划。</b>围绕重大主题提前谋划、制定宣传方案，明确报道方向与重点。<br>二、<b>深入一线取材。</b>记者下沉基层，蹲点采访群众和一线工作者，采集鲜活素材。<br>三、<b>多元平台联动。</b>统筹电视、公众号、短视频等渠道同步分发，扩大传播覆盖面。<br>四、<b>创新呈现形式。</b>采用图文、短视频、直播、互动话题等群众喜闻乐见的形式，增强可读性与传播力。<br>五、<b>注重效果反馈。</b>监测传播数据，收集受众反馈，及时调整报道策略。</div></div>
+      <div class="ex-s"><span class="ex-label">采分点解析</span><div class="ex-block">① 经验做法题的通用得分结构：<b>做法动词 + 具体内容</b>，两者缺一不可——只有"深入一线"没有"怎么深入"会扣细节分。<br>② 这题的采分点几乎全在材料里，属于"摘抄+压缩"型，考的是<b>信息筛选速度</b>。<br>③ 目标读者是"简报"，所以语言要<b>凝练、有概括性</b>，每条30~60字为宜。</div></div>
+    </div>
+  </div>
+
+  <h3>3.8 例题精讲③：资料分类题（2022年9月联考真题·第1题·35分）</h3>
+  <div class="ex">
+    <div class="ex-head">真题 · 2022年9月17日联考 · 中小学卫生保健所</div>
+    <div class="ex-body">
+      <div class="ex-q"><span class="ex-label">题目</span><div class="ex-block">朝阳小学将近视防控与"三好学生"评选挂钩的做法，引发社会热议。请根据材料2，<b>分类整理网友们的各种意见</b>。<br>要求：分类恰当，准确全面，简明扼要，不超过350字。</div></div>
+      <div class="ex-m"><span class="ex-label">材料特点</span><div class="ex-block">材料是网友留言合集，立场混乱、语言口语化、观点重叠。这种题的难点不是"找"，而是<b>"分类"</b>——先给意见分好类，再把同类的放进去。</div></div>
+      <div class="ex-a"><span class="ex-label">示范作答框架</span><div class="ex-block">一、<b>支持派</b>：1.认为有助于引导学生重视视力健康，形成良好用眼习惯；2.认为制度创新值得鼓励，把健康纳入评价体系有导向意义。<br>二、<b>质疑派</b>：1.质疑科学性，近视成因复杂，与评选挂钩不够合理；2.质疑公平性，可能对先天视力不佳的学生造成歧视。<br>三、<b>建议派</b>：1.建议只作激励不作惩罚，多设进步奖等；2.建议配套家校协同、定期筛查等措施，而非单一挂钩。</div></div>
+      <div class="ex-s"><span class="ex-label">采分点解析</span><div class="ex-block">① <b>分类维度自己定</b>：按立场分（支持/质疑/建议）是最稳妥的"意见类"分类法；也可按"肯定-担忧-建议"分。<br>② 每条意见先给<b>总括（观点立场）</b>再给<b>理由</b>，因为阅卷是按"类+要点"双轨踩分。<br>③ 网友口语（"这也太扯了吧"）必须转成<b>书面规范表述</b>（"质疑合理性"）——这是资料分类题的隐性考点。</div></div>
+    </div>
+  </div>
+
+  <div class="callout teal"><b>本课小结：</b>归纳概括 = <b>对象定准（K1）→ 范围锁定（K2）→ 三招找点（K3）→ 合并分类（K4）→ 节点+表述（K5）</b>。牢记"忠于材料、宁多勿漏、分类清晰"。这是全卷性价比最高的一题，务必拿满分。</div>
+</section>
+
+<!-- ============ 第4课 提出对策 ============ -->
+<section id="s4">
+  <div class="sec-head"><div class="sec-num">4</div><div><h2>第4课 提出对策（常态处理 / 解决问题）</h2><div class="sub">高频 · 常驻第2题 · 最容易提分也最容易写空</div></div></div>
+
+  <div class="goal"><div>🎯 <b>本课目标：</b>学会"判问数、定边界、三来源、十层面、四要素"，让每条对策都具体可执行，杜绝"加强管理"式空话。</div></div>
+
+  <h3>4.1 题型识别：三种常见问法</h3>
+  <div class="chips">
+    <span class="chip blue">提出解决措施/建议</span><span class="chip blue">针对……问题提出改进建议</span><span class="chip blue">先概括问题，再提出对策</span>
+  </div>
+
+  <h3>4.2 知识点①：先判问数（一看就会，一考就错）</h3>
+  <div class="kp"><div class="kp-t"><span class="no">K6</span>一问还是两问？</div>
+    <ul>
+      <li><b>一问</b>：题干只要求"提出对策/建议"，且问题在材料中已明确 → 直接写对策</li>
+      <li><b>两问</b>：题干出现"概括准确""问题明确"等字样，或"先概括问题再提出对策" → 先简写问题（占1/4~1/3篇幅），再重点写对策（占2/3以上）</li>
+      <li><b>判断口诀：</b>"只谈措施是一问，要求概括才两问"</li>
+    </ul>
+  </div>
+
+  <h3>4.3 知识点②：身份定边界（权限是天花板）</h3>
+  <div class="kp"><div class="kp-t"><span class="no">K7</span>你的身份决定你能提什么对策</div>
+    <ul>
+      <li><b>政府机关</b>：可提制度、立法、监管、专项整治、跨部门联合</li>
+      <li><b>单位普通工作人员</b>：从岗位职能出发——加强宣传、完善设施、优化流程、组织志愿者、请示汇报上级、协调相关部门</li>
+      <li><b>越权写法是重灾区：</b>社区工作人员提"修订《民法典》"＝直接扣分。改法："建议向上级反映，推动相关法规政策完善"。</li>
+    </ul>
+  </div>
+
+  <h3>4.4 知识点③：对策三来源（答案从哪来）</h3>
+  <div class="kp"><div class="kp-t"><span class="no">K8</span>直接对策 + 间接对策（问题/原因反推）+ 经验借鉴</div>
+    <ul>
+      <li><b>直接对策</b>：材料里的"应当/需要/建议/已采取措施" → 摘抄转规范</li>
+      <li><b>问题反推</b>："缺人手"→"加强人才队伍建设，引进专业人才，开展业务培训"</li>
+      <li><b>原因反推</b>："因为宣传不够导致知晓率低"→"加大宣传力度，拓宽宣传渠道"</li>
+      <li><b>经验借鉴</b>：材料中其他地区/单位的成功做法 → 迁移到本地</li>
+    </ul>
+    <p><b>检查清单：</b>写完全部对策后，把材料里的每个问题逐条对照——<b>问题全部有对策对应 = 全；有遗漏 = 漏点扣分</b>。</p>
+  </div>
+
+  <h3>4.5 知识点④：对策十层面（写不出来的万能仓库）</h3>
+  <table>
+    <tr><th>层面</th><th>万能示例</th></tr>
+    <tr><td><b>思想</b></td><td>加强宣传引导（横幅海报、公众号、宣讲会、知识竞赛）；开展专题教育，转变观念</td></tr>
+    <tr><td><b>制度</b></td><td>建章立制、细化规则；出台管理办法，明确责任分工；完善考核与奖惩机制</td></tr>
+    <tr><td><b>监管</b></td><td>加强巡查检查、明察暗访；拓宽投诉渠道、设立举报电话、引入媒体监督</td></tr>
+    <tr><td><b>执法/惩处</b></td><td>依法查处、专项整治、通报批评、提高违法成本、纳入信用记录</td></tr>
+    <tr><td><b>管理</b></td><td>明确岗位职责、量化考核、加强培训、科学排班、优化流程</td></tr>
+    <tr><td><b>技术</b></td><td>数字化平台、智能管理系统、线上预约、大数据分析、政务App、追溯系统</td></tr>
+    <tr><td><b>资金</b></td><td>加大财政投入、申请专项资金、政策补贴、引入社会资本</td></tr>
+    <tr><td><b>人才</b></td><td>引进专业人才、转岗培训、招募志愿者、校企合作定向培养、提高待遇</td></tr>
+    <tr><td><b>设施</b></td><td>完善基础设施、合理规划布局、增加便民设施、无障碍改造、资源下沉</td></tr>
+    <tr><td><b>服务</b></td><td>优化办事流程、一窗受理、上门服务、延时服务、预约办理、满意度回访</td></tr>
+  </table>
+  <div class="callout gold"><b>记忆口诀：</b>"想（思想）制（制度）管（监管）罚（执法）理（管理），技（技术）钱（资金）才（人才）设（设施）服（服务）"——十个字，对策不愁。</div>
+
+  <h3>4.6 知识点⑤：对策四要素（从空话变可执行）</h3>
+  <div class="kp"><div class="kp-t"><span class="no">K9</span>主体 + 手段 + 内容 + 目的</div>
+    <p>一条合格对策 = 谁来做（主体）+ 用什么方式（手段）+ 具体做什么（内容）+ 达到什么效果（目的）。</p>
+    <div class="tpl"><span class="tag">对比示范</span><br>❌ 空话：<span class="cm">加强宣传，提高知晓度。</span><br>✅ 可执行：<span class="hl">利用便民服务大厅、公众号、短视频等渠道，</span>通过张贴海报、推送图解、滚动播放等方式，<span class="hl">持续开展"办不成事"专窗宣传</span>，让群众知晓专窗功能与申请流程，<span class="hl">提高社会知晓度与使用率。</span></div>
+    <p><b>自查标准：</b>把对策念给同事听，对方能直接照着做——就是合格；对方问"怎么做？"——就是空话。</p>
+  </div>
+
+  <h3>4.7 例题精讲①：2024年11月联考真题（柳桥市集提档升级·第2题·40分）</h3>
+  <div class="ex">
+    <div class="ex-head">真题 · 2024年11月2日联考 · C街道综合服务中心</div>
+    <div class="ex-body">
+      <div class="ex-q"><span class="ex-label">题目</span><div class="ex-block">C街道准备召开"柳桥市集"提档升级工作讨论会，邀请相关各方参加，赵主任将代表中心在会上发言。根据材料3，<b>提出提档升级工作建议</b>，供赵主任参考。<br>要求：内容全面，条理清晰，针对性强，具体可行，字数不超过350字。</div></div>
+      <div class="ex-m"><span class="ex-label">材料概要（材料3·问题型材料）</span><div class="ex-block">市集存在：<b>停车难、公交不便</b>；<b>摊位流动性差</b>，老面孔多、新鲜感不足；<b>营业时间短</b>，周一到周三空置；<b>整体规划乱</b>，与公园、商场动线绕行，雕塑遮挡摊位；<b>噪音扰民</b>，影响周边居民休息。</div></div>
+      <div class="ex-a"><span class="ex-label">示范作答</span><div class="ex-block">一、<b>完善交通设施。</b>与交通管理部门协商，科学规划停车位，设计公交线路与站点；与周边写字楼协商，市集时段开放其停车场，缓解停车压力。<br>二、<b>优化摊位管理。</b>实行每周申报、筛选轮换机制，保持新鲜感；对长期守法经营且考核达标的商家，给予固定摊位名额，留住优质商户。<br>三、<b>科学延长营业时间。</b>与运营方、周边居民共同商定营业时段，适度增加周一到周三的营业安排，兼顾摊主收益与居民休息。<br>四、<b>升级整体规划。</b>联合规划部门设计公园、商场与市集之间的便捷通道，减少绕行；合理调整摊位布局，避免雕塑遮挡，兼顾"烟火气"与"浪漫感"。<br>五、<b>强化噪音管理。</b>加强日常巡逻与群众监督，对日常经营和活动时段严格控制音量与时长，减少对居民的影响。</div></div>
+      <div class="ex-s"><span class="ex-label">采分点解析</span><div class="ex-block">① 本题典型 <b>"问题→对策"一一对应</b>：材料5个问题，答案5条对策，条条精准，这就是"针对性"满分的样子。<br>② 每条对策都有<b>具体做法</b>（协商规划停车位/每周申报轮换/共同商定时段），不是空喊"加强管理"——这是"具体可行"的得分点。<br>③ 身份是"街道综合服务中心"（基层单位），所以措施都是<b>协调、建议、组织</b>层面（与××协商、联合××），没有越权下命令——符合角色意识。</div></div>
+    </div>
+  </div>
+
+  <h3>4.8 例题精讲②：2024年3月联考真题（人才队伍建设建议·第2题·30分）</h3>
+  <div class="ex">
+    <div class="ex-head">真题 · 2024年3月30日联考 · Y县融媒体中心</div>
+    <div class="ex-body">
+      <div class="ex-q"><span class="ex-label">题目</span><div class="ex-block">Y县融媒体中心召开的人才工作座谈会结束后，办公室主任让你根据与会人员的发言，就<b>融媒体背景下的人才队伍建设提出建议</b>，供领导参阅。根据材料3，列出建议要点。<br>要求：内容全面，条理清晰，针对性强，具体可行，字数不超过250字。</div></div>
+      <div class="ex-m"><span class="ex-label">材料概要</span><div class="ex-block">座谈会上各方发言反映：<b>复合型人才短缺</b>（既懂技术又懂内容的人少）、<b>培训不足</b>、<b>激励机制不完善</b>（留不住人）、<b>年轻人才引进难</b>（基层吸引力弱）。</div></div>
+      <div class="ex-a"><span class="ex-label">示范作答</span><div class="ex-block">一、<b>拓宽引才渠道。</b>加大复合型人才招聘力度，与高校合作定向培养，柔性引进新媒体运营、技术研发等紧缺人才。<br>二、<b>强化教育培训。</b>围绕采编、技术、运营等开展常态化岗位培训与轮岗锻炼，提升队伍综合能力。<br>三、<b>完善激励机制。</b>健全绩效考核与薪酬分配办法，向一线和骨干倾斜，打通职业晋升通道，增强岗位吸引力。<br>四、<b>优化留才环境。</b>改善工作条件，丰富文化生活，落实人才关心关爱措施，增强归属感。</div></div>
+      <div class="ex-s"><span class="ex-label">采分点解析</span><div class="ex-block">① 对策题如果材料本身就是"会议发言"，要点往往散在各人嘴里，<b>先合并同类再写对策</b>（4类问题→4条对策）。<br>② 250字写4条，每条60字左右——<b>"节点词+一句话展开"</b>即可，不要每条写成一段长文。<br>③ "供领导参阅"提示这是<b>建议要点/内参型</b>，语言要简洁、观点要鲜明，直接给干货。</div></div>
+    </div>
+  </div>
+
+  <div class="callout teal"><b>本课小结：</b>对策题得分 = <b>判问数（K6）＋ 不越权（K7）＋ 三来源找全（K8）＋ 十层面兜底（K9表）＋ 四要素写实</b>。写完必须做"问题—对策"对照检查。</div>
+</section>
+
+<!-- ============ 第5课 应急处理 ============ -->
+<section id="s5">
+  <div class="sec-head"><div class="sec-num">5</div><div><h2>第5课 应急处理</h2><div class="sub">中频但必会 · 考验"轻重缓急"的办事智慧 · 常与常态处理融合考查</div></div></div>
+
+  <div class="goal"><div>🎯 <b>本课目标：</b>掌握"找矛盾—排顺序—给方案—补机制"四步，以及投诉纠纷、舆情危机、安全事故、活动中断四类场景的固定套路。</div></div>
+
+  <h3>5.1 题型识别：怎么判断是应急处理</h3>
+  <div class="chips">
+    <span class="chip blue">面对突发事件如何处理</span><span class="chip blue">现场发生冲突/投诉，你怎么办</span>
+    <span class="chip blue">列出处理步骤</span><span class="chip blue">网络舆情发酵，如何应对</span>
+    <span class="chip blue">活动进行中发生意外，如何处理</span>
+  </div>
+  <p class="muted">注意：大纲把它归入"计划与控制能力"，试卷上常写作"常态处理/应急处理/突发事件处理"。</p>
+
+  <h3>5.2 知识点①：三大处理原则（先立原则再答细节）</h3>
+  <div class="kp"><div class="kp-t"><span class="no">K10</span>生命至上 / 轻重缓急 / 先控后处</div>
+    <ul>
+      <li><b>生命与安全永远第一</b>：涉及人身安全的先救人、先疏散，再说别的</li>
+      <li><b>轻重缓急排序</b>：紧急的（伤人、冲突、舆情爆发）先办；重要的（制度完善）后办；先"灭火"再"防火"</li>
+      <li><b>先控制局面再处理问题</b>：情绪不稳定的先安抚，现场混乱的先稳住，再谈调查解决</li>
+    </ul>
+  </div>
+
+  <h3>5.3 知识点②：通用四步流程（几乎万能）</h3>
+  <div class="steps">
+    <div class="step"><div class="no">1</div><div><b>紧急处置</b><p>第一时间到场/回应：抢救伤者、疏散人群、控制现场、安抚情绪、向领导报告。</p></div></div>
+    <div class="step"><div class="no">2</div><div><b>调查核实</b><p>了解事情来龙去脉：走访当事人、调取记录、听取多方说法，核实真伪。</p></div></div>
+    <div class="step"><div class="no">3</div><div><b>分类处置</b><p>针对核实的每个矛盾逐一出方案：能解决的当场解决，不能解决的说明原因、明确时限。</p></div></div>
+    <div class="step"><div class="no">4</div><div><b>善后长效</b><p>跟踪回访、反馈结果；举一反三排查同类隐患；建章立制、完善长效机制。</p></div></div>
+  </div>
+
+  <h3>5.4 知识点③：四类高频场景固定套路（背下来直接套）</h3>
+  <table>
+    <tr><th>场景</th><th>固定处理框架</th><th>高频动作词</th></tr>
+    <tr><td><b>群众投诉/现场纠纷</b></td><td>安抚情绪（先道歉、稳住局面）→ 倾听记录诉求 → 核实情况 → 依法依规处理 → 反馈结果 → 跟进回访</td><td>耐心倾听、及时反馈、限时办结</td></tr>
+    <tr><td><b>网络舆情/负面报道</b></td><td>第一时间回应表态 → 调查核实 → 公布真相（及时、准确、权威）→ 严肃处理责任人 → 加强引导、修复形象</td><td>及时发声、澄清事实、回应关切</td></tr>
+    <tr><td><b>突发安全事故</b></td><td>救人第一 → 疏散现场 → 上报领导 → 保护现场、配合调查 → 举一反三、排查隐患</td><td>抢救、疏散、上报、配合、整改</td></tr>
+    <tr><td><b>活动/设备突发中断</b></td><td>启动备用方案 → 安抚参会者 → 调整议程 → 组织抢修 → 事后复盘</td><td>备用、调整、抢修、复盘</td></tr>
+  </table>
+  <div class="callout red"><b>最容易漏的3个点：</b>① 忘了"上报领导/向领导汇报"；② 只处理完就结束，忘了"跟踪回访/长效机制"；③ 语言用"解决一下""安抚一下"这种口语，要用"第一时间""迅速""依法依规"等机关表达。</div>
+
+  <h3>5.5 例题精讲：群众现场投诉冲突（典型示例·方法示范）</h3>
+  <div class="ex">
+    <div class="ex-head">典型例题（依据历年"常态处理"考法设计）· 社区服务中心</div>
+    <div class="ex-body">
+      <div class="ex-q"><span class="ex-label">题目</span><div class="ex-block">你是某社区综合服务中心的工作人员。居民王大爷因家中漏水维修问题与物业多次沟通无果，情绪激动地冲到服务大厅，当众大声投诉，引来不少群众围观。你会如何处理？请列出处理要点。<br>要求：措施得当，考虑周全，条理清晰。</div></div>
+      <div class="ex-a"><span class="ex-label">示范作答</span><div class="ex-block">一、<b>安抚情绪、控制现场。</b>立即请王大爷到接待室就座，递上茶水，耐心倾听，先对其焦急心情表示理解；同时引导围观群众有序离开，恢复大厅正常秩序。<br>二、<b>认真记录、核实情况。</b>详细记录其反映的漏水情况、维修经过及诉求，留下联系方式；随后联系物业了解事情原委，必要时上门实地查看。<br>三、<b>协调处置、解决问题。</b>组织物业、业主当面沟通，明确责任与维修方案：属物业职责的，督促限期维修；涉及开发商或政策性问题的，及时向上级反映，并明确告知王大爷处理时限和进展。<br>四、<b>反馈回访、完善机制。</b>处理完毕后及时向王大爷反馈结果并回访；同时举一反三，梳理同类诉求，建立社区矛盾纠纷排查化解台账，畅通居民投诉渠道，防止类似问题升级。</div></div>
+      <div class="ex-s"><span class="ex-label">采分点解析</span><div class="ex-block">① 第一步必须是<b>"稳住情绪+控制现场"</b>——这是应急题的开场动作，漏了直接丢档次分。<br>② 中段体现<b>"核实—协调—限期"</b>的办事闭环，并有"物业责任/政策问题"的分类思维。<br>③ 结尾必须有<b>"回访+长效机制"</b>——这是应急题"善后"的固定得分点。<br>④ 全程语言规范（"引导围观群众有序离开""督促限期维修"），符合机关表达习惯。</div></div>
+    </div>
+  </div>
+
+  <div class="callout teal"><b>本课小结：</b>应急题拿分密码 = <b>原则（K10）＋ 四步流程（K11）＋ 场景套路（K12）</b>。记住三句话：先控场、再核实、后处置，结尾必须补长效。</div>
+</section>
+
+<!-- ============ 第6课 沟通协调 ============ -->
+<section id="s6">
+  <div class="sec-head"><div class="sec-num">6</div><div><h2>第6课 沟通协调（沟通谈话）</h2><div class="sub">近年高频 · 常驻第3题 · 考的是"会说话、能说服人"</div></div></div>
+
+  <div class="goal"><div>🎯 <b>本课目标：</b>掌握"理解—讲理—解难—要求"四步沟通法，能针对领导/同事/群众/下属不同对象调整策略。</div></div>
+
+  <h3>6.1 题型识别</h3>
+  <div class="chips">
+    <span class="chip blue">与××沟通，列出沟通思路</span><span class="chip blue">劝说××，争取理解支持</span>
+    <span class="chip blue">如何说服××配合工作</span><span class="chip blue">代拟一份沟通发言稿</span>
+  </div>
+
+  <h3>6.2 知识点①：沟通的本质（不是吵架，是解决问题）</h3>
+  <div class="kp"><div class="kp-t"><span class="no">K13</span>沟通的目标与底线</div>
+    <ul>
+      <li><b>目标</b>：化解矛盾、达成共识、推进工作——沟通是手段，工作是目的</li>
+      <li><b>底线</b>：不推诿、不指责、不说教；换位思考，情理结合</li>
+      <li><b>对象意识</b>：先判断对方是谁（身份）、对方在意的点是什么（诉求）、矛盾点在哪（症结）</li>
+    </ul>
+  </div>
+
+  <h3>6.3 知识点②：万能四步沟通法（背到形成肌肉记忆）</h3>
+  <div class="steps">
+    <div class="step"><div class="no">1</div><div><b>拉近距离 · 理解共情</b><p>先肯定、先理解："理解您的顾虑""感谢您对工作的支持"——让对方放下对立情绪。切忌一开口就讲大道理。</p></div></div>
+    <div class="step"><div class="no">2</div><div><b>阐述利害 · 讲清道理</b><p>摆事实、讲政策、算利害：这件事为什么重要、对对方有什么好处、不配合会有什么影响。用对方听得懂的话。</p></div></div>
+    <div class="step"><div class="no">3</div><div><b>施以援手 · 解决困难</b><p>针对对方的核心顾虑给方案、给帮助、扫清障碍——这是沟通成败的关键一步：光讲理不给路，说服不了人。</p></div></div>
+    <div class="step"><div class="no">4</div><div><b>巩固成果 · 提出要求</b><p>明确下一步双方怎么做、谁来跟进；必要时约定反馈机制，确保沟通结果落地。</p></div></div>
+  </div>
+
+  <h3>6.4 知识点③：不同对象的沟通策略（对象不同，打法不同）</h3>
+  <table>
+    <tr><th>对象</th><th>对方心理</th><th>关键打法</th></tr>
+    <tr><td><b>对领导</b></td><td>看重大局、效率、责任</td><td>先汇报事实与方案，讲清利弊得失，请示决策；尊重权威，不越级</td></tr>
+    <tr><td><b>对同事/平级</b></td><td>怕多干活、怕担责</td><td>换位思考、明确分工、讲大局讲协作，必要时请领导协调</td></tr>
+    <tr><td><b>对群众</b></td><td>情绪化、诉求具体</td><td>耐心倾听、稳定情绪，政策讲透讲细，能办则办、给时限、给路径</td></tr>
+    <tr><td><b>对下属</b></td><td>怕批评、需认可</td><td>先肯定付出，再指出问题，一起想办法，明确改进要求</td></tr>
+    <tr><td><b>对专家/专业方</b></td><td>重专业判断</td><td>尊重专业意见，讲清需求背景，争取技术支持和可行性建议</td></tr>
+  </table>
+
+  <h3>6.5 例题精讲①：2024年3月联考真题（大喇叭扰民沟通·第3题·40分）</h3>
+  <div class="ex">
+    <div class="ex-head">真题 · 2024年3月30日联考 · Y县融媒体中心</div>
+    <div class="ex-body">
+      <div class="ex-q"><span class="ex-label">题目</span><div class="ex-block">针对村民投诉<b>大喇叭扰民</b>问题，在了解掌握情况后，你将与B村几位反映问题的村民进行沟通，争取获得理解与支持。根据材料4，<b>列出沟通的基本思路</b>。<br>要求：角色定位准确，沟通策略得当，考虑周全，有理有据，字数不超过350字。</div></div>
+      <div class="ex-m"><span class="ex-label">背景要点</span><div class="ex-block">村里用大喇叭播通知、宣传政策，但部分村民觉得<b>声音大、时间早、频次高</b>，影响休息，多次投诉。村干部觉得大喇叭是传达政策的必要渠道。</div></div>
+      <div class="ex-a"><span class="ex-label">示范作答（沟通思路）</span><div class="ex-block">一、<b>倾听诉求，表示理解。</b>上门走访或邀请村民座谈，耐心听取意见，理解其受噪音影响的困扰，感谢其对村务的关注与监督，缓解对立情绪。<br>二、<b>说明背景，争取理解。</b>讲清大喇叭是传递惠农政策、应急通知、防汛防火等关键信息的重要渠道，尤其是留守老人多的村组，关系群众切身利益，请村民予以理解。<br>三、<b>拿出方案，回应关切。</b>提出改进措施：调整播放时段（避开清晨和午休）、控制音量和时长、优化点位布局（远离住户集中区）、对紧急通知与非紧急内容分类播放，最大限度减少影响。<br>四、<b>建立机制，巩固共识。</b>公布反馈渠道，欢迎村民随时提出意见，根据反馈动态调整播放安排；同时探索微信群、公示栏等多元化通知方式，逐步降低对大喇叭的依赖。</div></div>
+      <div class="ex-s"><span class="ex-label">采分点解析</span><div class="ex-block">① 要求是"列出沟通<b>基本思路</b>"，所以按<b>步骤式呈现</b>（先听→再讲→给方案→建机制），每一步一个得分点。<br>② 沟通要点在于<b>双方都照顾到</b>：既理解村民（调整时段音量），也保留大喇叭的正当功能（应急通知）——这是"策略得当、考虑周全"的核心。<br>③ 结尾的"多元通知渠道"体现<b>长效思维</b>，是高分的点睛之笔。</div></div>
+    </div>
+  </div>
+
+  <h3>6.6 例题精讲②：2025年3月联考真题（与儿童主任小王沟通·第3题）</h3>
+  <div class="ex">
+    <div class="ex-head">真题 · 2025年3月29日联考 · 未成年人保护中心</div>
+    <div class="ex-body">
+      <div class="ex-q"><span class="ex-label">题目</span><div class="ex-block">你是未成年人保护中心综合办公室的工作人员。针对儿童主任小王在工作中存在的问题，你将与他进行沟通，动之以情、晓之以理，争取其理解支持、改进工作。请根据材料，<b>列出沟通内容要点</b>。</div></div>
+      <div class="ex-m"><span class="ex-label">材料概要</span><div class="ex-block">小王工作态度积极但存在不足：<b>重数量轻质量</b>（走访台账做得漂亮、实际关怀不够）、<b>方法简单</b>（工作靠经验、不学习政策）、<b>沟通生硬</b>（与家长孩子交流缺乏耐心技巧）。</div></div>
+      <div class="ex-a"><span class="ex-label">示范作答（沟通要点）</span><div class="ex-block">一、<b>肯定付出，拉近距离。</b>首先肯定小王工作积极、责任心强，在台账整理、任务完成上付出了大量努力，营造良好沟通氛围。<br>二、<b>指出问题，点明利害。</b>委婉而明确地指出：工作不能只看台账数量，更要看孩子和家长的实际感受；政策学习不足、沟通方式生硬，可能影响帮扶效果甚至引发误解，关系未成年人保护工作的实效与单位形象。<br>三、<b>帮助分析，共同改进。</b>一起分析问题原因：任务多时间紧、缺乏专业方法；建议其参加政策培训、学习沟通技巧，向有经验的同事请教，合理安排走访时间，把工作做实做细。<br>四、<b>明确要求，持续跟进。</b>提出改进期望，建议定期复盘工作，遇到困难及时反馈；中心将提供培训支持，共同把未成年人保护工作做好。</div></div>
+      <div class="ex-s"><span class="ex-label">采分点解析</span><div class="ex-block">① <b>对象是同事/下属</b>，所以"先肯定再批评"（三明治沟通法）是必须的——直接劈头盖脸批评=策略不当。<br>② 指出问题时给<b>"利害分析"</b>（影响帮扶实效与单位形象），为对方转变态度提供理由。<br>③ 第三步是高分关键：<b>不止指出问题，还给出路</b>（培训、请教、合理安排），把"批评"变成"帮助"。</div></div>
+    </div>
+  </div>
+
+  <div class="callout teal"><b>本课小结：</b>沟通题 = <b>共情开场（K13）→ 讲理（K14）→ 给路 → 闭环</b>。四步里"施以援手"最容易被考生漏掉——光说服不给方案，说服力直接减半。</div>
+</section>
+
+<!-- ============ 第7课 会务安排 ============ -->
+<section id="s7">
+  <div class="sec-head"><div class="sec-num">7</div><div><h2>第7课 会务安排</h2><div class="sub">低频但必会 · 办会/办活动/办培训 · 考"计划与控制"</div></div></div>
+
+  <div class="goal"><div>🎯 <b>本课目标：</b>背熟"会前—会中—会后"全流程，会写会议/活动方案，会议知识能迁移到方案类公文。</div></div>
+
+  <h3>7.1 题型识别</h3>
+  <div class="chips">
+    <span class="chip blue">由你组织一次会议，怎么安排</span><span class="chip blue">组织一次培训/活动，列出要点</span>
+    <span class="chip blue">撰写会议工作方案</span><span class="chip blue">活动的注意事项</span>
+  </div>
+
+  <h3>7.2 知识点①：会议组织全流程（背！）</h3>
+  <table>
+    <tr><th>阶段</th><th>动作清单</th><th>细节考点</th></tr>
+    <tr><td rowspan="3"><b>会前准备</b></td><td>明确会议主题、目的、议程</td><td>一切工作的起点</td></tr>
+    <tr><td>制定方案、下发通知（时间、地点、参会人、议题、材料准备）</td><td>通知要"提前一周左右"发出，注明需带材料</td></tr>
+    <tr><td>会场布置、设备调试、材料印制、人员分工（签到/记录/后勤/主持）</td><td>分工到人，责任到岗</td></tr>
+    <tr><td rowspan="2"><b>会中服务</b></td><td>组织签到、按议程推进、维持秩序</td><td>领导致辞→代表发言→讨论→记录</td></tr>
+    <tr><td>设备保障、突发应对</td><td>备用设备、灵活调整议程</td></tr>
+    <tr><td rowspan="2"><b>会后总结</b></td><td>整理会议记录、形成会议纪要</td><td>纪要写"会议时间/地点/参会人/议定事项"</td></tr>
+    <tr><td>汇报领导、落实督办、资料归档</td><td>跟踪落实比开会本身更重要</td></tr>
+  </table>
+
+  <h3>7.3 知识点②：活动/培训组织（会务变体）</h3>
+  <div class="kp"><div class="kp-t"><span class="no">K15</span>活动五步：方案→宣传→组织→执行→评估</div>
+    <ul>
+      <li><b>制定方案</b>：主题、时间地点、对象人数、内容流程、经费预算、责任分工</li>
+      <li><b>宣传动员</b>：提前通过公告栏、公众号、网格群等招募/通知目标人群</li>
+      <li><b>组织实施</b>：物资准备、现场引导、秩序维护、人员签到、过程记录</li>
+      <li><b>执行保障</b>：应急预案（天气、设备、人员变动）、安全保障、后勤服务</li>
+      <li><b>效果评估</b>：满意度调查、总结复盘、资料归档、宣传报道</li>
+    </ul>
+    <p><b>记忆法：</b>一切活动都是"<b>事前方案通知、事中组织保障、事后评估归档</b>"三段式——和会议一个逻辑。</p>
+  </div>
+
+  <h3>7.4 例题精讲：组织一次社区义诊活动（典型示例·方法示范）</h3>
+  <div class="ex">
+    <div class="ex-head">典型例题（依据"会务安排/方案写作"考法设计）· 街道综合服务中心</div>
+    <div class="ex-body">
+      <div class="ex-q"><span class="ex-label">题目</span><div class="ex-block">你所在的街道综合服务中心计划联合辖区医院开展一次"健康进社区"义诊活动，领导让你负责组织。请你列出活动组织要点。</div></div>
+      <div class="ex-a"><span class="ex-label">示范作答</span><div class="ex-block">一、<b>制定活动方案。</b>明确义诊主题、时间地点、服务内容（测量血压血糖、常见病咨询、健康宣教等）、经费预算，报领导审批。<br>二、<b>做好对接分工。</b>与医院沟通确定出诊科室、专家人数及所需设备；明确中心人员分工：现场引导、秩序维护、登记记录、后勤保障，责任到人。<br>三、<b>广泛宣传动员。</b>提前一周通过公告栏、社区微信群、公众号等发布义诊时间地点和注意事项，重点通知老年人等目标群体。<br>四、<b>落实场地物资。</b>提前布置场地（桌椅、遮阳棚、指示牌），准备血压计等设备，调试电源，设置候诊区与问诊区，备好应急药品。<br>五、<b>现场组织保障。</b>引导居民有序排队，协助登记；维护现场秩序，照顾行动不便老人；做好突发情况应急预案。<br>六、<b>总结评估归档。</b>活动后统计服务人数、收集居民反馈，形成总结报领导；留存影像资料，为后续活动提供参考。</div></div>
+      <div class="ex-s"><span class="ex-label">采分点解析</span><div class="ex-block">① 组织类题目按<b>"方案→对接→宣传→物资→现场→总结"</b>纵向展开，覆盖全流程不遗漏。<br>② 每个环节都有<b>具体动作</b>（公告栏微信群、候诊区问诊区、应急药品），拒绝"做好宣传""安排好现场"这类空话。<br>③ 身份是街道服务中心，所以与医院用"对接/沟通"，与领导用"报批/汇报"——权限分寸正确。</div></div>
+    </div>
+  </div>
+
+  <div class="callout teal"><b>本课小结：</b>会务题 = <b>流程全（会前中后）＋ 动作实（具体到人到物）＋ 权限对（报批对接）</b>。会务框架同时是"方案类公文"的骨架，一举两得。</div>
+</section>
+
+<!-- ============ 第8课 公文写作 ============ -->
+<section id="s8">
+  <div class="sec-head"><div class="sec-num">8</div><div><h2>第8课 公文写作（应用文）</h2><div class="sub">必考 · 分值最重（每场1~2题·合计70~80分）· 决定能否过百</div></div></div>
+
+  <div class="goal"><div>🎯 <b>本课目标：</b>背熟格式五要素与标题三式，掌握"凭—事—断"正文结构，逐个吃透高频文种（含近年新文种），每个文种都会套模板写。</div></div>
+
+  <h3>8.1 知识点①：格式五要素（先保格式分，一分不丢）</h3>
+  <div class="tpl">
+    <span class="hl">标题</span>（居中）<br>
+    <span class="hl">称谓</span>（顶格 + 冒号）<br>
+    <span class="hl">正文</span>（开头缘由 → 主体事项 → 结尾）<br>
+    <span class="hl">落款</span>（发文单位，右下）<br>
+    <span class="hl">日期</span>（落款下方，右空4格；不写真名，用××代替）
+  </div>
+  <p><b>格式特殊文种速记（必背）：</b></p>
+  <div class="chips">
+    <span class="chip gold">讲话稿/演讲稿 → 不写落款</span>
+    <span class="chip gold">短评/编者按 → 不写落款</span>
+    <span class="chip gold">回帖 → 不需要格式</span>
+    <span class="chip gold">回信 → 按书信格式</span>
+    <span class="chip gold">纪要 → 日期写会议当天</span>
+    <span class="chip gold">前言/简介 → 一般无称谓落款</span>
+  </div>
+
+  <h3>8.2 知识点②：标题命名三式</h3>
+  <div class="kp"><div class="kp-t"><span class="no">K16</span>规范式 / 文种式 / 文章式</div>
+    <ul>
+      <li><b>规范式</b>（最稳妥）：关于 + 事由 + 的 + 文种 ——《关于深入开展便民服务活动的倡议书》</li>
+      <li><b>文种式</b>：直接写"通知""倡议书"——题干未要求自拟标题时可用</li>
+      <li><b>文章式</b>（自拟）：适用于讲话稿、短评、宣传稿、讲述稿 ——"建设文明社区 共享美好生活"</li>
+    </ul>
+  </div>
+
+  <h3>8.3 知识点③：正文"凭—事—断"万能结构</h3>
+  <table>
+    <tr><th>部分</th><th>写什么</th><th>常用句式</th></tr>
+    <tr><td><b>凭（开头）</b></td><td>发文背景/缘由/目的/依据</td><td>"为进一步××××，切实××××……""根据××××要求……"</td></tr>
+    <tr><td><b>事（主体）</b></td><td>主要内容：做法/要求/倡议/进展（分条列项）</td><td>"一、×××× 二、×××× 三、××××"</td></tr>
+    <tr><td><b>断（结尾）</b></td><td>总结、呼吁、号召、请示语</td><td>"以上请示妥否，请批示""让我们携手共进……"</td></tr>
+  </table>
+  <div class="callout red"><b>铁律：</b>骨架是死的，血肉必须来自材料——先把材料要点找全填进框架，切忌脱离材料自编。</div>
+
+  <h3>8.4 高频文种逐个过（模板库）</h3>
+
+  <div class="tpl"><span class="tag">① 通知（最常考的基础文种）</span><br>
+关于××××的通知<br>
+各部门、各单位：<br>
+为进一步××××，切实××××，经研究，现就有关事项通知如下：<br>
+一、××××　二、××××　三、××××<br>
+请各部门高度重视，认真组织落实，确保取得实效。<br>
+<span class="cm">（落款）××单位　××××年××月××日</span></div>
+
+  <div class="tpl"><span class="tag">② 请示（向上请求·必背结尾）</span><br>
+关于××××的请示<br>
+××××（主送机关）：<br>
+为××××，现需××××，理由如下：一、×××× 二、××××<br>
+以上请示妥否，请批示。<br>
+<span class="cm">（落款）××单位　××××年××月××日</span></div>
+
+  <div class="tpl"><span class="tag">③ 报告（向上汇报工作）</span><br>
+关于××××工作情况的报告<br>
+××领导/××部门：<br>
+根据××××要求，我单位开展了××××工作，现将有关情况报告如下：<br>
+一、工作开展情况　二、主要成效　三、存在问题　四、下一步打算<br>
+特此报告。<br>
+<span class="cm">（落款）××单位　××××年××月××日</span></div>
+
+  <div class="tpl"><span class="tag">④ 倡议书（号召类高频）</span><br>
+关于××××的倡议书<br>
+广大市民朋友们：<br>
+当前××××问题凸显，为进一步××××，我们倡议：<br>
+一、提高认识，××××　二、积极行动，××××　三、从我做起，××××<br>
+让我们从现在做起、从身边做起，共同营造××××的良好氛围！<br>
+<span class="cm">（落款）××单位　××××年××月××日</span></div>
+
+  <div class="tpl"><span class="tag">⑤ 公开信/回复（舆情回应类高频）</span><br>
+致××××的公开信<br>
+××××（称呼）：<br>
+首先感谢您对××××工作的关注与监督。针对您反映的××××问题，现将有关情况回复如下：<br>
+一、情况说明（来龙去脉）　二、处理进展　三、下一步安排<br>
+再次感谢您对我们工作的理解与支持！<br>
+<span class="cm">（落款）××单位　××××年××月××日</span></div>
+
+  <div class="tpl"><span class="tag">⑥ 讲话稿/发言稿（不写落款）</span><br>
+在××××会议上的讲话<br>
+各位领导、同志们：<br>
+大家好！今天，我们召开××××会议，主要目的是××××。<br>
+一、统一思想，充分认识××××的重要意义<br>
+二、突出重点，扎实推进××××各项工作<br>
+三、强化保障，确保××××取得实效<br>
+我相信，在大家共同努力下，我们一定能够××××！谢谢大家！</div>
+
+  <div class="tpl"><span class="tag">⑦ 宣传稿（文章式标题）</span><br>
+（自拟标题，如"文明出行 从我做起"）<br>
+广大市民：<br>
+开头：背景+目的；主体：存在问题及危害 → 转变做法的意义 → 发出倡议；结尾：呼吁号召。<br>
+<span class="cm">（落款）××单位　××××年××月××日</span></div>
+
+  <div class="tpl"><span class="tag">⑧ 短评/编者按（不写落款）</span><br>
+（自拟观点式标题）<br>
+第一段：引出话题，亮明观点（是什么）；第二段：分析原因/意义/危害（为什么）；第三段：提出对策/呼吁（怎么办）。<br>
+<span class="cm">万能结构：是什么 → 为什么 → 怎么办</span></div>
+
+  <div class="tpl"><span class="tag">⑨ 工作方案/计划（高分文种）</span><br>
+关于开展××××的工作方案<br>
+为××××，进一步××××，制定本方案。<br>
+一、指导思想　二、工作目标　三、主要任务　四、实施步骤（动员部署→集中推进→总结提升）　五、保障措施（组织领导、责任落实、督导考核、宣传引导）</div>
+
+  <div class="tpl"><span class="tag">⑩ 简报</span><br>
+××××工作简报<br>
+开头：背景介绍；主体：按材料分条概括进展/做法/成效；结尾：总结或下一步安排。</div>
+
+  <div class="tpl"><span class="tag">⑪ 调研报告</span><br>
+关于××××的调研报告<br>
+一、调研背景　二、调研方式及对象（实地走访、问卷调查、座谈）　三、现状与问题　四、原因分析　五、对策建议</div>
+
+  <div class="tpl"><span class="tag">⑫ 前言（近年新考·展览/书籍/手册开头）</span><br>
+（可直接用文章式标题或"××展览前言"）<br>
+第一段：展览/活动的背景与缘起；第二段：主要内容与亮点（分条）；第三段：意义与期待（有感染力收尾）。<br>
+<span class="cm">要点：内容恰当、结构完整、层次分明、语言富有感染力</span></div>
+
+  <div class="tpl"><span class="tag">⑬ 简介（2024年11月新考·宣传类）</span><br>
+关于"××××"的简介<br>
+开头：设立背景与定位；主体：受理范围 / 服务对象 / 办理流程 / 申请方式（分条）；结尾：承诺与展望（提升群众幸福感获得感）。<br>
+<span class="cm">要点：介绍对象的功能、范围、流程、方式要全，语言规范正式</span></div>
+
+  <div class="tpl"><span class="tag">⑭ 学习小结/总结（2024年11月新考）</span><br>
+（标题自拟或"××××学习小结"）<br>
+一、学习背景与目的　二、学习内容（所见所学，分条）　三、经验启示（学到什么）　四、下一步打算（结合岗位落地）<br>
+<span class="cm">要点：紧扣材料，层次分明，含个人体会与展望</span></div>
+
+  <div class="tpl"><span class="tag">⑮ 讲述稿（2024年3月新考·参赛/汇报口播）</span><br>
+（自拟标题或"××××讲述稿"）<br>
+开头：问候+引入主题（"大家好，我是××"）；主体：讲清"做了什么、怎么做的、效果如何"（分条，重数据与案例）；结尾：总结升华、致谢。<br>
+<span class="cm">要点：语言流畅、有感染力，突出"积极作用"与"发挥作用的机制"</span></div>
+
+  <div class="tpl"><span class="tag">⑯ 健康提示/温馨提示（2023年8月新考）</span><br>
+××××健康提示<br>
+（面向公众）<br>
+一、风险提醒（当前需要注意什么）　二、具体防护建议（分条，可操作）　三、就医/求助指引。<br>
+<span class="cm">要点：受众导向，语言通俗，措施具体，可落款或直接落款单位</span></div>
+
+  <div class="tpl"><span class="tag">⑰ 推荐材料（2022年9月新考）</span><br>
+关于××××的推荐材料<br>
+一、基本情况（对象/项目介绍）　二、主要亮点/成效（分条，数据支撑）　三、推荐理由（契合评选标准之处）</div>
+
+  <div class="tpl"><span class="tag">⑱ 招募启事 / 调查问卷 / 函</span><br>
+<b>招募启事</b>：标题 → 缘由 → 招募对象/岗位人数 → 条件要求 → 报名方式与截止时间 → 联系方式 → 落款<br>
+<b>调查问卷</b>：标题 → 开头（目的、组织单位、保密承诺）→ 主体（分条设问，标序号）→ 结语（感谢配合）<br>
+<b>函</b>（不相隶属机关之间）：标题"关于××××的函"→ 称谓 → 缘由 → 事项 → "特此函商/盼复" → 落款</div>
+
+  <h3>8.5 例题精讲①：讲话稿（2023年5月联考·第3题·40分）</h3>
+  <div class="ex">
+    <div class="ex-head">真题 · 2023年5月7日联考 · G市图书馆</div>
+    <div class="ex-body">
+      <div class="ex-q"><span class="ex-label">题目</span><div class="ex-block">馆校合作项目协调推进会的第一个议程将由杜馆长作简短发言，针对<b>馆校合作存在的问题和双方各自应承担的任务</b>进行沟通，以进一步加强馆校合作。请根据材料4，<b>代拟这份发言稿</b>。<br>要求：角色定位准确，沟通目标清晰、沟通策略得当，符合文稿写作要求，不超过550字。</div></div>
+      <div class="ex-m"><span class="ex-label">材料概要</span><div class="ex-block">馆校合作中存在：<b>合作流于形式</b>（挂牌后活动少）、<b>双方责任不清</b>、<b>学校参与积极性不高</b>、<b>资源对接不畅</b>等问题。</div></div>
+      <div class="ex-a"><span class="ex-label">示范作答（发言稿）</span><div class="ex-block">在馆校合作项目协调推进会上的发言<br>各位领导、各位同仁：<br>大家好！今天召开馆校合作项目协调推进会，主要目的是梳理问题、明确责任，推动合作走深走实。下面我谈几点意见：<br>一、<b>正视问题，找准症结。</b>目前馆校合作还存在活动流于形式、内容不够丰富、双方衔接不畅等不足，需要我们共同面对、共同破解。<br>二、<b>明确任务，各负其责。</b>我馆将切实履行主体责任：开放馆藏资源，设计适合学生的课程和活动；安排专业力量对接，确保服务常态化。同时也希望学校方面：将馆校合作纳入教学安排，组织学生有序参与，及时反馈需求，形成双向互动。<br>三、<b>健全机制，常态长效。</b>建议双方建立定期会商、联络员对接、活动评估等机制，把合作项目做实做细。<br>让我们以此次会议为契机，携手把馆校合作打造成育人品牌。谢谢大家！</div></div>
+      <div class="ex-s"><span class="ex-label">采分点解析</span><div class="ex-block">① 题目要求"针对问题+双方任务进行沟通"——所以主体部分必须是<b>"摆问题 → 我方责任 → 对方任务"</b>三段，少了任何一段都扣分。<br>② 讲话稿<b>不写落款</b>，用"大家好/谢谢大家"开头结尾，这是格式分。<br>③ "沟通策略得当"体现在：先说自己的问题（承担），再提对方要求（协作），姿态得体不指责。</div></div>
+    </div>
+  </div>
+
+  <h3>8.6 例题精讲②：前言（2023年5月联考·第4题·40分）</h3>
+  <div class="ex">
+    <div class="ex-head">真题 · 2023年5月7日联考 · G市图书馆</div>
+    <div class="ex-body">
+      <div class="ex-q"><span class="ex-label">题目</span><div class="ex-block">"红色记忆：G市图书馆馆藏红色文献展"即将开展，首块展板的内容是<b>展览前言</b>，以向读者介绍展览的主要情况。请根据材料5，撰写这则前言。<br>要求：内容恰当，结构完整，层次分明，语言富有感染力，不超过450字。</div></div>
+      <div class="ex-a"><span class="ex-label">示范作答（前言）</span><div class="ex-block">红色记忆：G市图书馆馆藏红色文献展前言<br>一段岁月，波澜壮阔；一种精神，穿越时空。<br>为庆祝××××，重温党的光辉历程，G市图书馆特别推出"红色记忆——馆藏红色文献展"。本次展览精选我馆馆藏的珍贵红色文献××件，包括革命时期报刊、领导人著作、手稿档案、历史图片等，力求多角度再现那段峥嵘岁月。<br>展览分为"星火燎原""浴血奋战""建设家园""改革奋进"四个篇章，以文献为证、以时间为轴，带领观众走进历史现场，感悟革命先辈的理想信念与家国情怀。<br>每一件文献，都是一段红色记忆；每一次驻足，都是一次精神洗礼。诚挚欢迎广大读者前来参观，在翻阅历史中汲取奋进力量，让红色基因代代相传。</div></div>
+      <div class="ex-s"><span class="ex-label">采分点解析</span><div class="ex-block">① 前言结构：<b>缘起（为什么办）→ 内容（有什么，分条）→ 意义与邀请（有感染力）</b>。<br>② "语言富有感染力"是本题的显性要求——开头排比句、结尾号召句是得分亮色，但<b>内容仍要来自材料</b>（文献类型、篇章划分）<br>③ 前言一般<b>不需要称谓和落款</b>，标题居中即可。</div></div>
+    </div>
+  </div>
+
+  <h3>8.7 例题精讲③：简介（2024年11月联考·第3题·35分）</h3>
+  <div class="ex">
+    <div class="ex-head">真题 · 2024年11月2日联考 · C街道综合服务中心</div>
+    <div class="ex-body">
+      <div class="ex-q"><span class="ex-label">题目</span><div class="ex-block">为提高"办不成事"专窗的社会知晓度，中心将加大宣传力度，通过网站、公众号、便民服务大厅等渠道介绍"办不成事"专窗。根据材料4，<b>拟写一份专窗简介</b>。<br>要求：内容全面，表述准确，条理清晰，字数不超过350字。</div></div>
+      <div class="ex-m"><span class="ex-label">材料要点</span><div class="ex-block">专窗定位：为企业群众破解难题的特殊窗口；受理范围：政策、系统、材料等原因办不成的事及特事特办诉求（封建迷信、违反公序良俗的不受理）；人员：业务骨干轮岗；方式：当场能解决立即解决，否则告知方向；申请渠道：工作日现场、邮箱、小程序、电话；回复时限：5个工作日内。</div></div>
+      <div class="ex-a"><span class="ex-label">示范作答（简介）</span><div class="ex-block">关于"办不成事"专窗的简介<br>为破解企业群众"办事难、办不成事"的堵点，中心设立"办不成事"专窗，专门协调解决群众诉求。现介绍如下：<br>一、<b>专窗定位。</b>面向企业和群众，受理因政策、系统、申报材料等原因在现有窗口未能办成的事项，以及经研判需特事特办的诉求；涉及封建迷信、违反公序良俗的诉求不予受理。<br>二、<b>服务机制。</b>由业务骨干定期轮岗值守，对符合受理范围、能当场解决的诉求立即解决；不能当场解决的，明确告知解决路径和办理时限。<br>三、<b>申请方式。</b>可在工作日到便民服务大厅现场反映，也可发送诉求表至中心邮箱、扫描二维码按小程序提示操作或电话咨询。<br>四、<b>办理承诺。</b>接到诉求后5个工作日内回复办理情况。<br>今后，中心将主动"靠前"服务，努力让群众少跑腿、事好办，不断提升群众幸福感和获得感。</div></div>
+      <div class="ex-s"><span class="ex-label">采分点解析</span><div class="ex-block">① 简介类文种核心是<b>"讲清楚对象"</b>：定位、范围、机制、方式、时限，五大要素缺一不可。<br>② 材料里的<b>细节（5个工作日、小程序、二维码）全是采分点</b>，必须原样保留。<br>③ 结尾的承诺语是宣传类文种的加分项，体现服务意识（呼应"管理角色意识"）。</div></div>
+    </div>
+  </div>
+
+  <h3>8.8 例题精讲④：公开信（2025年3月联考·第4题）</h3>
+  <div class="ex">
+    <div class="ex-head">真题 · 2025年3月29日联考 · 未成年人保护中心</div>
+    <div class="ex-body">
+      <div class="ex-q"><span class="ex-label">题目</span><div class="ex-block">针对未成年人保护相关工作，请你以未成年人保护中心的名义，撰写《致家长的一封信》。</div></div>
+      <div class="ex-a"><span class="ex-label">示范作答（结构示范）</span><div class="ex-block">致家长的一封信<br>尊敬的各位家长：<br>您好！孩子是家庭的希望、祖国的未来。为筑牢未成年人保护防线，我中心特致信各位家长，携手共同守护孩子健康成长：<br>一、<b>加强安全教育。</b>请家长关注孩子交通、防溺水、防欺凌、防网络沉迷等安全事项，帮助孩子提高自我保护意识与能力。<br>二、<b>重视身心健康。</b>多与孩子沟通交流，关注情绪变化与心理需求，发现异常及时疏导，必要时可联系中心寻求专业支持。<br>三、<b>依法履行监护职责。</b>切实承担监护责任，营造和谐家庭氛围，为孩子健康成长创造良好环境。<br>四、<b>畅通求助渠道。</b>如遇侵害未成年人权益的情形，请及时拨打××热线或向中心反映，我们将依法依规提供帮助。<br>让我们携起手来，共同为孩子们撑起一片健康成长的蓝天！<br>祝各位家长身体健康、家庭幸福！<br>（落款）××未成年人保护中心　××××年××月××日</div></div>
+      <div class="ex-s"><span class="ex-label">采分点解析</span><div class="ex-block">① 公开信/致信类文种：<b>称呼顶格 → 问候 → 正文（分条倡议/提示）→ 祝福语 → 落款</b>，书信格式务必完整。<br>② 内容是"给家长的温馨提示+倡议"，每条都要<b>具体可做</b>（讲什么、怎么护、找谁帮），不能只喊口号。<br>③ 语气要<b>温情而不失严肃</b>，既讲保护也讲责任，符合"致家长"的受众定位。</div></div>
+    </div>
+  </div>
+
+  <div class="callout teal"><b>本课小结：</b>公文题 = <b>格式分（五要素）＋ 结构分（凭事断）＋ 内容分（材料要点）</b>。先默写格式，再背"凭—事—断"，最后把材料要点填进去——三者齐备，就是一类卷。近年新文种（前言/简介/讲述稿/学习小结/健康提示）都是"老结构、新马甲"，见一个会一个即可。</div>
+</section>
+
+<!-- ============ 第9课 素材库 ============ -->
+<section id="s9">
+  <div class="sec-head"><div class="sec-num">9</div><div><h2>第9课 规范表达素材库</h2><div class="sub">把"大白话"翻译成"机关话" · 概括和对策的弹药库</div></div></div>
+
+  <h3>9.1 问题类规范词（概括题直接用）</h3>
+  <div class="chips">
+    <span class="chip">责任落实不到位</span><span class="chip">监管存在盲区/缺位</span><span class="chip">制度不健全</span><span class="chip">基础设施薄弱</span><span class="chip">服务意识欠缺</span><span class="chip">宣传引导不足</span><span class="chip">群众参与度低</span><span class="chip">信息不透明</span><span class="chip">资源分配不均</span><span class="chip">人才队伍短缺</span><span class="chip">部门协调不畅</span><span class="chip">长效机制缺失</span><span class="chip">流程繁琐</span><span class="chip">知晓率低</span><span class="chip">安全隐患突出</span><span class="chip">管理粗放</span>
+  </div>
+
+  <h3>9.2 对策十层面速查（提对策直接对号入座）</h3>
+  <table>
+    <tr><th>层面</th><th>示例表述</th></tr>
+    <tr><td><b>思想</b></td><td>加强宣传引导（横幅海报、三微一端、宣讲会、知识竞赛）；开展专题教育</td></tr>
+    <tr><td><b>制度</b></td><td>建章立制、细化规则；出台管理办法，明确责任分工；完善考核机制</td></tr>
+    <tr><td><b>监管</b></td><td>内部：加大检查巡查力度、明察暗访、长效机制；外部：拓宽投诉渠道、设举报电话、媒体监督</td></tr>
+    <tr><td><b>执法/惩处</b></td><td>依法查处、专项整治、通报批评、纳入信用记录、提高违法成本</td></tr>
+    <tr><td><b>管理</b></td><td>对干部：绩效考核、量化考核、培训学习；对群众：宣传引导、严格执法、专项整顿</td></tr>
+    <tr><td><b>技术</b></td><td>数字化平台、智能管理系统、线上预约、大数据分析、政务App、追溯系统</td></tr>
+    <tr><td><b>资金</b></td><td>加大财政投入、申请专项资金、政策补贴、减免费用、社会资本参与</td></tr>
+    <tr><td><b>人才</b></td><td>引进专业人才、加强业务培训、提高福利待遇、拓宽晋升通道、校企合作</td></tr>
+    <tr><td><b>设施</b></td><td>完善基础设施、合理规划布局、增加便民设施、无障碍改造、资源下沉</td></tr>
+    <tr><td><b>服务</b></td><td>优化办事流程、一窗受理、集成服务、上门服务、延时服务、满意度回访</td></tr>
+  </table>
+
+  <h3>9.3 公文常用语（写不出来时的兜底弹药）</h3>
+  <div class="tpl">
+    <span class="hl">开头万能句：</span>为进一步××××，切实××××，现就有关事项通知如下：<br>
+    <span class="hl">结尾万能句：</span>请各单位高度重视，认真组织落实，确保取得实效。/ 让我们携手共进，为××××贡献力量！/ 以上请示妥否，请批示。/ 特此报告。<br>
+    <span class="hl">高频热词：</span>精细化治理、共建共治共享、以人为本、源头治理、标本兼治、资源下沉、网格化管理、放管服改革、数字政府、长效机制、举一反三、问计于民、急难愁盼、幸福感获得感安全感、靠前服务
+  </div>
+
+  <h3>9.4 服务意识金句（角色意识题/结尾升华用）</h3>
+  <div class="chips">
+    <span class="chip teal">群众利益无小事</span><span class="chip teal">把群众的事当自己的事</span>
+    <span class="chip teal">让数据多跑路、群众少跑腿</span><span class="chip teal">民有所呼、我有所应</span>
+    <span class="chip teal">小窗口、大服务</span><span class="chip teal">民生无小事，枝叶总关情</span>
+  </div>
+</section>
+
+<!-- ============ 第10课 考场实战 ============ -->
+<section id="s10">
+  <div class="sec-head"><div class="sec-num">10</div><div><h2>第10课 考场实战技巧</h2><div class="sub">把知识变成分数：时间分配、卷面、急救卡</div></div></div>
+
+  <h3>10.1 时间分配（120分钟参考节奏）</h3>
+  <table>
+    <tr><th>任务</th><th>用时</th><th>说明</th></tr>
+    <tr><td>通读背景材料（把握全局）</td><td>15~20分钟</td><td>先读题再读材料：带着第1题去读，边读边圈</td></tr>
+    <tr><td>第1题 概括/要素提炼</td><td>20~25分钟</td><td>点全、分条、节点前置</td></tr>
+    <tr><td>第2题 对策/常态处理</td><td>20~25分钟</td><td>问题—对策对照，四要素写实</td></tr>
+    <tr><td>第3题 沟通/应急/公文</td><td>20~30分钟</td><td>按框架展开，别恋战</td></tr>
+    <tr><td>第4题 公文写作</td><td>30~40分钟</td><td>分值最高，留足时间；先定格式再写内容</td></tr>
+    <tr><td>检查</td><td>5分钟</td><td>补漏点、改错别字、查格式</td></tr>
+  </table>
+  <div class="callout red"><b>重要提醒：</b>材料字数逐年增加（2024年11月普遍反映时间紧），平时必须练"速读+详读"结合，15分钟内完成通读是硬指标。</div>
+
+  <h3>10.2 卷面与答题技巧</h3>
+  <div class="grid">
+    <div class="card"><h4><span class="dot" style="background:var(--blue)"></span>卷面</h4><p>字迹工整不求书法；分条列项；段首不空格（顶格写）；修改用单线划掉，不用涂黑。</p></div>
+    <div class="card"><h4><span class="dot" style="background:var(--teal)"></span>字数</h4><p>贴近上限不超格；按"每点字数=总字数÷要点数"倒推；写不满时优先补"怎么做"细节。</p></div>
+    <div class="card"><h4><span class="dot" style="background:var(--gold)"></span>关键词</h4><p>核心词用材料原词；每条首句放总括词；阅卷人30秒一题，第一眼看到的就是分数。</p></div>
+    <div class="card"><h4><span class="dot" style="background:var(--purple)"></span>心态</h4><p>不会的题按框架写满不空；公文格式拿不准就写最保险的"标题+称谓+正文+落款"。</p></div>
+  </div>
+
+  <h3>10.3 考前急救卡（一页纸速记）</h3>
+  <div class="tpl">
+    <span class="tag">① 万能四步</span> 审题（身份/问数/对象）→ 析点（画材料找全）→ 加工（合并+规范+节点）→ 书写（分条+核心词前置）<br><br>
+    <span class="tag">② 归纳概括</span> 忠于原文 · 宁多勿漏 · 合并同类 · 节点+表述 · 写到上限<br><br>
+    <span class="tag">③ 提出对策</span> 判问数 → 身份定边界 → 直接对策+问题反推+经验借鉴 → 主体+手段+内容+目的<br><br>
+    <span class="tag">④ 应急处理</span> 先控场（安抚/疏散/上报）→ 核实 → 分类处置 → 回访+长效机制<br><br>
+    <span class="tag">⑤ 沟通协调</span> 理解共情 → 阐述利害 → 施以援手 → 巩固要求<br><br>
+    <span class="tag">⑥ 会务安排</span> 会前（方案/通知/物资/分工）→ 会中（议程/秩序/应急）→ 会后（纪要/汇报/落实）<br><br>
+    <span class="tag">⑦ 公文格式</span> 标题居中 · 称谓顶格 · 正文凭事断 · 落款日期右下；讲话稿/短评不落款<br><br>
+    <span class="tag">⑧ 对策十层面</span> 思想 · 制度 · 监管 · 执法 · 管理 · 技术 · 资金 · 人才 · 设施 · 服务<br><br>
+    <span class="tag">⑨ 时间</span> 通读15~20 + 25 + 25 + 30 + 35~40 + 检查5 = 120分钟<br><br>
+    <span class="tag">⑩ 三铁律</span> 答案源于材料 · 时刻代入身份 · 分类清晰不堆砌
+  </div>
+  <div class="callout blue"><b>最后一句话：</b>综应A不考天赋，考"方法+熟练度"。方法这本教材已经完整给你，剩下就是拿起真题动笔。每写完一题，用本课的采分点框架自评一遍，你的分数就会一节一节往上涨。</div>
+</section>
+
+<footer>综应A全知识点精讲与例题带学 · 考情数据依据华图/粉笔/中公公开考情分析整理（2020—2025年联考）· 例题示范为方法参考，非官方标准答案 · 仅供学习使用</footer>
+</div>
+
+<button class="go-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+  <script data-study-hub-script src="../../assets/hub-nav.js"></script>
+</body>
+</html>
