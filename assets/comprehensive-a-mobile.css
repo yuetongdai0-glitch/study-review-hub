@@ -14,7 +14,7 @@
   .wrap {
     width: 100%;
     max-width: none;
-    padding: 0 12px 74px;
+    padding: 0 12px 100px;
   }
 
   .hero {
@@ -32,7 +32,7 @@
   }
 
   .hero h1 {
-    font-size: clamp(22px, 7vw, 28px);
+    font-size: clamp(20px, 6.4vw, 26px);
     line-height: 1.4;
     word-break: break-word;
   }
@@ -102,7 +102,7 @@
   }
 
   .sec-head h2 {
-    font-size: 18px;
+    font-size: 17.5px;
     line-height: 1.45;
     overflow-wrap: anywhere;
   }
@@ -113,9 +113,9 @@
   }
 
   h3 {
-    margin: 18px 0 8px;
+    margin: 20px 0 8px;
     padding-left: 8px;
-    font-size: 16px;
+    font-size: 15.5px;
     line-height: 1.5;
     overflow-wrap: anywhere;
   }
@@ -151,24 +151,112 @@
     font-size: 13px;
   }
 
-  /* 表格保持完整列信息，在自身区域横向滑动，不撑破页面视口。 */
+  /* ---------- 表格：窄屏改为卡片式，完整保留每一列信息 ---------- */
   table {
     display: block;
     width: 100%;
     min-width: 0;
     max-width: 100%;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    font-size: 12.5px;
+    margin: 12px 0;
+    overflow: visible;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 13px;
+  }
+
+  table tr.thead-row {
+    display: none;
+  }
+
+  table tbody {
+    display: block;
   }
 
   table tr {
-    white-space: nowrap;
+    display: block;
+    white-space: normal;
+    margin-bottom: 10px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: #fff;
+    overflow: hidden;
   }
 
-  th,
-  td {
-    padding: 7px 8px;
+  table tr:last-child {
+    margin-bottom: 0;
+  }
+
+  /* 分组名（由 rowspan 单元格生成）只在组首卡片显示一次 */
+  table tr[data-card-group-start]::before {
+    content: attr(data-card-group);
+    display: block;
+    padding: 7px 11px;
+    background: #123c8c;
+    color: #fff;
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+
+  /* 同组卡片合并成一个块：去掉卡间空隙与重复边框 */
+  table tr[data-card-group]:not([data-card-group-start]) {
+    margin-top: -1px;
+    border-radius: 0;
+  }
+
+  table tr[data-card-group-start]:not([data-card-group-end]) {
+    margin-bottom: -1px;
+    border-radius: 10px 10px 0 0;
+  }
+
+  table tr[data-card-group-end]:not([data-card-group-start]) {
+    border-radius: 0 0 10px 10px;
+  }
+
+  /* 分组名已在卡片头显示，隐藏原始 rowspan 单元格避免重复 */
+  table td[rowspan][data-group] {
+    display: none;
+  }
+
+  table th,
+  table td {
+    display: block;
+    width: auto;
+    max-width: 100%;
+    padding: 8px 11px;
+    border: 0;
+    border-bottom: 1px solid var(--line);
+    background: none;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    vertical-align: top;
+  }
+
+  table tr > *:last-child {
+    border-bottom: 0;
+  }
+
+  table td::before {
+    content: attr(data-label);
+    display: block;
+    margin-bottom: 3px;
+    color: #5b7cc0;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .5px;
+  }
+
+  /* 每行第一个可见单元格作为卡片标题，不重复显示列名 */
+  table td[data-card-lead] {
+    background: var(--blue-soft);
+    color: #14408f;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  table td[data-card-lead]::before {
+    display: none;
   }
 
   .tpl {
@@ -186,11 +274,53 @@
     gap: 9px;
   }
 
+  .step .no {
+    width: 26px;
+    height: 26px;
+    font-size: 13px;
+  }
+
+  .chips {
+    gap: 6px;
+  }
+
+  .chip {
+    font-size: 12.5px;
+    padding: 3px 10px;
+  }
+
+  /* 底部两个浮动按钮错开，避免相互遮挡 */
   .go-top {
     right: 14px;
-    bottom: 76px;
+    bottom: 82px;
     width: 42px;
     height: 42px;
     z-index: 2147482990;
+  }
+}
+
+/* 超窄屏（如 320px）进一步压缩留白 */
+@media (max-width: 360px) {
+  .wrap {
+    padding: 0 9px 100px;
+  }
+
+  section {
+    padding: 15px 11px;
+  }
+
+  .ex-body,
+  .card,
+  .kp {
+    padding: 10px;
+  }
+
+  table th,
+  table td {
+    padding: 7px 9px;
+  }
+
+  .hero h1 {
+    font-size: 19px;
   }
 }

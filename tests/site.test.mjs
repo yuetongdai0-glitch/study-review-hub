@@ -68,6 +68,29 @@ test('综应 A 页面整合袁东方法论并与 2026 大纲同步', async () =>
   )
 })
 
+test('综应 A 页面移动端表格卡片化结构完整', async () => {
+  const page = await readText(new URL('../pages/comprehensive-a/index.html', import.meta.url))
+
+  // 每张表格的表头行需被标记，移动端才能隐藏表头并改用列标签
+  const tableCount = (page.match(/<table>/g) || []).length
+  const headRowCount = (page.match(/<tr class="thead-row">/g) || []).length
+  assert.equal(headRowCount, tableCount, '存在未标记表头行的表格，移动端卡片化会丢失列名')
+
+  // 每张表格至少有一个数据单元格携带列标签
+  const labels = page.match(/data-label="/g) || []
+  assert.ok(labels.length >= tableCount, '表格缺少 data-label 列标签，移动端将无法显示列名')
+
+  // rowspan 分组单元格需带 data-group（含分组名），供移动端显示分块标题
+  const rowspanCells = page.match(/<td rowspan="\d+"[^>]*data-group="/g) || []
+  assert.ok(rowspanCells.length > 0, 'rowspan 分组单元格缺少 data-group')
+
+  // 移动端样式须包含卡片化关键规则
+  const mobile = await readText(new URL('../assets/comprehensive-a-mobile.css', import.meta.url))
+  for (const rule of ['thead-row', 'data-card-group-start', 'data-card-lead', 'data-label']) {
+    assert.ok(mobile.includes(rule), `移动端样式缺少表格卡片化规则：${rule}`)
+  }
+})
+
 test('共享导航声明七个科目，并支持返回总览', async () => {
   const navigation = await readText(new URL('../assets/hub-nav.js', import.meta.url))
 
