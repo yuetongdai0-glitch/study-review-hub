@@ -12,7 +12,7 @@ const pages = [
   { route: 'quantitative', title: '数量关系' },
   { route: 'judgment', title: '判断推理知识图谱' },
   { route: 'data-analysis', title: '资料分析' },
-  { source: '综应A全知识点精讲与例题带学.html', route: 'comprehensive-a', title: '综应 A 类' }
+  { route: 'comprehensive-a', title: '综应 A 类' }
 ]
 
 /**
@@ -44,21 +44,28 @@ test('每个复习页接入共享导航且保留完整源文件内容', async ()
       assert.ok(deployed.includes('data-study-hub-mobile'), '综应 A 类缺少移动端样式')
     }
 
-    if (page.source) {
-      const sourcePath = `/Users/a1/WorkBuddy/2026-08-27-17-43-48/${page.source}`
-      const source = await readText(sourcePath)
-
-      // 只剔除两条明确的注入标签，剩余文本必须与新增源文件逐字相同。
-      const restored = deployed
-        .replace('  <link data-study-hub-style rel="stylesheet" href="../../assets/hub-nav.css">\n', '')
-        .replace('  <link data-study-hub-mobile rel="stylesheet" href="../../assets/comprehensive-a-mobile.css">\n', '')
-        .replace('  <script data-study-hub-script src="../../assets/hub-nav.js"></script>\n', '')
-
-      assert.equal(restored, source, `${page.title} 的原始内容发生了变化`)
-    } else {
-      assert.ok(deployed.length > 1000, `${page.title} 页面内容异常为空`)
-    }
+    assert.ok(deployed.length > 1000, `${page.title} 页面内容异常为空`)
   }
+})
+
+test('综应 A 页面整合袁东方法论并与 2026 大纲同步', async () => {
+  const page = await readText(new URL('../pages/comprehensive-a/index.html', import.meta.url))
+
+  // 袁东体系核心表述
+  for (const marker of ['袁东', '逻辑至上', '机关视角', '材料为王', '去模板化']) {
+    assert.ok(page.includes(marker), `综应 A 页面缺少袁东体系要点：${marker}`)
+  }
+
+  // 2026 大纲调整要点
+  for (const marker of ['2026大纲', '背景材料和任务', '组织协调与活动方案']) {
+    assert.ok(page.includes(marker), `综应 A 页面缺少 2026 大纲要点：${marker}`)
+  }
+
+  // 静态资源仍以相对路径引用，确保 GitHub Pages 链接可用
+  assert.ok(
+    page.includes('href="../../assets/hub-nav.css"'),
+    '综应 A 页面共享样式未使用相对路径引用'
+  )
 })
 
 test('共享导航声明七个科目，并支持返回总览', async () => {
