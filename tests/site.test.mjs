@@ -89,6 +89,15 @@ test('综应 A 页面移动端表格卡片化结构完整', async () => {
   for (const rule of ['thead-row', 'data-card-group-start', 'data-card-lead', 'data-label']) {
     assert.ok(mobile.includes(rule), `移动端样式缺少表格卡片化规则：${rule}`)
   }
+
+  // 卡片化断点必须覆盖平板（iPad 竖屏 768px）。若断点回落到 720px，
+  // 768px 视口会回退到桌面表格布局，首列被压到 50~70px 并出现逐字换行。
+  const breakpoints = [...mobile.matchAll(/@media \(max-width:\s*(\d+)px\)/g)].map((m) => Number(m[1]))
+  const widest = Math.max(...breakpoints)
+  assert.ok(
+    widest >= 1024,
+    `表格卡片化断点最大仅 ${widest}px，未覆盖平板视口（768px iPad 竖屏）`
+  )
 })
 
 test('共享导航声明七个科目，并支持返回总览', async () => {
