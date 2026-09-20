@@ -1,4 +1,142 @@
-/* 综应 A 页面移动端覆写：保留原有内容与视觉，仅调整窄屏排版和滚动边界。 */
+/* 综应 A 页面移动端覆写：保留原有内容与视觉，仅调整窄屏排版和滚动边界。
+   断点约定：
+   - ≤1024px（手机 + 全部平板，含 iPad 竖屏 768px）：多列表格改为卡片式，
+     否则表格会被压缩到首列仅 50~70px，出现"逐字换行、无法阅读"的问题
+   - ≤720px：手机端排版细节（字号、间距、留白）
+   - ≤360px：超窄屏进一步压缩留白 */
+
+/* ============ 一、表格卡片化：手机 + 平板（≤1024px） ============ */
+@media (max-width: 1024px) {
+  table {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    margin: 12px 0;
+    overflow: visible;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 13.5px;
+  }
+
+  table tr.thead-row {
+    display: none;
+  }
+
+  table tbody {
+    display: block;
+  }
+
+  table tr {
+    display: block;
+    white-space: normal;
+    margin-bottom: 10px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: #fff;
+    overflow: hidden;
+  }
+
+  table tr:last-child {
+    margin-bottom: 0;
+  }
+
+  /* 分组名（由 rowspan 单元格生成的 data-group）只在组首卡片显示一次 */
+  table tr[data-card-group-start]::before {
+    content: attr(data-card-group);
+    display: block;
+    padding: 7px 11px;
+    background: #123c8c;
+    color: #fff;
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+
+  /* 同组卡片合并成一个块：去掉卡间空隙与重复边框 */
+  table tr[data-card-group]:not([data-card-group-start]) {
+    margin-top: -1px;
+    border-radius: 0;
+  }
+
+  table tr[data-card-group-start]:not([data-card-group-end]) {
+    margin-bottom: -1px;
+    border-radius: 10px 10px 0 0;
+  }
+
+  table tr[data-card-group-end]:not([data-card-group-start]) {
+    border-radius: 0 0 10px 10px;
+  }
+
+  /* 分组名已在卡片头显示，隐藏原始 rowspan 单元格避免重复 */
+  table td[rowspan][data-group] {
+    display: none;
+  }
+
+  table th,
+  table td {
+    display: block;
+    width: auto;
+    max-width: 100%;
+    padding: 8px 11px;
+    border: 0;
+    border-bottom: 1px solid var(--line);
+    background: none;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    vertical-align: top;
+  }
+
+  table tr > *:last-child {
+    border-bottom: 0;
+  }
+
+  /* 每个单元格以「列名 + 内容」呈现，完整保留原本的列信息 */
+  table td::before {
+    content: attr(data-label);
+    display: block;
+    margin-bottom: 3px;
+    color: #5b7cc0;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .5px;
+  }
+
+  /* 每行第一个可见单元格作为卡片标题，不重复显示列名 */
+  table td[data-card-lead] {
+    background: var(--blue-soft);
+    color: #14408f;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  table td[data-card-lead]::before {
+    display: none;
+  }
+}
+
+/* 平板（721~1024px）视口更宽，卡片内文字可稍大，减少在宽卡片上的阅读疲劳 */
+@media (min-width: 721px) and (max-width: 1024px) {
+  table {
+    font-size: 14px;
+  }
+
+  table th,
+  table td {
+    padding: 9px 13px;
+  }
+
+  table td::before {
+    font-size: 11.5px;
+  }
+
+  table td[data-card-lead] {
+    font-size: 14.5px;
+  }
+}
+
+/* ============ 二、手机端排版（≤720px） ============ */
 @media (max-width: 720px) {
   html,
   body {
@@ -151,114 +289,6 @@
     font-size: 13px;
   }
 
-  /* ---------- 表格：窄屏改为卡片式，完整保留每一列信息 ---------- */
-  table {
-    display: block;
-    width: 100%;
-    min-width: 0;
-    max-width: 100%;
-    margin: 12px 0;
-    overflow: visible;
-    border-collapse: separate;
-    border-spacing: 0;
-    font-size: 13px;
-  }
-
-  table tr.thead-row {
-    display: none;
-  }
-
-  table tbody {
-    display: block;
-  }
-
-  table tr {
-    display: block;
-    white-space: normal;
-    margin-bottom: 10px;
-    border: 1px solid var(--line);
-    border-radius: 10px;
-    background: #fff;
-    overflow: hidden;
-  }
-
-  table tr:last-child {
-    margin-bottom: 0;
-  }
-
-  /* 分组名（由 rowspan 单元格生成）只在组首卡片显示一次 */
-  table tr[data-card-group-start]::before {
-    content: attr(data-card-group);
-    display: block;
-    padding: 7px 11px;
-    background: #123c8c;
-    color: #fff;
-    font-size: 12.5px;
-    font-weight: 700;
-    letter-spacing: 1px;
-  }
-
-  /* 同组卡片合并成一个块：去掉卡间空隙与重复边框 */
-  table tr[data-card-group]:not([data-card-group-start]) {
-    margin-top: -1px;
-    border-radius: 0;
-  }
-
-  table tr[data-card-group-start]:not([data-card-group-end]) {
-    margin-bottom: -1px;
-    border-radius: 10px 10px 0 0;
-  }
-
-  table tr[data-card-group-end]:not([data-card-group-start]) {
-    border-radius: 0 0 10px 10px;
-  }
-
-  /* 分组名已在卡片头显示，隐藏原始 rowspan 单元格避免重复 */
-  table td[rowspan][data-group] {
-    display: none;
-  }
-
-  table th,
-  table td {
-    display: block;
-    width: auto;
-    max-width: 100%;
-    padding: 8px 11px;
-    border: 0;
-    border-bottom: 1px solid var(--line);
-    background: none;
-    white-space: normal;
-    overflow-wrap: anywhere;
-    word-break: break-word;
-    vertical-align: top;
-  }
-
-  table tr > *:last-child {
-    border-bottom: 0;
-  }
-
-  table td::before {
-    content: attr(data-label);
-    display: block;
-    margin-bottom: 3px;
-    color: #5b7cc0;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: .5px;
-  }
-
-  /* 每行第一个可见单元格作为卡片标题，不重复显示列名 */
-  table td[data-card-lead] {
-    background: var(--blue-soft);
-    color: #14408f;
-    font-size: 14px;
-    font-weight: 600;
-  }
-
-  table td[data-card-lead]::before {
-    display: none;
-  }
-
   .tpl {
     padding: 12px;
     font-size: 12.5px;
@@ -299,7 +329,7 @@
   }
 }
 
-/* 超窄屏（如 320px）进一步压缩留白 */
+/* ============ 三、超窄屏（≤360px） ============ */
 @media (max-width: 360px) {
   .wrap {
     padding: 0 9px 100px;
@@ -318,6 +348,10 @@
   table th,
   table td {
     padding: 7px 9px;
+  }
+
+  table {
+    font-size: 13px;
   }
 
   .hero h1 {
