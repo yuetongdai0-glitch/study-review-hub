@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link data-study-hub-style rel="stylesheet" href="../../assets/hub-nav.css">
+<title>模拟考试答题纸 · 答题卡练习</title>
+<style>
+  :root{
+    --bg:#f2f3f6; --card:#fff; --ink:#1c2333; --ink2:#5a6478;
+    --blue:#1f5fd6; --blue-soft:#e8f0fd; --line:#e3e7f0;
+    --red:#b8453c; --red-soft:#fdeeee; --gold:#b07a1f; --gold-soft:#faf3e3;
+    --teal:#0f6e56; --teal-soft:#e1f5ee;
+    /* 答题卡印刷色 */
+    --sheet-line:#eab6b6;      /* 格子线（浅红） */
+    --sheet-edge:#e19a9a;      /* 外框 */
+    --sheet-ink:#c05b52;       /* 字数标记 */
+    --sheet-hand:#1d3a63;      /* 填写的字 */
+    --caret:#e04b4b;           /* 光标 */
+    --gutter:36px;
+    --cell:30px; --cols:25;
+  }
+  *{box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent;}
+  html{-webkit-text-size-adjust:100%;}
+  body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif; background:var(--bg); color:var(--ink); font-size:15px; line-height:1.6;}
+
+  /* ===== 字数浮标（浮在内容之上，不占用任何布局空间） ===== */
+  .countchip{position:fixed; left:14px; bottom:calc(80px + env(safe-area-inset-bottom)); z-index:34;
+             display:inline-flex; align-items:baseline; gap:4px; padding:5px 11px; border-radius:999px;
+             background:rgba(255,255,255,.95); backdrop-filter:blur(8px); border:1px solid var(--line);
+             box-shadow:0 4px 14px rgba(16,24,40,.12); font-size:12.5px; color:var(--ink2);}
+  .countchip b{font-size:15px; color:var(--red); font-variant-numeric:tabular-nums;}
+
+  /* 输入法拼音提示：拼音只出现在这里，不写进答案 */
+  .imechip{position:fixed; left:14px; bottom:calc(112px + env(safe-area-inset-bottom)); z-index:34;
+           display:none; align-items:baseline; gap:6px; padding:4px 11px; border-radius:999px;
+           background:rgba(255,255,255,.96); backdrop-filter:blur(8px); border:1px solid #c9dcf7;
+           box-shadow:0 4px 14px rgba(16,24,40,.12); font-size:12px; color:#14408f;}
+  .imechip[data-open="true"]{display:inline-flex;}
+  .imechip b{font-family:ui-monospace,Menlo,Consolas,monospace; font-size:13px; color:var(--blue); letter-spacing:1.5px;}
+
+  /* 光标位置提示：让用户随时知道"现在会删哪一个字" */
+  .poschip{position:fixed; left:50%; transform:translateX(-50%);
+           bottom:calc(80px + env(safe-area-inset-bottom)); z-index:34;
+           display:none; align-items:center; gap:5px; padding:4px 12px; border-radius:999px;
+           background:rgba(255,255,255,.97); backdrop-filter:blur(8px); border:1px solid var(--line);
+           box-shadow:0 4px 14px rgba(16,24,40,.14); font-size:12px; color:var(--ink2);
+           max-width:70vw; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .poschip[data-open="true"]{display:inline-flex;}
+  .poschip b{color:var(--ink); font-weight:600; font-variant-numeric:tabular-nums;}
+  .poschip i{font-style:normal; color:var(--red); font-weight:600;}
+
+  /* 删除反馈：被删掉的格子闪一下，让用户看见"删了哪个" */
+  @keyframes cellFlash{0%{background:#ffd9d6; box-shadow:inset 0 0 0 2px #e0786f;}100%{background:transparent; box-shadow:none;}}
+  .cell[data-flash]{animation:cellFlash .55s ease-out;}
+
+  /* ===== 答题卡 ===== */
+  .stage{padding:14px 14px 110px; max-width:900px; margin:0 auto;}
+  .sheet-scroll{overflow-x:auto; overflow-y:hidden; -webkit-overflow-scrolling:touch;}
+  .sheet{background:#fff; border:2px solid var(--sheet-edge);
+         border-radius:5px; box-shadow:0 1px 3px rgba(28,35,51,.09), 0 8px 22px rgba(28,35,51,.06); padding:12px;
+         cursor:text;}
+  .sheet-inner{position:relative; --cols:25; --cell:30px; width:max-content;}
+
+  .rows{display:block;}
+  .row{display:flex; height:var(--cell);}
+  .row[data-current]{background:#fff4f4;}
+  .cells{display:grid; grid-template-columns:repeat(var(--cols), var(--cell)); flex:none;}
+  .cell{width:var(--cell); height:var(--cell); display:flex; align-items:center; justify-content:center;
+        font-size:calc(var(--cell) * .76); color:var(--sheet-hand); line-height:1;
+        border-right:1px solid var(--sheet-line); border-bottom:1px solid var(--sheet-line);
+        font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif; overflow:hidden;}
+  .cells > .cell:first-child{border-left:1px solid var(--sheet-line);}
+  .row:first-child .cell{border-top:1px solid var(--sheet-line);}
+  /* 选中的格子（拖选 / Shift 选择） */
+  .cell[data-sel]{background:#dbe8fd; box-shadow:inset 0 0 0 1px #a8c8f5;}
+  .mark{width:var(--gutter); flex:none; display:flex; align-items:center; padding-left:7px;
+        font-size:10.5px; color:var(--sheet-ink); font-variant-numeric:tabular-nums; letter-spacing:.3px;}
+
+  /* 真实输入源：覆盖在格子上，文字与原生光标全部透明，由下方格子负责显示。
+     字号压到 1px：让浏览器原生的输入法组合高亮（黄色块）小到看不见——
+     这块高亮是平台绘制的，无法用 CSS 去掉，只能让它没有可视面积。 */
+  .editor{position:absolute; left:0; top:0; width:calc(var(--cols) * var(--cell)); height:100%;
+          margin:0; padding:0; border:0; outline:none; resize:none; background:transparent;
+          color:transparent; -webkit-text-fill-color:transparent; caret-color:transparent;
+          font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+          font-size:1px; line-height:1px; letter-spacing:0;
+          white-space:pre-wrap; word-break:break-all; overflow:hidden; z-index:2;
+          text-indent:0; opacity:1;}
+  /* 选区与组合高亮都不允许在答题卡上露出原生的底色 */
+  .editor::selection{background-color:transparent; color:transparent; -webkit-text-fill-color:transparent;}
+  .editor::-moz-selection{background-color:transparent; color:transparent;}
+  /* 自绘光标 */
+  .caret{position:absolute; width:var(--cell); height:var(--cell); border:2px solid var(--caret);
+         background:rgba(224,75,75,.16); z-index:3; pointer-events:none; display:none; border-radius:1px;
+         box-shadow:0 0 0 1px rgba(255,255,255,.7) inset;}
+  .sheet-inner[data-focus="true"] .caret{display:block;}
+
+  /* ===== 底部固定操作条 ===== */
+  .actions{position:fixed; left:0; right:0; bottom:0; z-index:40; background:rgba(255,255,255,.96);
+           backdrop-filter:blur(10px); border-top:1px solid var(--line);
+           padding:9px 14px calc(9px + env(safe-area-inset-bottom));}
+  .actions .inner{max-width:900px; margin:0 auto; display:flex; flex-wrap:wrap; gap:8px;}
+  .btn{font:inherit; font-size:13.5px; padding:9px 14px; border-radius:10px; border:1px solid var(--line);
+       background:#fff; color:var(--ink); cursor:pointer; white-space:nowrap; flex:0 0 auto;}
+  .btn:hover{background:#f5f7fb;}
+  .btn:active{transform:translateY(1px);}
+  .btn.primary{background:var(--blue); border-color:var(--blue); color:#fff;}
+  .btn.primary:hover{background:#1a52bb;}
+  .btn.danger{background:var(--red-soft); border-color:#f0c8c4; color:var(--red);}
+  .btn.danger:hover{background:#fbe0de;}
+  .btn.ghost{background:transparent; border-color:transparent; color:var(--ink2);}
+  .btn .k{font-size:12.5px; color:var(--ink2); margin-left:3px;}
+  .btn.primary .k{color:#cfe0ff;}
+
+  /* ===== 弹层 ===== */
+  .modal{position:fixed; inset:0; background:rgba(16,24,40,.44); display:none; align-items:center;
+         justify-content:center; padding:16px; z-index:70;}
+  .modal[data-open="true"]{display:flex;}
+  .box{background:var(--card); border-radius:15px; width:min(620px,96vw); max-height:88vh;
+       display:flex; flex-direction:column; overflow:hidden; box-shadow:0 20px 60px rgba(16,24,40,.3);}
+  .box-h{display:flex; align-items:center; justify-content:space-between; gap:10px;
+         padding:14px 18px; border-bottom:1px solid var(--line);}
+  .box-h b{font-size:15.5px;}
+  .box-b{padding:15px 18px; overflow:auto;}
+  .box-b textarea{width:100%; min-height:220px; font-family:ui-monospace,Menlo,Consolas,monospace;
+                  font-size:12.5px; line-height:1.7; padding:11px; border:1px solid var(--line);
+                  border-radius:10px; background:#fbfcfe; color:var(--ink); resize:vertical; outline:none;}
+  .box-b input[type=text]{width:100%; font:inherit; font-size:14.5px; padding:10px 12px;
+                          border:1px solid var(--line); border-radius:10px; background:#fbfcfe; outline:none;}
+  .box-b input[type=text]:focus, .box-b textarea:focus{border-color:#9dbfef; background:#fff; box-shadow:0 0 0 3px var(--blue-soft);}
+  .box-b .hint{font-size:12.5px; color:var(--ink2); margin-bottom:8px;}
+  .box-f{display:flex; flex-wrap:wrap; gap:8px; padding:12px 18px; border-top:1px solid var(--line); justify-content:flex-end;}
+  .chk{display:inline-flex; align-items:center; gap:7px; font-size:13px; color:var(--ink2); cursor:pointer; margin-right:auto;}
+  .chk input{width:15px; height:15px; accent-color:var(--blue);}
+
+  /* 草稿抽屉 */
+  .drawer{position:fixed; inset:0; background:rgba(16,24,40,.44); opacity:0; pointer-events:none;
+          transition:opacity .18s ease; z-index:60;}
+  .drawer[data-open="true"]{opacity:1; pointer-events:auto;}
+  .drawer-p{position:absolute; right:0; top:0; bottom:0; width:min(420px,92vw); background:var(--card);
+            border-left:1px solid var(--line); display:flex; flex-direction:column;
+            transform:translateX(100%); transition:transform .22s ease;}
+  .drawer[data-open="true"] .drawer-p{transform:none;}
+  .dp-h{display:flex; align-items:center; justify-content:space-between; padding:15px 18px; border-bottom:1px solid var(--line);}
+  .dp-h b{font-size:15.5px;}
+  .dp-b{flex:1; overflow:auto; padding:12px 14px;}
+  .draft{border:1px solid var(--line); border-radius:11px; padding:11px 13px; margin-bottom:10px; background:#fbfcfe;}
+  .draft .dt{font-size:14.5px; font-weight:600; word-break:break-all;}
+  .draft .dm{font-size:12.5px; color:var(--ink2); margin:3px 0 8px;}
+  .draft .dv{font-size:12.5px; color:var(--ink2); background:#fff; border:1px dashed var(--line);
+             border-radius:8px; padding:7px 9px; max-height:70px; overflow:hidden; white-space:pre-wrap; word-break:break-all;}
+  .draft .da{display:flex; gap:8px; margin-top:9px;}
+  .draft .da .btn{padding:6px 12px; font-size:12.5px;}
+  .empty{color:var(--ink2); text-align:center; padding:34px 10px; font-size:13.5px;}
+
+  .toast{position:fixed; left:50%; bottom:96px; transform:translate(-50%,12px); background:#101a2e; color:#fff;
+         font-size:13.5px; padding:10px 16px; border-radius:10px; box-shadow:0 8px 24px rgba(16,24,40,.3);
+         opacity:0; pointer-events:none; transition:opacity .2s ease, transform .2s ease; z-index:80;
+         max-width:88vw; text-align:center;}
+  .toast[data-open="true"]{opacity:1; transform:translate(-50%,0);}
+  .toast button{font:inherit; background:none; border:0; color:#ffd27a; cursor:pointer; text-decoration:underline; margin-left:8px;}
+
+  /* ===== 移动端 ===== */
+  @media (max-width:760px){
+    .stage{padding:10px 8px 100px;}
+    .sheet{padding:8px; border-radius:3px; border-width:1px;}
+    :root{--gutter:30px;}
+    .mark{font-size:10px; padding-left:4px;}
+    .countchip{left:10px; bottom:calc(94px + env(safe-area-inset-bottom)); font-size:12px; padding:4px 10px;}
+    .countchip b{font-size:14px;}
+    .imechip{left:10px; bottom:calc(124px + env(safe-area-inset-bottom)); font-size:11.5px; padding:3px 9px;}
+    .imechip b{font-size:12px;}
+    .poschip{bottom:calc(124px + env(safe-area-inset-bottom)); font-size:11.5px; padding:3px 10px; max-width:64vw;}
+    .actions{padding:8px 10px calc(8px + env(safe-area-inset-bottom));}
+    .actions .inner{gap:6px;}
+    .btn{font-size:13px; padding:10px 6px; flex:1 1 calc(25% - 4.5px); justify-content:center; text-align:center;}
+    .btn .k{display:none;}
+  }
+  @media print{
+    .countchip,.poschip,.actions,.drawer,.modal,.toast,.study-hub-shell{display:none !important;}
+    body{background:#fff;}
+    .stage{padding:0; max-width:none;}
+    .sheet{box-shadow:none; border:0; padding:0;}
+    .caret{display:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<!-- 字数浮标 -->
+<div class="countchip">已写 <b id="c-now">0</b> 字</div>
+<div class="imechip" id="ime-chip">拼音 <b id="ime-py"></b></div>
+<div class="poschip" id="pos-chip"></div>
+
+<!-- 答题卡 -->
+<div class="stage" id="stage">
+  <div class="sheet-scroll" id="scroll">
+    <div class="sheet">
+      <div class="sheet-inner" id="inner" data-focus="false">
+        <div class="rows" id="rows"></div>
+        <textarea id="editor" class="editor" spellcheck="false" autocorrect="off"
+                  autocapitalize="off" autocomplete="off" aria-label="模拟考试答题纸 输入区"></textarea>
+        <div class="caret" id="caret"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 底部操作条 -->
+<div class="actions">
+  <div class="inner">
+    <button class="btn primary" type="button" id="a-export">一键导出<span class="k">复制并下载</span></button>
+    <button class="btn" type="button" id="a-save">保存草稿</button>
+    <button class="btn" type="button" id="a-drafts">草稿箱 <span id="a-count">(0)</span></button>
+    <button class="btn danger" type="button" id="a-clear">一键抹除</button>
+  </div>
+</div>
+
+<!-- 命名弹窗（保存时才出现） -->
+<div class="modal" id="m-name" data-open="false">
+  <div class="box" style="width:min(430px,94vw)">
+    <div class="box-h"><b>保存草稿</b><button class="btn ghost" type="button" data-close="m-name">关闭</button></div>
+    <div class="box-b">
+      <div class="hint">给这份练习起个名字，方便以后在草稿箱里找到。</div>
+      <input type="text" id="n-input" placeholder="例：2024年11月联考·第3题 简介" maxlength="60">
+    </div>
+    <div class="box-f">
+      <button class="btn ghost" type="button" data-close="m-name">取消</button>
+      <button class="btn primary" type="button" id="n-ok">保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- 导出预览弹窗 -->
+<div class="modal" id="m-export" data-open="false">
+  <div class="box">
+    <div class="box-h"><b>导出预览</b><button class="btn ghost" type="button" data-close="m-export">关闭</button></div>
+    <div class="box-b">
+      <div class="hint">作答要求（选填，会写进导出文本，方便 AI 按题干要求批改）</div>
+      <textarea id="e-brief" spellcheck="false" style="min-height:56px; font-family:inherit; font-size:13.5px;"
+                placeholder="例：内容全面，条理清晰，针对性强，具体可行，字数不超过350字。"></textarea>
+      <div class="hint" style="margin-top:12px;">导出内容</div>
+      <textarea id="e-text" spellcheck="false"></textarea>
+    </div>
+    <div class="box-f">
+      <label class="chk"><input type="checkbox" id="e-prompt" checked> 附加"对答案"指令</label>
+      <button class="btn" type="button" id="e-md">下载 .md</button>
+      <button class="btn" type="button" id="e-txt">下载 .txt</button>
+      <button class="btn primary" type="button" id="e-copy">复制全文</button>
+    </div>
+  </div>
+</div>
+
+<!-- 确认弹层（自绘，绝不用原生 confirm —— 原生弹窗在部分环境会被拦截并阻塞页面） -->
+<div class="modal" id="m-confirm" data-open="false">
+  <div class="box" style="width:min(410px,94vw)">
+    <div class="box-h"><b id="cf-title">确认</b></div>
+    <div class="box-b">
+      <div id="cf-msg" style="font-size:14px; color:var(--ink); line-height:1.7;"></div>
+    </div>
+    <div class="box-f">
+      <button class="btn ghost" type="button" id="cf-cancel">取消</button>
+      <button class="btn danger" type="button" id="cf-ok">确定</button>
+    </div>
+  </div>
+</div>
+
+<!-- 草稿箱 -->
+<div class="drawer" id="drawer" data-open="false">
+  <div class="drawer-p" role="dialog" aria-label="草稿箱">
+    <div class="dp-h"><b>草稿箱</b><button class="btn ghost" type="button" data-close="drawer">关闭</button></div>
+    <div class="dp-b" id="d-list"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast" data-open="false"></div>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ============================================================
+     存储：IndexedDB，失败降级 localStorage
+     ============================================================ */
+  var DB = 'zl-study-hub', VER = 1, STORE = 'exam-drafts', SESSION = '__current__';
+  var LS = 'zl-study-hub:exam-drafts';
+  var useIDB = ('indexedDB' in window);
+
+  function openDB() {
+    return new Promise(function (resolve, reject) {
+      var req = window.indexedDB.open(DB, VER);
+      req.onupgradeneeded = function () {
+        var db = req.result;
+        if (!db.objectStoreNames.contains(STORE)) db.createObjectStore(STORE, { keyPath: 'id' });
+      };
+      req.onsuccess = function () { resolve(req.result); };
+      req.onerror = function () { reject(req.error); };
+    });
+  }
+  function lsAll() { try { return JSON.parse(localStorage.getItem(LS) || '{}'); } catch (e) { return {}; } }
+  function lsSave(m) { try { localStorage.setItem(LS, JSON.stringify(m)); } catch (e) {} }
+
+  function storePut(rec) {
+    if (!useIDB) { var m = lsAll(); m[rec.id] = rec; lsSave(m); return Promise.resolve(true); }
+    return openDB().then(function (db) {
+      return new Promise(function (res, rej) {
+        var tx = db.transaction(STORE, 'readwrite');
+        tx.objectStore(STORE).put(rec);
+        tx.oncomplete = function () { db.close(); res(true); };
+        tx.onerror = function () { db.close(); rej(tx.error); };
+      });
+    }).catch(function () { useIDB = false; return storePut(rec); });
+  }
+  function storeAll() {
+    if (!useIDB) { var m = lsAll(); return Promise.resolve(Object.keys(m).map(function (k) { return m[k]; })); }
+    return openDB().then(function (db) {
+      return new Promise(function (res, rej) {
+        var tx = db.transaction(STORE, 'readonly');
+        var rq = tx.objectStore(STORE).getAll();
+        rq.onsuccess = function () { db.close(); res(rq.result || []); };
+        rq.onerror = function () { db.close(); rej(rq.error); };
+      });
+    }).catch(function () { useIDB = false; return storeAll(); });
+  }
+  function storeGet(id) {
+    return storeAll().then(function (list) {
+      for (var i = 0; i < list.length; i++) if (list[i].id === id) return list[i];
+      return null;
+    });
+  }
+  function storeDel(id) {
+    if (!useIDB) { var m = lsAll(); delete m[id]; lsSave(m); return Promise.resolve(true); }
+    return openDB().then(function (db) {
+      return new Promise(function (res, rej) {
+        var tx = db.transaction(STORE, 'readwrite');
+        tx.objectStore(STORE).delete(id);
+        tx.oncomplete = function () { db.close(); res(true); };
+        tx.onerror = function () { db.close(); rej(tx.error); };
+      });
+    }).catch(function () { return false; });
+  }
+
+  /* ============================================================
+     状态
+     ============================================================ */
+  var narrow = function () { return window.innerWidth < 700; };
+  /* 每行格数不固定：按可用宽度自动铺，格子大小保持在这个区间 */
+  var CELL_IDEAL_MOBILE = 21, CELL_IDEAL_DESKTOP = 30;
+  var COLS_MIN = 12, COLS_MAX = 32;
+
+  var state = {
+    cols: 25,
+    text: '',
+    title: '',
+    brief: '',
+    cell: 30
+  };
+  var rowEls = [], markEls = [], cellEls = [];
+
+  var inner = document.getElementById('inner');
+  var rowsEl = document.getElementById('rows');
+  var editor = document.getElementById('editor');
+  var caret = document.getElementById('caret');
+  var scrollEl = document.getElementById('scroll');
+  var stageEl = document.getElementById('stage');
+  var sheetEl = document.querySelector('.sheet');
+  var actionsEl = document.querySelector('.actions');
+  var actH = 60;
+
+  /* ============================================================
+     尺寸与行数
+     ============================================================ */
+  /* 按可用宽度自动决定：每行几格 + 每格多大，精确铺满答题卡 */
+  function layout() {
+    var mobile = narrow();
+    var pad = mobile ? 16 : 24;      // 答题卡内边距合计
+    var bd = mobile ? 2 : 4;         // 答题卡外框合计
+    var gutter = mobile ? 30 : 36;   // 右侧字数标记列
+    var avail = (scrollEl.clientWidth || stageEl.clientWidth || 360) - pad - bd - gutter;
+    if (avail < 140) avail = 140;
+
+    var ideal = mobile ? CELL_IDEAL_MOBILE : CELL_IDEAL_DESKTOP;
+    var cols = Math.round(avail / ideal);
+    if (cols < COLS_MIN) cols = COLS_MIN;
+    if (cols > COLS_MAX) cols = COLS_MAX;
+
+    // 用浮点格宽把余量吃掉，保证格子正好铺满一行
+    var cell = Math.round((avail / cols) * 100) / 100;
+    if (cell < 12) cell = 12;
+
+    var colsChanged = (cols !== state.cols);
+    state.cols = cols;
+    state.cell = cell;
+    inner.style.setProperty('--cell', cell + 'px');
+    inner.style.setProperty('--cols', cols);
+    if (actionsEl) actH = Math.round(actionsEl.getBoundingClientRect().height) || actH;
+    return colsChanged;
+  }
+
+  /* 最少行数：一屏尽量铺满（像真答题卡），且保证能看到第 200 字标记 */
+  function minRows() {
+    var cell = state.cell || 30;
+    var stagePad = narrow() ? 100 : 110;    // .stage 上下内边距
+    var sheetPad = narrow() ? 16 : 24;      // 答题卡上下内边距
+    var availH = window.innerHeight - stagePad - sheetPad - actH;
+    var byHeight = Math.floor(availH / cell);
+    var byChars = Math.ceil(215 / state.cols);
+    var n = Math.max(byHeight, byChars, 8);
+    return Math.min(n, 40);
+  }
+
+  function needRows() {
+    var forText = Math.ceil(state.text.length / state.cols) + 2;
+    return Math.max(minRows(), forText);
+  }
+
+  function buildRow(r) {
+    var row = document.createElement('div');
+    row.className = 'row';
+    var cells = document.createElement('div');
+    cells.className = 'cells';
+    var arr = [];
+    for (var c = 0; c < state.cols; c++) {
+      var s = document.createElement('span');
+      s.className = 'cell';
+      cells.appendChild(s);
+      arr.push(s);
+    }
+    var mk = document.createElement('span');
+    mk.className = 'mark';
+    row.appendChild(cells);
+    row.appendChild(mk);
+    rowEls[r] = row;
+    markEls[r] = mk;
+    cellEls[r] = arr;
+    return row;
+  }
+
+  function markerFor(r) {
+    var start = r * state.cols + 1, end = (r + 1) * state.cols;
+    for (var n = 200; n <= end; n += 200) if (n >= start) return String(n);
+    return '';
+  }
+
+  function ensureRows(n) {
+    var cur = rowEls.length;
+    if (cur === n) return false;
+    if (n > cur) {
+      var frag = document.createDocumentFragment();
+      for (var r = cur; r < n; r++) frag.appendChild(buildRow(r));
+      rowsEl.appendChild(frag);
+    } else {
+      for (var k = n; k < cur; k++) {
+        rowsEl.removeChild(rowEls[k]);
+      }
+      rowEls.length = n; markEls.length = n; cellEls.length = n;
+    }
+    return true;
+  }
+
+  function render(fromIdx) {
+    var n = needRows();
+    var rowCountChanged = ensureRows(n);
+    if (rowCountChanged) {
+      // 行结构变了：旧的行/选区高亮标记已随 DOM 失效
+      curRow = -1;
+      if (selCells.length) clearGridSelection();
+      for (var r = 0; r < n; r++) {
+        var want = markerFor(r);
+        if (markEls[r].textContent !== want) markEls[r].textContent = want;
+      }
+    }
+    var sr = Math.floor(Math.max(0, fromIdx) / state.cols);
+    for (var i = sr; i < n; i++) {
+      var base = i * state.cols, cells = cellEls[i];
+      for (var c = 0; c < state.cols; c++) {
+        var ch = state.text.charAt(base + c);
+        if (cells[c].textContent !== ch) cells[c].textContent = ch;
+      }
+    }
+  }
+
+  /* ============================================================
+     光标与统计
+     ============================================================ */
+  var curRow = -1;
+
+  function updateCaret() {
+    var pos = editor.selectionStart;
+    if (pos === null || pos === undefined) pos = state.text.length;
+    if (pos > state.text.length) pos = state.text.length;
+    var r = Math.floor(pos / state.cols), c = pos % state.cols;
+    var total = rowEls.length;
+    if (r >= total) { r = total - 1; c = state.cols - 1; }
+    caret.style.left = (c * state.cell) + 'px';
+    caret.style.top = (r * state.cell) + 'px';
+    // 整行淡高亮，让"当前在哪一行"一眼可见
+    if (r !== curRow) {
+      if (curRow >= 0 && rowEls[curRow]) rowEls[curRow].removeAttribute('data-current');
+      if (rowEls[r]) rowEls[r].setAttribute('data-current', '');
+      curRow = r;
+    }
+    updatePosChip(pos, r, c);
+    return r;
+  }
+
+  /**
+   * 显示光标位置，并明确告诉用户"退格 / 删除 会删掉哪个字"。
+   * 这是为了避免"点完不知道该删哪个"造成的误删。
+   */
+  function updatePosChip(pos, r, c) {
+    var chip = document.getElementById('pos-chip');
+    if (document.activeElement !== editor) { chip.dataset.open = 'false'; return; }
+    var hasSel = editor.selectionStart !== editor.selectionEnd;
+    if (hasSel) {
+      var n = editor.selectionEnd - editor.selectionStart;
+      chip.innerHTML = '已选中 <b>' + n + '</b> 格';
+      chip.dataset.open = 'true';
+      return;
+    }
+    var prev = pos > 0 ? state.text.charAt(pos - 1) : '';
+    var next = state.text.charAt(pos);
+    var parts = ['第<b>' + (r + 1) + '</b>行'];
+    if (prev && !/[\s\u3000]/.test(prev)) parts.push('退格删<i>' + esc(prev) + '</i>');
+    if (next && !/[\s\u3000]/.test(next)) parts.push('删除删<i>' + esc(next) + '</i>');
+    chip.innerHTML = parts.join(' · ');
+    chip.dataset.open = 'true';
+  }
+
+  function esc(s) {
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  /** 删除 / 输入后，让受影响的那一格闪一下，用户能看见改动落在哪。 */
+  var flashTimer = null;
+  function flashCell(idx) {
+    if (idx < 0 || idx >= state.text.length + 1) return;
+    var cols = state.cols;
+    var r = Math.floor(idx / cols), c = idx % cols;
+    var el = cellEls[r] && cellEls[r][c];
+    if (!el) return;
+    el.removeAttribute('data-flash');
+    /* 强制重排以便动画可重放 */
+    void el.offsetWidth;
+    el.setAttribute('data-flash', '');
+    if (flashTimer) clearTimeout(flashTimer);
+    flashTimer = setTimeout(function () { el.removeAttribute('data-flash'); }, 600);
+  }
+
+  /** 计入字数的字符数：只数实际写下的字，点击空白格补出来的占位空格不算。 */
+  function chargeLen() {
+    return String(state.text).replace(/[\s\u3000]/g, '').length;
+  }
+
+  function updateCount() {
+    document.getElementById('c-now').textContent = String(chargeLen());
+  }
+
+  /** 导出用文本：按答题卡的行切开，去掉行尾空白与首尾空行。 */
+  function layoutText() {
+    var cols = state.cols, out = [];
+    for (var i = 0; i < state.text.length; i += cols) {
+      out.push(state.text.substr(i, cols).replace(/[\s\u3000]+$/, ''));
+    }
+    while (out.length && out[0] === '') out.shift();
+    while (out.length && out[out.length - 1] === '') out.pop();
+    return out.join('\n');
+  }
+
+  var saveTimer = null;
+  function scheduleSave() {
+    if (saveTimer) clearTimeout(saveTimer);
+    saveTimer = setTimeout(saveSession, 800);
+  }
+
+  function record(id, name) {
+    return {
+      id: id, name: name, title: state.title, brief: state.brief,
+      cols: state.cols, text: state.text, count: chargeLen(),
+      updatedAt: new Date().toISOString()
+    };
+  }
+
+  function saveSession() {
+    if (saveTimer) { clearTimeout(saveTimer); saveTimer = null; }
+    return storePut(record(SESSION, '（自动保存 · 未命名）'));
+  }
+
+  /* ============================================================
+     输入（单一 textarea，交给浏览器处理输入法）
+     ============================================================ */
+  var lastLen = 0;
+  /* 输入法组合状态：拼音期间 textarea.value = 已确认文本 + 正在拼写的拼音。
+     拼音范围用「组合起点 → 当前光标」推算，不依赖 compositionupdate，
+     这样任何输入法/浏览器都能正确处理，拼音不会被当成答案。 */
+  var composing = false;
+  var composeStart = 0;
+
+  /** 组合期间"正在拼写"的那段区间；不在组合状态返回 null。 */
+  function composingRange() {
+    if (!composing) return null;
+    var v = editor.value;
+    var s = Math.min(Math.max(0, composeStart), v.length);
+    var e = editor.selectionStart;
+    if (e === null || e === undefined) e = v.length;
+    if (e < s) e = s;
+    if (e > v.length) e = v.length;
+    return { s: s, e: e };
+  }
+
+  /** 取出"已经确认"的文本（组合期间剔除正在拼写的拼音）。 */
+  function committedText() {
+    var r = composingRange();
+    if (!r) return editor.value;
+    var v = editor.value;
+    return v.slice(0, r.s) + v.slice(r.e);
+  }
+
+  function showPinyin(py) {
+    var chip = document.getElementById('ime-chip');
+    if (!py) { chip.dataset.open = 'false'; document.getElementById('ime-py').textContent = ''; return; }
+    document.getElementById('ime-py').textContent = py;
+    chip.dataset.open = 'true';
+  }
+
+  function syncFromEditor() {
+    // 拼音只显示在提示条里，不进入答案
+    var range = composingRange();
+    showPinyin(range ? editor.value.slice(range.s, range.e) : '');
+
+    var raw = committedText();
+    var clean = raw.replace(/[\r\n\t]/g, '');
+    if (clean !== editor.value && !composing) {
+      // 落格文本里有换行/制表符（一般是粘贴带入），清掉并保留光标
+      var removed = editor.value.length - clean.length;
+      var pos = Math.max(0, editor.selectionStart - removed);
+      editor.value = clean;
+      try { editor.setSelectionRange(pos, pos); } catch (e) {}
+    }
+    /* 统一 diff：找出第一处不同的下标，从那里开始重绘。
+       旧代码在"删除"分支里直接用 clean.length 当起点，当删除发生在别处
+       （尤其是跨行删除）时会漏掉需要重绘的行，表现为"格子内容不更新"。 */
+    var changedAt = 0;
+    var scan = Math.min(clean.length, lastLen);
+    while (changedAt < scan && clean.charAt(changedAt) === state.text.charAt(changedAt)) changedAt++;
+    var removedHere = lastLen > clean.length;
+
+    state.text = clean;
+    lastLen = clean.length;
+    render(Math.max(0, changedAt - 1));
+    // 把改动落在哪一格闪出来，用户能看见"删了哪个 / 写了哪个"
+    flashCell(removedHere ? changedAt : changedAt);
+    updateCount();
+    updateCaret();
+    scheduleSave();
+    autoScroll();
+  }
+
+  function autoScroll() {
+    var pos = editor.selectionStart;
+    if (pos === null || pos === undefined) return;
+    var r = Math.floor(pos / state.cols);
+    var rowTop = 12 + r * state.cell;
+    var stageTop = scrollEl.getBoundingClientRect().top;
+    var actH = actionsEl ? actionsEl.getBoundingClientRect().height : 60;
+    var rowRect = { top: stageTop + rowTop, bottom: stageTop + rowTop + state.cell };
+    // 软键盘弹起时 innerHeight 不变，需用 visualViewport 的真实高度
+    var vh = (window.visualViewport && window.visualViewport.height) ? window.visualViewport.height : window.innerHeight;
+    var viewTop = 8, viewBottom = vh - actH - 8;
+    if (rowRect.bottom > viewBottom) window.scrollBy(0, rowRect.bottom - viewBottom);
+    else if (rowRect.top < viewTop) window.scrollBy(0, rowRect.top - viewTop);
+  }
+
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', function () { autoScroll(); });
+  }
+
+  editor.addEventListener('input', syncFromEditor);
+
+  /* 输入法组合：拼音只显示在提示条里，绝不写进答案 */
+  editor.addEventListener('compositionstart', function () {
+    composing = true;
+    composeStart = editor.selectionStart;
+    syncFromEditor();
+  });
+  editor.addEventListener('compositionupdate', function () {
+    syncFromEditor();
+  });
+  editor.addEventListener('compositionend', function () {
+    composing = false;
+    showPinyin('');
+    // 提交后 textarea 里是最终文本，整体同步一次
+    setTimeout(syncFromEditor, 0);
+  });
+  ['click', 'keyup'].forEach(function (ev) {
+    editor.addEventListener(ev, updateCaret);
+  });
+  editor.addEventListener('focus', function () { inner.dataset.focus = 'true'; updateCaret(); });
+  editor.addEventListener('blur', function () {
+    inner.dataset.focus = 'false';
+    clearGridSelection();
+    document.getElementById('pos-chip').dataset.open = 'false';
+    saveSession();
+  });
+
+  /* 方向键 / 回车 / Home / End 一律按"格子"移动，避免半角字符造成错位 */
+  editor.addEventListener('keydown', function (e) {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    var pos = editor.selectionStart;
+    if (pos === null || pos === undefined) return;
+    var len = state.text.length;
+    var cols = state.cols;
+    var rowStart = Math.floor(pos / cols) * cols;
+
+    function go(p) {
+      e.preventDefault();
+      p = Math.max(0, Math.min(p, len));
+      try { editor.setSelectionRange(p, p); } catch (err) {}
+      updateCaret();
+      autoScroll();
+    }
+
+    if (e.key === 'ArrowUp') go(pos - cols);
+    else if (e.key === 'ArrowDown') go(pos + cols);
+    else if (e.key === 'Home') go(rowStart);
+    else if (e.key === 'End') go(Math.min(rowStart + cols, len));
+    else if (e.key === 'Enter') go(rowStart + cols);
+    else if (e.key === 'Delete' || e.key === 'Backspace') {
+      /* 删除键"按了没反应"是最高频的困惑，这里主动说明原因。
+         不阻止默认行为，只做提示。 */
+      if (pos === editor.selectionEnd) {           // 没有选中内容时
+        var target = e.key === 'Delete' ? pos : pos - 1;
+        if (e.key === 'Delete' && pos >= len) {
+          showToast('光标已在最后，后面没有可删的字（可试试退格键 ←）');
+        } else if (e.key === 'Backspace' && pos <= 0) {
+          showToast('光标已在最前，前面没有可删的字（可试试删除键 →）');
+        } else if (/[\s\u3000]/.test(state.text.charAt(target))) {
+          showToast('这一格是空白（点格子定位时补出来的），删掉看不出变化');
+        }
+      }
+    }
+  });
+
+  /* ============================================================
+     鼠标 / 触摸点格定位 + 按格子拖选
+     原生光标与选区都基于 textarea 的排版，与"一格一字"的网格并不一致，
+     所以点击定位与拖选范围全部由我们自己算，再写回 textarea 的 selection，
+     这样 Delete / Backspace / 直接输入覆盖都能走浏览器原生行为。
+     ============================================================ */
+  var dragAnchor = null;
+  var dragging = false;
+  var downPt = null;
+  var selCells = [];
+
+  /** 清除网格上的选区高亮。 */
+  function clearGridSelection() {
+    for (var i = 0; i < selCells.length; i++) selCells[i].removeAttribute('data-sel');
+    selCells.length = 0;
+  }
+
+  /** 高亮 [a, b) 区间的格子。 */
+  function paintGridSelection(a, b) {
+    clearGridSelection();
+    if (b <= a) return;
+    var cols = state.cols;
+    for (var idx = a; idx < b; idx++) {
+      var r = Math.floor(idx / cols), c = idx % cols;
+      if (cellEls[r] && cellEls[r][c]) {
+        cellEls[r][c].setAttribute('data-sel', '');
+        selCells.push(cellEls[r][c]);
+      }
+    }
+  }
+
+  /** 同步网格选区高亮到当前 textarea 选区。 */
+  function syncGridSelection() {
+    var a = editor.selectionStart, b = editor.selectionEnd;
+    if (a === null || b === null || a === b) { clearGridSelection(); return; }
+    paintGridSelection(a, b);
+  }
+
+  /** 把事件坐标换算成格子下标；点到答题卡边缘时吸附到最近的格子。 */
+  function cellFromEvent(e) {
+    var rect = inner.getBoundingClientRect();
+    var rows = rowEls.length;
+    if (!rows || !state.cols) return null;
+    var x = e.clientX - rect.left;
+    var y = e.clientY - rect.top;
+    // 纵向放宽：点在答题卡上下留白里也吸附到最近一行
+    var r = Math.floor(y / state.cell);
+    var c = Math.floor(x / state.cell);
+    if (r < 0) r = 0;
+    if (r >= rows) r = rows - 1;
+    if (c < 0) c = 0;
+    if (c >= state.cols) c = state.cols - 1;
+    return r * state.cols + c;
+  }
+
+  /** 把光标放到指定格子，并按需滚动到可见。 */
+  function placeCaret(idx) {
+    /* 点到已经写过的内容之后时，光标直接落在文本末尾，**不补空格**。
+       补空格会让"点最后一个字右边的空白，想删这个字"变成只删掉空格：
+       退格键看着没反应，用户会以为坏了。 */
+    if (idx > state.text.length) idx = state.text.length;
+    if (document.activeElement !== editor) editor.focus();
+    try { editor.setSelectionRange(idx, idx); } catch (err) {}
+    inner.dataset.focus = 'true';
+    clearGridSelection();
+    updateCaret();
+    /* 再确认一次焦点：pointerdown 里的 focus 可能被后续 mouseup 抢走，
+       焦点一旦不在输入层，Delete/Backspace 就会"按了没反应"。 */
+    requestAnimationFrame(function () {
+      if (document.activeElement !== editor) editor.focus();
+      try { editor.setSelectionRange(idx, idx); } catch (err) {}
+      updateCaret();
+    });
+  }
+
+  stageEl.addEventListener('pointerdown', function (e) {
+    if (e.button !== undefined && e.button !== 0) return;
+    var idx = cellFromEvent(e);
+    if (idx === null) return;
+    // 鼠标自己管光标与选区（避免原生按错位排版定位）；触摸不阻止，保留滚动
+    if (e.pointerType === 'mouse') e.preventDefault();
+    dragAnchor = idx;
+    dragging = false;
+    downPt = { x: e.clientX, y: e.clientY };
+    placeCaret(idx);
+  });
+
+  stageEl.addEventListener('pointermove', function (e) {
+    if (dragAnchor === null) return;
+    if (!dragging) {
+      var dx = Math.abs(e.clientX - downPt.x), dy = Math.abs(e.clientY - downPt.y);
+      if (dx < 4 && dy < 4) return;          // 还没到拖选阈值，当点击处理
+      if (e.pointerType !== 'mouse') { dragAnchor = null; return; }  // 触摸滑动交给页面滚动
+      dragging = true;
+    }
+    var idx = cellFromEvent(e);
+    if (idx === null) return;
+    // 拖选范围含起点格与拖到的目标格，符合"从这一格拖到那一格"的直觉
+    var a = Math.min(dragAnchor, idx);
+    var b = Math.max(dragAnchor, idx) + 1;
+    try { editor.setSelectionRange(a, b); } catch (err) {}
+    paintGridSelection(a, b);
+    updateCaret();
+  });
+
+  function endDrag() {
+    if (dragAnchor === null) return;
+    if (!dragging) placeCaret(dragAnchor);   // 只是点击：重新锚定光标
+    dragAnchor = null;
+    dragging = false;
+  }
+  stageEl.addEventListener('pointerup', endDrag);
+  stageEl.addEventListener('pointercancel', function () { dragAnchor = null; dragging = false; });
+
+  // 键盘 Shift+方向键等产生的选区，也要同步高亮
+  document.addEventListener('selectionchange', function () {
+    if (document.activeElement === editor) {
+      updateCaret();
+      if (!dragging) syncGridSelection();
+    }
+  });
+
+  function setText(t) {
+    state.text = String(t == null ? '' : t).replace(/[\r\n\t]/g, '');
+    lastLen = state.text.length;
+    editor.value = state.text;
+    render(0);
+    updateCount();
+    var end = chargeLen();
+    try { editor.setSelectionRange(end, end); } catch (e) {}
+    updateCaret();
+    saveSession();
+  }
+
+  /* 每行格数变化后清空并重建行结构 */
+  function rebuildRows() {
+    rowsEl.innerHTML = '';
+    rowEls = []; markEls = []; cellEls = [];
+    layout();
+    render(0);
+  }
+
+  /* ============================================================
+     顶栏控件
+     ============================================================ */
+
+  function openModal(id) { document.getElementById(id).dataset.open = 'true'; }
+  function closeModal(id) { document.getElementById(id).dataset.open = 'false'; }
+
+  /* ============================================================
+     自绘确认框
+     绝不使用原生 confirm()/alert()：在某些内嵌浏览器（含本项目的预览环境）
+     原生对话框会被静默拦截，JS 主线程从此挂起 —— 表现为"按钮点了没反应"，
+     且后续所有操作（含键盘）全部失效。
+     ============================================================ */
+  var cfResolve = null;
+
+  function askConfirm(title, msg, okText) {
+    return new Promise(function (resolve) {
+      document.getElementById('cf-title').textContent = title;
+      document.getElementById('cf-msg').textContent = msg;
+      document.getElementById('cf-ok').textContent = okText || '确定';
+      cfResolve = resolve;
+      openModal('m-confirm');
+      setTimeout(function () { document.getElementById('cf-cancel').focus(); }, 60);
+    });
+  }
+
+  function settleConfirm(value) {
+    if (!cfResolve) { closeModal('m-confirm'); return; }
+    var fn = cfResolve;
+    cfResolve = null;
+    closeModal('m-confirm');
+    fn(value);
+  }
+
+  document.getElementById('cf-ok').addEventListener('click', function () { settleConfirm(true); });
+  document.getElementById('cf-cancel').addEventListener('click', function () { settleConfirm(false); });
+  document.getElementById('m-confirm').addEventListener('click', function (e) {
+    if (e.target === this) settleConfirm(false);
+  });
+
+  document.querySelectorAll('[data-close]').forEach(function (b) {
+    b.addEventListener('click', function () { closeModal(b.getAttribute('data-close')); });
+  });
+  ['m-name', 'm-export'].forEach(function (id) {
+    var el = document.getElementById(id);
+    el.addEventListener('click', function (e) { if (e.target === el) el.dataset.open = 'false'; });
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
+      if (cfResolve) { settleConfirm(false); return; }
+      ['m-name', 'm-export'].forEach(closeModal);
+      document.getElementById('drawer').dataset.open = 'false';
+    }
+  });
+
+  /* ============================================================
+     标题（仅保存时输入）
+     ============================================================ */
+  function paintTitle() { /* 顶部栏已移除，标题只在导出/草稿箱中体现 */ }
+
+  function defaultName() {
+    var d = new Date();
+    function p(x) { return (x < 10 ? '0' : '') + x; }
+    return '综应A练习 ' + (d.getMonth() + 1) + '-' + p(d.getDate()) + ' ' + p(d.getHours()) + ':' + p(d.getMinutes());
+  }
+
+  document.getElementById('a-save').addEventListener('click', function () {
+    if (!chargeLen()) { showToast('答题区还是空的，先写点什么吧'); return; }
+    var input = document.getElementById('n-input');
+    input.value = state.title || defaultName();
+    openModal('m-name');
+    setTimeout(function () { input.focus(); input.select(); }, 50);
+  });
+
+  document.getElementById('n-ok').addEventListener('click', function () {
+    var v = document.getElementById('n-input').value.trim() || defaultName();
+    state.title = v;
+    paintTitle();
+    storePut(record('d' + Date.now(), v)).then(function () {
+      closeModal('m-name');
+      showToast('已保存到本机草稿箱：' + v);
+      refreshDraftCount();
+      saveSession();
+    });
+  });
+  document.getElementById('n-input').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') document.getElementById('n-ok').click();
+  });
+
+  /* ============================================================
+     抹除 / 撤销
+     ============================================================ */
+  var backup = '';
+  document.getElementById('a-clear').addEventListener('click', function () {
+    if (!chargeLen()) { showToast('答题区已经是空的'); return; }
+    askConfirm('一键抹除', '确定要抹除全部内容吗？抹除后仍可点提示里的"撤销"恢复一次。', '抹除').then(function (ok) {
+      if (!ok) return;
+      backup = state.text;
+      setText('');
+      showToast('已抹除全部内容', '撤销', function () {
+        var b = backup; backup = '';
+        setText(b);
+        showToast('已恢复');
+      });
+    });
+  });
+
+  /* ============================================================
+     导出
+     ============================================================ */
+  var AI = '请你以事业单位《综合应用能力（A类）》阅卷老师的身份，按题干要求批改上面这份作答：' +
+    '1）先判断是否有审题偏差、问数是否答全；2）逐条指出漏掉的采分点与表述不规范的采分点；' +
+    '3）给出按"总括词+分条列项"改写后的参考答案；4）最后给出预期分数区间和三条最关键的改进建议。';
+
+  function fmtTime(d) {
+    function p(x) { return (x < 10 ? '0' : '') + x; }
+    return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()) + ' ' + p(d.getHours()) + ':' + p(d.getMinutes());
+  }
+
+  function exportText(withPrompt) {
+    var L = [];
+    L.push('【综应A · 模拟考试答题纸】');
+    L.push('题目：' + (state.title || '（未命名）'));
+    L.push('时间：' + fmtTime(new Date()));
+    if (state.brief.trim()) L.push('作答要求：' + state.brief.trim());
+    L.push('字数：' + chargeLen() + ' 字　·　规格：每行 ' + state.cols + ' 格');
+    L.push('————————————————————');
+    L.push(layoutText() || '（答题区为空）');
+    if (withPrompt) {
+      L.push('');
+      L.push('————————————————————');
+      L.push('【对答案指令】');
+      L.push(AI);
+    }
+    return L.join('\n');
+  }
+
+  function copyText(t) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(t).then(function () { return true; })
+        .catch(function () { return legacyCopy(t); });
+    }
+    return Promise.resolve(legacyCopy(t));
+  }
+  function legacyCopy(t) {
+    var ta = document.createElement('textarea');
+    ta.value = t; ta.setAttribute('readonly', 'readonly');
+    ta.style.cssText = 'position:fixed;left:-9999px;top:0;opacity:0';
+    document.body.appendChild(ta); ta.select();
+    var ok = false; try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+    document.body.removeChild(ta); return ok;
+  }
+  function download(name, text, mime) {
+    var blob = new Blob([text], { type: mime || 'text/plain;charset=utf-8' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = name;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(url); }, 1500);
+  }
+  function safeName() {
+    var d = new Date();
+    function p(x) { return (x < 10 ? '0' : '') + x; }
+    var base = (state.title || '综应A练习').replace(/[\\/:*?"<>|\s]+/g, '_').slice(0, 40);
+    return base + '_' + d.getFullYear() + p(d.getMonth() + 1) + p(d.getDate()) + '_' + p(d.getHours()) + p(d.getMinutes());
+  }
+
+  function openExport() {
+    document.getElementById('e-brief').value = state.brief;
+    document.getElementById('e-text').value = exportText(document.getElementById('e-prompt').checked);
+    openModal('m-export');
+  }
+
+  document.getElementById('a-export').addEventListener('click', function () {
+    if (!chargeLen()) { showToast('答题区还是空的，先写点什么吧'); return; }
+    var t = exportText(document.getElementById('e-prompt').checked);
+    copyText(t).then(function (ok) {
+      download(safeName() + '.txt', t);
+      showToast(ok ? '已复制到剪贴板，并下载了 .txt' : '已下载 .txt（剪贴板不可用，可点右键打开预览手动复制）');
+    });
+  });
+  document.getElementById('a-export').addEventListener('contextmenu', function (e) {
+    e.preventDefault(); if (chargeLen()) openExport();
+  });
+  document.getElementById('a-export').addEventListener('dblclick', function () {
+    if (chargeLen()) openExport();
+  });
+  document.getElementById('e-prompt').addEventListener('change', function () {
+    document.getElementById('e-text').value = exportText(this.checked);
+  });
+  document.getElementById('e-brief').addEventListener('input', function (e) {
+    state.brief = e.target.value;
+    document.getElementById('e-text').value = exportText(document.getElementById('e-prompt').checked);
+    scheduleSave();
+  });
+  document.getElementById('e-copy').addEventListener('click', function () {
+    copyText(document.getElementById('e-text').value).then(function (ok) {
+      showToast(ok ? '已复制全文' : '复制失败，请手动选中复制');
+    });
+  });
+  document.getElementById('e-txt').addEventListener('click', function () {
+    download(safeName() + '.txt', document.getElementById('e-text').value);
+    showToast('已下载 .txt');
+  });
+  document.getElementById('e-md').addEventListener('click', function () {
+    download(safeName() + '.md', document.getElementById('e-text').value, 'text/markdown;charset=utf-8');
+    showToast('已下载 .md');
+  });
+
+  /* ============================================================
+     草稿箱
+     ============================================================ */
+  function refreshDraftCount() {
+    storeAll().then(function (list) {
+      var n = list.filter(function (r) { return r && r.id !== SESSION; }).length;
+      document.getElementById('a-count').textContent = '(' + n + ')';
+    });
+  }
+
+  function openDrawer() {
+    storeAll().then(function (list) {
+      var items = list.filter(function (r) { return r && r.id !== SESSION; })
+        .sort(function (a, b) { return String(b.updatedAt).localeCompare(String(a.updatedAt)); });
+      var box = document.getElementById('d-list');
+      box.innerHTML = '';
+      if (!items.length) {
+        box.innerHTML = '<div class="empty">还没有保存过草稿。<br>写完后点底部"保存草稿"即可存到本机。</div>';
+      } else {
+        items.forEach(function (r) {
+          var d = document.createElement('div');
+          d.className = 'draft';
+          d.innerHTML = '<div class="dt"></div><div class="dm"></div><div class="dv"></div>'
+            + '<div class="da"><button class="btn primary" data-a="load" type="button">载入</button>'
+            + '<button class="btn danger" data-a="del" type="button">删除</button></div>';
+          d.querySelector('.dt').textContent = r.name || '未命名';
+          d.querySelector('.dm').textContent = (r.count || 0) + ' 字　·　' + fmtTime(new Date(r.updatedAt || Date.now()));
+          d.querySelector('.dv').textContent = String(r.text || '').slice(0, 80) || '（空）';
+          d.querySelector('[data-a=load]').addEventListener('click', function () { loadDraft(r); });
+          d.querySelector('[data-a=del]').addEventListener('click', function () {
+            askConfirm('删除草稿', '确定删除「' + (r.name || '未命名') + '」吗？删除后无法恢复。', '删除').then(function (ok) {
+              if (!ok) return;
+              storeDel(r.id).then(function () { openDrawer(); refreshDraftCount(); showToast('已删除'); });
+            });
+          });
+          box.appendChild(d);
+        });
+      }
+      document.getElementById('drawer').dataset.open = 'true';
+    });
+  }
+  document.getElementById('a-drafts').addEventListener('click', openDrawer);
+  document.getElementById('drawer').addEventListener('click', function (e) {
+    if (e.target.id === 'drawer') e.target.dataset.open = 'false';
+  });
+
+  function loadDraft(r) {
+    state.title = r.title || '';
+    state.brief = r.brief || '';
+    document.getElementById('e-brief').value = state.brief;
+    paintTitle();
+    layout();
+    rebuildRows();
+    setText(r.text || '');
+    document.getElementById('drawer').dataset.open = 'false';
+    showToast('已载入：' + (r.name || '未命名'));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  /* ============================================================
+     提示
+     ============================================================ */
+  var toastTimer = null;
+  function showToast(msg, label, action) {
+    var el = document.getElementById('toast');
+    el.innerHTML = '';
+    el.appendChild(document.createTextNode(msg));
+    if (label && typeof action === 'function') {
+      var b = document.createElement('button');
+      b.type = 'button'; b.textContent = label;
+      b.addEventListener('click', action);
+      el.appendChild(b);
+    }
+    el.dataset.open = 'true';
+    if (toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { el.dataset.open = 'false'; }, label ? 6000 : 2600);
+  }
+
+  /* ============================================================
+     避让共享导航悬浮按钮
+     ============================================================ */
+  function lift() {
+    var shell = document.querySelector('.study-hub-shell');
+    if (!shell) return false;
+    var bar = document.querySelector('.actions');
+    var h = bar ? Math.round(bar.getBoundingClientRect().height) : 0;
+    shell.style.bottom = Math.max(22, h + 14) + 'px';
+    return true;
+  }
+  function watchLift() {
+    if (lift()) return;
+    var n = 0;
+    var t = setInterval(function () { if (lift() || ++n > 40) clearInterval(t); }, 120);
+  }
+
+  var rz = null;
+  window.addEventListener('resize', function () {
+    if (rz) clearTimeout(rz);
+    rz = setTimeout(function () {
+      var pos = editor.selectionStart || 0;
+      var colsChanged = layout();
+      if (colsChanged) rebuildRows();
+      updateCaret();
+      try { editor.setSelectionRange(Math.min(pos, state.text.length), Math.min(pos, state.text.length)); } catch (e) {}
+      lift();
+    }, 160);
+  });
+  window.addEventListener('beforeunload', function () { if (chargeLen()) saveSession(); });
+
+  /* ============================================================
+     初始化
+     ============================================================ */
+  function init() {
+    layout();
+    render(0);
+    updateCount();
+    paintTitle();
+    refreshDraftCount();
+    watchLift();
+    storeGet(SESSION).then(function (rec) {
+      if (rec && rec.text) {
+        state.title = rec.title || '';
+        state.brief = rec.brief || '';
+        document.getElementById('e-brief').value = state.brief;
+        paintTitle();
+        layout();
+        rebuildRows();
+        setText(rec.text);
+        showToast('已恢复上次未保存的练习');
+      } else {
+        editor.focus();
+      }
+    }).catch(function () { editor.focus(); });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init, { once: true });
+  } else {
+    init();
+  }
+})();
+</script>
+  <script data-study-hub-script src="../../assets/hub-nav.js"></script>
+</body>
+</html>

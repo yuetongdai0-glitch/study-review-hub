@@ -12,7 +12,8 @@ const pages = [
   { route: 'quantitative', title: '数量关系' },
   { route: 'judgment', title: '判断推理知识图谱' },
   { route: 'data-analysis', title: '资料分析' },
-  { route: 'comprehensive-a', title: '综应 A 类' }
+  { route: 'comprehensive-a', title: '综应 A 类' },
+  { route: 'exam-grid', title: '模拟考试答题纸' }
 ]
 
 /**
@@ -24,7 +25,7 @@ function readText(path) {
   return readFile(path, 'utf8')
 }
 
-test('首页包含全部七份复习资料的有效路由', async () => {
+test('首页包含全部复习入口的有效路由', async () => {
   const home = await readText(new URL('../index.html', import.meta.url))
 
   for (const page of pages) {
@@ -100,7 +101,7 @@ test('综应 A 页面移动端表格卡片化结构完整', async () => {
   )
 })
 
-test('共享导航声明七个科目，并支持返回总览', async () => {
+test('共享导航声明全部复习入口，并支持返回总览', async () => {
   const navigation = await readText(new URL('../assets/hub-nav.js', import.meta.url))
 
   assert.ok(navigation.includes('../../index.html'), '共享导航缺少返回总览链接')
@@ -108,4 +109,27 @@ test('共享导航声明七个科目，并支持返回总览', async () => {
     // 共享导航通过配置数组生成相对链接，因此校验路由配置而非运行时模板结果。
     assert.ok(navigation.includes(`route: '${page.route}'`), `共享导航缺少路由：${page.route}`)
   }
+})
+
+test('模拟考试答题纸具备字数统计、抹除、导出与本地保存能力', async () => {
+  const page = await readText(new URL('../pages/exam-grid/index.html', import.meta.url))
+
+  // 核心能力标记：网格、字数统计、一键抹除、一键导出、IndexedDB 本地保存
+  for (const marker of ['模拟考试答题纸', '一键抹除', '一键导出', '已写', 'indexedDB', '草稿箱']) {
+    assert.ok(page.includes(marker), `答题纸页面缺少能力：${marker}`)
+  }
+
+  // 索引库与自动保存的实现细节（防止后续改动破坏持久化）
+  assert.ok(page.includes('indexedDB.open'), '答题纸页面未使用 IndexedDB')
+  assert.ok(page.includes("keyPath: 'id'"), '答题纸页面缺少 IndexedDB 主键配置')
+
+  // 导出需覆盖复制与下载两条路径，便于拿去和 AI 对答案
+  assert.ok(page.includes('clipboard') || page.includes('execCommand'), '答题纸页面缺少剪贴板复制能力')
+  assert.ok(page.includes('download'), '答题纸页面缺少文件下载能力')
+
+  // 仍以相对路径引用共享样式，保证 GitHub Pages 可用
+  assert.ok(
+    page.includes('href="../../assets/hub-nav.css"'),
+    '答题纸页面共享样式未使用相对路径引用'
+  )
 })

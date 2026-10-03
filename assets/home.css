@@ -267,6 +267,26 @@ main {
 .subject-teal { --subject-color: var(--teal); }
 .subject-a { --subject-color: #1f5fd6; }
 
+.subject-tool {
+  grid-column: 1 / -1;
+  min-height: 150px;
+  border-right: 0;
+  background: var(--surface);
+  --subject-color: var(--red);
+}
+
+.subject-tool .subject-body {
+  max-width: 760px;
+}
+
+.subject-tool::before {
+  transform: scaleY(1);
+}
+
+.subject-tool .subject-description {
+  margin-top: 8px;
+}
+
 .site-footer {
   width: min(calc(100% - 48px), var(--content-width));
   min-height: 120px;
@@ -311,7 +331,8 @@ main {
   }
 
   .subject,
-  .subject-featured {
+  .subject-featured,
+  .subject-tool {
     min-height: 150px;
     grid-column: auto;
     grid-template-columns: 34px minmax(0, 1fr) 26px;
@@ -329,6 +350,15 @@ main {
   }
 
   .subject-featured .subject-action span {
+    font-size: 16px;
+  }
+
+  /* 练习工具卡片：移动端只保留箭头，避免"去练笔"文字溢出 */
+  .subject-tool .subject-action {
+    font-size: 0;
+  }
+
+  .subject-tool .subject-action span {
     font-size: 16px;
   }
 
