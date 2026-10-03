@@ -23,28 +23,35 @@
   html{-webkit-text-size-adjust:100%;}
   body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif; background:var(--bg); color:var(--ink); font-size:15px; line-height:1.6;}
 
-  /* ===== 字数浮标（浮在内容之上，不占用任何布局空间） ===== */
-  .countchip{position:fixed; left:14px; bottom:calc(80px + env(safe-area-inset-bottom)); z-index:34;
+  /* ===== 浮层提示（不占布局）：分两行排，避免互相压住 =====
+     第 1 行：已写字数（左下）
+     第 2 行：拼音提示（左）+ 光标位置提示（居中） */
+  :root{
+    --chip-r1: calc(80px + env(safe-area-inset-bottom));   /* 第 1 行基线 */
+    --chip-r2: calc(122px + env(safe-area-inset-bottom));  /* 第 2 行基线 = 第1行 + 胶囊高 + 间距 */
+  }
+  .countchip{position:fixed; left:14px; bottom:var(--chip-r1); z-index:34;
              display:inline-flex; align-items:baseline; gap:4px; padding:5px 11px; border-radius:999px;
              background:rgba(255,255,255,.95); backdrop-filter:blur(8px); border:1px solid var(--line);
              box-shadow:0 4px 14px rgba(16,24,40,.12); font-size:12.5px; color:var(--ink2);}
   .countchip b{font-size:15px; color:var(--red); font-variant-numeric:tabular-nums;}
 
   /* 输入法拼音提示：拼音只出现在这里，不写进答案 */
-  .imechip{position:fixed; left:14px; bottom:calc(112px + env(safe-area-inset-bottom)); z-index:34;
+  .imechip{position:fixed; left:14px; bottom:var(--chip-r2); z-index:34;
            display:none; align-items:baseline; gap:6px; padding:4px 11px; border-radius:999px;
            background:rgba(255,255,255,.96); backdrop-filter:blur(8px); border:1px solid #c9dcf7;
-           box-shadow:0 4px 14px rgba(16,24,40,.12); font-size:12px; color:#14408f;}
+           box-shadow:0 4px 14px rgba(16,24,40,.12); font-size:12px; color:#14408f;
+           max-width:38vw; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
   .imechip[data-open="true"]{display:inline-flex;}
   .imechip b{font-family:ui-monospace,Menlo,Consolas,monospace; font-size:13px; color:var(--blue); letter-spacing:1.5px;}
 
   /* 光标位置提示：让用户随时知道"现在会删哪一个字" */
   .poschip{position:fixed; left:50%; transform:translateX(-50%);
-           bottom:calc(80px + env(safe-area-inset-bottom)); z-index:34;
+           bottom:var(--chip-r2); z-index:34;
            display:none; align-items:center; gap:5px; padding:4px 12px; border-radius:999px;
            background:rgba(255,255,255,.97); backdrop-filter:blur(8px); border:1px solid var(--line);
            box-shadow:0 4px 14px rgba(16,24,40,.14); font-size:12px; color:var(--ink2);
-           max-width:70vw; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+           max-width:52vw; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
   .poschip[data-open="true"]{display:inline-flex;}
   .poschip b{color:var(--ink); font-weight:600; font-variant-numeric:tabular-nums;}
   .poschip i{font-style:normal; color:var(--red); font-weight:600;}
@@ -162,12 +169,16 @@
   @media (max-width:760px){
     .stage{padding:10px 8px 100px;}
     .sheet{padding:8px; border-radius:3px; border-width:1px;}
-    .mark{font-size:10px; padding-left:4px;}
-    .countchip{left:10px; bottom:calc(94px + env(safe-area-inset-bottom)); font-size:12px; padding:4px 10px;}
+    /* 手机：底栏更高，两行提示整体上移，避免压住底栏 */
+    :root{
+      --chip-r1: calc(94px + env(safe-area-inset-bottom));
+      --chip-r2: calc(136px + env(safe-area-inset-bottom));
+    }
+    .countchip{left:10px; font-size:12px; padding:4px 10px;}
     .countchip b{font-size:14px;}
-    .imechip{left:10px; bottom:calc(124px + env(safe-area-inset-bottom)); font-size:11.5px; padding:3px 9px;}
+    .imechip{left:10px; font-size:11.5px; padding:3px 9px; max-width:36vw;}
     .imechip b{font-size:12px;}
-    .poschip{bottom:calc(124px + env(safe-area-inset-bottom)); font-size:11.5px; padding:3px 10px; max-width:64vw;}
+    .poschip{font-size:11.5px; padding:3px 10px; max-width:50vw;}
     .actions{padding:8px 10px calc(8px + env(safe-area-inset-bottom));}
     .actions .inner{gap:6px;}
     .btn{font-size:13px; padding:10px 6px; flex:1 1 calc(25% - 4.5px); justify-content:center; text-align:center;}
