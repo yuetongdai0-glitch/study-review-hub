@@ -17,7 +17,6 @@
     --sheet-ink:#c05b52;       /* 字数标记 */
     --sheet-hand:#1d3a63;      /* 填写的字 */
     --caret:#e04b4b;           /* 光标 */
-    --gutter:36px;
     --cell:30px; --cols:25;
   }
   *{box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent;}
@@ -74,8 +73,6 @@
   .row:first-child .cell{border-top:1px solid var(--sheet-line);}
   /* 选中的格子（拖选 / Shift 选择） */
   .cell[data-sel]{background:#dbe8fd; box-shadow:inset 0 0 0 1px #a8c8f5;}
-  .mark{width:var(--gutter); flex:none; display:flex; align-items:center; padding-left:7px;
-        font-size:10.5px; color:var(--sheet-ink); font-variant-numeric:tabular-nums; letter-spacing:.3px;}
 
   /* 真实输入源：覆盖在格子上，文字与原生光标全部透明，由下方格子负责显示。
      字号压到 1px：让浏览器原生的输入法组合高亮（黄色块）小到看不见——
@@ -165,7 +162,6 @@
   @media (max-width:760px){
     .stage{padding:10px 8px 100px;}
     .sheet{padding:8px; border-radius:3px; border-width:1px;}
-    :root{--gutter:30px;}
     .mark{font-size:10px; padding-left:4px;}
     .countchip{left:10px; bottom:calc(94px + env(safe-area-inset-bottom)); font-size:12px; padding:4px 10px;}
     .countchip b{font-size:14px;}
@@ -356,7 +352,7 @@
     brief: '',
     cell: 30
   };
-  var rowEls = [], markEls = [], cellEls = [];
+  var rowEls = [], cellEls = [];
 
   var inner = document.getElementById('inner');
   var rowsEl = document.getElementById('rows');
@@ -376,8 +372,7 @@
     var mobile = narrow();
     var pad = mobile ? 16 : 24;      // 答题卡内边距合计
     var bd = mobile ? 2 : 4;         // 答题卡外框合计
-    var gutter = mobile ? 30 : 36;   // 右侧字数标记列
-    var avail = (scrollEl.clientWidth || stageEl.clientWidth || 360) - pad - bd - gutter;
+    var avail = (scrollEl.clientWidth || stageEl.clientWidth || 360) - pad - bd;
     if (avail < 140) avail = 140;
 
     var ideal = mobile ? CELL_IDEAL_MOBILE : CELL_IDEAL_DESKTOP;
@@ -398,16 +393,32 @@
     return colsChanged;
   }
 
-  /* 最少行数：一屏尽量铺满（像真答题卡），且保证能看到第 200 字标记 */
+  /**
+   * 当前视口下，答题卡真正能放下的高度（像素）。
+   * 全部从元素的实际计算样式读取，不再硬编码内边距——
+   * 之前把"底栏避让"重复扣了一次，还额外留了余量，导致默认行数明显不满屏。
+   */
+  function availableHeight() {
+    var st = getComputedStyle(stageEl);
+    var sh = getComputedStyle(sheetEl);
+    var used = (parseFloat(st.paddingTop) || 0)
+             + (parseFloat(st.paddingBottom) || 0)
+             + (parseFloat(sh.paddingTop) || 0)
+             + (parseFloat(sh.paddingBottom) || 0)
+             + (parseFloat(sh.borderTopWidth) || 0)
+             + (parseFloat(sh.borderBottomWidth) || 0);
+    var vh = (window.visualViewport && window.visualViewport.height) ? window.visualViewport.height : window.innerHeight;
+    var h = vh - used;
+    return h > 120 ? h : 120;
+  }
+
+  /* 默认行数：把一屏铺满（像真答题卡那样是整页格子）。
+     availableHeight() 已扣除全部内边距与边框，直接 floor 即可；
+     若因亚像素取整产生竖向滚动，render 后会由 settleRows() 自动减一行。 */
   function minRows() {
     var cell = state.cell || 30;
-    var stagePad = narrow() ? 100 : 110;    // .stage 上下内边距
-    var sheetPad = narrow() ? 16 : 24;      // 答题卡上下内边距
-    var availH = window.innerHeight - stagePad - sheetPad - actH;
-    var byHeight = Math.floor(availH / cell);
-    var byChars = Math.ceil(215 / state.cols);
-    var n = Math.max(byHeight, byChars, 8);
-    return Math.min(n, 40);
+    var byHeight = Math.floor(availableHeight() / cell);
+    return Math.max(10, byHeight);
   }
 
   function needRows() {
@@ -427,20 +438,10 @@
       cells.appendChild(s);
       arr.push(s);
     }
-    var mk = document.createElement('span');
-    mk.className = 'mark';
     row.appendChild(cells);
-    row.appendChild(mk);
     rowEls[r] = row;
-    markEls[r] = mk;
     cellEls[r] = arr;
     return row;
-  }
-
-  function markerFor(r) {
-    var start = r * state.cols + 1, end = (r + 1) * state.cols;
-    for (var n = 200; n <= end; n += 200) if (n >= start) return String(n);
-    return '';
   }
 
   function ensureRows(n) {
@@ -454,7 +455,7 @@
       for (var k = n; k < cur; k++) {
         rowsEl.removeChild(rowEls[k]);
       }
-      rowEls.length = n; markEls.length = n; cellEls.length = n;
+      rowEls.length = n; cellEls.length = n;
     }
     return true;
   }
@@ -466,10 +467,6 @@
       // 行结构变了：旧的行/选区高亮标记已随 DOM 失效
       curRow = -1;
       if (selCells.length) clearGridSelection();
-      for (var r = 0; r < n; r++) {
-        var want = markerFor(r);
-        if (markEls[r].textContent !== want) markEls[r].textContent = want;
-      }
     }
     var sr = Math.floor(Math.max(0, fromIdx) / state.cols);
     for (var i = sr; i < n; i++) {
@@ -877,10 +874,25 @@
   }
 
   /* 每行格数变化后清空并重建行结构 */
+  /** 重建所有行（列数或可用高度变化后调用）。 */
   function rebuildRows() {
     rowsEl.innerHTML = '';
-    rowEls = []; markEls = []; cellEls = [];
+    rowEls = []; cellEls = [];
     layout();
+    render(0);
+    settleRows();
+  }
+
+  /**
+   * 渲染后校验：若因亚像素取整导致页面出现竖向滚动，
+   * 说明多排了一行，减掉后重排一次（只重试一次，避免递归）。
+   */
+  function settleRows() {
+    var doc = document.documentElement;
+    if (doc.scrollHeight <= window.innerHeight + 1) return;
+    var cur = rowEls.length;
+    if (cur <= 10) return;
+    ensureRows(cur - 1);
     render(0);
   }
 
@@ -1177,15 +1189,38 @@
   function lift() {
     var shell = document.querySelector('.study-hub-shell');
     if (!shell) return false;
-    var bar = document.querySelector('.actions');
-    var h = bar ? Math.round(bar.getBoundingClientRect().height) : 0;
+    var h = actionsEl ? Math.round(actionsEl.getBoundingClientRect().height) : 0;
     shell.style.bottom = Math.max(22, h + 14) + 'px';
     return true;
   }
+
+  /**
+   * 让答题卡下方的留白等于底栏的实际高度，这样一屏能被格子精确填满，
+   * 不会因为硬编码 110px 与真实底栏高度不匹配而少排几行。
+   */
+  function syncBottomGap() {
+    if (!actionsEl) return;
+    var h = Math.round(actionsEl.getBoundingClientRect().height);
+    /* 底栏高度未稳定时（首帧）先不写，交给 watchLift 的轮询兜底 */
+    if (h <= 0) return;
+    var gap = h + (narrow() ? 12 : 16);
+    var cur = parseFloat(stageEl.style.paddingBottom) || 0;
+    if (Math.abs(cur - gap) > 1) {
+      stageEl.style.paddingBottom = gap + 'px';
+      return true;   // 值变了，需要重排行数
+    }
+    return false;
+  }
+
   function watchLift() {
-    if (lift()) return;
+    if (lift()) { syncBottomGap(); return; }
     var n = 0;
-    var t = setInterval(function () { if (lift() || ++n > 40) clearInterval(t); }, 120);
+    var t = setInterval(function () {
+      if (lift() || ++n > 40) {
+        clearInterval(t);
+        if (syncBottomGap()) rebuildRows();
+      }
+    }, 120);
   }
 
   var rz = null;
@@ -1193,8 +1228,10 @@
     if (rz) clearTimeout(rz);
     rz = setTimeout(function () {
       var pos = editor.selectionStart || 0;
-      var colsChanged = layout();
-      if (colsChanged) rebuildRows();
+      syncBottomGap();
+      layout();
+      /* 窗口高度变了，"一屏能排几行"就变了，必须重排（无条件，代价很小） */
+      rebuildRows();
       updateCaret();
       try { editor.setSelectionRange(Math.min(pos, state.text.length), Math.min(pos, state.text.length)); } catch (e) {}
       lift();
@@ -1206,6 +1243,7 @@
      初始化
      ============================================================ */
   function init() {
+    syncBottomGap();
     layout();
     render(0);
     updateCount();
