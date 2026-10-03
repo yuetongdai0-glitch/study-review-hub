@@ -1222,7 +1222,15 @@ function updateAll(){
   });
 }
 function resetAll(){
-  if(!confirm("确定重置全部掌握进度吗？")) return;
+  /* 不用原生 confirm：部分内嵌浏览器会拦截原生对话框并阻塞 JS 主线程，
+     导致按钮"点了没反应"且后续操作全部失效。改为两步确认。 */
+  if(!window.__resetArmed){
+    window.__resetArmed = true;
+    var btn = document.getElementById("reset-btn") || document.querySelector('[onclick*="resetAll"]');
+    if(btn){ var old = btn.textContent; btn.textContent = "再点一次确认重置"; setTimeout(function(){ btn.textContent = old; window.__resetArmed = false; }, 4000); }
+    return;
+  }
+  window.__resetArmed = false;
   state = {known:{}}; save();
   cards.forEach(function(c){ c.classList.remove("done","open"); });
   document.querySelectorAll(".opt").forEach(function(o){ o.classList.remove("right","wrong","locked"); o.parentElement.querySelector(".explain").classList.remove("show"); });
