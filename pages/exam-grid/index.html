@@ -724,16 +724,16 @@
     else if (e.key === 'End') go(Math.min(rowStart + cols, len));
     else if (e.key === 'Enter') go(rowStart + cols);
     else if (e.key === 'Delete' || e.key === 'Backspace') {
-      /* 删除键"按了没反应"是最高频的困惑，这里主动说明原因。
-         不阻止默认行为，只做提示。 */
-      if (pos === editor.selectionEnd) {           // 没有选中内容时
-        var target = e.key === 'Delete' ? pos : pos - 1;
-        if (e.key === 'Delete' && pos >= len) {
+      var dir = e.key === 'Backspace' ? -1 : 1;
+      /* 先尝试"带跳过的删除"：能一次跨过占位空格直接删到真实文字 */
+      if (deleteSmart(dir)) { e.preventDefault(); return; }
+
+      /* 确实没内容可删时，说明原因（最高频的困惑） */
+      if (pos === editor.selectionEnd) {
+        if (dir === 1 && pos >= len) {
           showToast('光标已在最后，后面没有可删的字（可试试退格键 ←）');
-        } else if (e.key === 'Backspace' && pos <= 0) {
+        } else if (dir === -1 && pos <= 0) {
           showToast('光标已在最前，前面没有可删的字（可试试删除键 →）');
-        } else if (/[\s\u3000]/.test(state.text.charAt(target))) {
-          showToast('这一格是空白（点格子定位时补出来的），删掉看不出变化');
         }
       }
     }
@@ -795,11 +795,22 @@
   }
 
   /** 把光标放到指定格子，并按需滚动到可见。 */
+  /**
+   * 把光标放到指定格子。
+   * 点到尚未写过内容的格子时，用占位空格补齐到该格，保证"点哪就写在哪"
+   * （否则光标会一直被拉回文字末尾／空文档时永远停在第 1 格）。
+   * 占位空格不计入字数，删除时也会被一次性跳过（见 deleteSmart）。
+   */
   function placeCaret(idx) {
-    /* 点到已经写过的内容之后时，光标直接落在文本末尾，**不补空格**。
-       补空格会让"点最后一个字右边的空白，想删这个字"变成只删掉空格：
-       退格键看着没反应，用户会以为坏了。 */
-    if (idx > state.text.length) idx = state.text.length;
+    if (idx > state.text.length) {
+      var pad = new Array(idx - state.text.length + 1).join(' ');
+      state.text += pad;
+      lastLen = state.text.length;
+      editor.value = state.text;
+      render(state.text.length - pad.length);
+      updateCount();
+      scheduleSave();
+    }
     if (document.activeElement !== editor) editor.focus();
     try { editor.setSelectionRange(idx, idx); } catch (err) {}
     inner.dataset.focus = 'true';
@@ -812,6 +823,60 @@
       try { editor.setSelectionRange(idx, idx); } catch (err) {}
       updateCaret();
     });
+  }
+
+  /** 是否是"点格子定位"补出来的占位空格。 */
+  function isPadChar(ch) {
+    return ch === ' ' || ch === '\u3000';
+  }
+
+  /**
+   * 带回跳的删除：一次按键就跨过整段占位空格，直接作用到真实文字。
+   * dir = -1 退格（向左），dir = 1 删除键（向右）。
+   * 否则用户点了远处的格子后，要连按十几次退格才删得到字。
+   * @returns {boolean} 是否已处理（true 时调用方应 preventDefault）
+   */
+  function deleteSmart(dir) {
+    var pos = editor.selectionStart, end = editor.selectionEnd;
+    if (pos === null || pos === undefined || pos !== end) return false;  // 有选区交给浏览器
+    var t = state.text;
+    var a, b;
+
+    if (dir < 0) {                       // 退格：向左
+      if (pos <= 0) return false;
+      var q = -1;
+      for (var i = pos - 1; i >= 0; i--) { if (!isPadChar(t.charAt(i))) { q = i; break; } }
+      if (q < 0) { a = 0; b = pos; }     // 左边全是占位空格：一次清干净，光标回到开头
+      else { a = q; b = pos; }           // 跳过空格，删掉这个真实字符
+    } else {                             // 删除键：向右
+      if (pos >= t.length) return false;
+      var q2 = -1;
+      for (var j = pos; j < t.length; j++) { if (!isPadChar(t.charAt(j))) { q2 = j; break; } }
+      if (q2 < 0) { a = pos; b = t.length; }   // 右边全是占位空格：清掉
+      else { a = pos; b = q2 + 1; }
+    }
+    if (b <= a) return false;
+
+    var next = t.slice(0, a) + t.slice(b);
+    /* 删完后把行尾残留的占位空格一并清理，避免空格无限堆积、
+       也保证光标不会停在一片"看不见的空白"中间 */
+    var trimmed = next.replace(/[ \u3000]+$/, '');
+    if (trimmed !== next) {
+      next = trimmed;
+      if (a > next.length) a = next.length;
+    }
+
+    state.text = next;
+    lastLen = next.length;
+    editor.value = next;
+    try { editor.setSelectionRange(a, a); } catch (err) {}
+    render(Math.max(0, a - 1));
+    flashCell(a);
+    updateCount();
+    updateCaret();
+    scheduleSave();
+    autoScroll();
+    return true;
   }
 
   stageEl.addEventListener('pointerdown', function (e) {
