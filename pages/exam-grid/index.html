@@ -555,10 +555,17 @@
   }
 
   /** 导出用文本：按答题卡的行切开，去掉行尾空白与首尾空行。 */
+  /**
+   * 导出用文本：按答题卡的行切开。
+   * 同时去掉行首与行尾的空白 —— "点格子定位"会在文字前留下占位空格，
+   * 它们是屏幕上的位置信息，导出成纯文本时只会变成噪音（拿去对答案要干净）。
+   */
   function layoutText() {
     var cols = state.cols, out = [];
     for (var i = 0; i < state.text.length; i += cols) {
-      out.push(state.text.substr(i, cols).replace(/[\s\u3000]+$/, ''));
+      out.push(state.text.substr(i, cols)
+        .replace(/^[\s\u3000]+/, '')
+        .replace(/[\s\u3000]+$/, ''));
     }
     while (out.length && out[0] === '') out.shift();
     while (out.length && out[out.length - 1] === '') out.pop();
@@ -724,18 +731,8 @@
     else if (e.key === 'End') go(Math.min(rowStart + cols, len));
     else if (e.key === 'Enter') go(rowStart + cols);
     else if (e.key === 'Delete' || e.key === 'Backspace') {
-      var dir = e.key === 'Backspace' ? -1 : 1;
-      /* 先尝试"带跳过的删除"：能一次跨过占位空格直接删到真实文字 */
-      if (deleteSmart(dir)) { e.preventDefault(); return; }
-
-      /* 确实没内容可删时，说明原因（最高频的困惑） */
-      if (pos === editor.selectionEnd) {
-        if (dir === 1 && pos >= len) {
-          showToast('光标已在最后，后面没有可删的字（可试试退格键 ←）');
-        } else if (dir === -1 && pos <= 0) {
-          showToast('光标已在最前，前面没有可删的字（可试试删除键 →）');
-        }
-      }
+      /* deleteSmart 内部已负责"没内容可删"的提示，这里只需阻止默认行为 */
+      if (deleteSmart(e.key === 'Backspace' ? -1 : 1)) e.preventDefault();
     }
   });
 
@@ -834,6 +831,11 @@
    * 带回跳的删除：一次按键就跨过整段占位空格，直接作用到真实文字。
    * dir = -1 退格（向左），dir = 1 删除键（向右）。
    * 否则用户点了远处的格子后，要连按十几次退格才删得到字。
+   *
+   * 重要：**绝不删除占位空格本身**。占位空格承载着"文字在答题卡上的位置"，
+   * 一旦把它删掉，后面的文字会整体左移、光标也会跳到开头
+   * （曾表现为"删除两次光标回到第一格"）。
+   *
    * @returns {boolean} 是否已处理（true 时调用方应 preventDefault）
    */
   function deleteSmart(dir) {
@@ -843,29 +845,30 @@
     var a, b;
 
     if (dir < 0) {                       // 退格：向左
-      if (pos <= 0) return false;
+      if (pos <= 0) { showToast('光标已在最前，前面没有可删的字'); return true; }
       var q = -1;
       for (var i = pos - 1; i >= 0; i--) { if (!isPadChar(t.charAt(i))) { q = i; break; } }
-      if (q < 0) { a = 0; b = pos; }     // 左边全是占位空格：一次清干净，光标回到开头
-      else { a = q; b = pos; }           // 跳过空格，删掉这个真实字符
+      if (q < 0) {
+        // 左边只有"点格子"补出来的占位空格，没有真实内容。
+        // 这里必须什么都不做：删掉空白会让光标弹回开头。
+        showToast('左边还没有写下的字（空白是点格子定位产生的）');
+        return true;
+      }
+      a = q; b = pos;                    // 跳过空白，删掉这个真实字符
     } else {                             // 删除键：向右
-      if (pos >= t.length) return false;
+      if (pos >= t.length) { showToast('光标已在最后，后面没有可删的字'); return true; }
       var q2 = -1;
       for (var j = pos; j < t.length; j++) { if (!isPadChar(t.charAt(j))) { q2 = j; break; } }
-      if (q2 < 0) { a = pos; b = t.length; }   // 右边全是占位空格：清掉
-      else { a = pos; b = q2 + 1; }
+      if (q2 < 0) {
+        showToast('右边还没有写下的字（空白是点格子定位产生的）');
+        return true;
+      }
+      a = pos; b = q2 + 1;
     }
     if (b <= a) return false;
 
     var next = t.slice(0, a) + t.slice(b);
-    /* 删完后把行尾残留的占位空格一并清理，避免空格无限堆积、
-       也保证光标不会停在一片"看不见的空白"中间 */
-    var trimmed = next.replace(/[ \u3000]+$/, '');
-    if (trimmed !== next) {
-      next = trimmed;
-      if (a > next.length) a = next.length;
-    }
-
+    /* 不做行尾空格清理：见函数头注释，清掉会让文字左移、光标跳回开头 */
     state.text = next;
     lastLen = next.length;
     editor.value = next;
