@@ -287,6 +287,11 @@ main {
   margin-top: 8px;
 }
 
+/* 第二个工具卡改用蓝色主色，与答题纸区分开 */
+.subject-tool.subject-quiz {
+  --subject-color: var(--blue);
+}
+
 .site-footer {
   width: min(calc(100% - 48px), var(--content-width));
   min-height: 120px;

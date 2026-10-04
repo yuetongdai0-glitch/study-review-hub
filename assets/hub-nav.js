@@ -9,7 +9,8 @@ const studyPages = [
   { route: 'judgment', label: '判断推理知识图谱' },
   { route: 'data-analysis', label: '资料分析' },
   { route: 'comprehensive-a', label: '综应 A 类' },
-  { route: 'exam-grid', label: '模拟考试答题纸' }
+  { route: 'exam-grid', label: '模拟考试答题纸' },
+  { route: 'choice-quiz', label: '选择题答题卡' }
 ]
 
 /**

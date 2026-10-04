@@ -13,7 +13,8 @@ const pages = [
   { route: 'judgment', title: '判断推理知识图谱' },
   { route: 'data-analysis', title: '资料分析' },
   { route: 'comprehensive-a', title: '综应 A 类' },
-  { route: 'exam-grid', title: '模拟考试答题纸' }
+  { route: 'exam-grid', title: '模拟考试答题纸' },
+  { route: 'choice-quiz', title: '选择题答题卡' }
 ]
 
 /**
@@ -131,5 +132,48 @@ test('模拟考试答题纸具备字数统计、抹除、导出与本地保存�
   assert.ok(
     page.includes('href="../../assets/hub-nav.css"'),
     '答题纸页面共享样式未使用相对路径引用'
+  )
+})
+
+test('选择题答题卡具备答题、对答案、结果统计与本地缓存能力', async () => {
+  const page = await readText(new URL('../pages/choice-quiz/index.html', import.meta.url))
+
+  // 三阶段主流程与结果统计
+  for (const marker of [
+    '选择题答题卡', '开始做题', '交卷', '答题卡', '正确答案',
+    '正确率', '总用时', '平均每题', '未作答'
+  ]) {
+    assert.ok(page.includes(marker), `选择题答题卡缺少能力：${marker}`)
+  }
+
+  // 阶段常量：答题 → 对答案 → 结果
+  for (const phase of ["PHASE_ANSWER = 'answer'", "PHASE_CHECK = 'check'", "PHASE_RESULT = 'result'"]) {
+    assert.ok(page.includes(phase), `选择题答题卡缺少阶段定义：${phase}`)
+  }
+
+  // 选项个数可调，且限制在 2~8 之间
+  assert.ok(page.includes('OPT_MIN = 2') && page.includes('OPT_MAX = 8'), '选项个数上下限定义缺失')
+
+  // 计时：从开始做题起算、可暂停、对答案不计时
+  assert.ok(/totalMs/.test(page), '缺少总用时累计字段')
+  assert.ok(/timeMs/.test(page), '缺少每题用时字段')
+  assert.ok(
+    /S\.phase === PHASE_ANSWER && !S\.paused/.test(page),
+    '计时未限制在"答题阶段且未暂停"内'
+  )
+
+  // 本地缓存：刷新后恢复进度
+  assert.ok(page.includes('localStorage'), '选择题答题卡未使用 localStorage 缓存')
+  assert.ok(page.includes('choice-quiz:v1'), '选择题答题卡缺少缓存键版本号')
+
+  // 禁用原生弹窗（内嵌环境会阻塞主线程），改用自绘确认框
+  assert.ok(!/\bconfirm\s*\(/.test(page), '选择题答题卡使用了原生 confirm')
+  assert.ok(!/\balert\s*\(/.test(page), '选择题答题卡使用了原生 alert')
+  assert.ok(page.includes('m-confirm'), '选择题答题卡缺少自绘确认框')
+
+  // 仍以相对路径引用共享样式，保证 GitHub Pages 可用
+  assert.ok(
+    page.includes('href="../../assets/hub-nav.css"'),
+    '选择题答题卡共享样式未使用相对路径引用'
   )
 })
