@@ -112,11 +112,11 @@ test('共享导航声明全部复习入口，并支持返回总览', async () =>
   }
 })
 
-test('模拟考试答题纸具备字数统计、抹除、导出与本地保存能力', async () => {
+test('模拟考试答题纸具备字数统计、抹除、复制与本地保存能力', async () => {
   const page = await readText(new URL('../pages/exam-grid/index.html', import.meta.url))
 
-  // 核心能力标记：网格、字数统计、一键抹除、一键导出、IndexedDB 本地保存
-  for (const marker of ['模拟考试答题纸', '一键抹除', '一键导出', '已写', 'indexedDB', '草稿箱']) {
+  // 核心能力标记：网格、字数统计、一键抹除、一键复制、IndexedDB 本地保存
+  for (const marker of ['模拟考试答题纸', '一键抹除', '一键复制', '已写', 'indexedDB', '草稿箱']) {
     assert.ok(page.includes(marker), `答题纸页面缺少能力：${marker}`)
   }
 
@@ -124,9 +124,14 @@ test('模拟考试答题纸具备字数统计、抹除、导出与本地保存�
   assert.ok(page.includes('indexedDB.open'), '答题纸页面未使用 IndexedDB')
   assert.ok(page.includes("keyPath: 'id'"), '答题纸页面缺少 IndexedDB 主键配置')
 
-  // 导出需覆盖复制与下载两条路径，便于拿去和 AI 对答案
+  // 主按钮只做"复制到剪贴板"（用户明确要求：不触发下载），
+  // 下载仅在导出预览弹层内作为可选项保留。
   assert.ok(page.includes('clipboard') || page.includes('execCommand'), '答题纸页面缺少剪贴板复制能力')
-  assert.ok(page.includes('download'), '答题纸页面缺少文件下载能力')
+  assert.ok(page.includes('一键复制'), '答题纸页面缺少「一键复制」按钮')
+  assert.ok(!page.includes('复制并下载'), '「一键复制」按钮仍带有下载语义')
+  const exportHandler = page.match(/getElementById\('a-export'\)[\s\S]{0,600}?\n  \}\);/)
+  assert.ok(exportHandler, '未找到「一键复制」按钮的点击处理')
+  assert.ok(!exportHandler[0].includes('download'), '「一键复制」按钮不应再触发下载')
 
   // 仍以相对路径引用共享样式，保证 GitHub Pages 可用
   assert.ok(

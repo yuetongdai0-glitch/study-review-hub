@@ -217,7 +217,7 @@
 <!-- 底部操作条 -->
 <div class="actions">
   <div class="inner">
-    <button class="btn primary" type="button" id="a-export">一键导出<span class="k">复制并下载</span></button>
+    <button class="btn primary" type="button" id="a-export">一键复制<span class="k">复制全文</span></button>
     <button class="btn" type="button" id="a-save">保存草稿</button>
     <button class="btn" type="button" id="a-drafts">草稿箱 <span id="a-count">(0)</span></button>
     <button class="btn danger" type="button" id="a-clear">一键抹除</button>
@@ -1148,12 +1148,12 @@
     openModal('m-export');
   }
 
+  /* 一键复制：只把作答全文放进剪贴板，不触发下载 */
   document.getElementById('a-export').addEventListener('click', function () {
     if (!chargeLen()) { showToast('答题区还是空的，先写点什么吧'); return; }
     var t = exportText(document.getElementById('e-prompt').checked);
     copyText(t).then(function (ok) {
-      download(safeName() + '.txt', t);
-      showToast(ok ? '已复制到剪贴板，并下载了 .txt' : '已下载 .txt（剪贴板不可用，可点右键打开预览手动复制）');
+      showToast(ok ? '已复制全文，可直接粘贴' : '复制失败，可长按按钮打开预览手动复制');
     });
   });
   document.getElementById('a-export').addEventListener('contextmenu', function (e) {
