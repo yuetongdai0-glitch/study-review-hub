@@ -152,10 +152,32 @@ test('模拟考试答题纸具备字数统计、抹除、复制与本地保存�
     '导入未按换行切分文本，标题与称谓会被挤在一起'
   )
 
-  // 底栏在手机上要能一行放下 5 个按钮
+  // 底栏在手机上要能一行放下 6 个按钮（复制/撤销/导入/保存/草稿箱/抹除）
   assert.ok(
-    /\.btn\{[^}]*calc\(20%/.test(page),
-    '手机端底栏按钮未按 5 个一行排布'
+    /\.btn\{[^}]*calc\(16\.666%/.test(page),
+    '手机端底栏按钮未按 6 个一行排布'
+  )
+  // 手机端用短标签替换长标签，否则 6 个按钮会挤爆
+  assert.ok(page.includes('class="sh"'), '手机端缺少短标签，6 个按钮会溢出')
+  assert.ok(
+    /\.btn \.sh\{display:none;\}/.test(page) && /\.btn \.lg\{display:none;\}/.test(page),
+    '短标签/长标签的显隐规则不完整'
+  )
+
+  // 撤销：Ctrl/Cmd+Z 最多回退 20 步
+  assert.ok(page.includes('id="a-undo"'), '答题纸页面缺少「撤销」按钮')
+  assert.ok(/UNDO_MAX\s*=\s*20/.test(page), '撤销步数上限不是 20')
+  assert.ok(/function\s+doUndo/.test(page), '答题纸页面缺少撤销实现')
+  assert.ok(/function\s+markUndo/.test(page), '答题纸页面缺少历史记录点')
+  // 必须拦下浏览器原生撤销：原生只认 textarea，与自绘网格不同步
+  const undoKeyHandler = page.match(/addEventListener\('keydown',\s*function \(e\)\s*\{[\s\S]{0,700}?\},\s*true\)/)
+  assert.ok(undoKeyHandler, '未找到拦截原生撤销的键盘处理')
+  assert.ok(undoKeyHandler[0].includes('preventDefault'), '未拦截原生 Ctrl+Z 的默认行为')
+  assert.ok(/doUndo\(\)/.test(undoKeyHandler[0]), '拦截后未执行自定义撤销')
+  // 删除路径也要记历史（删除同样应可撤销）
+  assert.ok(
+    /function deleteSmart[\s\S]{0,1600}?markUndo\(/.test(page),
+    'deleteSmart 未记录撤销历史'
   )
 
   // 仍以相对路径引用共享样式，保证 GitHub Pages 可用

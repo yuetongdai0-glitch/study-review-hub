@@ -109,6 +109,11 @@
        background:#fff; color:var(--ink); cursor:pointer; white-space:nowrap; flex:0 0 auto;}
   .btn:hover{background:#f5f7fb;}
   .btn:active{transform:translateY(1px);}
+  .btn:disabled{opacity:.42; cursor:default;}
+  .btn:disabled:hover{background:#fff;}
+  .btn:disabled:active{transform:none;}
+  /* 手机端用短标签（由 .sh 替换 .lg），腾出空间给"撤销" */
+  .btn .sh{display:none;}
   .btn.primary{background:var(--blue); border-color:var(--blue); color:#fff;}
   .btn.primary:hover{background:#1a52bb;}
   .btn.danger{background:var(--red-soft); border-color:#f0c8c4; color:var(--red);}
@@ -181,9 +186,11 @@
     .poschip{font-size:11.5px; padding:3px 10px; max-width:50vw;}
     .actions{padding:8px 10px calc(8px + env(safe-area-inset-bottom));}
     .actions .inner{gap:6px;}
-    /* 一行放 5 个按钮（复制 / 导入 / 保存 / 草稿箱 / 抹除） */
-    .btn{font-size:12.5px; padding:10px 4px; flex:1 1 calc(20% - 6.4px); justify-content:center; text-align:center;}
+    /* 一行放 6 个按钮（复制 / 撤销 / 导入 / 保存 / 草稿箱 / 抹除），手机用短标签 */
+    .btn{font-size:11.5px; padding:10px 3px; flex:1 1 calc(16.666% - 6.67px); justify-content:center; text-align:center;}
     .btn .k{display:none;}
+    .btn .lg{display:none;}
+    .btn .sh{display:inline;}
   }
   @media print{
     .countchip,.poschip,.actions,.drawer,.modal,.toast,.study-hub-shell{display:none !important;}
@@ -218,11 +225,12 @@
 <!-- 底部操作条 -->
 <div class="actions">
   <div class="inner">
-    <button class="btn primary" type="button" id="a-export">一键复制<span class="k">复制全文</span></button>
+    <button class="btn primary" type="button" id="a-export"><span class="lg">一键复制</span><span class="sh">复制</span><span class="k">复制全文</span></button>
+    <button class="btn" type="button" id="a-undo" disabled title="撤销（Ctrl/Cmd + Z）"><span>撤销</span><span class="k">Ctrl+Z</span></button>
     <button class="btn" type="button" id="a-import">导入<span class="k">粘贴答案</span></button>
-    <button class="btn" type="button" id="a-save">保存草稿</button>
-    <button class="btn" type="button" id="a-drafts">草稿箱 <span id="a-count">(0)</span></button>
-    <button class="btn danger" type="button" id="a-clear">一键抹除</button>
+    <button class="btn" type="button" id="a-save"><span class="lg">保存草稿</span><span class="sh">保存</span></button>
+    <button class="btn" type="button" id="a-drafts"><span class="lg">草稿箱</span><span class="sh">草稿</span> <span id="a-count">(0)</span></button>
+    <button class="btn danger" type="button" id="a-clear"><span class="lg">一键抹除</span><span class="sh">抹除</span></button>
   </div>
 </div>
 
@@ -507,6 +515,7 @@
         if (cells[c].textContent !== ch) cells[c].textContent = ch;
       }
     }
+    syncUndoBtn();
   }
 
   /* ============================================================
@@ -652,6 +661,129 @@
     return v.slice(0, r.s) + v.slice(r.e);
   }
 
+  /* ============================================================
+     撤销 / 重做（Ctrl/Cmd + Z 回退，最多 20 步）
+     答题卡的文字是自己接管渲染的，原生撤销与网格不同步，
+     所以这里维护一条自己的历史栈。
+     ============================================================ */
+  var UNDO_MAX = 20;            /* 最多可回退的步数 */
+  var UNDO_MERGE_MS = 700;      /* 连续打字的合并窗口 */
+  var undoStack = [];           /* 每一项 = { text, pos }，表示"可以回到"的历史 */
+  var redoStack = [];
+  var undoStamp = 0;            /* 上一次记录历史的时间戳 */
+  var undoDir = 0;              /* 上一笔的方向：1=往后加字，-1=往前删字 */
+
+  /** 该状态是否已与栈顶相同（避免重复记录）。 */
+  function sameAsTop(stack, text) {
+    return stack.length > 0 && stack[stack.length - 1].text === text;
+  }
+
+  /**
+   * 把一段内容记成"将来可回到的一步"。
+   * @param {string} text 要记录的历史内容。
+   * @param {number} pos 还原时把光标放回的下标。
+   */
+  function pushHistory(text, pos) {
+    if (sameAsTop(undoStack, text)) return;
+    undoStack.push({ text: text, pos: pos });
+    if (undoStack.length > UNDO_MAX) undoStack.shift();
+    redoStack.length = 0;                            /* 有新动作就清掉重做链 */
+  }
+
+  /**
+   * 内容改动前调用（打字 / 删除）。
+   * @param {string} nextText 改动后的文本（用于判断是否"连续同向编辑"）。
+   */
+  function markUndo(nextText) {
+    var pos = editor.selectionStart;
+    if (pos === null || pos === undefined) pos = state.text.length;
+    var top = undoStack.length ? undoStack[undoStack.length - 1] : null;
+    var delta = nextText.length - state.text.length;
+
+    /* 连续同向编辑合并成一步：否则 20 步只够回退 20 个字。
+       - 往后加字：新文本以旧文本开头，且增量很小
+       - 往前删字：旧文本以新文本开头，且减量很小
+       方向一变（比如打完字马上退格）就另开一步，避免一次退掉两件事。 */
+    var append = delta > 0 && delta <= 4 && nextText.indexOf(state.text) === 0;
+    var backsp = delta < 0 && delta >= -4 && state.text.indexOf(nextText) === 0;
+    if (top && Date.now() - undoStamp < UNDO_MERGE_MS &&
+        ((append && undoDir === 1) || (backsp && undoDir === -1))) {
+      undoStamp = Date.now();
+      return;
+    }
+    pushHistory(state.text, pos);
+    undoDir = append ? 1 : (backsp ? -1 : 0);
+    undoStamp = Date.now();
+  }
+
+  /** 整体替换类操作（导入 / 抹除 / 载入草稿）前，把现状记一步。 */
+  function markUndoForBulk() {
+    pushHistory(state.text, editor.selectionStart || 0);
+    undoDir = 0;                                     /* 让下一次打字重新开一步 */
+    undoStamp = 0;
+  }
+
+  /** 把历史项还原到纸面（不再产生新的历史）。 */
+  function restoreHistory(item) {
+    setText(item.text);
+    var p = Math.min(item.pos, state.text.length);
+    if (p < 0) p = 0;
+    try { editor.setSelectionRange(p, p); } catch (e) {}
+    updateCaret();
+  }
+
+  /** 撤销一步。 */
+  function doUndo() {
+    if (!undoStack.length) { showToast('没有可撤销的操作了'); return false; }
+    var item = undoStack.pop();
+    redoStack.push({ text: state.text, pos: editor.selectionStart || 0 });
+    restoreHistory(item);
+    showToast(undoStack.length ? '已撤销（还可回退 ' + undoStack.length + ' 步）' : '已撤销（已回到最早）');
+    return true;
+  }
+
+  /** 重做一步。 */
+  function doRedo() {
+    if (!redoStack.length) { showToast('没有可重做的操作了'); return false; }
+    var item = redoStack.pop();
+    undoStack.push({ text: state.text, pos: editor.selectionStart || 0 });
+    if (undoStack.length > UNDO_MAX) undoStack.shift();
+    undoDir = 0;
+    undoStamp = 0;
+    restoreHistory(item);
+    showToast('已重做');
+    return true;
+  }
+
+  /* 撤销 / 重做：在捕获阶段拦下浏览器原生撤销（原生只认 textarea，
+     与本页自绘的网格不同步，会得出错乱结果）。 */
+  document.addEventListener('keydown', function (e) {
+    if (!(e.metaKey || e.ctrlKey) || e.altKey) return;
+    var k = String(e.key || '').toLowerCase();
+    if (k !== 'z' && k !== 'y') return;
+    var tgt = e.target;
+    /* 焦点在弹窗里的普通输入框（导入框、导出预览、命名框）时交回浏览器 */
+    if (tgt && tgt !== editor && /^(INPUT|TEXTAREA)$/.test(tgt.tagName)) return;
+    e.preventDefault();
+    e.stopPropagation();
+    if (k === 'y' || e.shiftKey) doRedo(); else doUndo();
+  }, true);
+
+  document.getElementById('a-undo').addEventListener('click', function () { doUndo(); });
+
+  /** 撤销按钮的可用态（没有可撤销的操作时置灰）。 */
+  function syncUndoBtn() {
+    var b = document.getElementById('a-undo');
+    if (!b) return;
+    b.disabled = undoStack.length === 0;
+    b.title = undoStack.length
+      ? '撤销（Ctrl/Cmd + Z）· 还可回退 ' + undoStack.length + ' 步'
+      : '撤销（暂无可回退的操作）';
+  }
+
+
+
+  /** 输入法拼音提示：拼音只出现在这里，绝不写进答案。 */
   function showPinyin(py) {
     var chip = document.getElementById('ime-chip');
     if (!py) { chip.dataset.open = 'false'; document.getElementById('ime-py').textContent = ''; return; }
@@ -680,6 +812,9 @@
     var scan = Math.min(clean.length, lastLen);
     while (changedAt < scan && clean.charAt(changedAt) === state.text.charAt(changedAt)) changedAt++;
     var removedHere = lastLen > clean.length;
+
+    /* 记一步历史（此处的 state.text 仍是"改动前"的内容） */
+    if (clean !== state.text) markUndo(clean);
 
     state.text = clean;
     lastLen = clean.length;
@@ -900,6 +1035,7 @@
 
     var next = t.slice(0, a) + t.slice(b);
     /* 不做行尾空格清理：见函数头注释，清掉会让文字左移、光标跳回开头 */
+    markUndo(next);                    /* 记一步历史（删除也应可撤销） */
     state.text = next;
     lastLen = next.length;
     editor.value = next;
@@ -1093,6 +1229,7 @@
     askConfirm('一键抹除', '确定要抹除全部内容吗？抹除后仍可点提示里的"撤销"恢复一次。', '抹除').then(function (ok) {
       if (!ok) return;
       backup = state.text;
+      markUndoForBulk();                 /* 抹除也可用 Ctrl+Z 回退 */
       setText('');
       showToast('已抹除全部内容', '撤销', function () {
         var b = backup; backup = '';
@@ -1286,6 +1423,7 @@
       if (rem !== 0 && base) base += new Array(cols - rem + 1).join(' ');
       grid = base + grid;
     }
+    markUndoForBulk();                   /* 导入也可回退 */
     setText(grid);
     closeModal('m-import');
     showToast((append ? '已追加 ' : '已导入 ') + chargeLen() + ' 字，可在答题卡上查看');
@@ -1385,6 +1523,7 @@
     paintTitle();
     layout();
     rebuildRows();
+    markUndoForBulk();                   /* 载入草稿也可回退 */
     setText(r.text || '');
     document.getElementById('drawer').dataset.open = 'false';
     showToast('已载入：' + (r.name || '未命名'));
