@@ -266,7 +266,7 @@
   <div class="box">
     <div class="box-h"><b>导入文本</b><button class="btn ghost" type="button" data-close="m-import">关闭</button></div>
     <div class="box-b">
-      <div class="hint">把答案粘贴进来，点「替换全部」即可在答题卡上查看。会自动去掉 Markdown 标记（<b>**</b>、<b>&gt;</b>）、导出表头、换行，以及紧贴中文的多余空格，按格子连续排列。</div>
+      <div class="hint">粘贴答案后点「替换全部」即可在答题卡上查看。<b>换行会保留</b>——标题、称谓、段落各自占一行；同时自动去掉 Markdown 标记（<b>**</b>、<b>&gt;</b>）、导出表头和紧贴中文的多余空格。</div>
       <textarea id="i-text" spellcheck="false" style="min-height:190px;"
                 placeholder="在此粘贴答案文本，例如：&#10;一、动之以情，拉近距离。表明身份和来意……&#10;二、晓之以理，讲清实情。……"></textarea>
       <div class="hint" id="i-stat" style="margin:10px 0 0;">已输入 0 字（去换行后 0 格）</div>
@@ -1176,12 +1176,12 @@
      ============================================================ */
 
   /**
-   * 规整待导入文本。
-   * 粘贴来源多为 Markdown（**加粗**、> 引用）或本页导出的成品，
-   * 这里统一剥掉这些装饰，只留正文；答题卡是"一格一字"的连续纸面，
-   * 所以换行也要去掉（否则会凭空多出空白格）。
+   * 规整待导入文本（保留换行）。
+   * 粘贴来源多为 Markdown（**加粗**、> 引用）或本页导出的成品。
+   * **换行必须保留**：讲述稿/公文里标题、称谓、段落都要各自成行，
+   * 全删掉会挤成一片（曾出过这个问题）。换行改由 importToGrid 落成"另起一行"。
    * @param {string} raw 原始粘贴文本。
-   * @returns {string} 可直接落格的正文。
+   * @returns {string} 规整后的多行文本。
    */
   function normalizeImport(raw) {
     var s = String(raw == null ? '' : raw).replace(/\r\n?/g, '\n');
@@ -1201,32 +1201,65 @@
          .replace(/^[ \t]*#{1,6}[ \t]*/gm, '')
          .replace(/`/g, '');
 
-    /* 4) 分隔线本身不要 */
+    /* 4) 分隔线本身不要；制表符当作空格处理掉 */
     s = s.split(SEP_LINE).join('');
+    s = s.replace(/\t/g, ' ');
 
-    /* 5) 换行与制表符去掉（答题卡连续填格），再修掉行尾多余空白 */
-    s = s.replace(/[\r\n\t]/g, '');
-
-    /* 6) 中文之间不留半角空格。
+    /* 5) 中文之间不留半角空格。
          典型来源：Markdown 的"**加粗** 后接正文"在去掉星号后会剩一个空格；
          在答题卡上它会变成一个多余的空白格，所以紧贴中文的空格一并收掉
          （英文单词之间的空格不受影响）。 */
     var CJK = '[\\u2460-\\u24ff\\u3000-\\u303f\\u4e00-\\u9fa5\\uff00-\\uffef]';
-    s = s.replace(new RegExp('(' + CJK + ')[ \\t]+', 'g'), '$1');
-    s = s.replace(new RegExp('[ \\t]+(' + CJK + ')', 'g'), '$1');
+    s = s.replace(new RegExp('(' + CJK + ')[ ]+', 'g'), '$1');
+    s = s.replace(new RegExp('[ ]+(' + CJK + ')', 'g'), '$1');
 
-    /* 7) 去掉开头的空白，避免导入后前几格是空白 */
-    s = s.replace(/^[\s\u3000]+/, '');
-    return s;
+    /* 6) 逐行去掉首尾空白；连续空行压成一个（保留段落间隔） */
+    var lines = s.split('\n').map(function (ln) {
+      return ln.replace(/^[\s\u3000]+/, '').replace(/[\s\u3000]+$/, '');
+    });
+    var out = [];
+    for (var i = 0; i < lines.length; i++) {
+      if (!lines[i]) {
+        if (out.length && out[out.length - 1] !== '') out.push('');
+        continue;
+      }
+      out.push(lines[i]);
+    }
+    while (out.length && out[out.length - 1] === '') out.pop();
+    return out.join('\n');
   }
 
-  /** 刷新导入弹窗里的实时字数提示。 */
+  /**
+   * 把多行文本铺到答题卡上：**换行 = 另起一行**。
+   * 用占位空格把当前行补满，下一段就正好从新行开头开始。
+   * 占位空格不计入字数（chargeLen 已剔除），删除时也会被 deleteSmart 整段跳过。
+   * @param {string} plain 已规整的多行文本。
+   * @returns {string} 可直接写入答题卡的连续文本。
+   */
+  function importToGrid(plain) {
+    var cols = state.cols || 25;
+    var lines = String(plain == null ? '' : plain).split('\n');
+    var out = '';
+    for (var i = 0; i < lines.length; i++) {
+      if (i > 0) {
+        var rem = out.length % cols;
+        if (rem !== 0) out += new Array(cols - rem + 1).join(' ');
+      }
+      out += lines[i];
+    }
+    return out;
+  }
+
+  /** 刷新导入弹窗里的实时统计。 */
   function refreshImportStat() {
-    var raw = document.getElementById('i-text').value;
-    var n = normalizeImport(raw).length;
-    var chars = normalizeImport(raw).replace(/[\s\u3000]/g, '').length;
-    document.getElementById('i-stat').textContent =
-      '已输入 ' + raw.replace(/\s/g, '').length + ' 字（去换行与标记后 ' + chars + ' 字 / ' + n + ' 格）';
+    var plain = normalizeImport(document.getElementById('i-text').value);
+    var el = document.getElementById('i-stat');
+    if (!plain.replace(/[\s\u3000]/g, '')) { el.textContent = '已输入 0 字'; return; }
+    var chars = plain.replace(/[\s\u3000]/g, '').length;
+    var grid = importToGrid(plain);
+    var cols = state.cols || 25;
+    var rows = Math.ceil(grid.length / cols);
+    el.textContent = '共 ' + chars + ' 字 · ' + plain.split('\n').length + ' 行 · 约占答题卡 ' + rows + ' 行';
   }
 
   function openImport() {
@@ -1241,15 +1274,19 @@
    * @param {boolean} append true=追加到现有内容末尾；false=替换全部。
    */
   function doImport(append) {
-    var add = normalizeImport(document.getElementById('i-text').value);
-    if (!add) { showToast('还没有粘贴内容'); return; }
+    var plain = normalizeImport(document.getElementById('i-text').value);
+    if (!plain.replace(/[\s\u3000]/g, '')) { showToast('还没有粘贴内容'); return; }
 
-    var text = add;
+    var grid = importToGrid(plain);
     if (append) {
-      /* 追加：先去掉末尾的占位空格，否则导入内容会接在一片空白之后 */
-      text = String(state.text || '').replace(/[\s\u3000]+$/, '') + add;
+      var cols = state.cols || 25;
+      /* 先去掉末尾占位空格，再把当前行补满，让新内容从新行开头开始 */
+      var base = String(state.text || '').replace(/[\s\u3000]+$/, '');
+      var rem = base.length % cols;
+      if (rem !== 0 && base) base += new Array(cols - rem + 1).join(' ');
+      grid = base + grid;
     }
-    setText(text);
+    setText(grid);
     closeModal('m-import');
     showToast((append ? '已追加 ' : '已导入 ') + chargeLen() + ' 字，可在答题卡上查看');
   }

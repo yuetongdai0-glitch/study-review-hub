@@ -137,13 +137,19 @@ test('模拟考试答题纸具备字数统计、抹除、复制与本地保存�
   assert.ok(page.includes('id="a-import"'), '答题纸页面缺少「导入」按钮')
   assert.ok(page.includes('m-import'), '答题纸页面缺少导入弹窗')
   assert.ok(/function\s+normalizeImport/.test(page), '答题纸页面缺少导入文本规整逻辑')
-  // 导入时需剥掉 Markdown 装饰、导出表头与换行（换行会凭空多出空白格）
+  // 导入时需剥掉 Markdown 装饰与导出表头（换行则必须保留，见下）
   assert.ok(/replace\(\/\\\*\\\*\/g/.test(page), '导入未剥离 Markdown 加粗标记')
   assert.ok(page.includes('SEP_LINE'), '导入未复用导出分隔线常量')
   // Markdown 的"**加粗** 后接正文"去星号后会剩半角空格，落在答题卡上就是多余空白格
   assert.ok(
     page.includes('\\\\u2460-\\\\u24ff'),
     '导入未处理"紧贴中文的多余空格"，会在答题卡上留下空白格'
+  )
+  // 换行必须保留：讲述稿/公文的标题、称谓、段落要各自成行（曾因全删换行挤成一片）
+  assert.ok(/function\s+importToGrid/.test(page), '导入未实现"换行=另起一行"的落格逻辑')
+  assert.ok(
+    /split\('\\n'\)/.test(page),
+    '导入未按换行切分文本，标题与称谓会被挤在一起'
   )
 
   // 底栏在手机上要能一行放下 5 个按钮
