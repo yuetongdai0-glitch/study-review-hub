@@ -133,6 +133,25 @@ test('模拟考试答题纸具备字数统计、抹除、复制与本地保存�
   assert.ok(exportHandler, '未找到「一键复制」按钮的点击处理')
   assert.ok(!exportHandler[0].includes('download'), '「一键复制」按钮不应再触发下载')
 
+  // 导入：把参考答案等外部文本粘进答题卡查看
+  assert.ok(page.includes('id="a-import"'), '答题纸页面缺少「导入」按钮')
+  assert.ok(page.includes('m-import'), '答题纸页面缺少导入弹窗')
+  assert.ok(/function\s+normalizeImport/.test(page), '答题纸页面缺少导入文本规整逻辑')
+  // 导入时需剥掉 Markdown 装饰、导出表头与换行（换行会凭空多出空白格）
+  assert.ok(/replace\(\/\\\*\\\*\/g/.test(page), '导入未剥离 Markdown 加粗标记')
+  assert.ok(page.includes('SEP_LINE'), '导入未复用导出分隔线常量')
+  // Markdown 的"**加粗** 后接正文"去星号后会剩半角空格，落在答题卡上就是多余空白格
+  assert.ok(
+    page.includes('\\\\u2460-\\\\u24ff'),
+    '导入未处理"紧贴中文的多余空格"，会在答题卡上留下空白格'
+  )
+
+  // 底栏在手机上要能一行放下 5 个按钮
+  assert.ok(
+    /\.btn\{[^}]*calc\(20%/.test(page),
+    '手机端底栏按钮未按 5 个一行排布'
+  )
+
   // 仍以相对路径引用共享样式，保证 GitHub Pages 可用
   assert.ok(
     page.includes('href="../../assets/hub-nav.css"'),

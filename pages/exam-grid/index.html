@@ -181,7 +181,8 @@
     .poschip{font-size:11.5px; padding:3px 10px; max-width:50vw;}
     .actions{padding:8px 10px calc(8px + env(safe-area-inset-bottom));}
     .actions .inner{gap:6px;}
-    .btn{font-size:13px; padding:10px 6px; flex:1 1 calc(25% - 4.5px); justify-content:center; text-align:center;}
+    /* 一行放 5 个按钮（复制 / 导入 / 保存 / 草稿箱 / 抹除） */
+    .btn{font-size:12.5px; padding:10px 4px; flex:1 1 calc(20% - 6.4px); justify-content:center; text-align:center;}
     .btn .k{display:none;}
   }
   @media print{
@@ -218,6 +219,7 @@
 <div class="actions">
   <div class="inner">
     <button class="btn primary" type="button" id="a-export">一键复制<span class="k">复制全文</span></button>
+    <button class="btn" type="button" id="a-import">导入<span class="k">粘贴答案</span></button>
     <button class="btn" type="button" id="a-save">保存草稿</button>
     <button class="btn" type="button" id="a-drafts">草稿箱 <span id="a-count">(0)</span></button>
     <button class="btn danger" type="button" id="a-clear">一键抹除</button>
@@ -255,6 +257,24 @@
       <button class="btn" type="button" id="e-md">下载 .md</button>
       <button class="btn" type="button" id="e-txt">下载 .txt</button>
       <button class="btn primary" type="button" id="e-copy">复制全文</button>
+    </div>
+  </div>
+</div>
+
+<!-- 导入弹窗：把外部文本（如参考答案）粘进来，按答题卡规则连续填格 -->
+<div class="modal" id="m-import" data-open="false">
+  <div class="box">
+    <div class="box-h"><b>导入文本</b><button class="btn ghost" type="button" data-close="m-import">关闭</button></div>
+    <div class="box-b">
+      <div class="hint">把答案粘贴进来，点「替换全部」即可在答题卡上查看。会自动去掉 Markdown 标记（<b>**</b>、<b>&gt;</b>）、导出表头、换行，以及紧贴中文的多余空格，按格子连续排列。</div>
+      <textarea id="i-text" spellcheck="false" style="min-height:190px;"
+                placeholder="在此粘贴答案文本，例如：&#10;一、动之以情，拉近距离。表明身份和来意……&#10;二、晓之以理，讲清实情。……"></textarea>
+      <div class="hint" id="i-stat" style="margin:10px 0 0;">已输入 0 字（去换行后 0 格）</div>
+    </div>
+    <div class="box-f">
+      <button class="btn ghost" type="button" data-close="m-import">取消</button>
+      <button class="btn" type="button" id="i-append">追加到末尾</button>
+      <button class="btn primary" type="button" id="i-replace">替换全部</button>
     </div>
   </div>
 </div>
@@ -1094,6 +1114,9 @@
     return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()) + ' ' + p(d.getHours()) + ':' + p(d.getMinutes());
   }
 
+  /* 导出/导入共用的段落分隔线 */
+  var SEP_LINE = '————————————————————';
+
   function exportText(withPrompt) {
     var L = [];
     L.push('【综应A · 模拟考试答题纸】');
@@ -1101,11 +1124,11 @@
     L.push('时间：' + fmtTime(new Date()));
     if (state.brief.trim()) L.push('作答要求：' + state.brief.trim());
     L.push('字数：' + chargeLen() + ' 字　·　规格：每行 ' + state.cols + ' 格');
-    L.push('————————————————————');
+    L.push(SEP_LINE);
     L.push(layoutText() || '（答题区为空）');
     if (withPrompt) {
       L.push('');
-      L.push('————————————————————');
+      L.push(SEP_LINE);
       L.push('【对答案指令】');
       L.push(AI);
     }
@@ -1147,6 +1170,94 @@
     document.getElementById('e-text').value = exportText(document.getElementById('e-prompt').checked);
     openModal('m-export');
   }
+
+  /* ============================================================
+     导入：把外部文本（参考答案、AI 批改稿等）填进答题卡
+     ============================================================ */
+
+  /**
+   * 规整待导入文本。
+   * 粘贴来源多为 Markdown（**加粗**、> 引用）或本页导出的成品，
+   * 这里统一剥掉这些装饰，只留正文；答题卡是"一格一字"的连续纸面，
+   * 所以换行也要去掉（否则会凭空多出空白格）。
+   * @param {string} raw 原始粘贴文本。
+   * @returns {string} 可直接落格的正文。
+   */
+  function normalizeImport(raw) {
+    var s = String(raw == null ? '' : raw).replace(/\r\n?/g, '\n');
+
+    /* 1) 若粘贴的是本页导出的成品：砍掉表头（到第一条分隔线为止） */
+    var sep = s.indexOf(SEP_LINE);
+    if (sep >= 0 && /【综应A[^】]*】/.test(s.slice(0, sep))) {
+      s = s.slice(sep + SEP_LINE.length);
+    }
+    /* 2) 砍掉尾部的"对答案指令"段落 */
+    var cut = s.indexOf('【对答案指令】');
+    if (cut >= 0) s = s.slice(0, cut);
+
+    /* 3) 去 Markdown 装饰：行首引用符、加粗星号、行首 # 标题、代码反引号 */
+    s = s.replace(/^[ \t]*>[ \t]?/gm, '')
+         .replace(/\*\*/g, '')
+         .replace(/^[ \t]*#{1,6}[ \t]*/gm, '')
+         .replace(/`/g, '');
+
+    /* 4) 分隔线本身不要 */
+    s = s.split(SEP_LINE).join('');
+
+    /* 5) 换行与制表符去掉（答题卡连续填格），再修掉行尾多余空白 */
+    s = s.replace(/[\r\n\t]/g, '');
+
+    /* 6) 中文之间不留半角空格。
+         典型来源：Markdown 的"**加粗** 后接正文"在去掉星号后会剩一个空格；
+         在答题卡上它会变成一个多余的空白格，所以紧贴中文的空格一并收掉
+         （英文单词之间的空格不受影响）。 */
+    var CJK = '[\\u2460-\\u24ff\\u3000-\\u303f\\u4e00-\\u9fa5\\uff00-\\uffef]';
+    s = s.replace(new RegExp('(' + CJK + ')[ \\t]+', 'g'), '$1');
+    s = s.replace(new RegExp('[ \\t]+(' + CJK + ')', 'g'), '$1');
+
+    /* 7) 去掉开头的空白，避免导入后前几格是空白 */
+    s = s.replace(/^[\s\u3000]+/, '');
+    return s;
+  }
+
+  /** 刷新导入弹窗里的实时字数提示。 */
+  function refreshImportStat() {
+    var raw = document.getElementById('i-text').value;
+    var n = normalizeImport(raw).length;
+    var chars = normalizeImport(raw).replace(/[\s\u3000]/g, '').length;
+    document.getElementById('i-stat').textContent =
+      '已输入 ' + raw.replace(/\s/g, '').length + ' 字（去换行与标记后 ' + chars + ' 字 / ' + n + ' 格）';
+  }
+
+  function openImport() {
+    document.getElementById('i-text').value = '';
+    refreshImportStat();
+    openModal('m-import');
+    setTimeout(function () { document.getElementById('i-text').focus(); }, 60);
+  }
+
+  /**
+   * 执行导入。
+   * @param {boolean} append true=追加到现有内容末尾；false=替换全部。
+   */
+  function doImport(append) {
+    var add = normalizeImport(document.getElementById('i-text').value);
+    if (!add) { showToast('还没有粘贴内容'); return; }
+
+    var text = add;
+    if (append) {
+      /* 追加：先去掉末尾的占位空格，否则导入内容会接在一片空白之后 */
+      text = String(state.text || '').replace(/[\s\u3000]+$/, '') + add;
+    }
+    setText(text);
+    closeModal('m-import');
+    showToast((append ? '已追加 ' : '已导入 ') + chargeLen() + ' 字，可在答题卡上查看');
+  }
+
+  document.getElementById('a-import').addEventListener('click', openImport);
+  document.getElementById('i-text').addEventListener('input', refreshImportStat);
+  document.getElementById('i-replace').addEventListener('click', function () { doImport(false); });
+  document.getElementById('i-append').addEventListener('click', function () { doImport(true); });
 
   /* 一键复制：只把作答全文放进剪贴板，不触发下载 */
   document.getElementById('a-export').addEventListener('click', function () {
