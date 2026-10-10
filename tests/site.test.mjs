@@ -260,4 +260,12 @@ test('规范词速查页具备分类词库、搜索与复制能力', async () =>
     page.includes('href="../../assets/hub-nav.css"'),
     '规范词速查页共享样式未使用相对路径引用'
   )
+
+  // 标签页标题（document.title）在切换任何分类时都应保持恒定：
+  // 页面内不得有改写 document.title 的代码
+  assert.ok(page.includes('<title>测试</title>'), '规范词速查页标签页标题不是「测试」')
+  assert.ok(
+    !/document\.title\s*=/.test(page),
+    '规范词速查页存在改写 document.title 的代码，切换分类时标题会变'
+  )
 })
