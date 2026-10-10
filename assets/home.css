@@ -292,6 +292,11 @@ main {
   --subject-color: var(--blue);
 }
 
+/* 备考手册卡单独用紫色，与两个练习工具区分开 */
+.subject-tool.subject-vocab {
+  --subject-color: var(--violet);
+}
+
 .site-footer {
   width: min(calc(100% - 48px), var(--content-width));
   min-height: 120px;

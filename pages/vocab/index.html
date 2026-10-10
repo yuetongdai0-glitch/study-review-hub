@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <link data-study-hub-style rel="stylesheet" href="../../assets/hub-nav.css">
+<title>综应A 规范词速查 · 总括词手册</title>
+<style>
+  :root{
+    --bg:#f2f3f6; --card:#fff; --ink:#1c2333; --ink2:#5a6478; --ink3:#8b93a5;
+    --blue:#1f5fd6; --blue-soft:#e8f0fd;
+    --green:#0f7a52; --green-soft:#e3f5ee;
+    --amber:#9a6a12; --amber-soft:#fdf5e3;
+    --red:#b8453c; --red-soft:#fdeeee;
+    --violet:#6d43c8; --violet-soft:#efe9fc;
+    --line:#e3e7f0; --line2:#eef1f6;
+    --r:14px;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{margin:0; padding:0;}
+  body{
+    background:var(--bg); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    font-size:15px; line-height:1.65;
+    padding-bottom:calc(30px + env(safe-area-inset-bottom));
+    -webkit-text-size-adjust:100%;
+  }
+  button{font:inherit; color:inherit; background:none; border:0; cursor:pointer;}
+  [hidden]{display:none !important;}
+
+  /* ── 顶栏 ── */
+  .topbar{
+    position:sticky; top:0; z-index:30;
+    background:rgba(255,255,255,.95); backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+    padding:calc(10px + env(safe-area-inset-top)) 14px 10px;
+  }
+  .topbar .row1{display:flex; align-items:baseline; gap:8px; max-width:820px; margin:0 auto;}
+  .topbar h1{margin:0; font-size:17px; letter-spacing:-.2px; white-space:nowrap;}
+  .topbar .stat{margin-left:auto; font-size:12.5px; color:var(--ink3); white-space:nowrap;}
+  .topbar .sub{max-width:820px; margin:3px auto 0; font-size:12.5px; color:var(--ink3);}
+  .searchwrap{max-width:820px; margin:9px auto 0; position:relative;}
+  #q{
+    width:100%; height:42px; padding:0 38px 0 36px;
+    border:1px solid var(--line); border-radius:11px;
+    background:#fbfcfe; font:inherit; font-size:14.5px; color:var(--ink); outline:none;
+  }
+  #q:focus{border-color:#9dbfef; background:#fff; box-shadow:0 0 0 3px var(--blue-soft);}
+  .searchwrap .ico{position:absolute; left:12px; top:50%; transform:translateY(-50%); color:var(--ink3); font-size:14px;}
+  .searchwrap .clr{
+    position:absolute; right:8px; top:50%; transform:translateY(-50%);
+    width:26px; height:26px; border-radius:50%; color:var(--ink3); font-size:15px; line-height:1;
+  }
+  .searchwrap .clr:hover{background:var(--line2);}
+
+  /* ── 快捷筛选 ── */
+  .chips{display:flex; gap:7px; overflow-x:auto; padding:9px 0 1px; max-width:820px; margin:0 auto;
+         -webkit-overflow-scrolling:touch; scrollbar-width:none;}
+  .chips::-webkit-scrollbar{display:none;}
+  .chips button{
+    flex:none; height:30px; padding:0 12px; border-radius:999px;
+    border:1px solid var(--line); background:#fff; font-size:12.5px; color:var(--ink2); white-space:nowrap;
+  }
+  .chips button[aria-pressed="true"]{background:var(--ink); border-color:var(--ink); color:#fff;}
+
+  /* ── 主体 ── */
+  main{max-width:820px; margin:0 auto; padding:14px 14px 0;}
+
+  .group{background:var(--card); border:1px solid var(--line); border-radius:var(--r); margin-bottom:12px; overflow:hidden;}
+  .group-head{
+    display:flex; align-items:center; gap:9px; width:100%;
+    padding:13px 14px; text-align:left;
+  }
+  .group-head:active{background:#fafbfd;}
+  .group-head .tick{flex:none; width:8px; height:34px; border-radius:4px; background:var(--c, var(--blue));}
+  .group-head .txt{flex:1 1 auto; min-width:0;}
+  .group-head .txt b{display:block; font-size:15px; letter-spacing:-.1px;}
+  .group-head .txt span{display:block; font-size:12px; color:var(--ink3); margin-top:1px;}
+  .group-head .cnt{flex:none; font-size:12px; color:var(--ink3); font-variant-numeric:tabular-nums;}
+  .group-head .caret{flex:none; color:var(--ink3); font-size:12px; transition:transform .18s ease;}
+  .group[data-open="true"] .caret{transform:rotate(90deg);}
+  .group-body{padding:0 14px 6px;}
+
+  /* ── 词条 ── */
+  .entry{border-top:1px solid var(--line2); padding:11px 0 12px;}
+  .entry:first-child{border-top:0;}
+  .entry-head{display:flex; align-items:baseline; gap:8px;}
+  .entry-head b{font-size:15px; letter-spacing:-.1px;}
+  .entry-head .copy{
+    margin-left:auto; flex:none; height:26px; padding:0 9px; border-radius:8px;
+    border:1px solid var(--line); background:#fff; font-size:11.5px; color:var(--ink3); white-space:nowrap;
+  }
+  .entry-head .copy:active{background:var(--line2);}
+  .use{font-size:13px; color:var(--ink2); margin-top:3px;}
+  .use em{font-style:normal; color:var(--ink3);}
+  .eg{
+    margin-top:7px; padding:8px 11px; border-radius:9px;
+    background:#fafbfd; border-left:3px solid var(--c, var(--blue));
+    font-size:13px; color:var(--ink2); line-height:1.7;
+  }
+  .eg b{color:var(--ink);}
+  .tagline{display:flex; flex-wrap:wrap; gap:6px; margin-top:8px;}
+  .tag{
+    font-size:12.5px; padding:4px 9px; border-radius:7px;
+    background:var(--blue-soft); color:var(--blue); white-space:nowrap;
+  }
+  .tag.g{background:var(--green-soft); color:var(--green);}
+  .tag.a{background:var(--amber-soft); color:var(--amber);}
+  .tag.r{background:var(--red-soft); color:var(--red);}
+  .tag.v{background:var(--violet-soft); color:var(--violet);}
+  .tag b{font-weight:600;}
+
+  /* 负面状态词表 */
+  .suffix{display:grid; grid-template-columns:90px 1fr; gap:0; margin-top:6px;}
+  .suffix > div{padding:7px 0; border-top:1px solid var(--line2); font-size:13.5px;}
+  .suffix > div:nth-child(-n+2){border-top:0;}
+  .suffix .k{color:var(--red); font-weight:600;}
+  .suffix .v{color:var(--ink2);}
+
+  .note{
+    margin-top:9px; padding:9px 11px; border-radius:9px;
+    background:var(--amber-soft); color:#7a530f; font-size:12.5px; line-height:1.7;
+  }
+  .note b{color:#5d3f08;}
+
+  mark{background:#fff3b0; color:inherit; border-radius:3px; padding:0 1px;}
+
+  .empty{text-align:center; color:var(--ink3); font-size:13.5px; padding:40px 0;}
+
+  @media (min-width:761px){
+    body{font-size:15.5px;}
+    .topbar h1{font-size:18.5px;}
+    .group-head .txt b{font-size:15.5px;}
+    .entry-head b{font-size:15.5px;}
+  }
+  @media (max-width:400px){
+    .suffix{grid-template-columns:76px 1fr;}
+    .entry-head b{font-size:14.5px;}
+  }
+  @media print{
+    .topbar,.chips,.copy,.study-hub-shell{display:none !important;}
+    .group-body{display:block !important;}
+    body{background:#fff;}
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="row1">
+    <h1>综应A 规范词速查</h1>
+    <span class="stat" id="stat"></span>
+  </div>
+  <div class="sub">总括词／规范表达速查 · 点击词条可整条复制</div>
+  <div class="searchwrap">
+    <span class="ico" aria-hidden="true">⌕</span>
+    <input id="q" type="search" placeholder="搜索：宣传 / 监管 / 队伍 / 应急 / 沟通…" autocomplete="off" aria-label="搜索规范词">
+    <button class="clr" type="button" id="qclr" aria-label="清空" hidden>✕</button>
+  </div>
+  <div class="chips" id="chips" role="group" aria-label="题型筛选"></div>
+</header>
+
+<main id="main"></main>
+
+<script data-study-hub-script src="../../assets/hub-nav.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  /* ============================================================
+     数据：按题型分组
+     ============================================================ */
+  var DATA = [
+    {
+      id: 'general',
+      color: 'var(--blue)',
+      title: '一、全题型通用十大总括词',
+      sub: '措施类题 80% 的场景都能套用 · 必须背',
+      kind: 'entry',
+      items: [
+        { t:'加强组织领导', use:'上层推动、重视不够、缺乏统筹', eg:'成立领导小组，明确责任分工，压实主体责任' },
+        { t:'健全制度机制', use:'无章可循、制度缺失、执行不力', eg:'建立XX联动机制，完善XX制度，纳入年度考核' },
+        { t:'加强宣传教育', use:'群众不了解、不配合、意识薄弱', eg:'线上线下结合，宣传XX政策、办理流程、现实意义' },
+        { t:'加强队伍建设', use:'人手不足、能力不够、结构老化', eg:'招聘专业人才，优化人员结构，开展业务培训' },
+        { t:'强化资金保障', use:'经费不足、投入不够、补贴偏低', eg:'申请专项经费，引入社会资本，提高补贴标准' },
+        { t:'完善基础设施', use:'硬件差、设备缺、场地不足', eg:'更新设施设备，增设服务场地，改善办公环境' },
+        { t:'加强监督管理', use:'无人监管、执行走样、问题反复', eg:'常态化巡查，畅通投诉举报，结果与绩效挂钩' },
+        { t:'加强部门协同', use:'推诿扯皮、配合不畅、信息不通', eg:'建立联调联动机制，明确权责边界，推动信息共享' },
+        { t:'优化服务方式', use:'流程繁琐、群众不便、体验差', eg:'简化办事流程，推行"一次告知""限时办结"' },
+        { t:'建立长效机制', use:'需要举一反三（多用于结尾）', eg:'巩固整改成果，健全管护责任，防止问题反弹' }
+      ]
+    },
+    {
+      id: 'problem',
+      color: 'var(--red)',
+      title: '二、概括题（问题类）· 负面状态词',
+      sub: '配方：对象／层面 + 负面状态词 · 把大白话翻译成规范表述',
+      kind: 'suffix',
+      head:['状态词','含义与用法'],
+      items: [
+        { k:'…不力', v:'做了但没做好 —— 监管不力、协调不力、执行不力' },
+        { k:'…缺位', v:'该做没做 —— 服务缺位、监管缺位、责任缺位' },
+        { k:'…不到位', v:'打了折扣 —— 落实不到位、宣传不到位、公开不到位' },
+        { k:'…混乱', v:'无序 —— 施工组织混乱、管理混乱、秩序混乱' },
+        { k:'…滞后', v:'落后于需要 —— 进度滞后、理念滞后、更新滞后' },
+        { k:'…缺失', v:'完全没有 —— 机制缺失、预案缺失、设施缺失' },
+        { k:'…薄弱', v:'底子差 —— 基础薄弱、意识薄弱、力量薄弱' },
+        { k:'…流于形式', v:'走了过场 —— 整改流于形式、培训流于形式' },
+        { k:'…单一', v:'不够丰富 —— 方式单一、渠道单一、结构单一' },
+        { k:'…不足', v:'不够 —— 经费不足、人员不足、能力不足' },
+        { k:'…突出', v:'问题明显 —— 矛盾突出、利益分歧突出' },
+        { k:'…脱节', v:'对不上 —— 供需脱节、政策与实际脱节' }
+      ],
+      note:'组合示例：<b>利益协调不力</b> / <b>诉求响应缺位</b> / <b>施工组织混乱</b> / <b>信息公开不到位</b> / <b>进度滞后</b>'
+    },
+    {
+      id: 'measure',
+      color: 'var(--green)',
+      title: '三、对策题（措施类）',
+      sub: '三大来源：抄 &gt; 借 &gt; 推 · 附高频配对',
+      kind: 'entry',
+      items: [
+        { t:'加强宣传引导', use:'宣传类（先问"对谁"：对内讲意识，对外讲政策流程）', eg:'公众号、短视频 + 宣讲会、发放手册、张贴标语，宣传政策与办理流程' },
+        { t:'健全工作机制', use:'部门之间配合不畅、协调成本高', eg:'建立XX联动机制，明确部门职责，纳入考核，定期召开联席会议' },
+        { t:'加强队伍建设', use:'人手不足、专业能力弱', eg:'招聘专业人才，优化队伍结构，开展业务培训，提升服务意识' },
+        { t:'完善激励措施', use:'待遇低、积极性不高、考核不统一', eg:'统一考核标准，实行绩效考核，申请专项经费提高补贴' },
+        { t:'优化服务流程', use:'办事繁琐、反复跑腿', eg:'简化办事环节，推行"一次告知""容缺受理""限时办结"' },
+        { t:'强化监督考核', use:'执行不力、问题反复', eg:'建立常态化巡查，畅通投诉渠道，引入群众评价，结果与绩效挂钩' },
+        { t:'拓宽资金渠道', use:'经费紧张、难以为继', eg:'争取财政专项，引入社会资本、慈善捐赠，探索"以副补主"' },
+        { t:'建立长效机制', use:'需要长期巩固', eg:'巩固成果，健全管护责任，防止问题反弹' }
+      ],
+      note:'<b>抄</b>：材料写"要建立…""应该…"→ 直接搬。<b>借</b>：材料写"反观X市…取得良好效果"→ 借鉴他地经验。<b>推</b>：材料写抱怨、困难 → 反过来说。'
+    },
+    {
+      id: 'emergency',
+      color: 'var(--amber)',
+      title: '四、应急处理题',
+      sub: '先急后缓 · 先对内后对外 · 举一反三',
+      kind: 'entry',
+      items: [
+        { t:'凸显"紧急"的词', use:'任何应急题开头都要用', eg:'及时、立即、立刻、当即、马上、赶紧、赶快、迅速、快速、第一时间、火速赶赴' },
+        { t:'① 现场处置', use:'刚到达／刚接到情况', eg:'迅速赶赴现场，立即启动应急预案，控制现场秩序，疏散围观群众，设置警戒区域' },
+        { t:'② 救助伤者', use:'涉及人身安全', eg:'优先抢救伤员，拨打120／119，及时送医，安排专人陪护' },
+        { t:'② 沟通安抚', use:'面对投诉者、群众', eg:'安抚情绪，耐心倾听诉求，诚恳致歉，说明情况，承诺限期解决' },
+        { t:'③ 对内统一', use:'团队情绪受影响（最易漏！）', eg:'统一内部认识，稳定队伍情绪，澄清事实，做好思想工作' },
+        { t:'③ 对外引导', use:'舆情风险、公众关注', eg:'主动发布信息，回应社会关切，引导舆情，防止谣言扩散' },
+        { t:'④ 举一反三', use:'事件收尾', eg:'排查同类隐患，完善应急预案，严肃追责问责' },
+        { t:'⑤ 按期反馈', use:'材料给了时限时', eg:'按X个工作日内向上级书面反馈处理结果，形成情况报告' }
+      ],
+      note:'排序三原则：<b>① 生命安全优先</b> <b>② 无自救能力 &gt; 有自救能力</b>、已受困 &gt; 即将受困 <b>③ 紧急程度 &gt; 事务重要性</b>（群体性诉求 ≠ 最紧急）'
+    },
+    {
+      id: 'communicate',
+      color: 'var(--violet)',
+      title: '五、沟通协调题',
+      sub: '三步骨架：动之以情 → 晓之以理 → 导之以行',
+      kind: 'entry',
+      items: [
+        { t:'① 动之以情', use:'开场必写（拉近距离）', eg:'表明身份和来意，感谢监督，对XX表示理解和歉意，肯定对方付出' },
+        { t:'② 晓之以理', use:'解释说明、打消疑虑', eg:'说明政策依据，讲清客观困难，分析利弊，解释制度规定' },
+        { t:'③ 导之以行', use:'收尾必写（最容易漏）', eg:'提出解决措施，明确改进方向，恳请理解支持，建立反馈渠道，承诺定期回访' },
+        { t:'话术·情', use:'缓和情绪', eg:'换位思考、设身处地、感同身受、深表理解、诚挚歉意' },
+        { t:'话术·理', use:'讲清道理', eg:'依据XX规定、从政策层面讲、客观情况是、需要说明的是' },
+        { t:'话术·行', use:'推进落实', eg:'我们将…、具体措施包括…、后续会…、您可以随时通过…联系我们' }
+      ],
+      note:'三条铁律：<b>① 不损害第三方</b>（禁止把矛盾转移给更弱势的人）<b>② 权限归位</b>（管不了的写"向上级反映""建议"）<b>③ 先内后外</b>（先做通内部，再对外沟通）'
+    },
+    {
+      id: 'document',
+      color: 'var(--blue)',
+      title: '六、公文写作题',
+      sub: '格式 · 标题 · 开头 · 结尾 · 结构模板',
+      kind: 'entry',
+      items: [
+        { t:'格式：法定公文', use:'通知、请示、报告、函', eg:'标题 + 主送机关 + 正文 + 发文机关 + 日期' },
+        { t:'格式：非完整格式', use:'讲话稿、宣讲稿、倡议书、公开信', eg:'标题 + 称谓 + 正文（+ 落款）' },
+        { t:'格式：纯内容型', use:'发言提纲、活动方案要点', eg:'标题 + 分条内容（不写发文机关和日期）' },
+        { t:'标题范式', use:'所有公文', eg:'关于 + 事由 + 文种 —— 如《关于开展XX活动的通知》' },
+        { t:'开头：目的式', use:'工作部署类', eg:'为深入贯彻落实XX精神，切实解决XX问题，现……' },
+        { t:'开头：依据式', use:'有上级文件依据时', eg:'根据《XX》要求，结合XX实际，现将有关事项通知如下：' },
+        { t:'开头：背景式', use:'总结、报告类', eg:'近年来，XX持续推进，取得一定成效，但也存在……' },
+        { t:'结尾：通知类', use:'下行文', eg:'请各单位高度重视，指定专人负责，确保工作有序推进。' },
+        { t:'结尾：请示类', use:'上行文', eg:'以上请示，妥否，请批示。／恳请领导研究批复。' },
+        { t:'结尾：号召类', use:'倡议书、讲话稿', eg:'让我们共同行动起来，携手共建XX！' },
+        { t:'讲话稿结构模板', use:'动员讲话、发言稿', eg:'开场问候 → 讲成绩 → 讲问题 → 提要求 → 号召表态' }
+      ]
+    },
+    {
+      id: 'universal',
+      color: 'var(--green)',
+      title: '七、跨题型万能句',
+      sub: '考场救急 · 想不起具体表述时用这些',
+      kind: 'tag',
+      tags:[
+        ['举一反三类','由点及面 · 以点带面 · 标本兼治','g'],
+        ['压实责任类','明确责任分工 · 压实主体责任 · 责任到人','g'],
+        ['长期坚持类','常态化 · 制度化 · 长效化 · 常抓不懈','g'],
+        ['多方参与类','政府主导 · 社会参与 · 共建共治共享','g'],
+        ['精准施策类','因地制宜 · 分类施策 · 一户一策','g'],
+        ['闭环管理类','跟踪问效 · 件件有回音 · 事事有落实','g']
+      ]
+    }
+  ];
+
+  /* ============================================================
+     渲染
+     ============================================================ */
+  var mainEl = document.getElementById('main');
+  var statEl = document.getElementById('stat');
+  var qEl = document.getElementById('q');
+  var clrEl = document.getElementById('qclr');
+  var chipsEl = document.getElementById('chips');
+
+  var openState = {};          /* 分组展开状态 */
+  DATA.forEach(function (g) { openState[g.id] = true; });
+
+  var filterGroup = '';        /* 当前题型筛选 */
+  var keyword = '';
+
+  /** HTML 转义，防止内容里的尖括号破坏结构。 */
+  function esc(s) {
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  /** 高亮关键词。 */
+  function hl(s) {
+    var t = esc(s);
+    if (!keyword) return t;
+    try {
+      var re = new RegExp('(' + keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
+      return t.replace(re, '<mark>$1</mark>');
+    } catch (e) { return t; }
+  }
+
+  /** 判断一个词条是否命中筛选条件。 */
+  function hit(texts) {
+    if (!keyword) return true;
+    var k = keyword.toLowerCase();
+    return texts.some(function (x) { return String(x).toLowerCase().indexOf(k) >= 0; });
+  }
+
+  /** 渲染一个 entry 型分组。 */
+  function renderEntries(g, items) {
+    var h = '';
+    items.forEach(function (it) {
+      h += '<div class="entry">' +
+             '<div class="entry-head"><b>' + hl(it.t) + '</b>' +
+             '<button class="copy" type="button" data-copy="' + esc(it.t + '。' + (it.eg || '')) + '">复制</button></div>' +
+             (it.use ? '<div class="use"><em>适用：</em>' + hl(it.use) + '</div>' : '') +
+             (it.eg ? '<div class="eg">' + hl(it.eg) + '</div>' : '') +
+           '</div>';
+    });
+    return h;
+  }
+
+  /** 渲染 suffix 型（负面状态词表）。 */
+  function renderSuffix(items) {
+    var h = '<div class="suffix">';
+    items.forEach(function (it) {
+      h += '<div class="k">' + hl(it.k) + '</div><div class="v">' + hl(it.v) + '</div>';
+    });
+    h += '</div>';
+    return h;
+  }
+
+  /** 渲染 tag 型。 */
+  function renderTags(tags) {
+    var h = '<div class="tagline">';
+    tags.forEach(function (t) {
+      h += '<span class="tag ' + (t[2] || '') + '"><b>' + hl(t[0]) + '</b>：' + hl(t[1]) + '</span>';
+    });
+    h += '</div>';
+    return h;
+  }
+
+  /** 主渲染。 */
+  function render() {
+    var html = '';
+    var shown = 0, total = 0;
+
+    DATA.forEach(function (g) {
+      total += g.items ? g.items.length : (g.tags ? g.tags.length : 0);
+
+      /* 按题型筛选 */
+      if (filterGroup && g.id !== filterGroup) return;
+
+      /* 按关键词过滤 */
+      var items = g.items ? g.items.filter(function (it) {
+        return hit([it.t || it.k, it.use, it.eg, it.v]);
+      }) : null;
+      var tags = g.tags ? g.tags.filter(function (t) { return hit([t[0], t[1]]); }) : null;
+      var n = items ? items.length : (tags ? tags.length : 0);
+      if (keyword && n === 0) return;
+      shown += n;
+
+      var body = '';
+      if (g.kind === 'suffix') body = renderSuffix(items);
+      else if (g.kind === 'tag') body = renderTags(tags);
+      else body = renderEntries(g, items);
+
+      /* 搜索时强制展开 */
+      var open = keyword ? true : openState[g.id];
+      html += '<section class="group" style="--c:' + g.color + '" data-g="' + g.id + '" data-open="' + open + '">' +
+                '<button class="group-head" type="button" aria-expanded="' + open + '">' +
+                  '<span class="tick" aria-hidden="true"></span>' +
+                  '<span class="txt"><b>' + esc(g.title) + '</b><span>' + g.sub + '</span></span>' +
+                  '<span class="cnt">' + n + '</span>' +
+                  '<span class="caret" aria-hidden="true">▶</span>' +
+                '</button>' +
+                '<div class="group-body"' + (open ? '' : ' hidden') + '>' +
+                  body +
+                  (g.note ? '<div class="note">' + g.note + '</div>' : '') +
+                '</div>' +
+              '</section>';
+    });
+
+    mainEl.innerHTML = html || '<div class="empty">没有找到匹配的词条，换个关键词试试</div>';
+    statEl.textContent = keyword || filterGroup
+      ? '筛出 ' + shown + ' / ' + total + ' 条'
+      : '共 ' + total + ' 条';
+    clrEl.hidden = !keyword;
+  }
+
+  /* ============================================================
+     交互
+     ============================================================ */
+  function showToast(msg) {
+    var t = document.getElementById('__toast');
+    if (!t) {
+      t = document.createElement('div');
+      t.id = '__toast';
+      t.style.cssText = 'position:fixed;left:50%;bottom:34px;transform:translate(-50%,10px);z-index:99;' +
+        'max-width:84vw;padding:10px 16px;border-radius:11px;background:#101a2e;color:#fff;font-size:13.5px;' +
+        'text-align:center;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;' +
+        'box-shadow:0 10px 26px rgba(16,24,40,.3);';
+      document.body.appendChild(t);
+    }
+    t.textContent = msg;
+    requestAnimationFrame(function () { t.style.opacity = '1'; t.style.transform = 'translate(-50%,0)'; });
+    clearTimeout(t.__t);
+    t.__t = setTimeout(function () { t.style.opacity = '0'; t.style.transform = 'translate(-50%,10px)'; }, 1900);
+  }
+
+  /**
+   * 复制文本。优先 Clipboard API，失败时回退到隐藏 textarea。
+   * @param {string} text 待复制内容。
+   * @returns {Promise<boolean>} 是否成功。
+   */
+  function copyText(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(text).then(function () { return true; })
+        .catch(function () { return legacyCopy(text); });
+    }
+    return Promise.resolve(legacyCopy(text));
+  }
+  function legacyCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.cssText = 'position:fixed;left:-9999px;top:0;opacity:0';
+    document.body.appendChild(ta);
+    ta.select();
+    var ok = false;
+    try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+    document.body.removeChild(ta);
+    return ok;
+  }
+
+  /* 折叠 / 展开 */
+  mainEl.addEventListener('click', function (e) {
+    var copyBtn = e.target.closest('.copy');
+    if (copyBtn) {
+      e.stopPropagation();
+      copyText(copyBtn.dataset.copy).then(function (ok) {
+        showToast(ok ? '已复制：' + copyBtn.dataset.copy.slice(0, 16) + '…' : '复制失败，请手动选中');
+      });
+      return;
+    }
+    var head = e.target.closest('.group-head');
+    if (!head) return;
+    var g = head.closest('.group');
+    var id = g.dataset.g;
+    var now = g.dataset.open !== 'true';
+    g.dataset.open = String(now);
+    head.setAttribute('aria-expanded', String(now));
+    g.querySelector('.group-body').hidden = !now;
+    openState[id] = now;
+  });
+
+  /* 搜索 */
+  var timer = null;
+  qEl.addEventListener('input', function () {
+    keyword = qEl.value.trim();
+    clearTimeout(timer);
+    timer = setTimeout(render, 120);
+  });
+  clrEl.addEventListener('click', function () {
+    qEl.value = ''; keyword = ''; qEl.focus(); render();
+  });
+  qEl.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { qEl.value = ''; keyword = ''; render(); }
+  });
+
+  /* 快捷筛选 chips */
+  var chips = [['', '全部']].concat(DATA.map(function (g) {
+    return [g.id, g.title.replace(/^[一二三四五六七]、/, '').split('·')[0].trim()];
+  }));
+  chipsEl.innerHTML = chips.map(function (c) {
+    return '<button type="button" data-g="' + c[0] + '" aria-pressed="' + (c[0] === '' ? 'true' : 'false') + '">' + esc(c[1]) + '</button>';
+  }).join('');
+  chipsEl.addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-g]');
+    if (!b) return;
+    filterGroup = b.dataset.g;
+    Array.prototype.forEach.call(chipsEl.children, function (x) {
+      x.setAttribute('aria-pressed', String(x === b));
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    render();
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>

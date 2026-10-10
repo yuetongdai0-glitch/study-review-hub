@@ -14,7 +14,8 @@ const pages = [
   { route: 'data-analysis', title: '资料分析' },
   { route: 'comprehensive-a', title: '综应 A 类' },
   { route: 'exam-grid', title: '模拟考试答题纸' },
-  { route: 'choice-quiz', title: '选择题答题卡' }
+  { route: 'choice-quiz', title: '选择题答题卡' },
+  { route: 'vocab', title: '综应A 规范词速查' }
 ]
 
 /**
@@ -227,5 +228,36 @@ test('选择题答题卡具备答题、对答案、结果统计与本地缓存�
   assert.ok(
     page.includes('href="../../assets/hub-nav.css"'),
     '选择题答题卡共享样式未使用相对路径引用'
+  )
+})
+
+test('规范词速查页具备分类词库、搜索与复制能力', async () => {
+  const page = await readText(new URL('../pages/vocab/index.html', import.meta.url))
+
+  // 核心能力标记
+  for (const marker of [
+    '总括词', '加强宣传引导', '加强队伍建设', '健全', '负面状态词',
+    '动之以情', '晓之以理', '导之以行', '长效机制'
+  ]) {
+    assert.ok(page.includes(marker), `规范词速查页缺少内容：${marker}`)
+  }
+
+  // 分类词库数据结构：7 个分组
+  const groups = page.match(/id: '(general|problem|measure|emergency|communicate|document|universal)'/g) || []
+  assert.ok(groups.length >= 7, `规范词速查页分组不足，仅 ${groups.length} 组`)
+
+  // 搜索与复制两条交互路径
+  assert.ok(page.includes('id="q"'), '规范词速查页缺少搜索框')
+  assert.ok(page.includes('data-copy='), '规范词速查页缺少"点词条复制"能力')
+  assert.ok(page.includes('clipboard') || page.includes('execCommand'), '规范词速查页缺少剪贴板能力')
+
+  // 禁用原生弹窗（内嵌环境会阻塞主线程）
+  assert.ok(!/\bconfirm\s*\(/.test(page), '规范词速查页使用了原生 confirm')
+  assert.ok(!/\balert\s*\(/.test(page), '规范词速查页使用了原生 alert')
+
+  // 仍以相对路径引用共享样式，保证 GitHub Pages 可用
+  assert.ok(
+    page.includes('href="../../assets/hub-nav.css"'),
+    '规范词速查页共享样式未使用相对路径引用'
   )
 })
