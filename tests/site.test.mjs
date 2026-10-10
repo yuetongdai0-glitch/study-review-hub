@@ -269,3 +269,22 @@ test('规范词速查页具备分类词库、搜索与复制能力', async () =>
     '规范词速查页存在改写 document.title 的代码，切换分类时标题会变'
   )
 })
+
+test('全站所有页面的标签页标题统一为「测试」', async () => {
+  // 首页 + 全部子页面
+  const files = ['../index.html', ...pages.map((p) => `../pages/${p.route}/index.html`)]
+
+  for (const rel of files) {
+    const page = await readText(new URL(rel, import.meta.url))
+
+    assert.ok(
+      page.includes('<title>测试</title>'),
+      `${rel} 的标签页标题不是「测试」`
+    )
+    // 页面内不得动态改写 document.title，否则切换分类/视图时标题会变
+    assert.ok(
+      !/document\.title\s*=/.test(page),
+      `${rel} 存在改写 document.title 的代码，标签页标题会变化`
+    )
+  }
+})
