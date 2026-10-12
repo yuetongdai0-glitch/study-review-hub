@@ -11,6 +11,7 @@ const pages = [
   { route: 'verbal', title: '言语理解与表达' },
   { route: 'quantitative', title: '数量关系' },
   { route: 'judgment', title: '判断推理知识图谱' },
+  { route: 'analogy', title: '类比推理考点体系' },
   { route: 'data-analysis', title: '资料分析' },
   { route: 'comprehensive-a', title: '综应 A 类' },
   { route: 'exam-grid', title: '模拟考试答题纸' },
@@ -287,4 +288,103 @@ test('全站所有页面的标签页标题统一为「测试」', async () => {
       `${rel} 存在改写 document.title 的代码，标签页标题会变化`
     )
   }
+})
+
+test('类比推理页具备考点体系、板块筛选与文字化积累', async () => {
+  const page = await readText(new URL('../pages/analogy/index.html', import.meta.url))
+
+  // 四大板块与核心内容标记
+  for (const marker of [
+    '核心原则', '先横后纵', '先整体后局部', '常态思维',
+    '全同关系', '全异关系', '种属关系', '交叉关系', '顺承关系', '因果关系', '目的关系', '条件关系',
+    '功能关系', '组成关系', '加工关系', '命名方式', '特征关系', '职业关系', '位置关系', '依据关系',
+    '释义关系', '指代', '词句结构', '造句法', '近反义'
+  ]) {
+    assert.ok(page.includes(marker), `类比推理页缺少考点：${marker}`)
+  }
+
+  // 五个板块分组（核心原则 / 逻辑关系 / 经验常识 / 言语关系 / 造句法）
+  const groups = page.match(/id:'(principle|logic|common|language|sentence)'/g) || []
+  assert.ok(groups.length === 5, `类比推理页分组应为 5 组，实际 ${groups.length} 组`)
+
+  // 类比推理全程用文字呈现（无复杂图案，截图反而看不清）——
+  // 因此不应再引用任何例题截图
+  assert.ok(
+    !page.includes('note-img/analogy'),
+    '类比推理页仍在引用截图，应全部转为文字'
+  )
+  assert.ok(!page.includes('<img'), '类比推理页不应包含图片')
+  // 关键常识积累必须落到文字
+  for (const kw of ['属相 : 生肖', '岳父 : 泰山', '领头雁 : 领导者', '巾帼', '干戈', '矛盾全异积累']) {
+    assert.ok(page.includes(kw), `类比推理页缺少文字化积累：${kw}`)
+  }
+
+  // 搜索与交互
+  assert.ok(page.includes('id="q"'), '类比推理页缺少搜索框')
+
+  // 禁用原生弹窗（内嵌环境会阻塞主线程）
+  assert.ok(!/\bconfirm\s*\(/.test(page), '类比推理页使用了原生 confirm')
+  assert.ok(!/\balert\s*\(/.test(page), '类比推理页使用了原生 alert')
+
+  // 相对路径引用共享样式
+  assert.ok(page.includes('href="../../assets/hub-nav.css"'), '类比推理页共享样式未使用相对路径')
+})
+
+test('图形推理页已按 91 页笔记补全三视图 / 立体拼合等内容', async () => {
+  const page = await readText(new URL('../pages/graphic-reasoning/index.html', import.meta.url))
+
+  // 补齐的内容（按 91 页笔记逐节核对后新增）
+  for (const marker of [
+    '三视图', '截面', '立体拼合', '相邻比较', '出题形式', '俄罗斯方块', '公共边',
+    '旋转', '翻转', '时针法', '箭头法', '宫格', '走到头', '平面拼合', '黑白面',
+    '外部轮廓定方向', '优先考虑不旋转', '找最大或最抽象',
+    '加减同异', '黑白运算', '标记', '对称性', '曲直性', '图形间关系',
+    '面数量', '线数量', '点数量', '角数量', '元素', '笔画',
+    '折纸', '思维导图串讲'
+  ]) {
+    assert.ok(page.includes(marker), `图形推理页缺少补充内容：${marker}`)
+  }
+
+  // 全部 11 个章节锚点（对应笔记 8 必修 + 2 选修 + 思维导图）
+  for (const sec of [
+    'sec-position', 'sec-style', 'sec-marker', 'sec-property', 'sec-quantity',
+    'sec-relation', 'sec-blackwhite', 'sec-space', 'sec-view', 'sec-solid',
+    'sec-xuanxiu', 'sec-daotu', 'sec-strategy'
+  ]) {
+    assert.ok(page.includes(`id="${sec}"`), `图形推理页缺少章节：${sec}`)
+  }
+
+  // ★ 每个章节都必须有例题截图（用户明确要求"全面"）
+  const secs = page.split(/<section id="/).slice(1)
+  for (const chunk of secs) {
+    const id = chunk.slice(0, chunk.indexOf('"'))
+    if (!/^sec-(style|marker|property|quantity|relation|blackwhite|space|view|solid|xuanxiu|daotu|position)$/.test(id)) continue
+    const figures = (chunk.split('data-zoom').length - 1)
+    assert.ok(figures > 0, `章节 ${id} 没有例题截图`)
+  }
+
+  // 例题截图总量应达到全面覆盖
+  const imgs = page.match(/note-img\/graph\/[\w.-]+\.webp/g) || []
+  assert.ok(imgs.length >= 60, `图形推理页例题截图偏少，仅 ${imgs.length} 张`)
+  assert.ok(page.includes('assets/note-img/graph/'), '图形推理页未引用笔记例题截图')
+
+  // 禁用原生弹窗
+  assert.ok(!/\bconfirm\s*\(/.test(page), '图形推理页使用了原生 confirm')
+  assert.ok(!/\balert\s*\(/.test(page), '图形推理页使用了原生 alert')
+})
+
+test('判断推理页已移除图形推理与类比推理两个模块', async () => {
+  const page = await readText(new URL('../pages/judgment/index.html', import.meta.url))
+
+  // 两个模块的区块与侧栏锚点都应删除
+  assert.ok(!page.includes('id="mod3"'), '判断推理页仍保留图形推理模块')
+  assert.ok(!page.includes('id="mod4"'), '判断推理页仍保留类比推理模块')
+  assert.ok(!page.includes('href="#graph-'), '判断推理页仍保留图推侧栏锚点')
+  assert.ok(!page.includes('href="#ana-'), '判断推理页仍保留类比侧栏锚点')
+
+  // 保留的模块仍应存在，并给出跳转到独立页的入口
+  assert.ok(page.includes('id="mod1"') && page.includes('id="mod2"'), '判断推理页缺少逻辑判断模块')
+  assert.ok(page.includes('id="mod5"'), '判断推理页缺少定义判断模块')
+  assert.ok(page.includes('../graphic-reasoning/'), '判断推理页缺少图形推理独立页入口')
+  assert.ok(page.includes('../analogy/'), '判断推理页缺少类比推理独立页入口')
 })

@@ -38,6 +38,7 @@
   .mode-switch button{
     border:none; background:transparent; padding:6px 14px; border-radius:8px;
     font-size:13px; cursor:pointer; color:var(--sub); font-weight:600; transition:all .2s;
+    min-height:40px;
   }
   .mode-switch button.active{background:#fff; color:var(--blue); box-shadow:var(--shadow);}
   /* ===== 侧边栏 ===== */
@@ -122,6 +123,25 @@
   .card-a .k-box.orange{border-color:var(--orange); background:var(--orange-bg);}
   .card-a .k-box.green{border-color:var(--green); background:var(--green-bg);}
   .card-a .k-box.purple{border-color:var(--purple); background:var(--purple-bg);}
+  /* 笔记例题截图 —— 用 .card 兜底选择器，避免 figure 位置不同导致宽度约束失效 */
+  .card figure{margin:10px 0 4px; max-width:100%;}
+  .card figure img{
+    display:block; width:100%; max-width:100%; height:auto;
+    border-radius:10px; border:1px solid var(--line);
+    background:#fff; cursor:zoom-in; box-sizing:border-box;
+  }
+  .card figcaption{font-size:12px; color:var(--muted); margin-top:5px; text-align:center;}
+  .lightbox{
+    position:fixed; inset:0; z-index:9999; background:rgba(12,18,30,.92);
+    display:none; align-items:center; justify-content:center; padding:12px;
+  }
+  .lightbox[data-open="true"]{display:flex;}
+  .lightbox img{max-width:100%; max-height:100%; border-radius:8px; background:#fff;}
+  .lightbox .x{
+    position:absolute; top:calc(12px + env(safe-area-inset-top)); right:14px;
+    width:40px; height:40px; border-radius:50%; background:rgba(255,255,255,.16);
+    color:#fff; font-size:19px; line-height:1; border:0; cursor:pointer;
+  }
   .card-a strong{color:var(--blue);}
   .card-a .k-box strong{color:inherit;}
   .card-actions{
@@ -246,7 +266,7 @@
   /* ===== 汉堡菜单 + 遮罩 ===== */
   #menu-btn{
     display:none; border:none; background:#eef1f6; border-radius:9px;
-    width:38px; height:38px; font-size:18px; cursor:pointer; flex-shrink:0;
+    width:44px;height:44px; font-size:18px; cursor:pointer; flex-shrink:0;
     color:var(--ink); line-height:1; transition:background .2s;
   }
   #menu-btn:hover{background:#e2e8f0;}
@@ -263,7 +283,7 @@
     .progress-wrap{min-width:0; max-width:none; order:3; flex-basis:100%;}
     .progress-text{display:none;}
     .mode-switch{margin-left:auto;}
-    .mode-switch button{padding:5px 12px; font-size:12px;}
+    .mode-switch button{padding:5px 12px; font-size:12px; min-height:40px;}
     aside{
       top:0; height:100%; bottom:auto; width:264px; padding:72px 12px 40px;
       transform:translateX(-105%); transition:transform .28s ease; z-index:110;
@@ -298,7 +318,7 @@
   @media(max-width:480px){
     header .logo{font-size:14px;}
     header .logo .badge{display:none;}
-    .mode-switch button{padding:5px 9px; font-size:11.5px;}
+    .mode-switch button{padding:5px 9px; font-size:11.5px; min-height:40px;}
     .progress-bar{height:6px;}
     .card-a ul{padding-left:16px;}
     .card-a li{font-size:14px;}
@@ -336,11 +356,12 @@
 <main>
   <div class="hero">
     <h1>图形推理「3+3」体系 · 复习手册</h1>
-    <p>源自刘义恒图推笔记 / 命题思维专项。核心心法：<b>先看图形像不像</b>——像的看「位置·样式·标记」，不像的看「属性·数量·图形间位置」。每个知识点卡默认隐藏答案，<b>先回忆、再点开核对</b>，这才是真复习。</p>
+    <p>源自刘义恒图推笔记 / 命题思维专项（已按《刘义恒 26 图推命题思维个人笔记》91 页完整版对照补全）。核心心法：<b>先看图形像不像</b>——像的看「位置·样式·标记」，不像的看「属性·数量·图形间位置」。每个知识点卡默认隐藏答案，<b>先回忆、再点开核对</b>，这才是真复习。</p>
     <div class="chips">
       <span class="chip">位置规律</span><span class="chip">样式规律</span><span class="chip">标记规律</span>
       <span class="chip">属性规律</span><span class="chip">数量规律</span><span class="chip">图形间位置</span>
       <span class="chip">黑白块</span><span class="chip">空间重构</span>
+      <span class="chip">三视图/截面</span><span class="chip">立体拼合</span>
     </div>
   </div>
 
@@ -376,7 +397,7 @@
 
   <!-- ============ 位置规律 ============ -->
   <section id="sec-position">
-    <div class="sec-head"><span class="idx" style="background:var(--green)">1</span><h2>位置规律</h2><span class="sec-progress sec-p" data-sec="sec-position">0/4</span></div>
+    <div class="sec-head"><span class="idx" style="background:var(--green)">1</span><h2>位置规律</h2><span class="sec-progress sec-p" data-sec="sec-position">0/9</span></div>
     <p class="sec-sub">特征：各图形构成<b>完全相同</b>（外形、数量完全一致），只变位置。口诀：基本相同看位置，再看元素往哪儿走。</p>
 
     <div class="card" data-id="pos1">
@@ -388,6 +409,28 @@
           <li>技巧①<b>特殊图案优先</b>：锁定一个特殊小元素，追踪它的移动路径最省力；技巧②<b>数个数</b>：统计移动格数找规律。</li>
         </ul>
         <div class="k-box green">📌 特征词：图形完全相同 + 有格子/宫格 + 小元素在动</div>
+        <ul>
+          <li><b>步数</b>：<b>恒定（高频）</b>、递增，递减较少 ——「确定方向」是难点。</li>
+          <li><b>出题形式</b>：除「<b>分组分类</b>」外都可 —— <b>平移不考分组！</b></li>
+        </ul>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-pingyi-1.webp" alt="位置规律总纲与平移考点" data-zoom><figcaption>第一节总纲 + 考点1 平移（方向 / 步数 / 出题形式）（原笔记 P5）</figcaption></figure>
+      </div>
+      <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
+    </div>
+
+    <div class="card" data-id="pos1b">
+      <div class="q-head"><span class="tag t-green">平移</span><h3>宫格类平移：9 / 16 / 25 宫格各自怎么定方向？</h3><span class="q-arrow">▶</span></div>
+      <div class="card-a">
+        <ul>
+          <li><b>9 宫格</b>：直线运动（横向/纵向）或绕圈运动（顺/逆时针）。</li>
+          <li><b>16 宫格</b>：先<b>数每行 / 每列的个数</b>——横向黑块数量相同 → 横向运动；纵向相同 → 纵向运动。也可<b>数内部个数</b>，内部相等则考虑「内外分开看」。</li>
+          <li><b>25 宫格</b>：比 16 宫格<b>多 1 圈</b>，斜线运动空间更大；<b>黑块由单个运动 → 整体运动</b>（与 16 宫格底层逻辑一样：内外、常规）。</li>
+          <li><b>蜂窝类</b>：与 25 宫格底层逻辑一样，<b>方向可变</b>（横、左斜、右斜）。</li>
+          <li><b>「走到头」两种走法</b>：<b>循环走</b>（从头开始）／ <b>反弹走</b>（直接弹回）。</li>
+        </ul>
+        <div class="k-box green">📌 口诀：<b>识别考点看「数个数」，定方向靠「数每行每列」或「找大区域（特殊图案）」</b>。</div>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-gongge-1.webp" alt="9宫格与16宫格平移" data-zoom><figcaption>9 宫格 + 16 宫格：直线/绕圈运动、加密与解密（原笔记 P6）</figcaption></figure>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-gongge-2.webp" alt="数个数与走到头考法" data-zoom><figcaption>数每行每列 / 数内部个数 +「走到头」两种走法（原笔记 P6）</figcaption></figure>
       </div>
       <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
     </div>
@@ -429,7 +472,70 @@
       <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
     </div>
 
-    <div class="koujue"><span class="k-icon">🧭</span><div class="k-text">基本相同看位置，再看元素往哪儿走 / 顺逆时针先绕圈，再看角度找答案 / 横轴对称上下翻，竖轴对称左右翻</div><span class="k-tag">位置3连</span></div>
+    <div class="card" data-id="pos7">
+      <div class="q-head"><span class="tag t-green">位置</span><h3>旋转与翻转：方向、角度怎么定？</h3><span class="q-arrow">▶</span></div>
+      <div class="card-a">
+        <ul>
+          <li><b>作图特点</b>：每幅图图案相同；<b>在重合情况下，图案数量会减少</b>。</li>
+          <li><b>旋转方向</b>：① 顺时针　② 逆时针。</li>
+          <li><b>旋转步数（角度）</b>：30° / 45° / 60° / 90° / 180° —— <b>90°、180° 是高频</b>。</li>
+          <li><b>翻转</b>：<br>（1）<b>左右翻转</b> = 竖轴对称<br>（2）<b>上下翻转</b> = 横轴对称</li>
+        </ul>
+        <div class="k-box green">📌 口诀：<b>左右翻转变左右，上下翻转变上下，全都变 = 180° 旋转。</b></div>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-xuanzhuan-1.webp" alt="旋转翻转的作图特点与方向" data-zoom><figcaption>旋转 / 翻转：作图特点、方向、步数（角度）（原笔记 P13）</figcaption></figure>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-xuanzhuan-2.webp" alt="如何区分旋转与翻转" data-zoom><figcaption>如何区分旋转、翻转？（看"怎么变"）（原笔记 P13）</figcaption></figure>
+      </div>
+      <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
+    </div>
+
+    <div class="card" data-id="pos8">
+      <div class="q-head"><span class="tag t-green">位置</span><h3>旋转翻转的「箭头法」「时针法」怎么用？</h3><span class="q-arrow">▶</span></div>
+      <div class="card-a">
+        <ul>
+          <li><b>① 箭头法（找唯一，定方向）</b>：找一个唯一点 / 唯一边作参照物画箭头 —— 适用于<b>方向性强的图形</b>（如 ↑、A、T、三角形、梯形）。</li>
+          <li><b>② 时针法</b>：要求「<b>三个同一</b>」—— <b>同一起点、同一路径、同一终点</b>；在题干与选项上分别标注，比较顺 / 逆时针是否一致。</li>
+          <li><b>对比选项</b>：图形较乱时，直接<b>逐项对比选项差异</b>再回题干验证。</li>
+        </ul>
+        <div class="k-box orange">⚠️ 两个提醒：<br>① <b>图案一样 + 分组分类题型</b> → <b>不考位置规律</b>（旋转翻转）<br>② <b>黑球不好看 → 看白色部分</b>；但这些技巧<b>不一定适用所有题型</b>。</div>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-xuanzhuan-3.webp" alt="箭头法与时针法" data-zoom><figcaption>技巧：箭头法（找唯一定方向）+ 时针法（三个同一）（原笔记 P13）</figcaption></figure>
+      </div>
+      <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
+    </div>
+
+    <div class="card" data-id="pos5">
+      <div class="q-head"><span class="tag t-green">位置</span><h3>「相邻比较」是什么？两个判定信号怎么认？</h3><span class="q-arrow">▶</span></div>
+      <div class="card-a">
+        <div class="k-box green"><b>相邻比较 = 只比「相邻两幅图」之间发生了什么变化</b>，而不是盯着一整行找规律。</div>
+        <ul>
+          <li><b>两个判定信号（笔记原话，看到就用它）</b>：<br>① <b>有黑块不动</b>（图里有一部分图案原地没动）<br>② <b>平移没规律</b>（按常规平移怎么数都对不上）</li>
+          <li><b>作图特点</b>：图案相同，但<b>相邻两图之间有元素保持不动</b>；而普通位置规律是<b>所有元素都在动</b>。</li>
+          <li><b>操作</b>：把第 1 图与第 2 图叠着比 → 看哪几个没动、哪几个动了 → 再看第 2、3 图是否重复同样变化。</li>
+          <li><b>配套技巧</b>：① <b>特殊图案（大区域）</b>优先追踪；② <b>数个数</b>（统计移动格数）。</li>
+        </ul>
+        <div class="k-box orange">⚠️ 易错提醒：相邻比较是「<b>位置规律专属</b>」的思路。样式规律、数量规律不要用它，会走偏。</div>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-xianglin-1.webp" alt="相邻比较·作图特点与实战思维" data-zoom><figcaption>相邻比较 · 作图特点（有不动 / 没规律）与实战思维导图（原笔记 P12）</figcaption></figure>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-xianglin-2.webp" alt="相邻比较·破解小心思" data-zoom><figcaption>破解出题者"小心思"：平移没规律 / 有图案不动（像）（原笔记 P12）</figcaption></figure>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-xianglin-3.webp" alt="相邻比较串讲三道例题" data-zoom><figcaption>刘义恒图推 · 相邻比较串讲：黑块 / 矩形 / 小球 三类例题（原笔记 P12）</figcaption></figure>
+      </div>
+      <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
+    </div>
+
+    <div class="card" data-id="pos6">
+      <div class="q-head"><span class="tag t-green">总纲</span><h3>图推的「出题形式」有哪几类？出题人偏好什么？</h3><span class="q-arrow">▶</span></div>
+      <div class="card-a">
+        <ul>
+          <li><b>横排形式</b>：一组图（4~5 个 + 问号）；两组图（前一组给规律，后一组照做）。</li>
+          <li><b>宫格形式</b>：九宫格（最常考，喜欢考"运算"）。</li>
+          <li><b>空间类</b>：给立体图形，选对应视图 / 拼合。</li>
+          <li><b>分组分类</b>：给 6 个图形，分成两组（①②③ / ④⑤⑥）。</li>
+        </ul>
+        <div class="k-box green"><b>出题人偏好（笔记原话）：</b><br>① <b>平移、相邻比较</b> → 不出"分组分类"<br>② <b>样式</b> → 以"两组图""九宫格"为主<br>③ <b>九宫格</b> → 喜欢"运算"</div>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-xingshi.webp" alt="出题形式小结" data-zoom><figcaption>出题形式小结（原笔记 P4）</figcaption></figure>
+      </div>
+      <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
+    </div>
+
+    <div class="koujue"><span class="k-icon">🧭</span><div class="k-text">基本相同看位置，再看元素往哪儿走 / 顺逆时针先绕圈，再看角度找答案 / 横轴对称上下翻，竖轴对称左右翻 / <b>有黑块不动、平移没规律 → 用相邻比较</b></div><span class="k-tag">位置3连</span></div>
   </section>
 
   <!-- ============ 样式规律 ============ -->
@@ -445,6 +551,8 @@
           <li>常与位置结合：元素种类齐全但摆放位置轮换。</li>
         </ul>
         <div class="k-box">口诀：元素重复看遍历，缺啥你就补个啥。</div>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-yangshi-1.webp" alt="遍历与加减同异 · 作图特点 & 解题思路（原笔记 P16）" data-zoom><figcaption>遍历与加减同异 · 作图特点 & 解题思路（原笔记 P16）</figcaption></figure>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-yangshi-2.webp" alt="求异和相减 + 加减同异 · 基础小结（原笔记 P16）" data-zoom><figcaption>求异和相减 + 加减同异 · 基础小结（原笔记 P16）</figcaption></figure>
       </div>
       <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
     </div>
@@ -457,6 +565,8 @@
           <li>注意<b>结合位置</b>：先旋转/翻转再运算，或运算后整体移动（常考组合）。</li>
         </ul>
         <div class="k-box">口诀：线条重复求同异，结合位置别忘记。</div>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-yangshi-bg.webp" alt="加减同异（拔高）：破解出题者"小心思"（原笔记 P17）" data-zoom><figcaption>加减同异（拔高）：破解出题者"小心思"（原笔记 P17）</figcaption></figure>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-yangshi-sum.webp" alt="加减同异 · 拔高小结 + 真题（原笔记 P18）" data-zoom><figcaption>加减同异 · 拔高小结 + 真题（原笔记 P18）</figcaption></figure>
       </div>
       <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
     </div>
@@ -470,6 +580,9 @@
           <li><b>相同位置做验证</b>：逐格对应，不能错位。</li>
         </ul>
         <div class="k-box">口诀：颜色数量不相同，轮廓相同看运算。<br>⚠️ 区分：黑块<b>数量相同</b> → 位置移动（平移）；黑块<b>数量不同</b> → 黑白运算。</div>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-heibai-1.webp" alt="黑白运算 · 作图特点 / 解题思路 / 提速技巧（原笔记 P19）" data-zoom><figcaption>黑白运算 · 作图特点 / 解题思路 / 提速技巧（原笔记 P19）</figcaption></figure>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-heibai-2.webp" alt="如何区分"黑白运算"与"加减同异"（原笔记 P19）" data-zoom><figcaption>如何区分"黑白运算"与"加减同异"（原笔记 P19）</figcaption></figure>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-heibai-sum.webp" alt="黑白运算 · 小结 + 真题（原笔记 P20）" data-zoom><figcaption>黑白运算 · 小结 + 真题（原笔记 P20）</figcaption></figure>
       </div>
       <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
     </div>
@@ -492,6 +605,8 @@
           <li><b>标在上下左右</b>：图形本体的方位关系。</li>
         </ul>
         <div class="k-box purple">本质：把「标记」当探针，指向图形的点 / 线 / 面 / 角特征。</div>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-biaoji-1.webp" alt="功能元素 · 基础（原笔记 P21）" data-zoom><figcaption>功能元素 · 基础（原笔记 P21）</figcaption></figure>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-biaoji-2.webp" alt="功能元素 · 拔高（原笔记 P21）" data-zoom><figcaption>功能元素 · 拔高（原笔记 P21）</figcaption></figure>
       </div>
       <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
     </div>
@@ -504,6 +619,7 @@
           <li><b>箭头</b>：看指向（上/下/左/右）、与图形线条的关系（平行/垂直/重合）。</li>
           <li>对称图形中，标记位置还常与<b>对称轴</b>结合（在轴上/不在轴上、两侧对称分布）。</li>
         </ul>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-biaoji-sum.webp" alt="标记 · 小结 + 真题（原笔记 P22）" data-zoom><figcaption>标记 · 小结 + 真题（原笔记 P22）</figcaption></figure>
       </div>
       <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
     </div>
@@ -519,11 +635,14 @@
     <div class="card" data-id="pro1">
       <div class="q-head"><span class="tag t-orange">属性</span><h3>轴对称：考什么细节？</h3><span class="q-arrow">▶</span></div>
       <div class="card-a">
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-shuxing-1.webp" alt="第三节属性规律总纲" data-zoom><figcaption>第三节 · 属性规律与图形关系 总纲（原笔记 P23）</figcaption></figure>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-shuxing-2.webp" alt="属性规律考点概览" data-zoom><figcaption>属性规律 · 考点概览（原笔记 P23）</figcaption></figure>
         <ul>
           <li><b>识别</b>：等腰元素（等腰三角形、等边图形、箭头形）、规则图形 → 画出对称轴看。</li>
           <li>细化考法：①<b>对称轴数量</b>（1条/2条/多条，递增或分组）；②<b>对称轴方向</b>（横/竖/斜，旋转变化）；③<b>对称轴与线条关系</b>（与图形线条重合 or 垂直）；④对称轴是否经过特定元素（点/面）。</li>
         </ul>
         <div class="k-box orange">口诀：规则图形看对称，轴和中心要分清；等腰元素别放过，轴画出来更清晰。</div>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-duichen-1.webp" alt="对称性 · 基础（原笔记 P24）" data-zoom><figcaption>对称性 · 基础（原笔记 P24）</figcaption></figure>
       </div>
       <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
     </div>
@@ -537,6 +656,8 @@
           <li>注意：某些图形只是轴对称（如正五边形），别误判。</li>
         </ul>
         <div class="k-box orange">口诀：N形Z形S形，还有平行四边形，原地旋转180，中心对称就是它；有种图形很贪心，两条垂直对称轴。</div>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-duichen-2.webp" alt="对称性 · 破解小心思（原笔记 P25）" data-zoom><figcaption>对称性 · 破解小心思（原笔记 P25）</figcaption></figure>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-duichen-bg.webp" alt="对称性 · 拔高（原笔记 P26）" data-zoom><figcaption>对称性 · 拔高（原笔记 P26）</figcaption></figure>
       </div>
       <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
     </div>
@@ -549,6 +670,7 @@
           <li><b>内外曲直</b>：外直内曲 / 外曲内直 / 外直内直 / 外曲内曲 —— 分层看。</li>
         </ul>
         <div class="k-box orange">口诀：单一线条看曲直，曲直共存别忘记；单一直线多边形，全直是它的属性；单一曲线圆和弧，优先考虑曲直性。</div>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-quzhi.webp" alt="曲直性 · 基础与拔高（原笔记 P27）" data-zoom><figcaption>曲直性 · 基础与拔高（原笔记 P27）</figcaption></figure>
       </div>
       <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
     </div>
@@ -561,6 +683,7 @@
           <li><b>重要</b>：半开半闭「很淘气」，<b>别的不行才考虑</b> —— 开闭性整体考频较低，作为兜底规律。</li>
         </ul>
         <div class="k-box orange">口诀：遇到开口看开闭，全开封闭都可行；半开半闭很淘气，别的不行才考虑。</div>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-shuxing-sum.webp" alt="属性规律 · 本节总结（原笔记 P28）" data-zoom><figcaption>属性规律 · 本节总结（原笔记 P28）</figcaption></figure>
       </div>
       <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
     </div>
@@ -583,6 +706,9 @@
           <li><b>相同面</b>：大小、形状都一样的面 —— 数个数、分组数。</li>
         </ul>
         <div class="k-box orange">口诀：多个窟窿入眼帘，数面考点灵光现；数完无解别放弃，面的形状全考虑；多胞胎面一出现，就要考虑相同面；图形明显大小面，关注形状和属性。</div>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-mian-1.webp" alt="面数量 · 基础（原笔记 P34）" data-zoom><figcaption>面数量 · 基础（原笔记 P34）</figcaption></figure>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-mian-2.webp" alt="面数量 · 「6+6」考点（原笔记 P35）" data-zoom><figcaption>面数量 · 「6+6」考点（原笔记 P35）</figcaption></figure>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-mian-sum.webp" alt="面数量 · 小结 + 真题（原笔记 P36）" data-zoom><figcaption>面数量 · 小结 + 真题（原笔记 P36）</figcaption></figure>
       </div>
       <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
     </div>
@@ -596,6 +722,8 @@
           <li><b>平行线</b>：出现大量平行线段时数平行线组数；也考内外线条数、线条加减。</li>
           <li><b>笔画数</b>：见下方专项（一笔画）。</li>
         </ul>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-xian-1.webp" alt="线数量 · 基础（原笔记 P37）" data-zoom><figcaption>线数量 · 基础（原笔记 P37）</figcaption></figure>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-xian-2.webp" alt="线数量 · 拔高（原笔记 P38）" data-zoom><figcaption>线数量 · 拔高（原笔记 P38）</figcaption></figure>
       </div>
       <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
     </div>
@@ -610,6 +738,8 @@
           <li>图形有外框（金刚罩）→ 数<b>框上、框内、框外</b>的交点。</li>
         </ul>
         <div class="k-box orange">口诀：大树杈子非常多，别忘交点数起来；图形有曲又有直，曲直交叉很明显；图形都有金刚罩，围绕外框想考点。</div>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-dian-1.webp" alt="点数量 · 基础（原笔记 P39）" data-zoom><figcaption>点数量 · 基础（原笔记 P39）</figcaption></figure>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-dian-2.webp" alt="点数量 · 破解小心思（原笔记 P40）" data-zoom><figcaption>点数量 · 破解小心思（原笔记 P40）</figcaption></figure>
       </div>
       <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
     </div>
@@ -622,6 +752,8 @@
           <li>折线折出多个角 / 留缺口 → 数角；也考锐角、钝角（较少，结合功能元素考）。</li>
         </ul>
         <div class="k-box orange">口诀：折线折出多个角，留了缺口别忘角；横平竖直多垂直，直角数量来试试。</div>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-jiao-1.webp" alt="角数量（直角）· 基础（原笔记 P46）" data-zoom><figcaption>角数量（直角）· 基础（原笔记 P46）</figcaption></figure>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-jiao-2.webp" alt="直角 · 破解小心思（原笔记 P47）" data-zoom><figcaption>直角 · 破解小心思（原笔记 P47）</figcaption></figure>
       </div>
       <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
     </div>
@@ -636,6 +768,8 @@
           <li>实在不行找相同：每幅图中相同元素的个数。</li>
         </ul>
         <div class="k-box orange">口诀：外框形状要牢记，多个小图形出现，先数种类和数量；生活化或粗线条，部分数量经常考。</div>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-yuansu-1.webp" alt="元素 · 基础（原笔记 P44）" data-zoom><figcaption>元素 · 基础（原笔记 P44）</figcaption></figure>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-yuansu-sum.webp" alt="元素 · 生活化小结（原笔记 P45）" data-zoom><figcaption>元素 · 生活化小结（原笔记 P45）</figcaption></figure>
       </div>
       <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
     </div>
@@ -651,6 +785,10 @@
           <li>多笔画一般不超过三笔，常考一笔 vs 两笔分组。</li>
         </ul>
         <div class="k-box orange">口诀：一根线条画到底，首尾特别要注意（端点即奇点）。</div>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-bihua-a.webp" alt="第五节总纲 + 笔画 · 基础（原笔记 P41）" data-zoom><figcaption>第五节总纲 + 笔画 · 基础（原笔记 P41）</figcaption></figure>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-bihua-b.webp" alt="笔画 · 奇点判定（原笔记 P41）" data-zoom><figcaption>笔画 · 奇点判定（原笔记 P41）</figcaption></figure>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-bihua-2.webp" alt="笔画 · 破解小心思（原笔记 P42）" data-zoom><figcaption>笔画 · 破解小心思（原笔记 P42）</figcaption></figure>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-bihua-sum.webp" alt="笔画 · 小结（原笔记 P43）" data-zoom><figcaption>笔画 · 小结（原笔记 P43）</figcaption></figure>
       </div>
       <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
     </div>
@@ -663,6 +801,8 @@
           <li><b>弱特征 vs 强特征</b>：特征明显（强）直接对应考点；特征弱时按 属性→数量 顺序试探，先对称再数数。</li>
           <li>数量规律常考<b>等差、循环、恒定、和相等</b>（每行之和相等）。</li>
         </ul>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-shuliang-1.webp" alt="第四节数量规律 · 总纲（原笔记 P33）" data-zoom><figcaption>第四节数量规律 · 总纲（原笔记 P33）</figcaption></figure>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-shuliang-2.webp" alt="数量规律 · 锁定考点（原笔记 P33）" data-zoom><figcaption>数量规律 · 锁定考点（原笔记 P33）</figcaption></figure>
       </div>
       <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
     </div>
@@ -685,6 +825,8 @@
           <li><b>相切</b>：内切 / 外切（圆与圆、圆与线切点）。</li>
         </ul>
         <div class="k-box">口诀：封闭空间很明显，图形关系成考点；多个图形独立站，相离关系是答案；多个图形交于点，或者彼此一线牵。</div>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-guanxi-1.webp" alt="图形间关系 · 基础（原笔记 P29）" data-zoom><figcaption>图形间关系 · 基础（原笔记 P29）</figcaption></figure>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-guanxi-2.webp" alt="图形间关系 · 拔高（原笔记 P29）" data-zoom><figcaption>图形间关系 · 拔高（原笔记 P29）</figcaption></figure>
       </div>
       <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
     </div>
@@ -699,6 +841,7 @@
           <li>两个图形相交于面 → 优先看<b>面的特征属性</b>（对称性等）。</li>
         </ul>
         <div class="k-box">口诀：两个图形面交叉，相交面是重头戏；形状大小和属性，全部都是得分地。</div>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-guanxi-3.webp" alt="图形间关系 · 破解小心思（原笔记 P30）" data-zoom><figcaption>图形间关系 · 破解小心思（原笔记 P30）</figcaption></figure>
       </div>
       <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
     </div>
@@ -712,6 +855,8 @@
           <li>拼接后看：整体边数、周长、封闭区域变化。</li>
         </ul>
         <div class="k-box">口诀：多个图形线相连，相交直线是关键；边长边短与边数，样样考虑拿分数。</div>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-guanxi-4.webp" alt="图形间关系 · 小结（原笔记 P31）" data-zoom><figcaption>图形间关系 · 小结（原笔记 P31）</figcaption></figure>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-guanxi-sum.webp" alt="图形间关系 · 总纲（原笔记 P32）" data-zoom><figcaption>图形间关系 · 总纲（原笔记 P32）</figcaption></figure>
       </div>
       <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
     </div>
@@ -731,6 +876,7 @@
           <li><b>明显类</b>：有明显特征（黑块占一半、连成线、分堆、黑块多且密）→ 图形关系 / 面积占比 / 相邻比较 / 笔画周长。</li>
         </ul>
         <div class="k-box">记忆钩子：先看<b>对不对称</b>，再问<b>数量变不变</b>（变→运算；不变→平移），都不行走「明显特征」路线。</div>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-biaoji-2.webp" alt="黑白块 · 考点与标记（原笔记 P19/P21）" data-zoom><figcaption>黑白块 · 考点与标记（原笔记 P19/P21）</figcaption></figure>
       </div>
       <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
     </div>
@@ -788,6 +934,8 @@
       <div class="card-a">
         <div class="k-box">第一步：出现<b>相对面</b> → 直接排除<br>第二步：有<b>唯一边或唯一点</b> → 优先箭头法（备选画边法）<br>第三步：无唯一边/点 → 2个面近、1个面远 → <b>公共边</b>；3个面都近 → <b>公共点</b></div>
         <ul><li>六面体四个基础模型：<b>1-4-1、2-3-1、3-3、2-2</b>。</li></ul>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-liumian-a.webp" alt="第六节总纲 + 六面体 · 基础（原笔记 P48）" data-zoom><figcaption>第六节总纲 + 六面体 · 基础（原笔记 P48）</figcaption></figure>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-liumian-b.webp" alt="六面体解题三步走（原笔记 P48）" data-zoom><figcaption>六面体解题三步走（原笔记 P48）</figcaption></figure>
       </div>
       <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
     </div>
@@ -801,6 +949,7 @@
           <li>相对面不能同时被看见 → 用于快速排除选项。</li>
         </ul>
         <div class="k-box">口诀：中间隔1个，或隔1列，都是相对面。</div>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-liumian-sum.webp" alt="六面体 · 小结（原笔记 P53）" data-zoom><figcaption>六面体 · 小结（原笔记 P53）</figcaption></figure>
       </div>
       <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
     </div>
@@ -815,6 +964,7 @@
           <li>技巧：把试卷/讲义转过来，让箭头正上方，更好对比；优先看直接靠一起的、位置居中的面（好观察）。</li>
           <li>能区分：上下左右大致方位；缺陷：无直接相邻需移动（用公共边补）。</li>
         </ul>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-liumian-2.webp" alt="箭头法（原笔记 P49）" data-zoom><figcaption>箭头法（原笔记 P49）</figcaption></figure>
       </div>
       <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
     </div>
@@ -829,6 +979,7 @@
           <li>优点：公共边周边图案区分快；缺点：一样的图案左右易混淆（配箭头法解决）。</li>
         </ul>
         <div class="k-box">公共边 = 两个图形共同拥有的边。多个立方体组合时：公共边两边颜色保持一致。</div>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-liumian-3.webp" alt="公共边 · 真实测评（原笔记 P50）" data-zoom><figcaption>公共边 · 真实测评（原笔记 P50）</figcaption></figure>
       </div>
       <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
     </div>
@@ -841,6 +992,8 @@
           <li><b>画边法</b>：找唯一点/唯一边 → <b>顺时针描边标号</b>（描同一个面）→ 题干与选项对应面不一致即排除。</li>
           <li>画边法关键：<b>同一个面、同一个点、同一方向</b>（或同边同方向）；缺点：偏慢，用来查方向细节。</li>
         </ul>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-liumian-4.webp" alt="公共点（原笔记 P51）" data-zoom><figcaption>公共点（原笔记 P51）</figcaption></figure>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-liumian-5.webp" alt="画边法（原笔记 P52）" data-zoom><figcaption>画边法（原笔记 P52）</figcaption></figure>
       </div>
       <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
     </div>
@@ -857,6 +1010,8 @@
           <li>⚠️ 极端情况：无限接近外表面 → 不考虑。</li>
         </ul>
         <div class="k-box">核心秘密：箭头法熟悉后 = 你有了「想象力」。</div>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-simianti.webp" alt="四面体（原笔记 P54）" data-zoom><figcaption>四面体（原笔记 P54）</figcaption></figure>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-kongjian-sum.webp" alt="空间 · 小结（原笔记 P55）" data-zoom><figcaption>空间 · 小结（原笔记 P55）</figcaption></figure>
       </div>
       <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
     </div>
@@ -864,9 +1019,304 @@
     <div class="koujue"><span class="k-icon">🧊</span><div class="k-text">找唯一，定方向（箭头法）/ 相对面：同行同列隔一个、Z字两端 / 公共边：直角两条、四连两端、直角边随便滚</div><span class="k-tag">空间口诀</span></div>
   </section>
 
+  <!-- ============ 三视图与截面（补：91 页笔记第七节） ============ -->
+  <section id="sec-view">
+    <div class="sec-head"><span class="idx" style="background:#0ea5e9">9</span><h2>空间：三视图与截面</h2><span class="sec-progress sec-p" data-sec="sec-view">0/5</span></div>
+    <p class="sec-sub">补自刘义恒 91 页笔记<b>第七节</b>（P56）。这里是三视图的判定、画线规则与截面的高频考法，原页面此前缺失。</p>
+
+    <div class="card" data-id="view1">
+      <div class="q-head"><span class="tag t-teal">三视图</span><h3>三视图指的是什么？怎么与「视图」区分？</h3><span class="q-arrow">▶</span></div>
+      <div class="card-a">
+        <ul>
+          <li><b>主视图</b>：从正面看　｜　<b>俯视图</b>：从头顶向下看　｜　<b>左视图</b>：从左侧看。</li>
+          <li><b>三视图 vs 视图</b>：<b>三视图</b>只指主视、俯视、左视这三个固定方向；<b>视图</b>则是<b>任意角度</b>看。题目问「三视图」时，就锁定这三个方向。</li>
+        </ul>
+        <div class="k-box">📌 题型判定：① 给出立体图形，问"符合的俯视图/左视图是哪一项"；② 给一组视图，问"选哪项填入问号处使其呈现规律"。</div>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-sanshitu-1.webp" alt="三视图题型判定" data-zoom><figcaption>题型判定：① 给立体图问俯视/左视 ② 给一组视图问填哪项（原笔记 P56）</figcaption></figure>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-sanshitu-2.webp" alt="三种视图的定义" data-zoom><figcaption>主视图 / 俯视图 / 左视图 分别指什么（原笔记 P56）</figcaption></figure>
+      </div>
+      <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
+    </div>
+
+    <div class="card" data-id="view2">
+      <div class="q-head"><span class="tag t-teal">三视图</span><h3>画三视图的 4 个注意点是什么？（最易错）</h3><span class="q-arrow">▶</span></div>
+      <div class="card-a">
+        <ul>
+          <li><b>(1) 观察到的三视图都是平面图。</b></li>
+          <li><b>(2) 原图有线，选项不一定有线；原图没线，选项一定没线。</b>（判断要不要画线时先回到原图找依据）</li>
+          <li><b>(3) 当被遮挡住时</b>，看不见的被遮挡部分 —— <b>虚线表示「能看见的边被挡」／不画线表示「本来就看不见」</b>。</li>
+          <li><b>(4) 曲面会变成直线图。</b></li>
+        </ul>
+        <div class="k-box orange">⚠️ 核心口诀：<b>原图没线 → 选项一定没线</b>。这一条能直接排除一批选项。</div>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-sanshitu-4.webp" alt="三视图和视图的区别" data-zoom><figcaption>三视图 和 视图 的区别（三视图=固定三向；视图=任意角度）（原笔记 P56）</figcaption></figure>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-sanshitu-5.webp" alt="画三视图的4个注意点" data-zoom><figcaption>画三视图的 4 个注意点（含"是否画线"的判断）（原笔记 P56）</figcaption></figure>
+      </div>
+      <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
+    </div>
+
+    <div class="card" data-id="view3">
+      <div class="q-head"><span class="tag t-teal">截面</span><h3>截面题有哪两条高频结论？</h3><span class="q-arrow">▶</span></div>
+      <div class="card-a">
+        <ul>
+          <li><b>正方体截面</b>：可以截出三角形（锐角三角形）、四边形（矩形/梯形/平行四边形）、五边形、<b>正六边形</b>（过六条棱的中点）；<b>截不出直角三角形和钝角三角形</b>。</li>
+          <li><b>圆柱截面</b>：横切 → 圆；斜切（不过底面）→ 椭圆；<b>竖切 → 矩形</b>。</li>
+        </ul>
+        <div class="k-box">📌 做截面题先想「刀怎么下」：横着切、竖着切、斜着切，各能得到什么形状。</div>
+      </div>
+      <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
+    </div>
+
+    <div class="card" data-id="view4">
+      <div class="q-head"><span class="tag t-teal">三视图</span><h3>三视图与立体图形的「转换思维」怎么用？</h3><span class="q-arrow">▶</span></div>
+      <div class="card-a">
+        <ul>
+          <li>做法：把<b>视图</b>还原成<b>平面网格</b>（每格代表一个"高/宽"单位），再把网格与选项的立体图形逐个比对。</li>
+          <li>技巧：先数<b>方块的层数 / 个数</b>，用"数字网格"确定每处高度，再验证哪一项能拼出这个网格。</li>
+        </ul>
+        <div class="k-box green">📌 立体拼合与三视图常连考：<b>先转成平面图</b>，把三维问题降成二维计数问题，正确率会明显提升。</div>
+      </div>
+      <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
+    </div>
+
+    <div class="card" data-id="view5">
+      <div class="q-head"><span class="tag t-teal">三视图</span><h3>做三视图题的「答题思路」是什么？</h3><span class="q-arrow">▶</span></div>
+      <div class="card-a">
+        <div class="k-box green"><b>核心一句话：外部轮廓定方向，内部线条定选项。</b></div>
+        <ul>
+          <li><b>第一步：看外部轮廓</b> —— 先根据俯视/左视的外轮廓<b>锁定方向</b>（这一步能干掉一批明显不符的选项）。</li>
+          <li><b>第二步：看内部线条</b> —— 再用内部线条的有无、位置<b>在剩余选项里定选</b>。</li>
+          <li><b>找不到特殊图形时</b>：看<b>线条是否平行</b>、<b>是否被遮挡</b>（遮挡处不画线）。</li>
+          <li><b>图形较乱时</b>：直接<b>对比选项差异</b>，再回题干验证。</li>
+        </ul>
+        <div class="k-box">📌 真题经验（25 广东）：判断俯视图时，逐条线问自己「<b>这条线俯视能看见吗</b>」，能看见才画。</div>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-sanshitu-3.webp" alt="三视图答题思路与真题" data-zoom><figcaption>三视图答题思路 + 25 广东真题（原笔记 P57）</figcaption></figure>
+      </div>
+      <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
+    </div>
+
+    <div class="koujue"><span class="k-icon">📐</span><div class="k-text">三视图 = 主视 · 俯视 · 左视（固定三向）；原图没线选项一定没线；正方体截不出直角/钝角三角形</div><span class="k-tag">三视图口诀</span></div>
+  </section>
+
+  <!-- ============ 立体拼合 + 选修场景（补：91 页笔记第八 / 第九节） ============ -->
+  <section id="sec-solid">
+    <div class="sec-head"><span class="idx" style="background:#8b5cf6">10</span><h2>立体拼合 &amp; 选修场景</h2><span class="sec-progress sec-p" data-sec="sec-solid">0/8</span></div>
+    <p class="sec-sub">补自刘义恒 91 页笔记<b>第八节（空间：立体拼合）</b>与<b>第十节（立体空间：不规则、平面拼合、折纸）</b>。后者属选修内容，部分省份已升温，值得了解。</p>
+
+    <div class="card" data-id="solid1">
+      <div class="q-head"><span class="tag t-purple">立体拼合</span><h3>「看选项，选方法」的速记口诀是什么？</h3><span class="q-arrow">▶</span></div>
+      <div class="card-a">
+        <div class="k-box purple"><b>速记口诀：① 个数　② 层数　③ 特殊</b></div>
+        <ul>
+          <li><b>1. 选项个数有差别 → 优先考虑「数个数」</b>。打算猜也可以数个数；<b>打算做，先不数</b>（时间留给更稳的方法）。选项里 3 个一致 → 尽量不数。</li>
+          <li><b>2. 选项分层明显或每层个数不一样 → 优先考虑「分层拼 / 分层数」</b>。数层数性价比最高；每层个数一致的选项，正确可能性更高。数每层个数时，<b>优先考虑不旋转</b>的情况。</li>
+          <li><b>3. 考虑「找特殊」</b>：即找题干中<b>最大或最抽象（不规则）的方块</b>优先代入。题干中越大或越抽象的方块，位置的局限性越大。</li>
+        </ul>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-pinhe-1.webp" alt="立体拼合口诀与示例" data-zoom><figcaption>速记口诀三招（原笔记 P65）</figcaption></figure>
+      </div>
+      <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
+    </div>
+
+    <div class="card" data-id="solid2">
+      <div class="q-head"><span class="tag t-purple">立体拼合</span><h3>例题：怎么从「分层数」快速选出答案？</h3><span class="q-arrow">▶</span></div>
+      <div class="card-a">
+        <ul>
+          <li>题干要求"能与左侧图形组合成立方体" → 先看选项是否<b>分层明显</b>（是 → 用分层数）。</li>
+          <li>把题干图形<b>转换成平面图</b>（标出每格的层数），再与各选项逐层相加，凑成完整立方体。</li>
+        </ul>
+        <div class="k-box purple">📌 思想：<b>选项分层明显或每层个数不一样 → 优先考虑分层拼 / 分层数。</b></div>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-pinhe-2.webp" alt="立体拼合例题解析" data-zoom><figcaption>例题：组合成立方体（原笔记 P65）</figcaption></figure>
+      </div>
+      <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
+    </div>
+
+    <div class="card" data-id="solid3">
+      <div class="q-head"><span class="tag t-purple">选修</span><h3>不规则图形：最实用的排除技巧是什么？</h3><span class="q-arrow">▶</span></div>
+      <div class="card-a">
+        <div class="k-box purple"><b>① 选项找差异，公共边做排除（公共边长度相等）</b></div>
+        <ul>
+          <li>口诀：<b>选项找差异</b> —— 先比选项之间的不同，再看这些不同点在题干里能不能成立。</li>
+          <li><b>公共边长度必须相等</b>；长度不等的直接排除。这条在"不规则展开图"里几乎必用。</li>
+        </ul>
+        <div class="k-box purple"><b>② 题干找特殊（最大的、标记物），看周边</b></div>
+        <ul>
+          <li>找题干里<b>最大的面</b>或<b>带标记的部分</b>，重点看它<b>周围有几个面、都是什么面</b>。</li>
+          <li>示例：某题干最大面周围应出现<b>三个灰面</b>；选项里哪个能对上就用哪个。</li>
+          <li>另一类：<b>最大的面右端应是白色长方形面</b> → 直接排除不符项。</li>
+        </ul>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-buguize-1.webp" alt="不规则图形技巧①公共边排除" data-zoom><figcaption>不规则技巧①：选项找差异，公共边做排除（公共边长度相等）（原笔记 P86）</figcaption></figure>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-buguize-3.webp" alt="不规则技巧②找特殊" data-zoom><figcaption>不规则技巧②：题干找特殊（最大的、标记物），看周边（原笔记 P87）</figcaption></figure>
+      </div>
+      <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
+    </div>
+
+    <div class="card" data-id="solid7">
+      <div class="q-head"><span class="tag t-purple">平面拼合</span><h3>「只有白色面」的平面拼合：原理与解法？</h3><span class="q-arrow">▶</span></div>
+      <div class="card-a">
+        <ul>
+          <li><b>出题者怎么画</b>：画一个图之后，<b>先复制粘贴，再切割</b> → 所以每块碎片其实来自同一个图形。</li>
+          <li><b>基本原则</b>：图形只能<b>上、下、左、右平移</b>，<b>不能旋转、翻转</b>。</li>
+          <li><b>解密三步</b>：① 找<b>特殊线条</b>（唯一的长线或横竖线）② 找<b>等长的线</b> ③ 必要时<b>拆分选项</b>。</li>
+        </ul>
+        <div class="k-box purple">📌 核心思路：既然碎片是「复制后切割」出来的，就一定能拼回原图 —— 所以盯住<b>特有的边和角</b>即可。</div>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-pinmian-1.webp" alt="平面拼合基本原理" data-zoom><figcaption>平面拼合（只有白色面）：基本原理 + 解密三步（原笔记 P87）</figcaption></figure>
+      </div>
+      <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
+    </div>
+
+    <div class="card" data-id="solid8">
+      <div class="q-head"><span class="tag t-purple">平面拼合</span><h3>「黑白面」的平面拼合：为什么能旋转翻转？</h3><span class="q-arrow">▶</span></div>
+      <div class="card-a">
+        <ul>
+          <li><b>出题者怎么出</b>：给<b>四张纸片</b>，每张纸片<b>一面黑色、一面白色</b>（翻过来颜色就变）。</li>
+          <li><b>基本原则</b>：<b>可以平移、旋转、翻转</b>（与"只有白色面"不同！）</li>
+          <li><b>解密关键</b>：<b>旋转 → 颜色一致；翻转 → 颜色变化</b> —— 本质就是<b>区分旋转和翻转</b>。</li>
+        </ul>
+        <div class="k-box orange">⚠️ 对比记忆：<br><b>只有白色面</b> → 只能平移，<b>不能</b>旋转翻转<br><b>黑白面</b> → 可以平移、旋转、翻转（靠颜色变化判断是否翻转）</div>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-pinmian-2.webp" alt="平面拼合黑白面原理" data-zoom><figcaption>平面拼合（黑白面）：可以平移/旋转/翻转 + 颜色的判断作用（原笔记 P87）</figcaption></figure>
+      </div>
+      <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
+    </div>
+
+    <div class="card" data-id="solid9">
+      <div class="q-head"><span class="tag t-purple">折纸</span><h3>折纸（折叠）类怎么做？</h3><span class="q-arrow">▶</span></div>
+      <div class="card-a">
+        <ul>
+          <li><b>考情</b>：广东、四川已考，属<b>新考点</b>，其他省份建议一并关注。</li>
+          <li><b>思路</b>：把它当成"不规则展开图"处理 —— 关键是<b>分清折叠方向</b>与<b>公共边的对应</b>。</li>
+          <li><b>技巧</b>：先找<b>唯一的长边或角</b>定位，再逐条验证相邻关系；必要时<b>对比选项差异</b>反推。</li>
+        </ul>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-zhezhi-1.webp" alt="折纸类考点" data-zoom><figcaption>折纸（折叠）· 考点与解法（原笔记 P88）</figcaption></figure>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-zhezhi-2.webp" alt="折纸例题" data-zoom><figcaption>折纸 · 例题（原笔记 P89）</figcaption></figure>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-zhezhi-3.webp" alt="折纸综合" data-zoom><figcaption>折纸 · 综合演练（原笔记 P90）</figcaption></figure>
+      </div>
+      <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
+    </div>
+
+    <div class="card" data-id="solid4">
+      <div class="q-head"><span class="tag t-purple">选修</span><h3>哪些场景需要额外关注？各地考情如何？</h3><span class="q-arrow">▶</span></div>
+      <div class="card-a">
+        <ul>
+          <li><b>1. 不规则</b>：广东、山东、联考、浙江、四川、上海，各地事业编 —— <b>目前需要关注</b>。</li>
+          <li><b>2. 平面拼合</b>：广东、江苏、联考、四川，各地事业编 —— <b>目前需要关注</b>。</li>
+          <li><b>3. 平面拼合-黑白面</b>：江苏，目前需要关注。</li>
+          <li><b>4. 俄罗斯方块</b>：广东、江苏 —— 目前需要关注。</li>
+          <li><b>5. 折叠</b>：广东、四川，目前需要关注 —— <b>新考点，建议其他省份也一并关注</b>。</li>
+        </ul>
+        <div class="k-box orange">💡 说明：以上未上榜省份的题，建议以"娱乐心态"了解即可。但考情可能变化，<b>有能力可以简单了解，不必重点准备</b>。</div>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-buguize-2.webp" alt="平面拼合与折叠" data-zoom><figcaption>平面拼合 / 俄罗斯方块 / 折叠（原笔记 P86）</figcaption></figure>
+      </div>
+      <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
+    </div>
+
+    <div class="card" data-id="solid5">
+      <div class="q-head"><span class="tag t-purple">立体拼合</span><h3>技巧性：为什么「优先考虑不旋转」？</h3><span class="q-arrow">▶</span></div>
+      <div class="card-a">
+        <ul>
+          <li><b>优先考虑不旋转的情况</b>：多数题目图形<b>只平移、不旋转</b>，先按不旋转验证，能省大量时间。</li>
+          <li><b>数层数时</b>：每层个数不一样 → <b>数层数性价比最高</b>。</li>
+          <li><b>合理凑数</b>：优先代入<b>局限性大</b>的那一块（越大或越不规则，可放的位置越少）。</li>
+        </ul>
+        <div class="k-box purple">📌 例题：左边立方体由①②③组成，求问号块 —— 每层个数不一样 → 数层数，逐层相加凑齐。</div>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-pinhe-3.webp" alt="立体拼合优先不旋转" data-zoom><figcaption>技巧：优先考虑不旋转 + 逐层凑数（原笔记 P66）</figcaption></figure>
+      </div>
+      <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
+    </div>
+
+    <div class="card" data-id="solid6">
+      <div class="q-head"><span class="tag t-purple">立体拼合</span><h3>「找最大或最抽象的方块」具体怎么做？</h3><span class="q-arrow">▶</span></div>
+      <div class="card-a">
+        <ul>
+          <li><b>做法</b>：把题干图形<b>用铅笔涂黑</b>分层 → 找出<b>最大或最抽象</b>的那一块 → <b>优先代入</b>验证。</li>
+          <li><b>为什么</b>：<b>越大或越抽象的方块，位置局限性越大</b>，可放的位置少，试错成本低。</li>
+          <li>必要时再<b>考虑旋转</b>（旋转后仍要满足层数一致）。</li>
+        </ul>
+        <div class="k-box purple">📌 出题者提示：①②③ 中优先代入「找最大的②」，能快速排除选项。</div>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-pinhe-4.webp" alt="找最大或最抽象的方块" data-zoom><figcaption>技巧：找最大 / 最抽象的方块优先代入（原笔记 P66）</figcaption></figure>
+      </div>
+      <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
+    </div>
+
+    <div class="koujue"><span class="k-icon">🧩</span><div class="k-text">立体拼合：看选项选方法 —— ①个数 ②层数 ③特殊；不规则：选项找差异，公共边做排除</div><span class="k-tag">拼合口诀</span></div>
+  </section>
+
+  <!-- ============ 选修一：平面图推思维导图串讲（笔记 P75-85） ============ -->
+  <section id="sec-xuanxiu">
+    <div class="sec-head"><span class="idx" style="background:#0891b2">11</span><h2>选修一：平面图推思维导图串讲</h2><span class="sec-progress sec-p" data-sec="sec-xuanxiu">0/3</span></div>
+    <p class="sec-sub">补自刘义恒 91 页笔记<b>选修第一节（P75–P85）</b> —— 用思维导图把前六节的平面考点<b>串成一张网</b>，适合二轮复习时快速过一遍。</p>
+
+    <div class="card" data-id="xx1">
+      <div class="q-head"><span class="tag t-teal">串讲</span><h3>平面图推怎么「一张图串起来」？</h3><span class="q-arrow">▶</span></div>
+      <div class="card-a">
+        <div class="k-box green"><b>串讲主线：先看"像不像"→ 再按 6 大规律逐层排查</b></div>
+        <ul>
+          <li><b>有相同</b> → 位置规律（平移 / 相邻比较 / 旋转翻转）、样式规律（加减同异 / 黑白运算）、标记</li>
+          <li><b>无相同</b> → 属性规律（对称 / 曲直 / 开闭）→ 数量规律（面线点角素笔画）→ 图形间关系</li>
+          <li><b>串讲的作用</b>：把分散的考点按"看到什么特征 → 想哪个考点"重新连起来，形成条件反射。</li>
+        </ul>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-xuanxiu-a.webp" alt="平面图推思维导图串讲" data-zoom><figcaption>平面图推 · 思维导图串讲（原笔记 P75）</figcaption></figure>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-xuanxiu-b.webp" alt="平面图推串讲续" data-zoom><figcaption>串讲续：考点归类与破题顺序（原笔记 P75）</figcaption></figure>
+      </div>
+      <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
+    </div>
+
+    <div class="card" data-id="xx2">
+      <div class="q-head"><span class="tag t-teal">串讲</span><h3>串讲里的高频易错点有哪些？</h3><span class="q-arrow">▶</span></div>
+      <div class="card-a">
+        <ul>
+          <li><b>考点会混</b>：位置（都一样）vs 样式（部分一样）—— 先数"图形是否完全相同"再定方向。</li>
+          <li><b>数量规律要按顺序试</b>：面 → 线 → 点 → 角 → 素 → 笔画，别跳着试。</li>
+          <li><b>属性优先于数量</b>：图形规整美观先想对称；极端特殊优先想图形间关系。</li>
+        </ul>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-xuanxiu-2.webp" alt="串讲易错点" data-zoom><figcaption>串讲 · 高频易错（原笔记 P76）</figcaption></figure>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-xuanxiu-3.webp" alt="串讲例题" data-zoom><figcaption>串讲 · 例题演练（原笔记 P77）</figcaption></figure>
+      </div>
+      <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
+    </div>
+
+    <div class="card" data-id="xx3">
+      <div class="q-head"><span class="tag t-teal">串讲</span><h3>二轮复习怎么用它？</h3><span class="q-arrow">▶</span></div>
+      <div class="card-a">
+        <ul>
+          <li>先<b>不看答案</b>把思维导图默写一遍（考点名称 + 判定特征）。</li>
+          <li>默写不出来的地方，回到对应章节重看卡片。</li>
+          <li>配合"考点 → 特征"反向记忆：<b>看到什么图形特征，就该想到哪个考点</b>。</li>
+        </ul>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-xuanxiu-4.webp" alt="串讲复习法" data-zoom><figcaption>串讲 · 复习方法（原笔记 P80）</figcaption></figure>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-xuanxiu-5.webp" alt="串讲综合" data-zoom><figcaption>串讲 · 综合演练（原笔记 P83）</figcaption></figure>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-xuanxiu-6.webp" alt="串讲总结" data-zoom><figcaption>串讲 · 总结（原笔记 P85）</figcaption></figure>
+      </div>
+      <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
+    </div>
+
+    <div class="koujue"><span class="k-icon">🕸️</span><div class="k-text">有相同：位置·样式·标记；无相同：属性→数量→图形间关系。二轮用思维导图默写复盘</div><span class="k-tag">串讲口诀</span></div>
+  </section>
+
+  <!-- ============ 第三部分：思维导图（笔记 P91-92） ============ -->
+  <section id="sec-daotu">
+    <div class="sec-head"><span class="idx" style="background:#7c3aed">12</span><h2>第三部分：思维导图（全册总览）</h2><span class="sec-progress sec-p" data-sec="sec-daotu">0/1</span></div>
+    <p class="sec-sub">补自刘义恒 91 页笔记<b>第三部分（P91–P92）</b> —— 全册知识点的总思维导图，适合考前总览与查漏。</p>
+
+    <div class="card" data-id="dt1">
+      <div class="q-head"><span class="tag t-purple">总览</span><h3>全册思维导图：怎么用它查漏补缺？</h3><span class="q-arrow">▶</span></div>
+      <div class="card-a">
+        <div class="k-box purple"><b>用法：拿导图当"清单"，逐个考点问自己"我会不会"</b></div>
+        <ul>
+          <li>先看<b>大分支</b>（平面 / 空间），确认没有整块遗漏。</li>
+          <li>再逐条看<b>最末端的小考点</b>，<b>说不出判定特征的就是漏洞</b>。</li>
+          <li>把漏洞记下来，回到对应章节的卡片重看一遍。</li>
+        </ul>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-daotu-1.webp" alt="全册思维导图" data-zoom><figcaption>全册思维导图（原笔记 P91）</figcaption></figure>
+        <figure><img loading="lazy" src="../../assets/note-img/graph/ex-daotu-2.webp" alt="思维导图续" data-zoom><figcaption>思维导图 · 下半（原笔记 P91）</figcaption></figure>
+      </div>
+      <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
+    </div>
+
+    <div class="koujue"><span class="k-icon">🗺️</span><div class="k-text">拿全册思维导图当查漏清单：说不出判定特征的，就是还没掌握</div><span class="k-tag">总览口诀</span></div>
+  </section>
+
   <!-- ============ 实战策略 ============ -->
   <section id="sec-strategy">
-    <div class="sec-head"><span class="idx" style="background:#f59e0b">9</span><h2>考场实战策略</h2><span class="sec-progress sec-p" data-sec="sec-strategy">0/3</span></div>
+    <div class="sec-head"><span class="idx" style="background:#f59e0b">13</span><h2>考场实战策略</h2><span class="sec-progress sec-p" data-sec="sec-strategy">0/3</span></div>
     <p class="sec-sub">把知识变成分数，靠的是解题顺序和节奏。</p>
 
     <div class="card" data-id="str1">
@@ -924,10 +1374,34 @@
     <div class="quiz-score" id="quiz-score"></div>
   </section>
 
-  <div class="footer">刘义恒图推「3+3」复习手册 · 知识点整理自公开课程笔记 · 祝上岸 🚀</div>
+  <div class="footer">刘义恒图推「3+3」复习手册 · 知识点整理自公开课程笔记（含《刘义恒 26 图推命题思维个人笔记》91 页例题截图） · 祝上岸 🚀</div>
 </main>
 
+<div class="lightbox" id="lightbox" data-open="false">
+  <button class="x" type="button" id="lb-x" aria-label="关闭">✕</button>
+  <img id="lb-img" alt="例题放大图">
+</div>
+
 <script>
+  /* 例题截图：点击放大（自绘遮罩，不用原生弹窗） */
+  (function(){
+    var lb = document.getElementById('lightbox');
+    var lbImg = document.getElementById('lb-img');
+    if (!lb) return;
+    document.addEventListener('click', function (e) {
+      var img = e.target.closest('img[data-zoom]');
+      if (img) { lbImg.src = img.src; lb.dataset.open = 'true'; return; }
+      if (lb.dataset.open === 'true' && (e.target === lb || e.target === lbImg || e.target.id === 'lb-x')) {
+        lb.dataset.open = 'false'; lbImg.removeAttribute('src');
+      }
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && lb.dataset.open === 'true') {
+        lb.dataset.open = 'false'; lbImg.removeAttribute('src');
+      }
+    });
+  })();
+
 /* ================= 数据 ================= */
 var QUIZ = [
   {q:"图形完全相同（外形数量都一致），第一反应看什么规律？", opts:["位置","数量","属性","笔画"], a:0, e:"完全相同 → 位置（平移/旋转/翻转）。数量规律看的是元素不同。"},
@@ -1172,7 +1646,9 @@ var NAV = [
   ["sec-framework","解题总框架",0],["sec-position","位置规律",1],["sec-style","样式规律",2],
   ["sec-marker","标记规律",3],["sec-property","属性规律",4],["sec-quantity","数量规律",5],
   ["sec-relation","图形间位置",6],["sec-blackwhite","黑白块专项",7],["sec-space","空间重构",8],
-  ["sec-strategy","实战策略",9],["quiz-sec","自测",10]
+  ["sec-view","三视图与截面",9],["sec-solid","立体拼合+选修",10],
+  ["sec-xuanxiu","选修·思维导图串讲",11],["sec-daotu","思维导图总览",12],
+  ["sec-strategy","实战策略",13],["quiz-sec","自测",14]
 ];
 var nav = document.getElementById("nav");
 NAV.forEach(function(n){

@@ -7,6 +7,7 @@ const studyPages = [
   { route: 'verbal', label: '言语理解与表达' },
   { route: 'quantitative', label: '数量关系' },
   { route: 'judgment', label: '判断推理知识图谱' },
+  { route: 'analogy', label: '类比推理考点' },
   { route: 'data-analysis', label: '资料分析' },
   { route: 'comprehensive-a', label: '综应 A 类' },
   { route: 'exam-grid', label: '模拟考试答题纸' },
