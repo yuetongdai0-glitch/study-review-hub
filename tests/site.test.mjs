@@ -388,3 +388,40 @@ test('判断推理页已移除图形推理与类比推理两个模块', async ()
   assert.ok(page.includes('../graphic-reasoning/'), '判断推理页缺少图形推理独立页入口')
   assert.ok(page.includes('../analogy/'), '判断推理页缺少类比推理独立页入口')
 })
+
+test('判断推理页补充了「论证评价」模块（综应 C 类）', async () => {
+  const page = await readText(new URL('../pages/judgment/index.html', import.meta.url))
+
+  // 模块锚点与七节
+  assert.ok(page.includes('id="argue"'), '判断推理页缺少论证评价模块')
+  for (const sec of ['arg-intro', 'arg-struct', 'arg-4', 'arg-12', 'arg-3type', 'arg-diff', 'arg-real']) {
+    assert.ok(page.includes(`id="${sec}"`), `论证评价缺少小节：${sec}`)
+  }
+
+  // 四大官方错误类型
+  for (const t of ['概念不明确', '判断不准确', '推理不严密', '论据不充分']) {
+    assert.ok(page.includes(t), `论证评价缺少错误类型：${t}`)
+  }
+
+  // 12 类逻辑谬误
+  for (const f of [
+    '以偏概全', '不当类比', '滑坡谬误', '偷换概念', '转移话题', '诉诸无知',
+    '诉诸权威', '自相矛盾', '强加因果', '因果倒置', '绝对表述', '非黑即白'
+  ]) {
+    assert.ok(page.includes(f), `论证评价缺少谬误：${f}`)
+  }
+
+  // 三大题型
+  for (const k of ['考查逻辑错误', '两面验证', '论证过程的理解']) {
+    assert.ok(page.includes(k), `论证评价缺少题型：${k}`)
+  }
+
+  // 真题与 A/B 作答格式
+  assert.ok(page.includes('历年真题演练'), '论证评价缺少真题演练')
+  assert.ok((page.match(/存在论证错误/g) || []).length >= 3, '论证评价真题缺少 A 处作答')
+  assert.ok(page.includes('再生水') && page.includes('转基因'), '论证评价缺少真题素材')
+
+  // 谬误卡片与侧栏
+  assert.ok((page.match(/class="flaw"/g) || []).length >= 12, '谬误卡片不足 12 张')
+  assert.ok(page.includes('模块四 · 论证评价'), '缺少模块四标题')
+})
