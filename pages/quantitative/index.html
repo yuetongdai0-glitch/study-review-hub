@@ -414,6 +414,7 @@
 <!-- 导航 -->
 <div class="nav-bar" id="navBar">
   <a class="nav-chip active" href="#nav">总览</a>
+  <a class="nav-chip" href="#s0">速解四法</a>
   <a class="nav-chip" href="#s1">倍数特性</a>
   <a class="nav-chip" href="#s2">方程法</a>
   <a class="nav-chip" href="#s3">周期问题</a>
@@ -430,6 +431,10 @@
   <a class="nav-chip" href="#s14">溶液问题</a>
   <a class="nav-chip" href="#s15">植树方阵</a>
   <a class="nav-chip" href="#s16">小题型</a>
+  <a class="nav-chip" href="#s17">数字推理</a>
+  <a class="nav-chip" href="#s18">时钟问题</a>
+  <a class="nav-chip" href="#s19">抽屉盈亏</a>
+  <a class="nav-chip" href="#s20">统筹优化</a>
 </div>
 
 <!-- 搜索 -->
@@ -443,7 +448,7 @@
   <div class="section c-blue" id="nav">
     <div class="section-header" onclick="toggleSection(this)">
       <div class="section-icon">📋</div>
-      <div class="section-title">两大基石 + 十四类高频题型</div>
+      <div class="section-title">两大基石 + 通用四法 + 十八类题型</div>
       <span class="section-tag tag-hot">总览</span>
       <span class="section-arrow">▼</span>
     </div>
@@ -459,7 +464,17 @@
         </ul>
       </div>
       <div class="block">
-        <div class="block-title">十四类高频题型</div>
+        <div class="block-title">通用四法（不属于某个题型，但所有题型都能用）</div>
+        <ul class="point-list">
+          <li><b>代入排除法</b>——把选项当已知条件往回验，是"多位数、年龄、不定方程"的首选</li>
+          <li><b>赋值法</b>——只给比例/倍数、不给具体量时，直接给总量赋一个好算的数</li>
+          <li><b>比例与十字交叉</b>——溶液混合、平均数混合、增长率混合的通用武器</li>
+          <li><b>数字特性法</b>——奇偶、倍数（整除）、尾数，先排除再代入</li>
+        </ul>
+        <div class="tip-box">这四法的适用特征与例题，见 <b>「零、速解四法」</b> 模块。</div>
+      </div>
+      <div class="block">
+        <div class="block-title">十八类高频题型（按考频排序）</div>
         <table class="mini-table">
           <tr><th>题型</th><th>考频</th><th>核心</th></tr>
           <tr><td>周期问题</td><td><span class="section-tag tag-high">高</span></td><td>余数+最小公倍数</td></tr>
@@ -476,7 +491,120 @@
           <tr><td>溶液问题</td><td><span class="section-tag tag-mid">中</span></td><td>溶质不变</td></tr>
           <tr><td>植树方阵</td><td><span class="section-tag tag-low">低</span></td><td>两端/环形</td></tr>
           <tr><td>小题型</td><td><span class="section-tag tag-low">低</span></td><td>空瓶换酒等</td></tr>
+          <tr><td>数字推理</td><td><span class="section-tag tag-hot">事业编必考</span></td><td>多级/多重/幂次</td></tr>
+          <tr><td>时钟问题</td><td><span class="section-tag tag-mid">中</span></td><td>追及 5.5°/分钟</td></tr>
+          <tr><td>抽屉盈亏</td><td><span class="section-tag tag-mid">中</span></td><td>最不利+1 / 假设法</td></tr>
+          <tr><td>统筹优化</td><td><span class="section-tag tag-mid">中</span></td><td>让等待与空转最少</td></tr>
         </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- 0. 速解四法 -->
+  <div class="section c-purple" id="s0">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">⚡</div>
+      <div class="section-title">零、速解四法（贯穿所有题型的方法）</div>
+      <span class="section-tag tag-hot">先学这个</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="key-box">
+        数量关系快不快，看的是<b>有没有方法意识</b>。除"两大基石"（倍数特性、方程法）外，最通用的四把刀就是：<b>代入排除、赋值、比例与十字交叉、数字特性</b>。它们不属于某一个题型，而是<b>几乎每个题型都能用</b>——先把这四法练熟，再进后面的章节。
+      </div>
+      <div class="block">
+        <div class="block-title">1. 代入排除法（把选项当已知条件）</div>
+        <ul class="point-list">
+          <li><b>什么时候用：</b>① 多位数问题 ② 年龄问题 ③ 不定方程（未知数比方程多）④ <b>选项信息充分</b>（选项里已给出全部未知量的值）⑤ 正面列式特别麻烦的题。</li>
+          <li><b>怎么代：</b>从"最好算"的选项开始。问"最大/最多"就从最大的选项开始代，问"最小/最少"就从最小的开始。</li>
+          <li><b>代一半就够：</b>只要有一个条件被违反，立刻排除该选项、换下一个——不必把整个式子算完。</li>
+        </ul>
+        <div class="tip-box">数量关系里"没思路"的题，先看选项——很多题目的正确答案就藏在选项的数值特征里。</div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题1 · 代入排除（多位数）</div>
+        <div class="example-body">
+          <div class="example-q">一个两位数，各位数字之和为 9；若把十位与个位的数字交换，所得新数比原数大 27。这个两位数是多少？</div>
+          <div class="example-opts">A.36　B.45　C.54　D.63</div>
+          <div class="example-answer">
+            <b>解析：</b>先用"新数比原数<b>大</b>"排除 —— 只有个位 &gt; 十位的数才满足：A、B 符合，C、D 会被算小<br>
+            再看差值：45 → 54 只大 9，36 → 63 大 <b>27</b> ✓（两数的数字之和都是 9）<br>
+            <span class="correct">答案：A</span>
+          </div>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">2. 赋值法（把"比例"变成"具体数"）</div>
+        <ul class="point-list">
+          <li><b>什么时候用：</b>题目里<b>只给比例、分数、百分数、倍数</b>，或者问的本身就是比例/倍数关系（此时赋什么值都不影响结果）。</li>
+          <li><b>工程总量</b> → 赋成各人单独完成时间的<b>最小公倍数</b>（最好算）。</li>
+          <li><b>成本 / 原价</b> → 赋 <b>100</b>（百分数题最省事）。</li>
+          <li><b>路程</b> → 赋成各速度的最小公倍数；只问"时间比"时也可赋路程为 <b>1</b>。</li>
+          <li><b>只出现"某量为 1"</b> → 直接赋 1。</li>
+        </ul>
+        <div class="warn-box">赋值的唯一原则：<b>不影响所求结果</b>。如果题目给了具体量、又要求具体量，就不能乱赋。</div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题2 · 赋值法（工程）</div>
+        <div class="example-body">
+          <div class="example-q">一项工程，甲单独做需 12 天完成，乙单独做需 18 天完成。两人合作需要多少天完成？</div>
+          <div class="example-opts">A.7 天　B.7.2 天　C.7.5 天　D.8 天</div>
+          <div class="example-answer">
+            <b>解析：</b>赋工程总量 = lcm(12, 18) = <b>36</b><br>
+            甲的效率 = 36 ÷ 12 = 3，乙的效率 = 36 ÷ 18 = 2<br>
+            合作效率 = 5 → 36 ÷ 5 = <b>7.2 天</b><br>
+            <span class="correct">答案：B</span>
+          </div>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">3. 比例与十字交叉法（混合类问题的通用武器）</div>
+        <div class="key-box">
+          <b>原理：</b>两部分混合，混合值 c 一定<b>夹在</b>两个部分值 a、b 之间；两侧的<b>数量比</b>与"到 c 的<b>距离</b>"成<b>反比</b>。<br>
+          <b>做法：</b>把 a 写上一行、b 写下一行，混合值 c 写在中间，然后<b>交叉相减</b>——得到的两个差，之比就是两边数量的<b>反比</b>。
+        </div>
+        <div class="formula-box">
+          <span class="formula">(a − c) ∶ (c − b) = m₂ ∶ m₁</span>（m₁ 是取 a 的那部分数量，m₂ 是取 b 的那部分数量）
+        </div>
+        <ul class="point-list">
+          <li><b>适用：</b>溶液混合（浓度）、平均数混合（平均分）、增长率混合（总体增速）、价格混合（均价）、男女比例（平均年龄）……</li>
+          <li><b>注意：</b>两边必须是<b>同一种量</b>（都是浓度、都是平均分），否则会算出荒唐的结果。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题3 · 十字交叉（溶液混合）</div>
+        <div class="example-body">
+          <div class="example-q">将浓度为 30% 的盐水 200 克与浓度为 10% 的盐水 300 克混合，混合后盐水的浓度是多少？</div>
+          <div class="example-opts">A.16%　B.18%　C.20%　D.22%</div>
+          <div class="example-answer">
+            <b>解析（十字交叉）：</b>数量比 m₁ ∶ m₂ = 200 ∶ 300 = 2 ∶ 3<br>
+            (30 − c) ∶ (c − 10) = m₂ ∶ m₁ = 3 ∶ 2 → 2(30 − c) = 3(c − 10)<br>
+            60 − 2c = 3c − 30 → 5c = 90 → c = <b>18%</b><br>
+            验算：溶质 = 200 × 30% + 300 × 10% = 60 + 30 = 90 克，90 ÷ 500 = 18% ✓<br>
+            <span class="correct">答案：B</span>
+          </div>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">4. 数字特性法（奇偶 / 倍数 / 尾数）</div>
+        <ul class="point-list">
+          <li><b>奇偶性：</b>和、差同奇偶；两数之和为奇数 ⟺ 一奇一偶。常用于不定方程"必须取整数"的判定。</li>
+          <li><b>倍数（整除）特性：</b>看到"平均分成 n 份""是 n 的倍数""甲 ∶ 乙 = m ∶ n"就想到整除。<br>
+            已互质的比例 a ∶ b → 总量必是 <b>(a + b)</b> 的倍数；"甲是乙的 3/5"→ 甲是 3 的倍数、乙是 5 的倍数。</li>
+          <li><b>尾数特性：</b>选项<b>尾数各不相同</b>时，只算尾数就能锁定答案（加减乘都适用）。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题4 · 数字特性（倍数筛选）</div>
+        <div class="example-body">
+          <div class="example-q">某班人数在 40 ~ 50 之间，若平均分成 5 组则多 2 人，且人数是 3 的倍数。该班有多少人？</div>
+          <div class="example-opts">A.42　B.45　C.48　D.49</div>
+          <div class="example-answer">
+            <b>解析：</b>先按"3 的倍数"筛：42 ✓、45 ✓、48 ✓（49 排除）<br>
+            再按"除以 5 余 2"筛：42 ＝ 5 × 8 + 2 ✓；45 整除 ✗；48 余 3 ✗<br>
+            <span class="correct">答案：A</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -574,6 +702,44 @@
           </div>
         </div>
       </div>
+      <div class="example">
+        <div class="example-header">📝 例题3 · 整除型（口诀法）</div>
+        <div class="example-body">
+          <div class="example-q">四位数 58□2 能被 3 整除，则 □ 中可填的数字共有几个？</div>
+          <div class="example-opts">A.3 个　B.4 个　C.5 个　D.6 个</div>
+          <div class="example-answer">
+            <b>解析：</b>被 3 整除看<b>各位数字之和</b>：5 + 8 + □ + 2 = 15 + □<br>
+            需 15 + □ 能被 3 整除 → □ = 0、3、6、9 共 <b>4 个</b><br>
+            <span class="correct">答案：B</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题4 · 余数型（多退少补）</div>
+        <div class="example-body">
+          <div class="example-q">某单位员工若平均分成 8 组则多 5 人，若平均分成 9 组则少 4 人。该单位最少有多少名员工？</div>
+          <div class="example-opts">A.69　B.77　C.85　D.93</div>
+          <div class="example-answer">
+            <b>解析：</b>把"多 5 人"化成"少 3 人"（8 − 5 = 3），"少 4 人"保持。<br>
+            即：<b>总人数 + 3 能被 8 整除</b>，<b>总人数 + 4 能被 9 整除</b>。<br>
+            代入验证：77 → 77+3 = 80 = 8×10 ✅；77+4 = 81 = 9×9 ✅<br>
+            <span class="correct">答案：B</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题5 · 增长率型（倍数特性）</div>
+        <div class="example-body">
+          <div class="example-q">某公司今年利润比去年增长 25%，今年的利润总额为 450 万元，则去年的利润是多少万元？</div>
+          <div class="example-opts">A.340　B.360　C.375　D.400</div>
+          <div class="example-answer">
+            <b>解析：</b>今年 = 去年 × (1 + 25%) = 去年 × <b>5/4</b><br>
+            → 去年必是 <b>4 的倍数</b>，今年必是 <b>5 的倍数</b>（450 能被 5 整除 ✅）<br>
+            450 ÷ 1.25 = <b>360 万元</b><br>
+            <span class="correct">答案：B</span>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -644,6 +810,33 @@
             <b>解析：</b>4y是偶数，25是奇数 → <b>3x必为奇数</b> → x为奇数<br>
             x=1时 y=(25-3)/4=5.5✗；x=3时 y=(25-9)/4=4 ✓<br>
             <span class="correct">答案：C（y=4）</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题3 · 普通方程（设中间量）</div>
+        <div class="example-body">
+          <div class="example-q">甲、乙、丙三人共有图书 120 本。已知甲比乙多 12 本，丙比乙少 6 本，则乙有多少本？</div>
+          <div class="example-opts">A.34　B.36　C.38　D.40</div>
+          <div class="example-answer">
+            <b>解析：</b>甲、丙都跟乙比较 → <b>设中间量乙为 x</b>（设中间量最省事）<br>
+            甲 = x + 12，丙 = x − 6<br>
+            列式：x + (x+12) + (x−6) = 120 → 3x + 6 = 120 → x = <b>38</b><br>
+            <span class="correct">答案：C</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题4 · 不定方程组（整体替换）</div>
+        <div class="example-body">
+          <div class="example-q">买 3 支铅笔、7 支圆珠笔、1 支钢笔共 32 元；买 4 支铅笔、10 支圆珠笔、1 支钢笔共 43 元。问买 1 支铅笔、1 支圆珠笔、1 支钢笔共需多少元？</div>
+          <div class="example-opts">A.10 元　B.11 元　C.12 元　D.13 元</div>
+          <div class="example-answer">
+            <b>解析：</b>设铅笔 x、圆珠笔 y、钢笔 z。<br>
+            两式相减：(4x+10y+z) − (3x+7y+z) = 43 − 32 → <b>x + 3y = 11</b><br>
+            再回代 3x + 7y + z = 32，得 z = 2y − 1<br>
+            x + y + z = (11 − 3y) + y + (2y − 1) = <b>10</b>（y 被消掉了 —— 这就是"整体替换"）<br>
+            <span class="correct">答案：A</span>
           </div>
         </div>
       </div>
@@ -783,6 +976,22 @@
           <li>工程图形：结合图形理解工作过程</li>
         </ul>
       </div>
+      <div class="block">
+        <div class="block-title">6. 周期循环工程（确定周期型）</div>
+        <div class="key-box">
+          特征：甲做一天歇一天、乙做两天歇一天…… 问"第几天完成"。<br>
+          <b>方法：</b>① 找出各主体的工作周期（如 3 天一轮）<br>
+          ② 算出一个完整周期的总工作量　③ 看需要几个完整周期　④ 剩余部分再单独算
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">7. 多个工程与工程费用</div>
+        <ul class="point-list">
+          <li><b>多个工程</b>：分别赋值（或统一赋值），把各工程的工作量方程联立求解。</li>
+          <li><b>工程费用（最省钱）</b>：先算各队单独完成的效率与单价，再用<b>每天费用 ÷ 每天效率</b>得到<b>单位工作量成本</b>，优先用成本低的队。</li>
+        </ul>
+        <div class="tip-box">工程题的"性价比"比法：<b>不是比每天谁便宜，而是比"干同样的活谁花钱少"</b>——很多同学在这里丢分。</div>
+      </div>
       <!-- 例题 -->
       <div class="example">
         <div class="example-header">📝 例题1 · 完工时间型（赋值法）</div>
@@ -825,6 +1034,19 @@
             y=(27-15)×6=72<br>
             21头牛：72=(21-15)×T → T=72÷6=<b>12天</b><br>
             <span class="correct">答案：12天</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题4 · 周期循环工程</div>
+        <div class="example-body">
+          <div class="example-q">一项工程甲单独做需 12 天。现甲做 3 天、休息 1 天，如此循环（每 4 天一轮）。问完成这项工程需要多少天？</div>
+          <div class="example-opts">A.14 天　B.15 天　C.16 天　D.18 天</div>
+          <div class="example-answer">
+            <b>解析：</b>甲效率 = 1/12，一轮 4 天只做 3 天 → 一轮完成 3 × (1/12) = <b>1/4</b><br>
+            3 轮（12 天）完成 3/4，剩 1/4 需 (1/4) ÷ (1/12) = <b>3 天</b>（第 13、14、15 天都在做）<br>
+            合计 12 + 3 = <b>15 天</b><br>
+            <span class="correct">答案：B</span>
           </div>
         </div>
       </div>
@@ -877,25 +1099,104 @@
         </table>
       </div>
       <div class="block">
-        <div class="block-title">4. 勾股定理 & 特殊直角三角形</div>
+        <div class="block-title">4. 勾股定理 & 必背勾股数</div>
         <div class="formula-box">
-          <span class="formula">a² + b² = c²</span>
+          <span class="formula">a² + b² = c²</span>（c 为斜边）
         </div>
         <div class="key-box">
-          <b>必背勾股数：</b><br>
-          (3, 4, 5) · (6, 8, 10) · (5, 12, 13) · (7, 24, 25)<br>
-          (8, 15, 17) · (9, 40, 41)
+          <b>必背勾股数（含倍数）：</b><br>
+          (3, 4, 5) · (6, 8, 10) · (9, 12, 15) · (12, 16, 20)<br>
+          (5, 12, 13) · (10, 24, 26) · (7, 24, 25) · (8, 15, 17) · (9, 40, 41) · (20, 21, 29)
         </div>
       </div>
       <div class="block">
-        <div class="block-title">5. 同比例放缩（核心考点）</div>
+        <div class="block-title">5. 特殊角直角三角形（★必背，最容易漏）</div>
+        <div class="formula-box">
+          <span class="formula">30°–60°–90°：1 ∶ √3 ∶ 2</span><br>
+          <span class="formula">45°–45°–90°：1 ∶ 1 ∶ √2</span>
+        </div>
+        <table class="mini-table">
+          <tr><th>三角形</th><th>三边之比</th><th>要点</th></tr>
+          <tr><td>30°–60°–90°</td><td>1 ∶ √3 ∶ 2</td><td>30° 所对的直角边 = <b>斜边的一半</b>；三边依次为 a、√3a、2a</td></tr>
+          <tr><td>45°–45°–90°</td><td>1 ∶ 1 ∶ √2</td><td>等腰直角三角形，斜边 = 直角边 × √2</td></tr>
+          <tr><td>正三角形（边长 a）</td><td>—</td><td>高 = <b>(√3/2)a</b>，面积 = <b>(√3/4)a²</b></td></tr>
+        </table>
+        <div class="key-box">
+          <b>怎么用：</b>已知任意一边，另外两边直接按比例写出来，<b>不用再算勾股定理</b>。<br>
+          例：30° 所对的边为 5 → 斜边 = 10，另一直角边 = 5√3。
+        </div>
+        <div class="tip-box">看到 30°／45°／60°／120°／135° 这些角度，或选项里出现 √2、√3，第一反应就是去找特殊直角三角形。</div>
+      </div>
+      <div class="block">
+        <div class="block-title">6. 直角三角形的三个常用结论</div>
+        <ul class="point-list">
+          <li><b>斜边中线定理</b>：斜边上的中线 = 斜边的一半（斜边中点到三个顶点距离相等）。</li>
+          <li><b>30° 对边定理</b>：直角三角形中，30° 所对的直角边 = 斜边的一半（反之亦然）。</li>
+          <li><b>三边关系</b>：任意两边之和 &gt; 第三边，任意两边之差 &lt; 第三边（判断能否构成三角形）。</li>
+        </ul>
+      </div>
+      <div class="block">
+        <div class="block-title">7. 相似三角形（核心考点）</div>
+        <div class="formula-box">
+          <span class="formula">对应边成比例 · 周长比 = 相似比 · 面积比 = 相似比²</span>
+        </div>
+        <ul class="point-list">
+          <li><b>AA 判定</b>：两个角对应相等 → 两三角形相似。考场最常见的是"平行线 + 公共角"造出来的相似。</li>
+          <li><b>面积比 = 相似比的平方</b>：边长放大 2 倍，面积放大 4 倍（这就是"同比例放缩"的来源）。</li>
+          <li><b>用途</b>：求不方便直接量的长度（树高、塔高、影长问题）、求面积比。</li>
+        </ul>
+      </div>
+      <div class="block">
+        <div class="block-title">8. 同底 / 同高三角形的面积比（秒算神器）</div>
+        <div class="key-box">
+          <b>同底（等底）</b>的两个三角形 → <b>面积比 = 高之比</b><br>
+          <b>同高（等高）</b>的两个三角形 → <b>面积比 = 底之比</b><br>
+          <b>等底等高必等面积</b>——这是求不规则图形面积最常用的突破口
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">9. 正六边形与正多边形</div>
+        <ul class="point-list">
+          <li><b>正六边形</b>：边长 = 外接圆半径 r，可分成 <b>6 个全等的正三角形</b>。<br>
+            周长 = 6r，面积 = 6 × (√3/4)r² = <b>(3√3/2) r²</b>。</li>
+          <li><b>内角和</b> = (n − 2) × 180°；每个内角 = (n − 2) × 180° ÷ n。</li>
+          <li><b>密铺</b>：正三角形、正方形、正六边形能无缝铺满平面；圆、正五边形不能。</li>
+        </ul>
+      </div>
+      <div class="block">
+        <div class="block-title">10. 蝴蝶定理（梯形对角线）</div>
+        <div class="key-box">
+          梯形 ABCD（AB ∥ CD）对角线交于 O，则：<br>
+          <b>① 左右两个三角形面积相等</b>：S△AOD = S△BOC<br>
+          <b>② 上下两个三角形面积比 = 上下底的平方比</b>：S△AOB ∶ S△COD = AB² ∶ CD²
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">11. 坐标构造（两点间距离）</div>
+        <div class="formula-box">
+          <span class="formula">AB = √[ (x₁−x₂)² + (y₁−y₂)² ]</span>
+        </div>
+        <div class="tip-box">几何没思路时的万能兜底：<b>建坐标系把图形代数化</b>——把关键点放到格点上，用距离公式硬算。</div>
+      </div>
+      <div class="block">
+        <div class="block-title">12. 立体几何：切割、涂色、拼合</div>
+        <table class="mini-table">
+          <tr><th>考法</th><th>结论</th></tr>
+          <tr><td>正方体切成两块</td><td>表面积<b>增加 2 个切面</b>（多出来的是两个截面）</td></tr>
+          <tr><td>棱长 n 的正方体表面涂色后切成 n³ 个小正方体</td><td>三面涂色 = <b>8</b>（8 个顶点）<br>两面涂色 = <b>(n−2)×12</b>（棱上非顶点）<br>一面涂色 = <b>(n−2)²×6</b>（面内非棱）<br>零面涂色 = <b>(n−2)³</b>（内部）</td></tr>
+          <tr><td>同底同高的锥体与柱体</td><td>圆锥体积 = 圆柱体积的 <b>⅓</b></td></tr>
+          <tr><td>容器注水 / 水深变化</td><td>抓住<b>水的体积不变</b>，用「底面积 × 高」列式</td></tr>
+        </table>
+      </div>
+      <div class="block">
+        <div class="block-title">13. 同比例放缩（核心考点）</div>
         <div class="formula-box">
           <span class="formula">长度 × N → 面积 × N² → 体积 × N³</span><br>
           <span class="formula">角度不变</span>
         </div>
       </div>
       <div class="block">
-        <div class="block-title">6. 几何最值理论</div>
+        <div class="block-title">14. 几何最值理论</div>
         <ul class="point-list">
           <li>周长一定 → 越接近圆，面积越大</li>
           <li>面积一定 → 越接近圆，周长越小</li>
@@ -904,14 +1205,14 @@
         </ul>
       </div>
       <div class="block">
-        <div class="block-title">7. 最短路径</div>
+        <div class="block-title">15. 最短路径</div>
         <div class="key-box">
           <b>两点同侧</b>：利用镜像对称，做其中一个点的镜像，连线下最短<br>
           <b>两点异侧</b>：直接连线（两点之间线段最短）
         </div>
       </div>
       <div class="block">
-        <div class="block-title">8. 常用根号（背）</div>
+        <div class="block-title">16. 常用根号（背）</div>
         <table class="mini-table">
           <tr><td>√2 ≈ 1.414</td><td>√3 ≈ 1.732</td></tr>
           <tr><td>√5 ≈ 2.236</td><td>√6 ≈ 2.449</td></tr>
@@ -952,6 +1253,67 @@
           <div class="example-answer">
             <b>解析：</b>周长一定，越接近圆面积越大<br>
             <span class="correct">答案：C（圆形面积最大）</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题4 · 特殊角直角三角形（30°-60°-90°）</div>
+        <div class="example-body">
+          <div class="example-q">一个直角三角形中，30° 角所对的直角边长为 5，则斜边长与另一条直角边分别是？</div>
+          <div class="example-opts">A.10 和 5√3　B.10 和 5√2　C.5√3 和 10　D.15 和 5√3</div>
+          <div class="example-answer">
+            <b>解析：</b>30°–60°–90° 三边比为 <b>1 ∶ √3 ∶ 2</b>，30° 所对的直角边 = 斜边的一半。<br>
+            30° 对边 = 5 → 斜边 = 5 × 2 = <b>10</b>；60° 对边 = 5 × √3 = <b>5√3</b><br>
+            <span class="correct">答案：A</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题5 · 相似三角形（影长测高）</div>
+        <div class="example-body">
+          <div class="example-q">同一时刻，身高 1.6 米的小明影长 2 米，旁边一棵直立大树影长 8 米（地面水平），则树高为：</div>
+          <div class="example-opts">A.5.6 米　B.6.4 米　C.8 米　D.10 米</div>
+          <div class="example-answer">
+            <b>解析：</b>同一时刻光线角度相同 → 人与树构成的直角三角形<b>相似</b>。<br>
+            树高 ∶ 影长 = 身高 ∶ 影长 → h ∶ 8 = 1.6 ∶ 2 = 0.8 → h = <b>6.4 米</b><br>
+            <span class="correct">答案：B</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题6 · 同高三角形面积比</div>
+        <div class="example-body">
+          <div class="example-q">在三角形 ABC 中，D 是边 BC 上一点，且 BD ∶ DC = 2 ∶ 3。若 S△ABD = 8，则 S△ADC 为：</div>
+          <div class="example-opts">A.10　B.12　C.14.4　D.16</div>
+          <div class="example-answer">
+            <b>解析：</b>△ABD 与 △ADC <b>同高</b>（都是从 A 向 BC 作的高）→ 面积比 = 底之比。<br>
+            S△ADC = 8 × (3 ÷ 2) = <b>12</b><br>
+            <span class="correct">答案：B</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题7 · 正方体涂色</div>
+        <div class="example-body">
+          <div class="example-q">棱长为 5 的正方体表面全部涂上红漆，再切成 125 个棱长 1 的小正方体。其中恰好两面涂色的有多少个？</div>
+          <div class="example-opts">A.36　B.48　C.54　D.60</div>
+          <div class="example-answer">
+            <b>解析：</b>n = 5 → 两面涂色 = <b>(n−2) × 12</b> = 3 × 12 = <b>36</b><br>
+            （对照：三面 = 8；一面 = (5−2)²×6 = 54；零面 = 3³ = 27。合计 8+36+54+27 = 125 ✅）<br>
+            <span class="correct">答案：A</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题8 · 正六边形面积</div>
+        <div class="example-body">
+          <div class="example-q">正六边形的边长为 2，则其面积为：</div>
+          <div class="example-opts">A.6√3　B.8√3　C.12　D.12√3</div>
+          <div class="example-answer">
+            <b>解析：</b>正六边形可分成 6 个边长 2 的正三角形。<br>
+            每个正三角形面积 = (√3/4) × 2² = √3 → 总面积 = 6√3<br>
+            （公式：(3√3/2) × r² = (3√3/2) × 4 = 6√3）<br>
+            <span class="correct">答案：A</span>
           </div>
         </div>
       </div>
@@ -1094,6 +1456,15 @@
         <div class="block-title">6. 容斥结合不定方程（最值）</div>
         <div class="tip-box">问法：求最值；方法：此消彼长</div>
       </div>
+      <div class="block">
+        <div class="block-title">7. 容斥与周期结合</div>
+        <div class="key-box">
+          特征：问"既能被 3 整除又能被 4 整除"这类<b>既是某周期又是某周期</b>的个数。<br>
+          <b>方法：</b>分别求出各自在总数中的个数，再用两集合容斥<br>
+          <b>A + B − A∩B = 总数 − 都不满足</b><br>
+          其中 <b>A∩B 的周期 = 两个周期的最小公倍数</b>（3 和 4 → 12）。
+        </div>
+      </div>
       <!-- 例题 -->
       <div class="example">
         <div class="example-header">📝 例题1 · 两集合容斥</div>
@@ -1130,6 +1501,19 @@
             179+146+246-24-2×115=总-52<br>
             → 571-24-230=总-52 → 317=总-52 → 总=<b>369</b><br>
             <span class="correct">答案：D（问卷369÷90%=410）</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题4 · 容斥与周期结合</div>
+        <div class="example-body">
+          <div class="example-q">在 1 到 100 这 100 个整数中，能被 3 整除或能被 4 整除的数共有多少个？</div>
+          <div class="example-opts">A.50　B.55　C.58　D.60</div>
+          <div class="example-answer">
+            <b>解析：</b>被 3 整除：100÷3 = 33 个；被 4 整除：100÷4 = 25 个<br>
+            两者交集 = 被 12 整除（lcm(3,4)=12）：100÷12 = 8 个<br>
+            容斥：33 + 25 − 8 = <b>50 个</b><br>
+            <span class="correct">答案：A</span>
           </div>
         </div>
       </div>
@@ -1177,6 +1561,26 @@
           （与容斥原理的多集合反向构造相同）
         </div>
       </div>
+      <div class="block">
+        <div class="block-title">4. 和定最值（均值不等式）</div>
+        <div class="formula-box">
+          <span class="formula">和一定：a + b = S → a·b 最大 = S²/4（a = b 时取到）</span><br>
+          <span class="formula">积一定：a·b = P → a + b 最小 = 2√P（a = b 时取到）</span>
+        </div>
+        <ul class="point-list">
+          <li>特征："周长一定求最大面积""两数之和固定求乘积最大""总价一定求最大利润"。</li>
+          <li>口诀：<b>和定差小积最大，积定差小和最小</b>。</li>
+          <li>若要求结果必须是<b>整数</b>，取最接近的两个整数（如和为 21 → 10 和 11）。</li>
+        </ul>
+      </div>
+      <div class="block">
+        <div class="block-title">5. 最不利构造 × 排列组合</div>
+        <div class="key-box">
+          特征："至少取出多少个才能保证……"，而取法本身要用排列组合算。<br>
+          <b>方法：</b>先算<b>最不利情况</b>（差一点就满足、最多能取多少个还没达标），再 <b>+1</b>。<br>
+          例：4 种颜色各取 2 个 = 8 个仍不满足"3 个同色"，再取 1 个必成 → 9 个。
+        </div>
+      </div>
       <!-- 例题 -->
       <div class="example">
         <div class="example-header">📝 例题1 · 最不利构造</div>
@@ -1200,6 +1604,29 @@
             设最少的人得x分，其余尽量小：x+1, x+2, x+3, x+4<br>
             → 5x+10=400 → x=<b>78</b><br>
             <span class="correct">答案：A</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题3 · 和定最值</div>
+        <div class="example-body">
+          <div class="example-q">两个正整数的和为 20，则这两个数的乘积最大是多少？</div>
+          <div class="example-opts">A.96　B.99　C.100　D.104</div>
+          <div class="example-answer">
+            <b>解析：</b>和一定 → 越接近，乘积越大。20 ÷ 2 = 10 → 10 × 10 = <b>100</b><br>
+            <span class="correct">答案：C</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题4 · 最不利构造</div>
+        <div class="example-body">
+          <div class="example-q">袋中有红、黄、蓝、白 4 种颜色的球，每种颜色的球都足够多。至少要取出多少个球，才能保证取出的球中有 3 个颜色相同？</div>
+          <div class="example-opts">A.7　B.9　C.11　D.13</div>
+          <div class="example-answer">
+            <b>解析：</b>最不利情况 = 每种颜色各取 2 个 → 4 × 2 = 8 个，仍不满足"3 个同色"<br>
+            再取 1 个，无论什么颜色都会凑齐 3 个同色 → 8 + 1 = <b>9 个</b><br>
+            <span class="correct">答案：B</span>
           </div>
         </div>
       </div>
@@ -1245,6 +1672,16 @@
           <li>不用每次重新推导，直接用等差公式</li>
         </ul>
       </div>
+      <div class="block">
+        <div class="block-title">4. 等差数列的两个隐藏性质（省时间）</div>
+        <ul class="point-list">
+          <li><b>下标和相等 → 对应项之和相等</b>：若 m + n = p + q，则 <b>aₘ + aₙ = aₚ + a_q</b>。<br>
+            例：a₁ + a₉ = a₂ + a₈ = a₃ + a₇ = a₄ + a₆ = 2a₅。</li>
+          <li><b>中项法万能</b>：n 为奇数 → Sₙ = n × a<sub>中</sub>；n 为偶数 → Sₙ = (n/2) × (a<sub>首</sub> + a<sub>末</sub>)。</li>
+          <li><b>巧求两数差</b>：两个等差数列方程相减，可消去公共项，快速求出两数之差。</li>
+        </ul>
+        <div class="tip-box">只给"a₃ + a₇ = 20"就要 S₉ → 用 <b>a₃ + a₇ = 2a₅</b> 先求中项，再 S₉ = 9 × a₅，两步出答案。</div>
+      </div>
       <!-- 例题 -->
       <div class="example">
         <div class="example-header">📝 例题1 · 等差数列中项求和</div>
@@ -1266,6 +1703,18 @@
             <b>解析：</b>a₁₀ = a₁ + (n-1)d = 3+9×2 = <b>21</b><br>
             S₁₀ = n(a₁+aₙ)/2 = 10×(3+21)/2 = 10×12 = <b>120</b><br>
             <span class="correct">答案：a₁₀=21，S₁₀=120</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题3 · 等差数列性质</div>
+        <div class="example-body">
+          <div class="example-q">等差数列 {aₙ} 中，a₃ + a₇ = 20，则该数列前 9 项之和 S₉ = ？</div>
+          <div class="example-opts">A.60　B.80　C.90　D.100</div>
+          <div class="example-answer">
+            <b>解析：</b>下标和相等 → a₃ + a₇ = 2a₅（3+7 = 5+5）→ a₅ = 10<br>
+            n = 9 为奇数 → S₉ = 9 × 中间项 = 9 × 10 = <b>90</b><br>
+            <span class="correct">答案：C</span>
           </div>
         </div>
       </div>
@@ -1340,10 +1789,11 @@
         <div class="block-title">5. 比例行程</div>
         <div class="key-box">
           <b>核心：</b>找相等的量，看比例，找份数<br>
-          时间相同 → S₁/S₂ = V₁/V₂<br>
-          路程相同 → V₁/V₂ = T₂/T₁<br>
+          时间相同 → S₁/S₂ = V₁/V₂（路程比 = 速度比）<br>
+          路程相同 → V₁/V₂ = T₂/T₁（速度比 = 时间的<b>反</b>比）<br>
           速度相同 → S₁/S₂ = T₁/T₂
         </div>
+        <div class="tip-box">看到"速度提高了 1/5""时间比是 3∶4"这类表述，<b>别设未知数列方程</b>——直接找份数，往往两步就出答案。</div>
       </div>
       <!-- 例题 -->
       <div class="example">
@@ -1391,6 +1841,18 @@
             =2×40×60/(40+60)=4800/100=<b>48km/h</b><br>
             <div class="warn-box" style="margin-top:4px;">不是简单的(40+60)/2=50！这是调和平均，不是算术平均</div>
             <span class="correct">答案：B</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题5 · 比例行程</div>
+        <div class="example-body">
+          <div class="example-q">甲、乙两人同时从 A 地出发前往 B 地，甲的速度是乙的 1.5 倍。全程为 12 千米，当乙到达 B 地时，甲一共走了多少千米？</div>
+          <div class="example-opts">A.15 千米　B.16 千米　C.18 千米　D.20 千米</div>
+          <div class="example-answer">
+            <b>解析：</b>两人<b>用时相同</b> → 路程比 = 速度比 = 1.5 ∶ 1 = 3 ∶ 2。<br>
+            乙走了 12 千米（2 份）→ 甲走了 3 份 = 12 ÷ 2 × 3 = <b>18 千米</b><br>
+            <span class="correct">答案：C</span>
           </div>
         </div>
       </div>
@@ -1462,6 +1924,31 @@
         <div class="block-title">9. 顺序固定（归一法）</div>
         <div class="sub-point">全排列后除以顺序不变的排列数</div>
       </div>
+      <div class="block">
+        <div class="block-title">10. 优限法（指定位置 / 指定元素）</div>
+        <div class="key-box">
+          有"特殊位置"或"特殊元素"时，<b>先安排特殊的，再排其余的</b>。<br>
+          例：5 人排队，甲不站排头 → 先给排头选人（4 种），剩下 4 人全排列（A₄⁴ = 24）→ 4 × 24 = <b>96 种</b>。
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">11. 同素分堆（插板法的三种变形）</div>
+        <table class="mini-table">
+          <tr><th>分配要求</th><th>公式</th></tr>
+          <tr><td>n 个相同元素分给 m 组，<b>每组至少 1 个</b></td><td>C(n−1, m−1)</td></tr>
+          <tr><td>n 个相同元素分给 m 组，<b>每组至少 0 个（允许空组）</b></td><td>C(n+m−1, m−1)</td></tr>
+          <tr><td>n 个相同元素分给 m 组，<b>每组至少 k 个</b></td><td>先给每组预分 k−1 个，余下的用"至少 1 个"公式</td></tr>
+        </table>
+        <div class="tip-box">判断三件事：<b>元素是否相同、组是否相同、是否允许空组</b>。组不同 → 用插板；组相同 → 还要除以组数的全排列（那就是"平均分组"）。</div>
+      </div>
+      <div class="block">
+        <div class="block-title">12. 传球问题</div>
+        <div class="key-box">
+          m 个人传球，从甲开始传 n 次后球回到甲手中，方法数为<br>
+          <b>[(m−1)ⁿ + (m−1) × (−1)ⁿ] ÷ m</b><br>
+          考场更实用的做法：<b>画树状图逐次递推</b>（n 通常很小，手算比套公式快且不容易错）。
+        </div>
+      </div>
       <!-- 例题 -->
       <div class="example">
         <div class="example-header">📝 例题1 · 捆绑法</div>
@@ -1509,6 +1996,31 @@
           <div class="example-answer">
             <b>解析：</b>4个元素的错位排列 D₄=<b>9</b>（直接背：0,1,2,9,44...）<br>
             <span class="correct">答案：B</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题5 · 优限法</div>
+        <div class="example-body">
+          <div class="example-q">5 名同学排成一排照相，其中甲不能站在两端，共有多少种排法？</div>
+          <div class="example-opts">A.48　B.72　C.96　D.120</div>
+          <div class="example-answer">
+            <b>解析：</b>先安排"特殊元素"甲 —— 5 个位置去掉两端，甲有 <b>3</b> 个位置可选<br>
+            剩下 4 人任意排列：A₄⁴ = 24<br>
+            共 3 × 24 = <b>72 种</b><br>
+            <span class="correct">答案：B</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题6 · 同素分堆（插板法）</div>
+        <div class="example-body">
+          <div class="example-q">把 10 个完全相同的名额分给 4 个不同的班级，每个班级至少分到 1 个名额，共有多少种分法？</div>
+          <div class="example-opts">A.84　B.120　C.210　D.286</div>
+          <div class="example-answer">
+            <b>解析：</b>10 个相同元素分给 4 组、每组至少 1 个 → C(n−1, m−1)<br>
+            C(9, 3) = (9×8×7) ÷ (3×2×1) = <b>84</b><br>
+            <span class="correct">答案：A</span>
           </div>
         </div>
       </div>
@@ -1568,6 +2080,25 @@
         <div class="block-title">8. 骰子问题</div>
         <div class="tip-box">画图辅助，列出所有可能组合</div>
       </div>
+      <div class="block">
+        <div class="block-title">9. 独立重复试验（伯努利模型）</div>
+        <div class="formula-box">
+          <span class="formula">P(恰好成功 k 次) = C(n, k) × pᵏ × (1−p)<sup>n−k</sup></span>
+        </div>
+        <div class="key-box">
+          特征：<b>同一件事重复做 n 次，每次成功概率都是 p，各次互不影响</b>。<br>
+          三步走：① 选出哪 k 次成功（组合数 C(n,k)）② 成功的 k 次乘起来（pᵏ）<br>
+          ③ 失败的 n−k 次乘起来（(1−p)<sup>n−k</sup>）。
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">10. 几何概型（面积比 / 长度比）</div>
+        <div class="key-box">
+          特征：结果有<b>无穷多个</b>、且"均匀分布"（随机投点、随机取数）。<br>
+          <b>方法：P = 满足条件的区域 ÷ 总区域</b>（一维用长度比，二维用面积比，三维用体积比）。<br>
+          注意：几何概型<b>不看点数，只看"面积/长度"</b>——这是它和古典概型的根本区别。
+        </div>
+      </div>
       <!-- 例题 -->
       <div class="example">
         <div class="example-header">📝 例题1 · 基础概率</div>
@@ -1604,6 +2135,46 @@
             第二个红球：2/4<br>
             P=(3/5)×(2/4)=6/20=<b>3/10</b><br>
             <span class="correct">答案：3/10</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题4 · 独立重复试验</div>
+        <div class="example-body">
+          <div class="example-q">某球员投篮命中率为 0.6，连续投篮 3 次（各次互不影响），恰好命中 2 次的概率是多少？</div>
+          <div class="example-opts">A.0.288　B.0.36　C.0.432　D.0.5</div>
+          <div class="example-answer">
+            <b>解析：</b>独立重复试验 → P = C(3,2) × 0.6² × 0.4¹<br>
+            = 3 × 0.36 × 0.4 = <b>0.432</b><br>
+            <span class="correct">答案：C</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题5 · 几何概型（面积比）</div>
+        <div class="example-body">
+          <div class="example-q">在边长为 2 的正方形内随机取一点，则该点到正方形中心的距离小于 1 的概率是多少？</div>
+          <div class="example-opts">A.π/4　B.π/2　C.1/4　D.π/8</div>
+          <div class="example-answer">
+            <b>解析：</b>几何概型 → 看面积比（半径 1 的圆完全落在正方形内）。<br>
+            圆的面积 = π × 1² = π；正方形面积 = 2² = 4<br>
+            P = π ÷ 4 = <b>π/4</b><br>
+            <span class="correct">答案：A</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题6 · 比赛类概率（枚举法）</div>
+        <div class="example-body">
+          <div class="example-q">甲、乙两人进行比赛，每局甲获胜的概率为 2/3，先赢 2 局者获胜。则甲最终获胜的概率是多少？</div>
+          <div class="example-opts">A.4/9　B.2/3　C.20/27　D.8/9</div>
+          <div class="example-answer">
+            <b>解析：</b>枚举甲的获胜路径：<br>
+            ① 连胜两局：2/3 × 2/3 = 4/9 = 12/27<br>
+            ② 胜负胜：2/3 × 1/3 × 2/3 = 4/27<br>
+            ③ 负胜胜：1/3 × 2/3 × 2/3 = 4/27<br>
+            合计 = 12/27 + 4/27 + 4/27 = <b>20/27</b><br>
+            <span class="correct">答案：C</span>
           </div>
         </div>
       </div>
@@ -1646,6 +2217,15 @@
           <tr><td>2070</td><td>46</td><td>2116</td></tr>
         </table>
       </div>
+      <div class="block">
+        <div class="block-title">属相与本命年</div>
+        <ul class="point-list">
+          <li>十二生肖<b>循环周期为 12</b> → <b>属相相同的人，年龄差必为 12 的整数倍</b>（一句秒排选项）。</li>
+          <li><b>本命年</b>：与出生年属相相同的年份，每 12 年一次。</li>
+          <li>求出生年份：<b>今年年份 − 年龄</b>，再按属相往前推 12 的倍数调整。</li>
+        </ul>
+        <div class="tip-box">记住今年（2026 年）是<b>马年</b>；2014、2002、1990 也都是马年 —— 相差都是 12 岁。</div>
+      </div>
       <!-- 例题 -->
       <div class="example">
         <div class="example-header">📝 例题1 · 年龄差不变</div>
@@ -1669,6 +2249,18 @@
             <b>解析：</b>代入A：甲25→5年前20，乙5年前10→乙今年15→10年后甲35乙25→35/25=1.4✗<br>
             代入B：甲30→5年前25，乙5年前12.5→乙今年17.5→10年后甲40乙27.5→40/27.5≠1.5✗<br>
             代入C：甲35→5年前30，乙5年前15→乙今年20→10年后甲45乙30→45/30=<b>1.5✓</b><br>
+            <span class="correct">答案：C</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题3 · 属相问题</div>
+        <div class="example-body">
+          <div class="example-q">甲、乙两人属相相同，甲今年 24 岁，则乙今年的年龄可能是：</div>
+          <div class="example-opts">A.30 岁　B.32 岁　C.36 岁　D.38 岁</div>
+          <div class="example-answer">
+            <b>解析：</b>属相相同 → 年龄差必为 <b>12 的整数倍</b>。<br>
+            24 + 12 = <b>36</b>（其余选项与 24 的差分别为 6、8、14，都不是 12 的倍数）<br>
             <span class="correct">答案：C</span>
           </div>
         </div>
@@ -1806,6 +2398,15 @@
         </div>
         <div class="sub-point">区分实心方阵和空心方阵</div>
       </div>
+      <div class="block">
+        <div class="block-title">4. 容斥原理植树</div>
+        <div class="key-box">
+          特征：两条（或多条）长度不同的路分别植树，问"一共植多少棵"（重合处只算一次）。<br>
+          <b>方法：</b>各自按公式算出棵数，再用两集合容斥减去重叠部分——<br>
+          重叠处就在 <b>两个间隔的最小公倍数的倍数位置</b>上。<br>
+          例：60 米的路每隔 4 米植（16 棵）、每隔 6 米植（11 棵），重合处在每 12 米一处 → 60÷12+1 = 6 棵 → 共用 16 + 11 − 6 = <b>21 棵</b>。
+        </div>
+      </div>
       <!-- 例题 -->
       <div class="example">
         <div class="example-header">📝 例题1 · 植树问题</div>
@@ -1843,6 +2444,19 @@
           </div>
         </div>
       </div>
+      <div class="example">
+        <div class="example-header">📝 例题4 · 容斥原理植树</div>
+        <div class="example-body">
+          <div class="example-q">一条 60 米长的路，方案一每隔 4 米植一棵树，方案二每隔 6 米植一棵树（两方案起点相同、两端都植）。两种方案合起来一共要植多少棵树（重合处只植一棵）？</div>
+          <div class="example-opts">A.19　B.21　C.23　D.27</div>
+          <div class="example-answer">
+            <b>解析：</b>方案一：60 ÷ 4 + 1 = 16 棵；方案二：60 ÷ 6 + 1 = 11 棵<br>
+            重合处每 lcm(4,6) = 12 米一处 → 0,12,24,36,48,60 共 6 棵<br>
+            16 + 11 − 6 = <b>21 棵</b><br>
+            <span class="correct">答案：B</span>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -1867,7 +2481,7 @@
         <div class="block-title">2. 货物集中 / 统筹运输</div>
         <div class="key-box">
           <b>方法：</b>先中间分开，轻的向重的方向移动<br>
-          核心思想：将货物集中在重量最大的一侧
+          核心思想：将货物集中在重量最大的一侧<br>（完整解法与例题见 <b>二十、统筹优化</b>）
         </div>
       </div>
       <div class="block">
@@ -1900,7 +2514,16 @@
         <div class="formula-box">
           <span class="formula">需要过河次数 = (总人数 - 1) ÷ (船容量 - 1)</span>
         </div>
-        <div class="sub-point">每次过去需要有人划船回来</div>
+        <div class="sub-point">每次过去需要有人划船回来（最短时间策略见 <b>二十、统筹优化</b>）</div>
+      </div>
+      <div class="block">
+        <div class="block-title">8. 网状图 / 树状图（图解法）</div>
+        <div class="key-box">
+          关系一复杂，<b>画图连线</b>比列式快得多。常用于：<br>
+          ① <b>比赛盘数</b>：几人单循环，已知各自赛过几盘，求某人赛了几盘<br>
+          ② <b>树状图</b>：逐层列出排列组合 / 概率的所有可能<br>
+          ③ <b>时间安排类</b>的对策分析
+        </div>
       </div>
       <!-- 例题 -->
       <div class="example">
@@ -1939,6 +2562,460 @@
             A(10)+B(20)向右移到C → C点集中<br>
             验证D：左侧(10+20+30=60) < 右侧(40)？60>40 → 不向D移<br>
             <span class="correct">答案：集中在C仓库</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题4 · 网状图（比赛盘数）</div>
+        <div class="example-body">
+          <div class="example-q">A、B、C、D、E 五人进行象棋单循环赛（每两人都赛一盘）。已知 A、B、C、D 已赛过的盘数依次为 4、3、2、1，此时 E 赛了多少盘？</div>
+          <div class="example-opts">A.2　B.3　C.4　D.5</div>
+          <div class="example-answer">
+            <b>解析：</b>用连线法（网状图）——<br>
+            A 赛了 4 盘 → A 与 B、C、D、E 都赛过<br>
+            D 只赛了 1 盘 → D 只和 A 赛过，与 B、C、E 都没赛<br>
+            B 赛了 3 盘 → 已知有 AB，又不能连 D，故 B 必连 C 和 E<br>
+            C 赛了 2 盘 → 已知有 AC、BC，已达 2 盘，不再连 E<br>
+            于是 E 只连了 A、B 两条线 → <b>2 盘</b><br>
+            <span class="correct">答案：A</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 17. 数字推理 -->
+  <div class="section c-red" id="s17">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">🔎</div>
+      <div class="section-title">十七、数字推理（数列推理）</div>
+      <span class="section-tag tag-hot">事业编必考</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="key-box">
+        数字推理是<b>事业单位、江苏等省份的必考题型</b>（国考、多省联考一般不考）。特点：<b>没有公式、纯靠观察</b>，但题型分类极其固定——分好类，就是送分题。
+      </div>
+      <div class="block">
+        <div class="block-title">1. 解题优先法则（先看特征，再定方法）</div>
+        <table class="mini-table">
+          <tr><th>数列特征</th><th>优先考虑</th></tr>
+          <tr><td>无明显特征、变化幅度<b>小</b></td><td><b>多级数列</b> → 相邻两项做差、做和</td></tr>
+          <tr><td>无明显特征、变化幅度<b>大</b>（倍数级）</td><td><b>多级数列</b> → 做商、做积</td></tr>
+          <tr><td>项数 ≥ 7 项，或有<b>两个括号</b></td><td><b>多重数列</b> → 隔项看、分组看</td></tr>
+          <tr><td>有明显<b>幂次数</b>或紧邻幂次数</td><td><b>幂次数列 / 幂次修正</b></td></tr>
+          <tr><td>相邻数有<b>倍数关系</b></td><td>做商，或<b>递推倍数列</b></td></tr>
+          <tr><td>含<b>分数</b></td><td><b>分数数列</b>（分子分母各成规律 / 反约分）</td></tr>
+          <tr><td>各项位数多（3~4 位）、结构类似</td><td><b>机械分组</b>（各位数字拆开找规律）</td></tr>
+        </table>
+        <div class="tip-box">前两步都试不出来，再考虑<b>递推数列</b>。方向：数列<b>递增</b> → 想加法、乘法、幂次；数列<b>递减</b> → 想减法、除法。</div>
+      </div>
+      <div class="block">
+        <div class="block-title">2. 多级数列（考得最多）</div>
+        <ul class="point-list">
+          <li><b>做差</b>：相邻两项相减得到新数列，再看新数列的规律；一次差不行就<b>做二次差</b>。</li>
+          <li><b>做和</b>：相邻两项相加，或两两相加得新数列。</li>
+          <li><b>做商 / 做积</b>：变化幅度大（几倍几倍地涨）时用。</li>
+          <li>经典模型：差为等差数列、等比数列，或差为质数 / 平方数序列。</li>
+        </ul>
+      </div>
+      <div class="block">
+        <div class="block-title">3. 多重数列（项数多 / 两个括号）</div>
+        <ul class="point-list">
+          <li><b>隔项看</b>：奇数项、偶数项各自成一个数列（最常见）。</li>
+          <li><b>分组看</b>：两两一组或三三一组，看组内的运算关系（和、差、积、商）。</li>
+          <li>特征提示：项数 ≥ 7 项，或题目里出现两个"（ ）"。</li>
+        </ul>
+      </div>
+      <div class="block">
+        <div class="block-title">4. 幂次数列与幂次修正</div>
+        <ul class="point-list">
+          <li>把每一项写成 <b>aⁿ</b> 或 <b>aⁿ ± m</b> 的形式，分别找底数、指数的规律。</li>
+          <li>看到 64 要能立刻想到 8²、4³、2⁶；看到 124 要想到 125 − 1 = 5³ − 1。</li>
+          <li>常见的"幂次附近数"：0(1³−1)、7(2³−1)、26(3³−1)、63(4³−1)、124(5³−1)。</li>
+        </ul>
+      </div>
+      <div class="block">
+        <div class="block-title">5. 递推数列</div>
+        <ul class="point-list">
+          <li><b>递推和差</b>：后项 = 前两项之和（如 3, 8, 11, 19, 30, 49）或之差。</li>
+          <li><b>递推倍数</b>：后项 ≈ 前项 × k ± m（如 2, 7, 22, 67, 202 → ×3 + 1）。</li>
+          <li>技巧：先看<b>相邻三项</b>之间的关系，比逐项硬试快得多。</li>
+        </ul>
+      </div>
+      <div class="block">
+        <div class="block-title">6. 分数数列</div>
+        <ul class="point-list">
+          <li><b>分子分母各自成规律</b>（分别看两个数列）—— 最常见。</li>
+          <li><b>反约分</b>：把部分分数"反向通分"，让分子分母同时出现规律（如把 1/2 写成 2/4）。</li>
+          <li>只有一个分数、或分子多为 1 → 考虑<b>负幂次</b>（1/4 = 2⁻²）。</li>
+        </ul>
+      </div>
+      <div class="block">
+        <div class="block-title">7. 必背数字表（不背就做不快）</div>
+        <table class="mini-table">
+          <tr><th>类型</th><th>内容</th></tr>
+          <tr><td>平方数 1~20</td><td>1, 4, 9, 16, 25, 36, 49, 64, 81, 100, 121, 144, 169, 196, 225, 256, 289, 324, 361, 400</td></tr>
+          <tr><td>立方数 1~10</td><td>1, 8, 27, 64, 125, 216, 343, 512, 729, 1000</td></tr>
+          <tr><td>2 的幂</td><td>2, 4, 8, 16, 32, 64, 128, 256, 512, 1024</td></tr>
+          <tr><td>质数（20 以内）</td><td>2, 3, 5, 7, 11, 13, 17, 19</td></tr>
+        </table>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题1 · 多级数列（做差）</div>
+        <div class="example-body">
+          <div class="example-q">1，3，6，10，15，（　）</div>
+          <div class="example-opts">A.18　B.20　C.21　D.24</div>
+          <div class="example-answer">
+            <b>解析：</b>无明显特征、变化幅度小 → 先做差：2，3，4，5（等差）<br>
+            下一个差为 6 → 15 + 6 = <b>21</b><br>
+            <span class="correct">答案：C</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题2 · 多重数列（隔项看）</div>
+        <div class="example-body">
+          <div class="example-q">2，3，4，9，8，27，（　）</div>
+          <div class="example-opts">A.16　B.20　C.24　D.81</div>
+          <div class="example-answer">
+            <b>解析：</b>项数 ≥ 7 → 隔项看：<br>
+            奇数项 2，4，8，（　）→ 每次 ×2 → 第 7 项 = <b>16</b><br>
+            （偶数项 3，9，27 也是 ×3，相互印证）<br>
+            <span class="correct">答案：A</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题3 · 幂次修正</div>
+        <div class="example-body">
+          <div class="example-q">0，7，26，63，（　）</div>
+          <div class="example-opts">A.120　B.124　C.125　D.126</div>
+          <div class="example-answer">
+            <b>解析：</b>各项紧邻立方数 → 写成 n³ − 1：<br>
+            1³−1 = 0，2³−1 = 7，3³−1 = 26，4³−1 = 63 → 下一项 5³ − 1 = <b>124</b><br>
+            <span class="correct">答案：B</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题4 · 递推数列（递推倍数）</div>
+        <div class="example-body">
+          <div class="example-q">2，7，22，67，（　）</div>
+          <div class="example-opts">A.198　B.201　C.202　D.204</div>
+          <div class="example-answer">
+            <b>解析：</b>变化幅度大且约为 3 倍 → 试递推倍数：<br>
+            2 × 3 + 1 = 7，7 × 3 + 1 = 22，22 × 3 + 1 = 67<br>
+            下一项 = 67 × 3 + 1 = <b>202</b><br>
+            <span class="correct">答案：C</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题5 · 分数数列</div>
+        <div class="example-body">
+          <div class="example-q">1/2，3/5，5/8，（　）</div>
+          <div class="example-opts">A.7/11　B.6/11　C.7/10　D.9/11</div>
+          <div class="example-answer">
+            <b>解析：</b>分子、分母各自成规律：<br>
+            分子 1，3，5 → 下一项 7；分母 2，5，8 → 下一项 11<br>
+            答案为 <b>7/11</b><br>
+            <span class="correct">答案：A</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 18. 时钟问题 -->
+  <div class="section c-purple" id="s18">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">🕰️</div>
+      <div class="section-title">十八、时钟问题</div>
+      <span class="section-tag tag-mid">中频</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="key-box">
+        时钟问题的本质是<b>"环形跑道上的追及问题"</b>——分针追时针。记住两个速度和一条时间线，这类题全部变成套公式。
+      </div>
+      <div class="block">
+        <div class="block-title">1. 三个必背数据</div>
+        <div class="formula-box">
+          <span class="formula">分针每分钟走 6°　（360° ÷ 60）</span><br>
+          <span class="formula">时针每分钟走 0.5°　（30° ÷ 60）</span><br>
+          <span class="formula">速度差 = 5.5° / 分钟</span>
+        </div>
+        <ul class="point-list">
+          <li>钟面一圈 360°，分成 12 大格（每格 30°）、60 小格。</li>
+          <li>时针 1 小时走 30°，分针 1 小时走 360°（比时针多走 330°）。</li>
+        </ul>
+      </div>
+      <div class="block">
+        <div class="block-title">2. 钟面追及（重合 / 垂直 / 成直线）</div>
+        <table class="mini-table">
+          <tr><th>问法</th><th>追及角度</th><th>公式</th></tr>
+          <tr><td>两针<b>重合</b></td><td>追 360° 的整数倍</td><td>t = 追及角度 ÷ 5.5</td></tr>
+          <tr><td>两针<b>垂直</b>（成 90°）</td><td>追 90° 或 270°</td><td>t = (90 + 360k) ÷ 5.5</td></tr>
+          <tr><td>两针<b>成直线</b>（成 180°）</td><td>追 180° 或 540°</td><td>t = (180 + 360k) ÷ 5.5</td></tr>
+        </table>
+        <div class="key-box">
+          <b>必背结论：</b>每 12 小时，时针与分针<b>重合 11 次</b>、<b>成直线 11 次</b>、<b>垂直 22 次</b>；<br>
+          一昼夜（24 小时）→ 重合 <b>22 次</b>、成直线 22 次、垂直 44 次。
+        </div>
+        <div class="tip-box">解题模板：① 先算出起点时两针的夹角 ② 用 夹角 ÷ 5.5 得到还需的分钟数 ③ 别忘了起点本身可能已经满足条件。</div>
+      </div>
+      <div class="block">
+        <div class="block-title">3. 坏钟问题（比例法）</div>
+        <div class="key-box">
+          "每小时快/慢 m 分钟" → <b>标准钟走 60 分钟，该钟走 (60 ± m) 分钟</b>。<br>
+          用比例列式：<b>该钟显示时间 ∶ 标准时间 = (60 ± m) ∶ 60</b><br>
+          问"显示几点"→ 标准时间 × (60±m)/60；问"实际几点"→ 用比例反解。
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题1 · 钟面夹角</div>
+        <div class="example-body">
+          <div class="example-q">3 点 20 分时，时针与分针的夹角是多少度？</div>
+          <div class="example-opts">A.15°　B.20°　C.25°　D.30°</div>
+          <div class="example-answer">
+            <b>解析：</b>分针 20 分 → 20 × 6° = <b>120°</b><br>
+            时针 3 点 20 分 → 3 × 30° + 20 × 0.5° = 90° + 10° = <b>100°</b><br>
+            夹角 = 120° − 100° = <b>20°</b><br>
+            <span class="correct">答案：B</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题2 · 坏钟问题（比例法）</div>
+        <div class="example-body">
+          <div class="example-q">一只钟每小时慢 5 分钟。某日中午 12:00 将它校准，当它显示下午 5:30 时，标准时间是几点？</div>
+          <div class="example-opts">A.下午 5:30　B.下午 6:00　C.下午 6:30　D.下午 7:00</div>
+          <div class="example-answer">
+            <b>解析：</b>该钟走 (60 − 5) = 55 分钟，相当于标准钟走 60 分钟。<br>
+            该钟从 12:00 显示走到 17:30，共走了 5.5 小时 = 330 分钟<br>
+            标准时间实际经过 = 330 ÷ 55 × 60 = <b>360 分钟 = 6 小时</b><br>
+            标准时间 = 12:00 + 6 小时 = <b>下午 6:00</b><br>
+            <span class="correct">答案：B</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题3 · 两针重合次数</div>
+        <div class="example-body">
+          <div class="example-q">在一昼夜（24 小时）内，时针与分针重合多少次？</div>
+          <div class="example-opts">A.11　B.12　C.22　D.24</div>
+          <div class="example-answer">
+            <b>解析：</b>每 12 小时，分针比时针多走一圈（360°），追上（重合）<b>11 次</b>（不是 12 次）<br>
+            一昼夜 = 2 × 12 小时 → 重合 <b>22 次</b><br>
+            <span class="correct">答案：C</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 19. 抽屉盈亏 -->
+  <div class="section c-orange" id="s19">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">🗄️</div>
+      <div class="section-title">十九、抽屉原理与盈亏问题</div>
+      <span class="section-tag tag-mid">中频</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="key-box">
+        这几个题型（抽屉、鸡兔同笼、盈亏）都有<b>固定的口算套路</b>，认出来就是 30 秒一题，属于"性价比最高"的一类。
+      </div>
+      <div class="block">
+        <div class="block-title">1. 抽屉原理（最不利原则）</div>
+        <div class="formula-box">
+          <span class="formula">答案 = 最不利情况 + 1</span>
+        </div>
+        <ul class="point-list">
+          <li>特征："至少……才能<b>保证</b>……"。</li>
+          <li>思路：<b>故意让你不成功</b>——先算"差一点就满足"时最多能取多少个，再 +1。</li>
+          <li>进阶：把 n 个物体放进 m 个抽屉，若 n &gt; m × k，则至少有一个抽屉里有 ≥ k+1 个物体。</li>
+        </ul>
+      </div>
+      <div class="block">
+        <div class="block-title">2. 鸡兔同笼</div>
+        <div class="formula-box">
+          <span class="formula">兔 = (总脚数 − 2 × 总只数) ÷ 2</span><br>
+          <span class="formula">鸡 = 总只数 − 兔</span>
+        </div>
+        <div class="key-box">
+          <b>本质是"假设法"：</b>假设全是鸡 → 脚数为 2 × 总只数 → 与实际脚数的差，就是"被少算的兔脚"，每只兔少算 2 只脚，所以除以 2。
+        </div>
+        <div class="tip-box">这类"两个量混在一起、已知两个总数"的题（鸡兔、得分/失分、晴天雨天、大盒小盒）<b>全是同一个模型</b>，直接套假设法。</div>
+      </div>
+      <div class="block">
+        <div class="block-title">3. 盈亏问题</div>
+        <div class="formula-box">
+          <span class="formula">一盈一亏：份数 = (盈 + 亏) ÷ 两次每份之差</span><br>
+          <span class="formula">双盈（双亏）：份数 = (大盈 − 小盈) ÷ 两次每份之差</span>
+        </div>
+        <div class="key-box">
+          特征："如果每人分 3 个则多 8 个，如果每人分 5 个则少 6 个"——<b>先求人数（份数），再求物品总数</b>。
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">4. 平均数问题</div>
+        <ul class="point-list">
+          <li><b>总数 = 平均数 × 份数</b>（万变不离其宗，先求总数再倒推）。</li>
+          <li><b>基准数法</b>：取一个基准值，各数记成"基准 ± 差"，只算偏差的平均值再加回基准。</li>
+          <li><b>混合平均</b>：两部分混合 → 用十字交叉求数量比（见第零节）。</li>
+          <li>注意：<b>平均数会被极端值拉偏</b>，出现"平均数"时先问"这个平均数到底代表谁"。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题1 · 抽屉原理（最不利）</div>
+        <div class="example-body">
+          <div class="example-q">一个盒子里有红、黄、蓝三种颜色的小球各 10 个。至少取出多少个球，才能保证其中有 4 个同色？</div>
+          <div class="example-opts">A.9　B.10　C.11　D.12</div>
+          <div class="example-answer">
+            <b>解析：</b>最不利情况 —— 每种颜色各取 3 个，共 9 个，此时仍没有 4 个同色<br>
+            再取 1 个，必然使某种颜色达到 4 个 → 9 + 1 = <b>10 个</b><br>
+            <span class="correct">答案：B</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题2 · 鸡兔同笼（假设法）</div>
+        <div class="example-body">
+          <div class="example-q">笼子里有鸡和兔共 35 只，共有脚 94 只。兔子有多少只？</div>
+          <div class="example-opts">A.12　B.20　C.23　D.24</div>
+          <div class="example-answer">
+            <b>解析：</b>假设全是鸡 → 脚数 = 2 × 35 = 70，比实际少 94 − 70 = 24 只脚<br>
+            每把一只鸡换成兔，脚就增加 2 只 → 兔 = 24 ÷ 2 = <b>12 只</b><br>
+            （公式：兔 =（总脚数 − 2 × 总只数）÷ 2）<br>
+            <span class="correct">答案：A</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题3 · 盈亏问题</div>
+        <div class="example-body">
+          <div class="example-q">给小朋友分苹果：每人分 3 个则多 8 个，每人分 5 个则少 6 个。一共有多少个苹果？</div>
+          <div class="example-opts">A.25　B.27　C.29　D.31</div>
+          <div class="example-answer">
+            <b>解析：</b>一盈一亏 → 人数 =（盈 + 亏）÷ 两次每人之差 =（8 + 6）÷（5 − 3）= 14 ÷ 2 = 7 人<br>
+            苹果数 = 3 × 7 + 8 = <b>29 个</b>（验算：5 × 7 − 6 = 29 ✓）<br>
+            <span class="correct">答案：C</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题4 · 平均数（基准数法）</div>
+        <div class="example-body">
+          <div class="example-q">五名同学的身高分别为 162、158、165、161、164 厘米，他们的平均身高是多少厘米？</div>
+          <div class="example-opts">A.160　B.161　C.162　D.163</div>
+          <div class="example-answer">
+            <b>解析：</b>取基准数 160，各数记为偏差：+2、−2、+5、+1、+4<br>
+            偏差之和 = 10 → 平均偏差 = 10 ÷ 5 = 2<br>
+            平均身高 = 160 + 2 = <b>162 厘米</b><br>
+            <span class="correct">答案：C</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 20. 统筹优化 -->
+  <div class="section c-green" id="s20">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">⚙️</div>
+      <div class="section-title">二十、统筹优化</div>
+      <span class="section-tag tag-mid">中频</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="key-box">
+        统筹问题的本质都是一句话：<b>让"等待"和"空转"最少</b>。事业单位考得比国考多，属于"看着难、其实有口诀"的类型。
+      </div>
+      <div class="block">
+        <div class="block-title">1. 排队取水（等待时间最短）</div>
+        <div class="formula-box">
+          <span class="formula">总时间 = Σ (第 i 人用时 × (总人数 − i + 1))</span>
+        </div>
+        <div class="key-box">
+          <b>口诀：用时短的先做。</b>把用时<b>从小到大</b>排列，再按 1、2、3…… 的倍数依次相乘相加。<br>
+          （一个人打水的时间，会让后面所有人都等这么久 —— 所以"短的先上"能让最长的时间影响最少的人。）
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">2. 货物集中（统筹运输）</div>
+        <div class="key-box">
+          <b>口诀：向重的一侧移动。</b><br>
+          从两端开始比较货物重量：把轻的一端的货<b>搬到重的一端方向去</b>，逐步缩小范围，最终落在"两边重量最接近"的那个点。<br>
+          验证方法：把货物集中到候选仓库，算 <b>Σ(吨数 × 距离)</b>，取最小值。
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">3. 过桥 / 过河（最短时间）</div>
+        <div class="key-box">
+          特征：一次最多过 2 人、必须有人把工具（手电筒/船）送回来。<br>
+          <b>核心：让"最快的两个人"当搬运工。</b><br>
+          常见策略：① 最快的两人先过，最快的回来 ② 最慢的两人一起过，第二快的回来 ③ 最快的两人再过。
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">4. 方案比较（田忌赛马型）</div>
+        <ul class="point-list">
+          <li>把每个方案的<b>总成本 / 总时间</b>都算出来比大小，不要凭感觉。</li>
+          <li>注意"单位成本"陷阱：便宜的不一定总价低，要算<b>单位工作量成本</b>。</li>
+          <li>出现"最多能完成多少""最少需要几个"时，用<b>向上取整</b>。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题1 · 排队取水</div>
+        <div class="example-body">
+          <div class="example-q">甲、乙、丙三人到只有一个水龙头的地方打水，各自需要 3、5、8 分钟。要使三人等待的总时间最短，应怎样安排顺序？最短总时间是多少？</div>
+          <div class="example-opts">A.23 分钟　B.25 分钟　C.27 分钟　D.30 分钟</div>
+          <div class="example-answer">
+            <b>解析：</b>用时短的先打 → 顺序为甲（3）→ 乙（5）→ 丙（8）<br>
+            总时间 = 3 × 3 + 5 × 2 + 8 × 1 = 9 + 10 + 8 = <b>27 分钟</b><br>
+            （一个人打水的时间，要让排在他后面的人都一起等，所以短的先上）<br>
+            <span class="correct">答案：C</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题2 · 货物集中</div>
+        <div class="example-body">
+          <div class="example-q">5 个仓库沿一条直线等距排列，从左到右存货量分别为 1、2、3、4、5 吨。把所有货物集中到一个仓库，运费最省的是第几个仓库？</div>
+          <div class="example-opts">A.第 2 个　B.第 3 个　C.第 4 个　D.第 5 个</div>
+          <div class="example-answer">
+            <b>解析：</b>总重 15 吨，一半为 7.5 吨。从左往右累加：<br>
+            到第 2 个：左 1 + 2 = 3 &lt; 右 12 → 继续右移<br>
+            到第 3 个：左 1 + 2 + 3 = 6 &lt; 右 9 → 继续右移<br>
+            到第 4 个：左 1 + 2 + 3 + 4 = 10 &gt; 右 5 → <b>停在第 4 个</b><br>
+            <span class="correct">答案：C</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题3 · 过桥（最短时间）</div>
+        <div class="example-body">
+          <div class="example-q">四人夜间过桥，只有一个手电筒，每次最多过 2 人，两人同行按慢者计时。四人单独过桥分别需 1、2、5、10 分钟，全部过桥最少需要多少分钟？</div>
+          <div class="example-opts">A.15　B.16　C.17　D.19</div>
+          <div class="example-answer">
+            <b>解析：</b>让最快的两人负责送手电筒，让最慢的两人一起过：<br>
+            ① 1、2 过（2 分）② 1 返回（1 分）③ 5、10 过（10 分）④ 2 返回（2 分）⑤ 1、2 再过（2 分）<br>
+            合计 2 + 1 + 10 + 2 + 2 = <b>17 分钟</b><br>
+            <span class="correct">答案：C</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题4 · 时间统筹（烙饼）</div>
+        <div class="example-body">
+          <div class="example-q">一个平底锅一次最多能放 2 张饼，每张饼两面都要烙，每面需 3 分钟。现在要烙 5 张饼，最少需要多少分钟？</div>
+          <div class="example-opts">A.15　B.18　C.21　D.30</div>
+          <div class="example-answer">
+            <b>解析：</b>5 张饼共 10 个"面"，锅每 3 分钟能烙 2 个面 → (10 ÷ 2) × 3 = <b>15 分钟</b><br>
+            口诀：锅一次 2 张、n 张饼（n ≥ 2）→ 最少 = n × 每面时间 = 5 × 3 = 15<br>
+            <span class="correct">答案：A</span>
           </div>
         </div>
       </div>

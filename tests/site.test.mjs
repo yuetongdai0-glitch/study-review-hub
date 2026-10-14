@@ -459,3 +459,64 @@ test('判断推理页补充了「论证评价」模块（综应 C 类）', async
     assert.ok(ov.includes(s), `四大类速览未列出小类：${s}`)
   }
 })
+
+test('数量关系页已按高照体系补全知识点，且每个模块都有例题', async () => {
+  const page = await readText(new URL('../pages/quantitative/index.html', import.meta.url))
+
+  // 总览 + 21 个知识模块（s0 速解四法 ~ s20 统筹优化）
+  const marks = [...page.matchAll(/<div class="section c-[a-z]+" id="(nav|s\d+)">/g)]
+  const slice = (id) => {
+    const k = marks.findIndex(m => m[1] === id)
+    assert.ok(k >= 0, `缺少模块 ${id}`)
+    const a = marks[k].index
+    const b = k + 1 < marks.length ? marks[k + 1].index : page.indexOf('<!-- 考场策略 -->')
+    return page.slice(a, b)
+  }
+  for (let i = 0; i <= 20; i++) assert.ok(slice(`s${i}`).length > 200, `模块 s${i} 内容为空`)
+  assert.equal((page.match(/class="nav-chip/g) || []).length, 22, '导航 chip 应为 22 个')
+
+  // 几何模块：块号 1~16 连续（防止重编号遗漏），且补上特殊角直角三角形
+  const geo = slice('s5')
+  const geoBlocks = [...geo.matchAll(/<div class="block-title">([^<]+)<\/div>/g)].map(m => m[1])
+  assert.equal(geoBlocks.length, 16, `几何模块应有 16 个知识点，实为 ${geoBlocks.length}`)
+  geoBlocks.forEach((t, i) => assert.ok(t.startsWith(`${i + 1}. `), `几何模块第 ${i + 1} 块编号错乱：${t}`))
+  for (const k of [
+    '30°–60°–90°', '1 ∶ √3 ∶ 2', '45°–45°–90°', '1 ∶ 1 ∶ √2',
+    '相似三角形', '蝴蝶定理', '正六边形', '正方体'
+  ]) {
+    assert.ok(geo.includes(k), `几何模块缺少知识点：${k}`)
+  }
+
+  // 零、速解四法：高照体系中"两大基石"之外的通用四法
+  const zero = slice('s0')
+  for (const k of ['代入排除法', '赋值法', '比例与十字交叉法', '数字特性法']) {
+    assert.ok(zero.includes(k), `速解四法缺少：${k}`)
+  }
+  assert.equal((zero.match(/class="example"/g) || []).length, 4, '速解四法应有 4 道例题')
+
+  // 四个新增模块的关键内容
+  assert.ok(slice('s17').includes('幂次数列与幂次修正'), '数字推理缺少幂次修正')
+  assert.ok(slice('s18').includes('5.5'), '时钟问题缺少 5.5°/分钟 速度差')
+  assert.ok(slice('s19').includes('鸡兔同笼') && slice('s19').includes('盈亏问题'), '抽屉盈亏模块内容不足')
+  assert.ok(slice('s20').includes('排队取水') && slice('s20').includes('过桥'), '统筹优化模块内容不足')
+
+  // 硬要求：每个模块都配有例题
+  assert.equal((slice('s17').match(/class="example"/g) || []).length, 5, '数字推理应有 5 道例题')
+  assert.equal((slice('s18').match(/class="example"/g) || []).length, 3, '时钟问题应有 3 道例题')
+  assert.equal((slice('s19').match(/class="example"/g) || []).length, 4, '抽屉盈亏应有 4 道例题')
+  assert.equal((slice('s20').match(/class="example"/g) || []).length, 4, '统筹优化应有 4 道例题')
+  const total = (page.match(/class="example"/g) || []).length
+  assert.ok(total >= 85, `例题总数偏少：${total}`)
+  for (let i = 0; i <= 20; i++) {
+    const n = (slice(`s${i}`).match(/class="example"/g) || []).length
+    assert.ok(n >= 1, `模块 s${i} 没有例题`)
+  }
+
+  // 总览：补上「通用四法」与 18 类题型表
+  const nav = slice('nav')
+  assert.ok(nav.includes('通用四法'), '总览缺少「通用四法」')
+  for (const k of ['数字推理', '时钟问题', '抽屉盈亏', '统筹优化']) {
+    assert.ok(nav.includes(k), `总览题型表缺少：${k}`)
+  }
+  assert.equal((nav.match(/<tr>/g) || []).length, 19, '总览题型表应为 1 表头 + 18 行')
+})
