@@ -1,0 +1,70 @@
+/* ============================================================
+   全站共用「示意图」样式（内联 SVG 配图）
+   用法：页面 <head> 里引用
+     <link rel="stylesheet" href="../../assets/fig.css">
+   正文里写：
+     <figure class="fig">
+       <svg viewBox="0 0 640 300" role="img" aria-label="……">…</svg>
+       <figcaption>图注：……</figcaption>
+     </figure>
+
+   约定（重要）：
+   - 图内文字用 SVG 属性显式着色（fill="#1f2937" 等），**不要依赖 currentColor**，
+     这样在深色主题页面里也能保证「浅底深字」的可读性。
+   - 几何一律画在 viewBox 内；`.fig svg{overflow:visible}` 只是为了防止文字被静默裁掉。
+   - 移动端按 `width:100%` 等比缩放，viewBox 宽度建议 560~680，字号 ≥12。
+   ============================================================ */
+.fig{
+  margin:12px 0;
+  padding:12px 12px 10px;
+  border-radius:12px;
+  background:var(--fig-bg,#fbfcff);
+  border:1px solid var(--fig-line,#e4ebff);
+}
+.fig svg{
+  display:block;
+  width:100%;
+  height:auto;
+  max-width:640px;
+  margin:0 auto;
+  overflow:visible;
+}
+.fig figcaption{
+  margin-top:8px;
+  font-size:12.5px;
+  color:var(--fig-cap,var(--ink3,var(--sub,#6b7280)));
+  text-align:center;
+  line-height:1.6;
+}
+.fig text{font-family:inherit;}
+.fig-row{display:flex;gap:12px;flex-wrap:wrap;align-items:stretch;}
+.fig-row>.fig{flex:1 1 240px;margin:8px 0;}
+
+/* 深色主题页面（如综应D）里，示意图保持「浅底深字」的小卡片外观——
+   图内文字已用 SVG 属性显式着色，所以只需补一点阴影让卡片从深底上「浮」起来。 */
+html[data-theme="dark"] .fig{box-shadow:0 2px 12px rgba(0,0,0,.4);}
+
+/* 窄屏（手机）：示意图保持「最小可读尺寸」并横向滚动，
+   不要整图等比缩小——缩到 320px 宽时 12px 的字会变成 6px，什么都看不清。
+   figcaption 用 sticky 钉在左边，滚动时不会跟着跑掉。 */
+@media (max-width:720px){
+  .fig{
+    overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;
+    /* 右侧「还有内容」的滚动阴影（background-attachment 的经典做法） */
+    background:
+      linear-gradient(to right,  var(--fig-bg,#fbfcff) 40%, rgba(251,252,255,0)) left  center,
+      linear-gradient(to left,   var(--fig-bg,#fbfcff) 40%, rgba(251,252,255,0)) right center,
+      radial-gradient(farthest-side at 0%   50%, rgba(15,23,42,.18), rgba(15,23,42,0)) left  center,
+      radial-gradient(farthest-side at 100% 50%, rgba(15,23,42,.18), rgba(15,23,42,0)) right center,
+      var(--fig-bg,#fbfcff);
+    background-repeat:no-repeat;
+    background-size:34px 100%, 34px 100%, 12px 100%, 12px 100%;
+    background-attachment:local, local, scroll, scroll;
+  }
+  .fig svg{min-width:520px;}
+  .fig figcaption{position:sticky;left:0;max-width:100%;}
+}
+
+@media print{
+  .fig{page-break-inside:avoid;overflow:visible;}
+}

@@ -792,3 +792,44 @@ test('类比推理页：每个考点后面紧挨示例（知识点自带 eg）',
   const labelled = (page.match(/eg:'<span class="lbl">示例<\/span>/g) || []).length
   assert.ok(labelled >= 20, `带「示例」标签的考点偏少：${labelled}`)
 })
+
+test('全站示意图：接入共用图样式、每图都有 viewBox 与图注', async () => {
+  const routes = ['data-analysis', 'verbal', 'judgment', 'comprehensive-a', 'comprehensive-d', 'analogy']
+  let figures = 0
+
+  for (const route of routes) {
+    const page = await readText(new URL(`../pages/${route}/index.html`, import.meta.url))
+    assert.ok(
+      page.includes('href="../../assets/fig.css"'),
+      `${route} 页用了示意图却没有引入 assets/fig.css（相对路径）`
+    )
+
+    const blocks = page.split('<figure class="fig">').slice(1)
+    assert.ok(blocks.length >= 1, `${route} 页应有至少一张示意图`)
+    figures += blocks.length
+
+    blocks.forEach((blk, i) => {
+      assert.ok(
+        blk.includes('<svg viewBox="0 0 '),
+        `${route} 页第 ${i + 1} 张示意图缺少 viewBox（无法等比缩放，手机端会变形）`
+      )
+      const cap = blk.match(/<figcaption>([\s\S]*?)<\/figcaption>/)
+      assert.ok(cap && cap[1].trim().length >= 8, `${route} 页第 ${i + 1} 张示意图缺少图注`)
+      // 图内文字必须用 SVG 属性显式着色，否则深色主题页面里会变成黑底黑字
+      const svg = blk.slice(0, blk.indexOf('</svg>') + 6)
+      assert.ok(!svg.includes('currentColor'), `${route} 页第 ${i + 1} 张示意图用了 currentColor 着色`)
+      assert.ok(/fill="#[0-9a-fA-F]{3,6}"/.test(svg), `${route} 页第 ${i + 1} 张示意图没有显式指定颜色`)
+    })
+  }
+
+  assert.ok(figures >= 18, `全站示意图数量偏少：${figures} < 18`)
+})
+
+test('示意图样式：窄屏保持最小可读尺寸并横向滚动', async () => {
+  const css = await readText(new URL('../assets/fig.css', import.meta.url))
+  assert.ok(css.includes('.fig'), 'fig.css 缺少 .fig 基础样式')
+  assert.ok(css.includes('max-width:640px'), 'fig.css 缺少 svg 最大宽度约束')
+  // 手机端不能整图等比缩小——12px 的字会缩到 6px，必须保底尺寸 + 横向滚动
+  assert.ok(css.includes('overflow-x:auto'), 'fig.css 窄屏缺少横向滚动')
+  assert.ok(/min-width:\s*\d+px/.test(css), 'fig.css 窄屏缺少最小可读宽度')
+})
