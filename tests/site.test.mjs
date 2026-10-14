@@ -473,7 +473,19 @@ test('数量关系页已按高照体系补全知识点，且每个模块都有�
     return page.slice(a, b)
   }
   for (let i = 0; i <= 20; i++) assert.ok(slice(`s${i}`).length > 200, `模块 s${i} 内容为空`)
-  assert.equal((page.match(/class="nav-chip/g) || []).length, 22, '导航 chip 应为 22 个')
+
+  // 导航：右上角已改为「左上角固定侧栏 + 移动端抽屉」（与判断推理页统一）
+  assert.equal((page.match(/class="nav-chip/g) || []).length, 0, '顶部横条应已移除')
+  assert.equal((page.match(/class="nav-bar"/g) || []).length, 0, '顶部导航条应已移除')
+  assert.equal((page.match(/class="sidebar"/g) || []).length, 1, '应有左侧固定目录')
+  assert.ok(page.includes('class="menu-btn"') && page.includes('class="mask"'), '缺少移动端抽屉结构')
+  assert.ok(page.includes('id="navSearch"'), '缺少侧栏搜索框')
+  const navLinks = [...page.matchAll(/class="nav-link"[^>]*href="#([^"]+)"/g)].map(m => m[1])
+  assert.equal(navLinks.length, 23, `侧栏链接应为 23 条，实为 ${navLinks.length}`)
+  assert.equal((page.match(/class="nav-group"/g) || []).length, 7, '侧栏应有 7 个分组')
+  for (const id of navLinks) {
+    assert.ok(page.includes(`id="${id}"`), `侧栏链接指向的锚点不存在：${id}`)
+  }
 
   // 几何模块：块号 1~16 连续（防止重编号遗漏），且补上特殊角直角三角形
   const geo = slice('s5')
@@ -501,16 +513,63 @@ test('数量关系页已按高照体系补全知识点，且每个模块都有�
   assert.ok(slice('s20').includes('排队取水') && slice('s20').includes('过桥'), '统筹优化模块内容不足')
 
   // 硬要求：每个模块都配有例题
-  assert.equal((slice('s17').match(/class="example"/g) || []).length, 5, '数字推理应有 5 道例题')
-  assert.equal((slice('s18').match(/class="example"/g) || []).length, 3, '时钟问题应有 3 道例题')
+  assert.equal((slice('s17').match(/class="example"/g) || []).length, 7, '数字推理应有 7 道例题')
+  assert.equal((slice('s18').match(/class="example"/g) || []).length, 4, '时钟问题应有 4 道例题')
   assert.equal((slice('s19').match(/class="example"/g) || []).length, 4, '抽屉盈亏应有 4 道例题')
-  assert.equal((slice('s20').match(/class="example"/g) || []).length, 4, '统筹优化应有 4 道例题')
+  assert.equal((slice('s20').match(/class="example"/g) || []).length, 5, '统筹优化应有 5 道例题')
   const total = (page.match(/class="example"/g) || []).length
-  assert.ok(total >= 85, `例题总数偏少：${total}`)
+  assert.ok(total >= 130, `例题总数偏少：${total}`)
   for (let i = 0; i <= 20; i++) {
     const n = (slice(`s${i}`).match(/class="example"/g) || []).length
     assert.ok(n >= 1, `模块 s${i} 没有例题`)
   }
+
+  // ★ 每个知识点后面必须「紧挨」例题（例题不得堆在模块末尾）
+  //   按 div 深度扫出模块内 depth-0 的元素序列，B=知识点、E=例题
+  const seqOf = (sec) => {
+    const key = '<div class="section-body">'
+    const i0 = sec.indexOf(key)
+    assert.ok(i0 >= 0, '缺少 section-body')
+    const re = /<div\b[^>]*>|<\/div>/g
+    re.lastIndex = i0 + key.length
+    const out = []
+    let depth = 0
+    let m
+    while ((m = re.exec(sec))) {
+      if (m[0] === '</div>') {
+        if (depth === 0) break
+        depth -= 1
+        continue
+      }
+      if (depth === 0) {
+        const cls = (m[0].match(/class="([^"]*)"/) || [null, ''])[1]
+        const toks = cls.split(/\s+/)
+        out.push(toks.includes('block') ? 'B' : toks.includes('example') ? 'E' : 'O')
+      }
+      depth += 1
+    }
+    return out
+  }
+  let grandB = 0
+  let grandE = 0
+  for (let i = 0; i <= 20; i++) {
+    const seq = seqOf(slice(`s${i}`))
+    const nb = seq.filter(x => x === 'B').length
+    const ne = seq.filter(x => x === 'E').length
+    grandB += nb
+    grandE += ne
+    assert.ok(nb >= 1, `模块 s${i} 没有知识点`)
+    assert.ok(ne >= nb, `模块 s${i} 例题数(${ne})少于知识点数(${nb})`)
+    seq.forEach((k, idx) => {
+      if (k === 'B') {
+        assert.equal(seq[idx + 1], 'E', `模块 s${i} 第 ${seq.slice(0, idx + 1).filter(x => x === 'B').length} 个知识点后面没有紧跟例题`)
+      }
+    })
+  }
+  assert.ok(grandB >= 126, `知识点总数偏少：${grandB}`)
+  assert.ok(grandE >= 134, `例题总数偏少：${grandE}`)
+  // 总览 / 考场策略为策略性内容，不要求配例题
+  assert.equal(seqOf(slice('nav')).filter(x => x === 'E').length, 0, '总览不应有例题')
 
   // 总览：补上「通用四法」与 18 类题型表
   const nav = slice('nav')
