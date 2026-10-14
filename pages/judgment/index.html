@@ -161,6 +161,61 @@
   tr:nth-child(even) td{background:#fcf9f4;}
   table.tight th,table.tight td{padding:6px 10px;}
 
+  /* 论证评价 · 考情事实卡（替代表格） */
+  .fact-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0;}
+  @media(max-width:860px){.fact-grid{grid-template-columns:1fr;}}
+  .fact{background:#faf7fd;border:1px solid #e8dcf7;border-radius:10px;padding:10px 13px;}
+  .fact .fk{font-size:12px;font-weight:800;color:#7b4bab;letter-spacing:.5px;margin-bottom:3px;}
+  .fact .fv{font-size:13.2px;line-height:1.6;}
+
+  /* 论证评价 · 三要素卡 */
+  .elem-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:12px 0;}
+  @media(max-width:860px){.elem-grid{grid-template-columns:1fr;}}
+  .elem{background:#f7f4fb;border:1px solid #e4d7f5;border-left:4px solid #7b4bab;border-radius:9px;padding:11px 14px;}
+  .elem .en-h{font-size:14px;margin-bottom:4px;color:#5c3785;}
+  .elem .en-b{font-size:13px;line-height:1.6;}
+  .elem .en-k{font-size:12.3px;color:var(--ink-soft);margin-top:6px;padding-top:6px;border-top:1px dashed #e4d7f5;line-height:1.55;}
+
+  /* 论证评价 · 四大类容器 */
+  .bigcat{border:1px solid #e4d7f5;border-radius:12px;margin:14px 0;overflow:hidden;background:#fff;}
+  .bc-head{
+    display:flex;align-items:center;gap:9px;flex-wrap:wrap;
+    background:#f5effc;padding:10px 14px;font-size:15px;color:#4e2d77;
+  }
+  .bc-head .bc-tag{
+    flex:none;width:22px;height:22px;border-radius:6px;background:#7b4bab;color:#fff;
+    font-size:12px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;
+  }
+  .bc-head b{font-size:15.5px;}
+  .bc-head .bc-onesent{font-size:12.5px;color:#7c5ba6;font-weight:400;margin-left:auto;}
+  @media(max-width:640px){.bc-head .bc-onesent{margin-left:0;width:100%;}}
+  .bc-body{padding:4px 14px 10px;}
+  .sub-item{padding:10px 0;border-bottom:1px dashed #ece2f8;}
+  .sub-item:last-child{border-bottom:none;}
+  .si-n{font-size:13.6px;font-weight:800;color:#5c3785;margin-bottom:3px;}
+  .si-n::before{content:"▸ ";color:#a98cd0;}
+  .si-d{font-size:13.2px;line-height:1.65;color:var(--ink);}
+  .si-e{
+    font-size:12.8px;line-height:1.65;color:var(--ink-soft);margin-top:6px;
+    background:#fbf8fe;border-left:3px solid #cbb2e8;border-radius:0 7px 7px 0;padding:7px 11px;
+  }
+  .si-e b{color:#8a5a12;}
+  .si-note{font-size:12.2px;color:#9b7fc4;font-style:italic;}
+
+  /* 论证评价 · 对比卡（替代对比表格） */
+  .cmp-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0;}
+  @media(max-width:860px){.cmp-grid{grid-template-columns:1fr;}}
+  .cmp{border:1px solid #e4d7f5;border-radius:11px;overflow:hidden;background:#fff;}
+  .cmp-h{background:#f5effc;padding:9px 14px;font-size:14px;font-weight:800;color:#4e2d77;}
+  .cmp-b{padding:10px 14px 12px;}
+  .cmp-b p{font-size:13.1px;line-height:1.6;margin:5px 0;}
+  .cmp-b p > b:first-child{color:#7b4bab;margin-right:4px;}
+  .cmp-e{
+    background:#fbf8fe;border-left:3px solid #cbb2e8;border-radius:0 7px 7px 0;
+    padding:7px 11px;color:var(--ink-soft) !important;font-size:12.8px !important;
+  }
+  .cmp-e b{color:#8a5a12 !important;}
+
   /* 论证评价 · 谬误卡片网格 */
   .flaw-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0;}
   @media(max-width:860px){.flaw-grid{grid-template-columns:1fr;}}
@@ -1211,15 +1266,16 @@
       <h3><span class="dot" style="background:#7b4bab;"></span>4.1 题型认知 &amp; 考情</h3>
       <p><b>是什么：</b>给一篇 300~600 字的短文（材料），要求指出其中存在的若干处<b>论证错误</b>，并<b>分别说明理由</b>。</p>
       <p><b>本质：</b>源于管理类联考的「论证有效性分析」，既测查<b>逻辑思维</b>，也测查<b>文字表达</b>。</p>
-      <table>
-        <tr><th style="width:110px;">维度</th><th>具体情况</th></tr>
-        <tr><td>材料篇幅</td><td>300~600 字，3~6 段（<b>4~5 段居多</b>）</td></tr>
-        <tr><td>材料话题</td><td>自然科学类、社科类为主 —— 科技文献、报刊评论、社会现象</td></tr>
-        <tr><td>错误数量</td><td>一般 <b>4~5 处</b>（题干会明确给出数量）</td></tr>
-        <tr><td>作答格式</td><td><b>A 处</b>：错误表现 + 错误类型（≤75 字）<br><b>B 处</b>：理由（≤50 字）</td></tr>
-        <tr><td>分值</td><td>36~50 分</td></tr>
-        <tr><td>命题趋势</td><td>2016 年 5 月之前题干<b>明确给出</b>四大错误类型；之后<b>不再提示</b>，更强调「错在哪 + 为什么」</td></tr>
-      </table>
+
+      <div class="fact-grid">
+        <div class="fact"><div class="fk">材料篇幅</div><div class="fv">300~600 字，3~6 段（<b>4~5 段居多</b>）</div></div>
+        <div class="fact"><div class="fk">材料话题</div><div class="fv">自然科学类、社科类为主 —— 科技文献、报刊评论、社会现象</div></div>
+        <div class="fact"><div class="fk">错误数量</div><div class="fv">一般 <b>4~5 处</b>（题干会明确给出数量）</div></div>
+        <div class="fact"><div class="fk">作答格式</div><div class="fv"><b>A 处</b>：错误表现 + 错误类型（≤75 字）<br><b>B 处</b>：理由（≤50 字）</div></div>
+        <div class="fact"><div class="fk">分值</div><div class="fv">36~50 分</div></div>
+        <div class="fact"><div class="fk">命题趋势</div><div class="fv">2016 年 5 月前题干<b>明确给出</b>四大错误类型；之后<b>不再提示</b>，更强调「错在哪 + 为什么」</div></div>
+      </div>
+
       <div class="jingle">
         <div class="jt">评分标准（四条）</div>
         ① <b>判断准确</b>——准确找错并说出错误类型　② <b>理由充分</b>——结合材料与常识解析<br>
@@ -1238,12 +1294,23 @@
     <div class="card" id="arg-struct">
       <h3><span class="dot" style="background:#7b4bab;"></span>4.2 论证结构 &amp; 做题四步</h3>
       <h4>先认清三个要素</h4>
-      <table>
-        <tr><th style="width:80px;">要素</th><th>含义</th><th style="width:230px;">识别标志词</th></tr>
-        <tr><td><b>论点</b></td><td>论述的话题 + 得出的<b>结论</b></td><td>因此、所以、可见、由此可见、据此判断、这说明</td></tr>
-        <tr><td><b>论据</b></td><td>支持论点的<b>依据</b></td><td>因为、由于、根据、调查研究（显示）、例如</td></tr>
-        <tr><td><b>论证</b></td><td>用论据证明论点的<b>推理过程</b>（隐藏的链条）</td><td>—— 重点看「论据 → 论点」这一步跳得合不合理</td></tr>
-      </table>
+      <div class="elem-grid">
+        <div class="elem">
+          <div class="en-h"><b>论点</b></div>
+          <div class="en-b">论述的话题 + 得出的<b>结论</b></div>
+          <div class="en-k">标志词：因此、所以、可见、由此可见、据此判断、这说明</div>
+        </div>
+        <div class="elem">
+          <div class="en-h"><b>论据</b></div>
+          <div class="en-b">支持论点的<b>依据</b></div>
+          <div class="en-k">标志词：因为、由于、根据、调查研究（显示）、例如</div>
+        </div>
+        <div class="elem">
+          <div class="en-h"><b>论证</b></div>
+          <div class="en-b">用论据证明论点的<b>推理过程</b>（隐藏的链条）</div>
+          <div class="en-k">重点看「论据 → 论点」这一步跳得合不合理</div>
+        </div>
+      </div>
       <div class="jingle">
         <div class="jt">核心心法</div>
         论证评价题<b>本质就是拆论证结构</b>：把「论点、论据、论证」三段拆开，
@@ -1266,34 +1333,111 @@
     <!-- 4.3 四大逻辑错误类型 -->
     <div class="card" id="arg-4">
       <h3><span class="dot" style="background:#7b4bab;"></span>4.3 四大逻辑错误类型（官方分类）</h3>
-      <p class="lead">题干若给出错误类型提示，就锁这四类。每类下面细分的小类，就是常见谬误的「官方名称」。</p>
-      <table>
-        <tr><th style="width:110px;">大类</th><th>细分小类</th><th style="width:210px;">一句话识别</th></tr>
-        <tr>
-          <td><b>概念不明确</b></td>
-          <td>偷换概念、转移论题、稻草人谬误</td>
-          <td>前后说的<b>不是同一个东西</b></td>
-        </tr>
-        <tr>
-          <td><b>判断不准确</b></td>
-          <td>过度推断、可能推必然、自相矛盾</td>
-          <td>结论<b>本身就不成立</b>或前后打架</td>
-        </tr>
-        <tr>
-          <td><b>推理不严密</b></td>
-          <td>强加因果、因果倒置、单因谬误、类比谬误、选择性论证、平均数谬误</td>
-          <td>论据到结论<b>这一步跳错</b>了</td>
-        </tr>
-        <tr>
-          <td><b>论据不充分</b></td>
-          <td>论据错误、以偏概全、诉诸情感</td>
-          <td>论据<b>太少 / 太偏</b>，撑不起结论</td>
-        </tr>
-      </table>
+      <p class="lead">题干若给出错误类型提示，就锁这四类。每类下面的小类都有定义和例子 —— <b>不求全背，但求看到能认出来</b>。</p>
+
+      <div class="bigcat">
+        <div class="bc-head"><span class="bc-tag">1</span><b>概念不明确</b><span class="bc-onesent">前后说的不是同一个东西</span></div>
+        <div class="bc-body">
+          <div class="sub-item">
+            <div class="si-n">偷换概念</div>
+            <div class="si-d">在论证过程中把一个概念<b>偷偷换成另一个</b>，前后说的不是同一件事。</div>
+            <div class="si-e"><b>例</b> 材料说「转基因<b>技术</b>是安全的」，结论却说「转基因<b>食品</b>是安全的」—— 技术与食品不是同一个概念。</div>
+          </div>
+          <div class="sub-item">
+            <div class="si-n">转移论题</div>
+            <div class="si-d">用<b>另一个话题</b>替换原本要论证的话题（答非所问、跑题）。</div>
+            <div class="si-e"><b>例</b> 领导问「你为什么迟到？」，小张答「这是我第一次迟到」—— 问的是原因，答的是次数。</div>
+          </div>
+          <div class="sub-item">
+            <div class="si-n">稻草人谬误</div>
+            <div class="si-d"><b>歪曲、夸大甚至凭空捏造</b>对方的观点，做成一个「稻草人」，再攻击这个假观点 —— 这样打起来很轻松，但打的根本不是对方。</div>
+            <div class="si-e"><b>例</b> 小明说「国家应该多投钱发展教育」，小红回击「想不到你这么不爱国，居然想减少国防开支、让外国有机可乘」。<br><span class="si-note">小明从没说要减国防开支，这是小红臆造的观点。</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bigcat">
+        <div class="bc-head"><span class="bc-tag">2</span><b>判断不准确</b><span class="bc-onesent">结论本身不成立，或前后打架</span></div>
+        <div class="bc-body">
+          <div class="sub-item">
+            <div class="si-n">过度推断</div>
+            <div class="si-d">由有限的论据推出<b>更深、更广</b>的结论，结论超出了论据能支撑的范围。</div>
+            <div class="si-e"><b>例</b> 国家很重视<b>学前教育</b> →「<b>教育行业</b>会得到很好的发展」—— 把范围从"学前"扩大到了整个教育。</div>
+          </div>
+          <div class="sub-item">
+            <div class="si-n">可能推必然</div>
+            <div class="si-d">论据只支持「<b>可能</b>」，结论却说成「<b>一定 / 必然</b>」。</div>
+            <div class="si-e"><b>例</b> 材料说「月亮并不是每个望月都进入地球阴影」→ 推出「望月与会不会月食<b>丝毫</b>关系都没有」—— 有关系但非必然，被说成了完全无关。</div>
+          </div>
+          <div class="sub-item">
+            <div class="si-n">自相矛盾</div>
+            <div class="si-d"><b>论据与结论相矛盾</b>，或对同一对象做出两个互相矛盾的断定。</div>
+            <div class="si-e"><b>例</b> 「月食是月亮被地球阴影遮掩、日食是太阳光被月球遮住，<b>所以说月食和日食的成因一样</b>」—— 前面刚说成因不同，后面却说一样。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bigcat">
+        <div class="bc-head"><span class="bc-tag">3</span><b>推理不严密</b><span class="bc-onesent">论据到结论这一步跳错了</span></div>
+        <div class="bc-body">
+          <div class="sub-item">
+            <div class="si-n">强加因果</div>
+            <div class="si-d">把<b>本无因果</b>的两件事强行联系起来，在中间建立「导致关系」。</div>
+            <div class="si-e"><b>例</b> 「B 市通过引水增加了水体循环自净能力」→ 推出「再生水回用促进了水资源循环利用」—— 两件事没有必然因果关系。</div>
+          </div>
+          <div class="sub-item">
+            <div class="si-n">因果倒置</div>
+            <div class="si-d">把<b>原因和结果搞反了</b>，或二者本就是「共同结果」而非因果。</div>
+            <div class="si-e"><b>例</b> 「90% 的富翁每天喝咖啡，所以喝咖啡能致富」—— 更可能是「有钱才喝得起 / 二者都是成功的结果」。</div>
+          </div>
+          <div class="sub-item">
+            <div class="si-n">单因谬误</div>
+            <div class="si-d">复杂结果<b>只有一个原因</b>造成的 —— 忽略其他因素。</div>
+            <div class="si-e"><b>例</b> 「小王成绩下降，<b>一定是</b>因为打游戏」—— 可能还有身体、家庭、兴趣等多种原因。</div>
+          </div>
+          <div class="sub-item">
+            <div class="si-n">类比谬误（不当类比）</div>
+            <div class="si-d">把<b>表面相似、本质不同</b>的两类事物放一起比较，并推出结论。</div>
+            <div class="si-e"><b>例</b> 「大脑和计算机都可计算，计算机能删除文件，所以大脑可删除记忆」—— 二者本质不同。</div>
+          </div>
+          <div class="sub-item">
+            <div class="si-n">选择性论证</div>
+            <div class="si-d">只挑<b>对自己有利</b>的证据，回避不利证据。</div>
+            <div class="si-e"><b>例</b> 只说「某药治好 30 人」，却不说「还有 100 人无效」—— 只呈现一部分事实。</div>
+          </div>
+          <div class="sub-item">
+            <div class="si-n">平均数谬误</div>
+            <div class="si-d">把<b>平均数</b>概念套到<b>单独个体</b>身上（数字陷阱）。</div>
+            <div class="si-e"><b>例</b> 家里月收入 3 万、三个劳动力 → 推出「每人月收入 1 万」—— 很可能一人挣 3 万、另外两人没收入。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bigcat">
+        <div class="bc-head"><span class="bc-tag">4</span><b>论据不充分</b><span class="bc-onesent">论据太少 / 太偏，撑不起结论</span></div>
+        <div class="bc-body">
+          <div class="sub-item">
+            <div class="si-n">论据错误</div>
+            <div class="si-d">论据本身就是<b>错的或假的</b>，地基不稳。</div>
+            <div class="si-e"><b>例</b> 「因为吸烟有益健康，所以我们应该吸烟」—— 前提本身就是假的。</div>
+          </div>
+          <div class="sub-item">
+            <div class="si-n">以偏概全</div>
+            <div class="si-d">由<b>少数、个别的</b>例子，推出<b>普遍性</b>的结论。</div>
+            <div class="si-e"><b>例</b> 「来自 A 市的小张是骗子，可见 A 市的人都是骗子」—— 样本太小且特殊。</div>
+          </div>
+          <div class="sub-item">
+            <div class="si-n">诉诸情感</div>
+            <div class="si-d">用<b>操纵感情</b>（恐惧、怜悯、同情等）代替逻辑论证。</div>
+            <div class="si-e"><b>例</b> 「你怎么可以吃狗肉？小狗多么可爱，就像小朋友一样，你忍心伤害朋友吗？」—— 用情感代替了论证。</div>
+          </div>
+        </div>
+      </div>
+
       <div class="warn">
         <div class="wt">💡 怎么用</div>
         <ul>
-          <li><b>先找错、再归类</b>：多年考试趋势是「不给类型提示」，所以重点是<b>说清哪里错</b>，类型名说不上来也别慌。</li>
+          <li><b>先找错、再归类</b>：近年趋势是「不给类型提示」，所以重点是<b>说清哪里错</b>，类型名说不上来也别慌。</li>
           <li>归类时抓关键：<b>概念</b>问题看「是不是同一个词」；<b>判断</b>问题看「结论本身对不对」；<b>推理</b>问题看「因果关系 / 类比关系」；<b>论据</b>问题看「样本够不够、代不代表」。</li>
         </ul>
       </div>
@@ -1425,13 +1569,30 @@
       <h3><span class="dot" style="background:#7b4bab;"></span>4.6 易混考点辨析（最容易判错）</h3>
 
       <h4>① 以偏概全　VS　过度推断</h4>
-      <table class="tight">
-        <tr><th style="width:90px;">维度</th><th>以偏概全</th><th>过度推断</th></tr>
-        <tr><td>本质</td><td>由少数 / 粗略事实 → <b>普遍性</b>结论</td><td>论据不足 → 结论，结论<b>更深、更广</b></td></tr>
-        <tr><td>特征</td><td>样本小、少数例子、特殊样本</td><td>扩大了<b>范围、程度</b></td></tr>
-        <tr><td>提示词</td><td>一个、极少数、某、典型、个别</td><td>可见、由此可知、一定、必然</td></tr>
-        <tr><td>例</td><td>来自 A 市的小张是骗子 → A 市的人都是骗子</td><td>国家很重视<b>学前教育</b> → <b>教育行业</b>会得到很好发展</td></tr>
-      </table>
+      <div class="cmp-grid">
+        <div class="cmp">
+          <div class="cmp-h">以偏概全</div>
+          <div class="cmp-b">
+            <p><b>本质</b>由少数 / 粗略事实 → <b>普遍性</b>结论</p>
+            <p><b>特征</b>样本小、少数例子、特殊样本</p>
+            <p><b>提示词</b>一个、极少数、某、典型、个别</p>
+            <p class="cmp-e"><b>例</b> 来自 A 市的小张是骗子 → A 市的人都是骗子</p>
+          </div>
+        </div>
+        <div class="cmp">
+          <div class="cmp-h">过度推断</div>
+          <div class="cmp-b">
+            <p><b>本质</b>论据不足 → 结论，结论<b>更深、更广</b></p>
+            <p><b>特征</b>扩大了<b>范围、程度</b></p>
+            <p><b>提示词</b>可见、由此可知、一定、必然</p>
+            <p class="cmp-e"><b>例</b> 国家很重视<b>学前教育</b> → <b>教育行业</b>会得到很好发展</p>
+          </div>
+        </div>
+      </div>
+      <div class="jingle">
+        <div class="jt">一句话区分</div>
+        <b>以偏概全</b>看「<b>样本</b>够不够」；<b>过度推断</b>看「<b>结论</b>是不是被放大了」。
+      </div>
 
       <h4>② 平均数谬误（数字陷阱）</h4>
       <p>把<b>平均数</b>概念放到<b>单独个体</b>身上。</p>

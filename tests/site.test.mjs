@@ -424,4 +424,23 @@ test('判断推理页补充了「论证评价」模块（综应 C 类）', async
   // 谬误卡片与侧栏
   assert.ok((page.match(/class="flaw"/g) || []).length >= 12, '谬误卡片不足 12 张')
   assert.ok(page.includes('模块四 · 论证评价'), '缺少模块四标题')
+
+  // 论证评价模块内部不得使用表格（用户明确要求改卡片式）
+  const m4 = page.slice(page.indexOf('<section id="argue">'), page.indexOf('<!-- ============ 口诀速记卡'))
+  assert.ok(!m4.includes('<table'), '论证评价模块内不应使用表格')
+
+  // 每个小类都必须有定义 + 例子（15 个小类）
+  for (const cls of [
+    '偷换概念', '转移论题', '稻草人谬误',
+    '过度推断', '可能推必然', '自相矛盾',
+    '强加因果', '因果倒置', '单因谬误', '类比谬误', '选择性论证', '平均数谬误',
+    '论据错误', '以偏概全', '诉诸情感'
+  ]) {
+    assert.ok(m4.includes(cls), `论证评价缺少小类：${cls}`)
+  }
+  const subs = (m4.match(/class="sub-item"/g) || []).length
+  assert.ok(subs >= 15, `小类条目不足（${subs}），每个小类都应有定义和例子`)
+  const evids = (m4.match(/class="si-e"/g) || []).length
+  assert.ok(evids >= 15, `小类例子不足（${evids}）`)
+  assert.ok(m4.includes('class="bigcat"'), '四大类应使用卡片容器')
 })
