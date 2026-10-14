@@ -8,7 +8,6 @@
 <title>测试</title>
 <style>
   :root {
-    --side-w: 252px;
     --bg: #f0f2f5;
     --card-bg: #ffffff;
     --primary: #4f7cff;
@@ -54,46 +53,6 @@
   .banner h1 { font-size: 22px; font-weight: 700; margin-bottom: 4px; letter-spacing: 1px; }
   .banner p { font-size: 13px; opacity: 0.85; }
 
-  /* ===== 左侧固定目录（与判断推理页统一） ===== */
-  .sidebar {
-    position: fixed; top: 0; left: 0; bottom: 0; width: var(--side-w);
-    background: #262b38; color: #d8dce6; overflow-y: auto; z-index: 50;
-    padding: 18px 0 60px; scrollbar-width: thin;
-  }
-  .sidebar::-webkit-scrollbar { width: 5px; }
-  .sidebar::-webkit-scrollbar-thumb { background: #4a5468; border-radius: 3px; }
-  .sb-brand { padding: 6px 20px 14px; border-bottom: 1px solid #39404f; margin-bottom: 10px; }
-  .sb-brand .t { font-size: 17px; font-weight: 800; color: #fff; letter-spacing: 1px; }
-  .sb-brand .s { font-size: 11px; color: #98a1b3; margin-top: 2px; }
-  .sb-search { margin: 10px 14px; }
-  .sb-search input {
-    width: 100%; padding: 8px 12px; border-radius: 8px; border: 1px solid #414b5e;
-    background: #1e222c; color: #eef1f7; font-size: 13px; outline: none; min-height: 38px;
-  }
-  .sb-search input:focus { border-color: var(--primary); }
-  .sb-search input::placeholder { color: #78829a; }
-  .nav-group { margin: 8px 0; }
-  .nav-group .g-title {
-    font-size: 11px; color: #8d97ab; padding: 6px 20px 4px; letter-spacing: 2px; font-weight: 700;
-  }
-  .nav-link {
-    display: block; padding: 7px 18px 7px 26px; font-size: 13.5px; color: #c4cbd9; cursor: pointer;
-    border-left: 3px solid transparent; transition: 0.15s; text-decoration: none;
-  }
-  .nav-link:hover { background: #303747; color: #fff; }
-  .nav-link.active { background: #23304d; color: #a9c4ff; border-left-color: var(--primary); font-weight: 600; }
-
-  /* 移动端抽屉按钮 */
-  .menu-btn {
-    display: none; position: fixed; top: 12px; left: 12px; z-index: 80;
-    width: 42px; height: 42px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.4);
-    background: rgba(17, 24, 39, 0.5); color: #fff; font-size: 19px; cursor: pointer;
-    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-    align-items: center; justify-content: center;
-  }
-  .menu-btn:active { transform: scale(0.94); }
-  .mask { display: none; position: fixed; inset: 0; background: rgba(18, 22, 32, 0.52); z-index: 65; }
-
   /* ===== 示意图 ===== */
   .fig {
     margin: 10px 0; padding: 12px 12px 8px; background: #fbfcff;
@@ -106,7 +65,6 @@
   .fig-row > .fig { flex: 1 1 210px; margin: 8px 0; }
 
   /* 主体：让出左侧目录宽度 */
-  .main { margin-left: var(--side-w); }
   .container {
     max-width: 720px;
     margin: 0 auto;
@@ -425,6 +383,7 @@
   }
 </style>
   <link data-study-hub-style rel="stylesheet" href="../../assets/hub-nav.css">
+  <link data-page-shell rel="stylesheet" href="../../assets/page-shell.css">
 </head>
 <body>
 
@@ -4086,30 +4045,6 @@
     section.classList.toggle('collapsed');
   }
 
-  // 移动端抽屉：汉堡开关
-  const menuBtn = document.getElementById('menuBtn');
-  const mask = document.getElementById('mask');
-  function closeMenu() { document.body.classList.remove('menu-open'); }
-  menuBtn.addEventListener('click', function () { document.body.classList.toggle('menu-open'); });
-  mask.addEventListener('click', closeMenu);
-
-  // 侧栏链接与滚动高亮
-  const navLinks = [...document.querySelectorAll('.nav-link')];
-  const navSections = [...document.querySelectorAll('.section[id]')];
-
-  function navActive() {
-    let cur = null;
-    navSections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) cur = s.id; });
-    navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + cur));
-  }
-  window.addEventListener('scroll', navActive);
-  window.addEventListener('resize', navActive);
-
-  // 移动端：点完导航收起抽屉
-  navLinks.forEach(l => l.addEventListener('click', function () {
-    if (window.innerWidth <= 900) closeMenu();
-  }));
-
   // 回到顶部 / 顶部进度条
   const backTop = document.getElementById('backTop');
   const progressFill = document.getElementById('progressFill');
@@ -4171,6 +4106,7 @@
   });
 </script>
 
-  <script data-study-hub-script src="../../assets/hub-nav.js"></script>
+    <script data-page-shell src="../../assets/page-shell.js"></script>
+<script data-study-hub-script src="../../assets/hub-nav.js"></script>
 </body>
 </html>

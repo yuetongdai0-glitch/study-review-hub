@@ -6,6 +6,7 @@
 <title>测试</title>
 <style>
   :root{
+    --primary:#2563eb;
     --bg:#f4f6fb; --card:#ffffff; --ink:#1f2937; --sub:#6b7280; --line:#e5e7eb;
     --blue:#2563eb; --blue-bg:#eff6ff; --orange:#f59e0b; --orange-bg:#fffbeb;
     --green:#10b981; --green-bg:#ecfdf5; --red:#ef4444; --red-bg:#fef2f2;
@@ -13,14 +14,14 @@
     --radius:14px; --shadow:0 1px 3px rgba(15,23,42,.08),0 4px 14px rgba(15,23,42,.05);
   }
   *{box-sizing:border-box; margin:0; padding:0;}
-  html{scroll-behavior:smooth; scroll-padding-top:76px;}
+  html{scroll-behavior:smooth;}
   body{
     font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
     background:var(--bg); color:var(--ink); line-height:1.7; font-size:15px;
   }
   /* ===== 顶栏 ===== */
   header{
-    position:fixed; top:0; left:0; right:0; z-index:100;
+    position:fixed; top:0; left:var(--side-w); right:0; z-index:100;
     background:rgba(255,255,255,.92); backdrop-filter:blur(10px);
     border-bottom:1px solid var(--line); padding:10px 20px;
     display:flex; align-items:center; gap:14px; flex-wrap:wrap;
@@ -42,31 +43,9 @@
   }
   .mode-switch button.active{background:#fff; color:var(--blue); box-shadow:var(--shadow);}
   /* ===== 侧边栏 ===== */
-  aside{
-    position:fixed; top:64px; bottom:0; left:0; width:250px; overflow-y:auto;
-    padding:18px 12px 40px; border-right:1px solid var(--line); background:#fbfcfe;
-  }
-  aside h4{font-size:12px; color:var(--sub); letter-spacing:2px; padding:0 10px 8px;}
-  aside nav a{
-    display:flex; align-items:center; gap:8px; padding:7px 10px; border-radius:9px;
-    color:var(--ink); text-decoration:none; font-size:13.5px; margin-bottom:2px; transition:all .15s;
-  }
-  aside nav a:hover{background:#eef2f9;}
-  aside nav a.active{background:var(--blue-bg); color:var(--blue); font-weight:700;}
-  aside nav a .dot{
-    width:8px; height:8px; border-radius:50%; flex-shrink:0;
-    background:#d1d5db; transition:background .3s;
-  }
-  aside nav a .dot.done{background:var(--green);}
-  aside nav a .num{font-size:11px; color:var(--sub); margin-left:auto;}
-  aside .sider-actions{padding:14px 10px 0; border-top:1px solid var(--line); margin-top:14px;}
-  aside .sider-actions button{
-    width:100%; padding:9px; border:none; border-radius:9px; font-size:13px;
-    cursor:pointer; margin-bottom:8px; font-weight:600;
-  }
   .btn-reset{background:#fef2f2; color:var(--red);}
   /* ===== 主内容 ===== */
-  main{margin-left:250px; padding:86px 28px 80px; max-width:960px;}
+  main{padding:86px 28px 80px; max-width:960px;}
   .hero{
     background:linear-gradient(135deg,#1e3a8a,#2563eb 60%,#3b82f6);
     color:#fff; border-radius:20px; padding:28px 30px; margin-bottom:26px;
@@ -254,7 +233,7 @@
   body.mode-quiz section:not(#quiz-sec){display:none;}
   /* ===== 打印 ===== */
   @media print{
-    header, aside, #menu-btn, #overlay, .card-actions, .mode-switch, .quiz-score button, .sider-actions{display:none !important;}
+    header, .card-actions, .mode-switch, .quiz-score button{display:none !important;}
     main{margin-left:0; padding:20px;}
     .card-a{display:block !important;}
     .ex-ans{display:block !important;}
@@ -263,36 +242,15 @@
     body{margin:0;}
   }
   .footer{text-align:center; color:var(--sub); font-size:12px; padding:30px 0 10px;}
-  /* ===== 汉堡菜单 + 遮罩 ===== */
-  #menu-btn{
-    display:none; border:none; background:#eef1f6; border-radius:9px;
-    width:44px;height:44px; font-size:18px; cursor:pointer; flex-shrink:0;
-    color:var(--ink); line-height:1; transition:background .2s;
-  }
-  #menu-btn:hover{background:#e2e8f0;}
-  #overlay{
-    display:none; position:fixed; inset:0; background:rgba(15,23,42,.45);
-    z-index:90; opacity:0; transition:opacity .25s; -webkit-tap-highlight-color:transparent;
-  }
-  body.menu-open #overlay{display:block; opacity:1;}
   /* ===== 移动端适配（< 900px） ===== */
   @media(max-width:900px){
-    #menu-btn{display:block;}
-    header{padding:8px 12px; gap:8px;}
+    header{left:0; padding:8px 12px 8px 64px; gap:8px;}
     header .logo{font-size:15px;}
     .progress-wrap{min-width:0; max-width:none; order:3; flex-basis:100%;}
     .progress-text{display:none;}
     .mode-switch{margin-left:auto;}
     .mode-switch button{padding:5px 12px; font-size:12px; min-height:40px;}
-    aside{
-      top:0; height:100%; bottom:auto; width:264px; padding:72px 12px 40px;
-      transform:translateX(-105%); transition:transform .28s ease; z-index:110;
-      box-shadow:0 0 44px rgba(0,0,0,.22); -webkit-overflow-scrolling:touch;
-    }
-    body.menu-open aside{transform:translateX(0);}
-    aside nav a{padding:9px 12px; font-size:14px;}
-    main{margin-left:0; padding:78px 14px 64px;}
-    html{scroll-padding-top:64px;}
+    main{padding:78px 14px 64px;}
     .hero{padding:20px 18px; border-radius:16px; margin-bottom:20px;}
     .hero h1{font-size:20px;}
     .hero p{font-size:13.5px;}
@@ -327,12 +285,54 @@
   }
 </style>
   <link data-study-hub-style rel="stylesheet" href="../../assets/hub-nav.css">
+  <link data-page-shell rel="stylesheet" href="../../assets/page-shell.css">
 </head>
 <body class="mode-browse">
 
+<!-- ===== 全站统一页壳（侧栏导航） ===== -->
+<button class="menu-btn" id="menuBtn" aria-label="打开目录">☰</button>
+<div class="mask" id="mask"></div>
+<aside class="sidebar" id="sidebar">
+  <div class="sb-brand">
+    <div class="t">图形推理 · 3+3 体系</div>
+    <div class="s">刘义恒图推笔记 · 15 节 · 逐卡自测（先回忆再核对）</div>
+  </div>
+  <div class="sb-search">
+    <input type="text" id="navSearch" placeholder="搜索：位置 / 对称 / 数量 / 黑白块…">
+  </div>
+  <div class="nav-group"><div class="g-title">总览</div>
+    <a class="nav-link" id="nav-sec-framework" data-kw="总框架 3+3 像不像 先看图形" href="#sec-framework"><span class="dot"></span>解题总框架：3+3 体系</a>
+  </div>
+  <div class="nav-group"><div class="g-title">第一组 · 图形「像」</div>
+    <a class="nav-link" id="nav-sec-position" data-kw="位置 平移 旋转 翻转 步长" href="#sec-position"><span class="dot"></span>位置规律<span class="tag">1</span></a>
+    <a class="nav-link" id="nav-sec-style" data-kw="样式 遍历 加减同异 黑白运算" href="#sec-style"><span class="dot"></span>样式规律<span class="tag">2</span></a>
+    <a class="nav-link" id="nav-sec-marker" data-kw="标记 功能元素 箭头 点 连线" href="#sec-marker"><span class="dot"></span>标记规律（功能元素）<span class="tag">3</span></a>
+  </div>
+  <div class="nav-group"><div class="g-title">第二组 · 图形「不像」</div>
+    <a class="nav-link" id="nav-sec-property" data-kw="属性 对称 曲直 开闭" href="#sec-property"><span class="dot"></span>属性规律<span class="tag">4</span></a>
+    <a class="nav-link" id="nav-sec-quantity" data-kw="数量 点 线 角 面 素 笔画" href="#sec-quantity"><span class="dot"></span>数量规律<span class="tag">5</span></a>
+    <a class="nav-link" id="nav-sec-relation" data-kw="图形间 位置关系 相邻 相交 相离" href="#sec-relation"><span class="dot"></span>图形间位置关系<span class="tag">6</span></a>
+  </div>
+  <div class="nav-group"><div class="g-title">专项突破</div>
+    <a class="nav-link" id="nav-sec-blackwhite" data-kw="黑白块 专项 黑白运算" href="#sec-blackwhite"><span class="dot"></span>黑白块专项（26版）<span class="tag">7</span></a>
+    <a class="nav-link" id="nav-sec-space" data-kw="空间重构 六面体 四面体 相对面" href="#sec-space"><span class="dot"></span>空间重构：六面体 + 四面体<span class="tag">8</span></a>
+    <a class="nav-link" id="nav-sec-view" data-kw="三视图 截面 剖面" href="#sec-view"><span class="dot"></span>三视图与截面<span class="tag">9</span></a>
+    <a class="nav-link" id="nav-sec-solid" data-kw="立体拼合 选修 场景" href="#sec-solid"><span class="dot"></span>立体拼合 &amp; 选修场景<span class="tag">10</span></a>
+  </div>
+  <div class="nav-group"><div class="g-title">串讲与实战</div>
+    <a class="nav-link" id="nav-sec-xuanxiu" data-kw="选修 平面 图推 串讲" href="#sec-xuanxiu"><span class="dot"></span>选修一：思维导图串讲<span class="tag">11</span></a>
+    <a class="nav-link" id="nav-sec-daotu" data-kw="思维导图 全册 总览" href="#sec-daotu"><span class="dot"></span>思维导图（全册总览）<span class="tag">12</span></a>
+    <a class="nav-link" id="nav-sec-strategy" data-kw="考场 实战 策略 时间分配" href="#sec-strategy"><span class="dot"></span>考场实战策略<span class="tag">13</span></a>
+    <a class="nav-link" id="nav-quiz-sec" data-kw="自测 测验 练习" href="#quiz-sec"><span class="dot"></span>自测<span class="tag">14</span></a>
+  </div>
+  <div class="sb-actions">
+    <button type="button" onclick="resetAll()">↺ 重置全部进度</button>
+  </div>
+</aside>
+
+
 <header>
-  <button id="menu-btn" aria-label="打开目录">☰</button>
-  <div class="logo">📐 刘义恒图推 <span class="badge">3+3</span></div>
+<div class="logo">📐 刘义恒图推 <span class="badge">3+3</span></div>
   <div class="progress-wrap">
     <div class="progress-bar"><div class="progress-fill" id="pf"></div></div>
     <div class="progress-text" id="pt">已掌握 0 / 0 个知识点</div>
@@ -344,15 +344,6 @@
   </div>
 </header>
 
-<aside>
-  <h4>目录导航</h4>
-  <nav id="nav"></nav>
-  <div class="sider-actions">
-    <button class="btn-reset" onclick="resetAll()">↺ 重置全部进度</button>
-  </div>
-</aside>
-
-<div id="overlay"></div>
 <main>
   <div class="hero">
     <h1>图形推理「3+3」体系 · 复习手册</h1>
@@ -1650,14 +1641,6 @@ var NAV = [
   ["sec-xuanxiu","选修·思维导图串讲",11],["sec-daotu","思维导图总览",12],
   ["sec-strategy","实战策略",13],["quiz-sec","自测",14]
 ];
-var nav = document.getElementById("nav");
-NAV.forEach(function(n){
-  var a = document.createElement("a");
-  a.href = "#" + n[0]; a.id = "nav-" + n[0];
-  a.innerHTML = '<span class="dot"></span>' + n[1] + '<span class="num">' + (n[2]?n[2]:"") + '</span>';
-  nav.appendChild(a);
-});
-
 /* ================= 卡片交互 ================= */
 var cards = document.querySelectorAll(".card");
 cards.forEach(function(c){
@@ -1772,38 +1755,9 @@ function reQuiz(){
   scoreEl.innerHTML = "";
 }
 
-/* ================= 移动端抽屉菜单 ================= */
-var menuBtn = document.getElementById("menu-btn");
-var overlay = document.getElementById("overlay");
-function toggleMenu(open){
-  document.body.classList.toggle("menu-open", open);
-}
-if(menuBtn){
-  menuBtn.addEventListener("click", function(){
-    toggleMenu(!document.body.classList.contains("menu-open"));
-  });
-}
-if(overlay){
-  overlay.addEventListener("click", function(){ toggleMenu(false); });
-}
-document.querySelectorAll("aside nav a").forEach(function(a){
-  a.addEventListener("click", function(){ toggleMenu(false); });
-});
-
-/* ================= 滚动高亮 ================= */
-window.addEventListener("scroll", function(){
-  var pos = window.scrollY + 100, cur = NAV[0][0];
-  NAV.forEach(function(n){
-    var el = document.getElementById(n[0]);
-    if(el && el.offsetTop <= pos) cur = n[0];
-  });
-  document.querySelectorAll("aside nav a").forEach(function(a){
-    a.classList.toggle("active", a.id === "nav-" + cur);
-  });
-});
-
 updateAll();
 </script>
-  <script data-study-hub-script src="../../assets/hub-nav.js"></script>
+    <script data-page-shell src="../../assets/page-shell.js"></script>
+<script data-study-hub-script src="../../assets/hub-nav.js"></script>
 </body>
 </html>

@@ -35,18 +35,7 @@
     line-height: 1.8;
     -webkit-font-smoothing: antialiased;
   }
-  .navbar {
-    position: sticky; top: 0; z-index: 100;
-    background: rgba(255,255,255,0.95);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid var(--border);
-    padding: 10px 24px;
-    display: flex; align-items: center; justify-content: space-between;
-    flex-wrap: wrap; gap: 10px;
-  }
-  .navbar-brand { font-size: 17px; font-weight: 700; color: var(--primary); display: flex; align-items: center; gap: 8px; }
   .navbar-brand .icon { font-size: 22px; }
-  .nav-links { display: flex; gap: 3px; flex-wrap: wrap; }
   .nav-links a {
     text-decoration: none; color: var(--text-light); font-size: 12px;
     padding: 5px 10px; border-radius: 6px; transition: all 0.2s; white-space: nowrap;
@@ -125,7 +114,7 @@
   }
   .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
   .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
-  @media (max-width: 700px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } .nav-links { display: none; } }
+  
   .compare-box { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 10px 0; }
   @media (max-width: 700px) { .compare-box { grid-template-columns: 1fr; } }
   .compare-item { padding: 14px; border-radius: 10px; border: 1px solid var(--border); font-size: 14px; }
@@ -199,25 +188,43 @@
   }
 </style>
   <link data-study-hub-style rel="stylesheet" href="../../assets/hub-nav.css">
+  <link data-page-shell rel="stylesheet" href="../../assets/page-shell.css">
 </head>
 <body>
 
-<nav class="navbar">
-  <div class="navbar-brand"><span class="icon">🥜</span><span>花生十三 · 资料分析复习（完整版）</span></div>
-  <div class="nav-links">
-    <a href="#abrx">ABRX</a>
-    <a href="#speed">速算</a>
-    <a href="#method415">415法</a>
-    <a href="#assign">假设分配</a>
-    <a href="#growth">增长率</a>
-    <a href="#proportion">比重</a>
-    <a href="#ratio">比值类</a>
-    <a href="#saltwater">盐水类</a>
-    <a href="#compare">比较类</a>
-    <a href="#special">特殊考点</a>
-    <a href="#trap">陷阱</a>
-    <a href="#cheatsheet">速查表</a>
+<!-- ===== 全站统一页壳（侧栏导航） ===== -->
+<button class="menu-btn" id="menuBtn" aria-label="打开目录">☰</button>
+<div class="mask" id="mask"></div>
+<aside class="sidebar" id="sidebar">
+  <div class="sb-brand">
+    <div class="t">花生十三 · 资料分析</div>
+    <div class="s">ABRX + 速算 + 盐水 + 比值 + 比重</div>
   </div>
+  <div class="sb-search">
+    <input type="text" id="navSearch" placeholder="搜索知识点…">
+  </div>
+  <div class="nav-group"><div class="g-title">核心框架与速算</div>
+    <a class="nav-link" data-kw="ABRX 基期 现期 增长量 增长率 核心框架" href="#abrx">1. ABRX 核心框架</a>
+    <a class="nav-link" data-kw="速算 截位 直除 估算 分数比较 技巧" href="#speed">2. 速算技巧体系</a>
+    <a class="nav-link" data-kw="415 份数法 特值 分数 转化" href="#method415">3. 415 份数法</a>
+    <a class="nav-link" data-kw="假设分配 分配法 求解 增长率" href="#assign">4. 假设分配法</a>
+  </div>
+  <div class="nav-group"><div class="g-title">主体考点</div>
+    <a class="nav-link" data-kw="增长率 增长量 环比 同比 年均增长" href="#growth">5. 增长率体系</a>
+    <a class="nav-link" data-kw="比重 占比 百分点 部分 整体" href="#proportion">6. 比重类问题</a>
+    <a class="nav-link" data-kw="比值 平均数 倍数 翻番 比重差" href="#ratio">7. 比值类问题（平均数·倍数·翻番）</a>
+    <a class="nav-link" data-kw="盐水 混合 十字交叉 线段法 混合增长率" href="#saltwater">8. 盐水类（混合思维）</a>
+    <a class="nav-link" data-kw="比较 大小 排序 增速比较" href="#compare">9. 比较类问题</a>
+    <a class="nav-link" data-kw="特殊考点 指数 拉动 贡献率 进出口" href="#special">10. 特殊考点</a>
+  </div>
+  <div class="nav-group"><div class="g-title">避坑与速查</div>
+    <a class="nav-link" data-kw="陷阱 避坑 易错 坑 注意" href="#trap">11. 常见陷阱与避坑指南</a>
+    <a class="nav-link" data-kw="公式 速查 总表 汇总" href="#cheatsheet">12. 公式速查总表</a>
+    <a class="nav-link" data-kw="备考 训练 建议 计划" href="#advice">13. 备考训练建议</a>
+  </div>
+</aside>
+
+
 </nav>
 
 <div class="container">
@@ -257,18 +264,65 @@
         <div class="compare-item" style="background:var(--primary-light)">
           <h4>① 一般基期</h4>
           <p>A = B ÷ (1+R)<br>方法：直除法 / 假设分配法</p>
+
+          <div class="example">
+            <div class="example-tag">📖 例题1 · 求基期量A</div>
+            <div class="example-q">2023年某省GDP为 <b>82500亿元</b>，同比增长 <b>9.2%</b>。求2022年该省GDP约为多少亿元？<br>
+            A. 74300　B. 75500　C. 76300　D. 77800</div>
+            <div class="example-sol">
+              <span class="step-label">识别</span>已知B和R，求A → A = B ÷ (1+R)<br>
+              <span class="step-label">方法</span>R=9.2%≈9%，用假设分配法：<br>
+              ① 取A₁=75000，X₁=75000×9%=6750，B₁=75000+6750=81750<br>
+              ② 剩余B₂=82500-81750=750，A₂≈750÷1.09≈688<br>
+              ③ A ≈ 75000+688 ≈ <b>75688</b>
+              <div class="example-ans">答案：B. 75500亿元</div>
+            </div>
+          </div>
         </div>
         <div class="compare-item" style="background:var(--success-light)">
           <h4>② 隔年基期（间隔基期）</h4>
           <p>求"前年"的量，先求间隔增长率<br>R间 = R₁ + R₂ + R₁R₂</p>
+
+          <div class="example">
+            <div class="example-tag">📖 例题2 · 隔年基期（间隔增长率）</div>
+            <div class="example-q">2023年某市快递业务量为 <b>52.5亿件</b>，2023年比2022年增长 <b>20%</b>，2022年比2021年增长 <b>25%</b>。求2021年该市快递业务量约为多少亿件？<br>A. 33　B. 35　C. 38　D. 42</div>
+            <div class="example-sol">
+              <span class="step-label">间隔增长率</span>R间 = 20% + 25% + 20%×25% = 45% + 5% = <b>50%</b><br>
+              <span class="step-label">求基期</span>A = B ÷ (1+R间) = 52.5 ÷ 1.5 = <b>35亿件</b><br>
+              <span class="step-label">验证</span>35 × 1.25 = 43.75，43.75 × 1.2 = 52.5 ✓
+              <div class="example-ans">答案：B. 35亿件</div>
+            </div>
+          </div>
         </div>
         <div class="compare-item" style="background:var(--accent-light)">
           <h4>③ 基期差值</h4>
           <p>两个基期量相减 → 两次假设分配</p>
+
+          <div class="example">
+            <div class="example-tag">📖 例题3 · 基期差值</div>
+            <div class="example-q">2023年甲市旅游收入 <b>1380亿元</b>（同比增长 <b>15%</b>），乙市旅游收入 <b>1224亿元</b>（同比增长 <b>20%</b>）。求2022年两市旅游收入之差约为多少亿元？<br>A. 150　B. 165　C. 180　D. 195</div>
+            <div class="example-sol">
+              <span class="step-label">甲基期</span>1380 ÷ 1.15 = <b>1200亿元</b>（1200×1.15 = 1380 ✓）<br>
+              <span class="step-label">乙基期</span>1224 ÷ 1.2 = <b>1020亿元</b>（1020×1.2 = 1224 ✓）<br>
+              <span class="step-label">求差值</span>1200 - 1020 = <b>180亿元</b>
+              <div class="example-ans">答案：C. 180亿元</div>
+            </div>
+          </div>
         </div>
         <div class="compare-item" style="background:var(--purple-light)">
           <h4>④ 已知X和R求A</h4>
           <p>A = X ÷ R</p>
+
+          <div class="example">
+            <div class="example-tag">📖 例题4 · 已知X和R求A</div>
+            <div class="example-q">2023年某省新能源发电量比上年增加 <b>96亿千瓦时</b>，增长率为 <b>12%</b>。求2022年该省新能源发电量约为多少亿千瓦时？<br>A. 720　B. 800　C. 880　D. 960</div>
+            <div class="example-sol">
+              <span class="step-label">公式</span>A = X ÷ R<br>
+              <span class="step-label">代入</span>96 ÷ 12% = 96 ÷ 0.12 = <b>800亿千瓦时</b><br>
+              <span class="step-label">验证</span>800 × 12% = 96 ✓
+              <div class="example-ans">答案：B. 800亿千瓦时</div>
+            </div>
+          </div>
         </div>
       </div>
       <div class="tip tip-warn">
@@ -289,21 +343,7 @@
     </div>
 
     <div class="example">
-      <div class="example-tag">📖 例题1 · 求基期量A</div>
-      <div class="example-q">2023年某省GDP为 <b>82500亿元</b>，同比增长 <b>9.2%</b>。求2022年该省GDP约为多少亿元？<br>
-      A. 74300　B. 75500　C. 76300　D. 77800</div>
-      <div class="example-sol">
-        <span class="step-label">识别</span>已知B和R，求A → A = B ÷ (1+R)<br>
-        <span class="step-label">方法</span>R=9.2%≈9%，用假设分配法：<br>
-        ① 取A₁=75000，X₁=75000×9%=6750，B₁=75000+6750=81750<br>
-        ② 剩余B₂=82500-81750=750，A₂≈750÷1.09≈688<br>
-        ③ A ≈ 75000+688 ≈ <b>75688</b>
-        <div class="example-ans">答案：B. 75500亿元</div>
-      </div>
-    </div>
-
-    <div class="example">
-      <div class="example-tag">📖 例题2 · 求增长量X和增长率R</div>
+      <div class="example-tag">📖 例题5 · 求增长量X和增长率R</div>
       <div class="example-q">2022年某市新能源汽车销量为 <b>12万辆</b>，2023年销量为 <b>15.6万辆</b>。<br>
       ① 求2023年比2022年增长了多少万辆？<br>
       ② 求2023年比2022年的增长率是多少？</div>
@@ -329,6 +369,19 @@
             <li>只看末位或末两位口算选答案</li>
             <li><b>前提：</b>数据必须是精确值（非四舍五入）</li>
           </ul>
+
+            <div class="example">
+              <div class="example-tag">📖 例题1 · 尾数法</div>
+              <div class="example-q">求和：2347 + 5618 + 8923 + 1456 = ?<br>
+              A. 17944　B. 18344　C. 18544　D. 18644</div>
+              <div class="example-sol">
+                <span class="step-label">尾数法</span>只看末位：7+8+3+6 = 24，末位为<b>4</b><br>
+                <span class="step-label">进位验证</span>十位：4+1+2+5+2(进位)=14，十位为4，进1<br>
+                百位：3+6+9+4+1(进位)=23，百位为3<br>
+                所以末三位为 <b>344</b>，匹配选项B
+                <div class="example-ans">答案：B. 18344</div>
+              </div>
+            </div>
         </div>
         <div>
           <h4 style="color:var(--success)">高位叠加法</h4>
@@ -337,6 +390,21 @@
             <li>从高位加起，错位书写（像楼梯）</li>
             <li>可随时停，先抓主要矛盾</li>
           </ul>
+
+            <div class="example">
+              <div class="example-tag">📖 例题2 · 高位叠加法</div>
+              <div class="example-q">求以下四个数的和：3127 + 4583 + 2956 + 1849 = ?</div>
+              <div class="example-sol">
+                <span class="step-label">高位叠加</span>从千位开始加，错位书写：<br>
+                千位：3+4+2+1 = <b>10</b>（万位1，千位0）<br>
+                百位：1+5+9+8 = <b>23</b>（进位2，百位3）<br>
+                十位：2+8+5+4+2(进位) = <b>21</b>（进位2，十位1）<br>
+                个位：7+3+6+9+2(进位) = <b>27</b><br>
+                结果：1 0 2 3 1 5 → <b>10237+... 精确计算 = 12515</b><br>
+                <span class="step-label">注意</span>高位叠加用于快速估算首2-3位，选项差距大时足够。
+                <div class="example-ans">和 ≈ 12515</div>
+              </div>
+            </div>
         </div>
       </div>
       <div class="tip tip-info">
@@ -352,10 +420,32 @@
           <h4 style="color:var(--accent)">整数基准值法</h4>
           <p style="font-size:13px">被减数-减数 = (被减数-基准值) + (基准值-减数)<br>
           <b>例：</b>632-589 = (632-600)+(600-589) = 32+11 = 43</p>
+
+          <div class="example">
+            <div class="example-tag">📖 例题3 · 整数基准值法</div>
+            <div class="example-q">某省2023年财政收入为 <b>5873亿元</b>，2022年为 <b>5341亿元</b>，求两年财政收入之差。</div>
+            <div class="example-sol">
+              <span class="step-label">取基准</span>以 5800 为基准值<br>
+              <span class="step-label">拆开算</span>(5873 - 5800) + (5800 - 5341) = 73 + 459 = <b>532亿元</b><br>
+              <span class="step-label">验证</span>5873 - 5341 = 532 ✓
+              <div class="example-ans">答案：相差 532亿元</div>
+            </div>
+          </div>
         </div>
         <div>
           <h4 style="color:var(--purple)">"21""12"分段法</h4>
           <p style="font-size:13px">将三位数减法分成"21"或"12"两段<br>尽可能不借位，用负数代替借位</p>
+
+          <div class="example">
+            <div class="example-tag">📖 例题4 · "21""12"分段法</div>
+            <div class="example-q">计算 <b>743 - 268</b> = ?（要求全程不借位）</div>
+            <div class="example-sol">
+              <span class="step-label">分段</span>前段 74 - 26 = 48，后段 3 - 8 = -5<br>
+              <span class="step-label">合并</span>48×10 + (-5) = 480 - 5 = <b>475</b><br>
+              <span class="step-label">验证</span>743 - 268 = 475 ✓
+              <div class="example-ans">答案：475</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -380,7 +470,17 @@
         <div class="frac-item"><div class="frac">1/14</div><div class="pct">7.1%</div></div>
         <div class="frac-item"><div class="frac">1/15</div><div class="pct">6.7%</div></div>
       </div>
-      <h4 style="margin:14px 0 8px">乘法拆分（包子法）— 巧用"1%"</h4>
+
+
+      <div class="example">
+        <div class="example-tag">📖 例题5 · 小分互换法（变乘为除）</div>
+        <div class="example-q">计算 <b>372 × 14.3%</b> = ?</div>
+        <div class="example-sol">
+          <span class="step-label">识别</span>14.3% ≈ 1/7，将乘法转化为除法<br>
+          <span class="step-label">计算</span>372 × 1/7 = 372 ÷ 7 ≈ <b>53.1</b>
+          <div class="example-ans">答案 ≈ 53</div>
+        </div>
+      </div>      <h4 style="margin:14px 0 8px">乘法拆分（包子法）— 巧用"1%"</h4>
       <div class="frac-table">
         <div class="frac-item"><div class="frac">45%</div><div class="pct">50%-5%</div></div>
         <div class="frac-item"><div class="frac">55%</div><div class="pct">50%+5%</div></div>
@@ -397,17 +497,62 @@
 
     <div class="card">
       <div class="card-title">➗ 除法技巧</div>
-      <h4 style="margin-bottom:8px">拆分法</h4>
+
+
+      <div class="example">
+        <div class="example-tag">📖 例题6 · 乘法拆分（包子法）</div>
+        <div class="example-q">计算 <b>2840 × 15%</b> = ?</div>
+        <div class="example-sol">
+          <span class="step-label">拆数</span>15% = 10% + 5%<br>
+          <span class="step-label">分部算</span>2840×10% = 284，2840×5% = 142<br>
+          <span class="step-label">求和</span>284 + 142 = <b>426</b>（验证：2840×0.15 = 426 ✓）
+          <div class="example-ans">答案：426</div>
+        </div>
+      </div>      <h4 style="margin-bottom:8px">拆分法</h4>
       <p style="font-size:13px; margin-bottom:8px;">将被除数由大到小拆成几部分分别计算，"抓大放小"，逐步分解得出结果。</p>
-      <h4 style="margin:14px 0 8px">分子分母同时拆分（盐水思想运用）<span class="new-badge">NEW</span></h4>
+
+
+      <div class="example">
+        <div class="example-tag">📖 例题7 · 拆分法</div>
+        <div class="example-q">计算 <b>1386 ÷ 42</b> = ?</div>
+        <div class="example-sol">
+          <span class="step-label">拆被除数</span>1386 = 1260 + 126<br>
+          <span class="step-label">分别除</span>1260 ÷ 42 = 30，126 ÷ 42 = 3<br>
+          <span class="step-label">合并</span>30 + 3 = <b>33</b>（验证：42×33 = 1386 ✓）
+          <div class="example-ans">答案：33</div>
+        </div>
+      </div>      <h4 style="margin:14px 0 8px">分子分母同时拆分（盐水思想运用）<span class="new-badge">NEW</span></h4>
       <p style="font-size:13px;">判断分数大于/小于某值，适用于综合分析题。前提：分子分母可拆成"一大杯+一小勺"关系。</p>
-      <h4 style="margin:14px 0 8px">化除为乘</h4>
+
+
+      <div class="example">
+        <div class="example-tag">📖 例题8 · 分子分母同时拆分</div>
+        <div class="example-q">判断 <b>398 ÷ 641</b> 与 <b>3/5</b>（即0.6）的大小关系。</div>
+        <div class="example-sol">
+          <span class="step-label">定标准</span>以 0.6 为"一大杯"：641 × 0.6 = <b>384.6</b><br>
+          <span class="step-label">拆分子</span>398 = 384.6 + 13.4，多出的"一小勺"13.4 &gt; 0<br>
+          <span class="step-label">结论</span>398 &gt; 384.6 → 398/641 &gt; 0.6 = 3/5<br>
+          <span class="step-label">验证</span>398 ÷ 641 ≈ 0.621 &gt; 0.6 ✓
+          <div class="example-ans">答案：398/641 &gt; 3/5</div>
+        </div>
+      </div>      <h4 style="margin:14px 0 8px">化除为乘</h4>
       <div class="formula">
         <span class="label">条件</span>R &lt; 5%时<br>
         A = B ÷ (1+R) ≈ B × (1-R)<br>
         <span class="label">例</span>108 ÷ 1.03 ≈ 108 × (1-3%) = 104.76
       </div>
-      <h4 style="margin:14px 0 8px">除乘转化<span class="new-badge">NEW</span></h4>
+
+
+      <div class="example">
+        <div class="example-tag">📖 例题9 · 化除为乘</div>
+        <div class="example-q">计算 <b>856 ÷ 1.04</b> = ?（R=4% &lt; 5%，可用化除为乘）</div>
+        <div class="example-sol">
+          <span class="step-label">公式</span>B ÷ (1+R) ≈ B × (1-R)<br>
+          <span class="step-label">代入</span>856 × (1-4%) = 856 × 0.96 = <b>821.76</b><br>
+          <span class="step-label">验证</span>精确值 856÷1.04 = 823.08，误差约0.16%
+          <div class="example-ans">答案 ≈ 822</div>
+        </div>
+      </div>      <h4 style="margin:14px 0 8px">除乘转化<span class="new-badge">NEW</span></h4>
       <div class="formula">
         <span class="label">场景1</span>求基期：A = B/(1+R) → 转化为 A + A×R = B，代入选项验证<br>
         <span class="label">场景2</span>求增量（R很小）：X ≈ B×R（用B代替A做乘法）<br>
@@ -415,58 +560,20 @@
       </div>
     </div>
 
+    <div class="example">
+      <div class="example-tag">📖 例题10 · 除乘转化（比重互推）</div>
+      <div class="example-q">某省2023年餐饮收入为 <b>4860亿元</b>，占社会消费品零售总额的 <b>12%</b>。求2023年该省社会消费品零售总额约为多少亿元？</div>
+      <div class="example-sol">
+        <span class="step-label">识别</span>已知部分和比重 → 整体 = 部分 ÷ 比重<br>
+        <span class="step-label">代入</span>4860 ÷ 12% = 4860 ÷ 0.12 = <b>40500亿元</b><br>
+        <span class="step-label">验证</span>40500 × 12% = 4860 ✓
+        <div class="example-ans">答案：40500亿元</div>
+      </div>
+    </div>
+
     <div class="mnemonic">
       <div class="title">🎯 速算核心心法</div>
       <div class="content">保留原始数据 · 不刻意截位 · 让误差抵消</div>
-    </div>
-
-    <div class="example">
-      <div class="example-tag">📖 例题1 · 高位叠加法</div>
-      <div class="example-q">求以下四个数的和：3127 + 4583 + 2956 + 1849 = ?</div>
-      <div class="example-sol">
-        <span class="step-label">高位叠加</span>从千位开始加，错位书写：<br>
-        千位：3+4+2+1 = <b>10</b>（万位1，千位0）<br>
-        百位：1+5+9+8 = <b>23</b>（进位2，百位3）<br>
-        十位：2+8+5+4+2(进位) = <b>21</b>（进位2，十位1）<br>
-        个位：7+3+6+9+2(进位) = <b>27</b><br>
-        结果：1 0 2 3 1 5 → <b>10237+... 精确计算 = 12515</b><br>
-        <span class="step-label">注意</span>高位叠加用于快速估算首2-3位，选项差距大时足够。
-        <div class="example-ans">和 ≈ 12515</div>
-      </div>
-    </div>
-
-    <div class="example">
-      <div class="example-tag">📖 例题2 · 小分互换法（变乘为除）</div>
-      <div class="example-q">计算 <b>372 × 14.3%</b> = ?</div>
-      <div class="example-sol">
-        <span class="step-label">识别</span>14.3% ≈ 1/7，将乘法转化为除法<br>
-        <span class="step-label">计算</span>372 × 1/7 = 372 ÷ 7 ≈ <b>53.1</b>
-        <div class="example-ans">答案 ≈ 53</div>
-      </div>
-    </div>
-
-    <div class="example">
-      <div class="example-tag">📖 例题3 · 化除为乘</div>
-      <div class="example-q">计算 <b>856 ÷ 1.04</b> = ?（R=4% &lt; 5%，可用化除为乘）</div>
-      <div class="example-sol">
-        <span class="step-label">公式</span>B ÷ (1+R) ≈ B × (1-R)<br>
-        <span class="step-label">代入</span>856 × (1-4%) = 856 × 0.96 = <b>821.76</b><br>
-        <span class="step-label">验证</span>精确值 856÷1.04 = 823.08，误差约0.16%
-        <div class="example-ans">答案 ≈ 822</div>
-      </div>
-    </div>
-
-    <div class="example">
-      <div class="example-tag">📖 例题4 · 尾数法</div>
-      <div class="example-q">求和：2347 + 5618 + 8923 + 1456 = ?<br>
-      A. 17944　B. 18344　C. 18544　D. 18644</div>
-      <div class="example-sol">
-        <span class="step-label">尾数法</span>只看末位：7+8+3+6 = 24，末位为<b>4</b><br>
-        <span class="step-label">进位验证</span>十位：4+1+2+5+2(进位)=14，十位为4，进1<br>
-        百位：3+6+9+4+1(进位)=23，百位为3<br>
-        所以末三位为 <b>344</b>，匹配选项B
-        <div class="example-ans">答案：B. 18344</div>
-      </div>
     </div>
   </section>
 
@@ -482,6 +589,20 @@
         → 基期:变化量:现期 = 4:1:5<br><br>
         <span class="label">公式</span>一份量 = B ÷ (对应份数)<br>
         A = 份数 × 一份量，X = 份数 × 一份量
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-tag">📖 例题1 · 415份数法求基期和增量</div>
+      <div class="example-q">2023年某企业利润为 <b>5000万元</b>，同比增长 <b>25%</b>。求2022年利润和同比增长量。<br>
+      A. 3800/1000　B. 4000/1000　C. 4200/1050　D. 4500/1200</div>
+      <div class="example-sol">
+        <span class="step-label">步骤1</span>R=25%=1/4，份数比 A:X:B = <b>4:1:5</b><br>
+        <span class="step-label">步骤2</span>现期B对应5份，一份量 = 5000 ÷ 5 = <b>1000</b><br>
+        <span class="step-label">步骤3</span>基期A = 4份 × 1000 = <b>4000万元</b><br>
+        <span class="step-label">步骤4</span>增量X = 1份 × 1000 = <b>1000万元</b><br>
+        <span class="step-label">验证</span>4000 + 1000 = 5000 ✓，R = 1000/4000 = 25% ✓
+        <div class="example-ans">答案：B. 基期4000万元，增量1000万元</div>
       </div>
     </div>
     <div class="card">
@@ -501,6 +622,18 @@
         <div><b>负增长：</b>R为负时变化量a也为负，"415"变成"4(-1)3"。例：R=-20% → A:X:B = 5:(-1):4</div>
       </div>
     </div>
+
+    <div class="example">
+      <div class="example-tag">📖 例题2 · 负增长的415法</div>
+      <div class="example-q">2023年某产品产量为 <b>4800吨</b>，同比下降 <b>20%</b>（即R=-20%）。求2022年产量。</div>
+      <div class="example-sol">
+        <span class="step-label">取分数</span>R=-20%=-1/5，份数比 A:X:B = <b>5:(-1):4</b><br>
+        <span class="step-label">求一份</span>一份量 = 4800 ÷ 4 = <b>1200</b><br>
+        <span class="step-label">求基期</span>A = 5 × 1200 = <b>6000吨</b><br>
+        <span class="step-label">验证</span>6000 + (-1200) = 4800 ✓，R = -1200/6000 = -20% ✓
+        <div class="example-ans">答案：2022年产量6000吨</div>
+      </div>
+    </div>
     <div class="card">
       <div class="card-title">✅ 使用时机选择</div>
       <table>
@@ -510,27 +643,9 @@
         <tr><td>R 非常小（&lt;5%）且选项差距大</td><td><span class="badge badge-orange">B×R近似</span></td><td>X ≈ B×R</td></tr>
       </table>
     </div>
-    <div class="mnemonic">
-      <div class="title">📌 误差修正口诀</div>
-      <div class="content">3322（上上岸岸） · 5013（吾师13）</div>
-    </div>
 
     <div class="example">
-      <div class="example-tag">📖 例题1 · 415份数法求基期和增量</div>
-      <div class="example-q">2023年某企业利润为 <b>5000万元</b>，同比增长 <b>25%</b>。求2022年利润和同比增长量。<br>
-      A. 3800/1000　B. 4000/1000　C. 4200/1050　D. 4500/1200</div>
-      <div class="example-sol">
-        <span class="step-label">步骤1</span>R=25%=1/4，份数比 A:X:B = <b>4:1:5</b><br>
-        <span class="step-label">步骤2</span>现期B对应5份，一份量 = 5000 ÷ 5 = <b>1000</b><br>
-        <span class="step-label">步骤3</span>基期A = 4份 × 1000 = <b>4000万元</b><br>
-        <span class="step-label">步骤4</span>增量X = 1份 × 1000 = <b>1000万元</b><br>
-        <span class="step-label">验证</span>4000 + 1000 = 5000 ✓，R = 1000/4000 = 25% ✓
-        <div class="example-ans">答案：B. 基期4000万元，增量1000万元</div>
-      </div>
-    </div>
-
-    <div class="example">
-      <div class="example-tag">📖 例题2 · R不整时近似取分数</div>
+      <div class="example-tag">📖 例题3 · R不整时近似取分数</div>
       <div class="example-q">2023年某市财政收入为 <b>7350亿元</b>，同比增长 <b>16.7%</b>。求2022年财政收入约为多少？</div>
       <div class="example-sol">
         <span class="step-label">取分数</span>16.7% ≈ 1/6，份数比 A:X:B = <b>6:1:7</b><br>
@@ -540,17 +655,9 @@
         <div class="example-ans">答案 ≈ 6300亿元</div>
       </div>
     </div>
-
-    <div class="example">
-      <div class="example-tag">📖 例题3 · 负增长的415法</div>
-      <div class="example-q">2023年某产品产量为 <b>4800吨</b>，同比下降 <b>20%</b>（即R=-20%）。求2022年产量。</div>
-      <div class="example-sol">
-        <span class="step-label">取分数</span>R=-20%=-1/5，份数比 A:X:B = <b>5:(-1):4</b><br>
-        <span class="step-label">求一份</span>一份量 = 4800 ÷ 4 = <b>1200</b><br>
-        <span class="step-label">求基期</span>A = 5 × 1200 = <b>6000吨</b><br>
-        <span class="step-label">验证</span>6000 + (-1200) = 4800 ✓，R = -1200/6000 = -20% ✓
-        <div class="example-ans">答案：2022年产量6000吨</div>
-      </div>
+    <div class="mnemonic">
+      <div class="title">📌 误差修正口诀</div>
+      <div class="content">3322（上上岸岸） · 5013（吾师13）</div>
     </div>
   </section>
 
@@ -582,26 +689,6 @@
         <div><b>取整百技巧：</b>R为正→向下取整；R为负→向上取整。A、B始终同号，与X异号。</div>
       </div>
     </div>
-    <div class="card">
-      <div class="card-title">⚡ R与X快速参考表</div>
-      <table>
-        <tr><th>增长率R范围</th><th>X的快速估值</th><th>说明</th></tr>
-        <tr><td>0 ~ 20%</td><td>用10%、20%上下修正</td><td>最常用区间</td></tr>
-        <tr><td>25%左右</td><td>X ≈ B/4</td><td>即415份数法</td></tr>
-        <tr><td>33%左右</td><td>X ≈ B/4</td><td>≈ 1/3</td></tr>
-        <tr><td>42.9%左右</td><td>X ≈ 0.3B</td><td>≈ 3/7</td></tr>
-        <tr><td>50%左右</td><td>X ≈ B/3</td><td>≈ 1/2</td></tr>
-        <tr><td>66%左右</td><td>X ≈ 0.4B</td><td>≈ 2/3</td></tr>
-        <tr><td>80%~100%以上</td><td>X ≈ B/2</td><td>接近翻倍</td></tr>
-      </table>
-    </div>
-    <div class="card">
-      <div class="card-title">🔄 选项极近时的假设思维</div>
-      <div class="tip tip-success">
-        <span class="tip-icon">✅</span>
-        <div>选项极其相近时，<b>反而可以利用选项反向代入计算</b>，比正向计算更快更准。</div>
-      </div>
-    </div>
 
     <div class="example">
       <div class="example-tag">📖 例题1 · 假设分配法基本操作</div>
@@ -618,9 +705,34 @@
         <div class="example-ans">答案：C. 35850亿元</div>
       </div>
     </div>
+    <div class="example">
+      <div class="example-tag">📖 例题2 · 负增长的假设分配</div>
+      <div class="example-q">2023年某行业利润为 <b>9450万元</b>，同比下降 <b>5.5%</b>。求2022年利润。<br>
+      A. 9800　B. 9980　C. 10050　D. 10200</div>
+      <div class="example-sol">
+        <span class="step-label">注意</span>R=-5.5%，R为负→A₁向上取整（A和B同号，与X异号）<br>
+        <span class="step-label">步骤1</span>取A₁=10000，X₁=10000×(-5.5%)=-550，B₁=10000-550=<b>9450</b><br>
+        <span class="step-label">刚好</span>B₁=9450=B，无需继续分配！<br>
+        A = A₁ = <b>10000</b>
+        <div class="example-ans">答案：C. 10050（取A₁=10000已非常接近）</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">⚡ R与X快速参考表</div>
+      <table>
+        <tr><th>增长率R范围</th><th>X的快速估值</th><th>说明</th></tr>
+        <tr><td>0 ~ 20%</td><td>用10%、20%上下修正</td><td>最常用区间</td></tr>
+        <tr><td>25%左右</td><td>X ≈ B/4</td><td>即415份数法</td></tr>
+        <tr><td>33%左右</td><td>X ≈ B/4</td><td>≈ 1/3</td></tr>
+        <tr><td>42.9%左右</td><td>X ≈ 0.3B</td><td>≈ 3/7</td></tr>
+        <tr><td>50%左右</td><td>X ≈ B/3</td><td>≈ 1/2</td></tr>
+        <tr><td>66%左右</td><td>X ≈ 0.4B</td><td>≈ 2/3</td></tr>
+        <tr><td>80%~100%以上</td><td>X ≈ B/2</td><td>接近翻倍</td></tr>
+      </table>
+    </div>
 
     <div class="example">
-      <div class="example-tag">📖 例题2 · 用B×R快速估算增量</div>
+      <div class="example-tag">📖 例题3 · 用B×R快速估算增量</div>
       <div class="example-q">2023年某市固定资产投资为 <b>12500亿元</b>，同比增长 <b>6.3%</b>。求同比增长量约为多少亿元？</div>
       <div class="example-sol">
         <span class="step-label">方法</span>R=6.3%&lt;10%，且选项差距大，可直接用 X ≈ B×R<br>
@@ -631,17 +743,11 @@
         <div class="example-ans">答案 ≈ 740亿元（精确值）</div>
       </div>
     </div>
-
-    <div class="example">
-      <div class="example-tag">📖 例题3 · 负增长的假设分配</div>
-      <div class="example-q">2023年某行业利润为 <b>9450万元</b>，同比下降 <b>5.5%</b>。求2022年利润。<br>
-      A. 9800　B. 9980　C. 10050　D. 10200</div>
-      <div class="example-sol">
-        <span class="step-label">注意</span>R=-5.5%，R为负→A₁向上取整（A和B同号，与X异号）<br>
-        <span class="step-label">步骤1</span>取A₁=10000，X₁=10000×(-5.5%)=-550，B₁=10000-550=<b>9450</b><br>
-        <span class="step-label">刚好</span>B₁=9450=B，无需继续分配！<br>
-        A = A₁ = <b>10000</b>
-        <div class="example-ans">答案：C. 10050（取A₁=10000已非常接近）</div>
+    <div class="card">
+      <div class="card-title">🔄 选项极近时的假设思维</div>
+      <div class="tip tip-success">
+        <span class="tip-icon">✅</span>
+        <div>选项极其相近时，<b>反而可以利用选项反向代入计算</b>，比正向计算更快更准。</div>
       </div>
     </div>
   </section>
@@ -672,6 +778,19 @@
       </div>
     </div>
 
+    <div class="example">
+      <div class="example-tag">📖 例题1 · 间隔增长率</div>
+      <div class="example-q">2022年某省GDP比2021年增长 <b>6.5%</b>，2023年比2022年增长 <b>7.2%</b>。<br>
+      求2023年该省GDP比2021年增长了百分之多少？</div>
+      <div class="example-sol">
+        <span class="step-label">公式</span>R间 = R₁ + R₂ + R₁×R₂<br>
+        <span class="step-label">代入</span>R间 = 6.5% + 7.2% + 6.5% × 7.2%<br>
+        = 13.7% + 0.468% ≈ <b>14.17%</b><br>
+        <span class="step-label">速算</span>R₁×R₂ = 0.065×0.072，两位数×两位数，0.065×0.07≈0.00455，约0.46个百分点
+        <div class="example-ans">答案 ≈ 14.2%</div>
+      </div>
+    </div>
+
     <div class="card">
       <div class="card-title">📊 比值增长率（平均数增长率）<span class="new-badge">重点</span></div>
       <div class="formula">
@@ -689,12 +808,37 @@
       </div>
     </div>
 
+    <div class="example">
+      <div class="example-tag">📖 例题2 · 比值增长率（平均数增长率）</div>
+      <div class="example-q">2023年某市商品房销售金额增长 <b>15%</b>，销售面积增长 <b>8%</b>。<br>
+      求2023年该市商品房<b>均价</b>同比增长百分之多少？</div>
+      <div class="example-sol">
+        <span class="step-label">识别</span>均价 = 金额 ÷ 面积 → 比值增长率<br>
+        <span class="step-label">公式</span>R = (R₁ - R₂) ÷ (1 + R₂)<br>
+        R₁ = 分子增长率（金额）= 15%，R₂ = 分母增长率（面积）= 8%<br>
+        <span class="step-label">代入</span>R = (15% - 8%) ÷ (1 + 8%) = 7% ÷ 1.08 ≈ <b>6.48%</b><br>
+        <span class="step-label">验证</span>分子涨得比分子快→均价上升，增长率为正 ✓
+        <div class="example-ans">答案 ≈ 6.5%</div>
+      </div>
+    </div>
+
     <div class="card">
       <div class="card-title">✖️ 乘积增长率<span class="new-badge">重点</span></div>
       <div class="formula">
         <span class="label">场景</span>A = B × C（如总价 = 单价 × 数量）<br>
         <span class="label">公式</span>R = R₁ + R₂ + R₁ × R₂（与间隔增长率公式相同！）<br><br>
         <span class="label">应用</span>售价=单价×数量、部分=整体×占比、总额=人均×人数
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-tag">📖 例题3 · 乘积增长率</div>
+      <div class="example-q">2023年某产品<b>单价</b>上涨 <b>5%</b>，<b>销量</b>增长 <b>12%</b>。求该产品销售额的增长率。</div>
+      <div class="example-sol">
+        <span class="step-label">识别</span>销售额 = 单价 × 销量 → 乘积增长率<br>
+        <span class="step-label">公式</span>R = R₁ + R₂ + R₁×R₂（与间隔增长率公式相同）<br>
+        <span class="step-label">代入</span>R = 5% + 12% + 5%×12% = 17% + 0.6% = <b>17.6%</b>
+        <div class="example-ans">答案 ≈ 17.6%</div>
       </div>
     </div>
 
@@ -715,58 +859,6 @@
       </div>
     </div>
 
-    <div class="card">
-      <div class="card-title">📌 复合增长率 vs 算术平均增长率<span class="new-badge">NEW</span></div>
-      <div class="compare-box">
-        <div class="compare-item" style="background:var(--primary-light)">
-          <h4>🔵 复合增长率（年均增长率）</h4>
-          <p style="font-size:13px">r = (B/A)^(1/n) - 1<br>几何平均，考虑复利效应<br><b>常考！</b></p>
-        </div>
-        <div class="compare-item" style="background:var(--accent-light)">
-          <h4>🟡 算术平均增长率</h4>
-          <p style="font-size:13px">r = (R₁+R₂+...+Rₙ) ÷ n<br>简单算术平均<br>注意区分！</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="example">
-      <div class="example-tag">📖 例题1 · 间隔增长率</div>
-      <div class="example-q">2022年某省GDP比2021年增长 <b>6.5%</b>，2023年比2022年增长 <b>7.2%</b>。<br>
-      求2023年该省GDP比2021年增长了百分之多少？</div>
-      <div class="example-sol">
-        <span class="step-label">公式</span>R间 = R₁ + R₂ + R₁×R₂<br>
-        <span class="step-label">代入</span>R间 = 6.5% + 7.2% + 6.5% × 7.2%<br>
-        = 13.7% + 0.468% ≈ <b>14.17%</b><br>
-        <span class="step-label">速算</span>R₁×R₂ = 0.065×0.072，两位数×两位数，0.065×0.07≈0.00455，约0.46个百分点
-        <div class="example-ans">答案 ≈ 14.2%</div>
-      </div>
-    </div>
-
-    <div class="example">
-      <div class="example-tag">📖 例题2 · 比值增长率（平均数增长率）</div>
-      <div class="example-q">2023年某市商品房销售金额增长 <b>15%</b>，销售面积增长 <b>8%</b>。<br>
-      求2023年该市商品房<b>均价</b>同比增长百分之多少？</div>
-      <div class="example-sol">
-        <span class="step-label">识别</span>均价 = 金额 ÷ 面积 → 比值增长率<br>
-        <span class="step-label">公式</span>R = (R₁ - R₂) ÷ (1 + R₂)<br>
-        R₁ = 分子增长率（金额）= 15%，R₂ = 分母增长率（面积）= 8%<br>
-        <span class="step-label">代入</span>R = (15% - 8%) ÷ (1 + 8%) = 7% ÷ 1.08 ≈ <b>6.48%</b><br>
-        <span class="step-label">验证</span>分子涨得比分子快→均价上升，增长率为正 ✓
-        <div class="example-ans">答案 ≈ 6.5%</div>
-      </div>
-    </div>
-
-    <div class="example">
-      <div class="example-tag">📖 例题3 · 乘积增长率</div>
-      <div class="example-q">2023年某产品<b>单价</b>上涨 <b>5%</b>，<b>销量</b>增长 <b>12%</b>。求该产品销售额的增长率。</div>
-      <div class="example-sol">
-        <span class="step-label">识别</span>销售额 = 单价 × 销量 → 乘积增长率<br>
-        <span class="step-label">公式</span>R = R₁ + R₂ + R₁×R₂（与间隔增长率公式相同）<br>
-        <span class="step-label">代入</span>R = 5% + 12% + 5%×12% = 17% + 0.6% = <b>17.6%</b>
-        <div class="example-ans">答案 ≈ 17.6%</div>
-      </div>
-    </div>
-
     <div class="example">
       <div class="example-tag">📖 例题4 · 年均增长率（n值陷阱）</div>
       <div class="example-q">某市2018年GDP为 <b>8000亿元</b>，2023年GDP为 <b>12000亿元</b>。<br>
@@ -779,6 +871,44 @@
         略大于1.5，再试更小的：<br>
         1.084⁵: 1.084²=1.175, 1.084⁴=1.381, ×1.084=1.497 ≈ 1.5 ✓
         <div class="example-ans">答案：A. 8.4%</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📌 复合增长率 vs 算术平均增长率<span class="new-badge">NEW</span></div>
+      <div class="compare-box">
+        <div class="compare-item" style="background:var(--primary-light)">
+          <h4>🔵 复合增长率（年均增长率）</h4>
+          <p style="font-size:13px">r = (B/A)^(1/n) - 1<br>几何平均，考虑复利效应<br><b>常考！</b></p>
+
+          <div class="example">
+            <div class="example-tag">📖 例题5 · 复合增长率（年均增长率）</div>
+            <div class="example-q">某市2020年快递业务收入为 <b>500亿元</b>，2023年为 <b>864亿元</b>。求2020~2023年该市快递业务收入的年均增长率。<br>A. 15%　B. 20%　C. 24%　D. 30%</div>
+            <div class="example-sol">
+              <span class="step-label">确定n</span>n = 2023 - 2020 = <b>3</b>（年份差）<br>
+              <span class="step-label">列式</span>(1+r)³ = 864 ÷ 500 = <b>1.728</b><br>
+              <span class="step-label">开方</span>1.728 = 1.2³ → 1+r = 1.2 → r = <b>20%</b><br>
+              <span class="step-label">验证</span>500 × 1.2³ = 500 × 1.728 = 864 ✓
+              <div class="example-ans">答案：B. 20%</div>
+            </div>
+          </div>
+        </div>
+        <div class="compare-item" style="background:var(--accent-light)">
+          <h4>🟡 算术平均增长率</h4>
+          <p style="font-size:13px">r = (R₁+R₂+...+Rₙ) ÷ n<br>简单算术平均<br>注意区分！</p>
+
+          <div class="example">
+            <div class="example-tag">📖 例题6 · 算术平均增长率 vs 复合增长率</div>
+            <div class="example-q">某市2019~2022年快递业务量同比增速依次为 <b>+20%、-10%、+20%、-10%</b>。<br>① 求这4年增速的算术平均值；② 求这4年的复合增长率（年均增长率）。</div>
+            <div class="example-sol">
+              <span class="step-label">① 算术平均</span>(20% - 10% + 20% - 10%) ÷ 4 = 20% ÷ 4 = <b>5.0%</b><br>
+              <span class="step-label">② 复合增长率</span>1.2 × 0.9 × 1.2 × 0.9 = <b>1.1664</b><br>
+              (1+r)⁴ = 1.1664 → 1+r ≈ 1.0392 → r ≈ <b>3.9%</b><br>
+              <span class="step-label">对比</span>算术平均(5.0%) &gt; 复合(3.9%)，波动越大差距越大；问"年均增长率"必须用复合增长率
+              <div class="example-ans">① 算术平均5.0%　② 复合增长率约3.9%</div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -810,12 +940,38 @@
       <p style="margin-top:8px"><span class="badge badge-blue">替代方法</span> 两次415份数法/假设分配法分别求基期部分和基期整体。</p>
     </div>
 
+    <div class="example">
+      <div class="example-tag">📖 例题1 · 基期比重</div>
+      <div class="example-q">2023年某市税收收入为 <b>2400亿元</b>，占财政收入的 <b>60%</b>（即财政收入为4000亿元）。<br>
+      税收收入增长 <b>8%</b>，财政收入增长 <b>5%</b>。<br>
+      求2022年税收收入占财政收入的比重约为多少？</div>
+      <div class="example-sol">
+        <span class="step-label">公式</span>基期比重 = 现期比重 × (1+R₁) ÷ (1+R₂)<br>
+        R₁ = 整体（财政收入）增长率 = 5%，R₂ = 部分（税收）增长率 = 8%<br>
+        <span class="step-label">代入</span>基期比重 = 60% × (1+5%) ÷ (1+8%)<br>
+        = 60% × 1.05 ÷ 1.08 = 60% × 0.9722 ≈ <b>58.3%</b><br>
+        <span class="step-label">理解</span>税收涨得比财政收入快(8%>5%) → 去年税收占比更低 ✓
+        <div class="example-ans">答案 ≈ 58.3%</div>
+      </div>
+    </div>
+
     <div class="card">
       <div class="card-title">🔍 隔级比重<span class="new-badge">NEW</span></div>
       <div class="formula">
         <span class="label">结构</span>大集合 → 中集合 → 小集合<br>
         <span class="label">公式</span>小集合占大集合 = (小集合÷中集合) × (中集合÷大集合)<br>
         小集合在中集合中占比 = (小集合÷大集合) ÷ (中集合÷大集合)
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-tag">📖 例题2 · 隔级比重</div>
+      <div class="example-q">某集团下设A事业部和B事业部。A事业部产值占集团的 <b>40%</b>，A事业部中核心业务占A事业部的 <b>25%</b>。<br>
+      问：核心业务占集团总产值的比重是多少？</div>
+      <div class="example-sol">
+        <span class="step-label">公式</span>小占大 = (小÷中) × (中÷大)<br>
+        <span class="step-label">代入</span>核心占集团 = 25% × 40% = <b>10%</b>
+        <div class="example-ans">答案：核心业务占集团10%</div>
       </div>
     </div>
 
@@ -836,6 +992,18 @@
       </div>
     </div>
 
+    <div class="example">
+      <div class="example-tag">📖 例题3 · 两期比重趋势判断（定性）</div>
+      <div class="example-q">2023年全国货物出口额增长 <b>10.6%</b>，进口额增长 <b>4.3%</b>，进出口总额增长 <b>7.7%</b>。<br>
+      问：2023年出口额占进出口总额的比重与上年相比是上升还是下降？</div>
+      <div class="example-sol">
+        <span class="step-label">识别</span>判断比重上升/下降 → 比较部分增速与整体增速<br>
+        <span class="step-label">比较</span>部分（出口）增速 R₂ = 10.6%，整体（进出口总额）增速 R₁ = 7.7%<br>
+        <span class="step-label">结论</span>R₂(10.6%) > R₁(7.7%) → 分子涨得快 → 比重<b>上升</b>
+        <div class="example-ans">答案：比重上升 ⬆️</div>
+      </div>
+    </div>
+
     <div class="card">
       <div class="card-title">📊 两期比重差（定量）</div>
       <div class="formula">
@@ -845,6 +1013,24 @@
       <div class="tip tip-success">
         <span class="tip-icon">✅</span>
         <div><b>秒杀技巧：</b><b>|比重差| &lt; |增速差|</b><br>比重差的绝对值一定小于增长率之差的绝对值！可快速排除选项。</div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-tag">📖 例题4 · 比重差（定量+秒杀）</div>
+      <div class="example-q">2023年某省高新技术产品出口额为 <b>1800亿元</b>，占全省出口总额的 <b>36%</b>。<br>
+      全省出口总额增长 <b>10%</b>，高新技术产品出口额增长 <b>15%</b>。<br>
+      问：2023年高新技术产品出口额占全省出口总额的比重比上年变化了多少个百分点？<br>
+      A. 上升1.2　B. 上升1.5　C. 上升1.8　D. 上升2.0</div>
+      <div class="example-sol">
+        <span class="step-label">公式</span>比重差 = (基期部分÷现期整体) × (R₂ - R₁)<br>
+        <span class="step-label">秒杀</span>|比重差| < |R₂ - R₁| = |15% - 10%| = 5个百分点<br>
+        所有选项都<5，需进一步计算<br>
+        <span class="step-label">计算</span>比重差 = (1800÷1.15) ÷ (1800÷0.36) × (15%-10%)<br>
+        = (1800÷1.15) ÷ 5000 × 5%<br>
+        = 1565.2 ÷ 5000 × 5% = 0.313 × 5% ≈ <b>1.57个百分点</b><br>
+        <span class="step-label">验证</span>1.57 < 5 ✓（符合秒杀规则）
+        <div class="example-ans">答案：B. 上升约1.5个百分点</div>
       </div>
     </div>
 
@@ -874,62 +1060,6 @@
         <li>比重×360° = 扇形圆心角角度</li>
       </ul>
     </div>
-
-    <div class="example">
-      <div class="example-tag">📖 例题1 · 两期比重趋势判断（定性）</div>
-      <div class="example-q">2023年全国货物出口额增长 <b>10.6%</b>，进口额增长 <b>4.3%</b>，进出口总额增长 <b>7.7%</b>。<br>
-      问：2023年出口额占进出口总额的比重与上年相比是上升还是下降？</div>
-      <div class="example-sol">
-        <span class="step-label">识别</span>判断比重上升/下降 → 比较部分增速与整体增速<br>
-        <span class="step-label">比较</span>部分（出口）增速 R₂ = 10.6%，整体（进出口总额）增速 R₁ = 7.7%<br>
-        <span class="step-label">结论</span>R₂(10.6%) > R₁(7.7%) → 分子涨得快 → 比重<b>上升</b>
-        <div class="example-ans">答案：比重上升 ⬆️</div>
-      </div>
-    </div>
-
-    <div class="example">
-      <div class="example-tag">📖 例题2 · 比重差（定量+秒杀）</div>
-      <div class="example-q">2023年某省高新技术产品出口额为 <b>1800亿元</b>，占全省出口总额的 <b>36%</b>。<br>
-      全省出口总额增长 <b>10%</b>，高新技术产品出口额增长 <b>15%</b>。<br>
-      问：2023年高新技术产品出口额占全省出口总额的比重比上年变化了多少个百分点？<br>
-      A. 上升1.2　B. 上升1.5　C. 上升1.8　D. 上升2.0</div>
-      <div class="example-sol">
-        <span class="step-label">公式</span>比重差 = (基期部分÷现期整体) × (R₂ - R₁)<br>
-        <span class="step-label">秒杀</span>|比重差| < |R₂ - R₁| = |15% - 10%| = 5个百分点<br>
-        所有选项都<5，需进一步计算<br>
-        <span class="step-label">计算</span>比重差 = (1800÷1.15) ÷ (1800÷0.36) × (15%-10%)<br>
-        = (1800÷1.15) ÷ 5000 × 5%<br>
-        = 1565.2 ÷ 5000 × 5% = 0.313 × 5% ≈ <b>1.57个百分点</b><br>
-        <span class="step-label">验证</span>1.57 < 5 ✓（符合秒杀规则）
-        <div class="example-ans">答案：B. 上升约1.5个百分点</div>
-      </div>
-    </div>
-
-    <div class="example">
-      <div class="example-tag">📖 例题3 · 基期比重</div>
-      <div class="example-q">2023年某市税收收入为 <b>2400亿元</b>，占财政收入的 <b>60%</b>（即财政收入为4000亿元）。<br>
-      税收收入增长 <b>8%</b>，财政收入增长 <b>5%</b>。<br>
-      求2022年税收收入占财政收入的比重约为多少？</div>
-      <div class="example-sol">
-        <span class="step-label">公式</span>基期比重 = 现期比重 × (1+R₁) ÷ (1+R₂)<br>
-        R₁ = 整体（财政收入）增长率 = 5%，R₂ = 部分（税收）增长率 = 8%<br>
-        <span class="step-label">代入</span>基期比重 = 60% × (1+5%) ÷ (1+8%)<br>
-        = 60% × 1.05 ÷ 1.08 = 60% × 0.9722 ≈ <b>58.3%</b><br>
-        <span class="step-label">理解</span>税收涨得比财政收入快(8%>5%) → 去年税收占比更低 ✓
-        <div class="example-ans">答案 ≈ 58.3%</div>
-      </div>
-    </div>
-
-    <div class="example">
-      <div class="example-tag">📖 例题4 · 隔级比重</div>
-      <div class="example-q">某集团下设A事业部和B事业部。A事业部产值占集团的 <b>40%</b>，A事业部中核心业务占A事业部的 <b>25%</b>。<br>
-      问：核心业务占集团总产值的比重是多少？</div>
-      <div class="example-sol">
-        <span class="step-label">公式</span>小占大 = (小÷中) × (中÷大)<br>
-        <span class="step-label">代入</span>核心占集团 = 25% × 40% = <b>10%</b>
-        <div class="example-ans">答案：核心业务占集团10%</div>
-      </div>
-    </div>
   </section>
 
   <!-- ============ 7. 比值类 ============ -->
@@ -953,6 +1083,49 @@
       </div>
     </div>
 
+    <div class="example">
+      <div class="example-tag">📖 例题1 · 平均数增长率</div>
+      <div class="example-q">2023年某省粮食总产量为 <b>3500万吨</b>，同比增长 <b>3.6%</b>；<br>
+      粮食播种面积为 <b>5000万亩</b>，同比增长 <b>1.2%</b>。<br>
+      问：2023年该省粮食<b>亩产</b>同比增长百分之多少？</div>
+      <div class="example-sol">
+        <span class="step-label">识别</span>亩产 = 总产量 ÷ 面积 → 比值增长率<br>
+        <span class="step-label">标注</span>R₁ = 分子（产量）增速 = 3.6%，R₂ = 分母（面积）增速 = 1.2%<br>
+        <span class="step-label">公式</span>R = (R₁ - R₂) ÷ (1 + R₂)<br>
+        <span class="step-label">代入</span>R = (3.6% - 1.2%) ÷ (1 + 1.2%) = 2.4% ÷ 1.012 ≈ <b>2.37%</b>
+        <div class="example-ans">答案 ≈ 2.4%</div>
+      </div>
+    </div>
+    <div class="example">
+      <div class="example-tag">📖 例题2 · 比值差（平均数变化量）</div>
+      <div class="example-q">2023年某市城镇居民人均可支配收入为 <b>55000元</b>，增长 <b>6.5%</b>；<br>
+      城镇常住人口为 <b>800万人</b>，增长 <b>2.1%</b>。<br>
+      问：2023年该市城镇居民人均可支配收入比上年<b>增加</b>了多少元？</div>
+      <div class="example-sol">
+        <span class="step-label">识别</span>"人均收入增加多少"→ 比值差（不是比值增长率！）<br>
+        <span class="step-label">公式</span>比值差 = (A/B) × (R₁ - R₂)<br>
+        <span class="step-label">注意</span>比值差单位是"元"（实际量），不是%，<b>不可秒杀</b><br>
+        <span class="step-label">代入</span>差 = 55000 × (6.5% - 2.1%) = 55000 × 4.4% = <b>2420元</b><br>
+        <span class="step-label">验证</span>现期人均 = 55000÷800 = 68750？不对，55000本身就是人均<br>
+        实际：现期人均收入=55000元，基期人均=55000×(1+2.1%)÷(1+6.5%)≈52696<br>
+        差 = 55000 - 52696 = 2304元（近似公式有微小误差）
+        <div class="example-ans">答案 ≈ 2300~2420元</div>
+      </div>
+    </div>
+    <div class="example">
+      <div class="example-tag">📖 例题3 · 基期平均数</div>
+      <div class="example-q">2023年某企业总产值为 <b>8000万元</b>（增长 <b>10%</b>），员工人数为 <b>200人</b>（增长 <b>5%</b>）。<br>
+      求2022年该企业人均产值约为多少万元？</div>
+      <div class="example-sol">
+        <span class="step-label">方法</span>基期平均数 = 现期平均数 × (1+R₁) ÷ (1+R₂)<br>
+        R₁ = 分母（人数）增速 = 5%，R₂ = 分子（产值）增速 = 10%<br>
+        <span class="step-label">现期人均</span>8000 ÷ 200 = 40万元/人<br>
+        <span class="step-label">基期人均</span>40 × (1+5%) ÷ (1+10%) = 40 × 1.05 ÷ 1.10<br>
+        = 40 × 0.9545 ≈ <b>38.2万元/人</b>
+        <div class="example-ans">答案 ≈ 38.2万元/人</div>
+      </div>
+    </div>
+
     <div class="card">
       <div class="card-title">🔢 倍数 — 考法汇总</div>
       <div class="formula">
@@ -971,6 +1144,19 @@
       </table>
     </div>
 
+    <div class="example">
+      <div class="example-tag">📖 例题4 · 倍数（是几倍 vs 多几倍）</div>
+      <div class="example-q">2023年A省GDP为 <b>60000亿元</b>，B省GDP为 <b>15000亿元</b>。<br>
+      ① A省GDP是B省的多少倍？<br>
+      ② A省GDP比B省多多少倍？</div>
+      <div class="example-sol">
+        <span class="step-label">① 是几倍</span>A ÷ B = 60000 ÷ 15000 = <b>4倍</b><br>
+        <span class="step-label">② 多几倍</span>(A ÷ B) - 1 = 4 - 1 = <b>3倍</b><br>
+        <span class="step-label">关系</span>多N倍 = 是(N+1)倍；增长率 = 多几倍 = 是几倍-1
+        <div class="example-ans">① 4倍　② 多3倍</div>
+      </div>
+    </div>
+
     <div class="card">
       <div class="card-title">📈 翻番</div>
       <div class="formula">
@@ -978,6 +1164,18 @@
         <span class="label">公式</span>现期 ÷ 基期 = 2ⁿ → n = log₂(现期÷基期)<br><br>
         <span class="label">例</span>1000→8000，8000÷1000=8=2³，翻了3番<br>
         <span class="label">对照</span>翻1番=2倍，翻2番=4倍，翻3番=8倍，翻4番=16倍
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-tag">📖 例题5 · 翻番</div>
+      <div class="example-q">某市2015年GDP为 <b>2000亿元</b>，2023年GDP为 <b>16000亿元</b>。<br>
+      问：2023年GDP与2015年相比翻了几番？</div>
+      <div class="example-sol">
+        <span class="step-label">公式</span>倍数 = 现期 ÷ 基期 = 16000 ÷ 2000 = <b>8倍</b><br>
+        <span class="step-label">翻番</span>8 = 2³ → 翻了<b>3番</b><br>
+        <span class="step-label">对照</span>翻1番=2倍，翻2番=4倍，翻3番=8倍
+        <div class="example-ans">答案：翻了3番</div>
       </div>
     </div>
 
@@ -993,76 +1191,6 @@
         <span class="label">方法一</span>分别计算增长量（用415/假设分配），再做除法<br>
         <span class="label">方法二</span>当R相差不大时（10个百分点内）：<br>
         增量倍数 ≈ (A÷B) × (R₁÷R₂)
-      </div>
-    </div>
-
-    <div class="example">
-      <div class="example-tag">📖 例题1 · 平均数增长率</div>
-      <div class="example-q">2023年某省粮食总产量为 <b>3500万吨</b>，同比增长 <b>3.6%</b>；<br>
-      粮食播种面积为 <b>5000万亩</b>，同比增长 <b>1.2%</b>。<br>
-      问：2023年该省粮食<b>亩产</b>同比增长百分之多少？</div>
-      <div class="example-sol">
-        <span class="step-label">识别</span>亩产 = 总产量 ÷ 面积 → 比值增长率<br>
-        <span class="step-label">标注</span>R₁ = 分子（产量）增速 = 3.6%，R₂ = 分母（面积）增速 = 1.2%<br>
-        <span class="step-label">公式</span>R = (R₁ - R₂) ÷ (1 + R₂)<br>
-        <span class="step-label">代入</span>R = (3.6% - 1.2%) ÷ (1 + 1.2%) = 2.4% ÷ 1.012 ≈ <b>2.37%</b>
-        <div class="example-ans">答案 ≈ 2.4%</div>
-      </div>
-    </div>
-
-    <div class="example">
-      <div class="example-tag">📖 例题2 · 比值差（平均数变化量）</div>
-      <div class="example-q">2023年某市城镇居民人均可支配收入为 <b>55000元</b>，增长 <b>6.5%</b>；<br>
-      城镇常住人口为 <b>800万人</b>，增长 <b>2.1%</b>。<br>
-      问：2023年该市城镇居民人均可支配收入比上年<b>增加</b>了多少元？</div>
-      <div class="example-sol">
-        <span class="step-label">识别</span>"人均收入增加多少"→ 比值差（不是比值增长率！）<br>
-        <span class="step-label">公式</span>比值差 = (A/B) × (R₁ - R₂)<br>
-        <span class="step-label">注意</span>比值差单位是"元"（实际量），不是%，<b>不可秒杀</b><br>
-        <span class="step-label">代入</span>差 = 55000 × (6.5% - 2.1%) = 55000 × 4.4% = <b>2420元</b><br>
-        <span class="step-label">验证</span>现期人均 = 55000÷800 = 68750？不对，55000本身就是人均<br>
-        实际：现期人均收入=55000元，基期人均=55000×(1+2.1%)÷(1+6.5%)≈52696<br>
-        差 = 55000 - 52696 = 2304元（近似公式有微小误差）
-        <div class="example-ans">答案 ≈ 2300~2420元</div>
-      </div>
-    </div>
-
-    <div class="example">
-      <div class="example-tag">📖 例题3 · 倍数（是几倍 vs 多几倍）</div>
-      <div class="example-q">2023年A省GDP为 <b>60000亿元</b>，B省GDP为 <b>15000亿元</b>。<br>
-      ① A省GDP是B省的多少倍？<br>
-      ② A省GDP比B省多多少倍？</div>
-      <div class="example-sol">
-        <span class="step-label">① 是几倍</span>A ÷ B = 60000 ÷ 15000 = <b>4倍</b><br>
-        <span class="step-label">② 多几倍</span>(A ÷ B) - 1 = 4 - 1 = <b>3倍</b><br>
-        <span class="step-label">关系</span>多N倍 = 是(N+1)倍；增长率 = 多几倍 = 是几倍-1
-        <div class="example-ans">① 4倍　② 多3倍</div>
-      </div>
-    </div>
-
-    <div class="example">
-      <div class="example-tag">📖 例题4 · 翻番</div>
-      <div class="example-q">某市2015年GDP为 <b>2000亿元</b>，2023年GDP为 <b>16000亿元</b>。<br>
-      问：2023年GDP与2015年相比翻了几番？</div>
-      <div class="example-sol">
-        <span class="step-label">公式</span>倍数 = 现期 ÷ 基期 = 16000 ÷ 2000 = <b>8倍</b><br>
-        <span class="step-label">翻番</span>8 = 2³ → 翻了<b>3番</b><br>
-        <span class="step-label">对照</span>翻1番=2倍，翻2番=4倍，翻3番=8倍
-        <div class="example-ans">答案：翻了3番</div>
-      </div>
-    </div>
-
-    <div class="example">
-      <div class="example-tag">📖 例题5 · 基期平均数</div>
-      <div class="example-q">2023年某企业总产值为 <b>8000万元</b>（增长 <b>10%</b>），员工人数为 <b>200人</b>（增长 <b>5%</b>）。<br>
-      求2022年该企业人均产值约为多少万元？</div>
-      <div class="example-sol">
-        <span class="step-label">方法</span>基期平均数 = 现期平均数 × (1+R₁) ÷ (1+R₂)<br>
-        R₁ = 分母（人数）增速 = 5%，R₂ = 分子（产值）增速 = 10%<br>
-        <span class="step-label">现期人均</span>8000 ÷ 200 = 40万元/人<br>
-        <span class="step-label">基期人均</span>40 × (1+5%) ÷ (1+10%) = 40 × 1.05 ÷ 1.10<br>
-        = 40 × 0.9545 ≈ <b>38.2万元/人</b>
-        <div class="example-ans">答案 ≈ 38.2万元/人</div>
       </div>
     </div>
   </section>
@@ -1115,6 +1243,20 @@
       </div>
     </div>
 
+    <div class="example">
+      <div class="example-tag">📖 例题1 · 盐水定性判断</div>
+      <div class="example-q">2023年上半年某省进出口总额增长 <b>8.5%</b>，其中一季度增长 <b>12.3%</b>，二季度增长 <b>5.1%</b>。<br>
+      问：一季度进出口额占上半年的比重与上年同期相比是上升还是下降？</div>
+      <div class="example-sol">
+        <span class="step-label">盐水思维</span>上半年 = 一季度 + 二季度<br>
+        整体增速8.5%在12.3%和5.1%之间 ✓（在中间不在正中间）<br>
+        <span class="step-label">判断</span>一季度增速(12.3%) > 整体增速(8.5%) → 一季度涨得快<br>
+        → 一季度占上半年比重<b>上升</b><br>
+        <span class="step-label">验证</span>二季度增速(5.1%) < 整体增速(8.5%) → 二季度占比下降 ✓
+        <div class="example-ans">答案：一季度比重上升 ⬆️</div>
+      </div>
+    </div>
+
     <div class="card">
       <div class="card-title">✚ 十字交叉法 — 定量计算</div>
       <p style="margin-bottom:12px">已知3个R求量之比，或已知2个R和量之比求另一个R。</p>
@@ -1133,6 +1275,37 @@
       <div class="mnemonic">
         <div class="title">📌 盐水口诀</div>
         <div class="content">求人数，想盐水</div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-tag">📖 例题2 · 十字交叉法求量之比</div>
+      <div class="example-q">2023年某市出口额增长 <b>10%</b>，进口额增长 <b>4%</b>，进出口总额增长 <b>7%</b>。<br>
+      求出口额与进口额的<b>基期</b>之比约为多少？</div>
+      <div class="example-sol">
+        <span class="step-label">十字交叉</span><br>
+        出口增速 a=10%　　　r-b = 7%-4% = <b>3%</b>　　→ 出口基期<br>
+        　　　　　　混合 r=7%　　　　　　　　　　　───────<br>
+        进口增速 b=4%　　　a-r = 10%-7% = <b>3%</b>　　→ 进口基期<br>
+        <span class="step-label">比例</span>出口基期 : 进口基期 = (r-b) : (a-r) = 3 : 3 = <b>1 : 1</b><br>
+        <span class="step-label">验证</span>7%正好在10%和4%的正中间 → 量相等
+        <div class="example-ans">答案：出口基期:进口基期 = 1:1</div>
+      </div>
+    </div>
+    <div class="example">
+      <div class="example-tag">📖 例题3 · 十字交叉法（非正中间）</div>
+      <div class="example-q">2023年某省城镇居民人均消费增长 <b>8%</b>，农村居民人均消费增长 <b>12%</b>，<br>
+      全省人均消费增长 <b>9%</b>。<br>
+      求城镇与农村居民人数的基期之比约为多少？</div>
+      <div class="example-sol">
+        <span class="step-label">十字交叉</span><br>
+        城镇增速 a=8%　　　r-b = 9%-12% = <b>-3%</b>（取绝对值3）→ 城镇<br>
+        　　　　　混合 r=9%　　　　　　　　　　　　　───────<br>
+        农村增速 b=12%　　　a-r = 8%-9% = <b>-1%</b>（取绝对值1）→ 农村<br>
+        <span class="step-label">比例</span>城镇 : 农村 = 3 : 1<br>
+        <span class="step-label">验证</span>整体增速9%更靠近8%（城镇）→ 城镇人数更多 ✓<br>
+        (8%×3+12%×1)÷4 = (24%+12%)÷4 = 36%÷4 = 9% ✓
+        <div class="example-ans">答案：城镇:农村 = 3:1</div>
       </div>
     </div>
 
@@ -1158,66 +1331,6 @@
       </div>
     </div>
 
-    <div class="card">
-      <div class="card-title">🔄 盐水三大考法总结</div>
-      <table>
-        <tr><th>考法</th><th>已知</th><th>方法</th><th>口诀</th></tr>
-        <tr><td>求量之比</td><td>3个R</td><td>十字交叉法</td><td>求人数，想盐水</td></tr>
-        <tr><td>求另一个R</td><td>2个R + 量之比</td><td>十字交叉法 / 线段法</td><td>画线标点，按比例分段</td></tr>
-        <tr><td>定性判断</td><td>2个R + 量的大小</td><td>在中间不在正中间</td><td>靠近量大的</td></tr>
-      </table>
-      <div class="tip tip-warn">
-        <span class="tip-icon">⚠️</span>
-        <div><b>时间分段考法：</b>如将1-7月分成1-6月和7月，累计量=当月量+上月累计量，也适用盐水思维。</div>
-      </div>
-    </div>
-
-    <div class="example">
-      <div class="example-tag">📖 例题1 · 盐水定性判断</div>
-      <div class="example-q">2023年上半年某省进出口总额增长 <b>8.5%</b>，其中一季度增长 <b>12.3%</b>，二季度增长 <b>5.1%</b>。<br>
-      问：一季度进出口额占上半年的比重与上年同期相比是上升还是下降？</div>
-      <div class="example-sol">
-        <span class="step-label">盐水思维</span>上半年 = 一季度 + 二季度<br>
-        整体增速8.5%在12.3%和5.1%之间 ✓（在中间不在正中间）<br>
-        <span class="step-label">判断</span>一季度增速(12.3%) > 整体增速(8.5%) → 一季度涨得快<br>
-        → 一季度占上半年比重<b>上升</b><br>
-        <span class="step-label">验证</span>二季度增速(5.1%) < 整体增速(8.5%) → 二季度占比下降 ✓
-        <div class="example-ans">答案：一季度比重上升 ⬆️</div>
-      </div>
-    </div>
-
-    <div class="example">
-      <div class="example-tag">📖 例题2 · 十字交叉法求量之比</div>
-      <div class="example-q">2023年某市出口额增长 <b>10%</b>，进口额增长 <b>4%</b>，进出口总额增长 <b>7%</b>。<br>
-      求出口额与进口额的<b>基期</b>之比约为多少？</div>
-      <div class="example-sol">
-        <span class="step-label">十字交叉</span><br>
-        出口增速 a=10%　　　r-b = 7%-4% = <b>3%</b>　　→ 出口基期<br>
-        　　　　　　混合 r=7%　　　　　　　　　　　───────<br>
-        进口增速 b=4%　　　a-r = 10%-7% = <b>3%</b>　　→ 进口基期<br>
-        <span class="step-label">比例</span>出口基期 : 进口基期 = (r-b) : (a-r) = 3 : 3 = <b>1 : 1</b><br>
-        <span class="step-label">验证</span>7%正好在10%和4%的正中间 → 量相等
-        <div class="example-ans">答案：出口基期:进口基期 = 1:1</div>
-      </div>
-    </div>
-
-    <div class="example">
-      <div class="example-tag">📖 例题3 · 十字交叉法（非正中间）</div>
-      <div class="example-q">2023年某省城镇居民人均消费增长 <b>8%</b>，农村居民人均消费增长 <b>12%</b>，<br>
-      全省人均消费增长 <b>9%</b>。<br>
-      求城镇与农村居民人数的基期之比约为多少？</div>
-      <div class="example-sol">
-        <span class="step-label">十字交叉</span><br>
-        城镇增速 a=8%　　　r-b = 9%-12% = <b>-3%</b>（取绝对值3）→ 城镇<br>
-        　　　　　混合 r=9%　　　　　　　　　　　　　───────<br>
-        农村增速 b=12%　　　a-r = 8%-9% = <b>-1%</b>（取绝对值1）→ 农村<br>
-        <span class="step-label">比例</span>城镇 : 农村 = 3 : 1<br>
-        <span class="step-label">验证</span>整体增速9%更靠近8%（城镇）→ 城镇人数更多 ✓<br>
-        (8%×3+12%×1)÷4 = (24%+12%)÷4 = 36%÷4 = 9% ✓
-        <div class="example-ans">答案：城镇:农村 = 3:1</div>
-      </div>
-    </div>
-
     <div class="example">
       <div class="example-tag">📖 例题4 · 线段法求混合增速</div>
       <div class="example-q">已知某省一季度GDP增长 <b>6%</b>，二季度GDP增长 <b>9%</b>。<br>
@@ -1232,6 +1345,20 @@
         混合增速 = 6% + 1.65% = <b>7.65%</b><br>
         <span class="step-label">验证</span>6%×0.45 + 9%×0.55 = 2.7% + 4.95% = 7.65% ✓
         <div class="example-ans">答案 ≈ 7.65%（约7.7%）</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🔄 盐水三大考法总结</div>
+      <table>
+        <tr><th>考法</th><th>已知</th><th>方法</th><th>口诀</th></tr>
+        <tr><td>求量之比</td><td>3个R</td><td>十字交叉法</td><td>求人数，想盐水</td></tr>
+        <tr><td>求另一个R</td><td>2个R + 量之比</td><td>十字交叉法 / 线段法</td><td>画线标点，按比例分段</td></tr>
+        <tr><td>定性判断</td><td>2个R + 量的大小</td><td>在中间不在正中间</td><td>靠近量大的</td></tr>
+      </table>
+      <div class="tip tip-warn">
+        <span class="tip-icon">⚠️</span>
+        <div><b>时间分段考法：</b>如将1-7月分成1-6月和7月，累计量=当月量+上月累计量，也适用盐水思维。</div>
       </div>
     </div>
 
@@ -1273,16 +1400,57 @@
       </div>
     </div>
 
+    <div class="example">
+      <div class="example-tag">📖 例题1 · 增长量比较（大大则大）</div>
+      <div class="example-q">2023年四个城市GDP数据如下，问哪个城市GDP增长量最大？<br>
+      甲：现期8000亿，增长6.0%　乙：现期6000亿，增长9.5%<br>
+      丙：现期5000亿，增长8.0%　丁：现期9000亿，增长4.5%</div>
+      <div class="example-sol">
+        <span class="step-label">比较甲vs乙</span>甲B=8000>乙6000，甲R=6%<乙9.5% → 一大一小看倍数<br>
+        甲/乙倍数 = 8000/6000≈1.33，乙R/甲R = 9.5/6≈1.58 > 1.33<br>
+        → 乙R的倍数更大 → 乙增量可能更大<br>
+        <span class="step-label">比较乙vs丁</span>丁B=9000>乙6000，丁R=4.5%<乙9.5%<br>
+        丁/乙倍数 = 9000/6000=1.5，乙R/丁R = 9.5/4.5≈2.11 > 1.5<br>
+        → 乙R倍数更大 → 乙增量更大<br>
+        <span class="step-label">验证</span>X甲≈8000×6%÷1.06≈452，X乙≈6000×9.5%÷1.095≈521<br>
+        X丙≈5000×8%÷1.08≈370，X丁≈9000×4.5%÷1.045≈387<br>
+        乙 > 甲 > 丁 > 丙
+        <div class="example-ans">答案：乙城市增长量最大（≈521亿）</div>
+      </div>
+    </div>
+
     <div class="card">
       <div class="card-title">📊 增长率大小比较</div>
       <div class="grid-2">
         <div class="compare-item" style="background:var(--primary-light)">
           <h4>一般增长率比较</h4>
           <p style="font-size:13px">R = X ÷ A<br>基期量相近时直接比较X<br>基期量不同时比较 X/A</p>
+
+          <div class="example">
+            <div class="example-tag">📖 例题2 · 一般增长率比较</div>
+            <div class="example-q">2023年三个城市的增量和基期量如下，哪座城市GDP增速最快？<br>甲：增量 <b>280亿元</b>，基期 <b>3500亿元</b>　乙：增量 <b>360亿元</b>，基期 <b>4000亿元</b>　丙：增量 <b>330亿元</b>，基期 <b>3000亿元</b></div>
+            <div class="example-sol">
+              <span class="step-label">原理</span>基期量不同 → 比较 X ÷ A，而不是只比增量<br>
+              <span class="step-label">计算</span>甲 = 280 ÷ 3500 = <b>8.0%</b>，乙 = 360 ÷ 4000 = <b>9.0%</b>，丙 = 330 ÷ 3000 = <b>11.0%</b><br>
+              <span class="step-label">结论</span>丙增速最快（乙增量最大，但增速不是最快）
+              <div class="example-ans">答案：丙城市，增速11.0%</div>
+            </div>
+          </div>
         </div>
         <div class="compare-item" style="background:var(--success-light)">
           <h4>年均增长率比较</h4>
           <p style="font-size:13px">年份相同时直接比较 B÷A<br>不需算出具体r值</p>
+
+          <div class="example">
+            <div class="example-tag">📖 例题3 · 年均增长率比较</div>
+            <div class="example-q">四市2019~2023年（n=4）快递业务量：甲 200→<b>320</b>，乙 300→<b>450</b>，丙 250→<b>390</b>，丁 400→<b>560</b>（单位：亿件）。哪座城市年均增长率最大？</div>
+            <div class="example-sol">
+              <span class="step-label">原理</span>年份相同 → 直接比较末期 ÷ 初期（B÷A），不必开方<br>
+              <span class="step-label">计算</span>甲 320÷200 = <b>1.60</b>，乙 450÷300 = <b>1.50</b>，丙 390÷250 = <b>1.56</b>，丁 560÷400 = <b>1.40</b><br>
+              <span class="step-label">结论</span>甲市倍数最大(1.60) → 年均增长率最大
+              <div class="example-ans">答案：甲市</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -1303,11 +1471,45 @@
       </div>
     </div>
 
+    <div class="example">
+      <div class="example-tag">📖 例题4 · 差分法比较分数</div>
+      <div class="example-q">比较两个分数的大小：<br>
+      分数A = <b>4523/7256</b>　　分数B = <b>3817/6103</b></div>
+      <div class="example-sol">
+        <span class="step-label">直除首判</span>A≈0.62...，B≈0.62...，太接近，用差分法<br>
+        <span class="step-label">差分</span>大分数A减小分数B：<br>
+        分子差 = 4523-3817 = 706，分母差 = 7256-6103 = 1153<br>
+        差分数 = 706/1153 ≈ 0.612<br>
+        <span class="step-label">比较</span>差分数(0.612) vs 小分数B(3817/6103≈0.625)<br>
+        差分数 < 小分数 → 大分数A < 小分数B<br>
+        <span class="step-label">验证</span>A=0.6233，B=0.6254，确实A < B ✓
+        <div class="example-ans">答案：4523/7256 < 3817/6103</div>
+      </div>
+    </div>
+
     <div class="card">
       <div class="card-title">📈 基期量比较</div>
       <div class="tip tip-info">
         <span class="tip-icon">💡</span>
         <div>当(1+R)相差不大时，着重比较<b>现期量</b>B即可。<br>当(1+R)差距大时，需要同时考虑B和R的影响。</div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-tag">📖 例题5 · 基期量比较</div>
+      <div class="example-q">2023年四个城市GDP现期量与增速如下，哪个城市2022年GDP最大？<br>
+      甲：现期8500亿，增长8.5%　乙：现期8200亿，增长3.0%<br>
+      丙：现期8800亿，增长12.0%　丁：现期8100亿，增长1.5%</div>
+      <div class="example-sol">
+        <span class="step-label">方法</span>比较基期 A = B÷(1+R)<br>
+        <span class="step-label">估算</span><br>
+        甲：8500÷1.085 ≈ 7834<br>
+        乙：8200÷1.03 ≈ 7961<br>
+        丙：8800÷1.12 ≈ 7857<br>
+        丁：8100÷1.015 ≈ 7980<br>
+        <span class="step-label">注意</span>丙现期最大但R也最大(12%)，基期反而被"稀释"<br>
+        丁现期最小但R最小(1.5%)，基期几乎不变 → 丁最大
+        <div class="example-ans">答案：丁城市2022年GDP最大（≈7980亿）</div>
       </div>
     </div>
 
@@ -1325,42 +1527,7 @@
     </div>
 
     <div class="example">
-      <div class="example-tag">📖 例题1 · 增长量比较（大大则大）</div>
-      <div class="example-q">2023年四个城市GDP数据如下，问哪个城市GDP增长量最大？<br>
-      甲：现期8000亿，增长6.0%　乙：现期6000亿，增长9.5%<br>
-      丙：现期5000亿，增长8.0%　丁：现期9000亿，增长4.5%</div>
-      <div class="example-sol">
-        <span class="step-label">比较甲vs乙</span>甲B=8000>乙6000，甲R=6%<乙9.5% → 一大一小看倍数<br>
-        甲/乙倍数 = 8000/6000≈1.33，乙R/甲R = 9.5/6≈1.58 > 1.33<br>
-        → 乙R的倍数更大 → 乙增量可能更大<br>
-        <span class="step-label">比较乙vs丁</span>丁B=9000>乙6000，丁R=4.5%<乙9.5%<br>
-        丁/乙倍数 = 9000/6000=1.5，乙R/丁R = 9.5/4.5≈2.11 > 1.5<br>
-        → 乙R倍数更大 → 乙增量更大<br>
-        <span class="step-label">验证</span>X甲≈8000×6%÷1.06≈452，X乙≈6000×9.5%÷1.095≈521<br>
-        X丙≈5000×8%÷1.08≈370，X丁≈9000×4.5%÷1.045≈387<br>
-        乙 > 甲 > 丁 > 丙
-        <div class="example-ans">答案：乙城市增长量最大（≈521亿）</div>
-      </div>
-    </div>
-
-    <div class="example">
-      <div class="example-tag">📖 例题2 · 差分法比较分数</div>
-      <div class="example-q">比较两个分数的大小：<br>
-      分数A = <b>4523/7256</b>　　分数B = <b>3817/6103</b></div>
-      <div class="example-sol">
-        <span class="step-label">直除首判</span>A≈0.62...，B≈0.62...，太接近，用差分法<br>
-        <span class="step-label">差分</span>大分数A减小分数B：<br>
-        分子差 = 4523-3817 = 706，分母差 = 7256-6103 = 1153<br>
-        差分数 = 706/1153 ≈ 0.612<br>
-        <span class="step-label">比较</span>差分数(0.612) vs 小分数B(3817/6103≈0.625)<br>
-        差分数 < 小分数 → 大分数A < 小分数B<br>
-        <span class="step-label">验证</span>A=0.6233，B=0.6254，确实A < B ✓
-        <div class="example-ans">答案：4523/7256 < 3817/6103</div>
-      </div>
-    </div>
-
-    <div class="example">
-      <div class="example-tag">📖 例题3 · "最值"关键词识别</div>
+      <div class="example-tag">📖 例题6 · "最值"关键词识别</div>
       <div class="example-q">某省2023年四个行业产值增长率分别为：<br>
       农业 +3.2%，工业 +7.5%，建筑业 -2.1%，服务业 +5.8%<br>
       ① 增长最快的是？　② 变化幅度最大的是？　③ 降幅最大的是？</div>
@@ -1372,24 +1539,6 @@
         <span class="step-label">③ 降幅最大</span>只有建筑业为负 → 建筑业 -2.1%<br>
         <span class="step-label">易错</span>"变化幅度"看绝对值，"增长幅度"看实际值，"降幅"只看负值
         <div class="example-ans">① 工业　② 工业　③ 建筑业</div>
-      </div>
-    </div>
-
-    <div class="example">
-      <div class="example-tag">📖 例题4 · 基期量比较</div>
-      <div class="example-q">2023年四个城市GDP现期量与增速如下，哪个城市2022年GDP最大？<br>
-      甲：现期8500亿，增长8.5%　乙：现期8200亿，增长3.0%<br>
-      丙：现期8800亿，增长12.0%　丁：现期8100亿，增长1.5%</div>
-      <div class="example-sol">
-        <span class="step-label">方法</span>比较基期 A = B÷(1+R)<br>
-        <span class="step-label">估算</span><br>
-        甲：8500÷1.085 ≈ 7834<br>
-        乙：8200÷1.03 ≈ 7961<br>
-        丙：8800÷1.12 ≈ 7857<br>
-        丁：8100÷1.015 ≈ 7980<br>
-        <span class="step-label">注意</span>丙现期最大但R也最大(12%)，基期反而被"稀释"<br>
-        丁现期最小但R最小(1.5%)，基期几乎不变 → 丁最大
-        <div class="example-ans">答案：丁城市2022年GDP最大（≈7980亿）</div>
       </div>
     </div>
   </section>
@@ -1405,11 +1554,33 @@
           <h4>🔵 拉动增长率</h4>
           <div class="formula" style="margin:6px 0">拉动增长率 = 部分增量 ÷ 整体<b>基期</b></div>
           <p style="font-size:12px">问法："拉动…增长多少个百分点"</p>
+
+          <div class="example">
+            <div class="example-tag">📖 例题1 · 拉动增长率</div>
+            <div class="example-q">2023年某省GDP基期为 <b>20000亿元</b>，其中信息产业增量为 <b>600亿元</b>。求信息产业拉动GDP增长多少个百分点？</div>
+            <div class="example-sol">
+              <span class="step-label">公式</span>拉动增长率 = 部分增量 ÷ 整体<b>基期</b><br>
+              <span class="step-label">代入</span>600 ÷ 20000 = <b>3.0%</b>，即拉动3.0个百分点
+              <div class="example-ans">答案：拉动3.0个百分点</div>
+            </div>
+          </div>
         </div>
         <div class="compare-item" style="background:var(--success-light)">
           <h4>🟢 增量贡献率</h4>
           <div class="formula" style="margin:6px 0">增量贡献率 = 部分增量 ÷ 整体<b>增量</b></div>
           <p style="font-size:12px">问法："贡献率""对…增长的贡献率"</p>
+
+          <div class="example">
+            <div class="example-tag">📖 例题2 · 增量贡献率</div>
+            <div class="example-q">2023年某省GDP基期为 <b>20000亿元</b>、增长 <b>6%</b>，其中信息产业增量为 <b>600亿元</b>。求信息产业对GDP增长的贡献率。</div>
+            <div class="example-sol">
+              <span class="step-label">整体增量</span>20000 × 6% = <b>1200亿元</b><br>
+              <span class="step-label">公式</span>增量贡献率 = 部分增量 ÷ 整体<b>增量</b><br>
+              <span class="step-label">代入</span>600 ÷ 1200 = <b>50%</b><br>
+              <span class="step-label">验证</span>拉动3% = 贡献率50% × 整体增速6% ✓
+              <div class="example-ans">答案：贡献率50%</div>
+            </div>
+          </div>
         </div>
       </div>
       <div class="tip tip-warn">
@@ -1419,6 +1590,23 @@
       <div class="tip tip-info">
         <span class="tip-icon">💡</span>
         <div><b>贡献率比较大小：</b>比较不同部分对同一整体的贡献率时，整体增量相同，只需比较部分增量大小。</div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-tag">📖 例题3 · 拉动增长率 vs 增量贡献率</div>
+      <div class="example-q">2023年某省GDP基期为 <b>10000亿元</b>，增量为 <b>800亿元</b>。<br>
+      其中制造业增量为 <b>280亿元</b>。<br>
+      ① 制造业拉动GDP增长多少个百分点？<br>
+      ② 制造业对GDP增长的贡献率是多少？</div>
+      <div class="example-sol">
+        <span class="step-label">① 拉动增长率</span>部分增量 ÷ 整体<b>基期</b><br>
+        = 280 ÷ 10000 = <b>2.8%</b>（即2.8个百分点）<br>
+        <span class="step-label">② 贡献率</span>部分增量 ÷ 整体<b>增量</b><br>
+        = 280 ÷ 800 = <b>35%</b><br>
+        <span class="step-label">区分</span>拉动看的是"对基期的拉动"，贡献看的是"在增量中占多少"<br>
+        验证：拉动2.8% = 贡献率35% × 整体增速8% → 35%×8%=2.8% ✓
+        <div class="example-ans">① 拉动2.8个百分点　② 贡献率35%</div>
       </div>
     </div>
 
@@ -1432,6 +1620,18 @@
       <div class="tip tip-info">
         <span class="tip-icon">💡</span>
         <div><b>两集合容斥：</b>A + B - A∩B = 总数 - 都不满足<br><b>三集合容斥：</b>A+B+C - (两两交集) + (三交集) = 总数 - 都不满足</div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-tag">📖 例题4 · 容斥问题</div>
+      <div class="example-q">某单位100人中，订阅A杂志的有60人，订阅B杂志的有45人，<br>
+      两本都订阅的有25人。问两本都没订阅的有多少人？</div>
+      <div class="example-sol">
+        <span class="step-label">公式</span>A + B - A∩B = 总数 - 都不满足<br>
+        <span class="step-label">代入</span>60 + 45 - 25 = 80（至少订阅一本的人数）<br>
+        <span class="step-label">结果</span>都不订阅 = 100 - 80 = <b>20人</b>
+        <div class="example-ans">答案：20人两本都没订阅</div>
       </div>
     </div>
 
@@ -1459,11 +1659,36 @@
       </div>
     </div>
 
+    <div class="example">
+      <div class="example-tag">📖 例题5 · 进出口计算</div>
+      <div class="example-q">2023年某国出口额为 <b>2.2万亿美元</b>，进口额为 <b>1.8万亿美元</b>。<br>
+      ① 进出口总额是多少？<br>
+      ② 贸易顺差还是逆差？金额是多少？</div>
+      <div class="example-sol">
+        <span class="step-label">①</span>进出口总额 = 出口 + 进口 = 2.2 + 1.8 = <b>4.0万亿美元</b><br>
+        <span class="step-label">②</span>出口(2.2) > 进口(1.8) → 贸易<b>顺差</b><br>
+        顺差 = 出口 - 进口 = 2.2 - 1.8 = <b>0.4万亿美元</b>
+        <div class="example-ans">① 总额4.0万亿美元　② 顺差0.4万亿美元</div>
+      </div>
+    </div>
+
     <div class="card">
       <div class="card-title">📅 年均增长量</div>
       <div class="formula">
         <span class="label">公式</span>年均增长量 = (末期值 - 初期值) ÷ n<br>
         n = 年份差（如2018→2023，n=5）
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-tag">📖 例题6 · 年均增长量</div>
+      <div class="example-q">某市2019年常住人口为 <b>850万人</b>，2023年常住人口为 <b>920万人</b>。<br>
+      求2019~2023年该市常住人口的年均增长量。</div>
+      <div class="example-sol">
+        <span class="step-label">公式</span>年均增长量 = (末期-初期) ÷ n<br>
+        <span class="step-label">n值</span>n = 2023-2019 = <b>4</b><br>
+        <span class="step-label">代入</span>(920-850) ÷ 4 = 70 ÷ 4 = <b>17.5万人/年</b>
+        <div class="example-ans">答案：年均增长17.5万人</div>
       </div>
     </div>
 
@@ -1478,61 +1703,7 @@
     </div>
 
     <div class="example">
-      <div class="example-tag">📖 例题1 · 拉动增长率 vs 增量贡献率</div>
-      <div class="example-q">2023年某省GDP基期为 <b>10000亿元</b>，增量为 <b>800亿元</b>。<br>
-      其中制造业增量为 <b>280亿元</b>。<br>
-      ① 制造业拉动GDP增长多少个百分点？<br>
-      ② 制造业对GDP增长的贡献率是多少？</div>
-      <div class="example-sol">
-        <span class="step-label">① 拉动增长率</span>部分增量 ÷ 整体<b>基期</b><br>
-        = 280 ÷ 10000 = <b>2.8%</b>（即2.8个百分点）<br>
-        <span class="step-label">② 贡献率</span>部分增量 ÷ 整体<b>增量</b><br>
-        = 280 ÷ 800 = <b>35%</b><br>
-        <span class="step-label">区分</span>拉动看的是"对基期的拉动"，贡献看的是"在增量中占多少"<br>
-        验证：拉动2.8% = 贡献率35% × 整体增速8% → 35%×8%=2.8% ✓
-        <div class="example-ans">① 拉动2.8个百分点　② 贡献率35%</div>
-      </div>
-    </div>
-
-    <div class="example">
-      <div class="example-tag">📖 例题2 · 容斥问题</div>
-      <div class="example-q">某单位100人中，订阅A杂志的有60人，订阅B杂志的有45人，<br>
-      两本都订阅的有25人。问两本都没订阅的有多少人？</div>
-      <div class="example-sol">
-        <span class="step-label">公式</span>A + B - A∩B = 总数 - 都不满足<br>
-        <span class="step-label">代入</span>60 + 45 - 25 = 80（至少订阅一本的人数）<br>
-        <span class="step-label">结果</span>都不订阅 = 100 - 80 = <b>20人</b>
-        <div class="example-ans">答案：20人两本都没订阅</div>
-      </div>
-    </div>
-
-    <div class="example">
-      <div class="example-tag">📖 例题3 · 进出口计算</div>
-      <div class="example-q">2023年某国出口额为 <b>2.2万亿美元</b>，进口额为 <b>1.8万亿美元</b>。<br>
-      ① 进出口总额是多少？<br>
-      ② 贸易顺差还是逆差？金额是多少？</div>
-      <div class="example-sol">
-        <span class="step-label">①</span>进出口总额 = 出口 + 进口 = 2.2 + 1.8 = <b>4.0万亿美元</b><br>
-        <span class="step-label">②</span>出口(2.2) > 进口(1.8) → 贸易<b>顺差</b><br>
-        顺差 = 出口 - 进口 = 2.2 - 1.8 = <b>0.4万亿美元</b>
-        <div class="example-ans">① 总额4.0万亿美元　② 顺差0.4万亿美元</div>
-      </div>
-    </div>
-
-    <div class="example">
-      <div class="example-tag">📖 例题4 · 年均增长量</div>
-      <div class="example-q">某市2019年常住人口为 <b>850万人</b>，2023年常住人口为 <b>920万人</b>。<br>
-      求2019~2023年该市常住人口的年均增长量。</div>
-      <div class="example-sol">
-        <span class="step-label">公式</span>年均增长量 = (末期-初期) ÷ n<br>
-        <span class="step-label">n值</span>n = 2023-2019 = <b>4</b><br>
-        <span class="step-label">代入</span>(920-850) ÷ 4 = 70 ÷ 4 = <b>17.5万人/年</b>
-        <div class="example-ans">答案：年均增长17.5万人</div>
-      </div>
-    </div>
-
-    <div class="example">
-      <div class="example-tag">📖 例题5 · "超过"的精确含义</div>
+      <div class="example-tag">📖 例题7 · "超过"的精确含义</div>
       <div class="example-q">2023年甲市GDP为 <b>1.2万亿元</b>，乙市GDP为 <b>4500亿元</b>。<br>
       问：甲市GDP是否<b>超过</b>乙市的2倍？</div>
       <div class="example-sol">
@@ -1561,6 +1732,19 @@
       </ul>
     </div>
 
+    <div class="example">
+      <div class="example-tag">📖 例题1 · 时间陷阱</div>
+      <div class="example-q">材料给出"2023年1-3月某省出口额为5000亿元"。<br>
+      选项："2023年全年某省出口额约为20000亿元"。<br>
+      这个选项能选吗？</div>
+      <div class="example-sol">
+        <span class="step-label">识别</span>材料是<b>1-3月</b>（季度）数据，选项说<b>全年</b><br>
+        <span class="step-label">排除</span>不能简单用5000×4=20000估算全年，因为各季度不均等<br>
+        <span class="step-label">结论</span>时间不匹配 → <b>直接排除</b>❌
+        <div class="example-ans">不能选，时间不对应</div>
+      </div>
+    </div>
+
     <div class="card">
       <div class="card-title">📏 单位陷阱</div>
       <div class="tip tip-danger">
@@ -1573,6 +1757,21 @@
           • "‰"（千分号）vs "%"（百分号）→ 差10倍<br>
           • 注意图表标题与表格标题的单位是否一致
         </div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-tag">📖 例题2 · 单位陷阱</div>
+      <div class="example-q">材料表格标题："某省货运量（单位：万吨）"，数据为 <b>38500</b>。<br>
+      选项A："该省货运量约为3.85亿吨"。<br>
+      选项B："该省货运量约为3850万吨"。<br>
+      哪个正确？</div>
+      <div class="example-sol">
+        <span class="step-label">单位换算</span>1万吨 = 0.01亿吨，1亿吨 = 10000万吨<br>
+        38500万吨 = 38500 ÷ 10000 = <b>3.85亿吨</b><br>
+        <span class="step-label">结论</span>选项A正确，选项B少了一个0<br>
+        <span class="step-label">警惕</span>考试中万吨/亿吨、万元/亿元、人/万人、‰/%都是高频陷阱
+        <div class="example-ans">答案：A. 3.85亿吨</div>
       </div>
     </div>
 
@@ -1589,33 +1788,8 @@
       </ul>
     </div>
 
-    <div class="card">
-      <div class="card-title">🔍 综合分析题防坑</div>
-      <ol class="steps">
-        <li>读题时特别留意<b>时间</b>和<b>对象</b>的表述</li>
-        <li>时间不对应 → 直接排除</li>
-        <li>对象不匹配（材料是"规上企业"，选项是"所有企业"）→ 排除</li>
-        <li>单位不匹配 → 排除</li>
-        <li>注意"约""近""超""超过"等表述的精确含义</li>
-        <li>多个数求和是否超过某值 → 以平均数为基准，算偏离部分</li>
-      </ol>
-    </div>
-
     <div class="example">
-      <div class="example-tag">📖 例题1 · 时间陷阱</div>
-      <div class="example-q">材料给出"2023年1-3月某省出口额为5000亿元"。<br>
-      选项："2023年全年某省出口额约为20000亿元"。<br>
-      这个选项能选吗？</div>
-      <div class="example-sol">
-        <span class="step-label">识别</span>材料是<b>1-3月</b>（季度）数据，选项说<b>全年</b><br>
-        <span class="step-label">排除</span>不能简单用5000×4=20000估算全年，因为各季度不均等<br>
-        <span class="step-label">结论</span>时间不匹配 → <b>直接排除</b>❌
-        <div class="example-ans">不能选，时间不对应</div>
-      </div>
-    </div>
-
-    <div class="example">
-      <div class="example-tag">📖 例题2 · 增速回落≠下降</div>
+      <div class="example-tag">📖 例题3 · 增速回落≠下降</div>
       <div class="example-q">材料："2023年某市GDP增速为7.5%，比上年<b>回落</b>1.2个百分点"。<br>
       选项A："2023年该市GDP<b>下降</b>了"。<br>
       这个选项能选吗？</div>
@@ -1627,9 +1801,8 @@
         <div class="example-ans">不能选，增速回落只是涨得慢</div>
       </div>
     </div>
-
     <div class="example">
-      <div class="example-tag">📖 例题3 · 百分点 vs 百分比</div>
+      <div class="example-tag">📖 例题4 · 百分点 vs 百分比</div>
       <div class="example-q">材料："2023年某省城镇化率为65%，比上年<b>提高1.5个百分点</b>"。<br>
       问：2022年该省城镇化率是多少？2023年城镇化率的增长率是多少？</div>
       <div class="example-sol">
@@ -1641,22 +1814,6 @@
         <div class="example-ans">2022年63.5%，增长率约2.36%</div>
       </div>
     </div>
-
-    <div class="example">
-      <div class="example-tag">📖 例题4 · 单位陷阱</div>
-      <div class="example-q">材料表格标题："某省货运量（单位：万吨）"，数据为 <b>38500</b>。<br>
-      选项A："该省货运量约为3.85亿吨"。<br>
-      选项B："该省货运量约为3850万吨"。<br>
-      哪个正确？</div>
-      <div class="example-sol">
-        <span class="step-label">单位换算</span>1万吨 = 0.01亿吨，1亿吨 = 10000万吨<br>
-        38500万吨 = 38500 ÷ 10000 = <b>3.85亿吨</b><br>
-        <span class="step-label">结论</span>选项A正确，选项B少了一个0<br>
-        <span class="step-label">警惕</span>考试中万吨/亿吨、万元/亿元、人/万人、‰/%都是高频陷阱
-        <div class="example-ans">答案：A. 3.85亿吨</div>
-      </div>
-    </div>
-
     <div class="example">
       <div class="example-tag">📖 例题5 · 是几倍 vs 多几倍</div>
       <div class="example-q">材料："2023年甲省GDP为4.8万亿元，乙省GDP为1.2万亿元"。<br>
@@ -1672,6 +1829,18 @@
         <span class="step-label">关系</span>是N倍 = 多(N-1)倍；多N倍 = 是(N+1)倍
         <div class="example-ans">B和C正确</div>
       </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🔍 综合分析题防坑</div>
+      <ol class="steps">
+        <li>读题时特别留意<b>时间</b>和<b>对象</b>的表述</li>
+        <li>时间不对应 → 直接排除</li>
+        <li>对象不匹配（材料是"规上企业"，选项是"所有企业"）→ 排除</li>
+        <li>单位不匹配 → 排除</li>
+        <li>注意"约""近""超""超过"等表述的精确含义</li>
+        <li>多个数求和是否超过某值 → 以平均数为基准，算偏离部分</li>
+      </ol>
     </div>
   </section>
 
@@ -1776,6 +1945,7 @@
   <p style="margin-top:4px;">公式背熟 + 刻意练习 = 考场秒杀 🚀</p>
 </div>
 
-  <script data-study-hub-script src="../../assets/hub-nav.js"></script>
+    <script data-page-shell src="../../assets/page-shell.js"></script>
+<script data-study-hub-script src="../../assets/hub-nav.js"></script>
 </body>
 </html>

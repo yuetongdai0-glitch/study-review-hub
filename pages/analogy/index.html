@@ -7,6 +7,7 @@
 <title>测试</title>
 <style>
   :root{
+    --primary:#1f5fd6;
     --bg:#f2f3f6; --card:#fff; --ink:#1c2333; --ink2:#5a6478; --ink3:#8b93a5;
     --blue:#1f5fd6; --blue-soft:#e8f0fd;
     --green:#1e8449; --green-soft:#e6f4ec;
@@ -29,38 +30,6 @@
   [hidden]{display:none !important;}
   a{color:var(--blue);}
 
-  /* ── 顶栏 ── */
-  .topbar{
-    position:sticky; top:0; z-index:30;
-    background:rgba(255,255,255,.95); backdrop-filter:blur(10px);
-    border-bottom:1px solid var(--line);
-    padding:calc(10px + env(safe-area-inset-top)) 14px 10px;
-  }
-  .topbar .row1{display:flex; align-items:baseline; gap:8px; max-width:860px; margin:0 auto;}
-  .topbar h1{margin:0; font-size:17px; letter-spacing:-.2px; white-space:nowrap;}
-  .topbar .stat{margin-left:auto; font-size:12.5px; color:var(--ink3); white-space:nowrap;}
-  .topbar .sub{max-width:860px; margin:3px auto 0; font-size:12.5px; color:var(--ink3);}
-  .searchwrap{max-width:860px; margin:9px auto 0; position:relative;}
-  #q{
-    width:100%; height:42px; padding:0 38px 0 36px;
-    border:1px solid var(--line); border-radius:11px;
-    background:#fbfcfe; font:inherit; font-size:14.5px; color:var(--ink); outline:none;
-  }
-  #q:focus{border-color:#9dbfef; background:#fff; box-shadow:0 0 0 3px var(--blue-soft);}
-  .searchwrap .ico{position:absolute; left:12px; top:50%; transform:translateY(-50%); color:var(--ink3); font-size:14px;}
-  .searchwrap .clr{
-    position:absolute; right:8px; top:50%; transform:translateY(-50%);
-    width:26px; height:26px; border-radius:50%; color:var(--ink3); font-size:15px; line-height:1;
-  }
-  .searchwrap .clr:hover{background:var(--line2);}
-  .chips{display:flex; gap:7px; overflow-x:auto; padding:9px 0 1px; max-width:860px; margin:0 auto;
-         -webkit-overflow-scrolling:touch; scrollbar-width:none;}
-  .chips::-webkit-scrollbar{display:none;}
-  .chips button{
-    flex:none; height:36px; padding:0 14px; border-radius:999px;
-    border:1px solid var(--line); background:#fff; font-size:12.5px; color:var(--ink2); white-space:nowrap;
-  }
-  .chips button[aria-pressed="true"]{background:var(--ink); border-color:var(--ink); color:#fff;}
 
   /* ── 主体 ── */
   main{max-width:860px; margin:0 auto; padding:14px 14px 0;}
@@ -130,7 +99,6 @@
 
   @media (min-width:761px){
     body{font-size:15.5px;}
-    .topbar h1{font-size:18.5px;}
     .hero .three{grid-template-columns:repeat(3,1fr);}
     .entry-head b{font-size:15.5px;}
   }
@@ -139,31 +107,81 @@
     .entry-head b{font-size:14.5px;}
   }
   @media print{
-    .topbar,.chips,.study-hub-shell{display:none !important;}
+    .study-hub-shell{display:none !important;}
     .group-body{display:block !important;}
     body{background:#fff;}
   }
 </style>
+  <link data-page-shell rel="stylesheet" href="../../assets/page-shell.css">
 </head>
 <body>
 
-<header class="topbar">
-  <div class="row1">
-    <h1>类比推理 · 考点体系</h1>
-    <span class="stat" id="stat"></span>
+<!-- ===== 全站统一页壳（侧栏导航） ===== -->
+<button class="menu-btn" id="menuBtn" aria-label="打开目录">☰</button>
+<div class="mask" id="mask"></div>
+<aside class="sidebar" id="sidebar">
+  <div class="sb-brand">
+    <div class="t">类比推理 · 考点体系</div>
+    <div class="s">共 28 个知识点 · 逻辑关系 / 经验常识 / 言语关系 / 造句法</div>
   </div>
-  <div class="sub">核心原则 · 逻辑关系 8 类 · 经验常识 8 类 · 言语关系 · 造句法 ｜ 整理自程意《26 超格类比推理 7 页纸》，全部转为文字</div>
-  <div class="searchwrap">
-    <span class="ico" aria-hidden="true">⌕</span>
-    <input id="q" type="search" placeholder="搜索：种属 / 因果 / 功能 / 命名 / 造句…" autocomplete="off" aria-label="搜索考点">
-    <button class="clr" type="button" id="qclr" aria-label="清空" hidden>✕</button>
+  <div class="sb-search">
+    <input type="text" id="navSearch" placeholder="搜索：种属 / 因果 / 功能 / 命名…">
   </div>
-  <div class="chips" id="chips" role="group" aria-label="板块筛选"></div>
+  <div class="nav-group"><div class="g-title">开篇</div>
+    <a class="nav-link" data-kw="常态思维 先横后纵 先整体后局部 速览" href="#hero">三条核心原则速览</a>
+  </div>
+  <div class="nav-group"><div class="g-title">核心原则</div>
+    <a class="nav-link" data-kw="核心原则 常态思维 先横后纵 先整体后局部" href="#g-principle">本节总览 · 3 条原则</a>
+    <a class="nav-link" data-kw="常态思维 极端情况" href="#e-principle-0">① 常态思维</a>
+    <a class="nav-link" data-kw="先横后纵 横向 纵向" href="#e-principle-1">② 先横后纵</a>
+    <a class="nav-link" data-kw="先整体后局部 拆字" href="#e-principle-2">③ 先整体后局部</a>
+  </div>
+  <div class="nav-group"><div class="g-title">一、逻辑关系（8 类）</div>
+    <a class="nav-link" data-kw="逻辑关系 主干 必背" href="#g-logic">本节总览 · 主干考点</a>
+    <a class="nav-link" data-kw="全同关系 麦克风 话筒 同义" href="#e-logic-0">1. 全同关系</a>
+    <a class="nav-link" data-kw="全异关系 并列 矛盾 反对" href="#e-logic-1">2. 全异关系</a>
+    <a class="nav-link" data-kw="种属关系 包含 二级辨析" href="#e-logic-2">3. 种属关系</a>
+    <a class="nav-link" data-kw="交叉关系 交叠" href="#e-logic-3">4. 交叉关系</a>
+    <a class="nav-link" data-kw="顺承关系 先后 时间" href="#e-logic-4">5. 顺承关系</a>
+    <a class="nav-link" data-kw="因果关系 原因 结果" href="#e-logic-5">6. 因果关系</a>
+    <a class="nav-link" data-kw="目的关系 为了" href="#e-logic-6">7. 目的关系</a>
+    <a class="nav-link" data-kw="条件关系 充分 必要" href="#e-logic-7">8. 条件关系</a>
+  </div>
+  <div class="nav-group"><div class="g-title">二、经验常识（8 类）</div>
+    <a class="nav-link" data-kw="经验常识 积累" href="#g-common">本节总览 · 常识积累</a>
+    <a class="nav-link" data-kw="功能关系 用途 单一 多重" href="#e-common-0">1. 功能关系</a>
+    <a class="nav-link" data-kw="组成关系 核心 非核心" href="#e-common-1">2. 组成关系</a>
+    <a class="nav-link" data-kw="加工关系 物理 化学" href="#e-common-2">3. 加工关系</a>
+    <a class="nav-link" data-kw="命名方式 命名 二级辨析" href="#e-common-3">4. 命名方式</a>
+    <a class="nav-link" data-kw="特征关系 必然 或然" href="#e-common-4">5. 特征关系</a>
+    <a class="nav-link" data-kw="职业关系 造句法" href="#e-common-5">6. 职业关系</a>
+    <a class="nav-link" data-kw="位置关系 方位" href="#e-common-6">7. 位置关系</a>
+    <a class="nav-link" data-kw="依据关系 根据 基础" href="#e-common-7">8. 依据关系</a>
+  </div>
+  <div class="nav-group"><div class="g-title">三、言语关系</div>
+    <a class="nav-link" data-kw="言语关系 释义 指代 成语" href="#g-language">本节总览 · 释义与结构</a>
+    <a class="nav-link" data-kw="释义关系 解释" href="#e-language-0">1. 释义关系</a>
+    <a class="nav-link" data-kw="指代 象征 比喻 积累" href="#e-language-1">2. 指代、象征、比喻</a>
+    <a class="nav-link" data-kw="成语 诗句 拆分" href="#e-language-2">3. 成语、诗句被拆分</a>
+    <a class="nav-link" data-kw="长诗句 六种关系" href="#e-language-3">4. 长诗句 : 长诗句</a>
+    <a class="nav-link" data-kw="近反义 近义 反义" href="#e-language-4">5. 近反义关系</a>
+    <a class="nav-link" data-kw="逻辑关系 叠加" href="#e-language-5">6. 结合逻辑关系考察</a>
+    <a class="nav-link" data-kw="词句结构 主谓 动宾 偏正" href="#e-language-6">7. 词句结构</a>
+  </div>
+  <div class="nav-group"><div class="g-title">四、造句法</div>
+    <a class="nav-link" data-kw="造句法 兜底" href="#g-sentence">本节总览 · 兜底办法</a>
+    <a class="nav-link" data-kw="使用条件 什么时候用造句法" href="#e-sentence-0">（一）使用条件</a>
+    <a class="nav-link" data-kw="造句原则 造句" href="#e-sentence-1">（二）造句原则</a>
+  </div>
+</aside>
+
+
 </header>
 
 <main id="main"></main>
 
 
+  <script data-page-shell src="../../assets/page-shell.js"></script>
 <script data-study-hub-script src="../../assets/hub-nav.js"></script>
 <script>
 (function () {
@@ -253,6 +271,7 @@
 
         { t:'6. 因果关系', badge:'必背',
           std:'<em>判断标准：</em>能用<b>"导致""所以"</b>造句。',
+          eg:'<span class="lbl">示例</span> 地震 : 房屋倒塌（结果必然发生）｜ 暴雨 : 航班延误　→ 先用"导致"造句确认是因果，再做二级辨析：原因是人为还是天然、结果是必然还是非必然。',
           subs:[
             { t:'分类', li:[
               '<b>(1) 普通因果</b>：下雨:地湿、发炎:发烧',
@@ -286,6 +305,7 @@
       entries:[
         { t:'1. 功能关系', badge:'必背',
           std:'<em>判断标准：</em>工具及其功能用途。',
+          eg:'<span class="lbl">示例</span> 台灯 : 照明（主要功能）｜ 台灯 : 装饰（次要功能）｜ 灯 : 黑暗（反向功能——灯的功能是驱散黑暗）｜ 棉签 : 碘伏 : 消毒（配套使用）',
           subs:[
             { t:'常见考察形式', li:[
               '<b>(1) 单个工具的功能</b>——正向功能：碘伏:消毒、灯:照明、减脂餐:减脂、消毒水:消毒；<br>&nbsp;&nbsp;&nbsp;&nbsp;<u>二级辨析</u>：主要 / 次要功能（台灯:装饰、食醋:除垢）；<u>反向功能</u>（不明说功能，需反推）：灯:黑暗 → 灯的功能是驱除黑暗；耳塞:噪音、肥皂:污渍',
@@ -389,6 +409,7 @@
 
         { t:'2. 指代、象征、比喻', badge:'必背',
           std:'<em>识别：</em>题目中出现<b>很文艺的、平时不用的词</b>。',
+          eg:'<span class="lbl">示例</span> 巾帼 : 女子　｜　草根 : 老百姓　｜　干戈 : 战争　｜　汗青 : 史书　→ 题干一出现这种"文艺词"，第一反应就是指代 / 象征 / 比喻。',
           subs:[
             { t:'★ 指代象征比喻积累（背下来）', li:[
               '<b>领头雁 : 领导者</b>　｜　<b>优雅 : 天鹅</b>　｜　<b>青衿 : 读书人</b>　｜　<b>巾帼 / 蛾眉 / 红颜 : 女子（女性）</b>',
@@ -411,6 +432,7 @@
 
         { t:'4. 长诗句 : 长诗句', badge:'常考',
           std:'<em>考点：</em>',
+          eg:'<span class="lbl">示例</span> 欲穷千里目 : 更上一层楼（目的）｜ 良禽择木而栖 : 贤臣择主而事（以物喻人）｜ 莫愁前路无知己 : 天下谁人不识君（因果）',
           subs:[ { t:'六种关系', li:[
             '<b>(1) 因果</b>：莫愁前路无知己:天下谁人不识君',
             '<b>(2) 目的</b>：欲穷千里目:更上一层楼',
@@ -434,6 +456,7 @@
 
         { t:'6. 结合逻辑关系考察', badge:'常考',
           std:'近反义常与逻辑关系叠加考察。',
+          eg:'<span class="lbl">示例</span> 一叶障目 : 不见泰山（因果）｜ 静以修身 : 俭以养德（目的）｜ 不经一事 : 不长一智（条件）｜ 先礼后兵 : 先斩后奏（顺承）',
           subs:[ { t:'四种叠加', li:[
             '<b>① 因果</b>：言之无文:行之不远、一叶障目:不见泰山',
             '<b>② 目的</b>：静以修身:俭以养德、藏诸名山:传之其人、嘤其鸣矣:求其友声',
@@ -456,11 +479,13 @@
       id:'sentence', color:'var(--red)', title:'四、造句法', sub:'看不出常考关系时的兜底办法',
       entries:[
         { t:'（一）使用条件', badge:'必背', std:'两类情况才用造句法：',
+          eg:'<span class="lbl">示例</span> 题干"轮船 : 海洋"能看出常考关系（位置）→ 直接用关系解题，找"汽车 : 公路"；题干"茶壶 : 沸腾"看不出常考关系 → 造句兜底："茶壶里的水沸腾了"，再找结构一致的选项。',
           subs:[ { t:'', li:[
             '<b>1. 题干没有常考关系</b> → 造句，然后找一样的句子。',
             '<b>2. 不确定有没有常考关系、不能直接看出来</b> → 造句：① 有明确关系，就用明确关系；② 无明确关系，就找一样的句子。'
           ] } ] },
         { t:'（二）造句原则', badge:'必背', std:'两条铁律，避免"造歪"。',
+          eg:'<span class="lbl">示例</span> 题干"医生 : 病人"→ 造句"医生诊治病人"；选项"教师 : 学生"→"教师教育学生"，结构一致即可选。若给题干加了"用手术刀"，而选项加不出同样的字，就是造歪了。',
           subs:[ { t:'', li:[
             '<b>1. 能不加字就不加字，能少加字就少加字，加字最好都加一样的字。</b>',
             '<b>2. 注意变化方向。</b>'
@@ -474,10 +499,6 @@
      渲染
      ============================================================ */
   var mainEl = document.getElementById('main');
-  var statEl = document.getElementById('stat');
-  var qEl = document.getElementById('q');
-  var clrEl = document.getElementById('qclr');
-  var chipsEl = document.getElementById('chips');
 
   var openState = {};
   DATA.forEach(function (g) { openState[g.id] = true; });
@@ -510,8 +531,8 @@
     return arr.some(function (x) { return String(x || '').toLowerCase().indexOf(k) >= 0; });
   }
 
-  function renderEntry(e) {
-    var h = '<div class="entry">';
+  function renderEntry(e, key) {
+    var h = '<div class="entry"' + (key ? ' id="' + key + '"' : '') + '>';
     h += '<div class="entry-head"><b>' + hl(e.t) + '</b>' +
          (e.badge ? '<span class="badge ' + (e.badge === '必背' ? 'must' : e.badge === '常考' ? 'freq' : '') + '">' + esc(e.badge) + '</span>' : '') +
          '</div>';
@@ -531,7 +552,7 @@
 
     /* 顶部速览只在无筛选/无搜索时出现 */
     if (!keyword && !filterGroup) {
-      html += '<section class="hero">' +
+      html += '<section class="hero" id="hero">' +
         '<h2>先记住这 3 条，再开始刷题</h2>' +
         '<div class="src">内容整理自《程意 · 26 超格类比推理 7 页纸》 · 考点与常识积累均已转为文字，便于搜索与背诵</div>' +
         '<div class="three">' +
@@ -551,9 +572,9 @@
       if (keyword && items.length === 0) return;
       shown += items.length;
 
-      var body = items.map(renderEntry).join('');
+      var body = items.map(function (e, i) { return renderEntry(e, 'e-' + g.id + '-' + i); }).join('');
       var open = keyword ? true : openState[g.id];
-      html += '<section class="group" style="--c:' + g.color + '" data-g="' + g.id + '" data-open="' + open + '">' +
+      html += '<section class="group" id="g-' + g.id + '" style="--c:' + g.color + '" data-g="' + g.id + '" data-open="' + open + '">' +
         '<button class="group-head" type="button" aria-expanded="' + open + '">' +
           '<span class="tick" aria-hidden="true"></span>' +
           '<span class="txt"><b>' + esc(g.title) + '</b><span>' + esc(g.sub) + '</span></span>' +
@@ -562,8 +583,6 @@
     });
 
     mainEl.innerHTML = html || '<div class="empty">没有找到匹配的考点，换个关键词试试</div>';
-    statEl.textContent = (keyword || filterGroup) ? ('筛出 ' + shown + ' / ' + total + ' 条') : ('共 ' + total + ' 个考点');
-    clrEl.hidden = !keyword;
   }
 
   /* ============================================================
@@ -580,32 +599,26 @@
     openState[g.dataset.g] = now;
   });
 
-  /* 搜索 */
-  var timer = null;
-  qEl.addEventListener('input', function () {
-    keyword = qEl.value.trim();
-    clearTimeout(timer);
-    timer = setTimeout(render, 120);
-  });
-  clrEl.addEventListener('click', function () { qEl.value = ''; keyword = ''; qEl.focus(); render(); });
-  qEl.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') { qEl.value = ''; keyword = ''; render(); }
-  });
-
-  /* 板块筛选 */
-  var chips = [['', '全部']].concat(DATA.map(function (g) {
-    return [g.id, g.title.replace(/^[一二三四]、/, '').replace(/^附：/, '').split('（')[0].trim()];
-  }));
-  chipsEl.innerHTML = chips.map(function (c) {
-    return '<button type="button" data-g="' + c[0] + '" aria-pressed="' + (c[0] === '' ? 'true' : 'false') + '">' + esc(c[1]) + '</button>';
-  }).join('');
-  chipsEl.addEventListener('click', function (e) {
-    var b = e.target.closest('button[data-g]');
-    if (!b) return;
-    filterGroup = b.dataset.g;
-    Array.prototype.forEach.call(chipsEl.children, function (x) { x.setAttribute('aria-pressed', String(x === b)); });
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  /* 侧栏搜索框同时过滤正文：由 page-shell 统一驱动，页面只提供实现 */
+  window.pageShellContentFilter = function (kw) {
+    keyword = String(kw || '').trim();
+    filterGroup = '';
     render();
+  };
+
+  /* 侧栏目录：跳到收起分组内的知识点前，先把该分组展开 */
+  Array.prototype.forEach.call(document.querySelectorAll('.sidebar .nav-link'), function (a) {
+    a.addEventListener('click', function () {
+      var id = (a.getAttribute('href') || '').slice(1);
+      var el = id && document.getElementById(id);
+      var g = el && el.closest ? el.closest('.group') : null;
+      if (!g || g.dataset.open === 'true') return;
+      g.dataset.open = 'true';
+      var hd = g.querySelector('.group-head'), bd = g.querySelector('.group-body');
+      if (hd) hd.setAttribute('aria-expanded', 'true');
+      if (bd) bd.hidden = false;
+      openState[g.dataset.g] = true;
+    });
   });
 
   render();

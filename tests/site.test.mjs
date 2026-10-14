@@ -20,12 +20,45 @@ const pages = [
 ]
 
 /**
+ * 阅读型科目页（带左上角共享侧栏目录）。
+ * exam-grid / choice-quiz 是练习工具（答题纸 / 答题卡），全屏单页布局，不适用侧栏目录。
+ */
+const shellPages = pages.filter((p) => !['exam-grid', 'choice-quiz'].includes(p.route))
+
+/**
+ * 侧栏目录锚点由页面脚本在运行时生成的页面：
+ * 这类页的锚点无法在源码里直接搜到，因此改为校验「锚点形态 + 生成代码」。
+ */
+const runtimeAnchorPages = {
+  analogy: {
+    pattern: /^#(hero|g-(principle|logic|common|language|sentence)|e-(principle|logic|common|language|sentence)-\d+)$/,
+    generator: ['id="g-\' + g.id + \'"', "'e-' + g.id + '-' + i"]
+  },
+  vocab: {
+    pattern: /^#g-(general|problem|measure|emergency|communicate|document|universal)$/,
+    generator: ['id="g-\' + g.id + \'"']
+  }
+}
+
+/**
  * 读取 UTF-8 文本文件。
  * @param {string} path 文件绝对路径。
  * @returns {Promise<string>} 文件文本。
  */
 function readText(path) {
   return readFile(path, 'utf8')
+}
+
+/**
+ * 把 HTML 按某个标题标签切成「标题 → 该标题管辖的内容」的片段。
+ * 片段右边界取下一个同级标题、`</section>` 或文末。
+ * @param {string} html 页面源码。
+ * @param {string} tag 标题标签名，如 'h4'。
+ * @returns {string[]} 每个标题及其后内容的片段。
+ */
+function headingChunks(html, tag) {
+  const re = new RegExp(`<${tag}[^>]*>[\\s\\S]*?(?=<${tag}[^>]*>|<h2[^>]*>|</section>|$)`, 'gi')
+  return html.match(re) || []
 }
 
 test('首页包含全部复习入口的有效路由', async () => {
@@ -49,6 +82,74 @@ test('每个复习页接入共享导航且保留完整源文件内容', async ()
     }
 
     assert.ok(deployed.length > 1000, `${page.title} 页面内容异常为空`)
+  }
+})
+
+test('科目页接入全站统一页壳（左上角侧栏 + 移动端抽屉）', async () => {
+  for (const page of shellPages) {
+    const html = await readText(new URL(`../pages/${page.route}/index.html`, import.meta.url))
+    const label = page.title
+
+    // 共享页壳样式与脚本（相对路径，保证 GitHub Pages 可用）
+    assert.ok(
+      html.includes('data-page-shell rel="stylesheet" href="../../assets/page-shell.css"'),
+      `${label} 未以相对路径引入共享页壳样式`
+    )
+    assert.ok(
+      html.includes('data-page-shell src="../../assets/page-shell.js"'),
+      `${label} 未以相对路径引入共享页壳脚本`
+    )
+
+    // 页壳标记：左上角侧栏、搜索框、汉堡按钮、遮罩
+    assert.ok(html.includes('<aside class="sidebar" id="sidebar">'), `${label} 缺少共享侧栏容器`)
+    assert.ok(html.includes('id="navSearch"'), `${label} 缺少侧栏搜索框`)
+    assert.ok(html.includes('id="menuBtn"'), `${label} 缺少移动端汉堡按钮`)
+    assert.ok(html.includes('id="mask"'), `${label} 缺少移动端遮罩`)
+
+    // 侧栏目录链接数量（阅读型页面至少 5 条）
+    const links = html.match(/class="nav-link"[^>]*href="#/g) || []
+    assert.ok(links.length >= 5, `${label} 侧栏目录链接过少：${links.length}`)
+
+    // 页面自己的旧导航不应残留（会与共享页壳的汉堡/高亮互相抵消）
+    assert.ok(!html.includes('id="menu-btn"'), `${label} 仍在自建汉堡按钮`)
+    assert.ok(!html.includes('<nav class="navbar">'), `${label} 仍在自建顶部导航`)
+
+    // 禁用原生弹窗（内嵌预览会阻塞主线程）
+    assert.ok(!/\bconfirm\s*\(/.test(html), `${label} 使用了原生 confirm`)
+    assert.ok(!/\balert\s*\(/.test(html), `${label} 使用了原生 alert`)
+  }
+})
+
+test('侧栏目录的锚点都能在页内找到（无死链）', async () => {
+  for (const page of shellPages) {
+    const html = await readText(new URL(`../pages/${page.route}/index.html`, import.meta.url))
+    const hrefs = [...html.matchAll(/class="nav-link"[^>]*href="#([^"]+)"/g)].map((m) => m[1])
+    const runtime = runtimeAnchorPages[page.route]
+
+    assert.ok(hrefs.length >= 5, `${page.title} 侧栏目录链接过少`)
+
+    for (const id of hrefs) {
+      if (runtime) {
+        assert.ok(
+          runtime.pattern.test(`#${id}`),
+          `${page.title} 侧栏锚点 #${id} 不符合运行期生成的锚点规范`
+        )
+      } else {
+        assert.ok(
+          html.includes(`id="${id}"`),
+          `${page.title} 侧栏锚点 #${id} 在页内不存在（死链）`
+        )
+      }
+    }
+
+    if (runtime) {
+      for (const snippet of runtime.generator) {
+        assert.ok(
+          html.includes(snippet),
+          `${page.title} 缺少运行期锚点生成代码：${snippet}`
+        )
+      }
+    }
   }
 })
 
@@ -247,8 +348,13 @@ test('规范词速查页具备分类词库、搜索与复制能力', async () =>
   const groups = page.match(/id: '(general|problem|measure|emergency|communicate|document|universal)'/g) || []
   assert.ok(groups.length >= 7, `规范词速查页分组不足，仅 ${groups.length} 组`)
 
-  // 搜索与复制两条交互路径
-  assert.ok(page.includes('id="q"'), '规范词速查页缺少搜索框')
+  // 搜索与复制两条交互路径：搜索框已并入共享页壳侧栏，
+  // 并由 pageShellContentFilter 钩子把侧栏搜索同时作用到词条正文
+  assert.ok(page.includes('id="navSearch"'), '规范词速查页缺少（侧栏）搜索框')
+  assert.ok(
+    page.includes('window.pageShellContentFilter'),
+    '规范词速查页未把侧栏搜索接到正文过滤'
+  )
   assert.ok(page.includes('data-copy='), '规范词速查页缺少"点词条复制"能力')
   assert.ok(page.includes('clipboard') || page.includes('execCommand'), '规范词速查页缺少剪贴板能力')
 
@@ -319,8 +425,17 @@ test('类比推理页具备考点体系、板块筛选与文字化积累', async
     assert.ok(page.includes(kw), `类比推理页缺少文字化积累：${kw}`)
   }
 
-  // 搜索与交互
-  assert.ok(page.includes('id="q"'), '类比推理页缺少搜索框')
+  // 搜索：搜索框已并入共享页壳侧栏，并同时过滤正文考点
+  assert.ok(page.includes('id="navSearch"'), '类比推理页缺少（侧栏）搜索框')
+  assert.ok(
+    page.includes('window.pageShellContentFilter'),
+    '类比推理页未把侧栏搜索接到正文过滤'
+  )
+  // 跳到「默认收起」的分组内的考点前，应先自动展开该分组
+  assert.ok(
+    page.includes("g.dataset.open = 'true'"),
+    '类比推理页缺少「跳转前自动展开分组」的处理'
+  )
 
   // 禁用原生弹窗（内嵌环境会阻塞主线程）
   assert.ok(!/\bconfirm\s*\(/.test(page), '类比推理页使用了原生 confirm')
@@ -578,4 +693,102 @@ test('数量关系页已按高照体系补全知识点，且每个模块都有�
     assert.ok(nav.includes(k), `总览题型表缺少：${k}`)
   }
   assert.equal((nav.match(/<tr>/g) || []).length, 19, '总览题型表应为 1 表头 + 18 行')
+})
+
+test('言语理解页：每个知识点后面紧挨例题', async () => {
+  const page = await readText(new URL('../pages/verbal/index.html', import.meta.url))
+
+  // 7 个「实战例题」锚点必须保留（侧栏/内链指向它们）
+  for (const id of ['ex-central', 'ex-logic-fill', 'ex-title', 'ex-next', 'ex-fill-in', 'ex-sort', 'ex-detail']) {
+    assert.ok(page.includes(`id="${id}"`), `言语理解页缺少例题锚点：${id}`)
+  }
+
+  // 每个 <h4> 知识点块到下一个 <h4>/<h2>/</section> 之间必须有例题
+  const chunks = headingChunks(page, 'h4')
+  assert.ok(chunks.length >= 10, `言语理解页知识点过少：${chunks.length}`)
+  chunks.forEach((chunk, i) => {
+    assert.ok(
+      chunk.includes('class="example"'),
+      `言语理解页第 ${i + 1} 个知识点后面没有紧跟例题`
+    )
+  })
+
+  // 例题必须自带答案与解析，且用四选项
+  const total = (page.match(/class="example"/g) || []).length
+  assert.ok(total >= 40, `言语理解页例题总数偏少：${total}`)
+  assert.equal((page.match(/class="example-tag"/g) || []).length, total, '例题标题与例题块数量不一致')
+  assert.equal((page.match(/class="example-answer"/g) || []).length, total, '每道例题都应有答案')
+  assert.equal((page.match(/class="example-analysis"/g) || []).length, total, '每道例题都应有解析')
+})
+
+test('资料分析页：每个知识点后面紧挨例题', async () => {
+  let page = await readText(new URL('../pages/data-analysis/index.html', import.meta.url))
+
+  // 模块 12/13（公式速查总表、备考训练建议）是速查与计划，不承载知识点
+  const advice = page.indexOf('<span class="num">13</span>')
+  if (advice > 0) page = page.slice(0, advice)
+
+  const chunks = headingChunks(page, 'h4')
+  assert.ok(chunks.length >= 20, `资料分析页知识点过少：${chunks.length}`)
+  chunks.forEach((chunk, i) => {
+    assert.ok(
+      chunk.includes('class="example"'),
+      `资料分析页第 ${i + 1} 个知识点后面没有紧跟例题`
+    )
+  })
+
+  const total = (page.match(/class="example"/g) || []).length
+  assert.ok(total >= 50, `资料分析页例题总数偏少：${total}`)
+  assert.equal((page.match(/class="example-tag"/g) || []).length, total, '例题标题与例题块数量不一致')
+})
+
+test('综应 D 页：每个考点卡片后面紧跟真题示例', async () => {
+  const page = await readText(new URL('../pages/comprehensive-d/index.html', import.meta.url))
+
+  const kp = (page.match(/class="kp"/g) || []).length
+  const ex = (page.match(/class="ex"/g) || []).length
+  const pairs = (page.match(/<\/div>\s*<div class="ex">/g) || []).length
+
+  assert.ok(kp >= 70, `综应 D 页考点卡片偏少：${kp}`)
+  assert.equal(pairs, ex, '每个「真题示例」都应紧跟在某个考点卡片之后')
+  assert.ok(ex >= 60, `综应 D 页真题示例偏少：${ex}`)
+  assert.ok(ex < kp, `真题示例(${ex})不应超过考点数(${kp})——示例块不得被算作考点`)
+
+  // 三类主观题型的示例都出现过
+  for (const t of ['真题示例 · 辨析题', '真题示例 · 案例分析题', '真题示例 · 方案设计题']) {
+    assert.ok(page.includes(t), `综应 D 页缺少题型示例：${t}`)
+  }
+})
+
+test('综应 A 页：每个知识点后面紧挨例题（五件套完整）', async () => {
+  const page = await readText(new URL('../pages/comprehensive-a/index.html', import.meta.url))
+
+  const chunks = headingChunks(page, 'h3')
+  assert.ok(chunks.length >= 35, `综应 A 页知识点过少：${chunks.length}`)
+  chunks.forEach((chunk, i) => {
+    assert.ok(chunk.includes('class="ex"'), `综应 A 页第 ${i + 1} 个知识点后面没有紧跟例题`)
+  })
+
+  // 例题必须配「逐步解析」与「参考答案」
+  const ex = (page.match(/class="ex"/g) || []).length
+  assert.ok(ex >= 40, `综应 A 页例题偏少：${ex}`)
+  assert.ok((page.match(/class="derive"/g) || []).length >= ex, '例题缺少逐步解析')
+  assert.ok((page.match(/class="ans"/g) || []).length >= ex, '例题缺少参考答案')
+  assert.ok((page.match(/class="dstep"/g) || []).length >= ex * 3, '逐步解析步骤不足')
+})
+
+test('类比推理页：每个考点后面紧挨示例（知识点自带 eg）', async () => {
+  const page = await readText(new URL('../pages/analogy/index.html', import.meta.url))
+
+  // 顶层考点共 28 个（核心原则 3 + 逻辑关系 8 + 经验常识 8 + 言语关系 7 + 造句法 2），
+  // 每个都必须在同一条目内自带 eg（示例），不能再有"只讲关系不给例子"的考点
+  const groups = page.match(/id:'(principle|logic|common|language|sentence)'/g) || []
+  assert.equal(groups.length, 5, `类比推理页分组应为 5 组，实际 ${groups.length} 组`)
+
+  const eg = (page.match(/\beg:/g) || []).length
+  assert.ok(eg >= 28, `类比推理页带示例的考点不足：${eg} < 28`)
+
+  // 每个 eg 都必须带「示例」标签，方便读者一眼看到例子
+  const labelled = (page.match(/eg:'<span class="lbl">示例<\/span>/g) || []).length
+  assert.ok(labelled >= 20, `带「示例」标签的考点偏少：${labelled}`)
 })

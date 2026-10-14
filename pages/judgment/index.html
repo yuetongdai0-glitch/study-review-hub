@@ -37,41 +37,8 @@
   }
   a{color:var(--primary);text-decoration:none;}
 
-  /* ===== 侧边栏 ===== */
-  .sidebar{
-    position:fixed;top:0;left:0;bottom:0;width:var(--side-w);
-    background:#2b2b33;color:#d8d8e0;overflow-y:auto;z-index:50;
-    padding:18px 0 60px;scrollbar-width:thin;
-  }
-  .sidebar::-webkit-scrollbar{width:5px;}
-  .sidebar::-webkit-scrollbar-thumb{background:#555;}
-  .sb-brand{padding:6px 20px 14px;border-bottom:1px solid #3a3a45;margin-bottom:10px;}
-  .sb-brand .t{font-size:17px;font-weight:800;color:#fff;letter-spacing:1px;}
-  .sb-brand .s{font-size:11px;color:#9b9ba8;margin-top:2px;}
-  .sb-search{margin:10px 14px;}
-  .sb-search input{
-    width:100%;padding:8px 12px;border-radius:8px;border:1px solid #4a4a58;
-    background:#22222a;color:#eee;font-size:13px;outline:none;
-   min-height:38px; }
-  .sb-search input:focus{border-color:#e07b6a;}
-  .sb-search input::placeholder{color:#777;}
-  .nav-group{margin:8px 0;}
-  .nav-group .g-title{
-    font-size:11px;color:#8f8f9d;padding:6px 20px 4px;letter-spacing:2px;font-weight:700;
-  }
-  .nav-link{
-    display:block;padding:7px 20px 7px 26px;font-size:13.5px;color:#c6c6d2;cursor:pointer;
-    border-left:3px solid transparent;transition:.15s;
-  }
-  .nav-link:hover{background:#34343f;color:#fff;}
-  .nav-link.active{background:#3a2a28;color:#ffb3a8;border-left-color:#e07b6a;font-weight:600;}
-  .nav-link .tag{
-    display:inline-block;font-size:10px;padding:0 6px;border-radius:10px;margin-left:6px;
-    background:#4a4a58;color:#bbb;vertical-align:1px;
-  }
-
   /* ===== 主体 ===== */
-  .main{margin-left:var(--side-w);max-width:1080px;padding:0 34px 80px;}
+  .main{max-width:1080px;padding:0 34px 80px;}
   .topbar{
     position:sticky;top:0;background:rgba(250,247,242,.94);backdrop-filter:blur(6px);
     padding:14px 0 10px;z-index:40;border-bottom:1px solid var(--line);margin-bottom:8px;
@@ -337,7 +304,7 @@
   .menu-btn:active{transform:scale(.94);}
   .mask{display:none;position:fixed;inset:0;background:rgba(18,18,26,.52);z-index:65;}
 
-  @media(max-width:760px){
+  @media(max-width:900px){
     .menu-btn{display:flex;}
     .sidebar{
       width:min(80vw,268px);transform:translateX(-105%);
@@ -397,6 +364,7 @@
   }
 </style>
   <link data-study-hub-style rel="stylesheet" href="../../assets/hub-nav.css">
+  <link data-page-shell rel="stylesheet" href="../../assets/page-shell.css">
 </head>
 <body>
 
@@ -1862,40 +1830,6 @@
 <button class="backtop" id="backtop" title="回到顶部">↑</button>
 
 <script>
-  /* 移动端抽屉：汉堡开关 */
-  const menuBtn=document.getElementById('menuBtn');
-  const mask=document.getElementById('mask');
-  function closeMenu(){document.body.classList.remove('menu-open');}
-  menuBtn.addEventListener('click',()=>document.body.classList.toggle('menu-open'));
-  mask.addEventListener('click',closeMenu);
-
-  /* 侧边栏高亮 + 搜索 */
-  const links=[...document.querySelectorAll('.nav-link')];
-  const search=document.getElementById('navSearch');
-  function filterNav(){
-    const kw=search.value.trim().toLowerCase();
-    links.forEach(l=>{
-      const hit=!kw || l.dataset.kw.toLowerCase().includes(kw) || l.textContent.toLowerCase().includes(kw);
-      l.style.display=hit?'block':'none';
-    });
-  }
-  search.addEventListener('input',filterNav);
-
-  /* 移动端：点击导航后收起抽屉 */
-  links.forEach(l=>l.addEventListener('click',()=>{ if(window.innerWidth<=760) closeMenu(); }));
-
-  const sections=[...document.querySelectorAll('section[id], .hero[id], .card[id]')];
-  function navActive(){
-    let cur=null;
-    sections.forEach(s=>{
-      if(window.scrollY>=s.offsetTop-90) cur=s.id;
-    });
-    links.forEach(l=>{
-      l.classList.toggle('active', l.getAttribute('href')==='#'+cur);
-    });
-  }
-  window.addEventListener('scroll',navActive);
-
   /* 学习进度：勾选考点 */
   const chkTotal=document.querySelectorAll('.chk input');
   const doneNum=document.getElementById('doneNum');
@@ -1919,6 +1853,7 @@
   const bt=document.getElementById('backtop');
   bt.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
 </script>
-  <script data-study-hub-script src="../../assets/hub-nav.js"></script>
+    <script data-page-shell src="../../assets/page-shell.js"></script>
+<script data-study-hub-script src="../../assets/hub-nav.js"></script>
 </body>
 </html>

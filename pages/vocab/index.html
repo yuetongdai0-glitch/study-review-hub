@@ -7,6 +7,7 @@
 <title>测试</title>
 <style>
   :root{
+    --primary:#1f5fd6;
     --bg:#f2f3f6; --card:#fff; --ink:#1c2333; --ink2:#5a6478; --ink3:#8b93a5;
     --blue:#1f5fd6; --blue-soft:#e8f0fd;
     --green:#0f7a52; --green-soft:#e3f5ee;
@@ -28,40 +29,8 @@
   button{font:inherit; color:inherit; background:none; border:0; cursor:pointer;}
   [hidden]{display:none !important;}
 
-  /* ── 顶栏 ── */
-  .topbar{
-    position:sticky; top:0; z-index:30;
-    background:rgba(255,255,255,.95); backdrop-filter:blur(10px);
-    border-bottom:1px solid var(--line);
-    padding:calc(10px + env(safe-area-inset-top)) 14px 10px;
-  }
-  .topbar .row1{display:flex; align-items:baseline; gap:8px; max-width:820px; margin:0 auto;}
-  .topbar h1{margin:0; font-size:17px; letter-spacing:-.2px; white-space:nowrap;}
-  .topbar .stat{margin-left:auto; font-size:12.5px; color:var(--ink3); white-space:nowrap;}
-  .topbar .sub{max-width:820px; margin:3px auto 0; font-size:12.5px; color:var(--ink3);}
-  .searchwrap{max-width:820px; margin:9px auto 0; position:relative;}
-  #q{
-    width:100%; height:42px; padding:0 38px 0 36px;
-    border:1px solid var(--line); border-radius:11px;
-    background:#fbfcfe; font:inherit; font-size:14.5px; color:var(--ink); outline:none;
-  }
-  #q:focus{border-color:#9dbfef; background:#fff; box-shadow:0 0 0 3px var(--blue-soft);}
-  .searchwrap .ico{position:absolute; left:12px; top:50%; transform:translateY(-50%); color:var(--ink3); font-size:14px;}
-  .searchwrap .clr{
-    position:absolute; right:8px; top:50%; transform:translateY(-50%);
-    width:26px; height:26px; border-radius:50%; color:var(--ink3); font-size:15px; line-height:1;
-  }
-  .searchwrap .clr:hover{background:var(--line2);}
 
   /* ── 快捷筛选 ── */
-  .chips{display:flex; gap:7px; overflow-x:auto; padding:9px 0 1px; max-width:820px; margin:0 auto;
-         -webkit-overflow-scrolling:touch; scrollbar-width:none;}
-  .chips::-webkit-scrollbar{display:none;}
-  .chips button{
-    flex:none; height:30px; padding:0 12px; border-radius:999px;
-    border:1px solid var(--line); background:#fff; font-size:12.5px; color:var(--ink2); white-space:nowrap;
-  }
-  .chips button[aria-pressed="true"]{background:var(--ink); border-color:var(--ink); color:#fff;}
 
   /* ── 主体 ── */
   main{max-width:820px; margin:0 auto; padding:14px 14px 0;}
@@ -129,7 +98,6 @@
 
   @media (min-width:761px){
     body{font-size:15.5px;}
-    .topbar h1{font-size:18.5px;}
     .group-head .txt b{font-size:15.5px;}
     .entry-head b{font-size:15.5px;}
   }
@@ -138,30 +106,45 @@
     .entry-head b{font-size:14.5px;}
   }
   @media print{
-    .topbar,.chips,.copy,.study-hub-shell{display:none !important;}
+    .copy,.study-hub-shell{display:none !important;}
     .group-body{display:block !important;}
     body{background:#fff;}
   }
 </style>
+  <link data-page-shell rel="stylesheet" href="../../assets/page-shell.css">
 </head>
 <body>
 
-<header class="topbar">
-  <div class="row1">
-    <h1>综应A 规范词速查</h1>
-    <span class="stat" id="stat"></span>
+<!-- ===== 全站统一页壳（侧栏导航） ===== -->
+<button class="menu-btn" id="menuBtn" aria-label="打开目录">☰</button>
+<div class="mask" id="mask"></div>
+<aside class="sidebar" id="sidebar">
+  <div class="sb-brand">
+    <div class="t">综应A · 规范词速查</div>
+    <div class="s">共 61 条 · 总括词 / 负面状态词 / 对策 / 应急 / 沟通 / 公文</div>
   </div>
-  <div class="sub">总括词／规范表达速查 · 点击词条可整条复制</div>
-  <div class="searchwrap">
-    <span class="ico" aria-hidden="true">⌕</span>
-    <input id="q" type="search" placeholder="搜索：宣传 / 监管 / 队伍 / 应急 / 沟通…" autocomplete="off" aria-label="搜索规范词">
-    <button class="clr" type="button" id="qclr" aria-label="清空" hidden>✕</button>
+  <div class="sb-search">
+    <input type="text" id="navSearch" placeholder="搜索：宣传 / 监管 / 队伍 / 应急…（同时过滤正文）">
   </div>
-  <div class="chips" id="chips" role="group" aria-label="题型筛选"></div>
+  <div class="nav-group"><div class="g-title">通用（任何题型都能套）</div>
+    <a class="nav-link" data-kw="总括词 通用 十大 措施类 组织领导 制度机制 宣传 队伍 资金" href="#g-general">一、全题型通用十大总括词</a>
+    <a class="nav-link" data-kw="万能句 举一反三 压实责任 常态长效 共建共治 精准施策 闭环" href="#g-universal">七、跨题型万能句</a>
+  </div>
+  <div class="nav-group"><div class="g-title">按题型查词</div>
+    <a class="nav-link" data-kw="概括题 问题 负面状态词 不力 缺位 不到位 混乱 滞后 薄弱" href="#g-problem">二、概括题（问题类）· 负面状态词</a>
+    <a class="nav-link" data-kw="对策题 措施 抄 借 推 高频配对" href="#g-measure">三、对策题（措施类）</a>
+    <a class="nav-link" data-kw="应急处理 先急后缓 现场处置 救助伤者 沟通安抚 舆情 举一反三" href="#g-emergency">四、应急处理题</a>
+    <a class="nav-link" data-kw="沟通协调 动之以情 晓之以理 导之以行 话术" href="#g-communicate">五、沟通协调题</a>
+    <a class="nav-link" data-kw="公文写作 格式 标题 开头 结尾 结构模板 讲话稿" href="#g-document">六、公文写作题</a>
+  </div>
+</aside>
+
+
 </header>
 
 <main id="main"></main>
 
+  <script data-page-shell src="../../assets/page-shell.js"></script>
 <script data-study-hub-script src="../../assets/hub-nav.js"></script>
 <script>
 (function () {
@@ -306,10 +289,6 @@
      渲染
      ============================================================ */
   var mainEl = document.getElementById('main');
-  var statEl = document.getElementById('stat');
-  var qEl = document.getElementById('q');
-  var clrEl = document.getElementById('qclr');
-  var chipsEl = document.getElementById('chips');
 
   var openState = {};          /* 分组展开状态 */
   DATA.forEach(function (g) { openState[g.id] = true; });
@@ -400,7 +379,7 @@
 
       /* 搜索时强制展开 */
       var open = keyword ? true : openState[g.id];
-      html += '<section class="group" style="--c:' + g.color + '" data-g="' + g.id + '" data-open="' + open + '">' +
+      html += '<section class="group" id="g-' + g.id + '" style="--c:' + g.color + '" data-g="' + g.id + '" data-open="' + open + '">' +
                 '<button class="group-head" type="button" aria-expanded="' + open + '">' +
                   '<span class="tick" aria-hidden="true"></span>' +
                   '<span class="txt"><b>' + esc(g.title) + '</b><span>' + g.sub + '</span></span>' +
@@ -415,10 +394,6 @@
     });
 
     mainEl.innerHTML = html || '<div class="empty">没有找到匹配的词条，换个关键词试试</div>';
-    statEl.textContent = keyword || filterGroup
-      ? '筛出 ' + shown + ' / ' + total + ' 条'
-      : '共 ' + total + ' 条';
-    clrEl.hidden = !keyword;
   }
 
   /* ============================================================
@@ -486,36 +461,26 @@
     openState[id] = now;
   });
 
-  /* 搜索 */
-  var timer = null;
-  qEl.addEventListener('input', function () {
-    keyword = qEl.value.trim();
-    clearTimeout(timer);
-    timer = setTimeout(render, 120);
-  });
-  clrEl.addEventListener('click', function () {
-    qEl.value = ''; keyword = ''; qEl.focus(); render();
-  });
-  qEl.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') { qEl.value = ''; keyword = ''; render(); }
-  });
-
-  /* 快捷筛选 chips */
-  var chips = [['', '全部']].concat(DATA.map(function (g) {
-    return [g.id, g.title.replace(/^[一二三四五六七]、/, '').split('·')[0].trim()];
-  }));
-  chipsEl.innerHTML = chips.map(function (c) {
-    return '<button type="button" data-g="' + c[0] + '" aria-pressed="' + (c[0] === '' ? 'true' : 'false') + '">' + esc(c[1]) + '</button>';
-  }).join('');
-  chipsEl.addEventListener('click', function (e) {
-    var b = e.target.closest('button[data-g]');
-    if (!b) return;
-    filterGroup = b.dataset.g;
-    Array.prototype.forEach.call(chipsEl.children, function (x) {
-      x.setAttribute('aria-pressed', String(x === b));
-    });
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  /* 侧栏搜索框同时过滤正文：由 page-shell 统一驱动，页面只提供实现 */
+  window.pageShellContentFilter = function (kw) {
+    keyword = String(kw || '').trim();
+    filterGroup = '';
     render();
+  };
+
+  /* 侧栏目录：跳到收起分组内的词条前，先把该分组展开 */
+  Array.prototype.forEach.call(document.querySelectorAll('.sidebar .nav-link'), function (a) {
+    a.addEventListener('click', function () {
+      var id = (a.getAttribute('href') || '').slice(1);
+      var el = id && document.getElementById(id);
+      var g = el && el.closest ? el.closest('.group') : null;
+      if (!g || g.dataset.open === 'true') return;
+      g.dataset.open = 'true';
+      var hd = g.querySelector('.group-head'), bd = g.querySelector('.group-body');
+      if (hd) hd.setAttribute('aria-expanded', 'true');
+      if (bd) bd.hidden = false;
+      openState[g.dataset.g] = true;
+    });
   });
 
   render();
