@@ -443,4 +443,19 @@ test('判断推理页补充了「论证评价」模块（综应 C 类）', async
   const evids = (m4.match(/class="si-e"/g) || []).length
   assert.ok(evids >= 15, `小类例子不足（${evids}）`)
   assert.ok(m4.includes('class="bigcat"'), '四大类应使用卡片容器')
+
+  // 4.3 开头概述必须直接点名四类 + 给出「四大类速览」，省得读者往下翻
+  const leadIdx = m4.indexOf('题干若给出错误类型提示')
+  assert.ok(leadIdx > 0, '4.3 缺少开头概述')
+  const lead = m4.slice(leadIdx, leadIdx + 260)
+  for (const n of ['概念不明确', '判断不准确', '推理不严谨', '论据不充分']) {
+    assert.ok(lead.includes(n), `4.3 开头概述未点出四类之一：${n}`)
+  }
+  assert.ok(m4.includes('class="bc-overview"'), '4.3 开头应有「四大类速览」')
+  assert.equal((m4.match(/class="bc-ov"/g) || []).length, 4, '四大类速览应为 4 张卡')
+  // 速览里要能看到小类归属（不用往下翻就知道 15 小类各属哪类）
+  const ov = m4.slice(m4.indexOf('class="bc-overview"'), m4.indexOf('class="bigcat"'))
+  for (const s of ['偷换概念', '自相矛盾', '平均数谬误', '以偏概全']) {
+    assert.ok(ov.includes(s), `四大类速览未列出小类：${s}`)
+  }
 })

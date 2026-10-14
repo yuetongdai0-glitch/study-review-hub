@@ -202,6 +202,18 @@
   .si-e b{color:#8a5a12;}
   .si-note{font-size:12.2px;color:#9b7fc4;font-style:italic;}
 
+  /* 论证评价 · 四大类速览（放在开头概述里，一眼看全，不用往下翻） */
+  .bc-overview{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0 4px;}
+  @media(max-width:860px){.bc-overview{grid-template-columns:1fr;}}
+  .bc-ov{background:#faf7fd;border:1px solid #e8dcf7;border-left:4px solid #7b4bab;border-radius:9px;padding:10px 13px;}
+  .bc-ov-h{display:flex;align-items:center;gap:7px;font-size:13.8px;font-weight:800;color:#5c3785;}
+  .bc-ov-n{
+    flex:none;width:19px;height:19px;border-radius:5px;background:#e9dcf8;color:#6a3f9d;
+    font-size:11.5px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;
+  }
+  .bc-ov-d{font-size:12.5px;color:#6b5a80;margin-top:4px;line-height:1.55;}
+  .bc-ov-t{font-size:12.2px;color:#8a6bb0;margin-top:5px;padding-top:5px;border-top:1px dashed #e8dcf7;line-height:1.7;}
+
   /* 论证评价 · 对比卡（替代对比表格） */
   .cmp-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0;}
   @media(max-width:860px){.cmp-grid{grid-template-columns:1fr;}}
@@ -1259,7 +1271,7 @@
       <h2>模块四 · 论证评价（综应 C 类常考）</h2>
       <span class="en">ARGUMENT EVALUATION</span>
     </div>
-    <div class="sec-desc">《综合应用能力 C 类》的必考大题，本质是<b>批判性评价材料</b>——在给定材料中「找出论证错误 + 说明理由」。与判断推理同源（都练逻辑），故附于本页。框架整理自超格程意「事业单位-论证评价」专项 + 中公/华图官方教研 + 历年联考真题。</div>
+    <div class="sec-desc">《综合应用能力 C 类》的必考大题，本质是<b>批判性评价材料</b>——在给定材料中「找出论证错误 + 说明理由」。与判断推理同源（都练逻辑），故附于本页。<b>全模块骨架只有四类：概念不明确 · 判断不准确 · 推理不严谨 · 论据不充分。</b>框架整理自超格程意「事业单位-论证评价」专项 + 中公/华图官方教研 + 历年联考真题。</div>
 
     <!-- 4.1 题型认知与考情 -->
     <div class="card" id="arg-intro">
@@ -1333,7 +1345,30 @@
     <!-- 4.3 四大逻辑错误类型 -->
     <div class="card" id="arg-4">
       <h3><span class="dot" style="background:#7b4bab;"></span>4.3 四大逻辑错误类型（官方分类）</h3>
-      <p class="lead">题干若给出错误类型提示，就锁这四类。每类下面的小类都有定义和例子 —— <b>不求全背，但求看到能认出来</b>。</p>
+      <p class="lead">题干若给出错误类型提示，就锁这四类：<b>① 概念不明确　② 判断不准确　③ 推理不严谨　④ 论据不充分</b>。四类下面共 15 个小类，每个都有定义和例子 —— <b>不求全背，但求看到能认出来</b>。</p>
+
+      <div class="bc-overview">
+        <div class="bc-ov">
+          <div class="bc-ov-h"><span class="bc-ov-n">1</span>概念不明确</div>
+          <div class="bc-ov-d">前后说的不是同一个东西</div>
+          <div class="bc-ov-t">偷换概念 · 转移论题 · 稻草人谬误</div>
+        </div>
+        <div class="bc-ov">
+          <div class="bc-ov-h"><span class="bc-ov-n">2</span>判断不准确</div>
+          <div class="bc-ov-d">结论本身不成立，或前后打架</div>
+          <div class="bc-ov-t">过度推断 · 可能推必然 · 自相矛盾</div>
+        </div>
+        <div class="bc-ov">
+          <div class="bc-ov-h"><span class="bc-ov-n">3</span>推理不严密</div>
+          <div class="bc-ov-d">论据到结论这一步跳错了</div>
+          <div class="bc-ov-t">强加因果 · 因果倒置 · 单因谬误 · 类比谬误 · 选择性论证 · 平均数谬误</div>
+        </div>
+        <div class="bc-ov">
+          <div class="bc-ov-h"><span class="bc-ov-n">4</span>论据不充分</div>
+          <div class="bc-ov-d">论据太少 / 太偏，撑不起结论</div>
+          <div class="bc-ov-t">论据错误 · 以偏概全 · 诉诸情感</div>
+        </div>
+      </div>
 
       <div class="bigcat">
         <div class="bc-head"><span class="bc-tag">1</span><b>概念不明确</b><span class="bc-onesent">前后说的不是同一个东西</span></div>
