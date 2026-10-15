@@ -469,19 +469,38 @@ test('图形推理页已按 91 页笔记补全三视图 / 立体拼合等内容'
     assert.ok(page.includes(`id="${sec}"`), `图形推理页缺少章节：${sec}`)
   }
 
-  // ★ 每个章节都必须有例题截图（用户明确要求"全面"）
+  // ★ 每个章节都必须有例题（用户明确要求"全面"）
   const secs = page.split(/<section id="/).slice(1)
   for (const chunk of secs) {
     const id = chunk.slice(0, chunk.indexOf('"'))
     if (!/^sec-(style|marker|property|quantity|relation|blackwhite|space|view|solid|xuanxiu|daotu|position)$/.test(id)) continue
     const figures = (chunk.split('data-zoom').length - 1)
-    assert.ok(figures > 0, `章节 ${id} 没有例题截图`)
+    assert.ok(figures > 0, `章节 ${id} 没有例题`)
   }
 
-  // 例题截图总量应达到全面覆盖
-  const imgs = page.match(/note-img\/graph\/[\w.-]+\.webp/g) || []
-  assert.ok(imgs.length >= 60, `图形推理页例题截图偏少，仅 ${imgs.length} 张`)
-  assert.ok(page.includes('assets/note-img/graph/'), '图形推理页未引用笔记例题截图')
+  // ★ 全页例题必须统统是「自绘图」，不得残留笔记截图
+  //   （用户 2026-10-15 明确要求：不用截图，风格要统一）
+  assert.ok(
+    !page.includes('note-img/graph/'),
+    '图形推理页仍引用笔记截图，应全部换成自绘 SVG'
+  )
+  assert.ok(!/<img[^>]*src="[^"]*\.webp"/.test(page), '图形推理页仍存在 webp 截图')
+
+  const figs = (page.match(/class="ex-figure"/g) || []).length
+  assert.ok(figs >= 90, `图形推理页自绘图偏少，仅 ${figs} 张`)
+
+  // 每张自绘图都必须带 viewBox（等比缩放）、aria-label（可访问）与 SVG 显式着色的文字
+  const svgBlocks = page.split('<svg ').slice(1)
+  assert.ok(svgBlocks.length >= 90, `自绘 SVG 数量偏少：${svgBlocks.length}`)
+  svgBlocks.forEach((blk, i) => {
+    const svg = blk.slice(0, blk.indexOf('</svg>') + 6)
+    assert.ok(/viewBox="0 0 620 /.test(svg), `第 ${i + 1} 张自绘图 viewBox 不规范`)
+    assert.ok(svg.includes('aria-label='), `第 ${i + 1} 张自绘图缺少 aria-label`)
+    assert.ok(!svg.includes('currentColor'), `第 ${i + 1} 张自绘图用了 currentColor`)
+    for (const t of svg.match(/<text\b[^>]*>/g) || []) {
+      assert.ok(t.includes('fill='), `第 ${i + 1} 张自绘图有 <text> 缺少 fill 显式着色`)
+    }
+  })
 
   // 禁用原生弹窗
   assert.ok(!/\bconfirm\s*\(/.test(page), '图形推理页使用了原生 confirm')
