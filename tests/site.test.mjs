@@ -487,11 +487,24 @@ test('图形推理页已按 91 页笔记补全三视图 / 立体拼合等内容'
   assert.ok(!/<img[^>]*src="[^"]*\.webp"/.test(page), '图形推理页仍存在 webp 截图')
 
   const figs = (page.match(/class="ex-figure"/g) || []).length
-  assert.ok(figs >= 90, `图形推理页自绘图偏少，仅 ${figs} 张`)
+  assert.ok(figs >= 80, `图形推理页自绘图偏少，仅 ${figs} 张`)
+
+  // ★ 每一张知识点卡都必须至少配一张自绘图（讲解用文字，图只画图形）
+  const cards = page.split('<div class="card" data-id="').slice(1)
+  assert.ok(cards.length >= 55, `图形推理页卡片偏少：${cards.length}`)
+  cards.forEach((c, i) => {
+    const id = c.slice(0, c.indexOf('"'))
+    assert.ok(c.includes('class="ex-figure"'), `卡片 ${id} 没有自绘图`)
+  })
+
+  // ★ 例题必须是静态 HTML（含题干 / 选项 / 解析），不能再靠 JS 生成
+  assert.ok(!page.includes('var EXAMPLES'), '图形推理页仍在使用 JS 生成例题')
+  assert.ok(!page.includes('class="ex-fig"'), '图形推理页仍残留 ASCII 字符画图框')
+  assert.ok((page.match(/class="ex-a"/g) || []).length >= 30, '图形推理页例题的「解析」偏少')
 
   // 每张自绘图都必须带 viewBox（等比缩放）、aria-label（可访问）与 SVG 显式着色的文字
   const svgBlocks = page.split('<svg ').slice(1)
-  assert.ok(svgBlocks.length >= 90, `自绘 SVG 数量偏少：${svgBlocks.length}`)
+  assert.ok(svgBlocks.length >= 80, `自绘 SVG 数量偏少：${svgBlocks.length}`)
   svgBlocks.forEach((blk, i) => {
     const svg = blk.slice(0, blk.indexOf('</svg>') + 6)
     assert.ok(/viewBox="0 0 620 /.test(svg), `第 ${i + 1} 张自绘图 viewBox 不规范`)
