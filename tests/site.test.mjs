@@ -722,8 +722,37 @@ test('数量关系页已按高照体系补全知识点，且每个模块都有�
       }
     })
   }
-  assert.ok(grandB >= 126, `知识点总数偏少：${grandB}`)
-  assert.ok(grandE >= 134, `例题总数偏少：${grandE}`)
+  assert.ok(grandB >= 140, `知识点总数偏少：${grandB}`)
+  assert.ok(grandE >= 155, `例题总数偏少：${grandE}`)
+
+  // ★ 结构完整性：每个 .block 都必须是 .section-body 的直接子元素。
+  //   曾因多写一个 </div> 把 section-body 提前闭合，导致「补充考点 13/14/15/17」
+  //   4 个块落在容器外 —— 折叠模块时它们不会被隐藏，且上面的 seqOf() 扫描会漏掉它们。
+  for (let i = 0; i <= 20; i++) {
+    const sec = slice(`s${i}`)
+    const bodyStart = sec.indexOf('<div class="section-body">')
+    assert.ok(bodyStart >= 0, `模块 s${i} 缺少 section-body`)
+    // 从 section-body 起点做 div 深度配对，找到它的配对 </div>
+    const re = /<div\b[^>]*>|<\/div>/g
+    re.lastIndex = bodyStart
+    let depth = 0
+    let bodyEnd = -1
+    let m
+    while ((m = re.exec(sec))) {
+      if (m[0] === '</div>') {
+        depth -= 1
+        if (depth === 0) { bodyEnd = m.index; break }
+        if (depth < 0) break
+      } else depth += 1
+    }
+    assert.ok(bodyEnd > bodyStart, `模块 s${i} 的 section-body 没有配对的闭合标签`)
+    const body = sec.slice(bodyStart, bodyEnd)
+    const inBody = (body.match(/<div class="block-title">/g) || []).length
+    const inSec = (sec.match(/<div class="block-title">/g) || []).length
+    assert.equal(inBody, inSec,
+      `模块 s${i} 有 ${inSec - inBody} 个知识点落在 section-body 之外（多半是多了 </div>）`)
+  }
+
   // 总览 / 考场策略为策略性内容，不要求配例题
   assert.equal(seqOf(slice('nav')).filter(x => x === 'E').length, 0, '总览不应有例题')
 

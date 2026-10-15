@@ -686,6 +686,23 @@
                 </div>
               </div>
             </div>
+            <div class="example">
+              <div class="example-header">📝 例题2 · 整除型（拆分法 · 2021 上海）</div>
+              <div class="example-body">
+                <div class="example-q">公司购买某设备 24 套，现要登记单价，但数据上没有标注单价，且总价第一位和最后一位模糊不清，只看到是 ☆579△ 元。则 ☆ 可能是（　　）。</div>
+                <div class="example-opts">A.3　B.5　C.7　D.9</div>
+                <div class="example-answer">
+                        <b>解析：</b>总价 = 单价 × 24，所以总价必须能被 24 整除。
+                        24 = 3 × 8，<b>3 与 8 互质</b> → 必须同时能被 3 和 8 整除（这就是"因式分解"）。
+                        ① 能被 8 整除：看<b>末三位</b>，即 79△ 要能被 8 整除。
+                        79△ ÷ 8 → △ = 2 时 792 = 8 × 99 ✓（△ = 0~9 中只有 2 满足）。
+                        ② 能被 3 整除：看各位数字之和，☆ + 5 + 7 + 9 + 2 = ☆ + 23。
+                        ☆ + 23 能被 3 整除 → ☆ = 1、4、7（选项中只有 <b>7</b>）。
+                        要点：<b>末尾数字用"拆分/末几位"、整体用"数字之和"</b>，两条路同时用才能锁定唯一答案。
+                  <span class="correct">答案：C</span>
+                </div>
+              </div>
+            </div>
             <div class="block">
               <div class="block-title">2. 余数型</div>
               <div class="formula-box">
@@ -764,6 +781,21 @@
           </div>
         </div>
       </div>
+            <div class="example">
+              <div class="example-header">📝 例题2 · 余数三则运算（差同减差）</div>
+              <div class="example-body">
+                <div class="example-q">一个三位数，除以 7 余 3，除以 6 余 2，除以 5 余 1。满足条件的最小三位数是多少？</div>
+                <div class="example-opts">A.101　B.164　C.199　D.206</div>
+                <div class="example-answer">
+                        <b>解析：</b>先看"除数 − 余数"：7 − 3 = 4、6 − 2 = 4、5 − 1 = 4 —— <b>差都是 4</b>。
+                        属于<b>「差同减差」</b>型：取公倍数 7 × 6 × 5 = 210，再减去这个共同的差 4，得 210n − 4。
+                        n = 1 时，210 − 4 = <b>206</b>，是三位数中的最小值（再小的是 −4，非三位数）。
+                        验证：206 ÷ 7 = 29 余 3 ✓、206 ÷ 6 = 34 余 2 ✓、206 ÷ 5 = 41 余 1 ✓。
+                        三则口诀对照：<b>余同加余</b>（除数 − 余数相同）→ 公倍数 <b>加</b>余数；<b>差同减差</b>（余数相同）→ 公倍数 <b>减</b>差；<b>和同加和</b>（除数 + 余数相同）→ 公倍数 <b>加</b>和。
+                  <span class="correct">答案：D</span>
+                </div>
+              </div>
+            </div>
             <div class="block">
               <div class="block-title">5. 倍数特性之增长率型</div>
               <ul class="point-list">
@@ -845,6 +877,24 @@
               </ul>
             </div>
             <div class="example">
+              <div class="example-header">📝 例题2 · 普通方程（出现比例设份数）</div>
+              <div class="example-body">
+                <div class="example-q">甲、乙两班共有学生 125 人。已知甲班人数 ∶ 乙班人数 = 3 ∶ 2，则乙班有多少人？</div>
+                <div class="example-opts">A.45　B.50　C.75　D.80</div>
+                <div class="example-answer">
+                        <b>解析：</b>题目给出<b>比例 3∶2</b> → 按"出现比例设份数"的方法，设甲班 3x 人、乙班 2x 人。
+                        利用总量列方程：3x + 2x = 125 → 5x = 125 → x = 25。
+                        乙班 = 2x = 2 × 25 = <b>50</b>（人）。
+                        对照本块的三种设法：
+                        · <b>设小不设大</b>：若题说"甲比乙多 5 人"，就设较小的"乙"为 x，避免出现负数；
+                        · <b>出现比例设份数</b>：本例就是这种 —— 设 3x、2x 比设两个独立未知数少一个未知数；
+                        · <b>设中间量</b>：若甲比丙多 10、乙比丙少 20，就设"居中的丙"为 x，两边都用 x 表示。
+                        要点：<b>设法选得对，方程就简单一半</b>。
+                  <span class="correct">答案：B</span>
+                </div>
+              </div>
+            </div>
+            <div class="example">
               <div class="example-header">📝 例题1 · 普通方程（设中间量）</div>
               <div class="example-body">
                 <div class="example-q">甲、乙、丙三人共有图书 120 本。已知甲比乙多 12 本，丙比乙少 6 本，则乙有多少本？</div>
@@ -920,6 +970,23 @@
                 <li><b>整数型</b>：消元时注意问啥设啥；提速用约分列式</li>
                 <li><b>非整数型（如求总和）</b>：大胆用<b>赋0法</b>，设某个未知数为0简化计算</li>
               </ul>
+            </div>
+            <div class="example">
+              <div class="example-header">📝 例题6 · 不定方程组（非整数型 · 赋0法）</div>
+              <div class="example-body">
+                <div class="example-q">甲、乙、丙三种货物，如果购买甲 3 件、乙 7 件、丙 1 件需花 3.15 元；如果购买甲 4 件、乙 10 件、丙 1 件需花 4.20 元。那么购买甲、乙、丙各 1 件需花多少钱？</div>
+                <div class="example-opts">A.1.05 元　B.1.40 元　C.1.85 元　D.2.10 元</div>
+                <div class="example-answer">
+                        <b>解析：</b>设甲 x 元、乙 y 元、丙 z 元：
+                        3x + 7y + z = 3.15 ①　　4x + 10y + z = 4.20 ②
+                        两式相减：x + 3y = 1.05 ③
+                        <b>赋 0 法：</b>问的是 <b>x + y + z 这个整体</b>（不是某一个未知数），所以取值与结果无关 —— 大胆设 <b>y = 0</b>。
+                        代入③：x = 1.05；再代入①：z = 3.15 − 3×1.05 − 0 = 0。
+                        所以 x + y + z = 1.05 + 0 + 0 = <b>1.05</b>（元）。
+                        要点：<b>只有问「整体」才能赋 0</b>；赋 0 后三元方程立刻退化成一元一次方程，两步就算完。
+                  <span class="correct">答案：A</span>
+                </div>
+              </div>
             </div>
             <div class="example">
               <div class="example-header">📝 例题5 · 不定方程组（整体替换）</div>
@@ -1056,6 +1123,23 @@
               </div>
             </div>
     
+            <div class="example">
+              <div class="example-header">📝 例题4 · 星期日期（53 个星期几 · 2024 吉林）</div>
+              <div class="example-body">
+                <div class="example-q">某一年的元旦是星期二，这一年共有 53 个星期三，则 3 月 27 日这一天为（　　）。</div>
+                <div class="example-opts">A.星期二　B.星期三　C.星期四　D.星期五</div>
+                <div class="example-answer">
+                        <b>解析：</b>平年 365 天 = 52 周 + 1 天，闰年 366 天 = 52 周 + 2 天。
+                        52 周里每个星期几都出现 52 次；出现 <b>53 次</b>的星期几，就是"多出来的那 1~2 天"覆盖的星期几。
+                        元旦（1 月 1 日）是星期二 → 平年的多出 1 天 = 1 月 1 日 = 星期二；闰年多出 2 天 = 星期二 + 星期三。
+                        题目说共有 53 个星期三 → 必须<b>恰好</b>含星期三 → 该年为 <b>闰年</b>（366 天），且元旦星期二 ✓（多出"星期二、星期三"）。
+                        1 月 1 日星期二 → 推算到 3 月 27 日的天数：1 月 31 天 + 2 月 29 天（闰年）+ 27 天 = 从 1 月 1 日算起第 87 天，间隔 86 天。
+                        86 ÷ 7 = 12 周余 <b>2</b> 天 → 星期二 + 2 = <b>星期四</b>。
+                        要点：<b>先由"53 个星期几"反推平/闰年</b>，再用余数定位具体日期，两步都不能省。
+                  <span class="correct">答案：C</span>
+                </div>
+              </div>
+            </div>
             <div class="block">
               <div class="block-title">4. 周期余数的最值</div>
               <div class="key-box"><b>识别：</b>问「循环周期中，<b>某主体最多</b>」</div>
@@ -1098,6 +1182,23 @@
                 <li>方法：列方程，根据问题求解</li>
                 <li>选项尾数不同时，只用看尾数</li>
               </ul>
+            </div>
+            <div class="example">
+              <div class="example-header">📝 例题2 · 具体单位型（尾数法看出答案）</div>
+              <div class="example-body">
+                <div class="example-q">一项加工任务，甲每天加工 127 个零件，乙每天加工 143 个零件，两人合作干了 13 天，恰好完成任务。问这项任务共有多少个零件？</div>
+                <div class="example-opts">A.3410　B.3510　C.3610　D.3710</div>
+                <div class="example-answer">
+                        <b>解析：</b>列式直接算太重，本题<b>四人选项尾数不同</b> → 只用算尾数。
+                        (127 + 143) × 13 = 270 × 13
+                        只要尾数：270 的尾数是 0（看成 27 × 10），13 的尾数是 3 → 0 × 3 = 0 → 结果尾数应为 <b>0</b>。
+                        看选项：3410、3510、3610、3710 <b>尾数全是 0</b> → 说明本题"只算尾数"不够，需要再算一位。
+                        算末两位：27 × 13 = 351 → 结果末两位为 10 → 结合百位、千位量级判断为 <b>3510</b>。
+                        要点：<b>选项尾数不同 → 只算尾数；尾数相同 → 退一步算末两位</b>。
+                        这类"具体数字型"工程题不需要赋值，只需列式 + 尾数技巧，是工程问题里最稳的一类。
+                  <span class="correct">答案：B</span>
+                </div>
+              </div>
             </div>
             <div class="example">
         <div class="example-header">📝 例题1 · 具体单位型（列方程）</div>
@@ -1739,6 +1840,22 @@
                 </div>
               </div>
             </div>
+            <div class="example">
+              <div class="example-header">📝 例题2 · 几何最值（体积一定求表面积最小）</div>
+              <div class="example-body">
+                <div class="example-q">用同样体积的材料做成一个立体，做成下面哪种形状时<b>表面积最小</b>（最省材料）？</div>
+                <div class="example-opts">A.正方体　B.长宽高不等的长方体　C.球体　D.圆柱体</div>
+                <div class="example-answer">
+                        <b>解析：</b>四句口诀成对记：
+                        周长一定 → 越接近圆，面积越大；面积一定 → 越接近圆，周长越小。
+                        <b>表面积一定 → 越接近球，体积越大；体积一定 → 越接近球，表面积越小。</b>
+                        本题是"体积一定求表面积最小" → 直接用第三对 → 越接近球越好 → 选 <b>球体</b>。
+                        把四句当成两个"方向相反的极端"记：平面图形里极值是<b>圆</b>，立体图形里极值是<b>球</b>，
+                        问"最大/最小"时，先判断量恒定的是哪一个，再往"圆/球"方向靠。
+                  <span class="correct">答案：C</span>
+                </div>
+              </div>
+            </div>
             <div class="block">
               <div class="block-title">15. 最短路径</div>
 
@@ -1869,6 +1986,24 @@
                 <li><b>方程法</b>：有具体钱数，根据等量关系设未知数</li>
                 <li><b>赋值法</b>：常赋值成本为100，减小计算量</li>
               </ul>
+            </div>
+            <div class="example">
+              <div class="example-header">📝 例题3 · 三种解法（资料分析法）</div>
+              <div class="example-body">
+                <div class="example-q">某商品今年的销量比去年增长 20%，售价上涨 5%。问今年的总销售额比去年增长百分之几？</div>
+                <div class="example-opts">A.20%　B.25%　C.26%　D.30%</div>
+                <div class="example-answer">
+                        <b>解析：</b>总销售额 = 销量 × 售价，属于 <b>A = B × C</b> 型 → 直接套<b>资料分析的乘积增长率公式</b>：
+                        r = r₁ + r₂ + r₁ × r₂
+                        = 20% + 5% + 20% × 5%
+                        = 20% + 5% + 1% = <b>26%</b>。
+                        对照三种解法：<br>· <b>赋值法</b>：赋去年销量 100、售价 100 → 今年 120 × 105 = 12600，去年 10000 → 增长 26% ✓
+                        · <b>方程法</b>：设去年销售额 A，今年 = A(1+20%)(1+5%) → 增长率 = 1.2 × 1.05 − 1 = 0.26 ✓
+                        · <b>资料分析法</b>：本例直接用乘积增长率公式，一步出答案 —— 数量题"用资料解决"就是这种题。
+                        要点：<b>看到"两个量各自变化、问总量变化率"就条件反射用乘积增长率</b>，比列方程快一截。
+                  <span class="correct">答案：C</span>
+                </div>
+              </div>
             </div>
             <div class="example">
         <div class="example-header">📝 例题2 · 三种解法（赋值法）</div>
@@ -2118,9 +2253,6 @@
                 </div>
               </div>
             </div>
-    </div>
-  </div>
-
             <div class="block">
               <div class="block-title">8. 补充考点 14：容斥的两个「常识公式」（夸夸刷）</div>
               <div class="formula-box">
@@ -2147,6 +2279,9 @@
                 </div>
               </div>
             </div>
+          </div>
+  </div>
+
   <!-- 8. 最值问题 -->
   <div class="section c-orange" id="s8">
     <div class="section-header" onclick="toggleSection(this)">
@@ -2205,6 +2340,23 @@
                     <div class="warn-box">注意：主体个数是否可以相同！设未知数时求谁设谁</div>
                     <div class="sub-point">变形：总量未知，构造数列</div>
                   </div>
+            <div class="example">
+              <div class="example-header">📝 例题4 · 构造数列（求最小值的最大值 · 2022 上海）</div>
+              <div class="example-body">
+                <div class="example-q">某单位进行了一次绩效考评打分，满分为 100 分。有 5 位员工的平均分为 90 分，而且他们的分数各不相同，其中分数最低的员工得分为 77 分，那么排第二名的员工至少得（　　）分（分数取整数）。</div>
+                <div class="example-opts">A.90　B.92　C.94　D.96</div>
+                <div class="example-answer">
+                        <b>解析：</b>总分 = 5 × 90 = 450 分。已知最低 77 分，求<b>第二名的最小值</b>。
+                        按要求"最小值的最大值"反向操作 —— <b>求谁的最小值，就让其余人尽量大</b>（此消彼长）。
+                        设第二名得 x 分。为了使 x 尽量小，第一名要尽量大（满分 100）。
+                        第三、四名必须严格小于 x 且严格大于 77，还要尽量大：取 x − 1、x − 2。
+                        求和：100 + x + (x − 1) + (x − 2) + 77 = 450 → 3x + 174 = 450 → 3x = 276 → x = <b>92</b>。
+                        验证：100、92、91、90、77 → 各不相同 ✓，总和 450 ✓。
+                        要点：<b>先"定位"再"反向"最后"求和"</b>；"反向"就是让不要求的那些量往反方向顶到边界。
+                  <span class="correct">答案：B</span>
+                </div>
+              </div>
+            </div>
             <div class="example">
                     <div class="example-header">📝 例题3 · 构造数列</div>
                     <div class="example-body">
@@ -2280,9 +2432,6 @@
           </div>
         </div>
       </div>
-    </div>
-  </div>
-
       <div class="block">
         <div class="block-title">6. 补充考点 15：最值思维（设未知数 → 代公式 → 分析最值）</div>
         <div class="tip-box">
@@ -2309,6 +2458,9 @@
           </div>
         </div>
       </div>
+          </div>
+  </div>
+
   <!-- 9. 数列问题 -->
   <div class="section c-blue" id="s9">
     <div class="section-header" onclick="toggleSection(this)">
@@ -2384,6 +2536,22 @@
               </ul>
             </div>
             <div class="example">
+              <div class="example-header">📝 例题5 · 特殊数列（季度数列）</div>
+              <div class="example-body">
+                <div class="example-q">某企业第一季度营收 300 万元，此后每个季度都比上一季度多 40 万元。问全年营收共多少万元？</div>
+                <div class="example-opts">A.1440　B.1500　C.1560　D.1620</div>
+                <div class="example-answer">
+                        <b>解析：</b>四个季度的营收成<b>等差数列</b>（每个季度 +40 万，公差 d = 40）。
+                        首项 a₁ = 300，项数 n = 4 → 求和：Sₙ = n × a₁ + n(n−1)/2 × d
+                        = 4 × 300 + 4 × 3 ÷ 2 × 40 = 1200 + 240 = <b>1440</b>（万元）。
+                        也可直接列出四项相加：300 + 340 + 380 + 420 = 1440 ✓
+                        要点：<b>季度数列（公差 3 个月/期）、星期数列（公差 7 天）都不用重新推导</b>，
+                        直接当作等差数列套中项法或求和公式 —— 这就是"特殊数列"的意义。
+                  <span class="correct">答案：A</span>
+                </div>
+              </div>
+            </div>
+            <div class="example">
         <div class="example-header">📝 例题4 · 特殊数列（星期数列）</div>
         <div class="example-body">
           <div class="example-q">某年的第 3 个星期一是 1 月 16 日，那么这一年的第 8 个星期一是几月几日？</div>
@@ -2417,9 +2585,6 @@
                 </div>
               </div>
             </div>
-    </div>
-  </div>
-
             <div class="block">
               <div class="block-title">5. 补充考点 13：等差数列中的倍数特性（页码类）</div>
               <div class="tip-box">
@@ -2461,6 +2626,9 @@
                 </div>
               </div>
             </div>
+          </div>
+  </div>
+
   <!-- 10. 行程问题 -->
   <div class="section c-green" id="s10">
     <div class="section-header" onclick="toggleSection(this)">
@@ -3234,9 +3402,6 @@
                 </div>
               </div>
             </div>
-    </div>
-  </div>
-
       <div class="block">
         <div class="block-title">11. 补充考点 17：描点法（枚举先描点，防漏防重）</div>
         <div class="tip-box">
@@ -3265,6 +3430,9 @@
           </div>
         </div>
       </div>
+          </div>
+  </div>
+
   <!-- 13. 年龄问题 -->
   <div class="section c-orange" id="s13">
     <div class="section-header" onclick="toggleSection(this)">
@@ -3304,6 +3472,23 @@
                 <li><b>不定方程</b>：奇偶、倍数、尾数代入排除</li>
               </ul>
               <div class="warn-box">别列一堆方程解半天，多用代入排除！</div>
+            </div>
+            <div class="example">
+              <div class="example-header">📝 例题3 · 列表梳理（表格法）</div>
+              <div class="example-body">
+                <div class="example-q">一家三口，妈妈比儿子大 26 岁，爸爸比儿子大 33 岁。1995 年，一家三口的年龄之和为 62。那么 2018 年儿子、妈妈和爸爸的年龄分别是（　　）。</div>
+                <div class="example-opts">A.23，49，56　B.24，50，57　C.25，51，58　D.26，52，59</div>
+                <div class="example-answer">
+                        <b>解析：</b>用<b>列表梳理</b>把各时间点列清楚（以"儿子"为基准）：
+                        设 1995 年儿子 x 岁 → 妈妈 x + 26、爸爸 x + 33。
+                        1995 年年龄和：x + (x + 26) + (x + 33) = 62 → 3x + 59 = 62 → 3x = 3 → x = 1。
+                        所以 1995 年：儿子 1 岁、妈妈 27 岁、爸爸 34 岁。
+                        从 1995 到 2018 过了 <b>23 年</b> → 三人都各加 23：儿子 24、妈妈 50、爸爸 57。
+                        也可用<b>代入排除</b>验证：A 项妈妈 49 − 儿子 23 = 26 ✓、爸爸 56 − 23 = 33 ✓，但 1995 年为 0、26、33，和为 59 ≠ 62 ✗ → 排除。
+                        要点：<b>年龄差永远不变</b>是列表法的锚点；先把某年的基准人物设出来，再统一平移年数。
+                  <span class="correct">答案：B</span>
+                </div>
+              </div>
             </div>
             <div class="example">
               <div class="example-header">📝 例题2 · 代入排除</div>
