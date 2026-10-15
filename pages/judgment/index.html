@@ -339,13 +339,17 @@
     .card h4{font-size:14px;margin:14px 0 6px;}
     .card ul,.card ol{margin-left:18px;}
 
-    .card table{display:block;overflow-x:auto;white-space:nowrap;-webkit-overflow-scrolling:touch;}
+    /* 窄屏表格：改为「自动折行」而不是横向滚动，避免每个表格都出现滚动条 */
+    .card table{display:table;width:100%;table-layout:auto;overflow:visible;}
+    /* 表头保持不折行（这样列宽至少撑到表头宽度），单元格正常折行 */
+    .card table td{white-space:normal;overflow-wrap:anywhere;word-break:break-word;}
+    .card table th[style*="width"]{width:auto !important;}
     table.tight th,table.tight td{padding:5px 8px;}
 
     .jingle,.warn,.ex{padding:11px 13px;}
     .jingle{font-size:13.5px;}
     .ex .q{font-size:13px;}
-    .formula{font-size:12.5px;padding:8px 10px;}
+    .formula{font-size:12.5px;padding:8px 10px;white-space:normal;overflow-x:visible;overflow-wrap:anywhere;line-height:1.75;}
     .step{padding:8px 2px;}
 
     .flow .node{min-width:0;flex:1 1 100%;padding:9px 12px;}

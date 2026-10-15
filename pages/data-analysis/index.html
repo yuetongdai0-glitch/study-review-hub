@@ -186,6 +186,64 @@
     display: inline-block; background: var(--success); color: #fff;
     padding: 3px 14px; border-radius: 6px; font-size: 13px; font-weight: 700; margin-top: 6px;
   }
+
+  /* ===== 移动端适配（手机/窄屏） ===== */
+  @media (max-width: 900px) {
+    .container { padding: 18px 14px 72px; }
+    .hero { padding: 30px 18px 26px; border-radius: 16px; margin-bottom: 26px; }
+    .hero h1 { font-size: 22px; }
+  }
+
+  @media (max-width: 720px) {
+    .container { padding: 16px 12px 72px; }
+    .hero { padding: 24px 14px 22px; border-radius: 14px; margin-bottom: 22px; }
+    .hero h1 { font-size: 20px; }
+    .hero p { font-size: 13px; }
+    .hero::before { display: none; }
+    .hero .tag { padding: 3px 10px; font-size: 11px; }
+    section { margin-bottom: 26px; }
+    .section-title { font-size: 17px; padding-bottom: 8px; }
+    .section-title .num { width: 28px; height: 28px; font-size: 13px; }
+    .card { padding: 15px 13px; border-radius: 12px; margin-bottom: 12px; }
+    .card-title { font-size: 15px; }
+    /* 两栏/三栏在手机上改单栏，避免挤成一团 */
+    .grid-2, .grid-3 { grid-template-columns: 1fr; gap: 10px; }
+    .compare-box { grid-template-columns: 1fr; }
+    .frac-table { grid-template-columns: repeat(auto-fill, minmax(76px, 1fr)); gap: 5px; }
+    .frac-item .frac { font-size: 14px; }
+    .formula { padding: 10px 12px; font-size: 13px; }
+    .formula .label { display: inline-block; margin-bottom: 2px; }
+    table { font-size: 12px; }
+    th, td { padding: 6px 7px; }
+    .tip { padding: 10px 12px; font-size: 13px; }
+    .tip-icon { font-size: 16px; }
+    .mnemonic { padding: 12px; }
+    .mnemonic .content { font-size: 15px; letter-spacing: 0; }
+    .cross-diagram { flex-direction: column; gap: 10px; font-size: 13px; text-align: center; }
+    .example { padding: 13px 13px; border-radius: 10px; }
+    .example-q { font-size: 13.5px; }
+    .example-sol { font-size: 12.5px; padding: 9px 11px; }
+    .steps li { font-size: 13px; padding-left: 32px; }
+    .steps li::before { width: 23px; height: 23px; font-size: 11px; }
+    details summary { font-size: 13.5px; padding: 10px 12px; }
+    details .detail-content { padding: 12px 12px; }
+    .footer { padding: 22px 12px; }
+    /* 回到顶部按钮避开右下角全站导航悬浮球 */
+    .back-top { right: 14px; bottom: 78px; width: 38px; height: 38px; font-size: 16px; }
+    /* 示意图：保留横向滑动看全图，但隐藏滚动条，视觉更干净 */
+    .fig { scrollbar-width: none; -ms-overflow-style: none; }
+    .fig::-webkit-scrollbar { display: none; }
+  }
+
+  @media (max-width: 400px) {
+    .container { padding: 14px 10px 68px; }
+    .hero h1 { font-size: 18px; }
+    .card { padding: 13px 11px; }
+    table { font-size: 11.5px; }
+    th, td { padding: 5px 6px; }
+    .formula { font-size: 12.5px; }
+    .fig { padding: 8px 8px 6px; }
+  }
 </style>
   <link data-study-hub-style rel="stylesheet" href="../../assets/hub-nav.css">
   <link data-page-shell rel="stylesheet" href="../../assets/page-shell.css">
@@ -594,6 +652,33 @@
       </div>
     </div>
 
+    <div class="card">
+      <div class="card-title">🗺️ 速算方法选择口诀（总结原话）<span class="new-badge">NEW</span></div>
+      <table>
+        <tr><th>遇到什么</th><th>用什么</th><th>说明</th></tr>
+        <tr><td><b>A、X</b>（求基期 / 求增量）</td><td><span class="badge badge-green">415修正 · 假设分配</span></td><td>R 靠近某个分数走 415；R 很小或很整走假设分配</td></tr>
+        <tr><td><b>比重</b>（分子分母一大一小）</td><td><span class="badge badge-blue">拆分</span></td><td>分子分母同时拆成「一大杯 + 一小勺」再比</td></tr>
+        <tr><td><b>比重</b>（分子分母同步放缩）</td><td><span class="badge badge-purple">放缩</span></td><td>分子往小看、分母往大看（或反之），夹出真值范围</td></tr>
+        <tr><td><b>不规则除法</b></td><td><span class="badge badge-orange">直除</span></td><td>分子不变，分母保留前 2～3 位直接除</td></tr>
+      </table>
+      <div class="tip tip-info">
+        <span class="tip-icon">💡</span>
+        <div><b>四则速算对应：</b>加法 → 高位叠加 / 尾数法；减法 → 分段法 / 基准值法；乘法 → 分小互换 / 拆分；除法 → 拆分 / <b>放缩</b>。</div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-tag">📖 例题 · 放缩法（不规则除法先夹范围）</div>
+      <div class="example-q">计算 4860 ÷ 12300 约等于多少？<br>（选项：A. 32.5%　B. 39.5%　C. 46.2%　D. 52.8%）</div>
+      <div class="example-sol">
+        <span class="step-label">看小</span>分子往小看（4860→4800）、分母往大看（12300→12400）→ 4800 ÷ 12400 ≈ <b>0.387</b><br>
+        <span class="step-label">看大</span>分子往大看（4900）、分母往小看（12200）→ 4900 ÷ 12200 ≈ <b>0.402</b><br>
+        <span class="step-label">夹范围</span>真值必落在 0.387 ～ 0.402 之间 → 约 <b>0.395 = 39.5%</b><br>
+        <span class="step-label">验证</span>4860 ÷ 12300 = 0.39512… ✓
+        <div class="example-ans">答案：B. 39.5%（放缩先定范围，再按选项取值）</div>
+      </div>
+    </div>
+
     <div class="mnemonic">
       <div class="title">🎯 速算核心心法</div>
       <div class="content">保留原始数据 · 不刻意截位 · 让误差抵消</div>
@@ -697,6 +782,42 @@
         <div class="example-ans">答案 ≈ 6300亿元</div>
       </div>
     </div>
+    <div class="card">
+      <div class="card-title">🧾 415 口诀「除 n+1」（总结原话）<span class="new-badge">NEW</span></div>
+      <p>把 R 写成 1/n 之后，<b>增量就是现期的 1/(n+1)</b>，一步到位，比列方程快得多：</p>
+      <div class="formula">
+        <span class="label">口诀</span>X = B ÷ (n+1)　　　A = B − X　　　（先除 n+1 得增量，再一减得基期）<br>
+        <span class="label">一般式</span>X ÷ B = R ÷ (1+R)　（R 为负也照样成立）<br>
+        <span class="label">修正</span>R 与 1/n 有偏差时，用「R差 × (n−1)」做微调
+      </div>
+      <table>
+        <tr><th>增长率 R</th><th>写成 1/n</th><th>X = B ÷ (n+1)</th><th>X ÷ B</th></tr>
+        <tr><td>25%</td><td>1/4</td><td>B ÷ 5</td><td>1/5 = 0.2</td></tr>
+        <tr><td>33.3%</td><td>1/3</td><td>B ÷ 4</td><td>1/4 = 0.25</td></tr>
+        <tr><td>50%</td><td>1/2</td><td>B ÷ 3</td><td>1/3 ≈ 0.33</td></tr>
+        <tr><td>100%</td><td>1/1</td><td>B ÷ 2</td><td>1/2 = 0.5</td></tr>
+        <tr><td>66.6% ≈ 2/3</td><td>—</td><td>—</td><td>0.4</td></tr>
+        <tr><td>43% ≈ 3/7</td><td>—</td><td>—</td><td>0.3</td></tr>
+      </table>
+      <div class="tip tip-danger">
+        <span class="tip-icon">❗</span>
+        <div><b>负增长照用：</b>先按 |R| 求出 |X|，再带上负号即可（X 为负，A = B + |X|，A 比 B 大）。</div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-tag">📖 例题 · 口诀一步出（除 n+1）</div>
+      <div class="example-q">① 2023年某市快递业务量为 <b>1250亿件</b>，同比增长 <b>25%</b>，求同比增长量；<br>
+      ② 某省2023年粮食产量为 <b>1430万吨</b>，同比增长 <b>43%</b>，求2022年产量。</div>
+      <div class="example-sol">
+        <span class="step-label">① 除n+1</span>R = 25% = 1/4 → n = 4，X = 1250 ÷ (4+1) = 1250 ÷ 5 = <b>250亿件</b><br>
+        <span class="step-label">① 回代</span>A = B − X = 1250 − 250 = 1000亿件，验证 1000 × 1.25 = 1250 ✓<br>
+        <span class="step-label">② 查比例</span>R = 43% → X ÷ B ≈ 0.3 → X ≈ 1430 × 0.3 = <b>429万吨</b><br>
+        <span class="step-label">② 回代</span>A = 1430 − 429 = <b>1001万吨</b>，验证 1001 × 1.43 ≈ 1431 ✓
+        <div class="example-ans">① 增长量250亿件　② 2022年产量约1001万吨</div>
+      </div>
+    </div>
+
     <div class="mnemonic">
       <div class="title">📌 误差修正口诀</div>
       <div class="content">3322（上上岸岸） · 5013（吾师13）</div>
@@ -945,6 +1066,34 @@
     </div>
 
     <div class="card">
+      <div class="card-title">📏 年均增长率「格尺法」（选项不同，打法不同）<span class="new-badge">NEW</span></div>
+      <table>
+        <tr><th>选项情况</th><th>打法</th></tr>
+        <tr><td>选项较松（5% / 10% / 15% / 20% 这种）</td><td>直接<b>代入或验证</b>：先算 (B ÷ A)，再拿选项去试</td></tr>
+        <tr><td>选项稍近（6.1% / 6.9% 这种）</td><td><b>格尺法</b>：背好常用「倍数尺」，直接拿 (B ÷ A) 去比对</td></tr>
+        <tr><td>选项极其近（1.7% / 1.8% 这种）</td><td>用近似式 <b>B ÷ A ≈ 1 + nr</b> 反推（反推出的 r 偏大，是上限）</td></tr>
+      </table>
+      <div class="formula">
+        <span class="label">倍数尺</span>n = 4：(1.05)⁴ = 1.22　(1.10)⁴ = 1.46　(1.15)⁴ = 1.75　(1.20)⁴ = 2.07<br>
+        <span class="label">n = 5</span>(1.08)⁵ = 1.47　(1.10)⁵ = 1.61　(1.15)⁵ = 2.01
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-tag">📖 例题 · 格尺法（n = 4）</div>
+      <div class="example-q">某市2019年快递业务收入为 <b>500亿元</b>，2023年为 <b>875亿元</b>。求2019～2023年该市快递业务收入的年均增长率。<br>
+      A. 13%　B. 15%　C. 17%　D. 19%</div>
+      <div class="example-sol">
+        <span class="step-label">定 n</span>n = 2023 − 2019 = <b>4</b><br>
+        <span class="step-label">算倍数</span>B ÷ A = 875 ÷ 500 = <b>1.75</b><br>
+        <span class="step-label">查尺</span>n = 4 的倍数尺里 (1.15)⁴ = 1.75 → r = <b>15%</b><br>
+        <span class="step-label">验证</span>500 × 1.15⁴ = 500 × 1.749 ≈ 874.5 ≈ 875 ✓<br>
+        <span class="step-label">极近时</span>若 B ÷ A = 1.0712、n = 4：1 + 4r = 1.0712 → r ≤ 1.78%（上限），真值 ≈ 1.73%，在两个极近选项 1.7% / 1.8% 里应选 <b>1.7%</b>
+        <div class="example-ans">答案：B. 15%</div>
+      </div>
+    </div>
+
+    <div class="card">
       <div class="card-title">📌 复合增长率 vs 算术平均增长率<span class="new-badge">NEW</span></div>
       <div class="compare-box">
         <div class="compare-item" style="background:var(--primary-light)">
@@ -1042,9 +1191,11 @@
       <div class="card-title">📅 基期比重</div>
       <div class="formula">
         <span class="label">公式</span>基期比重 = 现期比重 × (1+R整体) ÷ (1+R部分)<br>
-        = (部分现期 ÷ 整体现期) × (1+R₁) ÷ (1+R₂)<br><br>
-        R₁ = 整体增长率，R₂ = 部分增长率<br>
-        <span class="label">理解</span>"增长率反过来"——部分涨得快则基期比重小
+        = (部分现期 ÷ 整体现期) × (1+R分母) ÷ (1+R分子)<br>
+        <span class="label">命名</span>分子 = 部分（R₁），分母 = 整体（R₂）—— 与基期平均数、基期倍数同一套路</div>
+      <div class="tip tip-info">
+        <span class="tip-icon">🔁</span>
+        <div><b>「以坑治坑」：</b>选项给的是现期比重时，别急着选——先想"分子分母谁涨得快"，去年比重就该往反方向偏。分子涨得快（R分子 &gt; R分母）→ 基期比重比现期<b>小</b>。</div>
       </div>
       <p style="margin-top:8px"><span class="badge badge-blue">替代方法</span> 两次415份数法/假设分配法分别求基期部分和基期整体。</p>
     </div>
@@ -1209,15 +1360,16 @@
     <h2 class="section-title"><span class="num">7</span> 比值类问题（平均数·倍数·翻番）<span class="new-badge">NEW</span></h2>
 
     <div class="card">
-      <div class="card-title">📊 平均数 — 6种考法</div>
+      <div class="card-title">📊 平均数 — 7种考法</div>
       <table>
         <tr><th>题型</th><th>问法</th><th>方法</th></tr>
-        <tr><td>① 求单个平均数</td><td>"平均每月…""人均…"</td><td>总数÷个数，注意时间平均数（闰年366天）</td></tr>
-        <tr><td>② 两个平均数之差</td><td>"平均…比上年高/低多少"</td><td>即<b>比值差</b>，A/B×(R₁-R₂)，不可秒杀</td></tr>
+        <tr><td>① 求单个平均数</td><td>"平均每月…""人均…"</td><td>总数÷个数；<b>时间平均数</b>注意闰年 366 天、季度个数、大小月</td></tr>
+        <tr><td>② 两个平均数之差</td><td>"平均…比上年高/低多少"</td><td>即<b>比值差</b>，基期分子÷现期分母×(R₁-R₂)，<b>不可秒杀</b></td></tr>
         <tr><td>③ 两个平均数之比</td><td>"A的平均是B的平均的多少倍"</td><td>(A/B)÷(C/D) = AD/BC（两边除中间）</td></tr>
         <tr><td>④ 平均数增长率</td><td>"平均…的增长率"</td><td>即<b>比值增长率</b>，(R₁-R₂)÷(1+R₂)</td></tr>
-        <tr><td>⑤ 基期平均数</td><td>"去年的平均…"</td><td>同基期比重，现期×(1+R₁)÷(1+R₂)</td></tr>
-        <tr><td>⑥ 平均数变化趋势</td><td>"平均…与上年相比上升/下降"</td><td>同比重趋势，比较R₁和R₂</td></tr>
+        <tr><td>⑤ 基期平均数</td><td>"去年的平均…"</td><td>同基期比重，现期×(1+R分母)÷(1+R分子)</td></tr>
+        <tr><td>⑥ 平均数变化趋势</td><td>"平均…与上年相比上升/下降"</td><td>同比重趋势，比较分子 R₁ 和分母 R₂</td></tr>
+        <tr><td>⑦ 混合平均数</td><td>"全国人均…""全班平均分…"</td><td>整体平均必在两部分平均<b>之间</b>，且<b>靠近量大</b>的一侧（盐水思想）</td></tr>
       </table>
       <div class="tip tip-info">
         <span class="tip-icon">💡</span>
@@ -1244,14 +1396,14 @@
       城镇常住人口为 <b>800万人</b>，增长 <b>2.1%</b>。<br>
       问：2023年该市城镇居民人均可支配收入比上年<b>增加</b>了多少元？</div>
       <div class="example-sol">
-        <span class="step-label">识别</span>"人均收入增加多少"→ 比值差（不是比值增长率！）<br>
-        <span class="step-label">公式</span>比值差 = (A/B) × (R₁ - R₂)<br>
-        <span class="step-label">注意</span>比值差单位是"元"（实际量），不是%，<b>不可秒杀</b><br>
-        <span class="step-label">代入</span>差 = 55000 × (6.5% - 2.1%) = 55000 × 4.4% = <b>2420元</b><br>
-        <span class="step-label">验证</span>现期人均 = 55000÷800 = 68750？不对，55000本身就是人均<br>
-        实际：现期人均收入=55000元，基期人均=55000×(1+2.1%)÷(1+6.5%)≈52696<br>
-        差 = 55000 - 52696 = 2304元（近似公式有微小误差）
-        <div class="example-ans">答案 ≈ 2300~2420元</div>
+        <span class="step-label">识别</span>"人均收入增加多少<b>元</b>"→ 比值差（求差值；若问"增长率"才是比值增长率）<br>
+        <span class="step-label">公式</span>比值差 = <b>基期分子 ÷ 现期分母</b> × (R₁ - R₂)　（等价于 现期平均数 ÷ (1+R₁) × (R₁-R₂)）<br>
+        <span class="step-label">标注</span>R₁ = 分子（收入总额）增速 = 6.5%，R₂ = 分母（人口）增速 = 2.1%<br>
+        <span class="step-label">注意</span>比值差单位是"元"（实际量）不是 %，且<b>不可秒杀</b>（只有比重差能秒杀）<br>
+        <span class="step-label">代入</span>差 = 55000 ÷ 1.065 × (6.5% - 2.1%) = 51643 × 4.4% ≈ <b>2272元</b><br>
+        <span class="step-label">验证</span>基期人均 = 55000 × 1.021 ÷ 1.065 ≈ 52728，差 = 55000 - 52728 = <b>2272元</b> ✓<br>
+        <span class="step-label">易错</span>直接用"现期平均 × 增速差" = 55000 × 4.4% = 2420元，<b>偏大</b>，老师用的是基期量，别算错
+        <div class="example-ans">答案 ≈ 2272元（人均收入比上年增加约2270元）</div>
       </div>
     </div>
     <div class="example">
@@ -1259,8 +1411,8 @@
       <div class="example-q">2023年某企业总产值为 <b>8000万元</b>（增长 <b>10%</b>），员工人数为 <b>200人</b>（增长 <b>5%</b>）。<br>
       求2022年该企业人均产值约为多少万元？</div>
       <div class="example-sol">
-        <span class="step-label">方法</span>基期平均数 = 现期平均数 × (1+R₁) ÷ (1+R₂)<br>
-        R₁ = 分母（人数）增速 = 5%，R₂ = 分子（产值）增速 = 10%<br>
+        <span class="step-label">方法</span>基期平均数 = 现期平均数 × (1+R分母) ÷ (1+R分子)<br>
+        分子 = 产值（R = 10%），分母 = 人数（R = 5%）<br>
         <span class="step-label">现期人均</span>8000 ÷ 200 = 40万元/人<br>
         <span class="step-label">基期人均</span>40 × (1+5%) ÷ (1+10%) = 40 × 1.05 ÷ 1.10<br>
         = 40 × 0.9545 ≈ <b>38.2万元/人</b>
@@ -1749,6 +1901,32 @@
       </div>
     </div>
   
+    <div class="card">
+      <div class="card-title">🔁 替代比较（换个式子比，顺序不变但更好算）<span class="new-badge">NEW</span></div>
+      <table>
+        <tr><th>原本要比</th><th>可以替代成</th><th>为什么能替代</th></tr>
+        <tr><td>年均增长率 (B/A)<sup>1/n</sup>−1</td><td>末期 ÷ 基期（B ÷ A）</td><td>年份差 n 相同时，B/A 越大，年均增长率越大</td></tr>
+        <tr><td>增速 R = X ÷ A</td><td><b>B ÷ A</b></td><td>B/A = 1 + R，随 R 单调递增，大小顺序不变</td></tr>
+        <tr><td>增速 R = X ÷ A</td><td><b>X ÷ B</b></td><td>X/B = R ÷ (1+R)，同样单调递增；现期量在材料里最好找</td></tr>
+        <tr><td>比重 A ÷ 整体</td><td><b>A ÷ 非A</b></td><td>A/非A = 比重 ÷ (1−比重)，随比重单调递增</td></tr>
+      </table>
+      <div class="tip tip-warn">
+        <span class="tip-icon">⚠️</span>
+        <div><b>查找 + 比较要分两步走：</b>先〈查找〉把要用到的数一次抄出来，再〈计算或比较〉——不要边查边比，最容易看错行。</div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-tag">📖 例题 · 替代比较（用 X ÷ B 代替 X ÷ A）</div>
+      <div class="example-q">甲市现期财政收入 1200亿元、基期 1000亿元；乙市现期 1500亿元、基期 1300亿元。哪市财政收入增速更快？</div>
+      <div class="example-sol">
+        <span class="step-label">常规</span>R甲 = 200 ÷ 1000 = <b>20.0%</b>，R乙 = 200 ÷ 1300 ≈ <b>15.4%</b> → 甲快<br>
+        <span class="step-label">替代</span>改用 X ÷ B：甲 200 ÷ 1200 ≈ 16.7%，乙 200 ÷ 1500 ≈ 13.3% → 仍是甲快（顺序完全一致）<br>
+        <span class="step-label">好处</span>基期 A 往往要自己求，现期 B 直接读材料，替代后少一次除法、少一次出错
+        <div class="example-ans">甲市更快（20.0% &gt; 15.4%）</div>
+      </div>
+    </div>
+
       <div class="card">
         <div class="card-title">📈 双线法（增速大小比较专用）</div>
         <p>用于<b>增速的大小比较</b>：增长率 R = 增量 X ÷ 基期 A，把「分子」和「分母」各自的变化画成两条线来比，比硬算快得多。</p>
@@ -2088,24 +2266,86 @@
     </div>
   
       <div class="card">
-        <div class="card-title">🕳️ 时间与表述类陷阱（第十讲原话）</div>
+        <div class="card-title">🕳️ 第十讲：14 个坑（分「比较计数」与「审题表述」两类）</div>
+        <p><b>建议备一个「坑本」</b>，把掉过的坑记下来，考前翻（自己记录，印象最深）。</p>
+        <p style="margin-top:10px;"><b>8.1 比较 / 计数类问题的坑</b></p>
         <ul>
-          <li><b>③ 注意首年</b>：首年的增量要用首年的量与增长率来求（可用 415 份数法），<b>后面各年才用 X = B − A</b>。</li>
-          <li><b>④ 注意单位</b>：如「毫克／微克」，1 毫克 = 1000 微克，选项常在此处挖坑。</li>
-          <li><b>⑦ 注意时间不匹配</b>：材料只给 1～7 月的数据，<b>推不出全年</b>；综合分析题常考「注意起始、结束时间」。</li>
-          <li><b>⑧ 注意环比与同比</b>：<b>环比</b>是和<b>上一个相邻统计周期</b>比（如 12 月比 11 月）；<b>同比</b>是和<b>去年同一时期</b>比。</li>
-          <li><b>⑨ 注意「是多少倍」与「多多少倍」</b>：城镇消费品零售额约是乡村的 <b>6.5 倍</b> → 城镇比乡村<b>多 6.5 − 1 = 5.5 倍</b>。</li>
-          <li><b>⑩ 注意比重问题的分母</b>：看清问的是「占谁的比重」，隔级比重别搞错分母。</li>
-          <li><b>⑪ 注意进出口</b>：<b>「日本对中国进口」＝ 中国出口给日本</b>，方向别反。</li>
-          <li><b>⑫ 注意累计与当期</b>：<b>8 月累计 = 1～8 月</b>，别当成「8 月单月」。</li>
-          <li>另注意<b>图表列举不全</b>（当作「母题」背下来）与<b>综合分析题</b>的起止时间。</li>
+          <li><b>① 注意起始、结束时间</b>：综合分析题每选项都要在材料给定区间内判断，别把区间外的年份算进去。</li>
+          <li><b>② 注意合计、总计行</b>：表格第一行若是「全国／合计」，数省份时<b>必须先划掉</b>，不能数进去。</li>
+          <li><b>③ 注意首年</b>：<b>首年的增量要用首年自己的量与增长率来求</b>（415 或 X = B×R÷(1+R)），<b>后面的各年才用 X = B − A</b>。</li>
+          <li><b>④ 注意单位</b>：如「毫克／微克」（1 毫克 = 1000 微克）、「万吨／亿吨」、「人／万人」、「‰／%」，选项常在此处挖坑。</li>
+          <li><b>⑤ 排序顺序坑</b>：做完之后<b>再看一眼</b>是从高到低还是从低到高。</li>
+          <li><b>⑥ 注意图表列举不全</b>：文字说 11 个沿海省市、图表只列 8 个 → 漏掉的 3 个「一定符合题意」，可以当「母题」背下来；稻谷+小麦+玉米 ≠ 谷物总量也说明还有未列举项。</li>
+          <li><b>⑦ 注意时间不匹配</b>：材料只有 1～7 月，<b>推不出全年</b>。</li>
         </ul>
+        <p style="margin-top:10px;"><b>8.3 审题时需要注意的思维陷阱</b></p>
+        <ul>
+          <li><b>⑧ 注意环比与同比</b>：<b>环比</b>是和<b>上一个相邻统计周期</b>比（如 12 月比 11 月）；<b>同比</b>是和<b>去年同一时期</b>比。问「同比增速」，16 年一季度要和 15 年一季度比，四季度各对各。</li>
+          <li><b>⑨ 注意「是多少倍」与「多多少倍」</b>：城镇消费品零售额约是乡村的 <b>6.5 倍</b> → 城镇比乡村<b>多 6.5 − 1 = 5.5 倍</b>。</li>
+          <li><b>⑩ 注意比重问题的分母</b>：看清问的是「占谁的比重」，<b>隔级比重</b>尤其别搞错分母。</li>
+          <li><b>⑪ 注意进出口相关</b>：<b>主客体颠倒</b>——「欧盟、美国从我国进口」＝「我国对欧盟、美国出口」，方向别反；另注意问的是出口「量」还是「额」。</li>
+          <li><b>⑫ 注意累计与当期</b>：<b>8 月累计 = 1～8 月</b>，别当成「8 月单月」。</li>
+          <li><b>⑬ 不要遗漏月均计算</b>：问「1～8 月月均增量」要<b>÷ 8</b>；问一个季度的「月均」要<b>÷ 3</b>；问「四星级及以上」要把四星、五星都算上。</li>
+          <li><b>⑭ 注意一二月合并统计</b>：材料常把 1、2 月合并公布（如 1～2 月总计 6.18），拆不开时用「两种情况」推理——平均分或不平均分，结论往往都指向同一选项。</li>
+        </ul>
+        <div class="tip tip-info">
+          <span class="tip-icon">💡</span>
+          <div><b>单位特征提示：</b>比重类的选项单位多是「<b>百分点</b>」（严谨题），比值增长率与增速类单位是「<b>%</b>」，比值差／增量类的选项往往带<b>实际含义</b>（元／人、元／吨）——看单位就能反推该想哪种方法。</div>
+        </div>
+      </div>
+
+      <div class="example">
+        <div class="example-tag">📖 例题 · 首年增量 / 月均计算 / 排序顺序</div>
+        <div class="example-q">某省高新技术产品出口额：2017 年 <b>800亿元</b>（同比增长 <b>12.5%</b>）、2018 年 <b>990亿元</b>、2019 年 <b>1100亿元</b>。<br>
+        ① 2017 年的同比增长量是多少？　② 2018、2019 两年的同比增量各是多少？<br>
+        ③ 2020 年 1～8 月某市快递业务量累计 <b>24亿件</b>，月均是多少？</div>
+        <div class="example-sol">
+          <span class="step-label">① 首年</span>2017 年<b>没有上一年的数据</b>，不能用 X = B − A；要用 X = A × R。R = 12.5% = 1/8 → 415 份数法：A = 8 份、X = 1 份、B = 9 份，一份 = 800 ÷ 9 ≈ 88.9，<b>X ≈ 89亿元</b><br>
+          <span class="step-label">① 验证</span>X = B × R ÷ (1+R) = 800 × 12.5% ÷ 1.125 ≈ <b>88.9亿元</b> ✓<br>
+          <span class="step-label">② 后面各年</span>直接用 X = B − A：2018 年 990 − 800 = <b>190亿元</b>；2019 年 1100 − 990 = <b>110亿元</b><br>
+          <span class="step-label">③ 月均</span>1～8 月求月均要<b>÷ 8</b>（不是 ÷ 7）：24 ÷ 8 = <b>3亿件/月</b>
+          <div class="example-ans">① 约89亿元　② 190亿元、110亿元　③ 3亿件/月</div>
+        </div>
       </div>
   </section>
 
   <!-- ============ 12. 速查表 ============ -->
   <section id="cheatsheet">
     <h2 class="section-title"><span class="num">12</span> 公式速查总表</h2>
+
+    <div class="card">
+      <div class="card-title">🗺️ 总表：一切资料分析题的「五问定位法」（总结原话）</div>
+      <p>每个小问先定位它在<b>哪一行</b>（考什么量）、<b>哪一列</b>（问的是哪种变化），公式自然就出来了。</p>
+      <table>
+        <tr><th></th><th>过去</th><th>现在</th><th>相对变化</th><th>绝对变化</th><th>混合</th></tr>
+        <tr><td><b>量</b></td><td>基期 A、基期差值</td><td>假设增量 / 假设增速求后期</td><td>一般增长率 R、间隔增长率 R₁+R₂+R₁R₂</td><td>增量 X、X₁/X₂、X = X₁+X₂+…</td><td>混合增长率（盐水）</td></tr>
+        <tr><td><b>比重</b></td><td>基期比重</td><td>现期比重</td><td>比重趋势（定性）</td><td>比重差（定量）</td><td>两部分混合比重</td></tr>
+        <tr><td><b>平均数</b></td><td>基期平均数</td><td>现期平均数</td><td>比值增长率</td><td>比值差</td><td>混合平均数（人均收入、平均分）</td></tr>
+        <tr><td><b>倍数</b></td><td>基期倍数</td><td>现期倍数</td><td>倍数 = 增长率 + 1</td><td>倍数 − 倍数</td><td>比值倍数 / 间隔倍数</td></tr>
+        <tr><td><b>其他比值</b></td><td>基期比值</td><td>现期比值</td><td>比值增长率</td><td>比值差</td><td>比值混合</td></tr>
+        <tr><td><b>乘积</b></td><td>a × b（基期）</td><td>a × b（现期）</td><td>乘积增长率 R₁+R₂+R₁R₂</td><td>ab − a′b′</td><td>—</td></tr>
+      </table>
+      <div class="tip tip-info">
+        <span class="tip-icon">💡</span>
+        <div><b>口诀：找不到量，想表达式！</b>写出「A = B ÷ C」→ 比值增长率；写出「A = B × C」→ 乘积增长率。看到「均／每／单位」想除法，看到「总／合计」想乘法。</div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-tag">📖 例题 · 用「五问定位法」找公式</div>
+      <div class="example-q">2023年某省出口额 <b>2400亿元</b>（增长 <b>12%</b>），出口量 <b>3000万吨</b>（增长 <b>5%</b>）。<br>
+      ① 2022 年出口额是多少？<br>② 出口单价同比上涨了百分之几？<br>③ 2023 年出口单价比上年上升／下降了多少元/吨？</div>
+      <div class="example-sol">
+        <span class="step-label">① 定位</span>「量」行 × 「过去」列 → 基期 A = B ÷ (1+R) = 2400 ÷ 1.12 ≈ <b>2143亿元</b><br>
+        <span class="step-label">② 定位</span>单价 = 出口额 ÷ 出口量 → 「其他比值」行 × 「相对变化」列 → 比值增长率<br>
+        ② 计算　R = (12% − 5%) ÷ (1 + 5%) = 7% ÷ 1.05 ≈ <b>6.7%</b><br>
+        <span class="step-label">③ 定位</span>同一行 × 「绝对变化」列 → <b>比值差</b><br>
+        <span class="step-label">③ 计算</span>现期单价 = 2400 ÷ 3000 = 0.8亿元/万吨 = 8000元/吨；比值差 = 8000 ÷ 1.12 × 7% ≈ <b>500元/吨</b>（上升）<br>
+        <span class="step-label">③ 验证</span>基期单价 = 2143 ÷ (3000÷1.05) ≈ 7500元/吨，差 = 8000 − 7500 = 500元/吨 ✓
+        <div class="example-ans">① 约2143亿元　② 约6.7%　③ 上升约500元/吨</div>
+      </div>
+    </div>
+
     <div class="card">
       <table>
         <tr><th>知识点</th><th>公式</th><th>适用场景</th></tr>

@@ -510,6 +510,31 @@
           <tr><td>统筹优化</td><td><span class="section-tag tag-mid">中</span></td><td>让等待与空转最少</td></tr>
         </table>
       </div>
+      <div class="block">
+        <div class="block-title">🎯 夸夸刷「补充考点」17 条全对照（查漏用）</div>
+        <div class="tip-box">
+          牟立志《数量夸夸刷》共 17 个补充考点，本页已全部落地，逐条核对如下（括号内为本页所在模块）。
+        </div>
+        <ul class="key-box" style="line-height:2;">
+          <li><b>考点 1</b> 神奇的 1764（五位数字连乘之积）—— <i>一、倍数特性</i></li>
+          <li><b>考点 2</b> 普通方程：A 和非 A 思想 —— <i>二、方程法</i></li>
+          <li><b>考点 3</b> 方程中的排比句 —— <i>二、方程法</i></li>
+          <li><b>考点 4</b> 鸡兔同笼（假设法，与得分/晴雨天/大小盒同一模型）—— <i>十九、抽屉原理与盈亏</i></li>
+          <li><b>考点 5</b> 暑假作业型 —— <i>四、工程问题</i></li>
+          <li><b>考点 6</b> 同时开始同时结束 —— <i>四、工程问题</i></li>
+          <li><b>考点 7</b> 切长最短（秒杀技巧）—— <i>五、几何问题</i></li>
+          <li><b>考点 8</b> 合并付费（省多少钱）—— <i>六、经济利润</i></li>
+          <li><b>考点 9</b> 等距离平均速度（做猜）—— <i>十、行程问题</i></li>
+          <li><b>考点 10</b> 多次相遇：每人都有事做 —— <i>十、行程问题</i></li>
+          <li><b>考点 11</b> 多次相遇比例类比 —— <i>十、行程问题</i></li>
+          <li><b>考点 12</b> 漂流瓶 —— <i>十、行程问题</i></li>
+          <li><b>考点 13</b> 等差数列中的倍数特性（页码类）—— <i>九、数列问题</i></li>
+          <li><b>考点 14</b> 容斥的两个常识公式 —— <i>七、容斥原理</i></li>
+          <li><b>考点 15</b> 最值思维（设未知数 → 代公式 → 分析最值）—— <i>八、最值问题</i></li>
+          <li><b>考点 16</b> 平均分组（组无编号要除以 n!）—— <i>十一、排列组合</i></li>
+          <li><b>考点 17</b> 描点法（枚举先描点，防漏防重）—— <i>十二、概率问题</i></li>
+        </ul>
+      </div>
     </div>
   </div>
 
@@ -2096,6 +2121,32 @@
     </div>
   </div>
 
+            <div class="block">
+              <div class="block-title">8. 补充考点 14：容斥的两个「常识公式」（夸夸刷）</div>
+              <div class="formula-box">
+                <span class="formula">常识1（分层次）：全部 = 只一 + 只二 + 只三 + 都不</span><br>
+                <span class="formula">常识2（按集合加）：A + B + C = 只一 + 2 × 只二 + 3 × 只三</span>
+              </div>
+              <div class="tip-box">
+                作用：题干只给「只满足一种／两种／三种」和「都不」时，用这两条把「集合之和」与「分层人数」互相翻译。<br>
+                看到「至少一项」「都不」先想它们，比硬套标准公式更快。<b>常识2 的来源</b>：只满足一种的人被算 1 次，只两种的被算 2 次，三种的都满足的被算 3 次。
+              </div>
+            </div>
+            <div class="example">
+              <div class="example-header">📝 例题8 · 两个常识公式互推</div>
+              <div class="example-body">
+                <div class="example-q">某班 40 人参加数学、语文、英语兴趣小组的情况为：只参加一项的 18 人，只参加两项的 7 人，三项都参加的 3 人，三项都没参加的 12 人。<br>① 参加至少一个小组的有多少人？　② 三个小组的参加人次之和是多少？</div>
+                <div class="example-answer">
+                  <b>解析：</b><br>
+                  ① 常识1：全部 = 只一 + 只二 + 只三 + 都不 → 18 + 7 + 3 + 12 = <b>40 人</b>（与全班相符，数据自洽）；<br>
+                  至少一项 = 只一 + 只二 + 只三 = 18 + 7 + 3 = <b>28 人</b>。<br>
+                  ② 常识2：A + B + C = 只一 + 2 × 只二 + 3 × 只三 = 18 + 2×7 + 3×3 = 18 + 14 + 9 = <b>41 人次</b>。<br>
+                  检验：40 人中 12 人一项没参加 → 28 人共产生 41 人次，平均每人 1.46 项，合理。
+                  <br>
+                  <span class="correct">答案：① 28 人　② 41 人次</span>
+                </div>
+              </div>
+            </div>
   <!-- 8. 最值问题 -->
   <div class="section c-orange" id="s8">
     <div class="section-header" onclick="toggleSection(this)">
@@ -2232,6 +2283,32 @@
     </div>
   </div>
 
+      <div class="block">
+        <div class="block-title">6. 补充考点 15：最值思维（设未知数 → 代公式 → 分析最值）</div>
+        <div class="tip-box">
+          <b>识别：</b>题目涉及最值，但不是「最不利（至少…才能保证…）」，也不是「和定最值」。<br>
+          <b>三步：</b>① 设未知数；② 代入公式（容斥／平均数／方程）；③ 分析未知量的最值情况（谁最小取 0、谁最大不能超过整体）。<br>
+          夸夸刷原话：「涉及最值，设未知数，代公式，分析未知量的最值情况即可」。
+        </div>
+        <div class="key-box">
+          常见落点：<b>「都不」≥ 0</b> 卡出交集最小值；<b>「只满足一种」≥ 0</b> 卡出交集最大值。
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题7 · 最值思维（两集合）</div>
+        <div class="example-body">
+          <div class="example-q">某调查发现，受访居民中 60% 使用手机支付，75% 使用银行卡支付。问两种方式<b>都使用</b>的受访居民占比最少是多少？</div>
+          <div class="example-opts">A.15%　B.35%　C.45%　D.60%</div>
+          <div class="example-answer">
+            <b>解析：</b>① 设两种都使用的占比为 x，两种都不使用的占比为 y；<br>
+            ② 代两集合公式：100% = 60% + 75% − x + y → x = 35% + y；<br>
+            ③ 分析最值：x 要最小 → 取 y 的最小可能值 y = 0 → x = <b>35%</b>。<br>
+            （即多集合反向构造的结论：A∩B 最小 = A + B − 全部 = 60% + 75% − 100% = 35%）
+            <br>
+            <span class="correct">答案：B</span>
+          </div>
+        </div>
+      </div>
   <!-- 9. 数列问题 -->
   <div class="section c-blue" id="s9">
     <div class="section-header" onclick="toggleSection(this)">
@@ -2343,6 +2420,47 @@
     </div>
   </div>
 
+            <div class="block">
+              <div class="block-title">5. 补充考点 13：等差数列中的倍数特性（页码类）</div>
+              <div class="tip-box">
+                <b>一个认知：</b>等差数列「多数考公式，少数考倍数」。<br>
+                页码、连续整数这类题，靠的是 <b>1 到 n 求和 S = n(n+1)/2</b> 加上<b>整除特性</b>，而不是硬列方程。
+              </div>
+              <div class="formula-box">
+                <span class="formula">① 先估 n：S ≈ n²/2 → n ≈ √(2S)，再算相邻两个 n 的完整和</span><br>
+                <span class="formula">② 多加/漏加：实际和 − 完整和 = ±（那一页的页码）</span><br>
+                <span class="formula">③ 连续 4 页之和 = 4 × 这 4 页的平均数，配合「能被某数整除」定位置</span>
+              </div>
+            </div>
+            <div class="example">
+              <div class="example-header">📝 例题6 · 页码多加了一页</div>
+              <div class="example-body">
+                <div class="example-q">某书的页码从 1 开始连续编号。小莎把全部页码相加时，不小心把其中某一页多加了一次，结果和为 2003，则被多加的页码是多少？</div>
+                <div class="example-opts">A.45　B.50　C.56　D.62</div>
+                <div class="example-answer">
+                  <b>解析：</b>① 先估总页数：S = n(n+1)/2 ≈ 2003 → <b>62</b>×63/2 = 1953，<b>63</b>×64/2 = 2016；<br>
+                  ② 因为是<b>多加</b>了一页，实际和一定 ≥ 完整和，所以完整和只能是 1953（n = 62）；<br>
+                  ③ 被多加的页码 = 2003 − 1953 = <b>50</b>（50 ≤ 62，位置成立）。
+                  <br>
+                  <span class="correct">答案：B</span>
+                </div>
+              </div>
+            </div>
+            <div class="example">
+              <div class="example-header">📝 例题7 · 连续页码 + 整除定位</div>
+              <div class="example-body">
+                <div class="example-q">小王读一本 204 页的书，发现书的前半部分有连续的 4 个页码被墨水污染，把其余 200 个页码相加，其和刚好能被 85 整除，则被污染的 4 个页码中最小的数是：</div>
+                <div class="example-opts">A.100　B.95　C.75　D.41</div>
+                <div class="example-answer">
+                  <b>解析：</b>① 全书页码和 = 204×205/2 = <b>20910</b>；<br>
+                  ② 设被污染的 4 页为 k、k+1、k+2、k+3，其和 = 4k + 6；<br>
+                  ③ 其余 200 页之和 = 20910 − (4k + 6) = 20904 − 4k，要求能被 85 整除；<br>
+                  ④ 20904 ÷ 85 余 <b>79</b> → 4k ≡ 79 (mod 85) → 取 4k = 79 + 85 = <b>164</b> → k = <b>41</b>（另一个解 k = 41 + 85/…不满足 4k ≤ 408 与"前半部分"条件）。
+                  <br>
+                  <span class="correct">答案：D</span>
+                </div>
+              </div>
+            </div>
   <!-- 10. 行程问题 -->
   <div class="section c-green" id="s10">
     <div class="section-header" onclick="toggleSection(this)">
@@ -2791,7 +2909,7 @@
         </div>
       </div>
             <div class="block">
-              <div class="block-title">7. 平均分组</div>
+              <div class="block-title">7. 补充考点 16：平均分组（组无编号要除以 n!）</div>
               <div class="tip-box">注意除以组数的全排列，消除重复计数</div>
             </div>
             <div class="example">
@@ -3119,6 +3237,34 @@
     </div>
   </div>
 
+      <div class="block">
+        <div class="block-title">11. 补充考点 17：描点法（枚举先描点，防漏防重）</div>
+        <div class="tip-box">
+          排列组合／概率里<b>套不出公式、只能数</b>的时候用描点法：<br>
+          ① 把每个对象画成一个点（一排点、一圈点、一列格子）；<br>
+          ② 固定一个有特殊条件的点"消掉旋转/对称"（例如固定甲坐在 1 号点）；<br>
+          ③ 按题目条件在点上逐一"描"出可行排列，描完再回头查有没有漏点、有没有重复数。
+        </div>
+        <div class="key-box">
+          描点法的价值不在"快"，而在<b>让枚举看得见</b>：手上有图，就不会漏数，也方便用奇偶、对称去检验。
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题11 · 描点法枚举（环形相邻）</div>
+        <div class="example-body">
+          <div class="example-q">甲、乙、丙、丁 4 人围坐在一张圆桌旁，若甲必须与乙相邻，共有多少种不同的坐法？</div>
+          <div class="example-opts">A.4　B.6　C.8　D.12</div>
+          <div class="example-answer">
+            <b>解析：</b>把 4 个座位描成一圈的 4 个点。<br>
+            ① 固定甲在 1 号点（消掉旋转带来的重复）→ 乙必须相邻，只能在 2 号或 4 号点，共 <b>2</b> 种；<br>
+            ② 剩下的两个点给丙、丁，可互换 → <b>2</b> 种；<br>
+            ③ 相乘：2 × 2 = <b>4</b> 种。<br>
+            用公式复核：4 人环形排列 (4−1)! = 6 种；把甲乙捆成一体 → 2 × (3−1)! = 4 种，一致。
+            <br>
+            <span class="correct">答案：A</span>
+          </div>
+        </div>
+      </div>
   <!-- 13. 年龄问题 -->
   <div class="section c-orange" id="s13">
     <div class="section-header" onclick="toggleSection(this)">

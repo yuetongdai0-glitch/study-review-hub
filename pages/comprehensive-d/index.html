@@ -134,6 +134,15 @@ html[data-theme="dark"] .qa-in .ans-tag{background:#052e16;color:#86efac;border-
   .hd-title h1{font-size:19px}
 }
 
+/* ===== 窄屏：表格改为自动折行，避免出现横向滚动条 ===== */
+@media (max-width:719px){
+  .table-box{overflow-x:visible}
+  table{min-width:0;table-layout:auto}
+  /* 表头保持不折行（列宽至少撑到表头宽度），单元格正常折行 */
+  td{white-space:normal;overflow-wrap:anywhere;word-break:break-word}
+  th,td{padding:6px 7px;font-size:12px}
+}
+
 /* ===== 真题示例块 ===== */
 .ex{margin:10px 0 16px;padding:12px 14px;border-radius:12px;background:var(--card);
     border:1px solid var(--line);border-left:4px solid var(--brand2);box-shadow:var(--shadow);}
