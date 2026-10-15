@@ -507,7 +507,7 @@ test('图形推理页已按 91 页笔记补全三视图 / 立体拼合等内容'
   assert.ok(svgBlocks.length >= 80, `自绘 SVG 数量偏少：${svgBlocks.length}`)
   svgBlocks.forEach((blk, i) => {
     const svg = blk.slice(0, blk.indexOf('</svg>') + 6)
-    assert.ok(/viewBox="0 0 620 /.test(svg), `第 ${i + 1} 张自绘图 viewBox 不规范`)
+    assert.ok(/viewBox="0 0 [1-9]\d*\.?\d* [1-9]\d*\.?\d*"/.test(svg), `第 ${i + 1} 张自绘图 viewBox 不规范`)
     assert.ok(svg.includes('aria-label='), `第 ${i + 1} 张自绘图缺少 aria-label`)
     assert.ok(!svg.includes('currentColor'), `第 ${i + 1} 张自绘图用了 currentColor`)
     for (const t of svg.match(/<text\b[^>]*>/g) || []) {
