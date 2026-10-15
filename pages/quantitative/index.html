@@ -776,7 +776,30 @@
           </div>
         </div>
       </div>
-    </div>
+    
+            <div class="block">
+              <div class="block-title">7. 补充考点 1：神奇的 1764（五位数字连乘之积）</div>
+              <div class="formula-box">
+                <span class="formula">1764 = 2 × 2 × 3 × 3 × 7 × 7</span><br>
+                五个数字连乘之积 = 1764 时：① 五位数字之和在 <b>24 ~ 28</b> 之间　② 数字和最大比最小多 <b>4</b>
+              </div>
+              <div class="sub-point">能凑成 1764 的五组数字（记「数字和」就够）：</div>
+              <div class="sub-point">· 3×3×4×7×7 → 和 <b>24</b>　· 2×3×6×7×7 → 和 <b>25</b></div>
+              <div class="sub-point">· 2×2×7×7×9 → 和 <b>27</b>　· 1×6×6×7×7 → 和 <b>27</b>　· 1×4×7×7×9 → 和 <b>28</b></div>
+              <div class="tip-box">看到「五位数字连乘之积 = 1764」「5 箭环数之积都是 1764」要立刻想到：<b>它们的数字和只可能是 24 / 25 / 27 / 28，最大比最小多 4</b>，直接对选项。</div>
+            </div>
+              <div class="example">
+              <div class="example-header">📝 例题 · 神奇的 1764（2014 河北）</div>
+              <div class="example-body">
+                <div class="example-q">小刘和小李进行射箭比赛，射不中记零环，射中按离靶心距离得 1~10 环。2 人各射 5 箭，所得环数之积都是 1764，但小刘的总环数比小李多 4 环，那么小刘得了多少环？</div>
+                <div class="example-opts">A. 24　B. 26　C. 28　D. 30</div>
+                <div class="example-answer">
+                  <b>解析：</b>5 箭环数之积 = 1764 → 数字和只可能是 <b>24 / 25 / 27 / 28</b>。<br>两人总环数相差 4 → 只能是 <b>28 与 24</b> 这一组。<br>小刘比小李多 4 环 → 小刘是 <b>28</b>。<br>
+                  <span class="correct">答案：C</span>
+                </div>
+              </div>
+            </div>
+          </div>
   </div>
 
   <!-- 2. 方程法 -->
@@ -887,7 +910,52 @@
                 </div>
               </div>
             </div>
-    </div>
+    
+            <div class="block">
+              <div class="block-title">5. 补充考点 2：A 和非 A 思想（普通方程）</div>
+              <div class="key-box"><b>识别：</b>题目给的是「<b>不是甲</b> / 不是乙 / 不是丙」的数量，却问「甲（某一个主体）有多少」</div>
+              <div class="formula-box">
+                <span class="formula">A = (非B + 非C − 非A) ÷ 2</span>
+              </div>
+              <div class="sub-point">推导：总量 T = A + B + C。<br>
+                「不是甲的」= B + C；「不是乙的」= A + C；「不是丙的」= A + B。<br>
+                三式相加 = 2(A+B+C) = 2T；又 T = 非A + A，代入化简即得上式。</div>
+              <div class="tip-box">别硬解三元方程 —— <b>把「不是另外两个的」加起来，减去「不是自己的」，再除以 2</b>。</div>
+            </div>
+              <div class="example">
+              <div class="example-header">📝 例题 · A 和非 A 思想（2020 深圳）</div>
+              <div class="example-body">
+                <div class="example-q">某快递集散点有一批包裹，由甲、乙、丙三名快递员各自独立完成送达。其中有 93 件不是甲派送的，92 件不是乙派送的，91 件不是丙派送的，则甲派送了多少件？</div>
+                <div class="example-opts">A. 44　B. 45　C. 46　D. 47</div>
+                <div class="example-answer">
+                  <b>解析：</b>套公式：甲 = (非乙 + 非丙 − 非甲) ÷ 2<br>= (92 + 91 − 93) ÷ 2 = 90 ÷ 2 = <b>45</b>（件）。<br>
+                  <span class="correct">答案：B</span>
+                </div>
+              </div>
+            </div>
+            <div class="block">
+              <div class="block-title">6. 补充考点 3：方程中的排比句</div>
+              <div class="key-box"><b>特征：</b>「余数的表述」——多了、少了；<b>总量相同，不同的分配方案</b></div>
+              <div class="formula-box">
+                <span class="formula">人数 = 余数差 ÷ 平均数差</span><br>
+                同向作差、反向作和
+              </div>
+              <div class="sub-point"><b>同向</b>（两次都多、或两次都少）→ 两个余数<b>相减</b>；<br>
+                <b>反向</b>（一次多、一次少）→ 两个余数<b>相加</b>。</div>
+              <div class="tip-box">口诀：<b>先按同向/反向把余数合成一个「总差」，再除以两次每人分的差</b>。</div>
+            </div>
+              <div class="example">
+              <div class="example-header">📝 例题 · 排比句（2018 联考）</div>
+              <div class="example-body">
+                <div class="example-q">老师拿来一箱笔记本让班长负责给同学们分发，如果每人发 2 本，还剩 22 本；如果每人发 3 本，就少 15 本。该班共有多少学生？</div>
+                <div class="example-opts">A. 37　B. 34　C. 23　D. 20</div>
+                <div class="example-answer">
+                  <b>解析：</b>一次「还剩」、一次「少」→ <b>反向作和</b>：22 + 15 = 37。<br>两次每人分的差：3 − 2 = 1。<br>人数 = 37 ÷ 1 = <b>37</b>（人）。<br>
+                  <span class="correct">答案：A</span>
+                </div>
+              </div>
+            </div>
+          </div>
   </div>
 
   <!-- 3. 周期问题 -->
@@ -962,7 +1030,28 @@
                 </div>
               </div>
             </div>
-    </div>
+    
+            <div class="block">
+              <div class="block-title">4. 周期余数的最值</div>
+              <div class="key-box"><b>识别：</b>问「循环周期中，<b>某主体最多</b>」</div>
+              <div class="formula-box"><span class="formula">方法：把该主体放到周期的第一个</span></div>
+              <div class="sub-point">道理：一个完整周期里该主体只出现一次；<b>把它摆在周期开头</b>，就能让「不满一个周期的余数」那一段也落在它身上，从而取到最多。</div>
+              <div class="sub-point">引例：一项工程甲、乙交替、每人单独干一天，耗时 11 天完成，问乙最多干几天？<br>
+                → 把乙放在第 1 天：第 1、3、5、7、9、11 天都是乙，共 <b>6 天</b>。<br>
+                （余数按同样思路处理，第一步就排除选项）</div>
+            </div>
+              <div class="example">
+              <div class="example-header">📝 例题 · 周期余数的最值（2016 国考）</div>
+              <div class="example-body">
+                <div class="example-q">某新建小区计划在小区主干道两侧种植银杏树和梧桐树绿化环境。一侧每隔 3 棵银杏树种 1 棵梧桐树，另一侧每隔 4 棵梧桐树种 1 棵银杏树，最终两侧各种植了 35 棵树。问最多栽种了多少棵银杏树？</div>
+                <div class="example-opts">A. 33　B. 34　C. 36　D. 37</div>
+                <div class="example-answer">
+                  <b>解析：</b>两侧各 35 棵，分别按周期算：<br>· 一侧周期是 <b>4</b>（3 银杏 + 1 梧桐）：35 ÷ 4 = 8 …… 余 3 → 8 个整周期得 8×3 = 24 棵银杏，<b>余下 3 棵也放银杏</b> → 24 + 3 = <b>27</b> 棵。<br>· 另一侧周期是 <b>5</b>（4 梧桐 + 1 银杏）：35 ÷ 5 = 7（整除）→ 7 个整周期得 7 棵银杏 → <b>7</b> 棵。<br>合计 27 + 7 = <b>34</b> 棵。<b>关键就是「把银杏放到周期开头」</b>，余数才算成银杏。<br>
+                  <span class="correct">答案：B</span>
+                </div>
+              </div>
+            </div>
+          </div>
   </div>
 
   <!-- 4. 工程问题 -->
@@ -1131,7 +1220,44 @@
           </div>
         </div>
       </div>
-    </div>
+    
+            <div class="block">
+              <div class="block-title">8. 补充考点 5：暑假作业型</div>
+              <div class="key-box"><b>情景：</b>「开始乖、中间玩，最后把所有<b>未完成的工作量</b>在更短时间里加班加点赶完」</div>
+              <div class="sub-point">方法：把「正常效率干了一段」和「剩余工作量突击完成」<b>分成两段</b>，用<b>总量守恒</b>列式。</div>
+              <div class="tip-box">计算技巧：<b>约分</b> —— 把工作总量设成效率的公倍数，数字会小很多、算得快。</div>
+            </div>
+              <div class="example">
+              <div class="example-header">📝 例题 · 暑假作业型（2018 国考）</div>
+              <div class="example-body">
+                <div class="example-q">工程队接到一项工程，投入 80 台挖掘机。如连续施工 30 天，每天工作 10 小时，正好按期完成。但施工过程中遭遇大暴雨，有 10 天时间无法施工，工期还剩 8 天时，工程队增派 70 台挖掘机并加班施工。问工程队若想按期完成，平均每天需多工作多少个小时？</div>
+                <div class="example-opts">A. 2.5　B. 3　C. 1.5　D. 2</div>
+                <div class="example-answer">
+                  <b>解析：</b>总量 = 80 × 30 × 10 = 24000（台·小时）。<br>实际前期正常施工：30 − 10（暴雨）− 8（最后突击）= <b>12 天</b> → 完成 80 × 12 × 10 = 9600。<br>剩余 = 24000 − 9600 = 14400。<br>最后 8 天有 80 + 70 = 150 台，设每天工作 h 小时：150 × 8 × h = 14400 → h = 12。<br>原来每天 10 小时 → 需<b>多工作 12 − 10 = 2 小时</b>。<br>
+                  <span class="correct">答案：D</span>
+                </div>
+              </div>
+            </div>
+            <div class="block">
+              <div class="block-title">9. 补充考点 6：同时开始同时结束</div>
+              <div class="key-box"><b>题型特征：</b>N 个人完成 (N−1) 项工作，有一个人「<b>打游击</b>」帮工，<b>同时开始、同时结束</b></div>
+              <div class="formula-box"><span class="formula">完工时间 = 工作总量 ÷ 效率和</span></div>
+              <div class="sub-point"><b>套路 ① 整体分析：</b>把几项工程合起来当总量，除以所有参与者的效率和 → 得到总时长。</div>
+              <div class="sub-point"><b>套路 ② 抓住问题：</b>只看被问的那项工程，用「它自己的量 = 固定人 × 总时长 + 打游击的人 × 帮工天数」反求帮工天数。</div>
+              <div class="tip-box">例：甲（效率 7）负责 A、乙（9）负责 B、丙（8）机动，两项同时开工、8 天同时结束 → 单项工程量 = 8 × (7+9+8) ÷ 2 = 96。</div>
+            </div>
+              <div class="example">
+              <div class="example-header">📝 例题 · 同时开始同时结束（2018 江西）</div>
+              <div class="example-body">
+                <div class="example-q">甲、乙、丙三人工作的效率比为 7∶9∶8，现将 A、B 两项工作量相同的工程交给这三个人，甲负责 A 工程，乙负责 B 工程，丙作为机动参与 A 工程若干天后转而参与 B 工程，两项工程同时开工，耗时 8 天同时结束，问丙在 A 工程中参与施工多少天？</div>
+                <div class="example-opts">A. 3　B. 4　C. 5　D. 6</div>
+                <div class="example-answer">
+                  <b>解析：</b>设效率为 7、9、8，总时长 8 天 → 总工作量 = 8 × (7+9+8) = 192。<br>A、B 工作量相同 → 每项 = 192 ÷ 2 = <b>96</b>。<br>设丙在 A 工程参与 x 天：A 的量 = 甲做满 8 天 + 丙帮 x 天 → 7×8 + 8x = 96 → 8x = 40 → x = <b>5</b>（天）。<br>
+                  <span class="correct">答案：C</span>
+                </div>
+              </div>
+            </div>
+          </div>
   </div>
 
   <!-- 5. 几何问题 -->
@@ -1649,7 +1775,31 @@
         </div>
       </div>
             <div class="tip-box">考试时如果时间够，几何题90%的概率选<b>居中</b>的选项。可带尺子（或用身份证）测量比例。</div>
-    </div>
+    
+            <div class="block">
+              <div class="block-title">17. 补充考点 7：切长最短（秒杀技巧）</div>
+              <div class="key-box"><b>特征：</b>「<b>对角顶点</b>、沿<b>表面</b>行走」——问最短距离</div>
+              <div class="formula-box">
+                <span class="formula">最短距离 = √( a² + (b + c)² )</span><br>
+                注：<b>长不变，两个短边相加组成另一条边</b>
+              </div>
+              <div class="sub-point">原理：把长方体表面<b>展开成平面</b>，最短路就是一条直线。展开方式有三种：</div>
+              <div class="sub-point">· √( a² + (b+c)² )　· √( b² + (a+c)² )　· √( c² + (a+b)² )　→ <b>取最小</b>。</div>
+              <div class="tip-box">秒杀：<b>把最长的那条棱当 a，另外两条棱相加当 (b+c)</b>，就是三种展开里最小的那一种。<br>
+                例（5,4,3）：√(3²+9²)=√90、√(5²+7²)=√74、√(4²+8²)=√80 → 最短 = √74。</div>
+            </div>
+              <div class="example">
+              <div class="example-header">📝 例题 · 切长最短（2006 江西）</div>
+              <div class="example-body">
+                <div class="example-q">右图为长、宽、高分别是 4cm、3cm、5cm 的长方体，如果一只小虫从顶点 A 爬到顶点 B（对角顶点），其爬行的最短距离为：</div>
+                <div class="example-opts">A. 4√5　B. √74　C. 3√10　D. √70</div>
+                <div class="example-answer">
+                  <b>解析：</b>三种展开各算一次：√(3² + (5+4)²) = √90；√(5² + (4+3)²) = √74；√(4² + (5+3)²) = √80。<br>取最小 → <b>√74</b>。<br>用秒杀公式：最长棱是 5，另两条 4 + 3 = 7 → √(5² + 7²) = √74。<br>
+                  <span class="correct">答案：B</span>
+                </div>
+              </div>
+            </div>
+          </div>
   </div>
 
   <!-- 6. 经济利润 -->
@@ -1746,7 +1896,26 @@
                 </div>
               </div>
             </div>
-    </div>
+    
+            <div class="block">
+              <div class="block-title">5. 补充考点 8：合并付费（省多少钱）</div>
+              <div class="key-box"><b>识别：</b>分段优惠（如「300 元及以下九折；300 元以上，其中 300 元九折、超出部分八折」），问「<b>合并结账比分开结账省多少</b>」</div>
+              <div class="sub-point"><b>① 穷 + 富：</b>省的是「穷的那部分<b>原价</b>」在折扣上的差 —— 原价本来落在高折扣区，合并后被前面的大额吃掉了。</div>
+              <div class="sub-point"><b>② 富 + 富：</b>省的是「<b>临界值那一段</b>」的折扣差。</div>
+              <div class="tip-box">做法固定：<b>先把每笔的实付换回原价 → 再把总原价按分段规则算出合并实付 → 与分开实付相减</b>。</div>
+            </div>
+              <div class="example">
+              <div class="example-header">📝 例题 · 合并付费（2013 联考）</div>
+              <div class="example-body">
+                <div class="example-q">某商场开展购物优惠活动：一次购买 300 元及以下的商品九折优惠；一次购买 300 元以上的商品，其中 300 元九折优惠，超过的部分八折优惠。小王购物第一次付款 144 元，第二次又付款 310 元。如果他一次购买并付款，可以节省多少元？</div>
+                <div class="example-opts">A. 16　B. 22.4　C. 30.6　D. 48</div>
+                <div class="example-answer">
+                  <b>解析：</b>先换回原价：<br>· 第一次 144 元 < 300×0.9 = 270 → 打的是九折 → 原价 = 144 ÷ 0.9 = <b>160</b>。<br>· 第二次 310 元 > 270 → 原价 = 300 + (310 − 270) ÷ 0.8 = 300 + 50 = <b>350</b>（验证：270 + 50×0.8 = 310 ✓）。<br>合并原价 = 160 + 350 = 510 → 合并实付 = 270 + (510 − 300)×0.8 = 270 + 168 = <b>438</b>。<br>分开实付 = 144 + 310 = 454 → 节省 = 454 − 438 = <b>16</b>（元）。<br>
+                  <span class="correct">答案：A</span>
+                </div>
+              </div>
+            </div>
+          </div>
   </div>
 
   <!-- 7. 容斥原理 -->
@@ -2408,7 +2577,71 @@
                 </div>
               </div>
             </div>
-    </div>
+    
+            <div class="block">
+              <div class="block-title">6. 补充考点 9：等距离平均速度（做猜）</div>
+              <div class="key-box"><b>特征：</b>题目给出「<b>上坡、下坡、平路</b>」三个速度</div>
+              <div class="formula-box"><span class="formula">等距离平均速度 = 2v₁v₂ ÷ (v₁ + v₂)</span></div>
+              <div class="sub-point">「邪修」：当上坡与下坡的<b>距离相等</b>时，这段的平均速度就等于<b>平路速度</b>（出题人就是这么设计的）→ <b>全程平均速度 = 平路速度</b>，直接选。</div>
+              <div class="tip-box">例：上坡 15、下坡 35 → 2×15×35 ÷ (15+35) = 21，正好等于平路速度 21 → 全程平均就是 <b>21</b>。</div>
+            </div>
+              <div class="example">
+              <div class="example-header">📝 例题 · 等距离平均速度（2024 天津河西）</div>
+              <div class="example-body">
+                <div class="example-q">从甲地到乙地 539 千米，其中有 4/7 是平路，2/7 是上坡路，1/7 是下坡路。假定一辆车在平路的速度是 21 千米/小时，上坡的速度是 15 千米/小时，下坡的速度是 35 千米/小时。则该车由甲地到乙地往返一趟的平均速度是多少千米/小时？</div>
+                <div class="example-opts">A. 20　B. 21　C. 23.75　D. 25.25</div>
+                <div class="example-answer">
+                  <b>解析：</b>去程上坡占 2/7、下坡占 1/7；<b>回程正好反过来</b>（原上坡变下坡）→ 一往一返合计，<b>上坡总距离 = 下坡总距离</b>（都是 3/7）。<br>等距离上下坡的平均速度 = 2×15×35 ÷ (15+35) = 1050 ÷ 50 = <b>21</b>，恰好等于平路速度 21。<br>所以整段往返的平均速度就是 <b>21</b> 千米/小时（不用算总路程）。<br>
+                  <span class="correct">答案：B</span>
+                </div>
+              </div>
+            </div>
+            <div class="block">
+              <div class="block-title">7. 补充考点 10 &amp; 11：多次相遇</div>
+              <div class="key-box"><b>考点 10「每人都有事做」：</b>行走时间相同、做事时间相同、<b>总时间也相同</b> —— 用「时间等量」列式最省事。</div>
+              <div class="formula-box">
+                <span class="formula">两端出发的多次相遇：第 1 次相遇两人合走 1 个全程 S；第 2 次合走 3S；第 n 次合走 (2n−1)S</span>
+              </div>
+              <div class="sub-point"><b>考点 11 比例类比：</b>速度恒定 → 各人走的路程与「两人合走的总量」<b>成正比</b>。<br>
+                例：第一次相遇两人合走 S、甲走 100 → 第二次相遇两人合走 3S，甲就走 3 × 100 = <b>300</b>。</div>
+              <div class="tip-box">口诀：<b>合走的总量翻几倍，各人走的路程就翻几倍</b>（1S→3S→5S 对应 1 倍→3 倍→5 倍）。</div>
+            </div>
+            <div class="example">
+              <div class="example-header">📝 例题 · 多次相遇比例类比</div>
+              <div class="example-body">
+                <div class="example-q">甲、乙两人同时从 A、B 两端相向出发，在距 A 端 100 米处第一次相遇。相遇后两人继续前进，到达对方出发点后立即原路返回。问：第二次相遇时，甲一共走了多少米？</div>
+                <div class="example-opts">A. 200 米　B. 300 米　C. 400 米　D. 500 米</div>
+                <div class="example-answer">
+                  <b>解析：</b>两端出发的多次相遇中，<b>两人合走的总路程</b>是：第 1 次相遇合走 1 个全程 S，第 2 次相遇合走 3S。<br>
+                  两人速度不变 → 各自走的路程与「合走总量」成正比：合走总量变成原来的 <b>3 倍</b>，甲走的路程也变成 3 倍。<br>
+                  甲第一次走了 100 米 → 第二次相遇时甲共走 <b>3 × 100 = 300 米</b>。
+                </div>
+                <span class="correct">答案：B</span>
+              </div>
+            </div>
+            <div class="block">
+              <div class="block-title">8. 补充考点 12：漂流瓶</div>
+              <div class="formula-box">
+                <span class="formula">漂 流 时 间 T = 2T₁T₂ ÷ (T₁ − T₂)</span><br>
+                T₁ = 逆流（慢）所需时间，T₂ = 顺流（快）所需时间
+              </div>
+              <div class="sub-point">推导：设水速 v、船速 V、距离 S。<br>
+                顺流 S = (V + v)·T₂，逆流 S = (V − v)·T₁ → 由两式解出 V、v 与 S 的关系，<br>
+                漂流时间 T = S ÷ v，化简即得 T = 2T₁T₂ / (T₁ − T₂)。</div>
+              <div class="tip-box">注意：<b>T₁ 必须大于 T₂</b>（逆流慢、顺流快），否则公式无意义。</div>
+            </div>
+              <div class="example">
+              <div class="example-header">📝 例题 · 漂流瓶（2005 浙江）</div>
+              <div class="example-body">
+                <div class="example-q">一艘游轮逆流而行，从 A 地到 B 地需 6 天；顺流而行，从 B 地到 A 地需 4 天。问若不考虑其他因素，一块塑料漂浮物从 B 地漂流到 A 地需要多少天？</div>
+                <div class="example-opts">A. 12　B. 16　C. 18　D. 24</div>
+                <div class="example-answer">
+                  <b>解析：</b>逆流 T₁ = 6 天，顺流 T₂ = 4 天，代入漂流公式：<br>T = 2 × 6 × 4 ÷ (6 − 4) = 48 ÷ 2 = <b>24</b>（天）。<br>（漂流物顺水而下，从 B 到 A 正是顺水方向，所以用这个时间。）<br>
+                  <span class="correct">答案：D</span>
+                </div>
+              </div>
+            </div>
+          </div>
   </div>
 
   <!-- 11. 排列组合 -->

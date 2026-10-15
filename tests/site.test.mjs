@@ -637,13 +637,22 @@ test('数量关系页已按高照体系补全知识点，且每个模块都有�
   // 几何模块：块号 1~16 连续（防止重编号遗漏），且补上特殊角直角三角形
   const geo = slice('s5')
   const geoBlocks = [...geo.matchAll(/<div class="block-title">([^<]+)<\/div>/g)].map(m => m[1])
-  assert.equal(geoBlocks.length, 16, `几何模块应有 16 个知识点，实为 ${geoBlocks.length}`)
+  assert.equal(geoBlocks.length, 17, `几何模块应有 17 个知识点，实为 ${geoBlocks.length}`)
   geoBlocks.forEach((t, i) => assert.ok(t.startsWith(`${i + 1}. `), `几何模块第 ${i + 1} 块编号错乱：${t}`))
   for (const k of [
     '30°–60°–90°', '1 ∶ √3 ∶ 2', '45°–45°–90°', '1 ∶ 1 ∶ √2',
-    '相似三角形', '蝴蝶定理', '正六边形', '正方体'
+    '相似三角形', '蝴蝶定理', '正六边形', '正方体', '切长最短'
   ]) {
     assert.ok(geo.includes(k), `几何模块缺少知识点：${k}`)
+  }
+
+  // 夸夸刷「补充考点」必须全部补齐（2026-10-15）
+  for (const [id, k] of [
+    ['s1', '神奇的 1764'], ['s2', 'A 和非 A 思想'], ['s2', '方程中的排比句'],
+    ['s3', '周期余数的最值'], ['s4', '暑假作业型'], ['s4', '同时开始同时结束'],
+    ['s6', '合并付费'], ['s10', '等距离平均速度'], ['s10', '多次相遇'], ['s10', '漂流瓶'],
+  ]) {
+    assert.ok(slice(id).includes(k), `${id} 缺少夸夸刷补充考点：${k}`)
   }
 
   // 零、速解四法：高照体系中"两大基石"之外的通用四法
