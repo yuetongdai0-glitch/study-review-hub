@@ -833,3 +833,77 @@ test('示意图样式：窄屏保持最小可读尺寸并横向滚动', async ()
   assert.ok(css.includes('overflow-x:auto'), 'fig.css 窄屏缺少横向滚动')
   assert.ok(/min-width:\s*\d+px/.test(css), 'fig.css 窄屏缺少最小可读宽度')
 })
+
+// ---------- 「N 条知识点 = N 道例题」 ----------
+// 用户要求：一个知识点小节里明明列了 5 条并列内容，就不能只给 1 道例题。
+// 口径：标题写着「N 种 / N 类 / N 大 / N 个 / N 条」，正文用表格或列表列出的条数
+// 与 N 相当（|实列 - N| <= 1，否则视为标题与正文不符的误报），
+// 则该小节下的例题数必须 >= N。
+const UNIT_SKIP = /速查|口诀|总表|清单|贴士|建议|节奏|练习|实战|课结构|母题盘点|速记|对号入座|时间分配|素材库|格式总纲|进度|阶段|计划|考情|定位|复盘|小结|总结|避坑|陷阱|全貌|一览/
+const CN_NUM = { 一: 1, 二: 2, 两: 2, 三: 3, 四: 4, 五: 5, 六: 6, 七: 7, 八: 8, 九: 9, 十: 10 }
+
+function stripTags (h) {
+  return h.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim()
+}
+
+// 挖掉例题块，避免把选项 <li> 当成知识点条数
+function cutBlocks (html, cls) {
+  const out = []
+  let i = 0
+  const pat = `<div class="${cls}"`
+  for (;;) {
+    const j = html.indexOf(pat, i)
+    if (j < 0) { out.push(html.slice(i)); break }
+    out.push(html.slice(i, j))
+    let k = j, depth = 0
+    while (k < html.length) {
+      if (html.startsWith('<div', k)) { depth++; k += 4 } else if (html.startsWith('</div>', k)) { depth--; k += 6; if (!depth) break } else k++
+    }
+    i = k
+  }
+  return out.join('')
+}
+
+function headingChunksAll (html) {
+  const re = /<h[234][^>]*>([\s\S]*?)<\/h[234]>/gi
+  const marks = [...html.matchAll(re)].map(m => ({ i: m.index, title: stripTags(m[1]) }))
+  marks.push({ i: html.length, title: '' })
+  const out = []
+  for (let k = 0; k < marks.length - 1; k++) {
+    out.push({ title: marks[k].title, body: html.slice(marks[k].i, marks[k + 1].i) })
+  }
+  return out
+}
+
+// 各页的例题标记：<div class="example-tag"> / <div class="ex-t"> / 图形推理用截图
+const UNIT_PAGES = [
+  { route: 'verbal', ex: /class="example-tag"/g },
+  { route: 'judgment', ex: /class="ex-t"/g },
+  { route: 'comprehensive-a', ex: /class="ex-head"/g },
+  { route: 'graphic-reasoning', ex: /data-zoom/g }
+]
+
+for (const { route, ex: exRe } of UNIT_PAGES) {
+  test(`${route} 页：标题声明 N 条知识点的小节，例题数不得少于 N 道`, async () => {
+    const page = await readText(new URL(`../pages/${route}/index.html`, import.meta.url))
+    const bad = []
+    for (const { title, body } of headingChunksAll(page)) {
+      if (UNIT_SKIP.test(title)) continue
+      const m = title.match(/([一二两三四五六七八九十]+)\s*(种|类|大|个|条|方面)/)
+      if (!m) continue
+      const N = CN_NUM[m[1]]
+      if (!N || N < 3) continue
+
+      const clean = cutBlocks(cutBlocks(body, 'example'), 'ex')
+      const tr = (clean.match(/<tr[ >]/g) || []).length - (clean.match(/class="thead-row"/g) || []).length
+      const li = (clean.match(/<li[ >]/g) || []).length
+      const det = (clean.match(/<details/g) || []).length
+      const got = Math.max(tr, li, det)
+      if (Math.abs(got - N) > 1) continue          // 标题与正文不符，跳过
+
+      const ex = (body.match(exRe) || []).length
+      if (ex < N) bad.push(`「${title.slice(0, 30)}」声明 ${N} 条，只有 ${ex} 道例题`)
+    }
+    assert.deepEqual(bad, [], `${route} 页存在「N 条知识点配不足 N 道例题」的小节：\n  ` + bad.join('\n  '))
+  })
+}

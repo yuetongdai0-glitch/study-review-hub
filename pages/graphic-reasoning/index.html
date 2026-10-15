@@ -116,6 +116,42 @@
   }
   .lightbox[data-open="true"]{display:flex;}
   .lightbox img{max-width:100%; max-height:100%; border-radius:8px; background:#fff;}
+  .lightbox .lb-svg{position:absolute; inset:44px 12px 12px; display:flex; align-items:center; justify-content:center;}
+  .lightbox .lb-svg:empty{display:none;}
+  .lightbox .lb-svg svg{width:100%; height:100%; max-width:1080px; background:#fff; border-radius:8px; padding:14px; box-sizing:border-box;}
+  /* ===== 自绘 SVG 例题（与笔记截图例题并列） ===== */
+  .card-a .ex-item{
+    border:1px solid var(--line); border-left:4px solid var(--blue);
+    border-radius:12px; padding:12px 14px; margin:16px 0; background:#fbfdff;
+  }
+  .card-a .ex-item .ex-h{font-size:13.5px; font-weight:700; color:var(--blue); margin-bottom:8px;}
+  .card-a .ex-item .ex-q{font-size:13.8px; margin:0 0 8px; line-height:1.75;}
+  .card-a .ex-item .ex-figure{display:block; width:100%; margin:6px 0 10px; cursor:zoom-in;}
+  .card-a .ex-item .ex-figure svg{
+    display:block; width:100%; height:auto; background:#fff;
+    border:1px solid var(--line); border-radius:10px; padding:6px; box-sizing:border-box;
+  }
+  .card-a .ex-item .ex-a{
+    font-size:13.8px; margin:0; padding:9px 12px; line-height:1.75;
+    background:var(--green-bg); border:1px solid #b7e4d0; border-radius:10px; color:#065f46;
+  }
+  .card-a .ex-item .ex-a b{color:#065f46;}
+  @media (max-width:720px){
+    /* 窄屏不整图等比缩小（12px 字会缩到 6px），改为保底宽度 + 横向滚动 */
+    .card-a .ex-item .ex-figure{
+      overflow-x:auto; overflow-y:hidden; -webkit-overflow-scrolling:touch;
+      background:
+        linear-gradient(to right,#fbfdff 30%,rgba(251,253,255,0)) left center,
+        linear-gradient(to left,#fbfdff 30%,rgba(251,253,255,0)) right center,
+        linear-gradient(to right,rgba(15,23,42,.10),rgba(15,23,42,0)) left center,
+        linear-gradient(to left,rgba(15,23,42,.10),rgba(15,23,42,0)) right center;
+      background-repeat:no-repeat;
+      background-size:40px 100%,40px 100%,14px 100%,14px 100%;
+      background-attachment:local,local,scroll,scroll;
+    }
+    .card-a .ex-item .ex-figure svg{min-width:520px;}
+    .card-a .ex-item .ex-figure figcaption{position:sticky; left:0; max-width:100%;}
+  }
   .lightbox .x{
     position:absolute; top:calc(12px + env(safe-area-inset-top)); right:14px;
     width:40px; height:40px; border-radius:50%; background:rgba(255,255,255,.16);
@@ -558,6 +594,50 @@
         <div class="k-box">口诀：线条重复求同异，结合位置别忘记。</div>
         <figure><img loading="lazy" src="../../assets/note-img/graph/ex-yangshi-bg.webp" alt="加减同异（拔高）：破解出题者"小心思"（原笔记 P17）" data-zoom><figcaption>加减同异（拔高）：破解出题者"小心思"（原笔记 P17）</figcaption></figure>
         <figure><img loading="lazy" src="../../assets/note-img/graph/ex-yangshi-sum.webp" alt="加减同异 · 拔高小结 + 真题（原笔记 P18）" data-zoom><figcaption>加减同异 · 拔高小结 + 真题（原笔记 P18）</figcaption></figure>
+        <div class="ex-item">
+          <div class="ex-h">例题 · 三种运算一起练（求同 / 求异 / 叠加）</div>
+          <p class="ex-q"><b>题干：</b>已知图1、图2，按「求同 / 求异 / 叠加」三种规则分别运算，图3 应各是什么样子？先自己画一遍，再对照下图。</p>
+          <figure class="ex-figure" data-zoom>
+          <svg viewBox="0 0 620 340" role="img" aria-label="加减同异：求同、求异、叠加三种运算对比">
+            <text x="118" y="22" font-size="13" fill="#6b7280" text-anchor="middle" font-weight="400">图1</text>
+            <text x="242" y="22" font-size="13" fill="#6b7280" text-anchor="middle" font-weight="400">图2</text>
+            <text x="366" y="22" font-size="13" fill="#6b7280" text-anchor="middle" font-weight="400">图3</text>
+            <rect x="76" y="32" width="84" height="84" fill="#ffffff" stroke="#1f2937" stroke-width="2.2"/>
+            <line x1="76" y1="74" x2="160" y2="74" stroke="#2563eb" stroke-width="2.4" stroke-linecap="round"/>
+            <rect x="200" y="32" width="84" height="84" fill="#ffffff" stroke="#1f2937" stroke-width="2.2"/>
+            <line x1="242" y1="32" x2="242" y2="116" stroke="#f59e0b" stroke-width="2.4" stroke-linecap="round"/>
+            <rect x="324" y="32" width="84" height="84" fill="#ffffff" stroke="#1f2937" stroke-width="2.2"/>
+            <text x="180" y="81" font-size="20" fill="#94a3b8" text-anchor="middle" font-weight="400">⊕</text>
+            <text x="304" y="81" font-size="20" fill="#94a3b8" text-anchor="middle" font-weight="400">=</text>
+            <text x="62" y="79" font-size="14" fill="#1f2937" text-anchor="end" font-weight="700">求同</text>
+            <text x="424" y="78" font-size="12.5" fill="#6b7280" text-anchor="start" font-weight="400">只留两图相同的线条</text>
+            <rect x="76" y="132" width="84" height="84" fill="#ffffff" stroke="#1f2937" stroke-width="2.2"/>
+            <line x1="76" y1="174" x2="160" y2="174" stroke="#2563eb" stroke-width="2.4" stroke-linecap="round"/>
+            <rect x="200" y="132" width="84" height="84" fill="#ffffff" stroke="#1f2937" stroke-width="2.2"/>
+            <line x1="242" y1="132" x2="242" y2="216" stroke="#f59e0b" stroke-width="2.4" stroke-linecap="round"/>
+            <line x1="324" y1="174" x2="408" y2="174" stroke="#2563eb" stroke-width="2.4" stroke-linecap="round"/>
+            <line x1="366" y1="132" x2="366" y2="216" stroke="#f59e0b" stroke-width="2.4" stroke-linecap="round"/>
+            <text x="180" y="181" font-size="20" fill="#94a3b8" text-anchor="middle" font-weight="400">⊕</text>
+            <text x="304" y="181" font-size="20" fill="#94a3b8" text-anchor="middle" font-weight="400">=</text>
+            <text x="62" y="179" font-size="14" fill="#1f2937" text-anchor="end" font-weight="700">求异</text>
+            <text x="424" y="178" font-size="12.5" fill="#6b7280" text-anchor="start" font-weight="400">去掉相同、只留不同</text>
+            <rect x="76" y="232" width="84" height="84" fill="#ffffff" stroke="#1f2937" stroke-width="2.2"/>
+            <line x1="76" y1="274" x2="160" y2="274" stroke="#2563eb" stroke-width="2.4" stroke-linecap="round"/>
+            <rect x="200" y="232" width="84" height="84" fill="#ffffff" stroke="#1f2937" stroke-width="2.2"/>
+            <line x1="242" y1="232" x2="242" y2="316" stroke="#f59e0b" stroke-width="2.4" stroke-linecap="round"/>
+            <rect x="324" y="232" width="84" height="84" fill="#ffffff" stroke="#1f2937" stroke-width="2.2"/>
+            <line x1="324" y1="274" x2="408" y2="274" stroke="#2563eb" stroke-width="2.4" stroke-linecap="round"/>
+            <line x1="366" y1="232" x2="366" y2="316" stroke="#f59e0b" stroke-width="2.4" stroke-linecap="round"/>
+            <text x="180" y="281" font-size="20" fill="#94a3b8" text-anchor="middle" font-weight="400">⊕</text>
+            <text x="304" y="281" font-size="20" fill="#94a3b8" text-anchor="middle" font-weight="400">=</text>
+            <text x="62" y="279" font-size="14" fill="#1f2937" text-anchor="end" font-weight="700">叠加</text>
+            <text x="424" y="278" font-size="12.5" fill="#6b7280" text-anchor="start" font-weight="400">两图线条全部相加</text>
+          </svg>
+            <figcaption>图：同一组图1、图2，按求同 / 求异 / 叠加得到三种不同的图3（蓝线来自图1、橙线来自图2）</figcaption>
+          </figure>
+          <p class="ex-a"><b>答案：</b>① <b>求同</b> → 只剩两图共有的方框（水平中线、竖直中线各自独有，被去掉）；② <b>求异</b> → 去掉共有的方框，只剩水平中线 + 竖直中线（一个"十"字）；③ <b>叠加</b> → 方框 + 水平中线 + 竖直中线全部相加（一个"田"字）。判别口诀：先看两图哪些线条<b>重复</b>——重复的保留是求同、去掉是求异、不管重不重复全保留是叠加。</p>
+        </div>
+
       </div>
       <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
     </div>
@@ -662,6 +742,52 @@
         </ul>
         <div class="k-box orange">口诀：单一线条看曲直，曲直共存别忘记；单一直线多边形，全直是它的属性；单一曲线圆和弧，优先考虑曲直性。</div>
         <figure><img loading="lazy" src="../../assets/note-img/graph/ex-quzhi.webp" alt="曲直性 · 基础与拔高（原笔记 P27）" data-zoom><figcaption>曲直性 · 基础与拔高（原笔记 P27）</figcaption></figure>
+        <div class="ex-item">
+          <div class="ex-h">例题 · 曲直性三种情况归类</div>
+          <p class="ex-q"><b>题干：</b>把下面三个图形分别归入「全直线 / 全曲线 / 曲直混合」中的哪一类？</p>
+          <figure class="ex-figure" data-zoom>
+          <svg viewBox="0 0 620 190" role="img" aria-label="曲直性：全直线、全曲线、曲直混合三种情况">
+            <rect x="70" y="44" width="110" height="110" rx="12" fill="#fbfdff" stroke="#cbd5e1" stroke-width="1.4"/>
+            <text x="125" y="30" font-size="15" fill="#1f2937" text-anchor="middle" font-weight="700">①</text>
+            <polygon points="125,61 161.373,124 88.6269,124" fill="#ffffff" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round"/>
+            <rect x="250" y="44" width="110" height="110" rx="12" fill="#fbfdff" stroke="#cbd5e1" stroke-width="1.4"/>
+            <text x="305" y="30" font-size="15" fill="#1f2937" text-anchor="middle" font-weight="700">②</text>
+            <circle cx="305" cy="99" r="42" fill="#ffffff" stroke="#1f2937" stroke-width="2.2"/>
+            <rect x="430" y="44" width="110" height="110" rx="12" fill="#fbfdff" stroke="#cbd5e1" stroke-width="1.4"/>
+            <text x="485" y="30" font-size="15" fill="#1f2937" text-anchor="middle" font-weight="700">③</text>
+            <path d="M 443 133 A 42 42 0 0 1 527 133 Z" fill="none" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+          </svg>
+            <figcaption>图：① 三角形（纯直线）　② 圆（纯曲线）　③ 半圆（一段弧 + 一条弦）</figcaption>
+          </figure>
+          <p class="ex-a"><b>答案：</b>① 三角形只有直线 → <b>全直线</b>；② 圆只有曲线 → <b>全曲线</b>；③ 半圆由一段弧和一条弦组成，既有曲线又有直线 → <b>曲直混合</b>。口诀：单一线条看曲直，曲直共存别忘记——先看一个图形里到底有没有曲线、有没有直线，两类都占就是混合。</p>
+        </div>
+        <div class="ex-item">
+          <div class="ex-h">例题 · 内外曲直组合判别</div>
+          <p class="ex-q"><b>题干：</b>下面四个图形都是「有内有外」的组合，请分别说出它们属于「外直内曲 / 外曲内直 / 外直内直 / 外曲内曲」中的哪一种。</p>
+          <figure class="ex-figure" data-zoom>
+          <svg viewBox="0 0 620 175" role="img" aria-label="内外曲直组合：外直内曲、外曲内直、外直内直、外曲内曲">
+            <rect x="50" y="42" width="100" height="100" rx="12" fill="#fbfdff" stroke="#cbd5e1" stroke-width="1.4"/>
+            <text x="100" y="30" font-size="15" fill="#1f2937" text-anchor="middle" font-weight="700">①</text>
+            <rect x="66" y="58" width="68" height="68" fill="#ffffff" stroke="#1f2937" stroke-width="2.2"/>
+            <circle cx="100" cy="92" r="22" fill="#ffffff" stroke="#1f2937" stroke-width="2.2"/>
+            <rect x="200" y="42" width="100" height="100" rx="12" fill="#fbfdff" stroke="#cbd5e1" stroke-width="1.4"/>
+            <text x="250" y="30" font-size="15" fill="#1f2937" text-anchor="middle" font-weight="700">②</text>
+            <circle cx="250" cy="92" r="38" fill="#ffffff" stroke="#1f2937" stroke-width="2.2"/>
+            <polygon points="250,70 269.053,103 230.947,103" fill="#ffffff" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round"/>
+            <rect x="350" y="42" width="100" height="100" rx="12" fill="#fbfdff" stroke="#cbd5e1" stroke-width="1.4"/>
+            <text x="400" y="30" font-size="15" fill="#1f2937" text-anchor="middle" font-weight="700">③</text>
+            <rect x="366" y="58" width="68" height="68" fill="#ffffff" stroke="#1f2937" stroke-width="2.2"/>
+            <polygon points="400,70 419.053,103 380.947,103" fill="#ffffff" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round"/>
+            <rect x="500" y="42" width="100" height="100" rx="12" fill="#fbfdff" stroke="#cbd5e1" stroke-width="1.4"/>
+            <text x="550" y="30" font-size="15" fill="#1f2937" text-anchor="middle" font-weight="700">④</text>
+            <circle cx="550" cy="92" r="38" fill="#ffffff" stroke="#1f2937" stroke-width="2.2"/>
+            <circle cx="550" cy="92" r="20" fill="#ffffff" stroke="#1f2937" stroke-width="2.2"/>
+          </svg>
+            <figcaption>图：① 方框 + 内圆　② 圆 + 内三角形　③ 方框 + 内三角形　④ 圆 + 内圆</figcaption>
+          </figure>
+          <p class="ex-a"><b>答案：</b>① <b>外直内曲</b>（方框 + 圆）；② <b>外曲内直</b>（圆 + 三角形）；③ <b>外直内直</b>（方框 + 三角形）；④ <b>外曲内曲</b>（圆 + 圆）。做法：<b>分层看、先外后内</b>——第一步只看外轮廓是直线还是曲线，第二步再看内部图形，两步就能锁定。</p>
+        </div>
+
       </div>
       <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
     </div>
@@ -818,6 +944,93 @@
         <div class="k-box">口诀：封闭空间很明显，图形关系成考点；多个图形独立站，相离关系是答案；多个图形交于点，或者彼此一线牵。</div>
         <figure><img loading="lazy" src="../../assets/note-img/graph/ex-guanxi-1.webp" alt="图形间关系 · 基础（原笔记 P29）" data-zoom><figcaption>图形间关系 · 基础（原笔记 P29）</figcaption></figure>
         <figure><img loading="lazy" src="../../assets/note-img/graph/ex-guanxi-2.webp" alt="图形间关系 · 拔高（原笔记 P29）" data-zoom><figcaption>图形间关系 · 拔高（原笔记 P29）</figcaption></figure>
+        <div class="ex-item">
+          <div class="ex-h">例题 · 图形间五大关系一眼认</div>
+          <p class="ex-q"><b>题干：</b>下面五个图形分别体现了两图形之间的哪种关系？（相离 / 交于点 / 交于线 / 交于面 / 相切）</p>
+          <figure class="ex-figure" data-zoom>
+          <svg viewBox="0 0 620 180" role="img" aria-label="图形间五大关系：相离、交于点、交于线、交于面、相切">
+            <rect x="30" y="52" width="100" height="100" rx="12" fill="#fbfdff" stroke="#cbd5e1" stroke-width="1.4"/>
+            <text x="80" y="40" font-size="15" fill="#1f2937" text-anchor="middle" font-weight="700">①</text>
+            <rect x="50" y="89" width="26" height="26" fill="#ffffff" stroke="#1f2937" stroke-width="2.2"/>
+            <rect x="84" y="89" width="26" height="26" fill="#ffffff" stroke="#1f2937" stroke-width="2.2"/>
+            <rect x="150" y="52" width="100" height="100" rx="12" fill="#fbfdff" stroke="#cbd5e1" stroke-width="1.4"/>
+            <text x="200" y="40" font-size="15" fill="#1f2937" text-anchor="middle" font-weight="700">②</text>
+            <rect x="172" y="74" width="34" height="34" fill="#ffffff" stroke="#1f2937" stroke-width="2.2"/>
+            <rect x="194" y="96" width="34" height="34" fill="#ffffff" stroke="#1f2937" stroke-width="2.2"/>
+            <rect x="270" y="52" width="100" height="100" rx="12" fill="#fbfdff" stroke="#cbd5e1" stroke-width="1.4"/>
+            <text x="320" y="40" font-size="15" fill="#1f2937" text-anchor="middle" font-weight="700">③</text>
+            <rect x="288" y="82" width="32" height="32" fill="#ffffff" stroke="#1f2937" stroke-width="2.2"/>
+            <rect x="320" y="82" width="32" height="32" fill="#ffffff" stroke="#1f2937" stroke-width="2.2"/>
+            <rect x="390" y="52" width="100" height="100" rx="12" fill="#fbfdff" stroke="#cbd5e1" stroke-width="1.4"/>
+            <text x="440" y="40" font-size="15" fill="#1f2937" text-anchor="middle" font-weight="700">④</text>
+            <rect x="410" y="76" width="40" height="40" fill="#ffffff" stroke="#1f2937" stroke-width="2.2"/>
+            <rect x="432" y="102" width="40" height="40" fill="#ffffff" stroke="#1f2937" stroke-width="2.2"/>
+            <rect x="510" y="52" width="100" height="100" rx="12" fill="#fbfdff" stroke="#cbd5e1" stroke-width="1.4"/>
+            <text x="560" y="40" font-size="15" fill="#1f2937" text-anchor="middle" font-weight="700">⑤</text>
+            <circle cx="540" cy="102" r="20" fill="#ffffff" stroke="#1f2937" stroke-width="2.2"/>
+            <circle cx="580" cy="102" r="20" fill="#ffffff" stroke="#1f2937" stroke-width="2.2"/>
+          </svg>
+            <figcaption>图：① 两图形分开站　② 只在角上碰一个点　③ 共用一条边　④ 有重叠的面　⑤ 圆与圆只碰一点</figcaption>
+          </figure>
+          <p class="ex-a"><b>答案：</b>① <b>相离</b>：两个图形独立站、互不接触；② <b>交于点</b>：只在角上碰了一个点；③ <b>交于线</b>：共用一条边，相交部分是一条线段；④ <b>交于面</b>：相交部分是一个"面"（这是重头戏，接下来要看这个面的形状、大小、对称性）；⑤ <b>相切</b>：圆与圆只碰一个点。</p>
+        </div>
+        <div class="ex-item">
+          <div class="ex-h">例题 · 相切的三种切法</div>
+          <p class="ex-q"><b>题干：</b>下面三个图形都属于"相切"，请分别说出是哪一种切法。</p>
+          <figure class="ex-figure" data-zoom>
+          <svg viewBox="0 0 620 175" role="img" aria-label="相切的三种切法：圆与圆外切、圆与圆内切、圆与直线相切">
+            <rect x="75" y="42" width="110" height="110" rx="12" fill="#fbfdff" stroke="#cbd5e1" stroke-width="1.4"/>
+            <text x="130" y="30" font-size="15" fill="#1f2937" text-anchor="middle" font-weight="700">①</text>
+            <circle cx="106" cy="97" r="24" fill="#ffffff" stroke="#1f2937" stroke-width="2.2"/>
+            <circle cx="154" cy="97" r="24" fill="#ffffff" stroke="#1f2937" stroke-width="2.2"/>
+            <rect x="255" y="42" width="110" height="110" rx="12" fill="#fbfdff" stroke="#cbd5e1" stroke-width="1.4"/>
+            <text x="310" y="30" font-size="15" fill="#1f2937" text-anchor="middle" font-weight="700">②</text>
+            <circle cx="310" cy="97" r="44" fill="#ffffff" stroke="#1f2937" stroke-width="2.2"/>
+            <circle cx="334" cy="97" r="20" fill="#ffffff" stroke="#1f2937" stroke-width="2.2"/>
+            <rect x="435" y="42" width="110" height="110" rx="12" fill="#fbfdff" stroke="#cbd5e1" stroke-width="1.4"/>
+            <text x="490" y="30" font-size="15" fill="#1f2937" text-anchor="middle" font-weight="700">③</text>
+            <circle cx="490" cy="89" r="36" fill="#ffffff" stroke="#1f2937" stroke-width="2.2"/>
+            <line x1="444" y1="125" x2="536" y2="125" stroke="#1f2937" stroke-width="2.2" stroke-linecap="round"/>
+          </svg>
+            <figcaption>图：① 圆与圆外切　② 圆与圆内切　③ 圆与直线相切</figcaption>
+          </figure>
+          <p class="ex-a"><b>答案：</b>① <b>圆与圆外切</b>：两圆在外部相碰，切点夹在两圆之间，<b>圆心距 = 半径之和</b>；② <b>圆与圆内切</b>：小圆在大圆内部相碰，<b>圆心距 = 半径之差</b>；③ <b>圆与直线相切</b>：圆心到直线的距离正好等于半径，垂足就是切点。相切题只需盯住"<b>只碰一个点</b>"，再判断切点在内还是在外。</p>
+        </div>
+        <div class="ex-item">
+          <div class="ex-h">例题 · 分组分类实战（相离 vs 相交）</div>
+          <p class="ex-q"><b>题干：</b>把下面六个图形分成两类，并说明分类依据。</p>
+          <figure class="ex-figure" data-zoom>
+          <svg viewBox="0 0 620 300" role="img" aria-label="分组分类：①②③图形相离，④⑤⑥图形相交于面">
+            <rect x="95" y="48" width="90" height="90" rx="10" fill="#fbfdff" stroke="#cbd5e1" stroke-width="1.4"/>
+            <text x="140" y="40" font-size="15" fill="#1f2937" text-anchor="middle" font-weight="700">①</text>
+            <rect x="112" y="81" width="24" height="24" fill="#ffffff" stroke="#1f2937" stroke-width="2.2"/>
+            <rect x="144" y="81" width="24" height="24" fill="#ffffff" stroke="#1f2937" stroke-width="2.2"/>
+            <rect x="95" y="178" width="90" height="90" rx="10" fill="#fbfdff" stroke="#cbd5e1" stroke-width="1.4"/>
+            <text x="140" y="170" font-size="15" fill="#1f2937" text-anchor="middle" font-weight="700">④</text>
+            <rect x="114" y="201" width="36" height="36" fill="#ffffff" stroke="#1f2937" stroke-width="2.2"/>
+            <rect x="136" y="225" width="36" height="36" fill="#ffffff" stroke="#1f2937" stroke-width="2.2"/>
+            <rect x="260" y="48" width="90" height="90" rx="10" fill="#fbfdff" stroke="#cbd5e1" stroke-width="1.4"/>
+            <text x="305" y="40" font-size="15" fill="#1f2937" text-anchor="middle" font-weight="700">②</text>
+            <circle cx="289" cy="93" r="15" fill="#ffffff" stroke="#1f2937" stroke-width="2.2"/>
+            <circle cx="321" cy="93" r="15" fill="#ffffff" stroke="#1f2937" stroke-width="2.2"/>
+            <rect x="260" y="178" width="90" height="90" rx="10" fill="#fbfdff" stroke="#cbd5e1" stroke-width="1.4"/>
+            <text x="305" y="170" font-size="15" fill="#1f2937" text-anchor="middle" font-weight="700">⑤</text>
+            <circle cx="293" cy="217" r="21" fill="#ffffff" stroke="#1f2937" stroke-width="2.2"/>
+            <circle cx="317" cy="229" r="21" fill="#ffffff" stroke="#1f2937" stroke-width="2.2"/>
+            <rect x="425" y="48" width="90" height="90" rx="10" fill="#fbfdff" stroke="#cbd5e1" stroke-width="1.4"/>
+            <text x="470" y="40" font-size="15" fill="#1f2937" text-anchor="middle" font-weight="700">③</text>
+            <polygon points="452,78 464.99,100.5 439.01,100.5" fill="#ffffff" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round"/>
+            <circle cx="487" cy="93" r="14" fill="#ffffff" stroke="#1f2937" stroke-width="2.2"/>
+            <rect x="425" y="178" width="90" height="90" rx="10" fill="#fbfdff" stroke="#cbd5e1" stroke-width="1.4"/>
+            <text x="470" y="170" font-size="15" fill="#1f2937" text-anchor="middle" font-weight="700">⑥</text>
+            <polygon points="456,193 476.785,229 435.215,229" fill="#ffffff" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round"/>
+            <circle cx="484" cy="229" r="19" fill="#ffffff" stroke="#1f2937" stroke-width="2.2"/>
+          </svg>
+            <figcaption>图：①②③ 两图形完全分开；④⑤⑥ 两图形有重叠区域</figcaption>
+          </figure>
+          <p class="ex-a"><b>答案：</b>①②③ 为一类——两个图形互不接触，属于 <b>相离</b>；④⑤⑥ 为一类——两个图形有重叠区域，属于 <b>相交</b>（都交于面）。这类题只要抓住"图形<b>挨不挨着</b>"：不挨着就是相离；挨着再细分交于点 / 交于线 / 交于面。</p>
+        </div>
+
       </div>
       <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
     </div>
@@ -868,6 +1081,51 @@
         </ul>
         <div class="k-box">记忆钩子：先看<b>对不对称</b>，再问<b>数量变不变</b>（变→运算；不变→平移），都不行走「明显特征」路线。</div>
         <figure><img loading="lazy" src="../../assets/note-img/graph/ex-biaoji-2.webp" alt="黑白块 · 考点与标记（原笔记 P19/P21）" data-zoom><figcaption>黑白块 · 考点与标记（原笔记 P19/P21）</figcaption></figure>
+        <div class="ex-item">
+          <div class="ex-h">例题 · 黑白块三大类一眼认</div>
+          <p class="ex-q"><b>题干：</b>下面三个黑白块图形分别属于「对称 / 非对称 / 明显」三大类中的哪一类？</p>
+          <figure class="ex-figure" data-zoom>
+          <svg viewBox="0 0 620 200" role="img" aria-label="黑白块三大类：对称类、非对称类、明显类">
+            <text x="120" y="46" font-size="15" fill="#1f2937" text-anchor="middle" font-weight="700">①</text>
+            <g><rect x="75" y="58" width="30" height="30" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/><rect x="105" y="58" width="30" height="30" fill="#18181b" stroke="#cbd5e1" stroke-width="1.4"/><rect x="135" y="58" width="30" height="30" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/><rect x="75" y="88" width="30" height="30" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/><rect x="105" y="88" width="30" height="30" fill="#18181b" stroke="#cbd5e1" stroke-width="1.4"/><rect x="135" y="88" width="30" height="30" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/><rect x="75" y="118" width="30" height="30" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/><rect x="105" y="118" width="30" height="30" fill="#18181b" stroke="#cbd5e1" stroke-width="1.4"/><rect x="135" y="118" width="30" height="30" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/></g>
+            <text x="310" y="46" font-size="15" fill="#1f2937" text-anchor="middle" font-weight="700">②</text>
+            <g><rect x="265" y="58" width="30" height="30" fill="#18181b" stroke="#cbd5e1" stroke-width="1.4"/><rect x="295" y="58" width="30" height="30" fill="#18181b" stroke="#cbd5e1" stroke-width="1.4"/><rect x="325" y="58" width="30" height="30" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/><rect x="265" y="88" width="30" height="30" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/><rect x="295" y="88" width="30" height="30" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/><rect x="325" y="88" width="30" height="30" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/><rect x="265" y="118" width="30" height="30" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/><rect x="295" y="118" width="30" height="30" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/><rect x="325" y="118" width="30" height="30" fill="#18181b" stroke="#cbd5e1" stroke-width="1.4"/></g>
+            <text x="500" y="46" font-size="15" fill="#1f2937" text-anchor="middle" font-weight="700">③</text>
+            <g><rect x="455" y="58" width="30" height="30" fill="#18181b" stroke="#cbd5e1" stroke-width="1.4"/><rect x="485" y="58" width="30" height="30" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/><rect x="515" y="58" width="30" height="30" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/><rect x="455" y="88" width="30" height="30" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/><rect x="485" y="88" width="30" height="30" fill="#18181b" stroke="#cbd5e1" stroke-width="1.4"/><rect x="515" y="88" width="30" height="30" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/><rect x="455" y="118" width="30" height="30" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/><rect x="485" y="118" width="30" height="30" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/><rect x="515" y="118" width="30" height="30" fill="#18181b" stroke="#cbd5e1" stroke-width="1.4"/></g>
+          </svg>
+            <figcaption>图：① 黑块排成一列　② 黑块零散无明显特征　③ 黑块连成一条斜线</figcaption>
+          </figure>
+          <p class="ex-a"><b>答案：</b>① <b>对称类</b>——黑块排成一列，整体明显轴对称（左右、上下都对称），先识别对称类型、再细化对称轴；② <b>非对称类</b>——看不出对称，改问"<b>黑块数量变不变</b>"：数量变 → 黑白运算，数量不变 → 平移；③ <b>明显类</b>——黑块连成一条斜线，属于"明显特征"，直接数笔画 / 看面积占比。</p>
+        </div>
+        <div class="ex-item">
+          <div class="ex-h">例题 · 非对称类三选一怎么定</div>
+          <p class="ex-q"><b>题干：</b>下面三组都是"非对称类"黑白块（图1 → 图2），请分别说出该用哪种考法（位置移动 / 黑白运算 / 部分数）。</p>
+          <figure class="ex-figure" data-zoom>
+          <svg viewBox="0 0 620 250" role="img" aria-label="非对称类三选一：位置移动、黑白运算、部分数">
+            <text x="120" y="28" font-size="15" fill="#1f2937" text-anchor="middle" font-weight="700">①</text>
+            <text x="73" y="85" font-size="11.5" fill="#6b7280" text-anchor="end" font-weight="400">图1</text>
+            <text x="73" y="189" font-size="11.5" fill="#6b7280" text-anchor="end" font-weight="400">图2</text>
+            <g><rect x="81" y="42" width="26" height="26" fill="#18181b" stroke="#cbd5e1" stroke-width="1.4"/><rect x="107" y="42" width="26" height="26" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/><rect x="133" y="42" width="26" height="26" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/><rect x="81" y="68" width="26" height="26" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/><rect x="107" y="68" width="26" height="26" fill="#18181b" stroke="#cbd5e1" stroke-width="1.4"/><rect x="133" y="68" width="26" height="26" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/><rect x="81" y="94" width="26" height="26" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/><rect x="107" y="94" width="26" height="26" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/><rect x="133" y="94" width="26" height="26" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/></g>
+            <g><rect x="81" y="146" width="26" height="26" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/><rect x="107" y="146" width="26" height="26" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/><rect x="133" y="146" width="26" height="26" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/><rect x="81" y="172" width="26" height="26" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/><rect x="107" y="172" width="26" height="26" fill="#18181b" stroke="#cbd5e1" stroke-width="1.4"/><rect x="133" y="172" width="26" height="26" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/><rect x="81" y="198" width="26" height="26" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/><rect x="107" y="198" width="26" height="26" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/><rect x="133" y="198" width="26" height="26" fill="#18181b" stroke="#cbd5e1" stroke-width="1.4"/></g>
+            <path d="M 120 126 L 120 136 M 115 129 L 120 137 L 125 129" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+            <text x="310" y="28" font-size="15" fill="#1f2937" text-anchor="middle" font-weight="700">②</text>
+            <text x="263" y="85" font-size="11.5" fill="#6b7280" text-anchor="end" font-weight="400">图1</text>
+            <text x="263" y="189" font-size="11.5" fill="#6b7280" text-anchor="end" font-weight="400">图2</text>
+            <g><rect x="271" y="42" width="26" height="26" fill="#18181b" stroke="#cbd5e1" stroke-width="1.4"/><rect x="297" y="42" width="26" height="26" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/><rect x="323" y="42" width="26" height="26" fill="#18181b" stroke="#cbd5e1" stroke-width="1.4"/><rect x="271" y="68" width="26" height="26" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/><rect x="297" y="68" width="26" height="26" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/><rect x="323" y="68" width="26" height="26" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/><rect x="271" y="94" width="26" height="26" fill="#18181b" stroke="#cbd5e1" stroke-width="1.4"/><rect x="297" y="94" width="26" height="26" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/><rect x="323" y="94" width="26" height="26" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/></g>
+            <g><rect x="271" y="146" width="26" height="26" fill="#18181b" stroke="#cbd5e1" stroke-width="1.4"/><rect x="297" y="146" width="26" height="26" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/><rect x="323" y="146" width="26" height="26" fill="#18181b" stroke="#cbd5e1" stroke-width="1.4"/><rect x="271" y="172" width="26" height="26" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/><rect x="297" y="172" width="26" height="26" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/><rect x="323" y="172" width="26" height="26" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/><rect x="271" y="198" width="26" height="26" fill="#18181b" stroke="#cbd5e1" stroke-width="1.4"/><rect x="297" y="198" width="26" height="26" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/><rect x="323" y="198" width="26" height="26" fill="#18181b" stroke="#cbd5e1" stroke-width="1.4"/></g>
+            <path d="M 310 126 L 310 136 M 305 129 L 310 137 L 315 129" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+            <text x="500" y="28" font-size="15" fill="#1f2937" text-anchor="middle" font-weight="700">③</text>
+            <text x="453" y="85" font-size="11.5" fill="#6b7280" text-anchor="end" font-weight="400">图1</text>
+            <text x="453" y="189" font-size="11.5" fill="#6b7280" text-anchor="end" font-weight="400">图2</text>
+            <g><rect x="461" y="42" width="26" height="26" fill="#18181b" stroke="#cbd5e1" stroke-width="1.4"/><rect x="487" y="42" width="26" height="26" fill="#18181b" stroke="#cbd5e1" stroke-width="1.4"/><rect x="513" y="42" width="26" height="26" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/><rect x="461" y="68" width="26" height="26" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/><rect x="487" y="68" width="26" height="26" fill="#18181b" stroke="#cbd5e1" stroke-width="1.4"/><rect x="513" y="68" width="26" height="26" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/><rect x="461" y="94" width="26" height="26" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/><rect x="487" y="94" width="26" height="26" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/><rect x="513" y="94" width="26" height="26" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/></g>
+            <g><rect x="461" y="146" width="26" height="26" fill="#18181b" stroke="#cbd5e1" stroke-width="1.4"/><rect x="487" y="146" width="26" height="26" fill="#18181b" stroke="#cbd5e1" stroke-width="1.4"/><rect x="513" y="146" width="26" height="26" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/><rect x="461" y="172" width="26" height="26" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/><rect x="487" y="172" width="26" height="26" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/><rect x="513" y="172" width="26" height="26" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/><rect x="461" y="198" width="26" height="26" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/><rect x="487" y="198" width="26" height="26" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/><rect x="513" y="198" width="26" height="26" fill="#18181b" stroke="#cbd5e1" stroke-width="1.4"/></g>
+            <path d="M 500 126 L 500 136 M 495 129 L 500 137 L 505 129" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+          </svg>
+            <figcaption>图：图1 → 图2；① 黑块数不变只是挪位　② 黑块数由 3 个变 4 个　③ 黑块由连成一片变成分成两堆</figcaption>
+          </figure>
+          <p class="ex-a"><b>答案：</b>① 黑块数量相同（都是 2 个）、轮廓相同 → <b>位置移动（平移）</b>：盯住任意一个黑块，看它每步走几格；② 黑块数量由 3 个变成 4 个、轮廓相同 → <b>黑白运算</b>：在相同位置逐格推规则；③ 黑块从"连成一片"变成"分成两堆" → <b>部分数</b>：数黑色部分数和白色部分数，还可能考部分数运算。</p>
+        </div>
+
       </div>
       <div class="card-actions"><button class="btn-known">✓ 已掌握</button><button class="btn-again">再复习</button></div>
     </div>
@@ -1371,6 +1629,7 @@
 <div class="lightbox" id="lightbox" data-open="false">
   <button class="x" type="button" id="lb-x" aria-label="关闭">✕</button>
   <img id="lb-img" alt="例题放大图">
+  <div class="lb-svg" id="lb-svg"></div>
 </div>
 
 <script>
@@ -1378,18 +1637,32 @@
   (function(){
     var lb = document.getElementById('lightbox');
     var lbImg = document.getElementById('lb-img');
+    var lbSvg = document.getElementById('lb-svg');
     if (!lb) return;
+    function closeLb(){
+      lb.dataset.open = 'false';
+      lbImg.removeAttribute('src');
+      if (lbSvg) lbSvg.innerHTML = '';
+    }
     document.addEventListener('click', function (e) {
-      var img = e.target.closest('img[data-zoom]');
-      if (img) { lbImg.src = img.src; lb.dataset.open = 'true'; return; }
-      if (lb.dataset.open === 'true' && (e.target === lb || e.target === lbImg || e.target.id === 'lb-x')) {
-        lb.dataset.open = 'false'; lbImg.removeAttribute('src');
+      var z = e.target.closest('[data-zoom]');
+      if (z) {
+        if (z.tagName === 'IMG') {
+          if (lbSvg) lbSvg.innerHTML = '';
+          lbImg.src = z.src;
+        } else {
+          var svg = z.tagName.toLowerCase() === 'svg' ? z : z.querySelector('svg');
+          if (!svg) return;
+          lbImg.removeAttribute('src');
+          if (lbSvg) { lbSvg.innerHTML = ''; lbSvg.appendChild(svg.cloneNode(true)); }
+        }
+        lb.dataset.open = 'true'; return;
       }
+      if (lb.dataset.open === 'true' && (e.target === lb || e.target === lbImg || e.target.id === 'lb-x'
+          || (lbSvg && e.target.closest && e.target.closest('#lb-svg')))) closeLb();
     });
     document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && lb.dataset.open === 'true') {
-        lb.dataset.open = 'false'; lbImg.removeAttribute('src');
-      }
+      if (e.key === 'Escape' && lb.dataset.open === 'true') closeLb();
     });
   })();
 

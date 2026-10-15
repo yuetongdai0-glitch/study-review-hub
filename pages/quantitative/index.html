@@ -2271,12 +2271,68 @@
                 <span class="formula">环形相遇（反向）：周长 × N = (V₁+V₂) × T</span><br>
                 <span class="formula">环形追及（同向）：周长 × N = (V快-V慢) × T</span>
               </div>
+            <figure class="fig">
+              <svg viewBox="0 0 460 232" role="img" aria-label="环形相遇与环形追及示意">
+                <circle cx="120" cy="110" r="66" fill="none" stroke="#cbd5e1" stroke-width="1.6" stroke-dasharray="5 4"/>
+                <path d="M120,44 A66,66 0 0 0 120,176" fill="none" stroke="#4f7cff" stroke-width="2.6"/>
+                <path d="M120,44 A66,66 0 0 1 120,176" fill="none" stroke="#2ecc71" stroke-width="2.6"/>
+                <path d="M47,104 L57,104 L52,114 Z" fill="#4f7cff"/>
+                <path d="M183,104 L193,104 L188,114 Z" fill="#2ecc71"/>
+                <circle cx="120" cy="44" r="5" fill="#ff6b6b"/>
+                <circle cx="120" cy="176" r="5" fill="#ff6b6b"/>
+                <text x="120" y="30" text-anchor="middle" font-size="12.5" font-weight="700" fill="#b91c1c">同一点反向出发</text>
+                <text x="132" y="181" font-size="12" font-weight="700" fill="#b91c1c">相遇点</text>
+                <text x="120" y="100" text-anchor="middle" font-size="12.5" fill="#475569">周长 × N</text>
+                <text x="120" y="120" text-anchor="middle" font-size="12.5" fill="#475569">= (v₁ + v₂) × T</text>
+                <text x="120" y="200" text-anchor="middle" font-size="12" fill="#6b7280">两人合跑 N 圈后相遇</text>
+                <text x="120" y="221" text-anchor="middle" font-size="13" font-weight="700" fill="#4f7cff">环形相遇（反向）</text>
+                <circle cx="340" cy="110" r="66" fill="none" stroke="#cbd5e1" stroke-width="1.6"/>
+                <path d="M268,118 L280,118 L274,106 Z" fill="#94a3b8"/>
+                <path d="M348,170 L348,182 L336,176 Z" fill="#94a3b8"/>
+                <circle cx="340" cy="44" r="7" fill="#4f7cff"/>
+                <circle cx="406" cy="110" r="7" fill="#2ecc71"/>
+                <text x="340" y="100" text-anchor="middle" font-size="12.5" fill="#475569">周长 × N</text>
+                <text x="340" y="120" text-anchor="middle" font-size="12.5" fill="#475569">= (v快 − v慢) × T</text>
+                <text x="340" y="200" text-anchor="middle" font-size="12" fill="#6b7280">快者比慢者多跑 N 圈</text>
+                <text x="340" y="221" text-anchor="middle" font-size="13" font-weight="700" fill="#4f7cff">环形追及（同向）</text>
+              </svg>
+            </figure>
+
               <div class="block">
                 <b>多次相遇：</b>
                 <div class="sub-point">左右点出发第N次迎面相遇：路程和 = (2N-1)×全程</div>
                 <div class="sub-point">同一点出发第N次迎面相遇：路程和 = 2N×全程</div>
                 <div class="sub-point">第二次相遇：各走的路程 = 第一次的2倍</div>
               </div>
+            <figure class="fig">
+              <svg viewBox="0 0 460 224" role="img" aria-label="多次相遇往返路径示意">
+                <line x1="50" y1="66" x2="398" y2="66" stroke="#4f7cff" stroke-width="2"/>
+                <path d="M398,60 L410,66 L398,72 Z" fill="#4f7cff"/>
+                <line x1="410" y1="88" x2="134" y2="88" stroke="#4f7cff" stroke-width="2" stroke-dasharray="7 4"/>
+                <path d="M146,82 L134,88 L146,94 Z" fill="#4f7cff"/>
+                <path d="M410,66 Q419,77 410,88" fill="none" stroke="#4f7cff" stroke-width="1.6"/>
+                <line x1="410" y1="142" x2="62" y2="142" stroke="#2ecc71" stroke-width="2"/>
+                <path d="M74,136 L62,142 L74,148 Z" fill="#2ecc71"/>
+                <line x1="50" y1="164" x2="122" y2="164" stroke="#2ecc71" stroke-width="2" stroke-dasharray="7 4"/>
+                <path d="M110,158 L122,164 L110,170 Z" fill="#2ecc71"/>
+                <path d="M50,142 Q41,153 50,164" fill="none" stroke="#2ecc71" stroke-width="1.6"/>
+                <line x1="266" y1="52" x2="266" y2="152" stroke="#f0a0a0" stroke-width="1.3" stroke-dasharray="4 3"/>
+                <line x1="122" y1="64" x2="122" y2="176" stroke="#f0a0a0" stroke-width="1.3" stroke-dasharray="4 3"/>
+                <circle cx="266" cy="66" r="5" fill="#ff6b6b"/>
+                <circle cx="266" cy="142" r="5" fill="#ff6b6b"/>
+                <circle cx="122" cy="88" r="5" fill="#ff6b6b"/>
+                <circle cx="122" cy="164" r="5" fill="#ff6b6b"/>
+                <text x="266" y="44" text-anchor="middle" font-size="12" font-weight="700" fill="#b91c1c">第 1 次相遇</text>
+                <text x="122" y="62" text-anchor="middle" font-size="12" font-weight="700" fill="#b91c1c">第 2 次相遇</text>
+                <text x="50" y="56" text-anchor="middle" font-size="12" font-weight="700" fill="#2b4b9b">甲</text>
+                <text x="410" y="132" text-anchor="middle" font-size="12" font-weight="700" fill="#1a7a45">乙</text>
+                <text x="50" y="190" text-anchor="middle" font-size="13" font-weight="700" fill="#334155">A 地</text>
+                <text x="410" y="190" text-anchor="middle" font-size="13" font-weight="700" fill="#334155">B 地</text>
+                <text x="230" y="198" text-anchor="middle" font-size="12" font-weight="700" fill="#b45309">第 1 次相遇：路程和 = 1 个全程</text>
+                <text x="230" y="216" text-anchor="middle" font-size="12" font-weight="700" fill="#b45309">第 2 次相遇：路程和 = 3 个全程（各走的路程 = 第一次的 2 倍）</text>
+              </svg>
+            </figure>
+
               <div class="warn-box">相遇追及与水流速度无关！</div>
             </div>
             <div class="example">
@@ -3708,7 +3764,7 @@
               <div class="block-title">1. 抽屉原理（最不利原则）</div>
 
             <figure class="fig">
-              <svg viewBox="0 0 460 180" role="img" aria-label="抽屉原理示意">
+              <svg viewBox="0 0 460 200" role="img" aria-label="抽屉原理示意">
                 <rect x="26" y="44" width="118" height="104" rx="8" fill="#fff0f0" stroke="#ff6b6b" stroke-width="1.8"/>
                 <rect x="171" y="44" width="118" height="104" rx="8" fill="#fef5e7" stroke="#f39c12" stroke-width="1.8"/>
                 <rect x="316" y="44" width="118" height="104" rx="8" fill="#e8efff" stroke="#4f7cff" stroke-width="1.8"/>
@@ -3718,8 +3774,8 @@
                 <g fill="#ff6b6b"><circle cx="58" cy="96" r="12"/><circle cx="85" cy="96" r="12"/><circle cx="112" cy="96" r="12"/></g>
                 <g fill="#f39c12"><circle cx="203" cy="96" r="12"/><circle cx="230" cy="96" r="12"/><circle cx="257" cy="96" r="12"/></g>
                 <g fill="#4f7cff"><circle cx="348" cy="96" r="12"/><circle cx="375" cy="96" r="12"/><circle cx="402" cy="96" r="12"/></g>
-                <text x="26" y="172" font-size="13.5" fill="#6b7280">最不利：每种颜色各 3 个，共 9 个 —— 此时还没有 4 个同色；</text>
-                <text x="26" y="176" font-size="13.5" fill="#6b7280">再取第 10 个，无论什么颜色，都会凑满 4 个同色 → 答案 10</text>
+                <text x="26" y="166" font-size="13.5" fill="#6b7280">最不利：每种颜色各 3 个，共 9 个 —— 此时还没有 4 个同色；</text>
+                <text x="26" y="188" font-size="13.5" fill="#6b7280">再取第 10 个，无论什么颜色，都会凑满 4 个同色 → 答案 10</text>
               </svg>
               <figcaption>「至少取几个才能<b>保证</b>……」→ 先故意让自己最不成功：每种颜色都取到「差一点」的个数，最后 <b>+1</b>。</figcaption>
             </figure>
