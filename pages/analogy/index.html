@@ -2,682 +2,2998 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <link data-study-hub-style rel="stylesheet" href="../../assets/hub-nav.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="light">
 <title>测试</title>
 <style>
-  :root{
-    --primary:#1f5fd6;
-    --bg:#f2f3f6; --card:#fff; --ink:#1c2333; --ink2:#5a6478; --ink3:#8b93a5;
-    --blue:#1f5fd6; --blue-soft:#e8f0fd;
-    --green:#1e8449; --green-soft:#e6f4ec;
-    --amber:#9a6a12; --amber-soft:#fdf5e3;
-    --red:#b8453c; --red-soft:#fdeeee;
-    --violet:#6d43c8; --violet-soft:#efe9fc;
-    --line:#e3e7f0; --line2:#eef1f6;
-    --r:14px;
+  :root {
+    --bg: #f0f2f5;
+    --card-bg: #ffffff;
+    --primary: #4f7cff;
+    --primary-light: #e8efff;
+    --primary-dark: #3a5fd9;
+    --accent: #ff6b6b;
+    --accent-light: #fff0f0;
+    --green: #2ecc71;
+    --green-light: #eafaf1;
+    --orange: #f39c12;
+    --orange-light: #fef5e7;
+    --purple: #9b59b6;
+    --purple-light: #f5eef8;
+    --text: #1a1a2e;
+    --text-light: #555;
+    --text-muted: #999;
+    --border: #e8e8e8;
+    --radius: 14px;
+    --shadow: 0 2px 12px rgba(0,0,0,0.06);
+    --shadow-lg: 0 4px 20px rgba(0,0,0,0.1);
   }
-  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
-  html,body{margin:0; padding:0;}
-  body{
-    background:var(--bg); color:var(--ink);
-    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
-    font-size:15px; line-height:1.65;
-    padding-bottom:calc(30px + env(safe-area-inset-bottom));
-    -webkit-text-size-adjust:100%;
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", "Microsoft YaHei", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 15px;
+    -webkit-font-smoothing: antialiased;
   }
-  button{font:inherit; color:inherit; background:none; border:0; cursor:pointer;}
-  [hidden]{display:none !important;}
-  a{color:var(--blue);}
 
-
-  /* ── 主体 ── */
-  main{max-width:860px; margin:0 auto; padding:14px 14px 0;}
-
-  /* 顶部速览 */
-  .hero{
-    background:var(--card); border:1px solid var(--line); border-radius:var(--r);
-    padding:15px 16px; margin-bottom:12px;
+  /* 顶部 Banner（不吸顶，导航交给左侧目录） */
+  .banner {
+    background: linear-gradient(135deg, #2ecc71 0%, #1f9d8f 100%);
+    color: #fff;
+    padding: 34px 20px 28px;
+    text-align: center;
+    box-shadow: 0 2px 16px rgba(46,204,113,0.28);
+    border-radius: 0 0 20px 20px;
   }
-  .hero h2{margin:0 0 4px; font-size:16px;}
-  .hero .src{font-size:12px; color:var(--ink3); margin-bottom:9px;}
-  .hero .three{display:grid; grid-template-columns:1fr; gap:8px; margin-top:10px;}
-  .hero .three > div{background:var(--green-soft); border-radius:10px; padding:9px 12px; font-size:13.5px;}
-  .hero .three b{color:var(--green);}
-  .hero .tip{margin-top:10px; font-size:12.5px; color:var(--ink2); line-height:1.7;}
+  .banner h1 { font-size: 22px; font-weight: 700; margin-bottom: 4px; letter-spacing: 1px; }
+  .banner p { font-size: 13px; opacity: 0.88; }
 
-  .group{background:var(--card); border:1px solid var(--line); border-radius:var(--r); margin-bottom:12px; overflow:hidden;}
-  .group-head{display:flex; align-items:center; gap:9px; width:100%; padding:13px 14px; text-align:left;}
-  .group-head:active{background:#fafbfd;}
-  .group-head .tick{flex:none; width:8px; height:34px; border-radius:4px; background:var(--c, var(--green));}
-  .group-head .txt{flex:1 1 auto; min-width:0;}
-  .group-head .txt b{display:block; font-size:15px; letter-spacing:-.1px;}
-  .group-head .txt span{display:block; font-size:12px; color:var(--ink3); margin-top:1px;}
-  .group-head .cnt{flex:none; font-size:12px; color:var(--ink3); font-variant-numeric:tabular-nums;}
-  .group-head .caret{flex:none; color:var(--ink3); font-size:12px; transition:transform .18s ease;}
-  .group[data-open="true"] .caret{transform:rotate(90deg);}
-  .group-body{padding:0 14px 8px;}
-
-  /* ── 知识点条目 ── */
-  .entry{border-top:1px solid var(--line2); padding:12px 0 13px;}
-  .entry:first-child{border-top:0;}
-  .entry-head{display:flex; align-items:baseline; gap:8px; flex-wrap:wrap;}
-  .entry-head b{font-size:15px; letter-spacing:-.1px;}
-  .entry-head .badge{
-    font-size:11.5px; padding:2px 7px; border-radius:6px;
-    background:var(--amber-soft); color:var(--amber); font-weight:400;
+  /* 主体：让出左侧目录宽度 */
+  .container {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 16px 14px 60px;
   }
-  .entry-head .badge.must{background:#fdeaea; color:var(--red);}
-  .entry-head .badge.freq{background:var(--blue-soft); color:var(--blue);}
-  .std{font-size:13.5px; color:var(--ink2); margin-top:4px;}
-  .std em{font-style:normal; color:var(--ink3);}
-  .std b{color:var(--ink);}
-  .sub2{margin-top:8px;}
-  .sub2 .t{font-size:12.5px; color:var(--green); font-weight:600; margin-bottom:3px;}
-  .sub2 ul{margin:0; padding-left:17px; font-size:13px; color:var(--ink2); line-height:1.75;}
-  .sub2 li{margin:2px 0;}
-  .sub2 li b{color:var(--ink);}
-  .eg{margin-top:9px; font-size:13px; color:var(--ink2); line-height:1.75;}
-  .eg .lbl{color:var(--green); font-weight:600;}
-  .kw{color:var(--red); font-weight:600;}
 
-  .note{
-    margin-top:10px; padding:9px 12px; border-radius:9px;
-    background:var(--amber-soft); color:#7a530f; font-size:12.5px; line-height:1.75;
+  /* 章节卡片 */
+  .section {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 16px;
+    overflow: hidden;
+    scroll-margin-top: 24px;
   }
-  .note b{color:#5d3f08;}
-  .note.green{background:var(--green-soft); color:#0f5c33;}
-  .note.green b{color:#0b4527;}
-
-  mark{background:#fff3b0; color:inherit; border-radius:3px; padding:0 1px;}
-  .empty{text-align:center; color:var(--ink3); font-size:13.5px; padding:40px 0;}
-
-  /* 原笔记整页 */
-  .pages .pg{border-top:1px solid var(--line2); padding:12px 0;}
-  .pages .pg:first-child{border-top:0;}
-  .pages .pg p{margin:0 0 8px; font-size:13px; color:var(--ink2);}
-
-  @media (min-width:761px){
-    body{font-size:15.5px;}
-    .hero .three{grid-template-columns:repeat(3,1fr);}
-    .entry-head b{font-size:15.5px;}
+  .section-header {
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    user-select: none;
   }
-  @media (max-width:400px){
-    .hero{padding:13px 13px;}
-    .entry-head b{font-size:14.5px;}
+  .section-icon {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; flex-shrink: 0;
   }
-  @media print{
-    .study-hub-shell{display:none !important;}
-    .group-body{display:block !important;}
-    body{background:#fff;}
+  .section-title { font-size: 16px; font-weight: 700; flex: 1; min-width: 0; }
+  .section-tag {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .section-arrow { transition: transform 0.3s; color: var(--text-muted); font-size: 14px; }
+  .section.collapsed .section-arrow { transform: rotate(-90deg); }
+  .section-body { padding: 0 16px 16px; display: block; }
+  .section.collapsed .section-body { display: none; }
+
+  /* 内容块 */
+  .block { margin-bottom: 14px; }
+  .block:last-child { margin-bottom: 0; }
+  .block-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .block-title::before {
+    content: '';
+    width: 3px; height: 14px;
+    background: var(--primary);
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  .formula-box {
+    background: var(--primary-light);
+    border-left: 3px solid var(--primary);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 14px;
+    margin: 6px 0;
+    line-height: 1.85;
+    word-break: break-word;
+  }
+  .formula-box .formula { font-weight: 700; font-size: 15px; color: var(--primary-dark); }
+  .tip-box {
+    background: var(--orange-light);
+    border-left: 3px solid var(--orange);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 13px;
+    margin: 6px 0;
+    color: #8a6d3b;
+    line-height: 1.8;
+  }
+  .key-box {
+    background: var(--green-light);
+    border-left: 3px solid var(--green);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 13px;
+    margin: 6px 0;
+    color: #1a7a45;
+    line-height: 1.8;
+  }
+  .warn-box {
+    background: var(--accent-light);
+    border-left: 3px solid var(--accent);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 13px;
+    margin: 6px 0;
+    color: #c0392b;
+    line-height: 1.8;
+  }
+
+  .point-list { padding-left: 2px; list-style: none; }
+  .point-list li {
+    position: relative;
+    padding-left: 16px;
+    margin-bottom: 4px;
+    font-size: 14px;
+    line-height: 1.8;
+  }
+  .point-list li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: var(--primary);
+    font-weight: bold;
+  }
+  .point-list.tight li { margin-bottom: 2px; }
+
+  .sub-point {
+    font-size: 13px;
+    color: var(--text-light);
+    margin: 4px 0 4px 8px;
+    padding-left: 10px;
+    border-left: 2px dashed var(--border);
+    line-height: 1.8;
+  }
+
+  /* 词对：成对关系用等宽块展示，手机端自动折行 */
+  .pair {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 18px;
+    font-size: 13.5px;
+    line-height: 1.9;
+  }
+  .pair > span { white-space: nowrap; }
+
+  /* 表格 */
+  .mini-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin: 6px 0;
+    table-layout: fixed;
+  }
+  .mini-table th {
+    background: var(--primary-light);
+    color: var(--primary-dark);
+    padding: 6px 8px;
+    text-align: left;
+    font-weight: 600;
+  }
+  .mini-table th:first-child { border-radius: 6px 0 0 0; }
+  .mini-table th:last-child { border-radius: 0 6px 0 0; }
+  .mini-table td {
+    padding: 6px 8px;
+    border-bottom: 1px solid var(--border);
+    word-break: break-word;
+  }
+  .mini-table tr:last-child td { border-bottom: none; }
+
+  /* 例题样式 */
+  .example {
+    border: 1.5px solid #e0e8ff;
+    border-radius: 10px;
+    margin: 10px 0;
+    overflow: hidden;
+  }
+  .example-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    padding: 6px 12px;
+    font-size: 13px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .example-header .src {
+    font-size: 11.5px;
+    font-weight: 400;
+    opacity: 0.9;
+    margin-left: auto;
+  }
+  .example-body { padding: 10px 12px; font-size: 14px; line-height: 1.8; }
+  .example-q { color: var(--text); margin-bottom: 6px; word-break: break-word; }
+  .example-opts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 16px;
+    font-size: 13.5px;
+    color: var(--text-light);
+    margin: 4px 0 6px;
+  }
+  .example-opts span { white-space: nowrap; }
+  .example-answer {
+    background: #f0f9ff;
+    border-left: 3px solid #0ea5e9;
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-size: 13px;
+    line-height: 1.85;
+    color: #0c4a6e;
+  }
+  .example-answer b { color: #0ea5e9; }
+  .example-answer .correct { color: #16a34a; font-weight: 700; }
+
+  /* 颜色方案 */
+  .c-blue .section-icon { background: var(--primary-light); color: var(--primary); }
+  .c-blue .section-tag { background: var(--primary-light); color: var(--primary); }
+  .c-blue .block-title { color: var(--primary); }
+  .c-blue .block-title::before { background: var(--primary); }
+
+  .c-red .section-icon { background: var(--accent-light); color: var(--accent); }
+  .c-red .section-tag { background: var(--accent-light); color: var(--accent); }
+  .c-red .block-title { color: var(--accent); }
+  .c-red .block-title::before { background: var(--accent); }
+  .c-red .formula-box { background: var(--accent-light); border-color: var(--accent); }
+  .c-red .formula-box .formula { color: #c0392b; }
+
+  .c-green .section-icon { background: var(--green-light); color: var(--green); }
+  .c-green .section-tag { background: var(--green-light); color: var(--green); }
+  .c-green .block-title { color: var(--green); }
+  .c-green .block-title::before { background: var(--green); }
+  .c-green .formula-box { background: var(--green-light); border-color: var(--green); }
+  .c-green .formula-box .formula { color: #1a7a45; }
+
+  .c-orange .section-icon { background: var(--orange-light); color: var(--orange); }
+  .c-orange .section-tag { background: var(--orange-light); color: var(--orange); }
+  .c-orange .block-title { color: var(--orange); }
+  .c-orange .block-title::before { background: var(--orange); }
+
+  .c-purple .section-icon { background: var(--purple-light); color: var(--purple); }
+  .c-purple .section-tag { background: var(--purple-light); color: var(--purple); }
+  .c-purple .block-title { color: var(--purple); }
+  .c-purple .block-title::before { background: var(--purple); }
+  .c-purple .formula-box { background: var(--purple-light); border-color: var(--purple); }
+  .c-purple .formula-box .formula { color: #7d3c98; }
+
+  /* 考频标签 */
+  .tag-hot { background: #ff4757 !important; color: #fff !important; }
+  .tag-high { background: #ffa502 !important; color: #fff !important; }
+  .tag-mid { background: #7bed9f !important; color: #333 !important; }
+  .tag-low { background: #dfe4ea !important; color: #666 !important; }
+
+  /* 底部 */
+  .footer { text-align: center; padding: 20px; font-size: 12px; color: var(--text-muted); line-height: 1.9; }
+
+  /* 回到顶部 */
+  .back-top {
+    position: fixed;
+    bottom: 90px;
+    right: 20px;
+    width: 44px; height: 44px;
+    background: var(--primary);
+    color: #fff;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    box-shadow: 0 4px 12px rgba(79,124,255,0.4);
+    cursor: pointer;
+    z-index: 200;
+    opacity: 0;
+    transition: opacity 0.3s;
+    border: none;
+  }
+  .back-top.show { opacity: 1; }
+  .back-top:active { transform: scale(0.9); }
+
+  /* 进度条 */
+  .progress-bar {
+    height: 3px;
+    background: rgba(255,255,255,0.2);
+    position: fixed;
+    top: 0; left: 0;
+    z-index: 300;
+    transition: width 0.1s;
+  }
+  .progress-fill { height: 100%; background: #ffd700; width: 0%; transition: width 0.1s; }
+
+  /* ===== 移动端 / 平板：目录变抽屉 ===== */
+  @media (max-width: 900px) {
+    .menu-btn { display: flex; }
+    .sb-brand { padding-left: 64px; }
+    .sidebar {
+      width: min(80vw, 280px); transform: translateX(-105%);
+      transition: transform 0.28s ease; z-index: 70;
+      box-shadow: 6px 0 26px rgba(0,0,0,0.28);
+    }
+    body.menu-open .sidebar { transform: translateX(0); }
+    body.menu-open .mask { display: block; }
+    body.menu-open { overflow: hidden; }
+    .main { margin-left: 0; }
+    .container { padding: 14px 12px 60px; }
+    .banner { padding: 26px 18px 22px; border-radius: 0 0 16px 16px; }
+    .banner h1 { font-size: 19px; }
+  }
+
+  /* 窄屏：表格改自动折行，避免横向溢出 */
+  @media (max-width: 560px) {
+    .mini-table { table-layout: auto; }
+    .mini-table th, .mini-table td { padding: 5px 6px; font-size: 12.5px; }
+    /* 三列表格的首列多是「两项式 / 矛盾全异」这类短标签，固定给足宽度免得被拆字；
+       两列表格（词对积累表）首列内容较长，保持自然均分。
+       :has() 不支持时自动退回原布局，不影响可读性。 */
+    .mini-table tr:has(td:nth-child(3)) > td:first-child,
+    .mini-table tr:has(th:nth-child(3)) > th:first-child { width: 5.3em; }
+    .pair { gap: 2px 14px; font-size: 13px; }
+    .example-header { font-size: 12.5px; }
+    .example-answer { font-size: 12.5px; }
+  }
+
+  @media print {
+    .sidebar, .menu-btn, .mask, .back-top, .progress-bar { display: none !important; }
+    .main { margin-left: 0; }
+    .section.collapsed .section-body { display: block; }
+  }
+
+  @media (max-width: 380px) {
+    body { font-size: 14px; }
+    .banner h1 { font-size: 19px; }
+    .section-title { font-size: 15px; }
   }
 </style>
+  <link data-study-hub-style rel="stylesheet" href="../../assets/hub-nav.css">
   <link data-page-shell rel="stylesheet" href="../../assets/page-shell.css">
-  <link rel="stylesheet" href="../../assets/fig.css">
 </head>
 <body>
 
-<!-- ===== 全站统一页壳（侧栏导航） ===== -->
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
 <button class="menu-btn" id="menuBtn" aria-label="打开目录">☰</button>
 <div class="mask" id="mask"></div>
+
+<!-- 左侧目录（与数量关系 / 判断推理页统一） -->
 <aside class="sidebar" id="sidebar">
   <div class="sb-brand">
-    <div class="t">类比推理 · 考点体系</div>
-    <div class="s">共 28 个知识点 · 逻辑关系 / 经验常识 / 言语关系 / 造句法</div>
+    <div class="t">程意 · 类比推理</div>
+    <div class="s">考点体系 + 常识积累 · 2026 版</div>
   </div>
   <div class="sb-search">
     <input type="text" id="navSearch" placeholder="搜索：种属 / 因果 / 功能 / 命名…">
   </div>
+
   <div class="nav-group"><div class="g-title">开篇</div>
-    <a class="nav-link" data-kw="常态思维 先横后纵 先整体后局部 速览" href="#hero">三条核心原则速览</a>
+    <a class="nav-link" data-kw="总览 备考认知 考查形式 两项式 三项式 括号式 做题流程 二级辨析 学习地图" href="#nav">总览 · 备考认知与做题流程</a>
   </div>
-  <div class="nav-group"><div class="g-title">核心原则</div>
-    <a class="nav-link" data-kw="核心原则 常态思维 先横后纵 先整体后局部" href="#g-principle">本节总览 · 3 条原则</a>
-    <a class="nav-link" data-kw="常态思维 极端情况" href="#e-principle-0">① 常态思维</a>
-    <a class="nav-link" data-kw="先横后纵 横向 纵向" href="#e-principle-1">② 先横后纵</a>
-    <a class="nav-link" data-kw="先整体后局部 拆字" href="#e-principle-2">③ 先整体后局部</a>
+
+  <div class="nav-group"><div class="g-title">一、核心原则</div>
+    <a class="nav-link" data-kw="常态思维 先横后纵 先整体后局部 核心原则 极端情况 拆字" href="#s0">三条核心原则</a>
   </div>
-  <div class="nav-group"><div class="g-title">一、逻辑关系（8 类）</div>
-    <a class="nav-link" data-kw="逻辑关系 主干 必背" href="#g-logic">本节总览 · 主干考点</a>
-    <a class="nav-link" data-kw="全同关系 麦克风 话筒 同义" href="#e-logic-0">1. 全同关系</a>
-    <a class="nav-link" data-kw="全异关系 并列 矛盾 反对" href="#e-logic-1">2. 全异关系</a>
-    <a class="nav-link" data-kw="种属关系 包含 二级辨析" href="#e-logic-2">3. 种属关系</a>
-    <a class="nav-link" data-kw="交叉关系 交叠" href="#e-logic-3">4. 交叉关系</a>
-    <a class="nav-link" data-kw="顺承关系 先后 时间" href="#e-logic-4">5. 顺承关系</a>
-    <a class="nav-link" data-kw="因果关系 原因 结果" href="#e-logic-5">6. 因果关系</a>
-    <a class="nav-link" data-kw="目的关系 为了" href="#e-logic-6">7. 目的关系</a>
-    <a class="nav-link" data-kw="条件关系 充分 必要" href="#e-logic-7">8. 条件关系</a>
+
+  <div class="nav-group"><div class="g-title">二、逻辑关系（8 类）</div>
+    <a class="nav-link" data-kw="全同关系 同义 别称 属相 生肖 纸鸢 风筝 话筒" href="#s1">1. 全同关系</a>
+    <a class="nav-link" data-kw="全异关系 并列 矛盾 反对 顺序 层级 动力来源 转化" href="#s2">2. 全异关系</a>
+    <a class="nav-link" data-kw="种属关系 包含 特指 泛指 修饰词 白兰地" href="#s3">3. 种属关系</a>
+    <a class="nav-link" data-kw="交叉关系 交集 尾缀 身份 铁皮桶 油桶" href="#s4">4. 交叉关系</a>
+    <a class="nav-link" data-kw="顺承关系 先后 时间 主体 圆满" href="#s5">5. 顺承关系</a>
+    <a class="nav-link" data-kw="因果关系 导致 所以 人为 天然 结果好坏 必然" href="#s6">6. 因果关系</a>
+    <a class="nav-link" data-kw="目的关系 为了 政府提倡 目的能否实现" href="#s7">7. 目的关系</a>
+    <a class="nav-link" data-kw="条件关系 充分 必要 成语俗语 则就必 不不才 隐含" href="#s8">8. 条件关系</a>
   </div>
-  <div class="nav-group"><div class="g-title">二、经验常识（8 类）</div>
-    <a class="nav-link" data-kw="经验常识 积累" href="#g-common">本节总览 · 常识积累</a>
-    <a class="nav-link" data-kw="功能关系 用途 单一 多重" href="#e-common-0">1. 功能关系</a>
-    <a class="nav-link" data-kw="组成关系 核心 非核心" href="#e-common-1">2. 组成关系</a>
-    <a class="nav-link" data-kw="加工关系 物理 化学" href="#e-common-2">3. 加工关系</a>
-    <a class="nav-link" data-kw="命名方式 命名 二级辨析" href="#e-common-3">4. 命名方式</a>
-    <a class="nav-link" data-kw="特征关系 必然 或然" href="#e-common-4">5. 特征关系</a>
-    <a class="nav-link" data-kw="职业关系 造句法" href="#e-common-5">6. 职业关系</a>
-    <a class="nav-link" data-kw="位置关系 方位" href="#e-common-6">7. 位置关系</a>
-    <a class="nav-link" data-kw="依据关系 根据 基础" href="#e-common-7">8. 依据关系</a>
+
+  <div class="nav-group"><div class="g-title">三、经验常识（8 类）</div>
+    <a class="nav-link" data-kw="功能关系 用途 正向 反向 配套 相似 相反 多重 单一" href="#s9">1. 功能关系</a>
+    <a class="nav-link" data-kw="组成关系 核心 非核心 部分 整体" href="#s10">2. 组成关系</a>
+    <a class="nav-link" data-kw="加工关系 物理变化 化学变化 必要原材料 唯一原材料" href="#s11">3. 加工关系</a>
+    <a class="nav-link" data-kw="命名方式 外形 功能 行为 颜色 制作方法 材料 人物 特征 位置" href="#s12">4. 命名方式</a>
+    <a class="nav-link" data-kw="特征关系 属性 必然 或然 XX性 XX化" href="#s13">5. 特征（属性）关系</a>
+    <a class="nav-link" data-kw="职业关系 职业内容 对象 场所 工具 服装 造句" href="#s14">6. 职业关系</a>
+    <a class="nav-link" data-kw="位置关系 动静 内外 上下 首尾 接触 唯一位置" href="#s15">7. 位置关系</a>
+    <a class="nav-link" data-kw="依据关系 规则 标准 法律 制度 提纲 依托" href="#s16">8. 依据关系</a>
   </div>
-  <div class="nav-group"><div class="g-title">三、言语关系</div>
-    <a class="nav-link" data-kw="言语关系 释义 指代 成语" href="#g-language">本节总览 · 释义与结构</a>
-    <a class="nav-link" data-kw="释义关系 解释" href="#e-language-0">1. 释义关系</a>
-    <a class="nav-link" data-kw="指代 象征 比喻 积累" href="#e-language-1">2. 指代、象征、比喻</a>
-    <a class="nav-link" data-kw="成语 诗句 拆分" href="#e-language-2">3. 成语、诗句被拆分</a>
-    <a class="nav-link" data-kw="长诗句 六种关系" href="#e-language-3">4. 长诗句 : 长诗句</a>
-    <a class="nav-link" data-kw="近反义 近义 反义" href="#e-language-4">5. 近反义关系</a>
-    <a class="nav-link" data-kw="逻辑关系 叠加" href="#e-language-5">6. 结合逻辑关系考察</a>
-    <a class="nav-link" data-kw="词句结构 主谓 动宾 偏正" href="#e-language-6">7. 词句结构</a>
+
+  <div class="nav-group"><div class="g-title">四、言语关系</div>
+    <a class="nav-link" data-kw="近反义 近义 反义 感情色彩 语义轻重 描述对象" href="#s17">1. 近反义关系</a>
+    <a class="nav-link" data-kw="结合逻辑关系 因果 目的 条件 顺承 叠加" href="#s18">2. 结合逻辑关系考查</a>
+    <a class="nav-link" data-kw="词句结构 主谓 动宾 偏正 并列 结构" href="#s19">3. 词句结构</a>
+    <a class="nav-link" data-kw="释义关系 同一语素 单字 覆 盖 抚摸" href="#s20">4. 释义关系</a>
+    <a class="nav-link" data-kw="指代 象征 比喻 文艺词 巾帼 鸿雁 桑梓" href="#s21">5. 指代、象征、比喻</a>
+    <a class="nav-link" data-kw="成语 诗句 拆分 因果 目的 水涨船高 守株待兔" href="#s22">6. 成语、诗句被拆分</a>
+    <a class="nav-link" data-kw="长诗句 六种关系 以物喻人 修辞 描述对象" href="#s23">7. 长诗句 : 长诗句</a>
   </div>
-  <div class="nav-group"><div class="g-title">四、造句法</div>
-    <a class="nav-link" data-kw="造句法 兜底" href="#g-sentence">本节总览 · 兜底办法</a>
-    <a class="nav-link" data-kw="使用条件 什么时候用造句法" href="#e-sentence-0">（一）使用条件</a>
-    <a class="nav-link" data-kw="造句原则 造句" href="#e-sentence-1">（二）造句原则</a>
+
+  <div class="nav-group"><div class="g-title">五、造句法</div>
+    <a class="nav-link" data-kw="造句法 兜底 使用条件 造句原则 不加字 变化方向" href="#s24">造句法（使用条件 + 原则）</a>
+  </div>
+
+  <div class="nav-group"><div class="g-title">冲刺 · 复盘</div>
+    <a class="nav-link" data-kw="易错 做题纪律 复盘 二级辨析 条件关系优先级 检查清单" href="#strategy">易错点与做题纪律</a>
   </div>
 </aside>
 
+<div class="main" id="main">
 
+<!-- Banner -->
+<div class="banner">
+  <h1>程意 · 类比推理知识点全景</h1>
+  <p>先横后纵 · 先整体后局部 · 造句法兜底 · 移动端复习专用</p>
+</div>
 
-<template id="tpl-fig">
-  <figure class="fig">
-    <svg viewBox="0 0 640 296" role="img" aria-label="类比推理的做题顺序与考点地图">
-      <defs>
-        <marker id="agA1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-          <path d="M0,0 L10,5 L0,10 z" fill="#94a3b8"></path>
-        </marker>
-      </defs>
-      <text x="320" y="24" text-anchor="middle" font-size="14" font-weight="700" fill="#1e293b">做题顺序固定：先横后纵 → 先整体后局部 → 造句法兜底</text>
-      <rect x="16" y="42" width="190" height="42" rx="9" fill="#eef2ff" stroke="#6366f1" stroke-width="1.5"></rect>
-      <text x="111" y="60" text-anchor="middle" font-size="12.5" font-weight="700" fill="#3730a3">① 先横后纵</text>
-      <text x="111" y="77" text-anchor="middle" font-size="11" fill="#4338ca">先看题干之间，再看题干与选项</text>
-      <line x1="212" y1="63" x2="222" y2="63" stroke="#94a3b8" stroke-width="1.6" marker-end="url(#agA1)"></line>
-      <rect x="225" y="42" width="190" height="42" rx="9" fill="#eef2ff" stroke="#6366f1" stroke-width="1.5"></rect>
-      <text x="320" y="60" text-anchor="middle" font-size="12.5" font-weight="700" fill="#3730a3">② 先整体后局部</text>
-      <text x="320" y="77" text-anchor="middle" font-size="11" fill="#4338ca">先当两个主体比，不行再拆字</text>
-      <line x1="421" y1="63" x2="431" y2="63" stroke="#94a3b8" stroke-width="1.6" marker-end="url(#agA1)"></line>
-      <rect x="434" y="42" width="190" height="42" rx="9" fill="#eef2ff" stroke="#6366f1" stroke-width="1.5"></rect>
-      <text x="529" y="60" text-anchor="middle" font-size="12.5" font-weight="700" fill="#3730a3">③ 造句法兜底</text>
-      <text x="529" y="77" text-anchor="middle" font-size="11" fill="#4338ca">造出的句子要贴合、要唯一</text>
-      <line x1="16" y1="104" x2="624" y2="104" stroke="#e2e8f0" stroke-width="1.4"></line>
-      <text x="320" y="126" text-anchor="middle" font-size="13" font-weight="700" fill="#334155">考点地图：认准「关系类型」，再横向比对选项</text>
-      <rect x="16" y="140" width="190" height="58" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="1.4"></rect>
-      <text x="111" y="162" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1e3a8a">集合关系</text>
-      <text x="111" y="181" text-anchor="middle" font-size="10.5" fill="#1d4ed8">全同 · 包含 · 交叉 · 并列</text>
-      <rect x="225" y="140" width="190" height="58" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.4"></rect>
-      <text x="320" y="162" text-anchor="middle" font-size="12.5" font-weight="700" fill="#92400e">逻辑关系</text>
-      <text x="320" y="181" text-anchor="middle" font-size="10.5" fill="#b45309">因果 · 条件 · 目的 · 顺承</text>
-      <rect x="434" y="140" width="190" height="58" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="1.4"></rect>
-      <text x="529" y="162" text-anchor="middle" font-size="12.5" font-weight="700" fill="#065f46">言语关系</text>
-      <text x="529" y="181" text-anchor="middle" font-size="10.5" fill="#047857">近反义 · 释义 · 象征比喻</text>
-      <rect x="16" y="208" width="190" height="58" rx="8" fill="#ede9fe" stroke="#8b5cf6" stroke-width="1.4"></rect>
-      <text x="111" y="230" text-anchor="middle" font-size="12.5" font-weight="700" fill="#5b21b6">常识 · 对应</text>
-      <text x="111" y="249" text-anchor="middle" font-size="10.5" fill="#6d28d9">材料 · 功能 · 时间 · 地点</text>
-      <rect x="225" y="208" width="190" height="58" rx="8" fill="#fce7f3" stroke="#ec4899" stroke-width="1.4"></rect>
-      <text x="320" y="230" text-anchor="middle" font-size="12.5" font-weight="700" fill="#9d174d">词句结构</text>
-      <text x="320" y="249" text-anchor="middle" font-size="10.5" fill="#be185d">主谓 · 动宾 · 偏正</text>
-      <rect x="434" y="208" width="190" height="58" rx="8" fill="#e2e8f0" stroke="#64748b" stroke-width="1.4"></rect>
-      <text x="529" y="230" text-anchor="middle" font-size="12.5" font-weight="700" fill="#334155">二级辨析</text>
-      <text x="529" y="249" text-anchor="middle" font-size="10.5" fill="#475569">命名 · 特征 · 职业 · 位置 · 依据</text>
-      <text x="320" y="286" text-anchor="middle" font-size="12" fill="#475569">考点碎是这门题的特点：不要凭语感，先把「关系类型」认准</text>
-    </svg>
-    <figcaption>图：类比推理的做题顺序与六大考点家族 —— 顺序错了再努力也白搭</figcaption>
-  </figure>
-</template>
+<div class="container">
 
-</header>
+  <!-- 总览 -->
+  <div class="section c-blue" id="nav">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">📋</div>
+      <div class="section-title">备考认知 · 考查形式 · 做题流程</div>
+      <span class="section-tag tag-hot">总览</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="key-box">
+        <b>这门题的特点：</b>题目短小、非常易读、做得也快。但<b>考点碎、常结合常识考查</b>，所以实际做题难度并不低。
+      </div>
+      <div class="block">
+        <div class="block-title">要提分必须突破的 3 件事</div>
+        <ul class="point-list">
+          <li><b>务必明确做题核心原则</b>——常态思维、先横后纵、先整体后局部。</li>
+          <li><b>弱化主观性想法，强化常考考点的记忆和使用</b>——不要凭语感，先认准「关系类型」。</li>
+          <li><b>边做题边积累常识</b>——地名别称、历史人物、成语典故、动植物分类，积累得越多越稳。</li>
+        </ul>
+      </div>
+      <div class="block">
+        <div class="block-title">考查形式（三种出题壳子）</div>
+        <table class="mini-table">
+          <tr><th>形式</th><th>样子</th><th>要点</th></tr>
+          <tr><td><b>两项式</b></td><td>龋齿 : 嗜食甜品</td><td>最常见，两个词直接比</td></tr>
+          <tr><td><b>三项式</b></td><td>路由器 : 连接 : 网络</td><td>三个词要两两看，先定 A 与 B、再看 B 与 C</td></tr>
+          <tr><td><b>括号式</b></td><td>桌子 之于（　）相当于 车轮 之于（　）</td><td>把选项代进去，变成两个两项式</td></tr>
+        </table>
+        <div class="tip-box">三项式与括号式本质都是「两项式的组合」—— 拆成两两的配对逐个验证即可。</div>
+      </div>
+      <div class="block">
+        <div class="block-title">做题流程（顺序固定，别乱）</div>
+        <div class="formula-box">
+          <span class="formula">① 先用常考关系解题</span>（直接定关系 ／ 通过造句辅助定关系）<br>
+          <span class="formula">② 无关系、或判断不出关系 → 再用造句法</span><br>
+          <span class="formula">③ 关系定下来后 → 才轮到二级辨析</span>
+        </div>
+        <div class="warn-box">
+          <b>两条纪律（最容易踩坑）：</b><br>
+          ① <b>做题不能直接用二级辨析</b>—— 一定要先用基础考点解题，<b>无唯一项</b>时再考虑二级辨析。<br>
+          ② <b>条件关系有优先级</b>—— 题干出现明显的条件关系提示词（则、就、必、不…不、才），<b>优先</b>考虑条件关系；<br>
+          题干没有明显提示词时，<b>不要去硬找隐含条件</b>，看出什么关系就用什么关系。
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">考点家族速览</div>
+        <table class="mini-table">
+          <tr><th>家族</th><th>包含</th></tr>
+          <tr><td><b>核心原则</b></td><td>常态思维 · 先横后纵 · 先整体后局部</td></tr>
+          <tr><td><b>逻辑关系</b>（8 类）</td><td>全同 · 全异 · 种属 · 交叉 · 顺承 · 因果 · 目的 · 条件</td></tr>
+          <tr><td><b>经验常识</b>（8 类）</td><td>功能 · 组成 · 加工 · 命名 · 特征 · 职业 · 位置 · 依据</td></tr>
+          <tr><td><b>言语关系</b></td><td>近反义 · 结合逻辑关系 · 词句结构 · 释义 · 指代象征 · 成语拆分 · 长诗句</td></tr>
+          <tr><td><b>造句法</b></td><td>看不出常考关系时的兜底办法</td></tr>
+        </table>
+        <div class="key-box"><b>这 4 个关系有个共同特征：题干出现多个名词</b> → 全同、全异、种属、交叉。看到一组名词，先往这四个里想。</div>
+        <div class="tip-box">初学时导图的记忆负担确实有点大——<b>理解着记、频繁回看</b>，熟练度会自然上来。</div>
+      </div>
+      <div class="block">
+        <div class="block-title">还有一类：纯常识（公式类）</div>
+        <div class="sub-point">题干看不出关系、也不靠背诵，而是考<b>初高中的常识公式</b>（物理、经济、数学）。先想公式，再比对公式的结构（积 / 差 / 商）。</div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 1 · 纯常识（公式）<span class="src">2024 浙江事业单位</span></div>
+        <div class="example-body">
+          <div class="example-q">质量：密度：体积</div>
+          <div class="example-opts"><span>A. 利润：售价：进价</span><span>B. 位移：速度：时间</span><span>C. 浓度：溶液：溶质</span><span>D. 集合：子集：元素</span></div>
+          <div class="example-answer">
+            <b>解析：</b>质量 = 密度 × 体积（中间量 = 两侧量<b>相乘</b>）。<br>
+            B 位移 = 速度 × 时间 → 同样是「中间量等于两侧量之积」，一致；<br>
+            A 利润 = 售价 − 进价（是<b>差</b>）；C 浓度 = 溶质 ÷ 溶液（是<b>商</b>）；D 是包含关系、没有公式。<br>
+            <span class="correct">答案：B</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-<main id="main"></main>
+  <!-- 一、核心原则 -->
+  <div class="section c-green" id="s0">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">🎯</div>
+      <div class="section-title">一、三条核心原则</div>
+      <span class="section-tag tag-hot">先记住</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="block">
+        <div class="block-title">1. 三条原则（做题前先入脑）</div>
+        <ul class="point-list">
+          <li><b>① 常态思维</b> —— 不要考虑极端情况，<b>按常态思维做题就行</b>。<br>
+            <span class="sub-point">考「苹果：水果」这种常识关系时，不要去纠结「苹果也可以是品牌名」这类极端理解。</span></li>
+          <li><b>② 先横后纵</b> —— 先看<b>横向</b>（题干两个词之间）的关系；横向找不出答案时，再对比<b>纵向</b>（题干与选项之间）。<br>
+            <span class="sub-point">题干「西瓜：水果」先定横向是种属关系，再去选项里找同为种属关系的一项；若多项都符合，再用纵向的词性 / 色彩区分。</span></li>
+          <li><b>③ 先整体后局部</b> —— 先把题干<b>冒号前后当成两个主体</b>对比、观察关系；整体看不出再<b>拆开看</b>（拆字 / 拆词）。<br>
+            <span class="sub-point">「铁路：公路」先整体看（并列）；整体无解时，再把「铁 / 公」这类字拆开比。</span></li>
+        </ul>
+        <div class="tip-box">
+          <b>横向一直定不出唯一答案怎么办？</b>→ 走「<b>纵向对比</b>」：比同一范畴（抽象 / 具体、同一领域、内 / 外、积极 / 消极）、
+          比人工与自然、比词性与结构。<b>具体用法与例题见文末「易错点与做题纪律」。</b>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 1 · 先横后纵（反义）<span class="src">超格 3+2 核心原则</span></div>
+        <div class="example-body">
+          <div class="example-q">吝啬：大方</div>
+          <div class="example-opts"><span>A. 贪婪：善良</span><span>B. 节约：浪费</span></div>
+          <div class="example-answer">
+            <b>解析：</b>横向看，题干是<b>反义关系</b>，且两个词都在描述「对财物 / 用度的态度」这同一个维度。<br>
+            A「贪婪」讲的是对财物的贪求，「善良」讲的是品德，<b>不是同一维度</b>，构不成反义；<br>
+            B「节约」与「浪费」正是同一维度上的反义。<br>
+            <span class="correct">答案：B</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 2 · 先整体后局部<span class="src">超格 3+2 核心原则</span></div>
+        <div class="example-body">
+          <div class="example-q">声东：击西</div>
+          <div class="example-opts"><span>A. 围魏：救赵</span><span>B. 说东：道西</span></div>
+          <div class="example-answer">
+            <b>解析：</b>先整体：「声东」是制造假象、「击西」是真实攻击，<b>前者是手段、后者是目的</b>。<br>
+            A「围魏」是手段、「救赵」是目的，整体关系一致；<br>
+            B「说东」「道西」是两个并列的动作（说三道四），没有手段与目的之分。<br>
+            <span class="correct">答案：A</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
+  <!-- 1. 全同关系 -->
+  <div class="section c-blue" id="s1">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">＝</div>
+      <div class="section-title">二 · 1　全同关系</div>
+      <span class="section-tag tag-hot">必背</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="block">
+        <div class="block-title">1. 含义与判断标准</div>
+        <div class="key-box"><b>判断标准：</b>两个概念<b>完全相同</b>——同一个事物、只是叫法不同。</div>
+        <div class="formula-box">
+          <span class="formula">示例</span>　麦克风：话筒　西红柿：番茄　纸鸢：风筝　芝麻：脂麻
+        </div>
+        <div class="sub-point">脂麻就是芝麻，又称胡麻、油麻。这类「一眼看是两种东西、其实是一个东西」的题，几乎每年都考。</div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 1 · 全同关系<span class="src">2025 天津事业单位</span></div>
+        <div class="example-body">
+          <div class="example-q">纸鸢：风筝</div>
+          <div class="example-opts"><span>A. 芝麻：脂麻</span><span>B. 竹筏：竹子</span><span>C. 骨架：木头</span><span>D. 白酒：酒精</span></div>
+          <div class="example-answer">
+            <b>解析：</b>纸鸢是风筝的旧称，二者<b>全同</b>。<br>
+            A 脂麻即芝麻（又称胡麻、油麻），也是全同；<br>
+            B 竹筏由竹子做成（加工 / 组成）；C 骨架可以由木头做成（材料）；D 白酒是含酒精的饮品，酒精只是成分之一（组成）。<br>
+            <span class="correct">答案：A</span>
+          </div>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">2. 全同关系知识积累（直接背）</div>
+        <table class="mini-table">
+          <tr><th>词对</th><th>词对</th></tr>
+          <tr><td>属相：生肖（2024 国考）</td><td>刘彻：汉武帝（2021 重庆）</td></tr>
+          <tr><td>朱棣：明成祖（2021 重庆）</td><td>赵匡胤：宋太祖（2021 重庆）</td></tr>
+          <tr><td>纸鸢：风筝（2023 湖北）</td><td>镇江：京口（2024 河南）</td></tr>
+          <tr><td>江南话：江浙话（2023 福建）</td><td>广州：羊城（2021 辽宁）</td></tr>
+          <tr><td>成都：蓉城（2021 辽宁）</td><td>南京：金陵（2022 福建）</td></tr>
+          <tr><td>合肥：庐州（2021 重庆）</td><td>桂：广西（2021 山东）</td></tr>
+          <tr><td>西红柿：番茄（2020 安徽）</td><td>马达：发动机（2020 安徽）</td></tr>
+          <tr><td>引擎：发动机（2024 河南）</td><td>分母：除数（2019 国考）</td></tr>
+          <tr><td>百分比：百分率（2024 重庆）</td><td>牙婆：人贩子（2024 河北）</td></tr>
+          <tr><td>益母草：红花艾（2023 内蒙古）</td><td>银杏：公孙木（2022 青海）</td></tr>
+          <tr><td>夜宵：宵夜（2022 福建）</td><td>生日：生辰（2022 福建）</td></tr>
+          <tr><td>岳父：泰山（2022 浙江）</td><td>考拉：树袋熊（2022 浙江）</td></tr>
+          <tr><td>杜鹃花：映山红（2021 山东）</td><td>牵牛花：喇叭花（2020 联考）</td></tr>
+          <tr><td>荷花：芙蕖（2019 四川）</td><td>荷花：菡萏（2019 四川）</td></tr>
+          <tr><td>乞巧节：七夕节（2020 联考）</td><td>矮瓜：茄子（2016 四川）</td></tr>
+          <tr><td>犬子：儿子（2015 江西）</td><td>芝麻：脂麻（2015 吉林）</td></tr>
+        </table>
+        <div class="key-box">
+          <b>规律：</b>地名别称（羊城 / 蓉城 / 金陵 / 京口 / 庐州）、历史人物庙号与本名、学名俗名（西红柿 / 番茄、考拉 / 树袋熊）、
+          外来语音译（马达 / 引擎）、拆字合称（桂：广西）—— 这五类就是全同关系的高频来源。
+        </div>
+      </div>
+    </div>
+  </div>
 
-  <script data-page-shell src="../../assets/page-shell.js"></script>
-<script data-study-hub-script src="../../assets/hub-nav.js"></script>
+  <!-- 2. 全异关系 -->
+  <div class="section c-blue" id="s2">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">⧗</div>
+      <div class="section-title">二 · 2　全异关系</div>
+      <span class="section-tag tag-hot">必背</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="block">
+        <div class="block-title">1. 含义与判断标准</div>
+        <div class="key-box"><b>判断标准：</b>针对<b>同一类事物</b>的分类，两个概念<b>没有交集</b>。</div>
+        <div class="formula-box">
+          <span class="formula">示例</span>　成年人：未成年人　香蕉：苹果　吸尘器：加湿器　土豆：香菜
+        </div>
+        <div class="warn-box">注意：全异一定要是<b>「同一大类下的分类」</b>——「卫生纸：猫」这种硬凑的两个词，不是全异。</div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 1 · 全异关系<span class="src">2023 安徽事业单位</span></div>
+        <div class="example-body">
+          <div class="example-q">吸尘器：加湿器</div>
+          <div class="example-opts"><span>A. 土豆：香菜</span><span>B. 除螨仪：螨虫</span><span>C. 水晶：宝石</span><span>D. 牙签：牙齿</span></div>
+          <div class="example-answer">
+            <b>解析：</b>吸尘器与加湿器都是<b>家用电器</b>，功能不同、互不包含 → 全异（并列）。<br>
+            A 土豆与香菜都是<b>食材</b>，同属一类、互不包含 → 全异，一致；<br>
+            B 除螨仪用来清理螨虫（对象），D 牙签用来剔牙齿（对象）——都不是并列；<br>
+            C 水晶与宝石有交集（部分水晶属宝石），是交叉。<br>
+            <span class="correct">答案：A</span>
+          </div>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">2. 矛盾全异 与 反对全异（第一层二级辨析）</div>
+        <table class="mini-table">
+          <tr><th>类型</th><th>判断</th><th>例子</th></tr>
+          <tr><td><b>矛盾全异</b></td><td>针对同一类事物的分类<b>只有 2 种</b>情况（非此即彼）</td><td>成年人：未成年人　金属：非金属　男：女　生：死</td></tr>
+          <tr><td><b>反对全异</b></td><td>针对同一类事物的分类<b>有第 3 种</b>情况</td><td>细菌：真菌（还有病毒）　蛾眉月：下弦月　苹果：香蕉</td></tr>
+        </table>
+        <div class="key-box">
+          <b>矛盾全异积累（按类别背）：</b><br>
+          <b>【是和非】</b>合法收入：非法收入　合法行为：非法行为　常规问题：非常规问题　盈利：非盈利　金属：非金属<br>
+          <b>【有和无】</b>有形损耗：无形损耗　有理数：无理数　有机物：无机物<br>
+          <b>【硬和软】</b>软实力：硬实力　软件：硬件<br>
+          <b>【阴和阳】</b>阴：阳　阴离子：阳离子<br>
+          <b>【真和假】</b>真：伪　真分数：假分数<br>
+          <b>【自然和人造】</b>自然光源：人造光源<br>
+          <b>【实和虚】</b>实体经济：虚拟经济<br>
+          <b>【单字】</b>曲：直　动：静　生：死　男：女
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 2 · 矛盾全异<span class="src">2022 联考</span></div>
+        <div class="example-body">
+          <div class="example-q">非法收入：合法收入</div>
+          <div class="example-opts"><span>A. 期货交易：期权交易</span><span>B. 物质资本：人力资本</span><span>C. 国有经济：私营经济</span><span>D. 有偿服务：无偿服务</span></div>
+          <div class="example-answer">
+            <b>解析：</b>「收入」按「是否合法」分类只有两种 → <b>矛盾全异</b>。<br>
+            D「服务」按「是否有偿」分类也只有两种 → 矛盾全异，一致；<br>
+            A、B、C 三项都是并列但还有第三种情况（反对全异）。<br>
+            <span class="correct">答案：D</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 3 · 反对全异<span class="src">2025 联考（24% 正确率）</span></div>
+        <div class="example-body">
+          <div class="example-q">细菌：真菌</div>
+          <div class="example-opts"><span>A. 鸳：鸯</span><span>B. 地下水：饮用水</span><span>C. 原子：电子</span><span>D. 蛾眉月：下弦月</span></div>
+          <div class="example-answer">
+            <b>解析：</b>细菌与真菌都是<b>微生物</b>下的不同类群，彼此没有交集，且还有第三种（病毒）→ <b>反对全异</b>。<br>
+            D 蛾眉月与下弦月都是<b>月相</b>下的不同形态，同样没有交集、还有第三种（满月等）→ 一致；<br>
+            A「鸳」与「鸯」是鸳鸯这一种鸟的雌雄个体，不是「同一大类下的两种事物」，构不成分类；<br>
+            B 地下水与饮用水有交集（交叉）；C 电子是原子的组成部分（组成）。<br>
+            <span class="correct">答案：D</span>
+          </div>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">3. 二级辨析 ①：是否有顺序</div>
+        <div class="sub-point">两个（多个）并列概念之间，<b>是否紧密衔接、有没有固定先后顺序</b>。</div>
+        <div class="formula-box"><span class="formula">示例</span>　锁骨：肋骨：坐骨（同一层级的人体骨骼，无固定顺序）　酉时：戌时：亥时（十二时辰，有固定顺序）</div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 4 · 是否为并列的关系<span class="src">2024 联考</span></div>
+        <div class="example-body">
+          <div class="example-q">锁骨：肋骨：坐骨</div>
+          <div class="example-opts"><span>A. 头脑：头皮：头发</span><span>B. 腹腔：口腔：鼻腔</span><span>C. 盲肠：大肠：直肠</span><span>D. 颈椎：胸椎：腰椎</span></div>
+          <div class="example-answer">
+            <b>解析：</b>锁骨、肋骨、坐骨是<b>三种并列的骨</b>，彼此没有包含关系，也没有固定先后。<br>
+            D 颈椎、胸椎、腰椎都是<b>椎骨</b>，并列且无包含 → 一致；<br>
+            A「头皮」在「头脑」上、「头发」长在头皮上 → 层级 / 组成；<br>
+            B 三个「腔」虽并列，但层次上并不统一；C 盲肠、直肠都是大肠的一部分 → 组成关系。<br>
+            <span class="correct">答案：D</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 5 · 有固定顺序的并列<span class="src">2022 联考（50% 正确率）</span></div>
+        <div class="example-body">
+          <div class="example-q">酉时：戌时：亥时</div>
+          <div class="example-opts"><span>A. 立春：立秋：立冬</span><span>B. 颔联：颈联：尾联</span><span>C. 口琴：古琴：胡琴</span><span>D. 吴语：粤语：软语</span></div>
+          <div class="example-answer">
+            <b>解析：</b>酉、戌、亥是十二时辰中<b>紧密相连</b>的三个时辰，既有并列、又有固定先后。<br>
+            B 颔联、颈联、尾联是律诗四联中的第二、三、四联，同样紧密相连 → 一致；<br>
+            A 立春、立秋、立冬之间并不相邻（跳过了大量节气）；C 都是乐器、无顺序；D 都是方言 / 语类、无顺序。<br>
+            <span class="correct">答案：B</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 6 · 隐含顺序（天干）<span class="src">2021 联考（53%）</span></div>
+        <div class="example-body">
+          <div class="example-q">戊：己：庚</div>
+          <div class="example-opts"><span>A. 钠：镁：铝</span><span>B. 寅：卯：巳</span><span>C. 牛：虎：龙</span><span>D. 秦：汉：隋</span></div>
+          <div class="example-answer">
+            <b>解析：</b>戊、己、庚是<b>天干中紧挨着的三个</b>——既有固定顺序，又必须<b>连续</b>。<br>
+            A 钠、镁、铝在元素周期表中正好是紧挨着的三个 → 一致；<br>
+            B 寅、卯、巳中间缺了「辰」；C 牛、虎、龙对应丑、寅、辰，中间缺了「兔」；<br>
+            D 秦、汉、隋之间隔了大量朝代，不连续。<br>
+            <span class="correct">答案：A</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 7 · 同一大类下的并列<span class="src">2024 山西纪委监委（60%）</span></div>
+        <div class="example-body">
+          <div class="example-q">卧室：书房：客厅</div>
+          <div class="example-opts"><span>A. 牙齿：牙龈：牙根</span><span>B. 川剧：蒲剧：锡剧</span><span>C. 桌面：桌布：桌腿</span><span>D. 教室：讲台：课桌</span></div>
+          <div class="example-answer">
+            <b>解析：</b>卧室、书房、客厅是住宅中<b>功能不同的房间</b>，彼此并列、互不包含。<br>
+            B 川剧、蒲剧、锡剧是并列的不同剧种 → 一致；<br>
+            A 牙龈、牙根是牙齿的组成部分；C 桌面、桌腿是桌子的部件，桌布是附属物；D 讲台、课桌是教室里的陈设。<br>
+            <span class="correct">答案：B</span>
+          </div>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">4. 二级辨析 ②：不同层级全异</div>
+        <div class="sub-point">看着像并列，其实<b>一个概念是「个体 / 子类」，另一个概念是「同一大类下的另一个子类」</b>，二者不在一个层级上。</div>
+        <div class="formula-box"><span class="formula">示例</span>　青蛙：哺乳动物（青蛙是两栖动物，与哺乳动物同一层级）　狗：植物　中国：发达国家　自行车：机动车　金星：恒星</div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 8 · 不同层级全异<span class="src">2023 辽宁事业单位（58%）</span></div>
+        <div class="example-body">
+          <div class="example-q">青蛙：哺乳动物</div>
+          <div class="example-opts"><span>A. 软件：计算机</span><span>B. 钢琴：铜管乐器</span><span>C. 奇数：自然数</span><span>D. 火星：太阳系</span></div>
+          <div class="example-answer">
+            <b>解析：</b>青蛙是<b>两栖动物</b>，与哺乳动物同属脊椎动物的不同类群，二者全异（青蛙不是哺乳动物）。<br>
+            B 钢琴是<b>键盘乐器</b>，与铜管乐器同属乐器的不同类群，全异 → 一致；<br>
+            A 软件是计算机的组成部分（组成）；C 奇数属于自然数（种属）；D 火星属于太阳系（种属）。<br>
+            <span class="correct">答案：B</span>
+          </div>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">5. 二级辨析 ③：动力来源</div>
+        <div class="sub-point">并列的两个事物，看它们的<b>动力从哪来</b>是否一致（人力 / 非人力）。</div>
+        <div class="formula-box"><span class="formula">示例</span>　飞机：汽车 → 动力都来自「<b>非人力</b>」</div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 9 · 动力来源<span class="src">2020 山东</span></div>
+        <div class="example-body">
+          <div class="example-q">飞机：汽车</div>
+          <div class="example-opts"><span>A. 电瓶车：自行车</span><span>B. 高铁：有轨电车</span></div>
+          <div class="example-answer">
+            <b>解析：</b>飞机与汽车都是交通工具，且动力都来自<b>非人力</b>（发动机 / 燃料）。<br>
+            B 高铁与有轨电车也都是电力驱动的交通工具，动力来源一致；<br>
+            A「电瓶车」靠电力、「自行车」靠人力，<b>动力来源不一致</b>。<br>
+            <span class="correct">答案：B</span>
+          </div>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">6. 二级辨析 ④：概念之间存在转化</div>
+        <div class="sub-point">并列的多个概念其实是<b>同一主体的不同阶段 / 不同身份</b>，可以互相转化。</div>
+        <div class="formula-box"><span class="formula">示例</span>　孙子：父亲：祖父（同一个人随辈分变化，身份在转化）　昨天：今天：明天（同一维度的推移）</div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 10 · 概念之间的转化<span class="src">2020 联考</span></div>
+        <div class="example-body">
+          <div class="example-q">孙子：父亲：祖父</div>
+          <div class="example-opts"><span>A. 昨天：今天：明天</span><span>B. 上旬：中旬：下旬</span></div>
+          <div class="example-answer">
+            <b>解析：</b>孙子、父亲、祖父这三个身份，可以由<b>同一个人</b>在不同阶段依次获得，是<b>同一主体的转化</b>。<br>
+            A 昨天、今天、明天同样是同一时间维度的推移（今天的我会变成明天的我）→ 一致；<br>
+            B 上旬、中旬、下旬是一个月内<b>三个不同的时段</b>，不是同一主体的转化。<br>
+            <span class="correct">答案：A</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. 种属关系 -->
+  <div class="section c-blue" id="s3">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">⊂</div>
+      <div class="section-title">二 · 3　种属关系</div>
+      <span class="section-tag tag-hot">必背</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="block">
+        <div class="block-title">1. 含义与判断标准</div>
+        <div class="key-box">
+          <b>含义：</b>一个小概念<b>完全属于</b>另一个大概念。<br>
+          <b>判断标准：</b>能造句「<b>A 是 B（的一种 / 一个）</b>」。
+        </div>
+        <div class="formula-box">
+          <span class="formula">示例</span>　单人床：床　狗：动物　劳动者：工人：瓦工　车：机动车：货车
+        </div>
+        <div class="tip-box">三个词时，通常要<b>逐级</b>判断：后一个包含前一个，一层套一层。</div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 1 · 逐级种属<span class="src">2025 山东事业单位</span></div>
+        <div class="example-body">
+          <div class="example-q">劳动者：工人：瓦工</div>
+          <div class="example-opts"><span>A. 动物：老虎：猫</span><span>B. 车：机动车：卡车</span><span>C. 新闻：报社：新华社</span><span>D. 语言：英语：听力</span></div>
+          <div class="example-answer">
+            <b>解析：</b>瓦工是工人的一种，工人是劳动者的一种 → <b>逐级种属</b>。<br>
+            B 卡车是机动车的一种，机动车是车的一种 → 一致；<br>
+            A「猫」不是老虎的一种；C 报社、新华社是机构，与新闻不是种属；D 听力不是英语的一种。<br>
+            <span class="correct">答案：B</span>
+          </div>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">2. 二级辨析 ①：小概念是特指还是泛指</div>
+        <div class="sub-point">
+          <b>特指</b>：一说这个词就知道是具体哪一个（唯一、专有名词）→ 长白山：火山、巢湖：淡水湖。<br>
+          <b>泛指</b>：这一类事物太多，不知道具体是哪一个 → 皇陵：古建筑。
+        </div>
+        <div class="key-box"><b>常见特指概念：山名、河流名、名人、名胜古迹、地名、国名。</b></div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 2 · 特指 / 泛指<span class="src">2023 浙江</span></div>
+        <div class="example-body">
+          <div class="example-q">长白山：火山</div>
+          <div class="example-opts"><span>A. 皇陵：古建筑</span><span>B. 巢湖：淡水湖</span><span>C. 连衣裙：丝绸</span><span>D. 火箭军：军人</span></div>
+          <div class="example-answer">
+            <b>解析：</b>长白山是<b>特指</b>的一座山（一说就知道是哪一座），且长白山是火山。<br>
+            B 巢湖也是<b>特指</b>的一个湖（位于安徽），且巢湖是淡水湖 → 一致；<br>
+            A 皇陵是<b>泛指</b>（皇陵有很多座，不知道指哪一座）；<br>
+            C 丝绸是连衣裙的材料（加工 / 材料）；D 是组成关系（火箭军由军人组成）。<br>
+            <span class="correct">答案：B</span>
+          </div>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">3. 二级辨析 ②：叠加修饰词</div>
+        <div class="sub-point">题干在同一核心词上<b>一层一层加修饰语</b>，做题时盯住「加的是什么维度的修饰」。</div>
+        <div class="formula-box"><span class="formula">示例</span>　制造 → 中国制造 → 智能化中国制造（先加地域，再加特征）<br><span class="formula">示例</span>　批评 → 自我批评 → 剖析式自我批评（先加对象，再加方式）</div>
+      </div>
+      <div class="block">
+        <div class="block-title">4. 三项式技巧：先看是「层层套」还是「两并列」</div>
+        <div class="sub-point">
+          <b>层层套</b>：第三词 ⊂ 第二词 ⊂ 第一词（古代小说 ⊂ 古代文学 ⊂ 文学）<br>
+          <b>两并列</b>：第二、三词都是第一词下的不同类别（①②③、甲乙丙 都是「编号」）
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 3 · 层层套的逐级种属<span class="src">2023 山东（61%）</span></div>
+        <div class="example-body">
+          <div class="example-q">文学：古代文学：古代小说</div>
+          <div class="example-opts"><span>A. 花：花苞：花蕊</span><span>B. 科学：基础科学：数学</span><span>C. 地球：亚洲：中国</span><span>D. 全日制大学生：大学生：学生</span></div>
+          <div class="example-answer">
+            <b>解析：</b>古代文学是文学的一种，古代小说是古代文学的一种 → <b>层层种属</b>。<br>
+            B 基础科学是科学的一种，数学是基础科学的一门 → 一致；<br>
+            A 花苞、花蕊是花的组成部分（组成）；C 亚洲、中国是组成（且方向反了）；D 语序是「小 → 大」，与题干相反。<br>
+            <span class="correct">答案：B</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 4 · 两并列（都是第一词的类别）<span class="src">2024 联考（51%）</span></div>
+        <div class="example-body">
+          <div class="example-q">编号：①②③：甲乙丙</div>
+          <div class="example-opts"><span>A. 热水器：进水管：出水管</span><span>B. 定价：生产成本：营销成本</span><span>C. 字母：大写字母：小写字母</span><span>D. 防晒：室内躲避：涂防晒霜</span></div>
+          <div class="example-answer">
+            <b>解析：</b>①②③和甲乙丙都是「编号」的具体形式，二者并列、都从属于第一词 → 种属 + 并列。<br>
+            C 大写字母、小写字母都是「字母」的形式，并列且从属 → 一致；<br>
+            A 进水管、出水管是热水器的组成部件；B 生产成本、营销成本不是「定价」的类别；<br>
+            D 室内躲避、涂防晒霜是防晒的手段。<br>
+            <span class="correct">答案：C</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 5 · 尾缀相同的两并列<span class="src">2025 联考（60%）</span></div>
+        <div class="example-body">
+          <div class="example-q">购票：自助购票：窗口购票</div>
+          <div class="example-opts"><span>A. 卖货：寄卖货物：赊卖货物</span><span>B. 灾害：抵御灾害：躲避灾害</span><span>C. 救助：提供现金：发放实物</span><span>D. 公司：银行贷款：股票筹资</span></div>
+          <div class="example-answer">
+            <b>解析：</b>自助购票、窗口购票都是「购票」的方式，且<b>都保留「购票」二字</b>（尾缀相同）。<br>
+            A 寄卖货物、赊卖货物都保留「卖货」二字，且都是卖货的方式 → 一致；<br>
+            B 抵御灾害、躲避灾害是<b>对付</b>灾害的方式，不是灾害的种类（关系方向不同）；<br>
+            C、D 的第二、三词都不含第一词，不符合「尾缀相同」。<br>
+            <span class="correct">答案：A</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. 交叉关系 -->
+  <div class="section c-blue" id="s4">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">◎</div>
+      <div class="section-title">二 · 4　交叉关系</div>
+      <span class="section-tag tag-high">常考</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="block">
+        <div class="block-title">1. 含义与判断标准（金标准）</div>
+        <div class="key-box"><b>判断标准：</b>两个概念<b>有交集</b>——画成两个<b>相交的圆圈</b>，既有「既是 A 又是 B」的，也有「是 A 不是 B」的。</div>
+        <div class="formula-box">
+          <span class="formula">示例</span>　布鞋：童鞋（既有布做的童鞋，也有非布的童鞋）　男性：护士：男护士
+        </div>
+        <div class="warn-box"><b>难点在识别。</b>交叉关系不会直接告诉你，要靠下面的三条思路去认。</div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 1 · 交叉关系<span class="src">2025 浙江</span></div>
+        <div class="example-body">
+          <div class="example-q">铁皮桶：油桶</div>
+          <div class="example-opts"><span>A. 汤勺：漏勺</span><span>B. 金饰：手镯</span><span>C. 党费：工资</span><span>D. 章鱼：鱿鱼</span></div>
+          <div class="example-answer">
+            <b>解析：</b>「铁皮桶」是按<b>材质</b>说、「油桶」是按<b>用途</b>说，二者<b>尾缀相同（都是「桶」）、从不同角度描述</b> → 交叉（有铁皮的油桶，也有塑料的油桶）。<br>
+            A「汤勺」按用途（盛汤）、「漏勺」按结构（有漏孔），尾缀相同、角度不同 → 交叉，一致；<br>
+            B「金饰」与「手镯」也有交集，但尾缀不同，不符合题干的识别特征；<br>
+            D 章鱼与鱿鱼是并列的不同物种（全异）。<br>
+            <span class="correct">答案：A</span>
+          </div>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">2. 初步识别思路（三条）</div>
+        <ul class="point-list">
+          <li><b>① 尾缀相同，从不同角度描述</b>：酒杯：玻璃杯（功能 / 材质）、素菜：热菜、童鞋：布鞋、铁皮桶：油桶</li>
+          <li><b>② 人的不同身份</b>：女性：作家、编剧：博士、专家：教授：博士、学生：顾客</li>
+          <li><b>③ 两个概念词，又不是前面几种关系</b>：瓷器：茶杯、果汁：冷饮、金饰：手镯、蛋糕：礼物</li>
+        </ul>
+        <div class="tip-box"><b>时间够就验、不够就凭思路定：</b>前两种大概率就是交叉关系，有时间验证更稳妥、没时间可以不验；<b>第三种必须验证</b>。</div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 2 · 三个概念两两交叉<span class="src">2023 河北事业单位</span></div>
+        <div class="example-body">
+          <div class="example-q">上市企业：大型企业：民营企业</div>
+          <div class="example-opts"><span>A. 专家：教授：博士</span><span>B. 上旬：中旬：下旬</span><span>C. 足球：篮球：排球</span><span>D. 海鱼：淡水鱼：海鲜</span></div>
+          <div class="example-answer">
+            <b>解析：</b>「上市」「大型」「民营」是三个<b>不同的划分角度</b>，三个概念两两都能交叉（有上市的大型民营企业）。<br>
+            A 专家、教授、博士也是三个不同角度：有专家是教授，教授多半是博士 → 两两交叉，一致；<br>
+            B 上中下旬互相排斥（全异）；C 三种球类互相排斥（全异）；D 海鱼与淡水鱼互相排斥（全异）。<br>
+            <span class="correct">答案：A</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 3 · 三个词「两同一异」<span class="src">2024 联考</span></div>
+        <div class="example-body">
+          <div class="example-q">陶瓷杯：玻璃杯：咖啡杯</div>
+          <div class="example-opts"><span>A. 摇篮曲：催眠曲：钢琴曲</span><span>B. 柳叶剑：桃木剑：长柄剑</span><span>C. 牡丹园：芍药园：百花园</span><span>D. 羊皮鞋：棉布鞋：儿童鞋</span></div>
+          <div class="example-answer">
+            <b>解析：</b>「陶瓷杯」「玻璃杯」都是按<b>材质</b>说，「咖啡杯」是按<b>用途</b>说 → 尾缀相同、前两个同一维度、第三个换维度。<br>
+            D「羊皮鞋」「棉布鞋」都按材质，「儿童鞋」按使用对象 → 与题干的「两同一异」完全对应；<br>
+            A 三个词分别按场景、功能、演奏形式分，维度各不相同；<br>
+            B「柳叶剑」「长柄剑」都按外形、中间夹一个按材质，顺序不符；C 是种植内容 + 数量特征。<br>
+            <span class="correct">答案：D</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 4 · 尾缀相同的两角度交叉<span class="src">2022 事业单位联考（38%）</span></div>
+        <div class="example-body">
+          <div class="example-q">民营企业：制造企业</div>
+          <div class="example-opts"><span>A. 原生灾害：次生灾害</span><span>B. 遗嘱继承：法定继承</span><span>C. 三元函数：二次函数</span><span>D. 雕版印刷：非物质文化遗产</span></div>
+          <div class="example-answer">
+            <b>解析：</b>「民营企业」按<b>所有制</b>分、「制造企业」按<b>行业</b>分，尾缀都是「企业」，二者有交集 → 交叉。<br>
+            C「三元函数」按变量个数分、「二次函数」按次数分，尾缀都是「函数」，也有交集（如 xyz² 之类）→ 一致；<br>
+            A 原生灾害与次生灾害互不包含（全异）；B 遗嘱继承与法定继承只有两种情况（矛盾全异）；<br>
+            D 尾缀不同，不符合题干的识别特征。<br>
+            <span class="correct">答案：C</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. 顺承关系 -->
+  <div class="section c-blue" id="s5">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">⏭</div>
+      <div class="section-title">二 · 5　顺承关系</div>
+      <span class="section-tag tag-high">常考</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="block">
+        <div class="block-title">1. 含义与判断标准</div>
+        <div class="key-box"><b>判断标准：</b>题干出现<b>多个有顺序的行为</b>（有先后顺序，缺一不可）。</div>
+        <div class="formula-box">
+          <span class="formula">示例</span>　提交：审核：批准　支付本币：兑换外币：确认汇率
+        </div>
+        <div class="warn-box">先验证<b>顺序对不对</b>——顺序错的选项直接排除，这一步就能筛掉大多数。</div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 1 · 顺承关系<span class="src">2025 国考</span></div>
+        <div class="example-body">
+          <div class="example-q">群众来访：窗口接访：调查督办</div>
+          <div class="example-opts"><span>A. 地面试验：点火飞行：燃料加注</span><span>B. 支付本币：兑换外币：确认汇率</span><span>C. 建造堤坝：潮汐发电：送电入户</span><span>D. 重启谈判：临时休战：边境冲突</span></div>
+          <div class="example-answer">
+            <b>解析：</b>先有群众来访，再有窗口接访，最后调查督办 → 按时间先后排列。<br>
+            C 先建造堤坝，才能潮汐发电，最后送电入户 → 顺序一致；<br>
+            A 应先「燃料加注」再「点火飞行」；B 应先「确认汇率」再「兑换外币」；D 应先「边境冲突」再「临时休战」「重启谈判」——<b>三项顺序全部颠倒</b>。<br>
+            <span class="correct">答案：C</span>
+          </div>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">2. 二级辨析 ①：主体是否一致</div>
+        <div class="sub-point">各环节的<b>动作发出者是不是同一个人 / 同一方</b>。</div>
+        <div class="formula-box">
+          <span class="formula">主体一致</span>　学习菜谱：下厨烹饪：总结经验　通过安检：车站候车：登上列车<br>
+          <span class="formula">主体不同</span>　投寄稿件：编辑排版：读者阅读　发布公告：制作标书：签订合同
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 2 · 主体是否一致<span class="src">2023 联考</span></div>
+        <div class="example-body">
+          <div class="example-q">学习菜谱：下厨烹饪：总结经验</div>
+          <div class="example-opts"><span>A. 通过安检：车站候车：登上列车</span><span>B. 投寄稿件：编辑排版：读者阅读</span><span>C. 发布公告：制作标书：签订合同</span><span>D. 撰写邮件：发送邮件：回复邮件</span></div>
+          <div class="example-answer">
+            <b>解析：</b>学菜谱、烹饪、总结，<b>都是同一个人做的</b>，主体一致，且顺序合理。<br>
+            A 过安检、候车、上车，也全是旅客一个人做的 → 主体一致，一致；<br>
+            B 投寄稿件（作者）、编辑排版（编辑）、读者阅读（读者），主体不同；<br>
+            C 顺序不合理（应先制作标书再发布公告）；D「回复邮件」的通常是对方，主体发生了变化。<br>
+            <span class="correct">答案：A</span>
+          </div>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">3. 二级辨析 ②：事情是否圆满结束</div>
+        <div class="sub-point">整个流程是<b>走完了一个完整闭环</b>，还是<b>中途变卦 / 中断</b>。</div>
+        <div class="formula-box">
+          <span class="formula">圆满结束</span>　预约：核实：兑换　设想：实践：总结<br>
+          <span class="formula">未圆满结束</span>　招聘：培训：辞职
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 3 · 事情是否圆满结束<span class="src">2022 联考</span></div>
+        <div class="example-body">
+          <div class="example-q">预约：核实：兑换</div>
+          <div class="example-opts"><span>A. 设想：实践：总结</span><span>B. 招聘：培训：辞职</span></div>
+          <div class="example-answer">
+            <b>解析：</b>预约 → 核实 → 兑换，是一个<b>走到底、有结果</b>的完整流程。<br>
+            A 设想 → 实践 → 总结，同样是完整闭环、有始有终 → 一致；<br>
+            B 招聘 → 培训 → 辞职，最后一步是「离开」，<b>流程没有圆满结束</b>。<br>
+            <span class="correct">答案：A</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 4 · 是否围绕同一对象走完全程<span class="src">2025 事业单位联考</span></div>
+        <div class="example-body">
+          <div class="example-q">议案提出：审议通过：公布生效</div>
+          <div class="example-opts"><span>A. 危险预警：紧急避让：安全驾驶</span><span>B. 按需采购：产品验收：登记入库</span><span>C. 市场监管：执法检查：责令整改</span><span>D. 问卷调查：设计量表：收集数据</span></div>
+          <div class="example-answer">
+            <b>解析：</b>议案提出 → 审议通过 → 公布生效，是<b>同一个议案</b>从提交到最后落地的完整流程。<br>
+            B 按需采购 → 产品验收 → 登记入库，也是同一批产品从进到入的完整流程 → 一致；<br>
+            A 顺序不当（「安全驾驶」不是流程终点）；C 前两项是监管行为、第三项是处置措施，对象不统一；<br>
+            D 顺序颠倒（应先设计量表再问卷调查）。<br>
+            <span class="correct">答案：B</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 5 · 双方互动的顺承<span class="src">2023 江苏</span></div>
+        <div class="example-body">
+          <div class="example-q">挑战：应战</div>
+          <div class="example-opts"><span>A. 报考：录取</span><span>B. 观察：评估</span><span>C. 抚养：扶养</span><span>D. 超速：限速</span></div>
+          <div class="example-answer">
+            <b>解析：</b>先有人挑战，才有对方应战 → 顺承，且<b>两个动作分属不同主体、互相呼应</b>。<br>
+            A 先报考、后录取，同样是双方（考生 / 学校）彼此呼应的顺承 → 一致；<br>
+            B 观察与评估是同一主体做的；C 抚养（长辈对晚辈）与扶养（同辈之间）是两种相近的养育义务，无先后；<br>
+            D 超速与限速不是先后关系。<br>
+            <span class="correct">答案：A</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. 因果关系 -->
+  <div class="section c-blue" id="s6">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">↯</div>
+      <div class="section-title">二 · 6　因果关系</div>
+      <span class="section-tag tag-hot">必背</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="block">
+        <div class="block-title">1. 含义与判断标准</div>
+        <div class="key-box"><b>判断标准：</b>能用「<b>导致</b>」「<b>所以</b>」造句 —— 前者导致后者。</div>
+        <table class="mini-table">
+          <tr><th>形态</th><th>结构</th><th>示例</th></tr>
+          <tr><td><b>普通因果</b></td><td>一因一果</td><td>下雨：地湿　发炎：发烧</td></tr>
+          <tr><td><b>连锁因果</b></td><td>一因一果再一果</td><td>饮酒：神志不清：车祸</td></tr>
+          <tr><td><b>多因一果</b></td><td>几个原因都能导致同一个结果</td><td>工业排放：滥用农药：水质污染</td></tr>
+        </table>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 1 · 普通因果<span class="src">2025 联考</span></div>
+        <div class="example-body">
+          <div class="example-q">发炎：发烧</div>
+          <div class="example-opts"><span>A. 饥饿：烧烤</span><span>B. 学习：考试</span><span>C. 祭祀：缅怀</span><span>D. 缺铁：贫血</span></div>
+          <div class="example-answer">
+            <b>解析：</b>发炎会导致发烧 → 因果。<br>
+            D 缺铁会导致贫血 → 因果，一致；<br>
+            A 饥饿与烧烤无因果；B 学习不是考试的原因（顺序相反）；C 祭祀是为了缅怀（目的关系）。<br>
+            <span class="correct">答案：D</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 2 · 结果状态在前、原因在后<span class="src">2025 联考</span></div>
+        <div class="example-body">
+          <div class="example-q">衰弱：噪声：听力</div>
+          <div class="example-opts"><span>A. 锻炼：饮食：健康</span><span>B. 杠杆：重力：质量</span><span>C. 降低：摩擦：速度</span><span>D. 气候变暖：冰层融化：环境</span></div>
+          <div class="example-answer">
+            <b>解析：</b>噪声导致听力衰弱 —— 语序是「<b>结果状态 + 原因 + 对象</b>」。<br>
+            C 摩擦导致速度降低 → 「降低（结果状态）+ 摩擦（原因）+ 速度（对象）」，结构完全一致；<br>
+            A 是「两个原因 + 结果」；B 杠杆、重力、质量之间没有因果；D 气候变暖导致冰层融化、进而影响环境，语序不符。<br>
+            <span class="correct">答案：C</span>
+          </div>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">2. 二级辨析 ①：多因一果</div>
+        <div class="sub-point">三个词时，前两个都是原因，<b>各自都能导致</b>第三个结果；注意区别于「连锁因果」。</div>
+        <div class="formula-box"><span class="formula">示例</span>　放养过密：饲喂不当：鱼病发生　发生地基下沉：结构老化：房屋倾斜</div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 3 · 多因一果<span class="src">2024 国考</span></div>
+        <div class="example-body">
+          <div class="example-q">放养过密：饲喂不当：鱼病发生</div>
+          <div class="example-opts"><span>A. 任务繁重：临时加班：积劳成疾</span><span>B. 材料审核：实地考核：评估通过</span><span>C. 地基下沉：结构老化：房屋倾斜</span><span>D. 市场饱和：利润下降：分红减少</span></div>
+          <div class="example-answer">
+            <b>解析：</b>「放养过密」和「饲喂不当」<b>各自都能导致</b>鱼病发生 → 多因一果。<br>
+            C 地基下沉、结构老化都能导致房屋倾斜 → 多因一果，一致；<br>
+            A「任务繁重」导致「临时加班」、再导致「积劳成疾」是一因接一果（连锁）；<br>
+            B 三者为流程顺序（顺承）；D 市场饱和 → 利润下降 → 分红减少也是连锁因果。<br>
+            <span class="correct">答案：C</span>
+          </div>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">3. 二级辨析 ②：原因是人为还是天然</div>
+        <div class="sub-point">起因是<b>人的行为</b>，还是<b>自然现象</b>。涉及自然现象的多考因果。</div>
+        <div class="formula-box">
+          <span class="formula">天然</span>　温室效应：冰山融化：海面上升　连日降雪：道路结冰：出行困难<br>
+          <span class="formula">人为</span>　博览群书：视野开阔：见解深刻　刻苦训练：技能提高：获得金牌
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 4 · 原因是人为还是天然<span class="src">2025 江苏</span></div>
+        <div class="example-body">
+          <div class="example-q">温室效应：冰山融化：海面上升</div>
+          <div class="example-opts"><span>A. 博览群书：视野开阔：见解深刻</span><span>B. 连日降雪：道路结冰：出行困难</span><span>C. 电闪雷鸣：狂风大作：沙尘肆虐</span><span>D. 刻苦训练：技能提高：获得金牌</span></div>
+          <div class="example-answer">
+            <b>解析：</b>温室效应 → 冰山融化 → 海面上升，环环相扣，且成因都是<b>自然 / 天然因素</b>。<br>
+            B 连日降雪 → 道路结冰 → 出行困难，同为天然因素的连锁因果 → 一致；<br>
+            A、D 的起点都是人的行为（博览群书、刻苦训练）；C 三者是并列现象，不成因果链。<br>
+            <span class="correct">答案：B</span>
+          </div>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">4. 二级辨析 ③：结果是好的还是坏的</div>
+        <div class="sub-point">同一类因果里，再看<b>结果的性质</b>是不是同一个方向。</div>
+        <div class="formula-box">
+          <span class="formula">坏结果</span>　酒后驾车：交通事故<br>
+          <span class="formula">好结果</span>　春雨绵绵：五谷丰登
+        </div>
+        <div class="warn-box">这一条经常被忽略：一路看下来「确实是因果」就选了，其实还要看<b>结果好坏是否与题干一致</b>。</div>
+      </div>
+      <div class="block">
+        <div class="block-title">5. 二级辨析 ④：结果是否必然发生</div>
+        <div class="sub-point">前者出现后，后者是<b>一定发生</b>，还是<b>可能发生</b>。</div>
+        <div class="formula-box">
+          <span class="formula">结果必然</span>　摩擦物体：产生热量　嗜烟酗酒：损害健康　春天播种：秋天收获　刻苦勤奋：成绩优秀<br>
+          <span class="formula">结果非必然</span>　认识错误：改正缺点
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. 目的关系 -->
+  <div class="section c-blue" id="s7">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">🎯</div>
+      <div class="section-title">二 · 7　目的关系</div>
+      <span class="section-tag tag-high">常考</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="block">
+        <div class="block-title">1. 含义与判断标准</div>
+        <div class="key-box"><b>判断标准：</b>出现明显的<b>目的</b>，能用「<b>为了</b>」造句 —— 前者（行为 / 方法）是为了后者（目的）。</div>
+        <div class="formula-box">
+          <span class="formula">示例</span>　拍照：留念　促销：提高销量　种树：改善生态　精准脱贫：共同富裕
+        </div>
+        <div class="tip-box"><b>出现「政府提倡的行为」，多考目的关系</b>（低碳排放、轮作休耕、灾害预警…）。</div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 1 · 目的关系<span class="src">2025 联考</span></div>
+        <div class="example-body">
+          <div class="example-q">低碳排放：保护环境</div>
+          <div class="example-opts"><span>A. 候鸟迁徙：气候变化</span><span>B. 昆虫叮咬：过敏反应</span><span>C. 收集数据：调查研究</span><span>D. 滴水成冰：热胀冷缩</span></div>
+          <div class="example-answer">
+            <b>解析：</b>低碳排放是为了保护环境 → 目的关系。<br>
+            C 收集数据是为了调查研究 → 目的关系，一致；<br>
+            A、D 无因果也无目的；B 昆虫叮咬导致过敏反应，是因果关系。<br>
+            <span class="correct">答案：C</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 2 · 三项式里的手段与目的<span class="src">2024 国考</span></div>
+        <div class="example-body">
+          <div class="example-q">轮作休耕：耕地保护：严禁占用</div>
+          <div class="example-opts"><span>A. 植树造林：碳中和：节能减排</span><span>B. 登月计划：空间站：太空探索</span><span>C. 商品交换：国际贸易：技术服务</span><span>D. 观众评选：荣获大奖：出类拔萃</span></div>
+          <div class="example-answer">
+            <b>解析：</b>「轮作休耕」是为了「耕地保护」；而「严禁占用」是另一个<b>并列的手段</b>，同样指向耕地保护。<br>
+            A「植树造林」和「节能减排」都是实现「碳中和」的手段，碳中和是目的 → 一致；<br>
+            B 登月计划与空间站是并列事项，不是手段；C、D 均无手段与目的的关系。<br>
+            <span class="correct">答案：A</span>
+          </div>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">2. 二级辨析：目的能否实现</div>
+        <div class="sub-point">行为本身<b>能不能达到</b>它想要的目的。</div>
+        <div class="formula-box">
+          <span class="formula">不可实现</span>　刻舟：求剑　缘木：求鱼<br>
+          <span class="formula">可实现</span>　围魏：救赵
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 3 · 目的能否实现<span class="src">2023 河北事业单位（51%）</span></div>
+        <div class="example-body">
+          <div class="example-q">刻舟：求剑</div>
+          <div class="example-opts"><span>A. 杯水：车薪</span><span>B. 缘木：求鱼</span><span>C. 画蛇：添足</span><span>D. 围魏：救赵</span></div>
+          <div class="example-answer">
+            <b>解析：</b>「刻舟」是想「求剑」，但在船上刻记号根本找不到剑 → 目的<b>不可能实现</b>。<br>
+            B 爬到树上去找鱼，目的同样不可能实现 → 一致（缘木求鱼 / 刻舟求剑是同一类成语）；<br>
+            D 围魏救赵能达成目的（袭击敌人后方迫使撤退），与题干相反；<br>
+            A「杯水车薪」是力量太小、C「画蛇添足」是多此一举，都不是目的关系。<br>
+            <span class="correct">答案：B</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. 条件关系 -->
+  <div class="section c-blue" id="s8">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">⇄</div>
+      <div class="section-title">二 · 8　条件关系</div>
+      <span class="section-tag tag-hot">必背</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="block">
+        <div class="block-title">1. 含义（充分 / 必要）</div>
+        <table class="mini-table">
+          <tr><th>类型</th><th>一句话理解</th><th>例子</th></tr>
+          <tr><td><b>充分条件</b></td><td><b>有它就行</b>——有 A 一定有 B</td><td>考试：试题　拔罐：杯罐</td></tr>
+          <tr><td><b>必要条件</b></td><td><b>没它不行</b>——没 A 一定没 B</td><td>氧气：生命　水：生命</td></tr>
+        </table>
+        <div class="warn-box">
+          <b>做题纪律（优先级）：</b>题干出现明显的条件关系提示词 → <b>优先</b>考虑条件关系；<br>
+          没有明显提示词时<b>不要硬找隐含条件</b>，看出什么关系就用什么关系。选项里也要先找有明确条件关系的。
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 1 · 必要条件<span class="src">2024 成都事业单位</span></div>
+        <div class="example-body">
+          <div class="example-q">水：生命</div>
+          <div class="example-opts"><span>A. 玩耍：海豚</span><span>B. 空气：人</span><span>C. 动物：食物</span><span>D. 咖喱：西方人</span></div>
+          <div class="example-answer">
+            <b>解析：</b>没有水就没有生命 → 水是生命的<b>必要条件</b>。<br>
+            B 没有空气就没有人 → 空气是人的必要条件，一致；<br>
+            A 玩耍不是海豚存活的条件；C 食物并非「动物」的条件（且方向不对）；D 无逻辑关联。<br>
+            <span class="correct">答案：B</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 2 · 充分条件<span class="src">2025 山东事业单位（46%）</span></div>
+        <div class="example-body">
+          <div class="example-q">考试：试题</div>
+          <div class="example-opts"><span>A. 办公：电脑</span><span>B. 拔罐：杯罐</span><span>C. 航海：帆船</span><span>D. 治疗：药品</span></div>
+          <div class="example-answer">
+            <b>解析：</b>有考试就一定有试题 → 试题是必不可少的，属条件关系。<br>
+            B 有拔罐就一定有杯罐 → 条件关系，一致；<br>
+            A 办公不一定要电脑；C 航海不一定要帆船（现代用轮船）；D 治疗不一定要药品（还能手术）。<br>
+            <span class="correct">答案：B</span>
+          </div>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">2. 常见考查形式 ①：成语俗语</div>
+        <div class="formula-box">
+          <span class="formula">充分条件（出现「必 / 则 / 就 / 便」）</span><br>
+          受人滴水之恩：必当涌泉相报　小不忍：则乱大谋　锲而舍之：朽木不折　水至清：则无鱼<br>
+          <span class="formula">必要条件（出现「不…不」「…才」）</span><br>
+          不入虎穴：焉得虎子　无风：不起浪　知己知彼：百战百胜　不经一事：不长一智
+        </div>
+        <div class="tip-box">看到「则、就、必」先想充分条件；看到「不…不」「才」先想必要条件。</div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 3 · 含「则」的充分条件<span class="src">2023 联考（28%）</span></div>
+        <div class="example-body">
+          <div class="example-q">小不忍：则乱大谋</div>
+          <div class="example-opts"><span>A. 不鸣则已：一鸣惊人</span><span>B. 知己知彼：百战百胜</span><span>C. 锲而舍之：朽木不折</span><span>D. 未雨绸缪：临渴掘井</span></div>
+          <div class="example-answer">
+            <b>解析：</b>「小不忍则乱大谋」= 如果不能忍耐小事，就会扰乱大计划 → <b>假设 / 条件关系</b>。<br>
+            C「锲而舍之，朽木不折」= 如果刻一下就放弃，即使朽木也折不断 → 同样是条件关系，一致；<br>
+            A「不鸣则已，一鸣惊人」是「要么不鸣、一鸣就惊人」的对比，不是条件；<br>
+            B 是必要条件（前面没有「不…不」的结构特征）；D 是反义。<br>
+            <span class="correct">答案：C</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 4 · 「不…不」的必要条件<span class="src">2022 联考（52%）</span></div>
+        <div class="example-body">
+          <div class="example-q">不经一事：不长一智</div>
+          <div class="example-opts"><span>A. 宁为玉碎：不为瓦全</span><span>B. 不入虎穴：安得虎子</span><span>C. 桃李不言：下自成蹊</span><span>D. 有福同享：有难同当</span></div>
+          <div class="example-answer">
+            <b>解析：</b>「不经历一事，就不能增长一智」→ 必要条件（不 A 不 B）。<br>
+            B「不入虎穴，焉得虎子」同样是不 A 就不 B → 一致；<br>
+            A 是选择关系（宁…不…）；C 是因果（桃李不言，自然有人来）；D 是并列。<br>
+            <span class="correct">答案：B</span>
+          </div>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">3. 常见考查形式 ②：日常生活事件</div>
+        <div class="formula-box">
+          <span class="formula">必要条件</span>　水：生命　空气：人<br>
+          <span class="formula">充分条件</span>　考试：试题　拔罐：杯罐　移动：跑步
+        </div>
+        <div class="sub-point">「有前者就一定有后者」→ 充分；「没有前者就一定没有后者」→ 必要。判断时先把方向想清楚。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 1. 功能关系 -->
+  <div class="section c-purple" id="s9">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">🔧</div>
+      <div class="section-title">三 · 1　功能关系</div>
+      <span class="section-tag tag-hot">必背</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="block">
+        <div class="block-title">1. 含义与判断标准</div>
+        <div class="key-box"><b>判断标准：</b>工具及其<b>功能用途</b>。能造句「用 X 来（干）…」。</div>
+        <div class="formula-box">
+          <span class="formula">示例</span>　碘伏：消毒　灯：照明　台灯：装饰　棉签：碘伏：消毒
+        </div>
+        <div class="tip-box">题干里<b>出现人造产物</b>时，很可能考的就是经验常识。</div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 1 · 正向功能<span class="src">2025 浙江</span></div>
+        <div class="example-body">
+          <div class="example-q">消毒水：消毒</div>
+          <div class="example-opts"><span>A. 部队锅：部队</span><span>B. 橄榄球：橄榄</span><span>C. 葡萄酒：葡萄</span><span>D. 减脂餐：减脂</span></div>
+          <div class="example-answer">
+            <b>解析：</b>消毒水的功能是消毒 → 功能关系。<br>
+            D 减脂餐的功能是减脂 → 一致；<br>
+            A 部队锅名字里有「部队」但与部队无关；B 橄榄球不是橄榄做的；C 葡萄是葡萄酒的原材料（加工关系）。<br>
+            <span class="correct">答案：D</span>
+          </div>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">2. 二级辨析 ①：主要功能 / 次要功能</div>
+        <div class="sub-point">一个事物身兼数职时，看题干用的是<b>主要用途还是衍生出来的次要用途</b>。</div>
+        <div class="formula-box"><span class="formula">示例</span>　台灯：装饰（主要功能是照明，装饰是次要功能）　食醋：除垢（主要功能是调味，除垢是次要功能）</div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 2 · 主要功能 / 次要功能<span class="src">2025 浙江（68%）</span></div>
+        <div class="example-body">
+          <div class="example-q">台灯：装饰</div>
+          <div class="example-opts"><span>A. 脸盆：洗漱</span><span>B. 空调：风扇</span><span>C. 食醋：除垢</span><span>D. 蜡烛：氛围</span></div>
+          <div class="example-answer">
+            <b>解析：</b>台灯的<b>主要功能是照明</b>，「装饰」是衍生出来的次要功能。<br>
+            C 食醋的主要功能是调味，「除垢」是次要功能 → 一致；<br>
+            A 洗漱就是脸盆的本职功能（主要功能）；B 空调与风扇是并列的两种电器，不是功能关系；<br>
+            D 蜡烛的主要功能本就是照明 / 烘托氛围，与题干「本职之外衍生出的新用途」不完全对应。<br>
+            <span class="correct">答案：C</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 3 · 次要功能的经典考法<span class="src">2017 国考</span></div>
+        <div class="example-body">
+          <div class="example-q">白醋：消毒</div>
+          <div class="example-opts"><span>A. 热水器：加热</span><span>B. 汽油：去渍</span><span>C. 白糖：调味</span><span>D. 人参：滋补</span></div>
+          <div class="example-answer">
+            <b>解析：</b>白醋的主要用途是调味，「消毒」是从中衍生出的<b>次要功能</b>。<br>
+            B 汽油的主要用途是燃料，「去渍」是衍生出的次要功能 → 一致；<br>
+            A「加热」是热水器的本职功能；C「调味」是白糖的主要功能；D「滋补」是人参的主要功能。<br>
+            <span class="correct">答案：B</span>
+          </div>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">3. 二级辨析 ②：反向功能（不明说功能，要反推）</div>
+        <div class="sub-point">题干给的不是「功能」本身，而是这个工具要<b>对付的对象 / 消除的东西</b>，需要自己反推。</div>
+        <div class="formula-box"><span class="formula">示例</span>　灯：黑暗 → 灯的功能是驱散黑暗　耳塞：噪音　肥皂：污渍</div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 4 · 反向功能<span class="src">2022 广东</span></div>
+        <div class="example-body">
+          <div class="example-q">耳塞：噪音</div>
+          <div class="example-opts"><span>A. 书籍：知识</span><span>B. 蜡烛：光明</span><span>C. 肥皂：污渍</span><span>D. 风扇：低温</span></div>
+          <div class="example-answer">
+            <b>解析：</b>耳塞的功能是<b>阻隔噪音</b>——题干给的是「要消除的东西」。<br>
+            C 肥皂的功能是<b>去除污渍</b>，同样是给「要消除的东西」→ 一致；<br>
+            B 蜡烛带来光明、A 书籍带来知识，都是「带来什么」而非「消除什么」；<br>
+            D 风扇只能加速空气流动，并不能产生「低温」，功能与对象不成立。<br>
+            <span class="correct">答案：C</span>
+          </div>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">4. 形式二：多个工具配套使用</div>
+        <div class="sub-point">几个工具<b>组合在一起</b>共同完成一个用途。</div>
+        <div class="formula-box"><span class="formula">示例</span>　棉签：碘伏：消毒　眼镜框：眼镜片　炭火：烤架：烧烤</div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 5 · 配套使用<span class="src">2025 四川</span></div>
+        <div class="example-body">
+          <div class="example-q">炭火：烤架：烧烤</div>
+          <div class="example-opts"><span>A. 扳手：电钻：修理</span><span>B. 鞋柜：皮鞋：收纳</span><span>C. 酒精：棉签：消毒</span><span>D. 手枪：子弹：击发</span></div>
+          <div class="example-answer">
+            <b>解析：</b>炭火放在烤架上，两者配套完成「烧烤」→ 两个工具配套实现同一功能。<br>
+            C 酒精配合棉签完成「消毒」→ 与题干结构一致；<br>
+            A 扳手与电钻是各自独立的工具，不构成配套；B「皮鞋」是被收纳的对象，不是工具；<br>
+            D 子弹要装进手枪才能击发，但「击发」是动作而非用途，且二者是组成 / 使用关系。<br>
+            <span class="correct">答案：C</span>
+          </div>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">5. 形式三：多个工具功能相似 + 出现时间有先后</div>
+        <div class="sub-point">两个东西功能差不多，但<b>一个古、一个今</b>。</div>
+        <div class="formula-box"><span class="formula">示例</span>　马车：汽车　刻漏（水钟）：钟表　煤：石油　青铜：黄金　刺绣：缂丝</div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 6 · 功能相似、古今先后<span class="src">2022 黑龙江</span></div>
+        <div class="example-body">
+          <div class="example-q">马车：汽车</div>
+          <div class="example-opts"><span>A. 煤：石油</span><span>B. 刻漏：钟表</span><span>C. 青铜：黄金</span><span>D. 刺绣：缂丝</span></div>
+          <div class="example-answer">
+            <b>解析：</b>马车与汽车都是代步工具，功能相同，且<b>马车在前、汽车在后</b>（时代先后）。<br>
+            B 刻漏（水钟，古代计时器）与钟表功能相同，也是前古后今 → 一致；<br>
+            A 煤与石油同为化石能源，孰先孰后不明确；C 青铜与黄金是两种材料；<br>
+            D 刺绣与缂丝都是传统丝织工艺，缂丝其实更古老，与题干的先后方向不符。<br>
+            <span class="correct">答案：B</span>
+          </div>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">6. 形式四：多个工具功能相反 / 功能多重与单一</div>
+        <div class="formula-box">
+          <span class="formula">功能相反</span>　电风扇：电暖机　火炉：蒲扇　油门：刹车<br>
+          <span class="formula">功能单一</span>　火炉：蒲扇　油门：刹车<br>
+          <span class="formula">功能多重</span>　伞：雨衣（伞可遮雨也可遮阳，雨衣只能防雨）　斗笠：蓑衣（斗笠可遮雨遮阳，蓑衣只能防雨）　暖气：空调（空调可制暖可制冷）
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 7 · 功能相反<span class="src">2025 四川（50%）</span></div>
+        <div class="example-body">
+          <div class="example-q">火炉：蒲扇</div>
+          <div class="example-opts"><span>A. 斗笠：蓑衣</span><span>B. 暖气：空调</span><span>C. 油门：刹车</span><span>D. 出租车：私家车</span></div>
+          <div class="example-answer">
+            <b>解析：</b>火炉用来取暖、蒲扇用来纳凉，<b>功能相反</b>，且各自只有单一功能。<br>
+            C 油门加速、刹车减速，功能相反且单一 → 一致；<br>
+            A 斗笠与蓑衣都是防雨用具（功能相似，斗笠还多一项遮阳）；<br>
+            B 暖气制热、空调既能制热又能制冷（功能并非相反）；D 两者功能相同、只是运营性质不同。<br>
+            <span class="correct">答案：C</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 8 · 功能多重 vs 功能单一<span class="src">超格 3+2 拓展</span></div>
+        <div class="example-body">
+          <div class="example-q">伞：雨衣</div>
+          <div class="example-opts"><span>A. 空调：暖气</span><span>B. 蚊香：蚊帐</span></div>
+          <div class="example-answer">
+            <b>解析：</b>伞既能遮雨、也能遮阳（<b>功能多重</b>）；雨衣只能防雨（<b>功能单一</b>）。<br>
+            A 空调既能制冷又能制热（多重）、暖气只能制热（单一）→ 结构一致；<br>
+            B 蚊香与蚊帐都是防蚊用具，功能基本重合，没有「多重与单一」的对照。<br>
+            <span class="correct">答案：A</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 9 · 种属 + 功能（三项式）<span class="src">2025 联考</span></div>
+        <div class="example-body">
+          <div class="example-q">车辆：货车：运输</div>
+          <div class="example-opts"><span>A. 温室气体：甲烷：二氧化碳</span><span>B. 未来产业：量子信息：研究监管</span><span>C. 自我意识：人格：心理调节</span><span>D. 绿色能源：太阳能：发电</span></div>
+          <div class="example-answer">
+            <b>解析：</b>货车是车辆的一种（种属），运输是货车的功能 → 种属 + 功能。<br>
+            D 太阳能是绿色能源的一种，发电是太阳能的功能 → 结构一致；<br>
+            A 甲烷是温室气体的一种，但「二氧化碳」不是甲烷的功能；<br>
+            B 量子信息是未来产业的一种，但「研究监管」不是它的功能；C 三者不构成种属 + 功能。<br>
+            <span class="correct">答案：D</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. 组成关系 -->
+  <div class="section c-purple" id="s10">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">🧩</div>
+      <div class="section-title">三 · 2　组成关系</div>
+      <span class="section-tag tag-hot">必背</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="block">
+        <div class="block-title">1. 含义与判断标准</div>
+        <div class="key-box"><b>判断标准：</b>能造句「<b>A 是 B 的一部分</b>」。</div>
+        <div class="formula-box"><span class="formula">示例</span>　桌子：桌面　衣服：衣领　钢琴：琴键</div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 1 · 整体与部分<span class="src">2023 重庆选调</span></div>
+        <div class="example-body">
+          <div class="example-q">衣服：衣领</div>
+          <div class="example-opts"><span>A. 窗户：窗帘</span><span>B. 火箭：飞船</span><span>C. 花瓶：瓷器</span><span>D. 钢琴：琴键</span></div>
+          <div class="example-answer">
+            <b>解析：</b>衣领是衣服的一部分 → 组成关系。<br>
+            D 琴键是钢琴的一部分 → 一致；<br>
+            A 窗帘与窗户是配套使用（位置关系）；B 火箭与飞船是并列的两种飞行器；C 瓷器是花瓶的材质（加工 / 材料）。<br>
+            <span class="correct">答案：D</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 2 · 三个部件都属于同一整体<span class="src">2023 全国事业单位联考</span></div>
+        <div class="example-body">
+          <div class="example-q">弹簧秤：刻度盘：挂钩</div>
+          <div class="example-opts"><span>A. 乐器：口哨：歌曲</span><span>B. 灭火器：干粉：泡沫</span><span>C. 纯电车：油箱：排气管</span><span>D. 吹风机：电动机：风叶</span></div>
+          <div class="example-answer">
+            <b>解析：</b>刻度盘和挂钩都是弹簧秤的组成部分。<br>
+            D 电动机和风叶都是吹风机的组成部分 → 一致；<br>
+            A「歌曲」不是乐器的部件；B 干粉、泡沫是灭火剂而非灭火器的固定部件；<br>
+            C 纯电车没有油箱和排气管（常识陷阱）。<br>
+            <span class="correct">答案：D</span>
+          </div>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">3. 二级辨析：核心部分 / 非核心部分</div>
+        <div class="sub-point">
+          少了它就不成立 → <b>核心部分</b>（桌面之于桌子、方向盘之于汽车）；<br>
+          少了它还能用 → <b>非核心部分</b>（衣领之于衣服、倒车雷达之于汽车）。
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">4. 易错点：种属关系 与 组成关系 必须分清</div>
+        <div class="formula-box">
+          <span class="formula">种属</span>　A 是 B（的一种 / 一个）<br>
+          <span class="formula">组成</span>　A 是 B 的一部分
+        </div>
+        <div class="warn-box"><b>做题顺序：先判断是不是种属关系，再判断是不是组成关系。</b>三个词时尤其容易混。</div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 3 · 种属与组成混搭<span class="src">2021 联考（47%）</span></div>
+        <div class="example-body">
+          <div class="example-q">省份：河北：石家庄</div>
+          <div class="example-opts"><span>A. 水果：桃子：桃核</span><span>B. 亚洲：中国：北京</span><span>C. 昆虫：蜜蜂：蜂蜜</span><span>D. 企业：民企：华为</span></div>
+          <div class="example-answer">
+            <b>解析：</b>河北是省份（<b>种属</b>），石家庄是河北的一部分 / 下辖市（<b>组成</b>）——第一层种属、第二层组成。<br>
+            A 桃子是水果（种属），桃核是桃子的一部分（组成）→ 一致；<br>
+            B 中国是亚洲的一部分（组成），不是种属；C 蜂蜜不是蜜蜂的一部分；D 华为不是民企的一部分。<br>
+            <span class="correct">答案：A</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 4 · 组成 + 种属的反向结构<span class="src">2022 广东</span></div>
+        <div class="example-body">
+          <div class="example-q">文字：诗词：绝句</div>
+          <div class="example-opts"><span>A. 笔画：隶书：汉字</span><span>B. 音符：乐谱：五线谱</span><span>C. 税收：财政：货币</span><span>D. 树木：森林：生态</span></div>
+          <div class="example-answer">
+            <b>解析：</b>文字是诗词的组成要素（<b>组成</b>），绝句是诗词的一种（<b>种属</b>）。<br>
+            A 笔画是隶书的组成部分（组成），隶书是汉字的一种（种属）→ 一致；<br>
+            B 音符组成乐谱，但五线谱不是乐谱的一种而是承载形式；C、D 均不成立。<br>
+            <span class="correct">答案：A</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 5 · 种属 + 组成的另一种组合<span class="src">2024 江苏</span></div>
+        <div class="example-body">
+          <div class="example-q">期刊：月刊：目录页</div>
+          <div class="example-opts"><span>A. 房屋：公寓：天花板</span><span>B. 能源：电池：电子书</span><span>C. 银行：企业：理财室</span><span>D. 欧盟：法国：凯旋门</span></div>
+          <div class="example-answer">
+            <b>解析：</b>月刊是期刊的一种（<b>种属</b>），目录页是期刊的一部分（<b>组成</b>）。<br>
+            A 公寓是房屋的一种，天花板是房屋的一部分 → 结构与题干完全一致；<br>
+            B 电池不是能源的一种（是储能装置）；C 银行不是企业的一种（银行本身就是企业，且理财室不是企业的部分）；<br>
+            D 法国是欧盟的成员国（组成），凯旋门是法国的组成部分——层次与题干不同。<br>
+            <span class="correct">答案：A</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. 加工关系 -->
+  <div class="section c-purple" id="s11">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">⚗️</div>
+      <div class="section-title">三 · 3　加工关系</div>
+      <span class="section-tag tag-high">常考</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="block">
+        <div class="block-title">1. 含义与判断标准</div>
+        <div class="key-box"><b>判断标准：</b>原材料与成品的关系 —— <b>原材料本身被加工成了成品</b>。</div>
+        <div class="formula-box"><span class="formula">示例</span>　树木：纸张　布：衣服　粮食：酒　面团：馒头</div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 1 · 原材料与成品<span class="src">2021 联考</span></div>
+        <div class="example-body">
+          <div class="example-q">布：衣服</div>
+          <div class="example-opts"><span>A. 牛奶：酸奶</span><span>B. 粮食：酒</span><span>C. 木材：餐桌</span><span>D. 朱古力：巧克力</span></div>
+          <div class="example-answer">
+            <b>解析：</b>布经过剪裁做成衣服，属于<b>物理变化</b>（没有生成新物质）。<br>
+            C 木材经过加工做成餐桌，同样是物理变化 → 一致；<br>
+            A 牛奶变酸奶、B 粮食酿酒都要经过发酵，是<b>化学变化</b>；D 朱古力就是巧克力（全同）。<br>
+            <span class="correct">答案：C</span>
+          </div>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">2. 二级辨析 ①：物理变化 / 化学变化</div>
+        <div class="formula-box">
+          <span class="formula">物理变化（无新物质生成）</span>　雕刻、研磨、组装、拆解、剪裁、织造<br>
+          <span class="formula">化学变化（有新物质生成）</span>　燃烧、发酵、酿造、氧化、冶炼、生锈
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">3. 二级辨析 ②：是否为必要原材料</div>
+        <div class="sub-point">没有它能不能做出成品。例如面团是馒头的必要原材料、棉纱是棉布的必要原材料。</div>
+      </div>
+      <div class="block">
+        <div class="block-title">4. 二级辨析 ③：是否可以为唯一原材料</div>
+        <div class="sub-point">成品可以只用这一种材料做，还是<b>左右两种材料都是做它的原料之一</b>。</div>
+        <div class="formula-box"><span class="formula">示例</span>　塑料：盘子：陶瓷　皮革：鞋子：布料 → 左右两者都是中间成品的原材料之一</div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 2 · 都不是唯一原材料<span class="src">2024 四川</span></div>
+        <div class="example-body">
+          <div class="example-q">塑料：盘子：陶瓷</div>
+          <div class="example-opts"><span>A. 面粉：馅饼：肉馅</span><span>B. 皮革：鞋子：布料</span><span>C. 纸张：证书：印章</span><span>D. 简答：试题：论述</span></div>
+          <div class="example-answer">
+            <b>解析：</b>塑料和陶瓷都能做盘子，<b>两者是同一成品的可选原材料</b>。<br>
+            B 皮革和布料都能做鞋子 → 一致；<br>
+            A 面粉是饼皮原料、肉馅是馅料（两者不是同一成品的备选原料）；<br>
+            C 印章不是证书的原料；D 三者是并列的题型。<br>
+            <span class="correct">答案：B</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 3 · 两种材料造同一个成品<span class="src">2025 联考</span></div>
+        <div class="example-body">
+          <div class="example-q">石料：木材：印章</div>
+          <div class="example-opts"><span>A. 毛笔：墨水：书法</span><span>B. 湘绣：蜀绣：刺绣</span><span>C. 宣纸：年画：国画</span><span>D. 搪瓷：塑料：脸盆</span></div>
+          <div class="example-answer">
+            <b>解析：</b>石料和木材都可以用来刻制印章 → 中间是成品、左右是可选原材料。<br>
+            D 搪瓷和塑料都可以用来制作脸盆 → 一致；<br>
+            A 毛笔与墨水是工具、书法是成品；B 湘绣、蜀绣都是刺绣的一种（种属）；            C 宣纸是国画的材料，年画不是。<br>
+            <span class="correct">答案：D</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 4 · 脱水晒干型加工<span class="src">2025 江苏</span></div>
+        <div class="example-body">
+          <div class="example-q">柿子：柿饼</div>
+          <div class="example-opts"><span>A. 土豆：土豆泥</span><span>B. 花生：花生糖</span><span>C. 椰子：椰子汁</span><span>D. 葡萄：葡萄干</span></div>
+          <div class="example-answer">
+            <b>解析：</b>柿子经<b>晾晒脱水</b>制成柿饼，是形态与水分的变化（物理变化），成品仍保留原物主体。<br>
+            D 葡萄经晾晒（或烘干）制成葡萄干 → 完全一致；<br>
+            A 土豆泥是捣碎、C 椰子汁是榨取，都不是「脱水成干」；B 花生糖是加入糖等做成的新制品（配方加工）。<br>
+            <span class="correct">答案：D</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. 命名方式 -->
+  <div class="section c-purple" id="s12">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">🏷️</div>
+      <div class="section-title">三 · 4　命名方式</div>
+      <span class="section-tag tag-high">常考</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="block">
+        <div class="block-title">1. 含义与判断标准</div>
+        <div class="key-box"><b>判断标准：</b>看事物<b>为什么叫这个名字</b>（命名的依据）。</div>
+        <div class="formula-box">
+          <span class="formula">示例</span>　办公桌（用途）　放大镜（功能）　蝴蝶结（外形）　蒲公英（特征）
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">2. 什么时候会考命名方式</div>
+        <ul class="point-list">
+          <li><b>① 全异关系的二级辨析</b>：清蒸鲈鱼：凉拌黄瓜（都在用「烹饪方式 + 食材」命名）</li>
+          <li><b>② 交叉关系的二级辨析</b>：国产灯：蘑菇灯：护眼灯（来源 / 外形 / 功能，三个不同命名角度）</li>
+          <li><b>③ 多个不相干的事物</b>：花生壳：核桃仁（都是「所属整体事物 + 部位」）</li>
+        </ul>
+      </div>
+      <div class="block">
+        <div class="block-title">3. 主要考哪些命名依据（背下来）</div>
+        <div class="pair">
+          <span>外形 → 蝴蝶结</span><span>功能 → 护城河</span>
+          <span>行为 → 啄木鸟</span><span>颜色 → 绿豆</span>
+          <span>制作方法 → 水煮鱼</span><span>制作工具 → 小笼包</span>
+          <span>所属整体事物 → 苹果皮</span><span>材料 → 羽毛扇</span>
+          <span>人物 → 东坡肉</span><span>特征 → 夜来香</span>
+          <span>位置 → 门帘</span>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 1 · 交叉关系的命名角度<span class="src">2024 省考</span></div>
+        <div class="example-body">
+          <div class="example-q">国产灯：蘑菇灯：护眼灯</div>
+          <div class="example-opts"><span>A. 社区公园：迷你公园：主题公园</span><span>B. 上皮细胞：扁平细胞：生殖细胞</span><span>C. 自制玩偶：人形玩偶：装饰玩偶</span><span>D. 水生植物：喜阴植物：防风植物</span></div>
+          <div class="example-answer">
+            <b>解析：</b>三个词都以「灯」为核心，分别按<b>来源（国产）、外形（蘑菇）、功能（护眼）</b>命名 → 交叉关系 + 三个命名角度。<br>
+            C「自制玩偶（来源）、人形玩偶（外形）、装饰玩偶（功能）」三个角度与题干完全对应 → 一致；<br>
+            A 是服务对象、规模、功能；B 是位置、形状、功能；D 是生长环境、习性、功能——角度都与题干不完全吻合。<br>
+            <span class="correct">答案：C</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 2 · 所属整体事物 + 部位<span class="src">2024 国考</span></div>
+        <div class="example-body">
+          <div class="example-q">花生壳：核桃仁</div>
+          <div class="example-opts"><span>A. 刺梨汁：桃花扇</span><span>B. 丝瓜络：石榴籽</span><span>C. 杏仁露：葡萄皮</span><span>D. 葛根茶：芡实粉</span></div>
+          <div class="example-answer">
+            <b>解析：</b>花生壳是花生的壳、核桃仁是核桃的仁 → 命名方式都是「<b>植物名 + 天然部位</b>」。<br>
+            B 丝瓜络是丝瓜的络、石榴籽是石榴的籽 → 命名方式一致；<br>
+            A「桃花扇」与桃花无关；C「杏仁露」「葡萄皮」一个不含杏仁、一个含葡萄皮；D 葛根、芡实都是植物但「粉」「茶」是加工品。<br>
+            <span class="correct">答案：B</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. 特征（属性）关系 -->
+  <div class="section c-purple" id="s13">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">✦</div>
+      <div class="section-title">三 · 5　特征（属性）关系</div>
+      <span class="section-tag tag-high">常考</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="block">
+        <div class="block-title">1. 含义与判断标准</div>
+        <div class="key-box"><b>判断标准：</b>后者是事物<b>自身具有的特征</b>；能造句「A 是……的」。</div>
+        <div class="formula-box"><span class="formula">示例</span>　盐：咸　汽车：快　花：美</div>
+        <div class="tip-box"><b>强烈提示：</b>题干出现 <b>XX 性 / XX 化 / XX 式</b> 这样的词，几乎一定是考特征（属性）关系。</div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 1 · 「XX 性」的特征关系<span class="src">2025 国考</span></div>
+        <div class="example-body">
+          <div class="example-q">直观性：即时性：网络直播</div>
+          <div class="example-opts"><span>A. 等边性：对称性：等腰梯形</span><span>B. 公开性：权威性：行政法律</span><span>C. 周期性：延展性：机械钟摆</span><span>D. 挥发性：保温性：石棉纤维</span></div>
+          <div class="example-answer">
+            <b>解析：</b>直观性和即时性都是网络直播<b>本身具备的特征</b>。<br>
+            B 公开性和权威性都是行政法律本身具备的特征 → 一致；<br>
+            A 等腰梯形并不具备「等边性」（只有等腰）；C 机械钟摆不具备「延展性」；<br>
+            D 石棉纤维不具备「挥发性」（石棉的特点是不燃、保温）。<br>
+            <span class="correct">答案：B</span>
+          </div>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">2. 二级辨析：必然特征 / 或然特征</div>
+        <div class="formula-box">
+          <span class="formula">必然特征</span>　太阳：东升西落　珠峰：高耸入云（一定成立）<br>
+          <span class="formula">或然特征</span>　桃树：花团锦簇　江面：风平浪静　道路：车水马龙（可能成立、也可能不成立）
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 2 · 必然特征<span class="src">2024 联考</span></div>
+        <div class="example-body">
+          <div class="example-q">太阳：东升西落</div>
+          <div class="example-opts"><span>A. 珠峰：高耸入云</span><span>B. 桃树：花团锦簇</span><span>C. 江面：风平浪静</span><span>D. 道路：车水马龙</span></div>
+          <div class="example-answer">
+            <b>解析：</b>东升西落是太阳<b>必然</b>出现的特征。<br>
+            A 高耸入云是珠峰必然具备的特征 → 一致；<br>
+            B 桃树不是常开花、C 江面不会永远平静、D 道路也不会总是车水马龙，都是<b>或然</b>特征。<br>
+            <span class="correct">答案：A</span>
+          </div>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">3. 易错点：特征 与 功能 的区别</div>
+        <div class="formula-box">
+          <span class="formula">特征</span>　事物<b>自身具有</b>的特性（汽车：快　灯光：亮）<br>
+          <span class="formula">功能</span>　<b>能用来做什么</b>——用「用 X（干）X」检验（汽车：载人　灯光：照明）
+        </div>
+        <div class="tip-box">活学活用：①花：美（特征）②花：装饰（功能）③灯光：亮（特征）④灯光：照明（功能）。<b>看能不能加「用」字</b>就能分开。</div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 3 · 特征与功能混在一起考<span class="src">2022 联考（57%）</span></div>
+        <div class="example-body">
+          <div class="example-q">潮汐能：生物质能：可再生</div>
+          <div class="example-opts"><span>A. 洗手液：消毒液：可除菌</span><span>B. 手套：围巾：可防寒</span><span>C. 易拉罐：塑料瓶：可回收</span><span>D. 小米：核桃：可助眠</span></div>
+          <div class="example-answer">
+            <b>解析：</b>「可再生」是潮汐能和生物质能<b>自身的属性</b> → 特征关系。<br>
+            C「可回收」是易拉罐和塑料瓶自身的属性 → 一致；<br>
+            A「可除菌」、B「可防寒」、D「可助眠」都能改写成「用它来除菌 / 防寒 / 助眠」，是<b>功能</b>而非特征。<br>
+            <span class="correct">答案：C</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. 职业关系 -->
+  <div class="section c-purple" id="s14">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">👷</div>
+      <div class="section-title">三 · 6　职业关系</div>
+      <span class="section-tag tag-high">常考</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="block">
+        <div class="block-title">1. 含义与判断标准</div>
+        <div class="key-box"><b>判断标准：</b>题干中出现<b>职业</b>（医生、警察、厨师、农民…）。</div>
+        <div class="table-wrap">
+        <table class="mini-table">
+          <tr><th>维度</th><th>示例</th></tr>
+          <tr><td><b>① 职业内容</b></td><td>医生：手术　厨师：炒菜</td></tr>
+          <tr><td><b>② 职业对象</b></td><td>医生：病人　厨师：菜肴</td></tr>
+          <tr><td><b>③ 职业场所</b></td><td>医生：医院　厨师：厨房</td></tr>
+          <tr><td><b>④ 职业工具</b></td><td>医生：手术刀　厨师：炒锅</td></tr>
+          <tr><td><b>⑤ 职业服装</b></td><td>医生：手术服　厨师：厨师服</td></tr>
+        </table>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 1 · 职业内容（括号式）<span class="src">2023 国考</span></div>
+        <div class="example-body">
+          <div class="example-q">刑事警察　对于　（　　）　相当于　（　　）　对于　对外交涉</div>
+          <div class="example-opts"><span>A. 公安机关　维护主权</span><span>B. 刑事案件　驻外武官</span><span>C. 打击犯罪　外交人员</span><span>D. 交通警察　外交领事</span></div>
+          <div class="example-answer">
+            <b>解析：</b>把选项代入，让「职业 → 职业内容」两段结构对称。<br>
+            C 刑事警察的职业内容就是「打击犯罪」，外交人员的职业内容就是「对外交涉」→ 前后完全对称；<br>
+            A 公安机关是刑事警察的所属单位，「维护主权」是行为而非职业；<br>
+            B、D 代入后两段关系不对称。<br>
+            <span class="correct">答案：C</span>
+          </div>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">2. 职业关系优先用造句法</div>
+        <div class="sub-point">职业类题目<b>造句很好用，可以优先造句</b>：</div>
+        <div class="formula-box">
+          <span class="formula">水稻：农田：农民</span>　→ 农民在农田种水稻<br>
+          <span class="formula">货物：网络：电商</span>　→ 电商在网络卖货物<br>
+          <span class="formula">捕鱼：海面：渔民</span>　→ 渔民在海面捕鱼（注意「捕鱼」本身就是个动作）
+        </div>
+        <div class="tip-box">造的句子要能<b>同时套住题干和选项</b>，结构、顺序都对上才选。</div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 2 · 同类场所 + 服务对象<span class="src">2022 事业单位联考</span></div>
+        <div class="example-body">
+          <div class="example-q">诊所：医院：病人</div>
+          <div class="example-opts"><span>A. 家庭：学校：孩子</span><span>B. 公路：铁路：司机</span><span>C. 杂货铺：商场：顾客</span><span>D. 幼儿园：游乐园：儿童</span></div>
+          <div class="example-answer">
+            <b>解析：</b>诊所与医院都是<b>看病的地方</b>（规模不同、属于同类场所），共同的服务对象是病人。<br>
+            C 杂货铺与商场都是<b>购物的地方</b>，共同的服务对象是顾客 → 一致；<br>
+            A 家庭与学校不是同类场所（且孩子是成员而非「服务对象」）；<br>
+            B 司机是道路的<b>使用者</b>而不是被服务的对象；D 幼儿园与游乐园不是同类场所。<br>
+            <span class="correct">答案：C</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. 位置关系 -->
+  <div class="section c-purple" id="s15">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">📍</div>
+      <div class="section-title">三 · 7　位置关系</div>
+      <span class="section-tag tag-high">常考</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="block">
+        <div class="block-title">1. 含义与判断标准</div>
+        <div class="key-box"><b>判断标准：</b>题干能体现<b>位置信息</b>（在哪、朝向哪、在什么里）。</div>
+        <div class="formula-box">
+          <span class="formula">示例</span>　鱼：海洋　老鹰：天空　首饰：首饰盒　胸针：衣服　碗：桌子　领头羊：羊群
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 1 · 内外层层嵌套<span class="src">2024 湖北选调</span></div>
+        <div class="example-body">
+          <div class="example-q">药片：药盒：药箱</div>
+          <div class="example-opts"><span>A. 冰棒：保鲜盒：冰箱</span><span>B. 文具：文具盒：书包</span><span>C. 衣服：挂衣架：衣柜</span><span>D. 信息：计算机：网络</span></div>
+          <div class="example-answer">
+            <b>解析：</b>药片装进药盒、药盒再放进药箱 → <b>由小到大的收纳容器层层嵌套</b>，且都是随身 / 家用收纳器具。<br>
+            B 文具放进文具盒、文具盒再放进书包 → 结构完全一致；<br>
+            A 保鲜盒与冰箱都是冷藏类器具，但「冰箱」是家电而非收纳器具；<br>
+            C 挂衣架不是容器（衣服只是挂着）；D 三者不是层层收纳关系。<br>
+            <span class="correct">答案：B</span>
+          </div>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">2. 二级辨析 ①：动 / 静</div>
+        <div class="sub-point">老鹰：天空（在飞 → <b>动</b>）　老鹰：树枝（停着 → <b>静</b>）</div>
+      </div>
+      <div class="block">
+        <div class="block-title">3. 二级辨析 ②：具体位置（内外、上下、首尾）</div>
+        <div class="formula-box">
+          <span class="formula">内外</span>　药片：药盒：药箱　文具：文具盒：书包<br>
+          <span class="formula">上下</span>　衣服：晾衣架　帆船：海面<br>
+          <span class="formula">首尾</span>　霜降：秋季（秋季最后一个节气）　大暑：夏季（夏季最后一个节气）　立春：春季（春季第一个节气）
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 2 · 首尾位置（节气）<span class="src">2023 联考（55%）</span></div>
+        <div class="example-body">
+          <div class="example-q">霜降：秋季</div>
+          <div class="example-opts"><span>A. 雨水：春季</span><span>B. 大暑：夏季</span><span>C. 清明：秋季</span><span>D. 冬至：冬季</span></div>
+          <div class="example-answer">
+            <b>解析：</b>霜降是秋季的<b>最后一个</b>节气（位在季末）。<br>
+            B 大暑是夏季的<b>最后一个</b>节气 → 位置一致；<br>
+            A 雨水是春季的第 2 个节气（不是季末）；C 清明属春季，不属秋季；<br>
+            D 冬至是冬季第 4 个节气，冬季最后一个是大寒。<br>
+            <span class="correct">答案：B</span>
+          </div>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">4. 二级辨析 ③：是否接触</div>
+        <div class="sub-point">台历：桌子（放在桌面上 → <b>接触</b>）　台历：客厅（只在客厅里 → <b>不接触</b>）</div>
+      </div>
+      <div class="block">
+        <div class="block-title">5. 二级辨析 ④：是否为唯一位置</div>
+        <div class="formula-box">
+          <span class="formula">位置唯一</span>　质证：法庭　监考：考场（只能在这里发生）<br>
+          <span class="formula">位置不唯一</span>　缴费：窗口（可现在也能网上缴）　采访：现场
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 3 · 唯一位置<span class="src">2024 国考</span></div>
+        <div class="example-body">
+          <div class="example-q">质证：法庭</div>
+          <div class="example-opts"><span>A. 缴费：窗口</span><span>B. 监狱：拘役</span><span>C. 监考：考场</span><span>D. 采访：现场</span></div>
+          <div class="example-answer">
+            <b>解析：</b>质证只能在法庭上进行 → 位置<b>唯一</b>。<br>
+            C 监考只能在考场进行 → 位置唯一，一致；<br>
+            A 缴费现在还能在网上办理（位置不唯一）；B 语序颠倒（应是「拘役：监狱」）；<br>
+            D 采访可以在任何现场进行（不唯一）。<br>
+            <span class="correct">答案：C</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 4 · 项目 + 装备 + 场地<span class="src">2024 事业单位联考</span></div>
+        <div class="example-body">
+          <div class="example-q">高尔夫：高尔夫球杆：高尔夫球场</div>
+          <div class="example-opts"><span>A. 马术：马鞍：马厩</span><span>B. 瑜伽：瑜伽服：瑜伽馆</span><span>C. 滑冰：冰刀鞋：滑冰场</span><span>D. 斗牛：斗牛士：斗牛场</span></div>
+          <div class="example-answer">
+            <b>解析：</b>高尔夫球杆是打球必需的<b>装备</b>、高尔夫球场是专属<b>场地</b>，三者词根也统一。<br>
+            C 冰刀鞋是滑冰必需的装备，滑冰场是滑冰的专属场地 → 一致；<br>
+            A 马厩是养马的地方，不是马术的场地（马术场地是马场）；<br>
+            B 瑜伽服不是练瑜伽的必需装备（穿普通衣服也能练）；D 斗牛士是<b>人</b>而不是装备。<br>
+            <span class="correct">答案：C</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. 依据关系 -->
+  <div class="section c-purple" id="s16">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">📐</div>
+      <div class="section-title">三 · 8　依据关系</div>
+      <span class="section-tag tag-high">常考</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="block">
+        <div class="block-title">1. 含义与判断标准</div>
+        <div class="key-box"><b>判断标准：</b>一者依据另一者（把某种事物作为<b>依托或根据</b>）→ 能造句「依据 A，做 B」。</div>
+        <div class="formula-box"><span class="formula">示例</span>　教案：授课　标准：测量　信息：决策　策略：经营盈亏</div>
+        <div class="tip-box"><b>出现「规则、标准、法律、制度、提纲」等词，常考依据关系。</b></div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 1 · 依据（括号式）<span class="src">2024 四川（57%）</span></div>
+        <div class="example-body">
+          <div class="example-q">标准　对于　（　　）　相当于　（　　）　对于　决策</div>
+          <div class="example-opts"><span>A. 准则　落实</span><span>B. 提纲　机会</span><span>C. 测量　信息</span><span>D. 制定　正确</span></div>
+          <div class="example-answer">
+            <b>解析：</b>依据标准进行测量；依据信息做出决策 —— 两段都是「<b>依据 … 做 …</b>」。<br>
+            C 代入后前后两段结构完全对称；<br>
+            A 准则只是标准的近义词；B 提纲与机会无依据关系；D 制定标准只是把标准当对象，不构成「依据 … 做 …」。<br>
+            <span class="correct">答案：C</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 2 · 依据 + 结果评价<span class="src">2022 广东（68%）</span></div>
+        <div class="example-body">
+          <div class="example-q">法律：诉讼：胜败</div>
+          <div class="example-opts"><span>A. 策略：经营：盈亏</span><span>B. 战争：武器：存亡</span><span>C. 判断：事实：对错</span><span>D. 教师：教学：优劣</span></div>
+          <div class="example-answer">
+            <b>解析：</b>依据法律进行诉讼，诉讼的结果有胜有败 → <b>依据 + 行为 + 结果评价</b>。<br>
+            A 依据策略进行经营，经营的结果有盈有亏 → 结构一致；<br>
+            B 战争不是依据武器进行的（武器是工具）；C 事实是判断的依据，但语序与题干不符；<br>
+            D 教师是行为的<b>主体</b>，不是依据（这是最容易误选的一项）。<br>
+            <span class="correct">答案：A</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 3 · 依据 + 行为 + 主体<span class="src">2024 河北事业单位（62%）</span></div>
+        <div class="example-body">
+          <div class="example-q">交规：处理违章：交警</div>
+          <div class="example-opts"><span>A. 职责：维持秩序：安保员</span><span>B. 教案：备课：教师</span><span>C. 合同：维修电器：维修工</span><span>D. 菜谱：烹饪：厨师</span></div>
+          <div class="example-answer">
+            <b>解析：</b>交警<b>依据交规</b>去处理违章 → 依据 + 行为 + 主体。<br>
+            D 厨师<b>依据菜谱</b>进行烹饪 → 完全一致；<br>
+            B 看起来像，但教案是备课的<b>产物</b>，不是备课的依据（顺序反了）；<br>
+            A「职责」是抽象概念、且维持秩序不是「依据」；C 维修工维修电器依据的是说明书或经验，而不是合同。<br>
+            <span class="correct">答案：D</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 4 · 以某物为存在标志<span class="src">2025 联考（65%）</span></div>
+        <div class="example-body">
+          <div class="example-q">宜居带：液态水</div>
+          <div class="example-opts"><span>A. 舒适区：页岩气</span><span>B. 生物圈：有机物</span><span>C. 无人区：可燃冰</span><span>D. 地震带：火山岩</span></div>
+          <div class="example-answer">
+            <b>解析：</b>判断一个区域是否属于「宜居带」，<b>依据就是能不能存在液态水</b> → 依据 / 标志关系。<br>
+            B 判断「生物圈」的依据是有没有有机物（有机物是生命存在的物质基础）→ 一致；<br>
+            A 舒适区与页岩气无关（且「舒适区」是个人心理概念）；<br>
+            C 无人区与可燃冰没有必然联系；D 地震带不必然存在火山岩。<br>
+            <span class="correct">答案：B</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 1. 近反义关系 -->
+  <div class="section c-orange" id="s17">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">⇅</div>
+      <div class="section-title">四 · 1　近反义关系</div>
+      <span class="section-tag tag-hot">必背</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="block">
+        <div class="block-title">1. 基础考点</div>
+        <div class="key-box"><b>基础考点：</b>近义词、反义词。</div>
+        <div class="formula-box">
+          <span class="formula">近义</span>　天荒地老：海枯石烂　不由自主：情不自禁　近水楼台：向阳花木<br>
+          <span class="formula">反义</span>　寥寥无几：数不胜数　打破砂锅问到底：不求甚解
+        </div>
+        <div class="tip-box">近反义题<b>几乎一定要走二级辨析</b>，四个选项往往都「沾边」。</div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 1 · 近义<span class="src">2025 全国事业单位联考（54%）</span></div>
+        <div class="example-body">
+          <div class="example-q">不由自主：情不自禁</div>
+          <div class="example-opts"><span>A. 别有洞天：峰回路转</span><span>B. 近水楼台：向阳花木</span><span>C. 瓜田李下：指鹿为马</span><span>D. 徒劳无功：水到渠成</span></div>
+          <div class="example-answer">
+            <b>解析：</b>不由自主与情不自禁都是「控制不住自己」→ 近义。<br>
+            B 近水楼台（因地利先得好处）与向阳花木（因光照好而先发育）都比喻「因占有便利条件而先获益」→ 近义，一致；<br>
+            A 别有洞天（境界奇特）与峰回路转（路径曲折）不同义；C 瓜田李下（避嫌）与指鹿为马（混淆是非）不同义；<br>
+            D 徒劳无功与「水到渠成」意思相反。<br>
+            <span class="correct">答案：B</span>
+          </div>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">2. 二级辨析 ①：感情色彩（褒 / 贬 / 中）</div>
+        <div class="sub-point">近义也要看<b>色彩是否一致</b>；不一样时，「褒贬相反的两个近义词」往往是正确答案。</div>
+        <div class="formula-box"><span class="formula">示例</span>　成果：恶果：结果（褒 / 贬 / 中）</div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 2 · 感情色彩相反<span class="src">2025 国考（60%）</span></div>
+        <div class="example-body">
+          <div class="example-q">殚精竭虑：费尽心机</div>
+          <div class="example-opts"><span>A. 狐假虎威：虚张声势</span><span>B. 舍生忘死：死里逃生</span><span>C. 侃侃而谈：喋喋不休</span><span>D. 光怪陆离：五光十色</span></div>
+          <div class="example-answer">
+            <b>解析：</b>殚精竭虑是<b>褒义</b>（用尽心思做正事），费尽心机是<b>贬义</b>（费尽心思算计）→ 近义但色彩相反。<br>
+            C 侃侃而谈（褒：从容不迫地谈）与喋喋不休（贬：唠叨不停）也是近义但色彩相反 → 一致；<br>
+            A 狐假虎威与虚张声势都是贬义；B 两者不是近义；D 光怪陆离与五光十色色彩接近。<br>
+            <span class="correct">答案：C</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 3 · 同为贬义<span class="src">2025 天津事业单位（56%）</span></div>
+        <div class="example-body">
+          <div class="example-q">围湖造田：饮鸩止渴</div>
+          <div class="example-opts"><span>A. 卧薪尝胆：学以致用</span><span>B. 忍辱偷生：削足适履</span><span>C. 兢兢业业：刻苦奋进</span><span>D. 山穷水尽：柳暗花明</span></div>
+          <div class="example-answer">
+            <b>解析：</b>围湖造田（为眼前利益破坏长远）和饮鸩止渴（用有害办法应急）都是<b>贬义</b>，且都是「动宾 + 动宾」结构。<br>
+            B 忍辱偷生与削足适履同为贬义，结构也一致 → 一致；<br>
+            A、C 都是褒义；D 山穷水尽（贬 / 困境）与柳暗花明（褒 / 转机）色彩相反。<br>
+            <span class="correct">答案：B</span>
+          </div>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">3. 二级辨析 ②：语义轻重</div>
+        <div class="sub-point">意思相近，但<b>程度有轻重</b>。</div>
+        <div class="formula-box"><span class="formula">示例</span>　恪守：遵守（恪守更重）　机密：绝密　希望：渴望　失望：绝望</div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 4 · 语义轻重<span class="src">2021 广东</span></div>
+        <div class="example-body">
+          <div class="example-q">恳求：要求</div>
+          <div class="example-opts"><span>A. 复杂：嘈杂</span><span>B. 恪守：遵守</span><span>C. 动机：动力</span><span>D. 妥协：协调</span></div>
+          <div class="example-answer">
+            <b>解析：</b>恳求与要求意思相近，但<b>恳求的程度更重</b>（更恳切、更迫切）。<br>
+            B 恪守与遵守也是近义，恪守的程度更重（严格遵守、坚守）→ 一致；<br>
+            A、C 不是近义；D 妥协与协调语境不同、也不是程度轻重关系。<br>
+            <span class="correct">答案：B</span>
+          </div>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">4. 二级辨析 ③：描述对象是否一致</div>
+        <div class="sub-point">两个词的意思都「对」，但<b>说的不是同一类对象</b>（男 / 女、人或物、内或外）。</div>
+        <div class="formula-box"><span class="formula">示例</span>　国色天香（形容女子）：玉树临风（形容男子）→ 描述对象<b>不一致</b>，正是考点</div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 5 · 描述对象（括号式）<span class="src">2022 国考</span></div>
+        <div class="example-body">
+          <div class="example-q">国色天香　对于　（　　）　相当于　（　　）　对于　玉树临风</div>
+          <div class="example-opts"><span>A. 面如冠玉　螓首蛾眉</span><span>B. 倾国倾城　明眸皓齿</span></div>
+          <div class="example-answer">
+            <b>解析：</b>国色天香形容<b>女子</b>之美，玉树临风形容<b>男子</b>之美。<br>
+            代入 A：「国色天香（女子）→ 面如冠玉（男子）」与「螓首蛾眉（女子）→ 玉树临风（男子）」都是「女子 → 男子」，关系对称；<br>
+            代入 B：国色天香与倾国倾城都形容女子（同义），而后半段「明眸皓齿（多形容女子）→ 玉树临风（男子）」关系不对称。<br>
+            <span class="correct">答案：A</span>
+          </div>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">5. 二级辨析 ④：词性、范围大小</div>
+        <div class="sub-point">
+          词性是否一致（动词对动词、名词对名词）；<br>
+          范围大小（「战争」＞「战役」）。
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 6 · 完整同义<span class="src">2022 联考（48%）</span></div>
+        <div class="example-body">
+          <div class="example-q">化险为夷：转危为安</div>
+          <div class="example-opts"><span>A. 异曲同工：深入浅出</span><span>B. 承前启后：继往开来</span><span>C. 除旧布新：空前绝后</span><span>D. 畏首畏尾：瞻前顾后</span></div>
+          <div class="example-answer">
+            <b>解析：</b>化险为夷与转危为安是<b>可以互换的同义成语</b>，且内部结构都是「动宾 + 动宾」（险 / 夷、危 / 安互为反义）。<br>
+            B 承前启后与继往开来也可互换（前 / 后、往 / 来互为反义）→ 一致；<br>
+            A 异曲同工与深入浅出含义完全不同；C 除旧布新与空前绝后不同义；<br>
+            D 畏首畏尾（纯粹贬义）与瞻前顾后（还含「考虑周密」的中性义）语义并不完全重合。<br>
+            <span class="correct">答案：B</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 7 · 拆字后的反义<span class="src">2025 内蒙</span></div>
+        <div class="example-body">
+          <div class="example-q">是古：非今</div>
+          <div class="example-opts"><span>A. 品头：论足</span><span>B. 挑肥：拣瘦</span><span>C. 拾遗：补缺</span><span>D. 抓大：放小</span></div>
+          <div class="example-answer">
+            <b>解析：</b>「是古非今」= 肯定古代、否定现代，拆开后「是 / 非」相反、「古 / 今」相反 → 内部反义。<br>
+            D「抓大放小」中「抓 / 放」相反、「大 / 小」相反 → 一致；<br>
+            A 品头论足、B 挑肥拣瘦、C 拾遗补缺内部都是近义。<br>
+            <span class="correct">答案：D</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 8 · 反义（括号式）<span class="src">2025 山东事业单位</span></div>
+        <div class="example-body">
+          <div class="example-q">打破砂锅问到底　对于　（　　）　相当于　（　　）　对于　拐弯抹角</div>
+          <div class="example-opts"><span>A. 分崩离析　众人拾柴火焰高</span><span>B. 善罢甘休　不到黄河不死心</span><span>C. 每况愈下　芝麻开花节节高</span><span>D. 不求甚解　打开天窗说亮话</span></div>
+          <div class="example-answer">
+            <b>解析：</b>前空要与「打破砂锅问到底」（追根究底）构成反义，后空要与「拐弯抹角」（不直说）构成反义。<br>
+            D「不求甚解」（不深究）与「打破砂锅问到底」反义；「打开天窗说亮话」（直说）与「拐弯抹角」反义 → 前后都成立；<br>
+            A、B、C 三组代入后都无法同时构成反义。<br>
+            <span class="correct">答案：D</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. 结合逻辑关系考查 -->
+  <div class="section c-orange" id="s18">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">🔗</div>
+      <div class="section-title">四 · 2　结合逻辑关系考查</div>
+      <span class="section-tag tag-high">常考</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="block">
+        <div class="block-title">1. 四种叠加（词语之间，先按逻辑关系判）</div>
+        <div class="formula-box">
+          <span class="formula">① 因果</span>　言之无文：行之不远　一叶障目：不见泰山　其身不正：虽令不从<br>
+          <span class="formula">② 目的</span>　静以修身：俭以养德　藏诸名山：传之其人　嘤其鸣矣：求其友声<br>
+          <span class="formula">③ 条件</span>　不经一事：不长一智<br>
+          <span class="formula">④ 顺承</span>　先礼后兵：先斩后奏
+        </div>
+        <div class="tip-box">古文中出现「<b>以、求、欲、为</b>」优先考虑<b>目的关系</b>：缘木求鱼、欲穷千里目：更上一层楼、为唤春来争艳朵：甘将香化育花泥。</div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 1 · 因果关系<span class="src">2025 联考（48%）</span></div>
+        <div class="example-body">
+          <div class="example-q">言之无文：行之不远</div>
+          <div class="example-opts"><span>A. 一叶障目：不见泰山</span><span>B. 宁为玉碎：不为瓦全</span><span>C. 藏诸名山：传之其人</span><span>D. 取之不尽：用之不竭</span></div>
+          <div class="example-answer">
+            <b>解析：</b>言之无文（语言没有文采）导致行之不远（流传不广）→ 因果。<br>
+            A 一叶障目（被叶子挡住）导致不见泰山 → 因果，一致；<br>
+            B 是选择关系；C 藏诸名山是为了传给后人（目的）；D 是并列。<br>
+            <span class="correct">答案：A</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 2 · 目的关系（含「以」）<span class="src">2025 国考（37%）</span></div>
+        <div class="example-body">
+          <div class="example-q">嘤其鸣矣：求其友声</div>
+          <div class="example-opts"><span>A. 遏其生气：以求重价</span><span>B. 求之其本：经旬必得</span><span>C. 道不拾遗：夜不闭户</span><span>D. 避其锐气：击其惰归</span></div>
+          <div class="example-answer">
+            <b>解析：</b>鸟嘤嘤鸣叫，是为了寻求伙伴 → 目的关系（「求」字是关键提示）。<br>
+            A 遏其生气（阻碍梅花的生机）是<b>为了</b>求得高价（「以」表目的）→ 一致；<br>
+            B 是条件 / 因果；C 是并列（治安好的两种表现）；D 是先避后击的顺承。<br>
+            <span class="correct">答案：A</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 3 · 三个成语都是因果<span class="src">2023 陕西事业单位（57%）</span></div>
+        <div class="example-body">
+          <div class="example-q">水滴石穿：唇亡齿寒：人去楼空</div>
+          <div class="example-opts"><span>A. 凿壁偷光：杀鸡取卵：刻舟求剑</span><span>B. 狼心狗肺：虎背熊腰：金枝玉叶</span><span>C. 得陇望蜀：返老还童：按部就班</span><span>D. 源清流清：春华秋实：物腐虫生</span></div>
+          <div class="example-answer">
+            <b>解析：</b>三个成语内部都是「原因 → 结果」：水滴→石穿、唇亡→齿寒、人去→楼空，且都是自然 / 生活现象。<br>
+            D 源清→流清、春华→秋实、物腐→虫生，同为因果且同为自然现象 → 一致；<br>
+            A 三个都是目的关系（凿壁偷光、杀鸡取卵、刻舟求剑）；<br>
+            B 三个都是比喻式并列；C 混合了递进、并列等关系。<br>
+            <span class="correct">答案：D</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. 词句结构 -->
+  <div class="section c-orange" id="s19">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">🧱</div>
+      <div class="section-title">四 · 3　词句结构</div>
+      <span class="section-tag tag-hot">必背</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="block">
+        <div class="block-title">1. 四种结构（判断依据：词性搭配）</div>
+        <table class="mini-table">
+          <tr><th>结构</th><th>构成</th><th>示例</th></tr>
+          <tr><td><b>主谓</b></td><td>主语 + 谓语（常见：名 + 动；不常见：名 + 形）</td><td>粮食：爱惜　秩序：维持　大雁：飞翔　阳光：明媚</td></tr>
+          <tr><td><b>动宾</b></td><td>动词 + 宾语（常见：动 + 名）</td><td>耕种：土地　阅读：小说</td></tr>
+          <tr><td><b>偏正</b></td><td>修饰词 + 中心语，能用「的 / 地」造句</td><td>清新：空气　平静：讲述　肥沃：土地</td></tr>
+          <tr><td><b>并列</b></td><td>结构一致（词语、成语、俗语、诗句内部或之间）</td><td>守株：待兔　锦衣：玉食　鸟兽虫鱼：江河湖海</td></tr>
+        </table>
+        <div class="tip-box">主谓、动宾、偏正都可以<b>造个句子</b>来验证结构：能加「的 / 地」的是偏正，能加「是」的是主谓。</div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 1 · 动宾结构（括号式）<span class="src">2024 四川事业单位</span></div>
+        <div class="example-body">
+          <div class="example-q">粮食　对于　（　　）　相当于　（　　）　对于　维持</div>
+          <div class="example-opts"><span>A. 大米　保持</span><span>B. 改进　健康</span><span>C. 爱惜　秩序</span><span>D. 工具　房子</span></div>
+          <div class="example-answer">
+            <b>解析：</b>C 代入后是「爱惜粮食」「维持秩序」，两段都是<b>动宾结构</b>，且「爱惜 / 维持」词性一致 → 最对称；<br>
+            A 代入后是「大米粮食」（种属）与「保持维持」（近义），前后不一致；<br>
+            B、D 代入后也都无法构成同一种结构。<br>
+            <span class="correct">答案：C</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 2 · 含两种动物的主谓宾<span class="src">2025 浙江</span></div>
+        <div class="example-body">
+          <div class="example-q">鸠占鹊巢：鹤立鸡群</div>
+          <div class="example-opts"><span>A. 风生水起：马不停蹄</span><span>B. 狐假虎威：鱼跃龙门</span><span>C. 龙腾四海：雁过留声</span><span>D. 鹰击长空：螳臂当车</span></div>
+          <div class="example-answer">
+            <b>解析：</b>两个成语都由<b>两种动物</b>构成（鸠 + 鹊、鹤 + 鸡），结构都是「动物 + 动作 + 对象 / 处所」。<br>
+            B 狐假虎威（狐 + 虎）、鱼跃龙门（鱼 + 龙）同样各含两种动物 → 一致；<br>
+            A 风生水起不含动物；C 龙腾四海、D 鹰击长空只含一种动物。<br>
+            <span class="correct">答案：B</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 3 · 主谓结构（三个词）<span class="src">2022 全国事业单位</span></div>
+        <div class="example-body">
+          <div class="example-q">古典诗文：浩如烟海：灿若星河</div>
+          <div class="example-opts"><span>A. 理想信念：坚定不移：共产主义</span><span>B. 革命斗争：艰苦卓绝：波澜壮阔</span><span>C. 祖国山河：三山五岳：山清水秀</span><span>D. 惊天动地：地动山摇：天崩地裂</span></div>
+          <div class="example-answer">
+            <b>解析：</b>「浩如烟海」「灿若星河」都是用来<b>陈述「古典诗文」</b>的谓语，构成主谓结构。<br>
+            B「艰苦卓绝」「波澜壮阔」都是陈述「革命斗争」的谓语 → 一致；<br>
+            A「共产主义」不是陈述理想信念的谓语；C 三山五岳是祖国山河的一部分；D 三者结构不一致。<br>
+            <span class="correct">答案：B</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 4 · 比喻式偏正<span class="src">2023 全国事业单位</span></div>
+        <div class="example-body">
+          <div class="example-q">柳烟：云海</div>
+          <div class="example-opts"><span>A. 书山：犬子</span><span>B. 天雷：怒火</span><span>C. 霜剑：玉液</span><span>D. 麦浪：花雨</span></div>
+          <div class="example-answer">
+            <b>解析：</b>「柳烟」= 像烟一样的柳，「云海」= 像海一样的云 → 结构都是「<b>本体 + 喻体</b>」的比喻式偏正。<br>
+            D 麦浪（麦像浪）、花雨（花像雨）也是「本体 + 喻体」→ 一致；<br>
+            C「霜剑」「玉液」是「喻体 + 本体」（语序相反）；A「犬子」不是比喻；B 两者都不是同一结构。<br>
+            <span class="correct">答案：D</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 5 · 同型比喻偏正<span class="src">2023 国考</span></div>
+        <div class="example-body">
+          <div class="example-q">花海：书山</div>
+          <div class="example-opts"><span>A. 怒火：苦雨</span><span>B. 车流：人潮</span><span>C. 雪白：麦浪</span><span>D. 龙舟：木马</span></div>
+          <div class="example-answer">
+            <b>解析：</b>花海（花多如海）、书山（书多如山）都是「本体 + 喻体」的比喻式偏正，且喻体都是宏大的自然物。<br>
+            B 车流（车如流）、人潮（人如潮）结构完全一致 → 答案；<br>
+            A「苦雨」是形容词 + 名词、非比喻；C「雪白」是主谓 / 偏正搭配，与「麦浪」不同构；D 都是实指事物、无比喻。<br>
+            <span class="correct">答案：B</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 6 · 四字并列<span class="src">2024 河南事业单位</span></div>
+        <div class="example-body">
+          <div class="example-q">悲欢离合：琴棋书画</div>
+          <div class="example-opts"><span>A. 万紫千红：柳暗花明</span><span>B. 喜怒哀乐：锅碗瓢盆</span><span>C. 阴晴圆缺：峰回路转</span><span>D. 酸甜苦辣：由表及里</span></div>
+          <div class="example-answer">
+            <b>解析：</b>「悲欢离合」是四种情感 / 经历并列，「琴棋书画」是四种技艺 / 物件并列 → 两个字都是<b>四字名词并列</b>。<br>
+            B「喜怒哀乐」（四种情绪）、「锅碗瓢盆」（四种厨具）→ 结构完全一致；<br>
+            A「柳暗花明」、C「峰回路转」内部都是主谓结构；D「由表及里」是介宾结构。<br>
+            <span class="correct">答案：B</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 7 · 对仗式主谓<span class="src">2025 天津（61%）</span></div>
+        <div class="example-body">
+          <div class="example-q">当局者迷：旁观者清</div>
+          <div class="example-opts"><span>A. 送君千里：终须一别</span><span>B. 东向而望：不见西墙</span><span>C. 道远知骥：世伪知贤</span><span>D. 冬寒抱冰：夏热握火</span></div>
+          <div class="example-answer">
+            <b>解析：</b>「当局者迷」「旁观者清」是主谓结构，且「当局者 / 旁观者」相对、「迷 / 清」对立，<b>双重对仗</b>。<br>
+            D「冬寒抱冰」「夏热握火」：冬 / 夏、寒 / 热、抱 / 握、冰 / 火，同样双重对仗 → 一致；<br>
+            A、B、C 的对仗工整度都明显不如 D。<br>
+            <span class="correct">答案：D</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 8 · 动宾并列（含夸夸刷）<span class="src">2023 河北事业单位</span></div>
+        <div class="example-body">
+          <div class="example-q">披星：戴月</div>
+          <div class="example-opts"><span>A. 呼天：抢地</span><span>B. 春花：秋月</span><span>C. 良师：益友</span><span>D. 王侯：将相</span></div>
+          <div class="example-answer">
+            <b>解析：</b>「披星」「戴月」都是<b>动宾结构</b>（披 + 星、戴 + 月），前后并列、意思相承。<br>
+            A「呼天」「抢地」也是动宾结构（呼 + 天、抢 + 地），同为动宾并列 → 一致；<br>
+            B「春花」「秋月」、C「良师」「益友」、D「王侯」「将相」都是名词性偏正 / 并列，不是动宾。<br>
+            <span class="correct">答案：A</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 9 · 动宾 + 中心语型偏正<span class="src">2025 国考</span></div>
+        <div class="example-body">
+          <div class="example-q">逐客令：挡箭牌</div>
+          <div class="example-opts"><span>A. 急先锋：领航者</span><span>B. 避风港：马后炮</span><span>C. 敲门砖：绊脚石</span><span>D. 鸿门宴：攻心计</span></div>
+          <div class="example-answer">
+            <b>解析：</b>「逐客令」「挡箭牌」都是「<b>动宾 + 中心语</b>」的偏正结构（逐客 + 令、挡箭 + 牌），且都是比喻性名词。<br>
+            C「敲门砖」（敲 + 门 + 砖）、「绊脚石」（绊 + 脚 + 石）结构与词性完全对应 → 一致；<br>
+            A「急先锋」是形容词 + 名词、「领航者」是动宾 + 者；<br>
+            B「避风港」是动宾 + 港，但「马后炮」是方位 + 名词；D「鸿门宴」是地名 + 名词。<br>
+            <span class="correct">答案：C</span>
+          </div>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">2. 拓展：偏正结构单独考</div>
+        <div class="formula-box"><span class="formula">示例</span>　清新：空气 → 高兴：开心（并列）／ 郑重：答案（不搭）／ 肥沃：土地（偏正）／ 得意：生气（并列）</div>
+        <div class="sub-point">能加「的」的才是偏正：「清新的空气」「肥沃的土地」。答案是「肥沃：土地」。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. 释义关系 -->
+  <div class="section c-orange" id="s20">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">📖</div>
+      <div class="section-title">四 · 4　释义关系</div>
+      <span class="section-tag tag-high">常考</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="block">
+        <div class="block-title">1. 识别：同一语素（A : AB : AC）</div>
+        <div class="key-box"><b>判断方法：</b>同一个字在两个词里<b>含义是否相同</b>。</div>
+        <div class="formula-box">
+          <span class="formula">含义不同（考得多）</span>　备：德才兼备（具备）：戒备森严（戒备）　兵：短兵相接（兵器）：草木皆兵（士兵）　假：狐假虎威（假借）：不假思索（借助）<br>
+          <span class="formula">含义相同</span>　狼：狼吞虎咽：狼奔豕突
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 1 · 同一字含义不同<span class="src">2025 天津（37%）</span></div>
+        <div class="example-body">
+          <div class="example-q">备：德才兼备：戒备森严</div>
+          <div class="example-opts"><span>A. 狼：狼吞虎咽：狼奔豕突</span><span>B. 兵：短兵相接：草木皆兵</span><span>C. 绳：结绳而治：绳锯木断</span><span>D. 假：狐假虎威：不假思索</span></div>
+          <div class="example-answer">
+            <b>解析：</b>「备」在「德才兼备」中是「具备」，在「戒备森严」中是「戒备」→ <b>含义不同</b>。<br>
+            B「兵」在「短兵相接」中是「兵器」，在「草木皆兵」中是「士兵」→ 含义不同，一致；<br>
+            A「狼」两处都是动物、C「绳」两处都是绳子、D「假」两处都是「借」→ 含义相同。<br>
+            <span class="correct">答案：B</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 2 · 本义与比喻义<span class="src">2023 联考（48%）</span></div>
+        <div class="example-body">
+          <div class="example-q">火：火急：火警</div>
+          <div class="example-opts"><span>A. 虎：虎将：虎劲</span><span>B. 蛇：蛇行：蛇胆</span><span>C. 牛：牛毛：牛饮</span><span>D. 鹊：鹊桥：鹊起</span></div>
+          <div class="example-answer">
+            <b>解析：</b>「火急」的「火」是<b>比喻义</b>（像火一样急），「火警」的「火」是<b>本义</b>（火灾）——先比喻、后本义。<br>
+            B「蛇行」的「蛇」是比喻（像蛇一样爬行），「蛇胆」的「蛇」是本义 → 顺序一致；<br>
+            A 两处都是比喻义；C「牛毛」本义在前、「牛饮」比喻在后（顺序相反）；D 同样顺序相反。<br>
+            <span class="correct">答案：B</span>
+          </div>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">2. 其他识别形式</div>
+        <div class="formula-box">
+          <span class="formula">① 「像……」</span>　火：火急　鹄：鹄起　虎：虎将<br>
+          <span class="formula">② 词语拆分成单字，单字是否都具备词的含义</span>　覆：盖：覆盖　抚：摸：抚摸　学：习：学习
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 3 · 两字同义合成词<span class="src">2025 联考</span></div>
+        <div class="example-body">
+          <div class="example-q">覆：盖：覆盖</div>
+          <div class="example-opts"><span>A. 寒：酸：寒酸</span><span>B. 厚：重：厚重</span><span>C. 喉：舌：喉舌</span><span>D. 抚：摸：抚摸</span></div>
+          <div class="example-answer">
+            <b>解析：</b>「覆」与「盖」含义相同，二者并列合成「覆盖」→ 单字都具备词义。<br>
+            D「抚」与「摸」含义相同，合成「抚摸」→ 一致；<br>
+            A「寒酸」不是「寒 + 酸」的简单相加（整体是穷困不体面的意思）；<br>
+            B「厚重」虽然两字义近，但整体已转为形容风格；C「喉舌」是借代（指代言人）。<br>
+            <span class="correct">答案：D</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 4 · 拆字后同义（考词性）<span class="src">2020 山东（71%）</span></div>
+        <div class="example-body">
+          <div class="example-q">战：斗：战斗</div>
+          <div class="example-opts"><span>A. 欢：迎：欢迎</span><span>B. 学：习：学习</span><span>C. 勤：劳：勤劳</span><span>D. 发：行：发行</span></div>
+          <div class="example-answer">
+            <b>解析：</b>「战」与「斗」同义（都是打仗），合成「战斗」，整体是动词性。<br>
+            B「学」与「习」同义，合成「学习」，也是动词性 → 一致；<br>
+            A「欢」与「迎」不同义（欢喜 / 迎接）；C「勤劳」是<b>形容词</b>，词性不符；D「发」「行」在「发行」中含义不同。<br>
+            <span class="correct">答案：B</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. 指代、象征、比喻 -->
+  <div class="section c-orange" id="s21">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">🎭</div>
+      <div class="section-title">四 · 5　指代、象征、比喻</div>
+      <span class="section-tag tag-hot">必背</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="block">
+        <div class="block-title">1. 如何识别</div>
+        <div class="key-box"><b>识别：</b>题目中出现<b>很文艺的、平时不用的词</b>（旌旗、巾帼、汗青、桑梓…）—— 第一反应就是<b>指代 / 象征 / 比喻</b>。</div>
+        <div class="formula-box">
+          <span class="formula">指代</span>　黄发：老人　旌旗：军队　布衣：百姓<br>
+          <span class="formula">象征</span>　鸽子：和平　牡丹：高洁　红色：喜庆
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 1 · 别称 + 相关节日<span class="src">2022 联考（36%）</span></div>
+        <div class="example-body">
+          <div class="example-q">月亮：婵娟：中秋</div>
+          <div class="example-opts"><span>A. 粽子：艾叶：端午</span><span>B. 菊花：寿客：重阳</span><span>C. 汤圆：元夕：元宵</span><span>D. 巧果：酥糖：七夕</span></div>
+          <div class="example-answer">
+            <b>解析：</b>婵娟是月亮的别称，中秋是赏月相关的节日 → 本体 + 别称 + 相关节日。<br>
+            B 寿客是菊花的别称，重阳节有赏菊习俗 → 一致；<br>
+            A 艾叶不是粽子的别称；C 元夕是元宵节的别称（不是汤圆的别称）；D 酥糖不是巧果的别称。<br>
+            <span class="correct">答案：B</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 2 · 借代要「同一范畴」<span class="src">2023 江苏（42%）</span></div>
+        <div class="example-body">
+          <div class="example-q">布衣：百姓</div>
+          <div class="example-opts"><span>A. 鸿雁：书信</span><span>B. 枢纽：关键</span><span>C. 须眉：男子</span><span>D. 巾帼：女子</span></div>
+          <div class="example-answer">
+            <b>解析：</b>四个选项都是借代，属于「横向定不出唯一答案」的典型题，要靠<b>纵向对比同一范畴</b>：<br>
+            布衣是<b>服饰</b>，用它借代百姓；D 巾帼是古代女子的<b>头巾发饰</b>，同属「服饰」范畴 → 与题干最贴合；<br>
+            C 须眉是<b>身体部位</b>（眉毛胡须）；A 鸿雁是动物；B「枢纽 / 关键」本身是同义而非借代。<br>
+            <span class="correct">答案：D</span>
+          </div>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">2. 指代、象征知识积累（直接背）</div>
+        <table class="mini-table">
+          <tr><th>词</th><th>指代 / 象征</th></tr>
+          <tr><td>领头雁（2024 国考）</td><td>领导者</td></tr>
+          <tr><td>拓荒牛（2024 国考）</td><td>先驱</td></tr>
+          <tr><td>草根（2023 辽宁）</td><td>平民百姓</td></tr>
+          <tr><td>鸿毛（2023 辽宁）</td><td>轻微的事物</td></tr>
+          <tr><td>旌旗（2023 吉林）</td><td>军队</td></tr>
+          <tr><td>牡丹（2022 江苏）</td><td>高洁</td></tr>
+          <tr><td>红色（2022 江苏）</td><td>喜庆</td></tr>
+          <tr><td>梅花（2021 云南）</td><td>高洁</td></tr>
+          <tr><td>优雅（2021 云南）</td><td>天鹅</td></tr>
+          <tr><td>红颜 / 娥眉（2019 四川）</td><td>女性</td></tr>
+          <tr><td>铁窗（2019 联考）</td><td>监狱</td></tr>
+          <tr><td>桃李（2018 吉林、2021 浙江）</td><td>学生</td></tr>
+          <tr><td>南冠（2018 联考）</td><td>囚犯</td></tr>
+          <tr><td>桑梓（2018 联考）</td><td>家乡</td></tr>
+          <tr><td>青衿（2018 联考）</td><td>读书人</td></tr>
+          <tr><td>浮屠（2018 联考）</td><td>佛塔</td></tr>
+          <tr><td>丝竹（2018 吉林）</td><td>音乐</td></tr>
+          <tr><td>花甲 / 耄耋 / 黄发（2018 辽宁）</td><td>老人</td></tr>
+          <tr><td>手足（2017 山东）</td><td>兄弟</td></tr>
+          <tr><td>鸿雁 / 笺札（2017 联考）</td><td>书信</td></tr>
+          <tr><td>干戈 / 烽烟（2015 甘肃）</td><td>战争</td></tr>
+          <tr><td>汗青（2015 甘肃）</td><td>史册</td></tr>
+          <tr><td>白丁 / 布衣（2014 四川）</td><td>百姓</td></tr>
+          <tr><td>总角 / 垂髫（2014 山西）</td><td>小孩</td></tr>
+          <tr><td>巾帼 / 娥眉（2019 联考）</td><td>女子</td></tr>
+          <tr><td>须眉（2019 联考）</td><td>男子</td></tr>
+        </table>
+        <div class="key-box">
+          <b>规律：</b>动物 → 人（领头雁 / 拓荒牛）、植物 → 人（桃李 / 草根）、服饰器官 → 人（巾帼 / 须眉 / 蛾眉 / 布衣）、
+          器物 → 抽象（干戈 → 战争、丝竹 → 音乐）、自然物 → 品格（牡丹 / 梅花 → 高洁）。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. 成语、诗句被拆分 -->
+  <div class="section c-orange" id="s22">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">✂️</div>
+      <div class="section-title">四 · 6　成语、诗句被拆分</div>
+      <span class="section-tag tag-high">常考</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="block">
+        <div class="block-title">1. 优先看这两个考点</div>
+        <div class="key-box"><b>① 因果关系　② 目的关系</b>——拆开后绝大多数落在两者之一。</div>
+        <div class="formula-box">
+          <span class="formula">示例</span>　风吹：草低：见牛羊（因果）　人去：楼空（因果）　直挂：云帆：济沧海（目的）　刻舟：求剑（目的）
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">2. 近年的「因果清单」（背下来）</div>
+        <div class="pair">
+          <span>水涨：船高</span><span>风吹：草动</span><span>水落：石出</span>
+          <span>天寒：地冻</span><span>水滴：石穿</span><span>理屈：词穷</span>
+          <span>有备：无患</span><span>人去：楼空</span><span>鸟尽：弓藏</span>
+          <span>唇亡：齿寒</span>
+        </div>
+        <div class="tip-box"><b>涉及自然现象的，多考因果关系</b>（水涨船高、风吹草动、天寒地冻…）；冒号前后两词<b>多为主谓结构</b>。</div>
+      </div>
+      <div class="block">
+        <div class="block-title">3. 近年的「目的清单」（背下来）</div>
+        <div class="pair">
+          <span>守株：待兔</span><span>刻舟：求剑</span><span>削足：适履</span>
+          <span>凿壁：偷光</span><span>缘木：求鱼</span><span>掩耳：盗铃</span>
+          <span>拔苗：助长</span><span>格物：致知</span><span>杀鸡：取卵</span>
+          <span>画饼：充饥</span>
+        </div>
+        <div class="tip-box">
+          <b>出现「欲、求、为」等词，多考目的关系</b>；出现<b>政府提倡的行为</b>也多考目的（低碳排放、轮作休耕、灾害预警）；<br>
+          冒号前后两词<b>多为动词或动宾结构</b>。
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 1 · 拆分后的因果<span class="src">2024 联考</span></div>
+        <div class="example-body">
+          <div class="example-q">风吹：草低：见牛羊</div>
+          <div class="example-opts"><span>A. 浪打：船摇：靠舵手</span><span>B. 光照：叶肥：促生长</span><span>C. 游人：如织：显道窄</span><span>D. 雨淋：花落：闻余香</span></div>
+          <div class="example-answer">
+            <b>解析：</b>风吹 → 草低 → 见牛羊，是自然现象引出的连锁结果，属因果关系。<br>
+            D 雨淋 → 花落 → 闻余香，同样是自然现象 + 因果 → 一致；<br>
+            A「靠舵手」与前两步无关；B「光照：叶肥」是因果，但「促生长」语义重复且结构不齐；<br>
+            C「游人如织」是主谓结构、非因果。<br>
+            <span class="correct">答案：D</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 2 · 拆分后的目的（含夸夸刷）<span class="src">2023 广东（65%）</span></div>
+        <div class="example-body">
+          <div class="example-q">舍身：取义</div>
+          <div class="example-opts"><span>A. 摩拳：擦掌</span><span>B. 含苞：欲放</span><span>C. 得陇：望蜀</span><span>D. 格物：致知</span></div>
+          <div class="example-answer">
+            <b>解析：</b>舍身是为了取义 → 目的关系，且「取」是目的提示词。<br>
+            D 格物致知：通过格物来获得知识 → 同样是目的关系（「致」表达到 / 求得）→ 一致；<br>
+            A 摩拳擦掌是并列近义；B 含苞欲放是顺承；C 得陇望蜀是递进（得到还想再得）。<br>
+            <span class="correct">答案：D</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. 长诗句 : 长诗句 -->
+  <div class="section c-orange" id="s23">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">📜</div>
+      <div class="section-title">四 · 7　长诗句 : 长诗句</div>
+      <span class="section-tag tag-high">常考</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="block">
+        <div class="block-title">1. 六种关系（前三种考得最多）</div>
+        <table class="mini-table">
+          <tr><th>关系</th><th>示例</th></tr>
+          <tr><td><b>① 因果</b></td><td>莫愁前路无知己：天下谁人不识君</td></tr>
+          <tr><td><b>② 目的</b></td><td>欲穷千里目：更上一层楼</td></tr>
+          <tr><td><b>③ 并列</b></td><td>吾生也有涯：而知也无涯</td></tr>
+          <tr><td>④ 描述对象一致</td><td>蝉噪林逾静（夏）：石榴开遍透帘明（夏）</td></tr>
+          <tr><td>⑤ 以物喻人</td><td>良禽择木而栖：贤臣择主而事</td></tr>
+          <tr><td>⑥ 修辞手法</td><td>比喻：大漠沙如雪　拟人：感时花溅泪　夸张：白发三千丈</td></tr>
+        </table>
+        <div class="tip-box">这类诗多借助自然界的某种现象，<b>来说明人的处事道理</b>——先读懂两句之间的逻辑，再去找结构一致的选项。</div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 1 · 目的关系<span class="src">2025 联考（53%）</span></div>
+        <div class="example-body">
+          <div class="example-q">欲穷千里目：更上一层楼</div>
+          <div class="example-opts"><span>A. 为唤春来争艳朵：甘将香化育花泥</span><span>B. 不经一番寒彻骨：怎得梅花扑鼻香</span><span>C. 欲上高楼去避愁：愁还随我上高楼</span><span>D. 抛开俗事陪山坐：才得闲心听水歌</span></div>
+          <div class="example-answer">
+            <b>解析：</b>想要看得更远，所以再上一层楼 → 目的关系（「欲」「为」是提示词）。<br>
+            A 为了春天到来时百花争艳，甘愿化作泥土育花 → 目的关系，一致；<br>
+            B、D 都含「才 / 怎得」，是条件关系；C 是转折（想去避愁，愁却跟上来）。<br>
+            <span class="correct">答案：A</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 2 · 描述对象一致（季节）<span class="src">2024 山东（29%）</span></div>
+        <div class="example-body">
+          <div class="example-q">蝉噪林逾静　对于　（　　）　相当于　（　　）　对于　满架蔷薇一院香</div>
+          <div class="example-opts"><span>A. 菊花从此不须开　谷鸟吟晴日</span><span>B. 蒌蒿满地芦芽短　雁行遥上月</span><span>C. 石榴开遍透帘明　卢橘垂金弹</span><span>D. 千里莺啼绿映红　燕草如碧丝</span></div>
+          <div class="example-answer">
+            <b>解析：</b>「蝉噪林逾静」「满架蔷薇一院香」描写的都是<b>夏季</b>景象，要按「季节一致」配对。<br>
+            C「石榴开遍透帘明」（石榴夏季开花）与「卢橘垂金弹」（卢橘初夏结果）都是夏季 → 前后都成立；<br>
+            A、B、D 中的「菊花」「芦芽」「燕草」多属春、秋，季节不符。<br>
+            <span class="correct">答案：C</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 3 · 因果倒装<span class="src">2024 四川（54%）</span></div>
+        <div class="example-body">
+          <div class="example-q">柴门闻犬吠：风雪夜归人</div>
+          <div class="example-opts"><span>A. 意欲捕鸣蝉：忽然闭口立</span><span>B. 向晚意不适：驱车登古原</span><span>C. 不敢高声语：恐惊天上人</span><span>D. 举头望明月：低头思故乡</span></div>
+          <div class="example-answer">
+            <b>解析：</b>「柴门闻犬吠」是<b>结果</b>（听到狗叫），「风雪夜归人」是<b>原因</b>（有人深夜归来）→ 因果且<b>结果在前、原因在后</b>。<br>
+            C「不敢高声语」是结果（不敢大声说话），「恐惊天上人」是原因（怕惊动天上的人）→ 同样是因果倒装，一致；<br>
+            A、B 都是原因在前、结果在后；D 是先望月、后思乡的顺承。<br>
+            <span class="correct">答案：C</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 五、造句法 -->
+  <div class="section c-red" id="s24">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">🪄</div>
+      <div class="section-title">五、造句法（兜底办法）</div>
+      <span class="section-tag tag-hot">必背</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="block">
+        <div class="block-title">1. 什么时候用</div>
+        <ul class="point-list">
+          <li><b>① 题干没有常考关系</b> → 造句子 → 找一样的句子。</li>
+          <li><b>② 不确定有没有常考关系、但没直接看出来</b> → 造句子：有明确关系就用关系，无明确关系就找一样的句子。</li>
+        </ul>
+        <div class="formula-box">
+          <span class="formula">示例</span>　轮船：海洋 → 能看出位置关系，直接用关系解题，找「汽车：公路」<br>
+          <span class="formula">示例</span>　茶壶：沸腾 → 看不出常考关系，造句「茶壶里的水沸腾了」，再找结构一致的选项
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">2. 造句原则（两条铁律）</div>
+        <ul class="point-list">
+          <li><b>① 能不加字就不加字，能少加字就少加字，加字最好都加一样的字。</b></li>
+          <li><b>② 注意变化方向。</b></li>
+        </ul>
+        <div class="warn-box">
+          <b>示例（体会「不加字」）：</b>题干「医生：病人」→ 造句「医生诊治病人」；选项「教师：学生」→「教师教育学生」，结构一致即可选。<br>
+          若给题干加了「用手术刀」，而选项里加不出同样的字，就是<b>造歪了</b>。
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 1 · 证件类信息（造句法）<span class="src">2025 联考</span></div>
+        <div class="example-body">
+          <div class="example-q">专业：学位：学位证</div>
+          <div class="example-opts"><span>A. 身份号码：登记日期：身份证</span><span>B. 所有权人：房屋坐落：房产证</span><span>C. 准驾车型：品牌型号：驾驶证</span><span>D. 健康状况：国籍信息：结婚证</span></div>
+          <div class="example-answer">
+            <b>解析：</b>造句：「专业、学位是<b>学位证上记载的信息</b>」。<br>
+            B「所有权人、房屋坐落是<b>房产证上记载的信息</b>」→ 完全一致；<br>
+            A 身份证上记载的是有效期限、签发机关，没有「登记日期」；<br>
+            C 品牌型号是行驶证的内容，不在驾驶证上；D 结婚证不记载健康状况、国籍信息。<br>
+            <span class="correct">答案：B</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 2 · 食物链（造句法）<span class="src">2024 国考</span></div>
+        <div class="example-body">
+          <div class="example-q">蚜虫：七星瓢虫：小麦</div>
+          <div class="example-opts"><span>A. 蛇：鸟：谷子</span><span>B. 稗草：螳螂：水稻</span><span>C. 蚊子：青蛙：高粱</span><span>D. 老鼠：黄鼬：玉米</span></div>
+          <div class="example-answer">
+            <b>解析：</b>造句：「七星瓢虫吃蚜虫，蚜虫吃小麦」—— 一条完整食物链。<br>
+            D「黄鼬吃老鼠，老鼠吃玉米」→ 结构完全一致；<br>
+            A 鸟不吃蛇；B 螳螂不吃稗草；C 蚊子不叮高粱。<br>
+            <span class="correct">答案：D</span>
+          </div>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 3 · 动词链（造句法）<span class="src">2022 联考</span></div>
+        <div class="example-body">
+          <div class="example-q">策略：销售：销量</div>
+          <div class="example-opts"><span>A. 表演：技巧：效果</span><span>B. 兵器：战斗：伤亡</span><span>C. 思路：答题：得分</span><span>D. 方法：测量：误差</span></div>
+          <div class="example-answer">
+            <b>解析：</b>造句：「好了策略能让销售提升，销量增加」。<br>
+            C「好的思路能让答题顺利，得分提高」→ 结构一致，且「销量」「得分」都是<b>可量化的结果</b>；<br>
+            A「效果」是定性描述，与题干的量化结果不对应；B 兵器与战斗不是「提升 / 降低」的关系；<br>
+            D 好的方法能让测量准确、误差<b>减少</b>（变化方向相反）。<br>
+            <span class="correct">答案：C</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 冲刺 · 复盘 -->
+  <div class="section c-green" id="strategy">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">🧭</div>
+      <div class="section-title">易错点与做题纪律</div>
+      <span class="section-tag tag-high">考前看</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="block">
+        <div class="block-title">1. 固定流程（照做就行）</div>
+        <div class="formula-box">
+          <b>第一步</b>　先横后纵：横向定关系（题干两个词之间）<br>
+          <b>第二步</b>　无唯一答案 → 用二级辨析（人为/天然、必然/或然、核心/非核心…）<br>
+          <b>第三步</b>　基础考点 + 二级辨析都定不出来 → <b>纵向对比</b><br>
+          <b>兜底</b>　看不出任何常考关系 → 造句法
+        </div>
+        <div class="warn-box"><b>纪律：不能一上来就用二级辨析。</b>一定要先用基础考点解题，没有唯一项时再往下走。</div>
+      </div>
+      <div class="block">
+        <div class="block-title">2. 纵向对比怎么比（横向无解时）</div>
+        <table class="mini-table">
+          <tr><th>对比维度</th><th>说明</th></tr>
+          <tr><td><b>同一范畴</b></td><td>抽象 / 具体；同一领域；内 / 外；积极 / 消极</td></tr>
+          <tr><td><b>人工 / 自然</b></td><td>花：牡丹：玫瑰（都是自然物）</td></tr>
+          <tr><td><b>词性、结构</b></td><td>道路：桥梁：市政设施（都是名词 + 名词 + 名词性总称）</td></tr>
+        </table>
+        <div class="formula-box">
+          <span class="formula">示例</span>　峰：山峰：碳达峰 → 要先在 B「潮：海潮：移民潮」与 D「羊：山羊：领头羊」之间纵向对比，<br>
+          看「单字在本词中的含义是否发生同方向的引申」，再选同一范畴的那一个。
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题 1 · 靠纵向对比收口<span class="src">2022 江苏（67%）</span></div>
+        <div class="example-body">
+          <div class="example-q">峰：山峰：碳达峰</div>
+          <div class="example-opts"><span>A. 界：世界：思想界</span><span>B. 潮：海潮：移民潮</span><span>C. 子：儿子：菜篮子</span><span>D. 羊：山羊：领头羊</span></div>
+          <div class="example-answer">
+            <b>解析：</b>横向看：「山峰」的「峰」是本义（山的尖顶），「碳达峰」的「峰」是<b>引申义</b>（峰值）——由自然实体引申为抽象数值。<br>
+            纵向对比：B「海潮」的「潮」是本义（潮汐），「移民潮」的「潮」引申为抽象的「趋势」→ 引申机制完全一致；<br>
+            D「领头羊」的「羊」仍是本义（只是整体成为比喻）；A 的「界」两处含义相近；C「菜篮子」的「子」是无实义后缀。<br>
+            <span class="correct">答案：B</span>
+          </div>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">3. 考前检查清单</div>
+        <ul class="point-list">
+          <li><b>常识积累先过一遍</b>：全同（地名别称 / 庙号本名）、矛盾全异、指代象征、成语拆分清单。</li>
+          <li><b>条件关系有优先级</b>：见到「则 / 就 / 必 / 不…不 / 才」先往条件上想；没有提示词就别硬找隐含条件。</li>
+          <li><b>先看顺序</b>：顺承题、并列题先验顺序，能筛掉大半干扰项。</li>
+          <li><b>种属先于组成</b>：先问「A 是 B 的一种」，再问「A 是 B 的一部分」。</li>
+          <li><b>特征 vs 功能</b>：能加「用」字的是功能，不能加的是特征。</li>
+          <li><b>造句不加字</b>：能不加就不加，加就要两边加一样的字。</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+<!-- INSERT_POINT -->
+</div>
+
+<div class="footer">
+  依据《超格程意 3+2 类比推理》课件与《程意类比推理思维导图》整理 · 例题均取自两份资料中的历年真题<br>
+  祝你成功上岸 🎉
+</div>
+
+</div><!-- /.main -->
+
+<button class="back-top" id="backTop" onclick="scrollToTop()">↑</button>
+
 <script>
-(function () {
-  'use strict';
-
-  /* 首页示意图放在 id=tpl-fig 的模板块里，避免在 JS 里拼一大段 SVG 字符串（引号/转义太容易出错） */
-  function figHTML() {
-    var t = document.getElementById('tpl-fig');
-    return t ? t.innerHTML : '';
+  // 折叠 / 展开
+  function toggleSection(header) {
+    const section = header.parentElement;
+    section.classList.toggle('collapsed');
   }
 
-  /* ============================================================
-     数据：按板块分组
-     内容整理自《程意丨26超格类比推理7页纸》，重新组织为网页结构
-     ============================================================ */
-  var DATA = [
-    {
-      id:'principle', color:'var(--green)', title:'核心原则', sub:'3 条 · 做题前先记住',
-      entries:[
-        { t:'① 常态思维', std:'不要考虑极端情况，<b>按常态思维做题就行</b>。',
-          eg:'<span class="lbl">例</span> 考"苹果 : 水果"这种常识关系时，不要去纠结"苹果也可以是品牌名"这类极端理解。' },
-        { t:'② 先横后纵', std:'先看<b>横向</b>（题干之间）的关系；横向找不出答案时，再对比<b>纵向</b>（题干与选项）。',
-          eg:'<span class="lbl">用法</span> 题干"西瓜 : 水果"先定横向是种属关系，再去选项里找同为种属关系的一项；若多项都符合，再用纵向词性/色彩区分。' },
-        { t:'③ 先整体后局部', std:'先将题干<b>冒号前和冒号后</b>分别当成不同主体进行对比、观察关系；如果无法得出答案，<b>再拆开看</b>。',
-          eg:'<span class="lbl">例</span> "铁路 : 公路"先整体看（并列）；整体无解时，再把"铁/公"这类字拆开比。' }
-      ]
-    },
-    {
-      id:'logic', color:'var(--blue)', title:'一、逻辑关系（8 类）', sub:'类比推理的主干考点 · 必背',
-      entries:[
-        { t:'1. 全同关系', badge:'必背',
-          std:'<em>判断标准：</em>两个概念<b>完全相同</b>（同一个事物的不同叫法）。',
-          eg:'<span class="lbl">示例</span> 麦克风 : 话筒　西红柿 : 番茄　纸鸢 : 风筝　芝麻 : 脂麻（脂麻即芝麻，又称胡麻、油麻）',
-          subs:[
-            { t:'★ 全同关系积累（背下来）', li:[
-              '<b>属相 : 生肖</b>　｜　<b>刘彻 : 汉武帝</b>　｜　<b>引擎 : 发动机</b>　｜　<b>分母 : 除数</b>',
-              '<b>岳父 : 泰山</b>　｜　<b>银杏 : 公孙木</b>　｜　<b>江南话 : 江浙话</b>　｜　<b>西红柿 : 番茄</b>',
-              '<b>镇江 : 京口</b>　｜　<b>杜鹃花 : 映山红</b>　｜　<b>牙婆 : 人贩子</b>　｜　<b>生日 : 生辰</b>',
-              '<b>牵牛花 : 喇叭花</b>　｜　<b>乞巧节 : 七夕节</b>　｜　<b>合肥 : 庐州</b>　｜　<b>荷花 : 芙蕖 / 菡萏</b>',
-              '<b>矮瓜 : 茄子</b>　｜　<b>犬子 : 儿子</b>　｜　<b>芝麻 : 脂麻</b>　｜　<b>南京 : 金陵</b>',
-              '<b>地瓜 : 甘薯</b>　｜　<b>考拉 : 树袋熊</b>　｜　<b>朱棣 : 明成祖</b>　｜　<b>桂 : 广西</b>',
-              '<b>纸鸢 : 风筝</b>　｜　<b>赵匡胤 : 宋太祖</b>　｜　<b>成都 : 蓉城</b>　｜　<b>百分比 : 百分率</b>',
-              '<b>广州 : 羊城</b>　｜　<b>马达 : 发动机</b>　｜　<b>益母草 : 红花艾</b>　｜　<b>夜宵 : 宵夜</b>',
-              '<span class="kw">规律：地名别称、历史人物庙号本名、学名俗名、外来语音译，都是高频全同。</span>'
-            ]}
-          ] },
+  // 回到顶部 / 顶部进度条
+  const backTop = document.getElementById('backTop');
+  const progressFill = document.getElementById('progressFill');
 
-        { t:'2. 全异关系', badge:'必背',
-          std:'<em>判断标准：</em>针对<b>同一类事物</b>的分类，两个概念<b>没有交集</b>。',
-          eg:'<span class="lbl">示例</span> 成年人 : 未成年人　香蕉 : 苹果　吸尘器 : 加湿器　土豆 : 香菜',
-          subs:[
-            { t:'二级辨析', li:[
-              '<b>(1) 矛盾全异</b>：只有两种情况（生:死、男:女、成年人:未成年人、金属:非金属）',
-              '<b>(2) 反对全异</b>：有第 3 种情况（细菌:真菌、蛾眉月:下弦月）',
-              '<b>(3) 是否有顺序</b>：是否紧密衔接（锁骨:肋骨:坐骨）',
-              '<b>(4) 不同层级全异</b>：青蛙:哺乳动物（青蛙是两栖动物，与哺乳动物同层）',
-              '<b>(5) 动力来源</b>：飞机:汽车:高铁:有轨电车（动力来源于"非人力"）',
-              '<b>(6) 概念之间存在的转化</b>：孙子:父亲:祖父、昨天:今天:明天（同一主体的不同阶段）'
-            ]},
-          ],
-          note:'★ 矛盾全异积累（按类别背）：<b>【是和非】</b>合法收入 : 非法收入、金属 : 非金属　｜　<b>【有和无】</b>有形损耗 : 无形损耗　｜　<b>【硬和软】</b>软实力 : 硬实力、软件 : 硬件　｜　<b>【阴和阳】</b>阴 : 阳、阴离子 : 阳离子　｜　<b>【真和假】</b>真 : 伪、真分数 : 假分数、有理数 : 无理数　｜　<b>【单字】</b>曲 : 直、动 : 静、生 : 死、男 : 女、合法行为 : 非法行为' },
-
-        { t:'3. 种属关系', badge:'必背',
-          std:'<em>含义：</em>一个小概念<b>完全属于</b>另一个大概念。<br><em>判断标准：</em>A 是 B（的一种 / 个）。',
-          eg:'<span class="lbl">示例</span> 狗 : 动物　劳动者 : 工人:瓦工　车 : 机动车:货车',
-          subs:[
-            { t:'二级辨析', li:[
-              '<b>(1) 小概念为泛指 / 特指</b>：长白山:火山、巢湖:淡水湖（特指——一说长白山就知道是哪里）；皇陵:古建筑（泛指——皇陵太多了，不知道是具体哪一个）。<br><span style="color:var(--red)">常见特指概念：山名、河流名、名人、名胜古迹、地名、国名</span>',
-              '<b>(2) 叠加修饰词</b>：制造:中国制造:智能化中国制造；批评:自我批评:剖析式自我批评'
-            ]},
-          ]},
-
-        { t:'4. 交叉关系', badge:'常考',
-          std:'<em>判断标准：</em>两个概念<b>有交集</b>（画成两个相交的圆圈）。',
-          eg:'<span class="lbl">示例</span> 布鞋 : 童鞋　护士 : 男护士',
-          subs:[
-            { t:'初步识别', li:[
-              '<b>(1) 尾缀相同，从不同角度描述</b>：酒杯:玻璃杯（功能:材质）、素菜:热菜、童鞋:布鞋、铁皮桶:油桶',
-              '<b>(2) 人的身份</b>：编剧:博士、专家:教授:博士、学生:顾客',
-              '<b>(3) 两个概念词，不是之前的几种关系</b>：果汁:冷饮、瓷器:茶杯、金饰:手镯、上市企业:大型企业:民营企业、蛋糕:礼物'
-            ]},
-          ]},
-
-        { t:'5. 顺承关系', badge:'常考',
-          std:'<em>判断标准：</em>出现<b>多个有顺序的行为</b>（有先后顺序）。',
-          eg:'<span class="lbl">示例</span> 提交:审核:批准　群众来访:窗口接访:调查督办　建造堤坝:潮汐发电:送电入户',
-          subs:[
-            { t:'二级辨析', li:[
-              '<b>(1) 主体是否一致</b>：学习菜谱:下厨烹饪:总结经验（主体一致）；投稿稿件:编辑排版:读者阅读（主体不同）；通过安检:车站候车:登上列车（主体一致）；发布公告:制作标书:签订合同（主体不同）',
-              '<b>(2) 事情是否圆满结束</b>：预约:核实:兑换　设想:实践:总结'
-            ]},
-          ]},
-
-        { t:'6. 因果关系', badge:'必背',
-          std:'<em>判断标准：</em>能用<b>"导致""所以"</b>造句。',
-          eg:'<span class="lbl">示例</span> 地震 : 房屋倒塌（结果必然发生）｜ 暴雨 : 航班延误　→ 先用"导致"造句确认是因果，再做二级辨析：原因是人为还是天然、结果是必然还是非必然。',
-          subs:[
-            { t:'分类', li:[
-              '<b>(1) 普通因果</b>：下雨:地湿、发炎:发烧',
-              '<b>(2) 连锁因果</b>：饮酒:神志不清:车祸',
-              '<b>(3) 多因一果</b>：工业排放:滥用农药:水质污染；放养过密:喂饲不当:鱼病；发生地基下沉:结构老化:房屋倾斜'
-            ]},
-            { t:'二级辨析', li:[
-              '<b>(1) 原因是人为 / 天然因素</b>：温室效应:冰川融化:海面上升、连日降雪:道路结冰:出行困难',
-              '<b>(2) 结果是必然发生</b>：摩擦物体:产生热量、嗜烟酗酒:损害健康、春天播种:秋天收获、刻苦勤奋:成绩优秀 → 结果<b>必然</b>发生；认识错误:改正缺 → 结果<b>非必然</b>'
-            ]},
-          ]},
-
-        { t:'7. 目的关系', badge:'常考',
-          std:'<em>判断标准：</em>出现明显的<b>目的</b>，能用<b>"为了"</b>造句。',
-          eg:'<span class="lbl">示例</span> 低碳排放:保护环境　收集数据:调查研究　轮作休耕:耕地保护:严禁占用　植树造林:碳中和:节能减排<br><span class="kw">注：政府提倡的行为，多考目的关系</span>',
-          subs:[ { t:'二级辨析', li:['<b>目的能否实现</b>：刻舟:求剑缘木（目的不可实现）；围魏:救赵（目的可实现）'] } ] },
-
-        { t:'8. 条件关系', badge:'必背',
-          std:'<em>含义：</em>① <b>充分条件</b>——有它就行（有 A 一定有 B）；② <b>必要条件</b>——没它不行（没 A 一定没 B）。',
-          eg:'<span class="lbl">示例</span> 氧气:生命 → 氧气是"必要条件"，生命是"充分条件"',
-          subs:[
-            { t:'常见考察形式', li:[
-              '<b>(1) 成语俗语</b><br>充分条件：A 必/则/就/便 B —— 水至清则无鱼、受人滴水之恩:必当涌泉相报、小不忍:则乱大谋、锲而不舍:朽木不折<br>必要条件：不 A，不 B；A，才 B —— 不入虎穴:焉得虎子、无风:不起浪知、己知彼:百战百胜、不经一事:不长一智',
-              '<b>(2) 日常生活事件</b>：水:生命、空气:人（前者是后者的必要条件）；考试:试题、拔罐:杯罐（前者是后者的充分条件）'
-            ]},
-          ]},
-      ]
-    },
-    {
-      id:'common', color:'var(--violet)', title:'二、经验常识（8 类）', sub:'结合生活常识考查 · 需边做题边积累',
-      entries:[
-        { t:'1. 功能关系', badge:'必背',
-          std:'<em>判断标准：</em>工具及其功能用途。',
-          eg:'<span class="lbl">示例</span> 台灯 : 照明（主要功能）｜ 台灯 : 装饰（次要功能）｜ 灯 : 黑暗（反向功能——灯的功能是驱散黑暗）｜ 棉签 : 碘伏 : 消毒（配套使用）',
-          subs:[
-            { t:'常见考察形式', li:[
-              '<b>(1) 单个工具的功能</b>——正向功能：碘伏:消毒、灯:照明、减脂餐:减脂、消毒水:消毒；<br>&nbsp;&nbsp;&nbsp;&nbsp;<u>二级辨析</u>：主要 / 次要功能（台灯:装饰、食醋:除垢）；<u>反向功能</u>（不明说功能，需反推）：灯:黑暗 → 灯的功能是驱除黑暗；耳塞:噪音、肥皂:污渍',
-              '<b>(2) 多个工具配套使用</b>：棉签:碘伏:消毒、眼镜框:眼镜片、炭火:烤架:烧烤',
-              '<b>(3) 多个工具功能相似</b>：电风扇:扇子；<u>二级辨析</u>：出现时间有先后（常考古、今）——马车:汽车、刻漏（水钟）:钟表（后者为今）、煤:石油、青铜:黄金、刺绣:绣丝（后者为古）',
-              '<b>(4) 多个工具功能相反</b>：电风扇:电暖机、火炉:蒲扇、油门:刹车'
-            ]},
-            { t:'功能"多重、单一"辨析', li:[
-              '火炉:蒲扇　油门:刹车 → 功能<b>单一</b>',
-              '暖气:空调 → 空调可制暖、制冷（功能多重）',
-              '伞:雨衣 → 斗笠:蓑衣（斗笠可以遮雨、遮阳；蓑衣只能防雨）'
-            ]},
-          ]},
-
-        { t:'2. 组成关系', badge:'必背',
-          std:'<em>判断标准：</em>A 是 B 的一部分。',
-          eg:'<span class="lbl">示例</span> 桌子:桌面　衣服:衣领　钢琴:琴键　弹簧秤:刻度盘:挂钩　吹风机:电动机:风叶',
-          subs:[
-            { t:'二级辨析：核心 / 非核心部分', li:['桌面是桌子的核心部分，衣领是衣服的非核心部分'] },
-            { t:'与种属关系的区别', li:[
-              '<b>(1) 种属关系：</b>A 是 B（的一种）',
-              '<b>(2) 组成关系：</b>A 是 B 的一部分',
-              '<span class="kw">注：做题是先判断是否是种属关系，再判断组成关系</span><br>省份:河北:石家庄 → 石家庄是河北的一部分，河北是省份（组成）；水果:桃子:桃核 → 桃核是桃子的一部分，桃子是水果（种属）；笔画:隶书:汉字 → 笔画是隶书的组成部分，隶书是汉字（种属）'
-            ]},
-          ]},
-
-        { t:'3. 加工关系', badge:'常考',
-          std:'<em>判断标准：</em>原材料与成品的关系 → 原材料本身加工为成品。',
-          eg:'<span class="lbl">示例</span> 树木:纸张　石料:木材:印章　搪瓷:塑料:脸盆',
-          subs:[
-            { t:'二级辨析', li:[
-              '<b>(1) 物理变化 / 化学变化</b>：布:衣服、木材:餐桌 → 物理变化；粮食:酒、牛奶:酸奶 → 化学变化<br>常见物理变化（无新物质生成）：雕刻、研磨、组装、拆解、剪裁、织造<br>常见化学变化（有新物质生成）：燃烧、发酵、酿造、氧化、冶炼、生锈',
-              '<b>(2) 是否为必要原材料</b>：面团:馒头、棉纱:棉布',
-              '<b>(3) 是否为唯一原材料</b>：塑料:盘子:陶瓷、皮革:鞋子:布料 → 左右两者都是中间的原材料之一'
-            ]},
-          ]},
-
-        { t:'4. 命名方式', badge:'常考',
-          std:'<em>判断标准：</em>事物命名的来源。',
-          eg:'<span class="lbl">示例</span> 外形（蝴蝶结）、功能（护城河）、行为（啄木鸟）、颜色（绿豆）、制作方法（水煮鱼）、制作工具（小笼包）、所属整体事物（苹果皮）、材料（羽毛球）、人物（东坡肉）、特征（夜来香）、位置（门帘）',
-          subs:[
-            { t:'二级辨析', li:[
-              '<b>(1) 全异关系的二级辨析</b>：清蒸鲈鱼:凉拌黄瓜',
-              '<b>(2) 交叉关系的二级辨析</b>：国产灯:蘑菇灯:护眼灯 → 国产灯:来源；蘑菇灯:形状；护眼灯:功能；社区公园:迷你公园:主题公园 → 服务对象、规模、功能；自制玩偶:人形玩偶:装饰玩偶 → 来源、形状、功能；水生植物:喜阴植物:防风植物 → 生长环境、喜好、功能',
-              '<b>(3) 多个不相干的事物</b>：花生壳:核桃仁丝瓜络:石榴籽 → 所属事物整体'
-            ]},
-          ]},
-
-        { t:'5. 特征关系', badge:'常考',
-          std:'<em>判断标准：</em>事物自身具有的特征 —— <b>XX 化 / 性 / 式</b>。',
-          eg:'<span class="lbl">示例</span> 直观性:即时性:网络直播　公开性:权威性:行政法律　全真阅读:沉浸式',
-          subs:[
-            { t:'二级辨析：必然 / 或然特征', li:[
-              '太阳:东升西落、珠峰:高耸入云 → <b>必然</b>特征',
-              '桃树:花团锦簇、江面:风平浪静、道路:车水马龙 → <b>或然</b>特征'
-            ]},
-            { t:'特征和功能的区别', li:[
-              '<b>(1) 特征：</b>事物自身具有的特性',
-              '<b>(2) 功能：</b>能用来做什么 → 用"A（干）B"检验<br>潮汐能:生物质能:可再生 → 特征；易拉罐:塑料瓶:可回收 → 特征；洗手液:消毒液:可除菌、手套:围巾:可防寒 → 功能；小米:核桃:可助眠 → 功能'
-            ]},
-          ]},
-
-        { t:'6. 职业关系', badge:'常考',
-          std:'<em>判断标准：</em>出现职业。',
-          eg:'<span class="lbl">示例</span> 刑事警察:打击犯罪（相当于）外交人员:对外交涉',
-          subs:[
-            { t:'考点（5 个维度）', li:[
-              '<b>(1) 职业内容</b>：医生:手术　<b>(2) 职业对象</b>：医生:病人　<b>(3) 职业场所</b>：医生:医院<br><b>(4) 职业工具</b>：医生:手术刀　<b>(5) 职业服装</b>：医生:手术服'
-            ]},
-            { t:'造句法优先', li:['造句好用、可优先用造句法做题：水稻:农田:农民 → 农民在农田种水稻；货物:网络:电商 → 电商在网络卖货物；捕鱼:海面:渔民 → 渔民在海面捕鱼 → <b>"捕鱼"本身就是一个动作</b>'] },
-          ]},
-
-        { t:'7. 位置关系', badge:'常考',
-          std:'<em>判断标准：</em>有位置信息。',
-          eg:'<span class="lbl">示例</span> 鱼 : 海洋　老鼠 : 天空',
-          subs:[
-            { t:'二级辨析', li:[
-              '<b>(1) 动、静</b>：老鼠:天空 → 动；猫头鹰:树枝 → 静',
-              '<b>(2) 具体位置</b>：内外（药片:药盒:药箱、文具:文具盒:书包）；上下（衣服:晾衣架、帆船:海面）；首尾（霜降:秋季、大暑:夏季）',
-              '<b>(3) 是否接触</b>：台历:桌子、台历:客厅',
-              '<b>(4) 是否为唯一位置</b>：质证:法庭、监考:考场 → 位置唯一；缴费:窗口、采访:现场 → 位置不唯一'
-            ]},
-          ]},
-
-        { t:'8. 依据关系', badge:'常考',
-          std:'<em>判断标准：</em>一者依据另一者（作为依托或依据）→ 依据 A，B。',
-          eg:'<span class="lbl">示例</span> 标准:测量　信息:决策　法律:诉讼:胜败　策略:经营盈亏',
-          subs:[ { t:'常考提示', li:['<span class="kw">规则、标准、法律、制度、提纲</span>常考依据关系'] } ] },
-      ]
-    },
-    {
-      id:'language', color:'var(--amber)', title:'三、言语关系', sub:'释义 · 指代象征 · 成语诗句 · 近反义 · 词句结构',
-      entries:[
-        { t:'1. 释义关系', badge:'常考',
-          std:'<em>识别：</em>同一语素 A:AB:AC，判断含义是否相同。',
-          eg:'<span class="lbl">示例</span> 备:德才兼备:防患未然 → 含义<b>不同</b>；兵:短兵相接:草木皆兵 → 含义<b>不同</b>；假:狐假虎威:不假思索 → 含义<b>不同</b>；狼:狼吞虎咽:狼狈家突 → 含义<b>相同</b>',
-          subs:[ { t:'其他识别形式', li:[
-            '<b>像……</b>：火:火急、鹄:鹄起、虎:虎将',
-            '<b>词语拆分成单字</b>，单字是否都具备词的含义：覆:盖:覆盖、抚:摸:抚摸'
-          ] } ] },
-
-        { t:'2. 指代、象征、比喻', badge:'必背',
-          std:'<em>识别：</em>题目中出现<b>很文艺的、平时不用的词</b>。',
-          eg:'<span class="lbl">示例</span> 巾帼 : 女子　｜　草根 : 老百姓　｜　干戈 : 战争　｜　汗青 : 史书　→ 题干一出现这种"文艺词"，第一反应就是指代 / 象征 / 比喻。',
-          subs:[
-            { t:'★ 指代象征比喻积累（背下来）', li:[
-              '<b>领头雁 : 领导者</b>　｜　<b>优雅 : 天鹅</b>　｜　<b>青衿 : 读书人</b>　｜　<b>巾帼 / 蛾眉 / 红颜 : 女子（女性）</b>',
-              '<b>鸿雁 : 笺札 : 书信</b>　｜　<b>拓荒牛 : 先驱</b>　｜　<b>草根 : 平民百姓</b>　｜　<b>铁窗 : 监狱</b>',
-              '<b>浮屠 : 佛塔</b>　｜　<b>丝竹 : 音乐</b>　｜　<b>干戈 / 烽烟 : 战争</b>　｜　<b>汗青 : 史书</b>',
-              '<b>须眉 : 男子</b>　｜　<b>桃李 : 学生</b>（延伸）　｜　<b>社稷 : 国家</b>（延伸）',
-              '<span class="kw">规律：动物→人（领头雁/拓荒牛）、植物→人（桃李/草根）、服饰器官→人（巾帼/须眉/蛾眉）、器物→抽象（干戈→战争、丝竹→音乐）。</span>'
-            ]}
-          ] },
-
-        { t:'3. 成语、诗句被拆分', badge:'常考',
-          std:'<em>考点：</em>(1) 因果关系　(2) 目的关系',
-          eg:'<span class="lbl">示例</span> 风吹:草低:见牛羊、雨淋:花落:闻余香 → <b>因果关系</b>；刻舟:求剑、直挂:云帆:济沧海 → <b>目的关系</b>',
-          subs:[
-            { t:'（因果 VS 目的）二级辨析', li:[
-              '<b>(1) 因果</b>：① 强调因果关系，能用"导致""所以"造句（强光照射:视力损伤、懒惰:失败、理屈:词穷）；② 涉及自然现象多考因果关系（水涨:船高、风吹:草动、水落:石出、天寒:地冻）；③ 冒号前后两词多为主谓结构',
-              '<b>(2) 目的</b>：① 强调目的 + 行为，能用"为了"造句（掩耳:盗铃、杀鸡:取卵、削足:适履、守株:待兔）；② 出现政府提倡的行为多考目的关系（低碳排放:保护环境、轮作休耕:耕地保护、灾害预警:减少损失）；③ 出现以"欲、求、为"等词，多考目的关系（静以修身、刻舟求剑、欲穷千里目:更上一层楼、为唤春来争艳朵，甘将香化育春泥）；④ 冒号前后两词多为动词或动宾结构（拔苗:助长、画饼:充饥、削足:适履、凿壁:借光、缘木:求鱼）'
-            ]},
-          ]},
-
-        { t:'4. 长诗句 : 长诗句', badge:'常考',
-          std:'<em>考点：</em>',
-          eg:'<span class="lbl">示例</span> 欲穷千里目 : 更上一层楼（目的）｜ 良禽择木而栖 : 贤臣择主而事（以物喻人）｜ 莫愁前路无知己 : 天下谁人不识君（因果）',
-          subs:[ { t:'六种关系', li:[
-            '<b>(1) 因果</b>：莫愁前路无知己:天下谁人不识君',
-            '<b>(2) 目的</b>：欲穷千里目:更上一层楼',
-            '<b>(3) 并列</b>：吾生也有涯:而知也无涯',
-            '<b>(4) 描述对象一致</b>：蝉噪林逾静:石榴开遍透帘明 → 夏季',
-            '<b>(5) 以物喻人</b>：良禽择木而栖:贤臣择主而事',
-            '<b>(6) 修辞手法</b>：比喻、拟人、夸张… 感时花溅泪:恨别鸟惊心、大漠沙如雪'
-          ] } ] },
-
-        { t:'5. 近反义关系', badge:'必背',
-          std:'<em>基础考点：</em>近义词、反义词。',
-          eg:'<span class="lbl">示例</span> 不由自主:情不自禁、近水楼台:向阳花木 → 近义关系；打破砂锅问到底:不求甚解、打开天窗说亮话:拐弯抹角 → 反义关系',
-          subs:[
-            { t:'二级辨析（1）', li:['<b>① 感情色彩</b>：褒义 / 贬义 / 中性　→ 近义也要看色彩是否一致','<b>② 语义轻重</b>：如"失望"与"绝望"，轻重不同'] },
-            { t:'二级辨析（2）', li:['<b>③ 词性是否一致</b>：动词对动词、名词对名词','<b>④ 范围大小</b>：如"战争"与"战役"，范围不同'] },
-            { t:'真题示例', li:[
-              '<b>近义</b>：不由自主 : 情不自禁　｜　近水楼台 : 向阳花木',
-              '<b>反义</b>：打破砂锅问到底 : 不求甚解　｜　打开天窗说亮话 : 拐弯抹角'
-            ]}
-          ] },
-
-        { t:'6. 结合逻辑关系考察', badge:'常考',
-          std:'近反义常与逻辑关系叠加考察。',
-          eg:'<span class="lbl">示例</span> 一叶障目 : 不见泰山（因果）｜ 静以修身 : 俭以养德（目的）｜ 不经一事 : 不长一智（条件）｜ 先礼后兵 : 先斩后奏（顺承）',
-          subs:[ { t:'四种叠加', li:[
-            '<b>① 因果</b>：言之无文:行之不远、一叶障目:不见泰山',
-            '<b>② 目的</b>：静以修身:俭以养德、藏诸名山:传之其人、嘤其鸣矣:求其友声',
-            '<b>③ 条件</b>：不经一事:不长一智',
-            '<b>④ 顺承</b>：先礼后兵:先斩后奏'
-          ] } ] },
-
-        { t:'7. 词句结构', badge:'必背',
-          std:'<em>判断依据：</em>词性搭配。',
-          eg:'<span class="lbl">示例</span> 主谓：粮食 : 爱惜　｜　动宾：耕种 : 土地　｜　偏正：清新 : 空气　｜　并列：守株 : 待兔',
-          subs:[ { t:'四种结构', li:[
-            '<b>① 主谓结构</b>（常见：名称+动词）：粮食:爱惜、秩序:维持、春光:明媚',
-            '<b>② 动宾结构</b>（常见：动词+名词）：耕种:土地、阅读:小说',
-            '<b>③ 偏正结构</b>（修饰词+中心语，可以用"的、地"造句）：清新:空气、平静:讲诉、肥沃:土地',
-            '<b>④ 并列结构</b>（结构一致）：词语、成语、俗语、诗句的内部（守株:待兔、风生:水起、锦衣:玉食）；连续的俗语、诗句之间（取之不尽:用之不竭、冬寒抱冰:夏热握火、道不拾遗:夜不闭户）'
-          ] } ] },
-      ]
-    },
-    {
-      id:'sentence', color:'var(--red)', title:'四、造句法', sub:'看不出常考关系时的兜底办法',
-      entries:[
-        { t:'（一）使用条件', badge:'必背', std:'两类情况才用造句法：',
-          eg:'<span class="lbl">示例</span> 题干"轮船 : 海洋"能看出常考关系（位置）→ 直接用关系解题，找"汽车 : 公路"；题干"茶壶 : 沸腾"看不出常考关系 → 造句兜底："茶壶里的水沸腾了"，再找结构一致的选项。',
-          subs:[ { t:'', li:[
-            '<b>1. 题干没有常考关系</b> → 造句，然后找一样的句子。',
-            '<b>2. 不确定有没有常考关系、不能直接看出来</b> → 造句：① 有明确关系，就用明确关系；② 无明确关系，就找一样的句子。'
-          ] } ] },
-        { t:'（二）造句原则', badge:'必背', std:'两条铁律，避免"造歪"。',
-          eg:'<span class="lbl">示例</span> 题干"医生 : 病人"→ 造句"医生诊治病人"；选项"教师 : 学生"→"教师教育学生"，结构一致即可选。若给题干加了"用手术刀"，而选项加不出同样的字，就是造歪了。',
-          subs:[ { t:'', li:[
-            '<b>1. 能不加字就不加字，能少加字就少加字，加字最好都加一样的字。</b>',
-            '<b>2. 注意变化方向。</b>'
-          ] } ],
-          note:'<b>示例（对比体会"不加字"原则）：</b>题干"医生 : 病人"，造句"医生诊治病人"；选项里若有"教师 : 学生"，可造"教师教育学生"，结构一致 → 选它。若造句时给题干加了"用手术刀"，选项却加不了同样的字，就是造歪了。' },
-      ]
-    },
-  ];
-
-  /* ============================================================
-     渲染
-     ============================================================ */
-  var mainEl = document.getElementById('main');
-
-  var openState = {};
-  DATA.forEach(function (g) { openState[g.id] = true; });
-  var filterGroup = '';
-  var keyword = '';
-
-  function esc(s) {
-    return String(s == null ? '' : s)
-      .replace(/&(?!(amp|lt|gt|quot|nbsp|#\d+);)/g, '&amp;')
-      .replace(/<(?!\/?(b|br|em|u|span|i)\b)/g, '&lt;');
-  }
-  function hl(s) {
-    var t = esc(s);
-    if (!keyword) return t;
-    try {
-      var re = new RegExp('(' + keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
-      return t.replace(re, '<mark>$1</mark>');
-    } catch (e) { return t; }
-  }
-  /** 词条文本（用于搜索，去掉标签） */
-  function flat(e) {
-    var arr = [e.t, e.std];
-    (e.subs || []).forEach(function (s) { arr.push(s.t); (s.li || []).forEach(function (x) { arr.push(x); }); });
-    if (e.eg) arr.push(e.eg);
-    return arr.join(' ').replace(/<[^>]+>/g, '');
-  }
-  function hit(arr) {
-    if (!keyword) return true;
-    var k = keyword.toLowerCase();
-    return arr.some(function (x) { return String(x || '').toLowerCase().indexOf(k) >= 0; });
-  }
-
-  function renderEntry(e, key) {
-    var h = '<div class="entry"' + (key ? ' id="' + key + '"' : '') + '>';
-    h += '<div class="entry-head"><b>' + hl(e.t) + '</b>' +
-         (e.badge ? '<span class="badge ' + (e.badge === '必背' ? 'must' : e.badge === '常考' ? 'freq' : '') + '">' + esc(e.badge) + '</span>' : '') +
-         '</div>';
-    if (e.std) h += '<div class="std">' + hl(e.std) + '</div>';
-    (e.subs || []).forEach(function (s) {
-      h += '<div class="sub2">' + (s.t ? '<div class="t">' + hl(s.t) + '</div>' : '') + '<ul>';
-      (s.li || []).forEach(function (x) { h += '<li>' + hl(x) + '</li>'; });
-      h += '</ul></div>';
-    });
-    if (e.eg) h += '<div class="eg">' + hl(e.eg) + '</div>';
-    h += '</div>';
-    return h;
-  }
-
-  function render() {
-    var html = '', shown = 0, total = 0;
-
-    /* 顶部速览只在无筛选/无搜索时出现 */
-    if (!keyword && !filterGroup) {
-      html += '<section class="hero" id="hero">' +
-        '<h2>先记住这 3 条，再开始刷题</h2>' +
-        '<div class="src">内容整理自《程意 · 26 超格类比推理 7 页纸》 · 考点与常识积累均已转为文字，便于搜索与背诵</div>' +
-        '<div class="three">' +
-          '<div><b>① 常态思维</b><br>不考虑极端情况</div>' +
-          '<div><b>② 先横后纵</b><br>先看题干之间，再看题干与选项</div>' +
-          '<div><b>③ 先整体后局部</b><br>先当两个主体比，实在不行再拆字</div>' +
-        '</div>' +
-        figHTML() +
-        '<div class="tip">题目短小易读、做得快，但<b>考点碎、常结合常识</b>，实际难度不低。突破要点：① 明确做题核心原则；② 弱化主观想法，强化常考考点的记忆与使用；③ 边做题边积累常识。</div>' +
-      '</section>';
-    }
-
-    DATA.forEach(function (g) {
-      var n;
-      total += g.entries.length;
-      if (filterGroup && filterGroup !== g.id) return;
-      var items = g.entries.filter(function (e) { return hit([flat(e)]); });
-      if (keyword && items.length === 0) return;
-      shown += items.length;
-
-      var body = items.map(function (e, i) { return renderEntry(e, 'e-' + g.id + '-' + i); }).join('');
-      var open = keyword ? true : openState[g.id];
-      html += '<section class="group" id="g-' + g.id + '" style="--c:' + g.color + '" data-g="' + g.id + '" data-open="' + open + '">' +
-        '<button class="group-head" type="button" aria-expanded="' + open + '">' +
-          '<span class="tick" aria-hidden="true"></span>' +
-          '<span class="txt"><b>' + esc(g.title) + '</b><span>' + esc(g.sub) + '</span></span>' +
-          '<span class="cnt">' + items.length + '</span><span class="caret" aria-hidden="true">▶</span>' +
-        '</button><div class="group-body"' + (open ? '' : ' hidden') + '>' + body + '</div></section>';
-    });
-
-    mainEl.innerHTML = html || '<div class="empty">没有找到匹配的考点，换个关键词试试</div>';
-  }
-
-  /* ============================================================
-     交互
-     ============================================================ */
-  mainEl.addEventListener('click', function (e) {
-    var head = e.target.closest('.group-head');
-    if (!head) return;
-    var g = head.closest('.group');
-    var now = g.dataset.open !== 'true';
-    g.dataset.open = String(now);
-    head.setAttribute('aria-expanded', String(now));
-    g.querySelector('.group-body').hidden = !now;
-    openState[g.dataset.g] = now;
+  window.addEventListener('scroll', function () {
+    const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+    const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    if (scrollHeight > 0) progressFill.style.width = (scrollTop / scrollHeight) * 100 + '%';
+    backTop.classList.toggle('show', scrollTop > 300);
   });
 
-  /* 侧栏搜索框同时过滤正文：由 page-shell 统一驱动，页面只提供实现 */
+  function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // 搜索：侧栏搜索框由 page-shell 驱动，这里把关键词同时作用到正文
+  const searchInput = document.getElementById('navSearch');
+  const allSections = document.querySelectorAll('.section');
+
+  function resetSearch() {
+    allSections.forEach(sec => {
+      sec.style.display = '';
+      sec.querySelectorAll('.block').forEach(b => { b.style.opacity = '1'; });
+    });
+  }
+
   window.pageShellContentFilter = function (kw) {
-    keyword = String(kw || '').trim();
-    filterGroup = '';
-    render();
+    const keyword = String(kw || '').trim().toLowerCase();
+    if (!keyword) { resetSearch(); return; }
+
+    allSections.forEach(sec => {
+      if (sec.textContent.toLowerCase().includes(keyword)) {
+        sec.style.display = '';
+        sec.classList.remove('collapsed');
+        sec.querySelectorAll('.block').forEach(b => {
+          b.style.opacity = b.textContent.toLowerCase().includes(keyword) ? '1' : '0.3';
+        });
+      } else {
+        sec.style.display = 'none';
+      }
+    });
   };
 
-  /* 侧栏目录：跳到收起分组内的知识点前，先把该分组展开 */
-  Array.prototype.forEach.call(document.querySelectorAll('.sidebar .nav-link'), function (a) {
-    a.addEventListener('click', function () {
-      var id = (a.getAttribute('href') || '').slice(1);
-      var el = id && document.getElementById(id);
-      var g = el && el.closest ? el.closest('.group') : null;
-      if (!g || g.dataset.open === 'true') return;
-      g.dataset.open = 'true';
-      var hd = g.querySelector('.group-head'), bd = g.querySelector('.group-body');
-      if (hd) hd.setAttribute('aria-expanded', 'true');
-      if (bd) bd.hidden = false;
-      openState[g.dataset.g] = true;
+  if (searchInput) {
+    searchInput.addEventListener('blur', function () {
+      if (!this.value.trim()) resetSearch();
     });
-  });
-
-  render();
-})();
+  }
 </script>
+
+    <script data-page-shell src="../../assets/page-shell.js"></script>
+<script data-study-hub-script src="../../assets/hub-nav.js"></script>
 </body>
 </html>

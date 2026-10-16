@@ -28,12 +28,9 @@ const shellPages = pages.filter((p) => !['exam-grid', 'choice-quiz'].includes(p.
 /**
  * 侧栏目录锚点由页面脚本在运行时生成的页面：
  * 这类页的锚点无法在源码里直接搜到，因此改为校验「锚点形态 + 生成代码」。
+ * 类比推理页已改为静态 section 骨架（与数量关系页一致），锚点可直接在源码里找到。
  */
 const runtimeAnchorPages = {
-  analogy: {
-    pattern: /^#(hero|g-(principle|logic|common|language|sentence)|e-(principle|logic|common|language|sentence)-\d+)$/,
-    generator: ['id="g-\' + g.id + \'"', "'e-' + g.id + '-' + i"]
-  },
   vocab: {
     pattern: /^#g-(general|problem|measure|emergency|communicate|document|universal)$/,
     generator: ['id="g-\' + g.id + \'"']
@@ -396,32 +393,55 @@ test('全站所有页面的标签页标题统一为「测试」', async () => {
   }
 })
 
-test('类比推理页具备考点体系、板块筛选与文字化积累', async () => {
+test('类比推理页具备完整考点体系、真题例题与文字化积累', async () => {
   const page = await readText(new URL('../pages/analogy/index.html', import.meta.url))
 
-  // 四大板块与核心内容标记
+  // 考点体系：核心原则 + 逻辑关系 8 类 + 经验常识 8 类 + 言语关系 7 类 + 造句法
   for (const marker of [
-    '核心原则', '先横后纵', '先整体后局部', '常态思维',
+    '核心原则', '先横后纵', '先整体后局部', '常态思维', '纵向对比',
     '全同关系', '全异关系', '种属关系', '交叉关系', '顺承关系', '因果关系', '目的关系', '条件关系',
-    '功能关系', '组成关系', '加工关系', '命名方式', '特征关系', '职业关系', '位置关系', '依据关系',
-    '释义关系', '指代', '词句结构', '造句法', '近反义'
+    '功能关系', '组成关系', '加工关系', '命名方式', '特征（属性）关系', '职业关系', '位置关系', '依据关系',
+    '近反义关系', '结合逻辑关系考查', '词句结构', '释义关系', '指代、象征、比喻',
+    '成语、诗句被拆分', '长诗句', '造句法'
   ]) {
     assert.ok(page.includes(marker), `类比推理页缺少考点：${marker}`)
   }
 
-  // 五个板块分组（核心原则 / 逻辑关系 / 经验常识 / 言语关系 / 造句法）
-  const groups = page.match(/id:'(principle|logic|common|language|sentence)'/g) || []
-  assert.ok(groups.length === 5, `类比推理页分组应为 5 组，实际 ${groups.length} 组`)
+  // 27 个板块：总览 + 核心原则 1 + 逻辑关系 8 + 经验常识 8 + 言语关系 7 + 造句法 1 + 复盘 1
+  const secIds = [...page.matchAll(/<div class="section c-[a-z]+" id="([^"]+)"/g)].map((m) => m[1])
+  assert.equal(secIds.length, 27, `类比推理页板块应为 27 个，实际 ${secIds.length} 个`)
+  for (let i = 0; i <= 24; i++) {
+    assert.ok(secIds.includes(`s${i}`), `类比推理页缺少板块 s${i}`)
+  }
+  assert.ok(secIds.includes('nav') && secIds.includes('strategy'), '缺少总览或复盘板块')
+
+  // 每个板块都必须配有例题（例题不得单独堆在页尾）
+  const chunks = page.split(/<div class="section c-[a-z]+" id="/).slice(1)
+  for (const chunk of chunks) {
+    const id = chunk.slice(0, chunk.indexOf('"'))
+    assert.ok(chunk.includes('class="example"'), `板块 ${id} 没有例题`)
+  }
+
+  // 例题必须自带解析与答案，且总数不能少（全部取自两份资料的历年真题）
+  const total = (page.match(/class="example"/g) || []).length
+  assert.ok(total >= 100, `类比推理页例题偏少：${total}`)
+  assert.equal((page.match(/class="example-answer"/g) || []).length, total, '每道例题都应有解析')
+  assert.equal((page.match(/class="correct">答案：/g) || []).length, total, '每道例题都应给出答案')
+  // 例题标题里要标出来源年份/地区，方便回查原文
+  assert.equal((page.match(/class="src">/g) || []).length, total, '每道例题都应标注真题来源')
 
   // 类比推理全程用文字呈现（无复杂图案，截图反而看不清）——
-  // 因此不应再引用任何例题截图
-  assert.ok(
-    !page.includes('note-img/analogy'),
-    '类比推理页仍在引用截图，应全部转为文字'
-  )
+  // 因此不应再引用任何例题截图与示意图
+  assert.ok(!page.includes('note-img/analogy'), '类比推理页仍在引用截图，应全部转为文字')
   assert.ok(!page.includes('<img'), '类比推理页不应包含图片')
+  assert.ok(!page.includes('<figure'), '类比推理页不应再使用示意图（移动端不好看）')
+  assert.ok(!page.includes('fig.css'), '类比推理页已无示意图，不应再引入 fig.css')
+
   // 关键常识积累必须落到文字
-  for (const kw of ['属相 : 生肖', '岳父 : 泰山', '领头雁 : 领导者', '巾帼', '干戈', '矛盾全异积累']) {
+  for (const kw of [
+    '属相：生肖', '岳父：泰山', '领头雁', '巾帼', '干戈', '矛盾全异',
+    '干戈 / 烽烟', '南冠', '桑梓', '总角 / 垂髫', '水涨：船高', '守株：待兔'
+  ]) {
     assert.ok(page.includes(kw), `类比推理页缺少文字化积累：${kw}`)
   }
 
@@ -430,11 +450,6 @@ test('类比推理页具备考点体系、板块筛选与文字化积累', async
   assert.ok(
     page.includes('window.pageShellContentFilter'),
     '类比推理页未把侧栏搜索接到正文过滤'
-  )
-  // 跳到「默认收起」的分组内的考点前，应先自动展开该分组
-  assert.ok(
-    page.includes("g.dataset.open = 'true'"),
-    '类比推理页缺少「跳转前自动展开分组」的处理'
   )
 
   // 禁用原生弹窗（内嵌环境会阻塞主线程）
@@ -852,24 +867,45 @@ test('综应 A 页：每个知识点后面紧挨例题（五件套完整）', as
   assert.ok((page.match(/class="dstep"/g) || []).length >= ex * 3, '逐步解析步骤不足')
 })
 
-test('类比推理页：每个考点后面紧挨示例（知识点自带 eg）', async () => {
+test('类比推理页：二级辨析与做题纪律必须落到页面上', async () => {
   const page = await readText(new URL('../pages/analogy/index.html', import.meta.url))
 
-  // 顶层考点共 28 个（核心原则 3 + 逻辑关系 8 + 经验常识 8 + 言语关系 7 + 造句法 2），
-  // 每个都必须在同一条目内自带 eg（示例），不能再有"只讲关系不给例子"的考点
-  const groups = page.match(/id:'(principle|logic|common|language|sentence)'/g) || []
-  assert.equal(groups.length, 5, `类比推理页分组应为 5 组，实际 ${groups.length} 组`)
+  // 「先基础考点、再二级辨析」这条纪律不能丢
+  for (const marker of [
+    '不能直接用二级辨析',
+    '无唯一项',
+    '先判断是不是种属关系，再判断是不是组成关系',
+    '用 X（干）X',
+    '能不加字就不加字',
+    '注意变化方向',
+    '目的能否实现',
+    '结果是否必然发生',
+    '结果是好的还是坏的',
+    '原因是人为还是天然',
+    '是否可以为唯一原材料',
+    '是否为唯一位置',
+    '描述对象是否一致'
+  ]) {
+    assert.ok(page.includes(marker), `类比推理页缺少做题纪律 / 二级辨析：${marker}`)
+  }
 
-  const eg = (page.match(/\beg:/g) || []).length
-  assert.ok(eg >= 28, `类比推理页带示例的考点不足：${eg} < 28`)
+  // 条件关系的优先级提示
+  assert.ok(page.includes('优先') && page.includes('硬找'), '缺少条件关系的优先级提示')
 
-  // 每个 eg 都必须带「示例」标签，方便读者一眼看到例子
-  const labelled = (page.match(/eg:'<span class="lbl">示例<\/span>/g) || []).length
-  assert.ok(labelled >= 20, `带「示例」标签的考点偏少：${labelled}`)
+  // 纵向对比的具体维度（横向定不出答案时的收口办法）
+  for (const marker of ['抽象 / 具体', '同一领域', '人工 / 自然', '词性、结构']) {
+    assert.ok(page.includes(marker), `类比推理页缺少纵向对比维度：${marker}`)
+  }
+
+  // 做题流程三步必须显式写出
+  assert.ok(page.includes('先用常考关系解题'), '缺少「先用常考关系解题」的流程说明')
+  assert.ok(page.includes('再用造句法'), '缺少「再用造句法兜底」的流程说明')
 })
 
 test('全站示意图：接入共用图样式、每图都有 viewBox 与图注', async () => {
-  const routes = ['data-analysis', 'verbal', 'judgment', 'comprehensive-a', 'comprehensive-d', 'analogy']
+  // 类比推理页已按数量关系页风格重构，并去掉了示意图（用户反馈移动端不好看），
+  // 改为表格 + 文字承载做题流程，因此不再列入本检查。
+  const routes = ['data-analysis', 'verbal', 'judgment', 'comprehensive-a', 'comprehensive-d']
   let figures = 0
 
   for (const route of routes) {
@@ -897,7 +933,7 @@ test('全站示意图：接入共用图样式、每图都有 viewBox 与图注',
     })
   }
 
-  assert.ok(figures >= 18, `全站示意图数量偏少：${figures} < 18`)
+  assert.ok(figures >= 17, `全站示意图数量偏少：${figures} < 17`)
 })
 
 test('示意图样式：窄屏保持最小可读尺寸并横向滚动', async () => {
