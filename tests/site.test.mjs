@@ -460,66 +460,76 @@ test('类比推理页具备完整考点体系、真题例题与文字化积累',
   assert.ok(page.includes('href="../../assets/hub-nav.css"'), '类比推理页共享样式未使用相对路径')
 })
 
-test('图形推理页已按 91 页笔记补全三视图 / 立体拼合等内容', async () => {
+test('图形推理页已按 3+2 十讲重建（与数量关系同款页壳）', async () => {
   const page = await readText(new URL('../pages/graphic-reasoning/index.html', import.meta.url))
 
-  // 补齐的内容（按 91 页笔记逐节核对后新增）
-  for (const marker of [
-    '三视图', '截面', '立体拼合', '相邻比较', '出题形式', '俄罗斯方块', '公共边',
-    '旋转', '翻转', '时针法', '箭头法', '宫格', '走到头', '平面拼合', '黑白面',
-    '外部轮廓定方向', '优先考虑不旋转', '找最大或最抽象',
-    '加减同异', '黑白运算', '标记', '对称性', '曲直性', '图形间关系',
-    '面数量', '线数量', '点数量', '角数量', '元素', '笔画',
-    '折纸', '思维导图串讲'
+  // 总览 + 十讲，共 11 个 section
+  const secs = [...page.matchAll(/<div class="section c-[a-z]+" id="(nav|s\d+)">/g)].map(m => m[1])
+  assert.deepEqual(secs, ['nav', 's1', 's2', 's3', 's4', 's5', 's6', 's7', 's8', 's9', 's10'],
+    '图形推理页模块缺失或顺序错：' + secs.join(','))
+
+  // 共享页壳：侧栏 + 抽屉 + 搜索
+  assert.equal((page.match(/class="nav-link"/g) || []).length, 11, '侧栏链接应为 11 条')
+  assert.equal((page.match(/class="nav-group"/g) || []).length, 5, '侧栏应有 5 个分组')
+  assert.equal((page.match(/class="sidebar"/g) || []).length, 1, '应有左侧固定目录')
+  assert.ok(page.includes('class="menu-btn"') && page.includes('class="mask"'), '缺少移动端抽屉结构')
+  assert.ok(page.includes('id="navSearch"'), '缺少侧栏搜索框')
+  const navLinks = [...page.matchAll(/class="nav-link"[^>]*href="#([^"]+)"/g)].map(m => m[1])
+  for (const id of navLinks) assert.ok(page.includes(`id="${id}"`), `侧栏链接指向的锚点不存在：${id}`)
+
+  // 十讲的核心内容标记（来自 3+2 命题思维讲义）
+  for (const k of [
+    '出题形式', '作图特点', '平移', '旋转', '翻转', '相邻比较', '加减同异', '黑白运算', '标记',
+    '对称性', '曲直性', '开闭性', '图形间关系', '面数量', '线数量', '点数量', '一笔画', '奇点',
+    '元素', '直角', '六面体', '四面体', '三视图', '截面', '立体拼合', '公共边', '平面拼合',
+    '折纸', '思维导图串讲', '俄罗斯方块'
   ]) {
-    assert.ok(page.includes(marker), `图形推理页缺少补充内容：${marker}`)
+    assert.ok(page.includes(k), `图形推理页缺少内容：${k}`)
   }
 
-  // 全部 11 个章节锚点（对应笔记 8 必修 + 2 选修 + 思维导图）
-  for (const sec of [
-    'sec-position', 'sec-style', 'sec-marker', 'sec-property', 'sec-quantity',
-    'sec-relation', 'sec-blackwhite', 'sec-space', 'sec-view', 'sec-solid',
-    'sec-xuanxiu', 'sec-daotu', 'sec-strategy'
-  ]) {
-    assert.ok(page.includes(`id="${sec}"`), `图形推理页缺少章节：${sec}`)
-  }
-
-  // ★ 每个章节都必须有例题（用户明确要求"全面"）
-  const secs = page.split(/<section id="/).slice(1)
-  for (const chunk of secs) {
-    const id = chunk.slice(0, chunk.indexOf('"'))
-    if (!/^sec-(style|marker|property|quantity|relation|blackwhite|space|view|solid|xuanxiu|daotu|position)$/.test(id)) continue
-    const figures = (chunk.split('data-zoom').length - 1)
-    assert.ok(figures > 0, `章节 ${id} 没有例题`)
-  }
-
-  // ★ 全页例题必须统统是「自绘图」，不得残留笔记截图
-  //   （用户 2026-10-15 明确要求：不用截图，风格要统一）
-  assert.ok(
-    !page.includes('note-img/graph/'),
-    '图形推理页仍引用笔记截图，应全部换成自绘 SVG'
-  )
-  assert.ok(!/<img[^>]*src="[^"]*\.webp"/.test(page), '图形推理页仍存在 webp 截图')
-
-  const figs = (page.match(/class="ex-figure"/g) || []).length
-  assert.ok(figs >= 80, `图形推理页自绘图偏少，仅 ${figs} 张`)
-
-  // ★ 每一张知识点卡都必须至少配一张自绘图（讲解用文字，图只画图形）
-  const cards = page.split('<div class="card" data-id="').slice(1)
-  assert.ok(cards.length >= 55, `图形推理页卡片偏少：${cards.length}`)
-  cards.forEach((c, i) => {
-    const id = c.slice(0, c.indexOf('"'))
-    assert.ok(c.includes('class="ex-figure"'), `卡片 ${id} 没有自绘图`)
-  })
-
-  // ★ 例题必须是静态 HTML（含题干 / 选项 / 解析），不能再靠 JS 生成
+  // 例题：静态 HTML + 全部标注来源年份
+  const exs = (page.match(/class="example-header"/g) || []).length
+  assert.ok(exs >= 120, `图形推理页例题偏少：${exs}`)
+  const dated = [...page.matchAll(/<div class="example-header">([\s\S]*?)<\/div>/g)]
+    .filter(m => /20\d\d/.test(m[1])).length
+  assert.ok(dated >= 100, `标注来源年份的例题偏少：${dated}`)
   assert.ok(!page.includes('var EXAMPLES'), '图形推理页仍在使用 JS 生成例题')
-  assert.ok(!page.includes('class="ex-fig"'), '图形推理页仍残留 ASCII 字符画图框')
-  assert.ok((page.match(/class="ex-a"/g) || []).length >= 30, '图形推理页例题的「解析」偏少')
 
-  // 每张自绘图都必须带 viewBox（等比缩放）、aria-label（可访问）与 SVG 显式着色的文字
+  // 自绘图：不得残留任何截图
+  const figs = (page.match(/<figure class="fig"/g) || []).length
+  assert.ok(figs >= 200, `图形推理页自绘图偏少：${figs}`)
+  assert.ok(!page.includes('note-img/graph/'), '图形推理页仍引用笔记截图')
+  assert.ok(!/<img[^>]*src="[^"]*\.webp"/.test(page), '图形推理页仍存在 webp 截图')
+  assert.ok(!page.includes('class="ex-fig"'), '图形推理页仍残留 ASCII 字符画图框')
+
+  // 结构：每个模块都要有知识点块、例题与配图，且每个 block 都落在 section-body 内
+  for (const id of ['s1', 's2', 's3', 's4', 's5', 's6', 's7', 's8', 's9', 's10']) {
+    const a = page.indexOf(`id="${id}"`)
+    const b = page.indexOf('id="s', a + 12)
+    const seg = page.slice(a, b > 0 ? b : page.length)
+    assert.ok((seg.match(/class="block-title"/g) || []).length >= 1, `模块 ${id} 没有知识点`)
+    assert.ok((seg.match(/class="example-header"/g) || []).length >= 1, `模块 ${id} 没有例题`)
+    assert.ok(seg.includes('<figure class="fig"'), `模块 ${id} 没有配图`)
+    // section-body 必须配对闭合（防「块逃出折叠容器」）
+    const i0 = seg.indexOf('<div class="section-body">')
+    const re = /<div\b[^>]*>|<\/div>/g
+    re.lastIndex = i0
+    let depth = 0
+    let bodyEnd = -1
+    let m
+    while ((m = re.exec(seg))) {
+      if (m[0] === '</div>') { depth -= 1; if (depth === 0) { bodyEnd = m.index; break } } else depth += 1
+    }
+    assert.ok(bodyEnd > i0, `模块 ${id} 的 section-body 没有配对闭合`)
+    const body = seg.slice(i0, bodyEnd)
+    assert.equal((body.match(/class="block-title"/g) || []).length,
+      (seg.match(/class="block-title"/g) || []).length,
+      `模块 ${id} 有知识点落在 section-body 之外`)
+  }
+
+  // 每张自绘图都要带 viewBox（等比缩放）、aria-label 与 SVG 显式着色的文字
   const svgBlocks = page.split('<svg ').slice(1)
-  assert.ok(svgBlocks.length >= 80, `自绘 SVG 数量偏少：${svgBlocks.length}`)
+  assert.ok(svgBlocks.length >= 200, `自绘 SVG 数量偏少：${svgBlocks.length}`)
   svgBlocks.forEach((blk, i) => {
     const svg = blk.slice(0, blk.indexOf('</svg>') + 6)
     assert.ok(/viewBox="0 0 [1-9]\d*\.?\d* [1-9]\d*\.?\d*"/.test(svg), `第 ${i + 1} 张自绘图 viewBox 不规范`)
@@ -976,7 +986,7 @@ const UNIT_PAGES = [
   { route: 'verbal', ex: /class="example-tag"/g },
   { route: 'judgment', ex: /class="ex-t"/g },
   { route: 'comprehensive-a', ex: /class="ex-head"/g },
-  { route: 'graphic-reasoning', ex: /data-zoom/g }
+  { route: 'graphic-reasoning', ex: /class="example-header"/g }
 ]
 
 for (const { route, ex: exRe } of UNIT_PAGES) {
