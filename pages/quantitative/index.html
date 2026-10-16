@@ -1109,6 +1109,8 @@
               <div class="tip-box">注意审题：每隔n天 = 每n+1天</div>
               <div class="sub-point">多个主体各有周期，同时出发，下一次同时出现 → 各周期的最小公倍数</div>
               <div class="sub-point">分数求公倍数：①分母通分 ②求分子最小公倍数 ③分子最小公倍数÷分母</div>
+              <div class="sub-point"><b>「过几加几」（讲义原话）：</b>求出最小公倍数（就是要过的天数）后，
+                <b>从起始日往后加这个天数</b>。例：三人 4 月 1 日同时相遇，周期的最小公倍数是 12 天 → 下次相遇 = 4 月 1 + 12 = <b>4 月 13 日</b>。</div>
             </div>
             <div class="example">
               <div class="example-header">📝 例题2 · 周期相遇</div>
@@ -1135,6 +1137,10 @@
                 含义是"再过一个这样的时间段，星期数往后推几天" —— 平年 365÷7 余 1、闰年 366÷7 余 2、大月 31÷7 余 3、小月 30÷7 余 2。</div>
               <div class="sub-point"><b>审题两条：</b>① 每个月都必然有 4 周，所以推断日期时<b>取连续 28 天</b>看（28 天里周一到周日各 4 次，位置随起点平移）；
                 ② 遇到「一个自然月内最多有……」，要<b>把这个月按大月 31 天算</b>（月长取最大才谈得上"最多"）。</div>
+              <div class="sub-point"><b>「圈连续 28 天」到底从哪边圈（讲义原话：求月初圈月末、求月末圈月初）：</b><br>
+                　 · 问<b>月初</b>某天的星期 → 从<b>月末</b>往前圈 28 天（月末的星期通常已知或好推），再往后平移；<br>
+                　 · 问<b>月末</b>某天的星期 → 从<b>月初</b>往后圈 28 天；<br>
+                　 · 圈出的这 28 天里周一到周日各出现 4 次，剩下不满 28 天的那几天再单独分析。</div>
               <div class="tip-box">做题方法：画图 + 枚举；技巧是「<b>前＝后（余数）</b>」—— 同一星期几在月内相隔 7 天、28 天出现，位置可以直接平移。</div>
             </div>
             <div class="example">
@@ -2138,6 +2144,13 @@
                 <span class="formula">长度 × N → 面积 × N² → 体积 × N³</span><br>
                 <span class="formula">角度不变</span>
               </div>
+              <div class="key-box" style="margin-top:8px;"><b>四条分开记（讲义原列 ——「变成几倍」和「增长几倍」差 1）：</b><br>
+                ① <b>对应角度不变</b>（相似图形角度永远不变）；<br>
+                ② 周长<b>变为</b> N 倍，<b>增长了 (N − 1) 倍</b>；<br>
+                ③ 面积<b>变为</b> N² 倍，<b>增长了 (N² − 1) 倍</b>；<br>
+                ④ 体积<b>变为</b> N³ 倍，<b>增长了 (N³ − 1) 倍</b>。
+              </div>
+              <div class="tip-box">看题干用词：问「<b>是</b>原来的几倍」→ 直接用 N / N² / N³；问「<b>比原来多了 / 增长了</b>几倍」→ <b>再减 1</b>。这一步看错，整题白算。</div>
             </div>
             <div class="example">
               <div class="example-header">📝 例题13 · 同比例放缩</div>
@@ -2195,6 +2208,11 @@
                 <li>表面积一定 → 越接近球，体积越大</li>
                 <li>体积一定 → 越接近球，表面积越小</li>
               </ul>
+              <div class="key-box" style="margin-top:8px;"><b>常考的「特殊矩形」（讲义原列）：</b><br>
+                · 四边形<b>周长一定</b>时，<b>正方形</b>的面积最大；<br>
+                · 四边形<b>面积一定</b>时，<b>正方形</b>的周长最小。
+              </div>
+              <div class="sub-point">道理同上：所有四边形里<b>正方形最接近圆</b>。所以题目把范围收窄到"四边形"时，答案基本都是正方形。</div>
             </div>
             <div class="example">
               <div class="example-header">📝 例题14 · 几何最值</div>
@@ -2809,7 +2827,9 @@
                 <b>特征：</b>"都……至少……" / "至少……都……"<br>
                 <b>方法：</b>反向 → 加和 → 作差<br>
                 A∩B最小 = a + b - 总数<br>
-                A∩B∩C最小 = a + b + c - 2×总数
+                A∩B∩C最小 = a + b + c - 2×总数<br>
+                A∩B∩C∩D最小 = a + b + c + d - 3×总数<br>
+                <b>通式：n 个集合 → 加和 − (n − 1) × 总数</b>
               </div>
             </div>
             <div class="example">
@@ -2985,6 +3005,16 @@
                       <b>方法：</b>反向 → 加和 → 作差<br>
                       （与容斥原理的多集合反向构造相同）
                     </div>
+                    <div class="formula-box" style="margin-top:8px;">
+                      <span class="formula">A∩B 最小 = A + B − 全部</span><br>
+                      <span class="formula">A∩B∩C 最小 = A + B + C − 2 × 全部</span><br>
+                      <span class="formula">A∩B∩C∩D 最小 = A + B + C + D − 3 × 全部</span><br>
+                      <span class="formula">通式：n 个集合 →（加和）− (n − 1) × 全部</span>
+                    </div>
+                    <div class="sub-point">为什么是「减 (n−1) 个全部」：每个集合都按"反向"取自己<b>没覆盖</b>的那部分，
+                      n 个集合反向加起来的总量 = n × 全部 − (A + B + C + …)；要挤进 1 个"全部"里，
+                      多出来的 (n − 1) 个全部就得减掉。</div>
+                    <div class="tip-box">考场直接记：<b>加和 −（集合数 − 1）× 全部</b>；2 个集合减 1 个、3 个集合减 2 个、4 个集合减 3 个。</div>
                   </div>
             <div class="example">
               <div class="example-header">📝 例题4 · 多集合反向构造</div>
@@ -3082,7 +3112,7 @@
             <div class="block">
               <div class="block-title">1. 等差数列【重点】</div>
               <div class="formula-box">
-                <span class="formula">通项：aₙ = a₁ + (n-1)d</span><br>
+                <span class="formula">通项：aₙ = a₁ + (n-1)d　　变体：aₙ = aₘ + (n − m)d（从任意已知项往两边推）</span><br>
                 <span class="formula">求和：Sₙ = n(a₁ + aₙ)/2 = n×a中项</span><br>
                 <span class="formula">中项求和：n为奇数 → Sₙ = n × a(中间项)</span><br>
                 <span class="formula">平均数 = 中位数 = (a₁ + aₙ)/2</span>
@@ -4160,6 +4190,8 @@
                 <li><b>列表梳理</b>：画表格理清各时间点的年龄</li>
                 <li><b>倍数特性</b>：利用年龄差不变，结合选项排除</li>
                 <li><b>不定方程</b>：奇偶、倍数、尾数代入排除</li>
+                <li><b>方程法</b>：关系能直接列等式时，设<b>最小的那个年龄</b>为 x，一步到位（人数少、关系简单时比代入快）</li>
+                <li><b>常识</b>：年龄必须是<b>非负整数</b>；父子 / 母子年龄差通常在 <b>20～40 岁</b>；「几倍关系」要符合现实 —— 先用常识砍掉离谱选项</li>
               </ul>
               <div class="warn-box">别列一堆方程解半天，多用代入排除！</div>
             </div>
