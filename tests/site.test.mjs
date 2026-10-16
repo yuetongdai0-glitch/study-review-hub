@@ -637,11 +637,12 @@ test('数量关系页已按高照体系补全知识点，且每个模块都有�
   // 几何模块：块号 1~16 连续（防止重编号遗漏），且补上特殊角直角三角形
   const geo = slice('s5')
   const geoBlocks = [...geo.matchAll(/<div class="block-title">([^<]+)<\/div>/g)].map(m => m[1])
-  assert.equal(geoBlocks.length, 17, `几何模块应有 17 个知识点，实为 ${geoBlocks.length}`)
+  assert.equal(geoBlocks.length, 19, `几何模块应有 19 个知识点，实为 ${geoBlocks.length}`)
   geoBlocks.forEach((t, i) => assert.ok(t.startsWith(`${i + 1}. `), `几何模块第 ${i + 1} 块编号错乱：${t}`))
   for (const k of [
     '30°–60°–90°', '1 ∶ √3 ∶ 2', '45°–45°–90°', '1 ∶ 1 ∶ √2',
-    '相似三角形', '蝴蝶定理', '正六边形', '正方体', '切长最短'
+    '相似三角形', '蝴蝶定理', '正六边形', '正方体', '切长最短',
+    '切线', '多边形内角和', '几何最优构造', '圆环', '圆锥'
   ]) {
     assert.ok(geo.includes(k), `几何模块缺少知识点：${k}`)
   }

@@ -1402,8 +1402,11 @@
                 <tr><td>正方形</td><td>4a</td></tr>
                 <tr><td>长方形</td><td>2(a+b)</td></tr>
                 <tr><td>圆形</td><td>2πr</td></tr>
-                <tr><td>扇形弧长</td><td>nπr/180</td></tr>
+                <tr><td>扇形弧长</td><td>nπr/180（n 为圆心角）</td></tr>
+                <tr><td>扇形周长</td><td>弧长 + 2r</td></tr>
+                <tr><td>正 n 边形内角和</td><td>(n − 2) × 180°</td></tr>
               </table>
+              <div class="tip-box">弧长题关键：<b>两条切线的夹角 α 与所夹弧的圆心角互补</b>（四边形内角和 360°，两个切点处各 90°）→ 圆心角 = <b>180° − α</b>。看到「切线」先标 90°。</div>
             </div>
             <div class="example">
         <div class="example-header">📝 例题1 · 常用周长公式</div>
@@ -1417,7 +1420,47 @@
           </div>
         </div>
       </div>
-            <div class="block">
+                        <div class="example">
+              <div class="example-header">📝 例题2 · 弧长 + 切线（2025 联考）</div>
+              <div class="example-body">
+                <div class="example-q">高速公路某路段转向处靠近居民楼，为减少噪声需设置隔音板。安装隔音板范围为公路转向处的一段圆曲线（即从点 A 至点 B 的圆弧），测控人员在过点 A、B 的两条切线的交点 C 处，测得从 A 到 B 的转角 α 为 60°，若此圆曲线的半径 OA = 1 km，则这段隔音板的安装长度为（　　）。</div>
+                <div class="example-opts">A. π/4 km　B. π/2 km　C. 2π/3 km　D. 3π/4 km</div>
+                <div class="example-answer">
+                        <b>解析：</b>题目给的是<b>两条切线的夹角 α = 60°</b>，不是圆心角，先换算：
+                        切线 ⊥ 半径 → ∠OAC = ∠OBC = 90°；四边形 OACB 内角和 = 360°，
+                        所以圆心角 ∠AOB = 360° − 90° − 90° − 60° = <b>120°</b>（即 180° − α）。
+                        弧长 = (120° ÷ 360°) × 2πr = ⅓ × 2π × 1 = <b>2π/3</b>（km）。
+                        要点：<b>出现「切线」先标两个 90°</b>，圆心角 = 180° − 切线夹角，这一步是本类题的固定动作。
+              <figure class="fig">
+                <svg viewBox="0 0 460 250" role="img" aria-label="圆曲线与两条切线，切线夹角60度对应圆心角120度">
+                  <text x="14" y="22" font-size="13.5" fill="#4f7cff" font-weight="700">切线夹角 60° → 圆心角 = 180° − 60° = 120°</text>
+                  <circle cx="160" cy="140" r="72" fill="#fbfcff" stroke="#cbd5e1" stroke-width="1.2" stroke-dasharray="5 4"/>
+                  <path d="M196 77.6 A72 72 0 0 1 196 202.4" fill="none" stroke="#4f7cff" stroke-width="3.6"/>
+                  <path d="M304 140 L196 77.6 M304 140 L196 202.4" stroke="#3f4a5f" stroke-width="2"/>
+                  <path d="M160 140 L196 77.6 M160 140 L196 202.4" stroke="#9fb2d8" stroke-width="1.4" stroke-dasharray="5 4"/>
+                  <circle cx="160" cy="140" r="3.4" fill="#1a1a2e"/>
+                  <circle cx="196" cy="77.6" r="4" fill="#4f7cff"/>
+                  <circle cx="196" cy="202.4" r="4" fill="#4f7cff"/>
+                  <circle cx="304" cy="140" r="4" fill="#ff6b6b"/>
+                  <text x="144" y="158" font-size="14" font-weight="700" fill="#1a1a2e">O</text>
+                  <text x="312" y="146" font-size="14" font-weight="700" fill="#ff6b6b">C</text>
+                  <text x="184" y="68" font-size="13.5" font-weight="700" fill="#4f7cff">A</text>
+                  <text x="184" y="222" font-size="13.5" font-weight="700" fill="#4f7cff">B</text>
+                  <text x="274" y="132" font-size="13" font-weight="700" fill="#ff6b6b">60°</text>
+                  <text x="172" y="136" font-size="12.5" font-weight="700" fill="#1a1a2e">120°</text>
+                  <text x="126" y="106" font-size="12.5" fill="#6b7280">r = 1 km</text>
+                  <text x="236" y="128" font-size="12.5" fill="#4f7cff" font-weight="700">弧 AB</text>
+                  <text x="14" y="242" font-size="13" fill="#6b7280">弧长 = 120°/360° × 2πr = ⅓ × 2π × 1 = 2π/3 km</text>
+                </svg>
+                <figcaption>切线 ⊥ 半径 → △OAC、△OBC 各有一个 90°，四边形 OACB 内角和 360°，
+                  所以 <b>圆心角 ∠AOB = 180° − 60° = 120°</b>。弧长只跟圆心角有关：
+                  <b>弧长 = (圆心角 ÷ 360°) × 2πr</b>。</figcaption>
+              </figure>
+                  <span class="correct">答案：C</span>
+                </div>
+              </div>
+            </div>
+<div class="block">
               <div class="block-title">2. 常用面积公式</div>
               <table class="mini-table">
                 <tr><th>图形</th><th>面积</th></tr>
@@ -1429,7 +1472,11 @@
                 <tr><td>圆形</td><td>πr²</td></tr>
                 <tr><td>扇形</td><td>nπr²/360</td></tr>
                 <tr><td>菱形</td><td>对角线乘积÷2</td></tr>
+                <tr><td><b>圆环 / 月牙</b></td><td><b>π(R² − r²)</b></td></tr>
+                <tr><td><b>等边三角形</b></td><td><b>(√3/4)a²</b>（＝½a·(√3/2)a）</td></tr>
+                <tr><td>正六边形</td><td>6 × (√3/4)a² ＝ <b>(3√3/2)a²</b></td></tr>
               </table>
+              <div class="tip-box">圆环类（月牙形、环形跑道、锚环）一律用 <b>大圆减小圆</b>：面积 = πR² − πr² = <b>π(R² − r²)</b>，不要分开算再相减，容易漏 π。</div>
             </div>
             <div class="example">
         <div class="example-header">📝 例题2 · 常用面积公式（扇形）</div>
@@ -1443,7 +1490,38 @@
           </div>
         </div>
       </div>
-            <div class="block">
+                        <div class="example">
+              <div class="example-header">📝 例题3 · 圆环 / 月牙形面积（2025 上海）</div>
+              <div class="example-body">
+                <div class="example-q">公园打算修建一个横截面为月牙形（如图所示）的柱体水池养观赏鱼，其中大圆的半径为 4 米，小圆内部为休息区、其半径为 2 米，水池深 2 米。等到水池修建好，需要注入大约（　　）立方米的水。</div>
+                <div class="example-opts">A.57　B.64　C.76　D.88</div>
+                <div class="example-answer">
+                        <b>解析：</b>月牙形横截面 = <b>大圆面积 − 小圆面积</b>（小圆是休息区，不装水）：
+                        面积 = πR² − πr² = π(R² − r²) = π × (4² − 2²) = π × 12 = <b>12π</b>（平方米）。
+                        这是柱体水池 → 体积 = 底面积 × 高 = 12π × 2 = <b>24π</b>（立方米）。
+                        取 π ≈ 3.14：24 × 3.14 = 75.36 ≈ <b>76</b>。
+                        要点：<b>环形一律「大减小」，写成 π(R² − r²) 一步到位</b>，别分成两次乘再相减。
+              <figure class="fig">
+                <svg viewBox="0 0 460 252" role="img" aria-label="月牙形水池由大圆减小圆构成">
+                  <text x="14" y="22" font-size="13.5" fill="#4f7cff" font-weight="700">月牙形 = 大圆 − 小圆（小圆是休息区）</text>
+                  <circle cx="170" cy="128" r="80" fill="#cfe0ff" stroke="#4f7cff" stroke-width="2"/>
+                  <circle cx="210" cy="128" r="40" fill="#fbfcff" stroke="#2ecc71" stroke-width="2"/>
+                  <path d="M170 128 L170 48 M210 128 L250 128" stroke="#3f4a5f" stroke-width="1.4"/>
+                  <text x="118" y="96" font-size="13.5" font-weight="700" fill="#2b4b9b">R = 4</text>
+                  <text x="214" y="120" font-size="13" font-weight="700" fill="#1a7a45">r = 2</text>
+                  <text x="60" y="146" font-size="13" fill="#2b4b9b" font-weight="700">水池（月牙）</text>
+                  <text x="258" y="170" font-size="12.5" fill="#6b7280">休息区</text>
+                  <text x="300" y="88" font-size="13" fill="#6b7280">深 = 2 米</text>
+                  <text x="14" y="238" font-size="13" fill="#6b7280">面积 = π(R² − r²) = π(16 − 4) = 12π　→　体积 = 12π × 2 = 24π ≈ 75.4 ≈ 76</text>
+                </svg>
+                <figcaption>月牙形（环形）面积一律用 <b>大圆减小圆</b>：<b>π(R² − r²)</b> = π(4² − 2²) = <b>12π</b>；
+                  再按柱体「底面积 × 高」求体积：12π × 2 = 24π ≈ <b>75.4 立方米 ≈ 76</b>。</figcaption>
+              </figure>
+                  <span class="correct">答案：C</span>
+                </div>
+              </div>
+            </div>
+<div class="block">
               <div class="block-title">3. 表面积 & 体积公式</div>
               <table class="mini-table">
                 <tr><th>图形</th><th>表面积</th><th>体积</th></tr>
@@ -1452,8 +1530,10 @@
                 <tr><td>柱体</td><td>—</td><td>Sh（底面积×高）</td></tr>
                 <tr><td>锥体</td><td>—</td><td>⅓Sh</td></tr>
                 <tr><td>球体</td><td>4πr²</td><td>4/3 πr³</td></tr>
-                <tr><td>圆柱</td><td>2πr²+2πrh</td><td>πr²h</td></tr>
+                <tr><td>圆柱</td><td>2πr²+2πrh（侧面积 2πrh）</td><td>πr²h</td></tr>
+                <tr><td>圆锥</td><td>—</td><td>⅓πr²h（是等底等高圆柱的 ⅓）</td></tr>
               </table>
+              <div class="tip-box"><b>长方体</b>：三对面的面积分别是 ab、bc、ac（a≥b≥c 时对应 最大面 / 次大面 / 最小面）；<b>体对角线 = √(a² + b² + c²)</b>。</div>
             </div>
             <div class="example">
         <div class="example-header">📝 例题3 · 表面积 & 体积公式</div>
@@ -1467,8 +1547,132 @@
           </div>
         </div>
       </div>
-            <div class="block">
-              <div class="block-title">4. 勾股定理 & 必背勾股数</div>
+            <div class="example">
+              <div class="example-header">📝 例题4 · 圆柱外表面（2025 联考）</div>
+              <div class="example-body">
+                <div class="example-q">某三层高的露天平台每层可视作圆柱体（如图所示）。已知每层高 5 米，下层直径 100 米，中层直径 80 米，上层直径 68 米，现要对平台的外表面进行清洁维护，共需要维护多少平方米？</div>
+                <div class="example-opts">A.3740π　B.5256π　C.6240π　D.6496π</div>
+                <div class="example-answer">
+                        <b>解析：</b>「外表面」= 三层<b>侧面</b> + 最上面的<b>顶面</b> + 两圈<b>露出来的环形台面</b>（下层露出中层的环、中层露出上层的环）。
+                        ① 侧面：2πr×h，三层分别是 2π×50×5 = 500π、2π×40×5 = 400π、2π×34×5 = 340π → 合计 <b>1240π</b>
+                        ② 顶面：π × 34² = <b>1156π</b>
+                        ③ 环面：π(50² − 40²) = π(2500 − 1600) = 900π；π(40² − 34²) = π(1600 − 1156) = 444π → 合计 <b>1344π</b>
+                        总计 = 1240π + 1156π + 900π + 444π = <b>3740π</b>（平方米）。
+                        要点：<b>一层一层列，别漏掉「露出来的环面」</b>—— 这是本类题最容易漏的一块。
+              <figure class="fig">
+                <svg viewBox="0 0 460 302" role="img" aria-label="三层圆柱平台，自上而下直径68、80、100米，每层高5米">
+                  <text x="14" y="22" font-size="13.5" fill="#4f7cff" font-weight="700">三层露天平台（每层高 5 米）</text>
+                  <rect x="159" y="50" width="82" height="50" fill="#fef5e7" stroke="#3f4a5f" stroke-width="1.6"/>
+                  <ellipse cx="200" cy="50" rx="41" ry="10" fill="#fdeccd" stroke="#3f4a5f" stroke-width="1.6"/>
+                  <rect x="152" y="100" width="96" height="50" fill="#eafaf1" stroke="#3f4a5f" stroke-width="1.6"/>
+                  <ellipse cx="200" cy="100" rx="48" ry="11" fill="#d9f2e3" stroke="#3f4a5f" stroke-width="1.6"/>
+                  <rect x="140" y="150" width="120" height="50" fill="#e8efff" stroke="#3f4a5f" stroke-width="1.6"/>
+                  <ellipse cx="200" cy="150" rx="60" ry="12" fill="#dbe4ff" stroke="#3f4a5f" stroke-width="1.6"/>
+                  <path d="M159 50 L140 150 M241 50 L260 150" stroke="#c0392b" stroke-width="1" stroke-dasharray="4 3"/>
+                  <text x="250" y="46" font-size="13" fill="#6b7280">上层 φ68</text>
+                  <text x="256" y="96" font-size="13" fill="#6b7280">中层 φ80</text>
+                  <text x="268" y="146" font-size="13" fill="#6b7280">下层 φ100</text>
+                  <text x="60" y="122" font-size="13" fill="#b8730d" font-weight="700">露出的环面</text>
+                  <text x="60" y="140" font-size="12" fill="#b8730d">（要维护）</text>
+                  <text x="268" y="200" font-size="12.5" fill="#6b7280">每层高 5 米</text>
+                  <text x="14" y="240" font-size="13" fill="#6b7280">3 层侧面 = 2π(50+40+34)×5 = 1240π</text>
+                  <text x="14" y="260" font-size="13" fill="#6b7280">顶面 = π·34² = 1156π</text>
+                  <text x="14" y="280" font-size="13" fill="#6b7280">露出环面 = π(50²−40²) + π(40²−34²) = 900π + 444π</text>
+                </svg>
+                <figcaption>「维护外表面」＝ <b>所有底面露出来的部分 + 所有侧面 + 最上面的顶面</b>。
+                  本题：侧面 2π(50+40+34)×5 = 1240π，顶面 1156π，两圈环面 900π + 444π，
+                  合计 1240π + 1156π + 900π + 444π = <b>3740π</b>。</figcaption>
+              </figure>
+                  <span class="correct">答案：A</span>
+                </div>
+              </div>
+            </div>
+            <div class="example">
+              <div class="example-header">📝 例题5 · 长方体三个面（2025 国考）</div>
+              <div class="example-body">
+                <div class="example-q">一个长方体零件最大面的面积是最小面的 3 倍，次大面的面积是最大、最小面面积平均值的 9/16。问该零件<b>最小面的长是其宽的多少倍</b>？</div>
+                <div class="example-opts">A. 7/3　B. 7/6　C. 8/3　D. 4/3</div>
+                <div class="example-answer">
+                        <b>解析：</b>设三条棱 a ≥ b ≥ c，则三个面的面积是 <b>ab（最大）、ac（次大）、bc（最小）</b>。
+                        ① 最大面是最小面的 3 倍：ab = 3 × bc → <b>a = 3c</b>。
+                        ② 次大面 = 最大面与最小面面积平均值的 9/16：
+                        　 ac = (9/16) × (ab + bc) ÷ 2 = (9/16) × (3bc + bc) ÷ 2 = (9/16) × 2bc = 9bc/8 → <b>a = 9b/8</b>。
+                        ③ 联立 a = 3c 与 a = 9b/8：3c = 9b/8 → <b>c = 3b/8</b>。
+                        ④ 最小面是 bc 面，其「长 ÷ 宽」= b ÷ c = b ÷ (3b/8) = <b>8/3</b>。
+                        要点：这类题<b>一定要先画长方体</b>（老师原话：得会画啊），把「最大面 ab / 次大面 ac / 最小面 bc」标到图上，三种面积的关系就不会张冠李戴。
+              <figure class="fig">
+                <svg viewBox="0 0 460 290" role="img" aria-label="长方体的三个面：最大面ab、次大面ac、最小面bc">
+                  <text x="14" y="24" font-size="13.5" fill="#4f7cff" font-weight="700">长方体三组面：ab（最大）、ac（次大）、bc（最小）</text>
+                  <polygon points="90,160 230,160 230,260 90,260" fill="#e8efff" stroke="#3f4a5f" stroke-width="1.8"/>
+                  <polygon points="90,160 230,160 270,120 130,120" fill="#dbe4ff" stroke="#3f4a5f" stroke-width="1.8"/>
+                  <polygon points="230,160 270,120 270,220 230,260" fill="#f2f6ff" stroke="#3f4a5f" stroke-width="1.8"/>
+                  <text x="146" y="215" font-size="14" font-weight="700" fill="#2b4b9b">ab 最大面</text>
+                  <text x="146" y="147" font-size="12.5" font-weight="700" fill="#1a7a45">ac 次大面</text>
+                  <path d="M286 190 L262 190" stroke="#b8730d" stroke-width="1.4"/>
+                  <text x="292" y="195" font-size="12.5" font-weight="700" fill="#b8730d">bc 最小面</text>
+                  <text x="155" y="278" font-size="13.5" font-weight="700" fill="#1a1a2e">a</text>
+                  <text x="74" y="216" font-size="13.5" font-weight="700" fill="#1a1a2e">b</text>
+                  <text x="256" y="132" font-size="13.5" font-weight="700" fill="#1a1a2e">c</text>
+                  <text x="292" y="240" font-size="12.5" fill="#6b7280">三边 a ≥ b ≥ c</text>
+                </svg>
+                <figcaption>长方体的三组对面，面积分别是 <b>ab、ac、bc</b>（设 a ≥ b ≥ c）→ 分别是最小面的 3 倍关系里
+                  对应的「最大面 / 次大面 / 最小面」。<b>列式前先把图画出来</b>，三个面的对应关系才不容易搞混。</figcaption>
+              </figure>
+                  <span class="correct">答案：C</span>
+                </div>
+              </div>
+            </div>
+<div class="block">
+              <div class="block-title">4. 圆的常用结论 & 多边形内角和</div>
+              <div class="key-box">
+                <b>① 切线 ⊥ 过切点的半径</b>：题干出现「切线」，先在那一点标出 <b>90°</b>；<br>
+                两条切线夹角 α 与所夹弧的圆心角互补 → <b>圆心角 = 180° − α</b>。<br>
+                <b>② 直径所对的圆周角 = 90°</b>：看到「直径 / 半圆」就找直角，能直接造出直角三角形。<br>
+                <b>③ 不在同一直线上的三个点确定一个圆</b>（求过三点的圆、找圆心先连两条中垂线）。<br>
+                <b>④ 多边形内角和 = (n − 2) × 180°</b>；正 n 边形每个内角 = (n − 2) × 180° ÷ n。
+              </div>
+            </div>
+                                    <div class="example">
+              <div class="example-header">📝 例题2 · 圆的切线（切线 ⊥ 半径）</div>
+              <div class="example-body">
+                <div class="example-q">PA、PB 分别与圆 O 相切于 A、B 两点，∠APB = 60°，圆 O 的半径为 3。则切线长 PA 是多少？</div>
+                <div class="example-opts">A.3　B.3√3　C.6　D.6√3</div>
+                <div class="example-answer">
+                        <b>解析：</b>切线 ⊥ 过切点的半径 → <b>∠OAP = 90°</b>，于是 △OAP 是直角三角形。
+                        由对称性，OP 平分 ∠APB → ∠APO = 60° ÷ 2 = <b>30°</b>（即切线夹角的一半）。
+                        在 Rt△OAP 中：tan∠APO = OA / PA → tan30° = 3 / PA = √3/3 → PA = <b>3√3</b>。
+                        要点：本块两条结论配合用 ——
+                        · <b>切线 ⊥ 半径</b>：把「切线长」变成直角三角形里的边；
+                        · <b>直径所对的圆周角 = 90°</b>：看到直径就找直角，同样是为了「造直角三角形」。
+              <figure class="fig">
+                <svg viewBox="0 0 460 252" role="img" aria-label="过圆外一点作两条切线，切线垂直于半径">
+                  <text x="14" y="22" font-size="13.5" fill="#4f7cff" font-weight="700">切线 ⊥ 过切点的半径 → 造出直角三角形</text>
+                  <circle cx="160" cy="132" r="70" fill="#fbfcff" stroke="#cbd5e1" stroke-width="1.2" stroke-dasharray="5 4"/>
+                  <path d="M310 132 L205 71 M310 132 L205 193" stroke="#3f4a5f" stroke-width="2"/>
+                  <path d="M160 132 L205 71 M160 132 L205 193 M160 132 L310 132" stroke="#4f7cff" stroke-width="1.6"/>
+                  <path d="M198 78 L204 84 L210 78" fill="none" stroke="#ff6b6b" stroke-width="1.6"/>
+                  <circle cx="160" cy="132" r="3.4" fill="#1a1a2e"/>
+                  <circle cx="205" cy="71" r="4" fill="#4f7cff"/>
+                  <circle cx="310" cy="132" r="4" fill="#ff6b6b"/>
+                  <text x="144" y="150" font-size="14" font-weight="700" fill="#1a1a2e">O</text>
+                  <text x="318" y="138" font-size="14" font-weight="700" fill="#ff6b6b">P</text>
+                  <text x="212" y="66" font-size="13.5" font-weight="700" fill="#4f7cff">A</text>
+                  <text x="212" y="212" font-size="13.5" font-weight="700" fill="#4f7cff">B</text>
+                  <text x="272" y="124" font-size="12.5" font-weight="700" fill="#ff6b6b">30°</text>
+                  <text x="176" y="140" font-size="12.5" font-weight="700" fill="#1a1a2e">60°</text>
+                  <text x="106" y="104" font-size="12.5" fill="#6b7280">r = 3</text>
+                  <text x="240" y="90" font-size="12.5" fill="#6b7280">PA = ?</text>
+                  <text x="14" y="240" font-size="13" fill="#6b7280">Rt△OAP 中 tan30° = OA / PA → PA = 3 ÷ (√3/3) = 3√3</text>
+                </svg>
+                <figcaption>过圆外一点 P 作两条切线，<b>PA ⊥ OA、PB ⊥ OB</b>（切线垂直于过切点的半径）；
+                  连 OP 后由对称性<b>平分 ∠APB</b>，于是得到一个含 30° 的直角三角形，长度就能算。</figcaption>
+              </figure>
+                  <span class="correct">答案：B</span>
+                </div>
+              </div>
+            </div>
+<div class="block">
+              <div class="block-title">5. 勾股定理 & 必背勾股数</div>
 
             <figure class="fig">
               <svg viewBox="0 0 460 190" role="img" aria-label="直角三角形勾股定理">
@@ -1507,7 +1711,7 @@
               </div>
             </div>
             <div class="block">
-              <div class="block-title">5. 特殊角直角三角形（★必背，最容易漏）</div>
+              <div class="block-title">6. 特殊角直角三角形（★必背，最容易漏）</div>
               <div class="formula-box">
                 <span class="formula">30°–60°–90°：1 ∶ √3 ∶ 2</span><br>
                 <span class="formula">45°–45°–90°：1 ∶ 1 ∶ √2</span>
@@ -1554,7 +1758,7 @@
               </div>
             </div>
             <div class="block">
-              <div class="block-title">6. 直角三角形的三个常用结论</div>
+              <div class="block-title">7. 直角三角形的三个常用结论</div>
               <ul class="point-list">
                 <li><b>斜边中线定理</b>：斜边上的中线 = 斜边的一半（斜边中点到三个顶点距离相等）。</li>
                 <li><b>30° 对边定理</b>：直角三角形中，30° 所对的直角边 = 斜边的一半（反之亦然）。</li>
@@ -1574,7 +1778,7 @@
         </div>
       </div>
             <div class="block">
-              <div class="block-title">7. 相似三角形（核心考点）</div>
+              <div class="block-title">8. 相似三角形（核心考点）</div>
 
             <figure class="fig">
               <svg viewBox="0 0 486 200" role="img" aria-label="相似三角形">
@@ -1611,7 +1815,7 @@
               </div>
             </div>
             <div class="block">
-              <div class="block-title">8. 同底 / 同高三角形的面积比（秒算神器）</div>
+              <div class="block-title">9. 同底 / 同高三角形的面积比（秒算神器）</div>
             <div class="fig-row">
 
             <figure class="fig">
@@ -1661,8 +1865,50 @@
                 </div>
               </div>
             </div>
-            <div class="block">
-              <div class="block-title">9. 正六边形与正多边形</div>
+                        <div class="example">
+              <div class="example-header">📝 例题 · 同底同高（四边形对角线 · 2025 浙江）</div>
+              <div class="example-body">
+                <div class="example-q">一块四边形田地 ABCD 如下图所示，已知 △AOD、△AOB 和 △COD 的面积分别为 9 平方千米、15 平方千米和 12 平方千米，CD 长 8 千米。问 B 点到 CD 的距离为多少千米？</div>
+                <div class="example-opts">A.6　B.7　C.8　D.9</div>
+                <div class="example-answer">
+                        <b>解析：</b>O 是对角线交点。反复用<b>「同底（同高）的两个三角形，面积比 = 底边比」</b>：
+                        ① △AOB 与 △AOD 共用以 A 为顶点、落到 BD 上的同一条高 → S△AOB : S△AOD = <b>BO : DO</b> = 15 : 9 = 5 : 3；
+                        ② △AOD 与 △COD 共用以 D 为顶点、落到 AC 上的同一条高 → S△AOD : S△COD = <b>AO : CO</b> = 9 : 12 = 3 : 4；
+                        ③ 把两次比例相乘，可得 △BOC 与 △AOD 的比：S△BOC = S△AOD × (BO/DO) × (CO/AO) = 9 × 5/3 × 4/3 = <b>20</b>；
+                        ④ △BCD 的面积 = S△BOC + S△COD = 20 + 12 = <b>32</b>；
+                        ⑤ 又 S△BCD = ½ × CD × h → 32 = ½ × 8 × h → h = <b>8</b>（千米）。
+                        要点：看到「对角线交点 + 几块面积」就条件反射用<b>共高比</b>，两次就够了。
+              <figure class="fig">
+                <svg viewBox="0 0 460 312" role="img" aria-label="四边形对角线分出的四块面积关系">
+                  <text x="14" y="22" font-size="13.5" fill="#4f7cff" font-weight="700">对角线把四边形切成 4 块，面积之间有比例关系</text>
+                  <polygon points="110,55 300,75 345,225 85,235" fill="#f7f9ff" stroke="#3f4a5f" stroke-width="1.8"/>
+                  <path d="M110 55 L345 225 M300 75 L85 235" stroke="#4f7cff" stroke-width="1.8"/>
+                  <path d="M300 75 L305.8 226.5" stroke="#ff6b6b" stroke-width="1.8" stroke-dasharray="6 4"/>
+                  <circle cx="220" cy="134.6" r="4" fill="#1a1a2e"/>
+                  <text x="226" y="130" font-size="13.5" font-weight="700" fill="#1a1a2e">O</text>
+                  <text x="98" y="48" font-size="13.5" font-weight="700" fill="#1a1a2e">A</text>
+                  <text x="306" y="68" font-size="13.5" font-weight="700" fill="#1a1a2e">B</text>
+                  <text x="352" y="236" font-size="13.5" font-weight="700" fill="#1a1a2e">C</text>
+                  <text x="66" y="244" font-size="13.5" font-weight="700" fill="#1a1a2e">D</text>
+                  <text x="196" y="88" font-size="14" font-weight="700" fill="#2b4b9b">15</text>
+                  <text x="128" y="150" font-size="14" font-weight="700" fill="#2b4b9b">9</text>
+                  <text x="204" y="204" font-size="14" font-weight="700" fill="#2b4b9b">12</text>
+                  <text x="286" y="150" font-size="15" font-weight="700" fill="#ff6b6b">?</text>
+                  <text x="196" y="252" font-size="13" font-weight="700" fill="#6b7280">CD = 8</text>
+                  <text x="316" y="158" font-size="13" font-weight="700" fill="#ff6b6b">h</text>
+                  <text x="14" y="278" font-size="13" fill="#6b7280">BO : DO = 15 : 9 = 5 : 3　　AO : CO = 9 : 12 = 3 : 4</text>
+                  <text x="14" y="298" font-size="13" fill="#6b7280">→　S△BOC = 9 × 5/3 × 4/3 = 20</text>
+                </svg>
+                <figcaption>同底同高的升级玩法：△AOB 与 △AOD 共高 → 面积比 = <b>BO : DO</b>；
+                  △AOD 与 △COD 共高 → 面积比 = <b>AO : CO</b>。两次套用即可推出第四块面积，
+                  进而把 △BCD 的面积算出来，用「½ × 底 × 高」反推 B 到 CD 的距离。</figcaption>
+              </figure>
+                  <span class="correct">答案：C</span>
+                </div>
+              </div>
+            </div>
+<div class="block">
+              <div class="block-title">10. 正六边形与正多边形</div>
 
             <figure class="fig">
               <svg viewBox="0 0 460 240" role="img" aria-label="正六边形分成六个正三角形">
@@ -1700,7 +1946,7 @@
               </div>
             </div>
             <div class="block">
-              <div class="block-title">10. 蝴蝶定理（梯形对角线）</div>
+              <div class="block-title">11. 蝴蝶定理（梯形对角线）</div>
 
             <figure class="fig">
               <svg viewBox="0 0 492 210" role="img" aria-label="梯形对角线四块面积关系">
@@ -1742,7 +1988,7 @@
         </div>
       </div>
             <div class="block">
-              <div class="block-title">11. 坐标构造（两点间距离）</div>
+              <div class="block-title">12. 坐标构造（两点间距离）</div>
               <div class="formula-box">
                 <span class="formula">AB = √[ (x₁−x₂)² + (y₁−y₂)² ]</span>
               </div>
@@ -1754,14 +2000,41 @@
           <div class="example-q">在平面直角坐标系中，点 A(1, 2)、B(4, 6)，则线段 AB 的长度是多少？</div>
           <div class="example-opts">A.4　B.5　C.√7　D.√13</div>
           <div class="example-answer">
-            <b>解析：</b>两点间距离公式：AB = √[(x₁ − x₂)² + (y₁ − y₂)²] = √[(1 − 4)² + (2 − 6)²] = √(9 + 16) = √25 = <b>5</b>。<br>几何题没思路时，把图形搬到坐标系里硬算，是最稳的兜底方案。
-            <br>
+            <b>解析：</b>两点间距离公式：AB = √[(x₁ − x₂)² + (y₁ − y₂)²] = √[(1 − 4)² + (2 − 6)²] = √(9 + 16) = √25 = <b>5</b>。<br>几何题没思路时，把图形搬到坐标系里硬算，是最稳的兜底方案 —— 画出来就是一条「横 3 竖 4」的斜边：
+            <figure class="fig">
+              <svg viewBox="0 0 460 300" role="img" aria-label="直角坐标系中 A(1,2) 到 B(4,6) 的距离">
+                <g stroke="#e5e9f5" stroke-width="1">
+                  <path d="M100 40 L100 250 M160 40 L160 250 M220 40 L220 250 M280 40 L280 250 M340 40 L340 250 M400 40 L400 250"/>
+                  <path d="M100 70 L400 70 M100 112 L400 112 M100 154 L400 154 M100 196 L400 196 M100 238 L400 238"/>
+                </g>
+                <line x1="70" y1="250" x2="428" y2="250" stroke="#3f4a5f" stroke-width="1.8"/>
+                <line x1="100" y1="268" x2="100" y2="30" stroke="#3f4a5f" stroke-width="1.8"/>
+                <text x="432" y="255" font-size="14" fill="#6b7280">x</text>
+                <text x="92" y="26" font-size="14" fill="#6b7280">y</text>
+                <text x="88" y="268" font-size="13" fill="#6b7280">O</text>
+                <line x1="160" y1="250" x2="280" y2="250" stroke="#f39c12" stroke-width="2.4"/>
+                <line x1="280" y1="250" x2="280" y2="82" stroke="#f39c12" stroke-width="2.4"/>
+                <line x1="160" y1="208" x2="280" y2="82" stroke="#4f7cff" stroke-width="3"/>
+                <path d="M266 250 L266 236 L280 236" fill="none" stroke="#ff6b6b" stroke-width="1.8"/>
+                <circle cx="160" cy="208" r="6" fill="#4f7cff"/>
+                <circle cx="280" cy="82" r="6" fill="#4f7cff"/>
+                <text x="126" y="204" font-size="15" fill="#2b4b9b" font-weight="700">A(1, 2)</text>
+                <text x="288" y="78" font-size="15" fill="#2b4b9b" font-weight="700">B(4, 6)</text>
+                <text x="204" y="268" font-size="15" fill="#b8730d" font-weight="700">4 − 1 = 3</text>
+                <text x="288" y="172" font-size="15" fill="#b8730d" font-weight="700">6 − 2 = 4</text>
+                <text x="196" y="132" font-size="16" fill="#4f7cff" font-weight="700">AB = 5</text>
+                <text x="30" y="292" font-size="13" fill="#6b7280">横向差 3、纵向差 4 → 直角三角形两直角边 → 斜边即 AB</text>
+              </svg>
+              <figcaption>把 A、B 画进坐标系：<b>横向差 = 4 − 1 = 3</b>、<b>纵向差 = 6 − 2 = 4</b>，
+                于是 AB 是一条直角边为 3 和 4 的斜边 → 勾股 3-4-5 → <b>AB = 5</b>。
+                这就是「坐标构造」：几何题没思路，先搬进坐标系量距离。</figcaption>
+            </figure>
             <span class="correct">答案：B</span>
           </div>
         </div>
       </div>
             <div class="block">
-              <div class="block-title">12. 立体几何：切割、涂色、拼合</div>
+              <div class="block-title">13. 立体几何：切割、涂色、拼合</div>
 
             <figure class="fig">
               <svg viewBox="0 0 460 290" role="img" aria-label="正方体涂色分块">
@@ -1803,7 +2076,7 @@
               </div>
             </div>
             <div class="block">
-              <div class="block-title">13. 同比例放缩（核心考点）</div>
+              <div class="block-title">14. 同比例放缩（核心考点）</div>
               <div class="formula-box">
                 <span class="formula">长度 × N → 面积 × N² → 体积 × N³</span><br>
                 <span class="formula">角度不变</span>
@@ -1820,8 +2093,45 @@
                 </div>
               </div>
             </div>
-            <div class="block">
-              <div class="block-title">14. 几何最值理论</div>
+                        <div class="example">
+              <div class="example-header">📝 例题 · 同比例放缩（圆锥倒置 · 2025 联考）</div>
+              <div class="example-body">
+                <div class="example-q">一个空的倒置的圆锥形容器，倒入 1 瓶固定容量的水后，水的高度恰好为容器高度的一半。若要使容器盛满水，则需要再倒入水的瓶数为（　　）。</div>
+                <div class="example-opts">A.5 瓶　B.7 瓶　C.8 瓶　D.10 瓶</div>
+                <div class="example-answer">
+                        <b>解析：</b>倒置圆锥（尖朝下）里装水，水面下是一个<b>与容器相似的小圆锥</b>。
+                        ① 求相似比：小圆锥高 : 容器高 = (h/2) : h = <b>1 : 2</b>；
+                        ② <b>同比例放缩：体积比 = 相似比的立方</b> → V水 : V容器 = (1/2)³ = <b>1/8</b>；
+                        ③ 所以 1 瓶水 = 容器的 ⅛ → 盛满共需 8 瓶 → 还需 <b>8 − 1 = 7</b> 瓶。
+                        要点：<b>长度比 → 面积比平方、体积比立方</b>，这是「同比例放缩」的核心；
+                        反过来，由「体积是 ⅛」也能推出「高是一半」，两个方向都要会。
+              <figure class="fig">
+                <svg viewBox="0 0 460 312" role="img" aria-label="倒置圆锥容器中水高为容器高一半">
+                  <text x="14" y="22" font-size="13.5" fill="#4f7cff" font-weight="700">水高 = 容器高的一半 → 相似比 1 : 2 → 体积比 1 : 8</text>
+                  <polygon points="230,245 140,60 320,60" fill="#f2f6ff" stroke="#3f4a5f" stroke-width="1.8"/>
+                  <polygon points="230,245 185,152.5 275,152.5" fill="#cfe0ff" stroke="#4f7cff" stroke-width="1.6"/>
+                  <line x1="185" y1="152.5" x2="275" y2="152.5" stroke="#4f7cff" stroke-width="2"/>
+                  <line x1="350" y1="60" x2="350" y2="245" stroke="#6b7280" stroke-width="1.2"/>
+                  <line x1="344" y1="60" x2="356" y2="60" stroke="#6b7280" stroke-width="1.2"/>
+                  <line x1="344" y1="245" x2="356" y2="245" stroke="#6b7280" stroke-width="1.2"/>
+                  <text x="358" y="158" font-size="13" fill="#6b7280">h</text>
+                  <line x1="300" y1="152.5" x2="300" y2="245" stroke="#ff6b6b" stroke-width="1.2"/>
+                  <line x1="294" y1="152.5" x2="306" y2="152.5" stroke="#ff6b6b" stroke-width="1.2"/>
+                  <line x1="294" y1="245" x2="306" y2="245" stroke="#ff6b6b" stroke-width="1.2"/>
+                  <text x="306" y="204" font-size="13" fill="#ff6b6b" font-weight="700">h/2</text>
+                  <text x="196" y="214" font-size="13" fill="#4f7cff" font-weight="700">1 瓶水</text>
+                  <text x="14" y="278" font-size="13" fill="#6b7280">V水 : V容器 = (h/2 : h)³ = (1/2)³ = 1/8</text>
+                  <text x="14" y="298" font-size="13" fill="#6b7280">容器共能装 8 瓶　→　还需 7 瓶</text>
+                </svg>
+                <figcaption>倒置圆锥里装水，水面始终是一个<b>与容器相似的小圆锥</b>：相似比 = 高之比 = 1 : 2；
+                  体积比 = 相似比的<b>立方</b> = 1 : 8。所以 1 瓶水只占容器的 ⅛。</figcaption>
+              </figure>
+                  <span class="correct">答案：B</span>
+                </div>
+              </div>
+            </div>
+<div class="block">
+              <div class="block-title">15. 几何最值理论</div>
               <ul class="point-list">
                 <li>周长一定 → 越接近圆，面积越大</li>
                 <li>面积一定 → 越接近圆，周长越小</li>
@@ -1857,7 +2167,7 @@
               </div>
             </div>
             <div class="block">
-              <div class="block-title">15. 最短路径</div>
+              <div class="block-title">16. 最短路径</div>
 
             <figure class="fig">
               <svg viewBox="0 0 460 250" role="img" aria-label="镜面反射求最短路径">
@@ -1896,7 +2206,7 @@
         </div>
       </div>
             <div class="block">
-              <div class="block-title">16. 常用根号（背）</div>
+              <div class="block-title">17. 常用根号（背）</div>
               <table class="mini-table">
                 <tr><td>√2 ≈ 1.414</td><td>√3 ≈ 1.732</td></tr>
                 <tr><td>√5 ≈ 2.236</td><td>√6 ≈ 2.449</td></tr>
@@ -1918,8 +2228,103 @@
       </div>
             <div class="tip-box">考试时如果时间够，几何题90%的概率选<b>居中</b>的选项。可带尺子（或用身份证）测量比例。</div>
     
-            <div class="block">
-              <div class="block-title">17. 补充考点 7：切长最短（秒杀技巧）</div>
+<div class="block">
+              <div class="block-title">18. 几何最优构造（手工操作题）</div>
+              <div class="key-box">
+                <b>识别：</b>「铺 / 裁 / 贴 / 覆盖 / 摆放」类，问最多能放几个、最少要几个 —— 纯几何拼摆，考的是<b>动手能力</b>。<br>
+                <b>两类模型：</b><br>
+                · <b>覆盖型</b>（几个圆盖住一块地）：把圆形能盖住的最大正方形抠出来 —— 半径 R 的圆，内接正方形边长 = <b>R√2</b>；然后看大地块能切成几块。<br>
+                · <b>裁剪型</b>（大板上裁小片，有间隔）：<b>一行一行地排</b>，先算每行能排几片（n 片占 nb + (n−1)×间隔 ≤ 板长），<br>
+                　 再算能排几行；<b>务必试一次「横竖混排」</b>，往往比单一方向多出好几片。
+              </div>
+              <div class="tip-box">间隔类裁剪的死穴：只按一个方向排。先按「小边对大边」和「大边对大边」各算一遍，取大的。</div>
+            </div>
+                                    <div class="example">
+              <div class="example-header">📝 例题1 · 几何最优构造（覆盖型 · 2025 江苏）</div>
+              <div class="example-body">
+                <div class="example-q">某单位在边长为 200 米的正方形广场上组织一场招聘会，计划安排若干名工作人员提供咨询服务，每名工作人员入场后将分别随机站在一个位置上，其服务半径不超过 50√2 米。若要确保咨询服务全覆盖，则至少需要安排工作人员（　　）。</div>
+                <div class="example-opts">A.4 名　B.5 名　C.6 名　D.7 名</div>
+                <div class="example-answer">
+                        <b>解析：</b>把广场切成 4 块 <b>100 米 × 100 米</b> 的正方形，每组把 1 个人放在该块的正中心。
+                        检查这个圆能不能盖住一整块：圆心到正方形<b>顶点</b>的距离最远，
+                        距离 = 半对角线 = √(50² + 50²) = 50√2（米）—— 恰好等于服务半径，<b>刚好够</b>。
+                        所以 1 个人恰好负责一块 100 × 100，200 × 200 的广场需要 2 × 2 = <b>4</b> 名。
+                        要点（覆盖型模板）：<b>半径 R 的圆能盖住的最大正方形，边长 = R√2</b>（正方形对角线的一半即 R）。
+                        先算出「一个人能管多大」，再拿总面积去除 —— 别一上来就凭感觉数人。
+              <figure class="fig">
+                <svg viewBox="0 0 460 300" role="img" aria-label="边长200的正方形广场用4个半径50根号2的圆覆盖">
+                  <text x="14" y="22" font-size="13.5" fill="#4f7cff" font-weight="700">半径 50√2 的圆 → 恰好盖住一块 100 × 100 的正方形</text>
+                  <rect x="130" y="60" width="200" height="200" fill="#fbfcff" stroke="#3f4a5f" stroke-width="2"/>
+                  <path d="M230 60 L230 260 M130 160 L330 160" stroke="#cbd5e1" stroke-width="1.4" stroke-dasharray="5 4"/>
+                  <circle cx="180" cy="110" r="70.7" fill="#4f7cff" fill-opacity="0.12" stroke="#4f7cff" stroke-width="1.6"/>
+                  <circle cx="280" cy="110" r="70.7" fill="#2ecc71" fill-opacity="0.12" stroke="#2ecc71" stroke-width="1.6"/>
+                  <circle cx="180" cy="210" r="70.7" fill="#f39c12" fill-opacity="0.12" stroke="#f39c12" stroke-width="1.6"/>
+                  <circle cx="280" cy="210" r="70.7" fill="#ff6b6b" fill-opacity="0.12" stroke="#ff6b6b" stroke-width="1.6"/>
+                  <circle cx="180" cy="110" r="3.4" fill="#4f7cff"/>
+                  <circle cx="280" cy="110" r="3.4" fill="#2ecc71"/>
+                  <circle cx="180" cy="210" r="3.4" fill="#f39c12"/>
+                  <circle cx="280" cy="210" r="3.4" fill="#ff6b6b"/>
+                  <text x="344" y="112" font-size="13" fill="#6b7280">圆心即各块</text>
+                  <text x="344" y="130" font-size="13" fill="#6b7280">中心位置</text>
+                  <text x="120" y="282" font-size="12.5" fill="#6b7280">200×200 的广场 → 恰需 4 块</text>
+                </svg>
+                <figcaption>覆盖型模板：人站在圆心，服务半径 R。这个圆能盖住的<b>最大正方形边长 = R√2</b>
+                  （因为正方形对角线的一半就是 R）。本题 R = 50√2 → 边长 100 米 → 边长 200 米的广场只要
+                  <b>2 × 2 = 4</b> 块。</figcaption>
+              </figure>
+                  <span class="correct">答案：A</span>
+                </div>
+              </div>
+            </div>
+            <div class="example">
+              <div class="example-header">📝 例题2 · 几何最优构造（裁剪型 · 2025 四川）</div>
+              <div class="example-body">
+                <div class="example-q">某工匠计划在 700 × 115 厘米的钢板上裁剪若干大小为 70 × 40 厘米的钢片，且在裁剪时，每块钢片之间还应保留至少 5 厘米的间隔。问最多能裁剪出多少块？</div>
+                <div class="example-opts">A.23　B.24　C.25　D.26</div>
+                <div class="example-answer">
+                        <b>解析：</b>先按<b>单一方向</b>排（长边 70 沿 700 方向）：
+                        每片占 70 厘米、片间 5 厘米 → n 片占 70n + 5(n−1) ≤ 700 → n ≤ 9.4 → 9 片；
+                        宽度方向：每片占 40 厘米，40m + 5(m−1) ≤ 115 → m ≤ 2.6 → 2 排 → 共 9 × 2 = 18 片（余宽 30 厘米浪费了）。
+                        再试<b>横竖混排</b>（这是本题的关键）：
+                        · 一排<b>竖放</b>（40 宽 × 70 高）：40n + 5(n−1) ≤ 700 → n = <b>15</b> 片，占高 70 厘米；
+                        · 剩下 115 − 70 − 5 = 40 厘米，正好再排一排<b>横放</b>（70 宽 × 40 高）：70m + 5(m−1) ≤ 700 → m = <b>9</b> 片。
+                        合计 15 + 9 = <b>24</b> 片，且高度刚好卡满 70 + 5 + 40 = 115。
+                        要点：裁剪型题目<b>一定要试一次横竖混排</b>，单一方向排出来的往往不是最多。
+              <figure class="fig">
+                <svg viewBox="0 0 482 180" role="img" aria-label="700乘115钢板上横竖混排裁出24片">
+                  <text x="14" y="26" font-size="13.5" fill="#4f7cff" font-weight="700">700 × 115 的钢板，裁 70 × 40 的钢片，片间留 5 厘米</text>
+                  <rect x="20" y="60" width="380" height="62.4" fill="#fbfcff" stroke="#3f4a5f" stroke-width="1.8"/>
+                  <g fill="#dbe4ff" stroke="#4f7cff" stroke-width="1">
+                    <rect x="20" y="60" width="38" height="21.7"/><rect x="60.71" y="60" width="38" height="21.7"/>
+                    <rect x="101.42" y="60" width="38" height="21.7"/><rect x="142.13" y="60" width="38" height="21.7"/>
+                    <rect x="182.84" y="60" width="38" height="21.7"/><rect x="223.55" y="60" width="38" height="21.7"/>
+                    <rect x="264.26" y="60" width="38" height="21.7"/><rect x="304.97" y="60" width="38" height="21.7"/>
+                    <rect x="345.68" y="60" width="38" height="21.7"/>
+                  </g>
+                  <g fill="#d9f2e3" stroke="#2ecc71" stroke-width="1">
+                    <rect x="20" y="84.4" width="21.7" height="38"/><rect x="44.41" y="84.4" width="21.7" height="38"/>
+                    <rect x="68.82" y="84.4" width="21.7" height="38"/><rect x="93.23" y="84.4" width="21.7" height="38"/>
+                    <rect x="117.64" y="84.4" width="21.7" height="38"/><rect x="142.05" y="84.4" width="21.7" height="38"/>
+                    <rect x="166.46" y="84.4" width="21.7" height="38"/><rect x="190.87" y="84.4" width="21.7" height="38"/>
+                    <rect x="215.28" y="84.4" width="21.7" height="38"/><rect x="239.69" y="84.4" width="21.7" height="38"/>
+                    <rect x="264.1" y="84.4" width="21.7" height="38"/><rect x="288.51" y="84.4" width="21.7" height="38"/>
+                    <rect x="312.92" y="84.4" width="21.7" height="38"/><rect x="337.33" y="84.4" width="21.7" height="38"/>
+                    <rect x="361.74" y="84.4" width="21.7" height="38"/>
+                  </g>
+                  <text x="406" y="76" font-size="12.5" fill="#4f7cff" font-weight="700">上排 9 片</text>
+                  <text x="406" y="108" font-size="12.5" fill="#1a7a45" font-weight="700">下排 15 片</text>
+                  <text x="20" y="146" font-size="13" fill="#6b7280">只按一个方向排：最多 18 片；<b>横竖混排</b>：15 + 9 = 24 片（高度 70 + 5 + 40 = 115 刚好卡满）</text>
+                </svg>
+                <figcaption>裁剪型模板：<b>一行一行地算</b>——n 片占 <b>n × 边长 + (n−1) × 间隔 ≤ 板长</b>。
+                  本题竖放 15 片（占高 70）+ 横放 9 片（占高 40），加中间 5 厘米间隔正好 115 厘米，
+                  比单一方向多出 6 片。</figcaption>
+              </figure>
+                  <span class="correct">答案：B</span>
+                </div>
+              </div>
+            </div>
+<div class="block">
+              <div class="block-title">19. 补充考点 7：切长最短（秒杀技巧）</div>
               <div class="key-box"><b>特征：</b>「<b>对角顶点</b>、沿<b>表面</b>行走」——问最短距离</div>
               <div class="formula-box">
                 <span class="formula">最短距离 = √( a² + (b + c)² )</span><br>
@@ -2194,7 +2599,27 @@
           <div class="example-q">某班学生中，会下象棋的有 22 人，会下围棋的有 18 人，两种棋都不会下的有 6 人，两种棋都会下的有 8 人。这个班共有多少人？</div>
           <div class="example-opts">A.36　B.38　C.40　D.42</div>
           <div class="example-answer">
-            <b>解析：</b>出现「都会 / 都不会」这类非标准表述 → 先画韦恩图，从里往外填。<br>会至少一种棋的人数 = 22 + 18 − 8 = 32 人。<br>全班人数 = 会下棋的 + 都不会下的 = 32 + 6 = <b>38</b> 人。
+            <b>解析：</b>出现「都会 / 都不会」这类非标准表述 → 先画韦恩图，从里往外填（见下图）。<br>会至少一种棋的人数 = 22 + 18 − 8 = 32 人。<br>全班人数 = 会下棋的 + 都不会下的 = 32 + 6 = <b>38</b> 人。
+            <figure class="fig">
+              <svg viewBox="0 0 460 250" role="img" aria-label="例题韦恩图：只象棋14、都会8、只围棋10、都不会6">
+                <rect x="26" y="20" width="408" height="196" rx="12" fill="#f7f9ff" stroke="#9fb2d8" stroke-width="1.6" stroke-dasharray="6 5"/>
+                <text x="36" y="40" font-size="13.5" fill="#6b7280" font-weight="700">全班（= ？人）</text>
+                <circle cx="170" cy="118" r="82" fill="#4f7cff" fill-opacity="0.18" stroke="#4f7cff" stroke-width="1.8"/>
+                <circle cx="290" cy="118" r="82" fill="#2ecc71" fill-opacity="0.18" stroke="#2ecc71" stroke-width="1.8"/>
+                <text x="86" y="76" font-size="14" fill="#2b4b9b" font-weight="700">象棋 22</text>
+                <text x="292" y="76" font-size="14" fill="#1a7a45" font-weight="700">围棋 18</text>
+                <text x="112" y="124" font-size="16" fill="#1a1a2e" font-weight="700">14</text>
+                <text x="214" y="124" font-size="16" fill="#ff6b6b" font-weight="700">8</text>
+                <text x="306" y="124" font-size="16" fill="#1a1a2e" font-weight="700">10</text>
+                <text x="140" y="152" font-size="12" fill="#6b7280">只象棋</text>
+                <text x="204" y="152" font-size="12" fill="#6b7280">都会</text>
+                <text x="316" y="152" font-size="12" fill="#6b7280">只围棋</text>
+                <text x="352" y="200" font-size="15" fill="#6b7280" font-weight="700">都不会 6</text>
+                <text x="34" y="240" font-size="12.5" fill="#4f7cff" font-weight="700">从里往外填：8 → 14 / 10 → 6</text>
+              </svg>
+              <figcaption><b>从内向外填</b>：① 都会 = <b>8</b>；② 只象棋 = 22 − 8 = <b>14</b>，只围棋 = 18 − 8 = <b>10</b>；
+                ③ 圈外什么都不满足的 = <b>6</b>。全部相加 14 + 8 + 10 + 6 = <b>38 人</b>。</figcaption>
+            </figure>
             <br>
             <span class="correct">答案：B</span>
           </div>
@@ -4011,12 +4436,42 @@
                 <div class="example-q">A、B、C、D、E 五人进行象棋单循环赛（每两人都赛一盘）。已知 A、B、C、D 已赛过的盘数依次为 4、3、2、1，此时 E 赛了多少盘？</div>
                 <div class="example-opts">A.2　B.3　C.4　D.5</div>
                 <div class="example-answer">
-                  <b>解析：</b>用连线法（网状图）——<br>
+                  <b>解析：</b>用连线法（网状图）—— 每连一条线 = 赛过一盘，看下图：<br>
                   A 赛了 4 盘 → A 与 B、C、D、E 都赛过<br>
                   D 只赛了 1 盘 → D 只和 A 赛过，与 B、C、E 都没赛<br>
                   B 赛了 3 盘 → 已知有 AB，又不能连 D，故 B 必连 C 和 E<br>
                   C 赛了 2 盘 → 已知有 AC、BC，已达 2 盘，不再连 E<br>
-                  于是 E 只连了 A、B 两条线 → <b>2 盘</b><br>
+                  于是 E 只连了 A、B 两条线 → <b>2 盘</b>
+            <figure class="fig">
+              <svg viewBox="0 0 460 306" role="img" aria-label="五人单循环赛连线网状图">
+                <path d="M230 44 L362 140 L312 262 L148 262 L98 140 Z" fill="#f7f9ff" stroke="#cbd5e1" stroke-width="1.2" stroke-dasharray="4 4"/>
+                <path d="M230 44 L362 140 M230 44 L312 262 M230 44 L148 262 M230 44 L98 140" stroke="#4f7cff" stroke-width="2.6"/>
+                <path d="M362 140 L312 262 M362 140 L98 140 M312 262 L98 140" stroke="#4f7cff" stroke-width="2.6"/>
+                <path d="M362 140 L148 262" stroke="#2ecc71" stroke-width="2.6" stroke-dasharray="7 5"/>
+                <path d="M98 140 L312 262" stroke="#f39c12" stroke-width="2.6" stroke-dasharray="7 5"/>
+                <circle cx="230" cy="44" r="27" fill="#e8efff" stroke="#4f7cff" stroke-width="2.2"/>
+                <circle cx="362" cy="140" r="27" fill="#eafaf1" stroke="#2ecc71" stroke-width="2.2"/>
+                <circle cx="312" cy="262" r="27" fill="#eafaf1" stroke="#2ecc71" stroke-width="2.2"/>
+                <circle cx="148" cy="262" r="27" fill="#fff5f5" stroke="#ff6b6b" stroke-width="2.2"/>
+                <circle cx="98" cy="140" r="27" fill="#fef5e7" stroke="#f39c12" stroke-width="2.2"/>
+                <text x="230" y="52" text-anchor="middle" font-size="17" font-weight="700" fill="#2b4b9b">A</text>
+                <text x="362" y="148" text-anchor="middle" font-size="17" font-weight="700" fill="#1a7a45">B</text>
+                <text x="312" y="270" text-anchor="middle" font-size="17" font-weight="700" fill="#1a7a45">C</text>
+                <text x="148" y="270" text-anchor="middle" font-size="17" font-weight="700" fill="#c0392b">D</text>
+                <text x="98" y="148" text-anchor="middle" font-size="17" font-weight="700" fill="#b8730d">E</text>
+                <text x="230" y="18" text-anchor="middle" font-size="13" fill="#6b7280">A：4 盘（满）</text>
+                <text x="410" y="128" text-anchor="middle" font-size="13" fill="#6b7280">B：3 盘</text>
+                <text x="368" y="292" text-anchor="middle" font-size="13" fill="#6b7280">C：2 盘</text>
+                <text x="86" y="292" text-anchor="middle" font-size="13" fill="#6b7280">D：1 盘</text>
+                <text x="34" y="128" text-anchor="middle" font-size="13" fill="#6b7280">E：？盘</text>
+                <text x="16" y="252" font-size="13" fill="#4f7cff" font-weight="700">实线 = 题干已定的对局</text>
+                <text x="16" y="272" font-size="13" fill="#2ecc71" font-weight="700">虚线 = 由盘数反推补上的对局</text>
+              </svg>
+              <figcaption><b>连线法（网状图）</b>：每个点是一个人，连一条线代表赛过一盘。
+                A 满 4 盘 → 与其余四人全连；D 只 1 盘 → 只连 A；B 要凑 3 盘 → 补连 C、E；C 已够 2 盘 → 不再连 E。
+                数 E 身上的线：<b>只连了 A 和 B → 2 盘</b>。</figcaption>
+            </figure>
+                  
                   <span class="correct">答案：A</span>
                 </div>
               </div>
