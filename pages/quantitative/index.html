@@ -1842,15 +1842,14 @@
               </ul>
             </div>
             <div class="example">
-              <div class="example-header">📝 例题12 · 相似三角形（影长测高）</div>
+              <div class="example-header">📝 例题12 · 相似三角形（灯下影子 · 2022 广东）</div>
               <div class="example-body">
-                <div class="example-q">同一时刻，身高 1.6 米的小明影长 2 米，旁边一棵直立大树影长 8 米（地面水平），则树高为：</div>
-                <div class="example-opts">A.5.6 米　B.6.4 米　C.8 米　D.10 米</div>
+                <div class="example-q">楼道上方有一盏灯，小刘径直走向这盏灯。一开始，他发现自己影子的长度为 3.2 米；前进 1 米后，发现影子缩短为 1.6 米。已知小刘身高为 1.6 米，则这盏灯的高度约为（　　）米。</div>
+                <div class="example-opts">A.2.6　B.2.8　C.3.2　D.3.4</div>
                 <div class="example-answer">
-                  <b>解析：</b>同一时刻光线角度相同 → 人与树构成的直角三角形<b>相似</b>。<br>
-                  树高 ∶ 影长 = 身高 ∶ 影长 → h ∶ 8 = 1.6 ∶ 2 = 0.8 → h = <b>6.4 米</b><br>
-                  <span class="correct">答案：B</span>
-                </div>
+              <b>解析：</b>灯、人、影子构成两组相似三角形（灯顶—人头顶—影子端点）。<br>由相似关系可推出：<b>影长与人到灯正下方的距离成正比</b>（因为人高和灯高都没变）。<br>影长从 3.2 变成 1.6，正好减半 → <b>人到灯下的距离也减半</b>。<br>设初始距离为 d → 前进 1 米后距离变成 d − 1，由「减半」得 <b>d − 1 = d ÷ 2 → d = 2 米</b>（此时距灯 1 米）。<br>再用相似比求灯高：影子 3.2 ÷ 人高 1.6 = 2 → 说明「影长 + 人到灯距离」是灯高的 2 倍？更直接地用「人高 ∶ 灯高 = 影长 ∶（影长 + 距离）」：<br>1.6 ∶ H = 3.2 ∶ (2 + 3.2) = 3.2 ∶ 5.2 → H = 1.6 × 5.2 ÷ 3.2 = <b>2.6</b> 米。<br><span style="color:#6b7280">考场提醒：这类题只要记住「影长 ∝ 人到光源正下方的距离」，先做比例求出距离，再代相似比求高，两步就够。</span>
+              <span class="correct">答案：A</span>
+            </div>
               </div>
             </div>
             <div class="block">
@@ -2036,42 +2035,37 @@
               <div class="tip-box">几何没思路时的万能兜底：<b>建坐标系把图形代数化</b>——把关键点放到格点上，用距离公式硬算。</div>
             </div>
             <div class="example">
-        <div class="example-header">📝 例题17 · 坐标构造（两点间距离）</div>
+        <div class="example-header">📝 例题17 · 坐标构造（方位角 · 2024 广东）</div>
         <div class="example-body">
-          <div class="example-q">在平面直角坐标系中，点 A(1, 2)、B(4, 6)，则线段 AB 的长度是多少？</div>
-          <div class="example-opts">A.4　B.5　C.√7　D.√13</div>
+          <div class="example-q">甲、乙、丙三艘船在海上航行。某一时刻，甲观测到乙位于它的北偏西 30° 方向，甲、乙相距 6 千米；甲观测到丙位于它的正西方向，甲、丙相距 6 千米。则乙与丙之间的距离为（　　）千米。</div>
+          <div class="example-opts">A.3　B.4　C.5　D.6</div>
           <div class="example-answer">
-            <b>解析：</b>两点间距离公式：AB = √[(x₁ − x₂)² + (y₁ − y₂)²] = √[(1 − 4)² + (2 − 6)²] = √(9 + 16) = √25 = <b>5</b>。<br>几何题没思路时，把图形搬到坐标系里硬算，是最稳的兜底方案 —— 画出来就是一条「横 3 竖 4」的斜边：
-            <figure class="fig">
-              <svg viewBox="0 0 460 300" role="img" aria-label="直角坐标系中 A(1,2) 到 B(4,6) 的距离">
-                <g stroke="#e5e9f5" stroke-width="1">
-                  <path d="M100 40 L100 250 M160 40 L160 250 M220 40 L220 250 M280 40 L280 250 M340 40 L340 250 M400 40 L400 250"/>
-                  <path d="M100 70 L400 70 M100 112 L400 112 M100 154 L400 154 M100 196 L400 196 M100 238 L400 238"/>
-                </g>
-                <line x1="70" y1="250" x2="428" y2="250" stroke="#3f4a5f" stroke-width="1.8"/>
-                <line x1="100" y1="268" x2="100" y2="30" stroke="#3f4a5f" stroke-width="1.8"/>
-                <text x="432" y="255" font-size="14" fill="#6b7280">x</text>
-                <text x="92" y="26" font-size="14" fill="#6b7280">y</text>
-                <text x="88" y="268" font-size="13" fill="#6b7280">O</text>
-                <line x1="160" y1="250" x2="280" y2="250" stroke="#f39c12" stroke-width="2.4"/>
-                <line x1="280" y1="250" x2="280" y2="82" stroke="#f39c12" stroke-width="2.4"/>
-                <line x1="160" y1="208" x2="280" y2="82" stroke="#4f7cff" stroke-width="3"/>
-                <path d="M266 250 L266 236 L280 236" fill="none" stroke="#ff6b6b" stroke-width="1.8"/>
-                <circle cx="160" cy="208" r="6" fill="#4f7cff"/>
-                <circle cx="280" cy="82" r="6" fill="#4f7cff"/>
-                <text x="126" y="204" font-size="15" fill="#2b4b9b" font-weight="700">A(1, 2)</text>
-                <text x="288" y="78" font-size="15" fill="#2b4b9b" font-weight="700">B(4, 6)</text>
-                <text x="204" y="268" font-size="15" fill="#b8730d" font-weight="700">4 − 1 = 3</text>
-                <text x="288" y="172" font-size="15" fill="#b8730d" font-weight="700">6 − 2 = 4</text>
-                <text x="196" y="132" font-size="16" fill="#4f7cff" font-weight="700">AB = 5</text>
-                <text x="30" y="292" font-size="13" fill="#6b7280">横向差 3、纵向差 4 → 直角三角形两直角边 → 斜边即 AB</text>
+              <b>解析：</b>「方位角 + 两点距离」→ <b>建坐标系</b>，把方位角翻译成坐标。<br>以甲为原点、正东为 x 轴、正北为 y 轴：<br>· 丙在甲正西 6 千米 → 丙 <b>(−6, 0)</b>；<br>· 乙在甲北偏西 30°、距 6 千米 → 向北的分量 = 6cos30° = 3√3，向西的分量 = 6sin30° = 3 → 乙 <b>(−3, 3√3)</b>。<br>乙丙距离 = √[(−6 + 3)² + (0 − 3√3)²] = √(9 + 27) = √36 = <b>6</b> 千米。<br><span style="color:#6b7280">要点：北偏西 30° 意味着「先向北、再向西偏 30°」，所以 x 取 −6sin30°、y 取 6cos30°，两者别记反。</span>
+              <figure class="fig">
+              <svg viewBox="0 0 460 300" role="img" aria-label="三船方位图：甲为原点，乙在北偏西30度距6千米，丙在正西距6千米，求乙丙距离">
+                <path d="M250 250 L250 150" stroke="#6b7280" stroke-width="1.4" stroke-dasharray="5 4" fill="none"/>
+                <path d="M250 150 l-5 9 h10 z" fill="#6b7280"/>
+                <text x="257" y="154" font-size="12.5" fill="#6b7280">正北</text>
+                <path d="M250 200 A50 50 0 0 0 225 207" stroke="#f59e0b" stroke-width="1.8" fill="none"/>
+                <text x="231" y="188" font-size="12.5" font-weight="700" fill="#b8730d">30°</text>
+                <path d="M250 250 L118 250" stroke="#6b7280" stroke-width="1.8" stroke-dasharray="6 4" fill="none"/>
+                <path d="M250 250 L184 136" stroke="#4f7cff" stroke-width="2" fill="none"/>
+                <path d="M184 136 L118 250" stroke="#b91c1c" stroke-width="2.2" fill="none"/>
+                <circle cx="250" cy="250" r="6" fill="#4f7cff"/>
+                <circle cx="184" cy="136" r="6" fill="#2ecc71"/>
+                <circle cx="118" cy="250" r="6" fill="#ff6b6b"/>
+                <text x="258" y="272" font-size="13.5" font-weight="700" fill="#2b4b9b">甲</text>
+                <text x="172" y="126" font-size="13.5" font-weight="700" fill="#1a7a45">乙</text>
+                <text x="94" y="272" font-size="13.5" font-weight="700" fill="#b91c1c">丙</text>
+                <text x="150" y="242" font-size="12.5" fill="#6b7280">6 千米</text>
+                <text x="196" y="228" font-size="12.5" fill="#2b4b9b">6 千米</text>
+                <text x="100" y="196" font-size="12.5" font-weight="700" fill="#b91c1c">? 千米</text>
               </svg>
-              <figcaption>把 A、B 画进坐标系：<b>横向差 = 4 − 1 = 3</b>、<b>纵向差 = 6 − 2 = 4</b>，
-                于是 AB 是一条直角边为 3 和 4 的斜边 → 勾股 3-4-5 → <b>AB = 5</b>。
-                这就是「坐标构造」：几何题没思路，先搬进坐标系量距离。</figcaption>
+              <figcaption>图：以甲为原点建系 —— 丙在正西 6 千米处、乙在<b>北偏西 30°</b> 距甲 6 千米处，
+                所求为乙、丙之间的直线距离（红色）。两边都是 6 千米、夹角 60°，构成等边三角形。</figcaption>
             </figure>
-            <span class="correct">答案：B</span>
-          </div>
+            <span class="correct">答案：D</span>
+            </div>
         </div>
       </div>
             <div class="block">
@@ -4753,8 +4747,8 @@
                 <text x="368" y="292" text-anchor="middle" font-size="13" fill="#6b7280">C：2 盘</text>
                 <text x="86" y="292" text-anchor="middle" font-size="13" fill="#6b7280">D：1 盘</text>
                 <text x="34" y="128" text-anchor="middle" font-size="13" fill="#6b7280">E：？盘</text>
-                <text x="16" y="252" font-size="13" fill="#4f7cff" font-weight="700">实线 = 题干已定的对局</text>
-                <text x="16" y="272" font-size="13" fill="#2ecc71" font-weight="700">虚线 = 由盘数反推补上的对局</text>
+                <text x="16" y="40" font-size="13" fill="#4f7cff" font-weight="700">实线 = 题干已定的对局</text>
+                <text x="16" y="60" font-size="13" fill="#2ecc71" font-weight="700">虚线 = 由盘数反推补上的对局</text>
               </svg>
               <figcaption><b>连线法（网状图）</b>：每个点是一个人，连一条线代表赛过一盘。
                 A 满 4 盘 → 与其余四人全连；D 只 1 盘 → 只连 A；B 要凑 3 盘 → 补连 C、E；C 已够 2 盘 → 不再连 E。
