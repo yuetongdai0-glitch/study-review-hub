@@ -551,75 +551,60 @@ test('判断推理页已移除图形推理与类比推理两个模块', async ()
   assert.ok(page.includes('../analogy/'), '判断推理页缺少类比推理独立页入口')
 })
 
-test('判断推理页补充了「论证评价」模块（综应 C 类）', async () => {
+test('判断推理页已剥离综应 C 论证评价，并按三份资料补齐考点', async () => {
   const page = await readText(new URL('../pages/judgment/index.html', import.meta.url))
 
-  // 模块锚点与七节
-  assert.ok(page.includes('id="argue"'), '判断推理页缺少论证评价模块')
-  for (const sec of ['arg-intro', 'arg-struct', 'arg-4', 'arg-12', 'arg-3type', 'arg-diff', 'arg-real']) {
-    assert.ok(page.includes(`id="${sec}"`), `论证评价缺少小节：${sec}`)
+  // ① 综应 C 的论证评价属于主观题，已整体删除：本页只服务行测 / 职测的选择题
+  assert.ok(!page.includes('id="argue"'), '判断推理页仍保留论证评价模块')
+  assert.ok(!page.includes('arg-intro') && !page.includes('arg-real'), '论证评价小节锚点未清理')
+  assert.ok(!page.includes('综应'), '判断推理页仍有「综应」字样')
+  assert.ok(!page.includes('模块四'), '判断推理页仍有「模块四」残留')
+
+  // ② 3+2 母题体系：真假话 / 直接找矛盾 的套路题必须齐
+  for (const k of [
+    '母题二', '母题三 · 真假话', '母题五 · 直接找矛盾',
+    '冠军模型', '半对半错', '只出现一次的信息', '一找', '二绕', '三回',
+    '假设起点', '二难推理', '出题思路'
+  ]) assert.ok(page.includes(k), `缺少 3+2 母题考点：${k}`)
+
+  // ③ 反对关系：3+2 的上/下反对 + 夸夸刷的秒杀技
+  for (const k of ['上反对', '下反对', '顺着第三句', '反着第三句']) {
+    assert.ok(page.includes(k), `缺少反对关系考点：${k}`)
   }
 
-  // 四大官方错误类型
-  for (const t of ['概念不明确', '判断不准确', '推理不严密', '论据不充分']) {
-    assert.ok(page.includes(t), `论证评价缺少错误类型：${t}`)
+  // ④ 三段论：按 3+2 与夸夸刷重写（画图法 + 排除法 + 拆分结论法 + 句式转换）
+  for (const k of [
+    '先画所有，再画有些', '圆环可空，点可放大', '三种概念各出现两次',
+    '拆分结论法', '句式转换', '中项', '周延'
+  ]) assert.ok(page.includes(k), `三段论缺少：${k}`)
+
+  // ⑤ 朴素逻辑：3+2 的四种方法 + 夸夸刷的套路题型
+  for (const k of ['列表法', '连线法', '画图法', '假设法', '多多少少', '数量差值', '相同归大']) {
+    assert.ok(page.includes(k), `朴素逻辑缺少：${k}`)
   }
 
-  // 12 类逻辑谬误
-  for (const f of [
-    '以偏概全', '不当类比', '滑坡谬误', '偷换概念', '转移话题', '诉诸无知',
-    '诉诸权威', '自相矛盾', '强加因果', '因果倒置', '绝对表述', '非黑即白'
-  ]) {
-    assert.ok(page.includes(f), `论证评价缺少谬误：${f}`)
+  // ⑥ 加强削弱：夸夸刷的「一般型」兜底 + 力度比较维度
+  for (const k of ['一般型', '一般加强型', '一般削弱型', '预设', '本质', '全面', '量大']) {
+    assert.ok(page.includes(k), `加强削弱缺少：${k}`)
   }
 
-  // 三大题型
-  for (const k of ['考查逻辑错误', '两面验证', '论证过程的理解']) {
-    assert.ok(page.includes(k), `论证评价缺少题型：${k}`)
+  // ⑦ 评价型：小红书「常规评价 / 论证评价」两个补充专题（均为选择题形态）
+  for (const k of [
+    '评价型', '字母代概念', '中项不周延',
+    '自相矛盾', '偷换概念', '转移话题', '并列不当', '诉诸无知',
+    '诉诸权威', '非黑即白', '强加因果', '循环论证'
+  ]) assert.ok(page.includes(k), `评价型缺少：${k}`)
+
+  // ⑧ 定义判断：夸夸刷的特殊解题技巧 + 多定义
+  for (const k of ['列举信息', '否定性信息', '同义转述', '长难句', '归纳定义', '总分', '同构选项排除']) {
+    assert.ok(page.includes(k), `定义判断缺少：${k}`)
   }
 
-  // 真题与 A/B 作答格式
-  assert.ok(page.includes('历年真题演练'), '论证评价缺少真题演练')
-  assert.ok((page.match(/存在论证错误/g) || []).length >= 3, '论证评价真题缺少 A 处作答')
-  assert.ok(page.includes('再生水') && page.includes('转基因'), '论证评价缺少真题素材')
-
-  // 谬误卡片与侧栏
-  assert.ok((page.match(/class="flaw"/g) || []).length >= 12, '谬误卡片不足 12 张')
-  assert.ok(page.includes('模块四 · 论证评价'), '缺少模块四标题')
-
-  // 论证评价模块内部不得使用表格（用户明确要求改卡片式）
-  const m4 = page.slice(page.indexOf('<section id="argue">'), page.indexOf('<!-- ============ 口诀速记卡'))
-  assert.ok(!m4.includes('<table'), '论证评价模块内不应使用表格')
-
-  // 每个小类都必须有定义 + 例子（15 个小类）
-  for (const cls of [
-    '偷换概念', '转移论题', '稻草人谬误',
-    '过度推断', '可能推必然', '自相矛盾',
-    '强加因果', '因果倒置', '单因谬误', '类比谬误', '选择性论证', '平均数谬误',
-    '论据错误', '以偏概全', '诉诸情感'
-  ]) {
-    assert.ok(m4.includes(cls), `论证评价缺少小类：${cls}`)
-  }
-  const subs = (m4.match(/class="sub-item"/g) || []).length
-  assert.ok(subs >= 15, `小类条目不足（${subs}），每个小类都应有定义和例子`)
-  const evids = (m4.match(/class="si-e"/g) || []).length
-  assert.ok(evids >= 15, `小类例子不足（${evids}）`)
-  assert.ok(m4.includes('class="bigcat"'), '四大类应使用卡片容器')
-
-  // 4.3 开头概述必须直接点名四类 + 给出「四大类速览」，省得读者往下翻
-  const leadIdx = m4.indexOf('题干若给出错误类型提示')
-  assert.ok(leadIdx > 0, '4.3 缺少开头概述')
-  const lead = m4.slice(leadIdx, leadIdx + 260)
-  for (const n of ['概念不明确', '判断不准确', '推理不严谨', '论据不充分']) {
-    assert.ok(lead.includes(n), `4.3 开头概述未点出四类之一：${n}`)
-  }
-  assert.ok(m4.includes('class="bc-overview"'), '4.3 开头应有「四大类速览」')
-  assert.equal((m4.match(/class="bc-ov"/g) || []).length, 4, '四大类速览应为 4 张卡')
-  // 速览里要能看到小类归属（不用往下翻就知道 15 小类各属哪类）
-  const ov = m4.slice(m4.indexOf('class="bc-overview"'), m4.indexOf('class="bigcat"'))
-  for (const s of ['偷换概念', '自相矛盾', '平均数谬误', '以偏概全']) {
-    assert.ok(ov.includes(s), `四大类速览未列出小类：${s}`)
-  }
+  // ⑨ 例题与解析：每个考点都要有配套例题，且总量充足
+  const ex = (page.match(/class="ex"/g) || []).length
+  assert.ok(ex >= 55, `判断推理页例题偏少：${ex}`)
+  assert.equal((page.match(/class="ex-t"/g) || []).length, ex, '每个例题都应有标题行')
+  assert.equal((page.match(/class="a"/g) || []).length, ex, '每个例题都应有解析')
 })
 
 test('数量关系页已按高照体系补全知识点，且每个模块都有例题', async () => {
