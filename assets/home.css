@@ -361,20 +361,14 @@ main {
     font-size: 23px;
   }
 
-  .subject-featured .subject-action {
+  /* 行动区：移动端只保留箭头，隐藏「开始复习 / 去复习 / 去练笔」这类引导文字。
+     第三列固定 26px，文字会把卡片撑破、凸到卡片外面去。 */
+  .subject .subject-action {
+    min-width: 0;
     font-size: 0;
   }
 
-  .subject-featured .subject-action span {
-    font-size: 16px;
-  }
-
-  /* 练习工具卡片：移动端只保留箭头，避免"去练笔"文字溢出 */
-  .subject-tool .subject-action {
-    font-size: 0;
-  }
-
-  .subject-tool .subject-action span {
+  .subject .subject-action span {
     font-size: 16px;
   }
 
