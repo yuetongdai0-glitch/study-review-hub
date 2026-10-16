@@ -668,12 +668,16 @@ test('数量关系页已按高照体系补全知识点，且每个模块都有�
   assert.ok(slice('s18').includes('5.5'), '时钟问题缺少 5.5°/分钟 速度差')
   assert.ok(slice('s19').includes('鸡兔同笼') && slice('s19').includes('盈亏问题'), '抽屉盈亏模块内容不足')
   assert.ok(slice('s20').includes('排队取水') && slice('s20').includes('过桥'), '统筹优化模块内容不足')
+  assert.ok(slice('s20').includes('煮茶'), '统筹优化缺少「煮茶问题」')
+  assert.ok(slice('s10').includes('匀加速'), '行程模块缺少「匀加速」')
+  assert.ok(slice('s7').includes('方法选择'), '容斥模块缺少「方法选择」')
+  assert.ok(slice('s6').includes('经济函数图形'), '经济利润模块缺少「经济函数图形」')
 
   // 硬要求：每个模块都配有例题
   assert.equal((slice('s17').match(/class="example"/g) || []).length, 7, '数字推理应有 7 道例题')
   assert.equal((slice('s18').match(/class="example"/g) || []).length, 4, '时钟问题应有 4 道例题')
   assert.equal((slice('s19').match(/class="example"/g) || []).length, 4, '抽屉盈亏应有 4 道例题')
-  assert.equal((slice('s20').match(/class="example"/g) || []).length, 5, '统筹优化应有 5 道例题')
+  assert.equal((slice('s20').match(/class="example"/g) || []).length, 6, '统筹优化应有 6 道例题')
   const total = (page.match(/class="example"/g) || []).length
   assert.ok(total >= 130, `例题总数偏少：${total}`)
   for (let i = 0; i <= 20; i++) {

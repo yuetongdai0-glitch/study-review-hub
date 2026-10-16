@@ -2468,8 +2468,59 @@
               </div>
             </div>
     
+<div class="block">
+              <div class="block-title">5. 经济函数图形（看图象，用排除法）</div>
+              <div class="key-box">
+                <b>识别：</b>题干给出<b>利润 y 与售价（或销量）x 的函数图象</b>，问最值点、递增区间、某个点对应多少。<br>
+                <b>方法：排除法 —— 不去算解析式，直接读图：</b><br>
+                · <b>与横轴的两个交点</b> = 利润为 0 的两个临界值（例如不赚钱的两个售价）；<br>
+                · <b>顶点 = 两个交点的中点</b>（抛物线对称）→ 这就是最值点的横坐标；<br>
+                · <b>左右对称</b>：关于顶点对称的两个 x，函数值相等，据此直接排除选项；<br>
+                · 开口向下 → 顶点处取<b>最大</b>值；开口向上 → 顶点处取<b>最小</b>值。
+              </div>
+              <div class="tip-box">图形题核心是<b>读图</b>而不是算：先标出交点，再取中点，通常 10 秒内就能锁定答案。</div>
+            </div>
+                        <div class="example">
+              <div class="example-header">📝 例题 · 经济函数图形（读图）</div>
+              <div class="example-body">
+                <div class="example-q">某商品的日利润 y（元）与售价 x（元）的关系如下图所示的抛物线，图象与 x 轴交于（20，0）和（60，0）两点。问日利润达到最大值时的售价是多少元？</div>
+                <div class="example-opts">A.30　B.40　C.45　D.50</div>
+                <div class="example-answer">
+                        <b>解析：</b>图象题不用求解析式，<b>看两个交点就够</b>：
+                        ① 图象与 x 轴交于 x = 20 和 x = 60 —— 这是利润为 0 的两个临界售价；
+                        ② 抛物线关于对称轴对称，<b>顶点（利润最大值）必在两个交点的正中间</b>：
+                        　 售价 = (20 + 60) ÷ 2 = <b>40</b>（元）。
+                        验证：售价 30 元与 50 元关于 40 对称，两者利润必然相等；只有 40 元处在顶点。
+                        要点（图形类方法：排除法）：<b>先读交点、再取中点</b>，比硬算解析式快得多；
+                        遇到「哪段利润递增 / 哪个点利润为负」这类问法，也是靠<b>左右两侧的对称性</b>直接排除选项。
+              <figure class="fig">
+                <svg viewBox="0 0 460 250" role="img" aria-label="利润随售价变化的抛物线，与横轴交于20和60">
+                  <text x="14" y="22" font-size="13.5" fill="#4f7cff" font-weight="700">利润 y 与售价 x 的图象：开口向下的抛物线</text>
+                  <line x1="50" y1="210" x2="418" y2="210" stroke="#3f4a5f" stroke-width="1.8"/>
+                  <line x1="70" y1="240" x2="70" y2="76" stroke="#3f4a5f" stroke-width="1.8"/>
+                  <text x="414" y="228" font-size="13" fill="#6b7280">x</text>
+                  <text x="76" y="72" font-size="13" fill="#6b7280">y</text>
+                  <path d="M70 210 Q220 10 370 210" fill="none" stroke="#4f7cff" stroke-width="3"/>
+                  <line x1="220" y1="110" x2="220" y2="210" stroke="#ff6b6b" stroke-width="1.4" stroke-dasharray="5 4"/>
+                  <circle cx="70" cy="210" r="4.6" fill="#4f7cff"/>
+                  <circle cx="370" cy="210" r="4.6" fill="#4f7cff"/>
+                  <circle cx="220" cy="110" r="5" fill="#ff6b6b"/>
+                  <text x="62" y="228" font-size="12.5" fill="#6b7280">20</text>
+                  <text x="214" y="228" font-size="12.5" fill="#6b7280">40</text>
+                  <text x="362" y="228" font-size="12.5" fill="#6b7280">60</text>
+                  <text x="226" y="106" font-size="12.5" font-weight="700" fill="#ff6b6b">顶点：x = 40 时利润最大</text>
+                  <text x="88" y="150" font-size="12.5" fill="#2b4b9b">与 x 轴交于 20 和 60（利润为 0 的两个临界价）</text>
+                  <text x="14" y="242" font-size="13" fill="#6b7280">对称轴 = 两根中点 =（20 + 60）÷ 2 = 40</text>
+                </svg>
+                <figcaption>图象题的通用读法：<b>与 x 轴的两个交点</b>就是「利润为 0」的两个临界售价，
+                  顶点（最值点）一定在两个交点的<b>正中间</b>。看到抛物线先找交点，中点就是最优售价。</figcaption>
+              </figure>
+                  <span class="correct">答案：B</span>
+                </div>
+              </div>
+            </div>
             <div class="block">
-              <div class="block-title">5. 补充考点 8：合并付费（省多少钱）</div>
+              <div class="block-title">6. 补充考点 8：合并付费（省多少钱）</div>
               <div class="key-box"><b>识别：</b>分段优惠（如「300 元及以下九折；300 元以上，其中 300 元九折、超出部分八折」），问「<b>合并结账比分开结账省多少</b>」</div>
               <div class="sub-point"><b>① 穷 + 富：</b>省的是「穷的那部分<b>原价</b>」在折扣上的差 —— 原价本来落在高折扣区，合并后被前面的大额吃掉了。</div>
               <div class="sub-point"><b>② 富 + 富：</b>省的是「<b>临界值那一段</b>」的折扣差。</div>
@@ -2625,8 +2676,58 @@
           </div>
         </div>
       </div>
+<div class="block">
+              <div class="block-title">5. 容斥的方法选择（公式法 vs 画图法）</div>
+              <div class="key-box">
+                <b>第一步先判断用哪种方法（这一步比套公式更重要）：</b><br>
+                <b>① 公式法</b> —— 题干给的、题目问的，<b>都是公式里的量</b>（总数、A、B、C、A∩B、都不……）：<b>直接套，快准狠</b>。<br>
+                <b>② 画图法</b> —— 题干给的或所求在公式里没有，或者缺少代公式必需的数据。典型特征：<br>
+                　 出现「<b>只参加 A</b>」「<b>参加 A 但不参加 B</b>」这类「只……」的表述。<br>
+                <b>画图三步走：</b>① 画圈圈（每类画一个圈，圈外留位置表示都不满足）；<br>
+                　 ② 标数字（<b>从里到外</b>，最里层是最多条件同时满足的交集，<b>注意去重</b>）；③ 列算式。
+              </div>
+              <div class="tip-box">口诀：<b>能套公式就套公式，看见「只」字就画图</b>；标数字必须从最里层往外填，否则一定重复计数。</div>
+            </div>
+                        <div class="example">
+              <div class="example-header">📝 例题 · 方法选择（三步走画图法）</div>
+              <div class="example-body">
+                <div class="example-q">某单位共有 37 人，其中会英语的有 25 人，会日语的有 18 人。已知<b>只会其中一种语言</b>的有 21 人，问两种语言都会的有多少人？</div>
+                <div class="example-opts">A.9　B.10　C.11　D.12</div>
+                <div class="example-answer">
+                        <b>解析：</b>题干给的是「<b>只会其中一种</b>」—— 这是公式里没有的量，属于典型该<b>画图</b>的题。
+                        <b>第一步 画圈圈：</b>画两个相交的圈（英语 A、日语 B），圈外留一块表示两种都不会。
+                        <b>第二步 标数字（从里到外，注意去重）：</b>设两样都会的为 x，
+                        　 则「只会英语」= 25 − x、「只会日语」= 18 − x（<b>都要减掉交集，否则重复计数</b>）；
+                        <b>第三步 列算式：</b>只会一种 = (25 − x) + (18 − x) = 43 − 2x = 21 → 2x = 22 → x = <b>11</b>。
+                        回代验证：只会英语 14 + 只会日语 7 = 21 ✓；至少会一种 = 14 + 11 + 7 = 32；两种都不会 = 37 − 32 = 5，数据自洽 ✓
+                        要点：<b>「只……」一出现就画图</b>；画图三步走固定为 <b>画圈圈 → 标数字（从里到外，注意去重）→ 列算式</b>，
+                        其中「标数字」是最容易错的一步 —— 每个「只参加某个」都必须在总数里<b>减去交集</b>。
+              <figure class="fig">
+                <svg viewBox="0 0 460 250" role="img" aria-label="容斥方法的判断流程：先看能否套公式，不能则画图三步走">
+                  <text x="14" y="22" font-size="13.5" fill="#4f7cff" font-weight="700">容斥：先判断用哪种方法</text>
+                  <rect x="120" y="40" width="220" height="42" rx="10" fill="#e8efff" stroke="#4f7cff" stroke-width="1.8"/>
+                  <text x="230" y="67" text-anchor="middle" font-size="13.5" font-weight="700" fill="#2b4b9b">已知与所求都是公式里的量？</text>
+                  <path d="M230 82 L230 104" stroke="#3f4a5f" stroke-width="1.6"/>
+                  <path d="M230 104 l-6 -9 h12 z" fill="#3f4a5f"/>
+                  <rect x="34" y="110" width="176" height="52" rx="10" fill="#eafaf1" stroke="#2ecc71" stroke-width="1.8"/>
+                  <text x="122" y="132" text-anchor="middle" font-size="13" font-weight="700" fill="#1a7a45">是 → 公式法</text>
+                  <text x="122" y="152" text-anchor="middle" font-size="12" fill="#6b7280">清晰明了，快准狠</text>
+                  <rect x="250" y="110" width="176" height="52" rx="10" fill="#fff5f5" stroke="#ff6b6b" stroke-width="1.8"/>
+                  <text x="338" y="132" text-anchor="middle" font-size="13" font-weight="700" fill="#c0392b">否 → 画图法</text>
+                  <text x="338" y="152" text-anchor="middle" font-size="12" fill="#6b7280">出现「只A」/ 缺数据</text>
+                  <rect x="70" y="180" width="320" height="52" rx="10" fill="#fbfcff" stroke="#9fb2d8" stroke-width="1.6" stroke-dasharray="6 4"/>
+                  <text x="230" y="200" text-anchor="middle" font-size="12.5" font-weight="700" fill="#4f7cff">画图三步走</text>
+                  <text x="230" y="220" text-anchor="middle" font-size="12.5" fill="#6b7280">① 画圈圈　② 标数字（从里到外，注意去重）　③ 列算式</text>
+                </svg>
+                <figcaption>判断题干的<b>「已知」和「所求」是不是公式里的量</b>：都是 → 直接套公式；
+                  出现<b>「只参加 A」「参加 A 但不参加 B」</b>，或缺少代公式必需的数据 → 改用画图法。</figcaption>
+              </figure>
+                  <span class="correct">答案：C</span>
+                </div>
+              </div>
+            </div>
             <div class="block">
-              <div class="block-title">5. 多集合反向构造</div>
+              <div class="block-title">6. 多集合反向构造</div>
               <div class="key-box">
                 <b>特征：</b>"都……至少……" / "至少……都……"<br>
                 <b>方法：</b>反向 → 加和 → 作差<br>
@@ -2647,7 +2748,7 @@
         </div>
       </div>
             <div class="block">
-              <div class="block-title">6. 容斥结合不定方程（最值）</div>
+              <div class="block-title">7. 容斥结合不定方程（最值）</div>
               <div class="tip-box">问法：求最值；方法：此消彼长</div>
             </div>
             <div class="example">
@@ -2663,7 +2764,7 @@
         </div>
       </div>
             <div class="block">
-              <div class="block-title">7. 容斥与周期结合</div>
+              <div class="block-title">8. 容斥与周期结合</div>
               <div class="key-box">
                 特征：问"既能被 3 整除又能被 4 整除"这类<b>既是某周期又是某周期</b>的个数。<br>
                 <b>方法：</b>分别求出各自在总数中的个数，再用两集合容斥<br>
@@ -2685,7 +2786,7 @@
               </div>
             </div>
             <div class="block">
-              <div class="block-title">8. 补充考点 14：容斥的两个「常识公式」（夸夸刷）</div>
+              <div class="block-title">9. 补充考点 14：容斥的两个「常识公式」（夸夸刷）</div>
               <div class="formula-box">
                 <span class="formula">常识1（分层次）：全部 = 只一 + 只二 + 只三 + 都不</span><br>
                 <span class="formula">常识2（按集合加）：A + B + C = 只一 + 2 × 只二 + 3 × 只三</span>
@@ -3295,8 +3396,53 @@
               </div>
             </div>
     
+<div class="block">
+              <div class="block-title">6. 匀加速（新型热门考法）</div>
+              <div class="key-box">
+                <b>识别：</b>题干出现「<b>匀加速 / 匀减速 / 均匀加速 / 均匀减速</b>」，或描述「从静止起步、速度均匀变化」。<br>
+                <b>唯一核心公式：</b>匀变速运动的平均速度 <b>V =（V初速度 + V末速度）÷ 2</b><br>
+                <b>解题两步：</b>① 先用「路程 ÷ 时间」求平均速度；② 代入公式，用已知的一头求另一头。<br>
+                <b>提醒：</b>匀变速不考位移公式，别去背 s = v₀t + ½at²，用平均速度一步到位。
+              </div>
+            </div>
+                        <div class="example">
+              <div class="example-header">📝 例题 · 匀加速追赶（2025 联考）</div>
+              <div class="example-body">
+                <div class="example-q">甲、乙两辆车相距 200 米，同向同时沿直线出发。乙保持 5 米/秒的速度匀速前行，甲从速度为零起步做匀加速运动追赶乙，10 秒后恰好追上乙，则甲在追上乙时的速度为（　　）。</div>
+                <div class="example-opts">A.10 米/秒　B.30 米/秒　C.50 米/秒　D.70 米/秒</div>
+                <div class="example-answer">
+                        <b>解析：</b>10 秒内甲追上乙，说明甲比乙多走了原来相距的 200 米。
+                        ① 乙 10 秒走的路程 = 5 × 10 = 50 米 → 甲 10 秒走的路程 = 50 + 200 = <b>250 米</b>；
+                        ② 甲的平均速度 = 路程 ÷ 时间 = 250 ÷ 10 = <b>25</b>（米/秒）；
+                        ③ 甲是匀加速，套<b>匀变速平均速度公式</b>：平均速度 =（初速 + 末速）÷ 2
+                        　 → 25 = (0 + v末) ÷ 2 → v末 = <b>50</b>（米/秒）。
+                        要点：<b>「匀加速 / 匀减速」就用这一个公式</b> —— 平均速度是初速和末速的算术平均；
+                        题目通常先用「路程 ÷ 时间」把平均速度算出来，再反推另一个速度。
+              <figure class="fig">
+                <svg viewBox="0 0 460 264" role="img" aria-label="匀加速追赶：初速0、末速v、平均速度v/2">
+                  <text x="14" y="22" font-size="13.5" fill="#4f7cff" font-weight="700">匀变速：平均速度 =（初速 + 末速）÷ 2</text>
+                  <line x1="40" y1="170" x2="420" y2="170" stroke="#3f4a5f" stroke-width="1.8"/>
+                  <circle cx="80" cy="170" r="12" fill="#4f7cff"/>
+                  <circle cx="330" cy="170" r="12" fill="#2ecc71"/>
+                  <text x="58" y="200" font-size="13" font-weight="700" fill="#2b4b9b">甲：v初 = 0</text>
+                  <text x="300" y="200" font-size="13" font-weight="700" fill="#1a7a45">乙：5 m/s</text>
+                  <path d="M92 150 L318 150" stroke="#c0392b" stroke-width="2"/>
+                  <path d="M318 150 l-9 -5 v10 z" fill="#c0392b"/>
+                  <text x="176" y="142" font-size="12.5" font-weight="700" fill="#c0392b">甲 10 秒追上</text>
+                  <rect x="40" y="96" width="290" height="6" fill="#dbe4ff" stroke="#4f7cff"/>
+                  <text x="60" y="88" font-size="12.5" fill="#2b4b9b">甲走的路程 = 50 + 200 = 250 米</text>
+                  <text x="14" y="234" font-size="13" fill="#6b7280">甲的平均速度 = 250 ÷ 10 = 25 m/s</text>
+                  <text x="14" y="252" font-size="13" fill="#6b7280">（0 + v末）÷ 2 = 25　→　v末 = 50 m/s</text>
+                </svg>
+                <figcaption>匀加速（匀减速）只有一个核心公式：<b>平均速度 =（初速 + 末速）÷ 2</b>。
+                  先用「路程 ÷ 时间」求出平均速度，再反推初速或末速，不用记位移公式。</figcaption>
+              </figure>
+                  <span class="correct">答案：C</span>
+                </div>
+              </div>
+            </div>
             <div class="block">
-              <div class="block-title">6. 补充考点 9：等距离平均速度（做猜）</div>
+              <div class="block-title">7. 补充考点 9：等距离平均速度（做猜）</div>
               <div class="key-box"><b>特征：</b>题目给出「<b>上坡、下坡、平路</b>」三个速度</div>
               <div class="formula-box"><span class="formula">等距离平均速度 = 2v₁v₂ ÷ (v₁ + v₂)</span></div>
               <div class="sub-point">「邪修」：当上坡与下坡的<b>距离相等</b>时，这段的平均速度就等于<b>平路速度</b>（出题人就是这么设计的）→ <b>全程平均速度 = 平路速度</b>，直接选。</div>
@@ -3314,7 +3460,7 @@
               </div>
             </div>
             <div class="block">
-              <div class="block-title">7. 补充考点 10 &amp; 11：多次相遇</div>
+              <div class="block-title">8. 补充考点 10 &amp; 11：多次相遇</div>
               <div class="key-box"><b>考点 10「每人都有事做」：</b>行走时间相同、做事时间相同、<b>总时间也相同</b> —— 用「时间等量」列式最省事。</div>
               <div class="formula-box">
                 <span class="formula">两端出发的多次相遇：第 1 次相遇两人合走 1 个全程 S；第 2 次合走 3S；第 n 次合走 (2n−1)S</span>
@@ -3337,7 +3483,7 @@
               </div>
             </div>
             <div class="block">
-              <div class="block-title">8. 补充考点 12：漂流瓶</div>
+              <div class="block-title">9. 补充考点 12：漂流瓶</div>
               <div class="formula-box">
                 <span class="formula">漂 流 时 间 T = 2T₁T₂ ÷ (T₁ − T₂)</span><br>
                 T₁ = 逆流（慢）所需时间，T₂ = 顺流（快）所需时间
@@ -5047,6 +5193,59 @@
           </div>
         </div>
       </div>
+<div class="block">
+              <div class="block-title">5. 时间统筹（煮茶问题）</div>
+              <div class="key-box">
+                <b>识别：</b>题干列出<b>几件要做的事和各自耗时</b>，问「最少需要多少时间」（同时进行多项工作，时间最少）。<br>
+                <b>方法：见缝插针</b> ——<br>
+                ① 先做<b>必须先行</b>的那一步（如泡茶要先洗水壶、要先热锅）；<br>
+                ② 找出其中<b>耗时最长、且不需要人盯着</b>的一步（烧水、烙饼的等待、洗衣机洗衣），把它当成「空档」；<br>
+                ③ 把其余零碎小事<b>塞进这个空档</b>里完成；<br>
+                ④ 总时间 = <b>关键路径</b>上的时间（最长的那条链），而不是所有事情耗时相加。
+              </div>
+              <div class="tip-box">和「排队取水」区分开：排队取水是<b>串联</b>（省的是别人的等待），煮茶是<b>并行</b>（省的是自己的等待）。</div>
+            </div>
+                        <div class="example">
+              <div class="example-header">📝 例题 · 时间统筹（煮茶问题）</div>
+              <div class="example-body">
+                <div class="example-q">小李要泡茶招待客人，需要做四件事：洗水壶 1 分钟、烧水 8 分钟、洗茶杯 2 分钟、拿茶叶 1 分钟。问最少需要多少分钟才能泡好茶？</div>
+                <div class="example-opts">A.12 分钟　B.11 分钟　C.9 分钟　D.8 分钟</div>
+                <div class="example-answer">
+                        <b>解析：</b>时间统筹的关键是找<b>「不需要人盯着」的空档</b>，把零碎活儿塞进去。
+                        ① 洗水壶必须<b>先做</b>（要用水壶烧水），花 1 分钟；
+                        ② 烧水要 8 分钟，这 8 分钟里人是<b>空着的</b>—— 正好用来洗茶杯（2 分钟）+ 拿茶叶（1 分钟）= 3 分钟 &lt; 8 分钟，<b>塞得下</b>；
+                        ③ 水开后即可泡茶 → 总时间 = 洗水壶 1 + 烧水 8 = <b>9</b>（分钟）。
+                        对比：如果一件一件顺着做，就是 1 + 8 + 2 + 1 = 12 分钟，多了 3 分钟。
+                        要点：<b>识别「同时进行多项工作，问时间最少」</b>→ 找关键路径，用「见缝插针」把短任务并进长任务的等待时间里。
+              <figure class="fig">
+                <svg viewBox="0 0 460 250" role="img" aria-label="煮茶问题的时间安排：烧水的同时洗茶杯拿茶叶">
+                  <text x="14" y="22" font-size="13.5" fill="#4f7cff" font-weight="700">见缝插针：等水开的 8 分钟里做别的事</text>
+                  <g font-size="12.5" fill="#6b7280">
+                    <text x="14" y="76">洗水壶</text>
+                    <text x="14" y="116">烧　水</text>
+                    <text x="14" y="156">洗茶杯</text>
+                    <text x="14" y="196">拿茶叶</text>
+                  </g>
+                  <rect x="88" y="60" width="33" height="22" rx="4" fill="#dbe4ff" stroke="#4f7cff" stroke-width="1.4"/>
+                  <rect x="121" y="100" width="267" height="22" rx="4" fill="#ffe8c2" stroke="#f39c12" stroke-width="1.4"/>
+                  <rect x="121" y="140" width="67" height="22" rx="4" fill="#eafaf1" stroke="#2ecc71" stroke-width="1.4"/>
+                  <rect x="188" y="180" width="33" height="22" rx="4" fill="#eafaf1" stroke="#2ecc71" stroke-width="1.4"/>
+                  <text x="94" y="76" font-size="11.5" fill="#2b4b9b">1 分</text>
+                  <text x="200" y="116" font-size="11.5" fill="#b8730d">8 分（水开）</text>
+                  <text x="124" y="156" font-size="11.5" fill="#1a7a45">2 分</text>
+                  <text x="191" y="196" font-size="11.5" fill="#1a7a45">1 分</text>
+                  <line x1="121" y1="52" x2="121" y2="214" stroke="#c0392b" stroke-width="1.4" stroke-dasharray="5 4"/>
+                  <line x1="388" y1="52" x2="388" y2="214" stroke="#c0392b" stroke-width="1.4" stroke-dasharray="5 4"/>
+                  <text x="100" y="48" font-size="12.5" font-weight="700" fill="#c0392b">洗茶杯 + 拿茶叶塞进烧水的 8 分钟里</text>
+                  <text x="14" y="238" font-size="13" fill="#6b7280">总时间 = 洗水壶 1 分 + 烧水 8 分 = 9 分钟（洗杯子不再额外占时间）</text>
+                </svg>
+                <figcaption>煮茶类时间统筹：先做<b>必须先行</b>的那一步（洗水壶），再让<b>耗时长、不需要人盯着</b>的那步（烧水）
+                  当「空档」，把其余零碎工作<b>见缝插针</b>塞进去。总时间 = 关键路径上的时间，而不是所有事相加。</figcaption>
+              </figure>
+                  <span class="correct">答案：C</span>
+                </div>
+              </div>
+            </div>
             <div class="example">
                     <div class="example-header">📝 例题5 · 时间统筹（烙饼）</div>
                     <div class="example-body">
