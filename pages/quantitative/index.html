@@ -1251,19 +1251,20 @@
               <div class="sub-point">复杂方程型：不会解就代入选项</div>
               <div class="sub-point">变形：工程费用、周期循环工程、多个工程的完工时间型</div>
             </div>
-            <div class="example">
-              <div class="example-header">📝 例题2 · 完工时间型（赋值法）</div>
+                        <div class="example">
+              <div class="example-header">📝 例题2 · 完工时间型（2024 联考）</div>
               <div class="example-body">
-                <div class="example-q">一项工程由甲、乙单独完成分别需50天和80天。甲乙合作20天后，剩余工程由乙、丙合作需12天完成，则丙单独完成需要多少天？</div>
-                <div class="example-opts">A.40天　B.45天　C.50天　D.60天</div>
+                <div class="example-q">有一批零件，如果甲车间单独完成需要 50 小时，乙车间单独完成需要 30 小时。在甲车间单独完成若干小时后，由于要承担其他紧急任务，剩余的任务由乙车间继续完成，这样一共用了 42 小时。问乙车间完成的零件量占这批零件总量的（　　）。</div>
+                <div class="example-opts">A. 3/4　B. 3/5　C. 2/5　D. 1/3</div>
                 <div class="example-answer">
-                  <b>解析：</b>①赋总量=50和80的最小公倍数 <b>400</b><br>
-                  ②甲效率=400÷50=8，乙效率=400÷80=5<br>
-                  ③列方程：400=(8+5)×20+(5+丙效率)×12<br>
-                  → 400=260+60+12×丙效率 → 丙效率=80÷12 → 不对<br>
-                  重算：(8+5)×20=260，400-260=140，140÷12=11.67... → 丙效率≈6.67<br>
-                  丙时间=400÷(20/3)=<b>60天</b><br>
-                  <span class="correct">答案：D</span>
+                        <b>解析：</b>完工时间型三步走 ——
+                        ① <b>赋值总量 = 50 与 30 的最小公倍数 = 150</b>；
+                        ② 求效率：甲 = 150 ÷ 50 = <b>3</b>，乙 = 150 ÷ 30 = <b>5</b>；
+                        ③ 设甲做了 x 小时，则乙做了 (42 − x) 小时，由「总量守恒」列式：
+                        　 3x + 5(42 − x) = 150 → 3x + 210 − 5x = 150 → −2x = −60 → <b>x = 30</b>；
+                        ④ 乙做 42 − 30 = 12 小时 → 乙完成 5 × 12 = 60，占总量 60 ÷ 150 = <b>2/5</b>。
+                        要点：<b>「谁做了几天」直接写成总量方程</b>，不要去逐段推算每种情形用了多久，那是最容易算错的地方。
+                  <span class="correct">答案：C</span>
                 </div>
               </div>
             </div>
@@ -1279,17 +1280,20 @@
               <div class="sub-point"><b>三、给具体人数或机器数</b>（50 个工人修路、80 台挖掘机）→ <b>直接赋值每个人（台）的效率为 1</b>，总量就是"人数 × 天数"。</div>
               <div class="sub-point">另外还有：<b>给定总量比与时间比，求效率比</b>（效率 = 总量 ÷ 时间）。</div>
             </div>
-            <div class="example">
-              <div class="example-header">📝 例题3 · 效率比例型</div>
+                        <div class="example">
+              <div class="example-header">📝 例题3 · 效率比例型（2025 联考）</div>
               <div class="example-body">
-                <div class="example-q">甲工程队与乙工程队的效率之比为4∶5。一项工程由甲单独做6天，再由乙单独做8天，最后甲乙合作4天刚好完成。如果由甲或乙单独完成，甲比乙多多少天？</div>
-                <div class="example-opts">A.3　B.4　C.5　D.6</div>
+                <div class="example-q">甲、乙、丙合作完成一项工程。如甲 8 天、乙 6 天、丙 4 天依次工作刚好可完工；现甲、乙合作 6 天后，剩下的工程丙恰好单独 5 天完工。已知甲的效率是乙的 1.5 倍，问丙单独完成需要多少天？</div>
+                <div class="example-opts">A.10　B.15　C.20　D.30</div>
                 <div class="example-answer">
-                  <b>解析：</b>①赋值甲效率=4，乙效率=5<br>
-                  ②总量=4×6+5×8+(4+5)×4=24+40+36=<b>100</b><br>
-                  ③甲单独时间=100÷4=25天，乙单独时间=100÷5=20天<br>
-                  甲比乙多 25-20=<b>5天</b><br>
-                  <span class="correct">答案：C</span>
+                        <b>解析：</b>题目给的是「甲是乙的 1.5 倍」——属于<b>间接给效率比</b>，先把它化成最简比：
+                        甲∶乙 = 1.5∶1 = 3∶2 → <b>赋甲效率 = 3、乙效率 = 2</b>（设丙效率为 c）。
+                        ① 方案一（13 天依次工作）的总量：(3×8) + (2×6) + (4×c) = 24 + 12 + 4c = <b>36 + 4c</b>；
+                        ② 方案二（甲乙合作 6 天 + 丙单独 5 天）的总量：(3+2)×6 + 5c = 30 + 5c = <b>30 + 5c</b>；
+                        ③ 两个方案是同一项工程 → 总量相等：36 + 4c = 30 + 5c → <b>c = 6</b>；
+                        ④ 总量 = 30 + 5×6 = 60 → 丙单独完成需 60 ÷ 6 = <b>10</b>（天）。
+                        要点：<b>「两种不同干法完成同一项工程」→ 两个总量表达式相等</b>，一步就能把未知效率解出来。
+                  <span class="correct">答案：A</span>
                 </div>
               </div>
             </div>
@@ -1310,17 +1314,20 @@
                 <b>变形 4 · 牛的效率变化</b>：不同阶段牛的数量（或效率）不一样 → <b>分阶段</b>列式，每段用一次 y = (N−x)T。</div>
               <div class="warn-box">别漏了消长量 x！先判断 x 是"帮着增加"还是"跟着消耗"，再决定括号里是 N−x 还是 N+x。</div>
             </div>
-            <div class="example">
-              <div class="example-header">📝 例题4 · 牛吃草</div>
+                        <div class="example">
+              <div class="example-header">📝 例题4 · 牛吃草（2023 广东 · 变形 1 牛羊吃草）</div>
               <div class="example-body">
-                <div class="example-q">一片牧场长满草，每天草匀速生长。27头牛6天吃完，23头牛9天吃完。问21头牛几天吃完？</div>
+                <div class="example-q">某牧场的草匀速生长。如果 20 头牛来吃，20 天可将草吃光；如果 10 头牛和 10 只羊来吃，30 天可以恰好吃光。已知一头牛每天的吃草量是一只羊的 2 倍，则 30 只羊吃该牧场的草，多少天可以吃光？</div>
+                <div class="example-opts">A.10　B.20　C.30　D.40</div>
                 <div class="example-answer">
-                  <b>解析：</b>设原有草量y，草生长速度x<br>
-                  y=(27-x)×6 且 y=(23-x)×9<br>
-                  → (27-x)×6=(23-x)×9 → 162-6x=207-9x → 3x=45 → x=15<br>
-                  y=(27-15)×6=72<br>
-                  21头牛：72=(21-15)×T → T=72÷6=<b>12天</b><br>
-                  <span class="correct">答案：12天</span>
+                        <b>解析：</b>先做<b>变形 1 的换算</b>：一头牛 = 两只羊 → <b>30 只羊 = 15 头牛</b>，「10 牛 + 10 羊」= 10 + 5 = <b>15 头牛</b>。
+                        统一成"头牛"后，设每头牛每天吃 1 份，草每天长 x 份、原有 y 份：
+                        ① 20 头吃 20 天：y + 20x = 20 × 20 = 400；
+                        ② 15 头吃 30 天：y + 30x = 15 × 30 = 450；
+                        ③ 两式相减：10x = 50 → <b>x = 5</b>；回代得 y = 400 − 100 = <b>300</b>；
+                        ④ 30 只羊 = 15 头牛：设吃 T 天，300 + 5T = 15T → 10T = 300 → T = <b>30</b>（天）。
+                        要点：<b>牛羊混着出现，第一步必须换算成同一主体</b>；换算完就是标准的两方程消 y 求 x。
+                  <span class="correct">答案：C</span>
                 </div>
               </div>
             </div>
@@ -1333,18 +1340,23 @@
                   剩下的选项逐个排除，不要去硬算每段的精确值。</li>
               </ul>
             </div>
-            <div class="example">
-        <div class="example-header">📝 例题5 · 统筹工程（中途休息）</div>
-        <div class="example-body">
-          <div class="example-q">某项工作甲单独做需要 10 天，乙单独做需要 30 天。两人合作，中途甲休息了 2 天，乙一直没有休息。完成这项工作实际用了多少天？</div>
-          <div class="example-opts">A.8　B.9　C.10　D.12</div>
-          <div class="example-answer">
-            <b>解析：</b>赋值总量为 lcm(10, 30) = 30，则甲效率 = 3，乙效率 = 1。<br>设实际用了 t 天，则甲工作了 (t − 2) 天：3(t − 2) + 1 × t = 30 → 4t = 36 → t = <b>9</b> 天。<br>统筹题的抓手：<b>把「谁干了几天」写成总量方程</b>，比逐段推算更稳。
-            <br>
-            <span class="correct">答案：B</span>
-          </div>
-        </div>
-      </div>
+                        <div class="example">
+              <div class="example-header">📝 例题5 · 统筹工程（中途增加工作量 · 2025 联考）</div>
+              <div class="example-body">
+                <div class="example-q">某单位接到一项任务，探访所在辖区的商户了解相关信息。原计划由 5 人 10 天完成探访 200 家商户的工作任务，工作 5 天后，由于工作调整，需要增加探访辖区的 300 家商户。假定所有人工作效率相同，若仍要求在原计划时间之内完成，则需要增加的人数为（　　）。</div>
+                <div class="example-opts">A.10 人　B.15 人　C.20 人　D.25 人</div>
+                <div class="example-answer">
+                        <b>解析：</b>先求<b>单人效率</b>（题目说"效率相同"，这是关键）：
+                        ① 单人效率 = 200 ÷ (5 人 × 10 天) = <b>4</b>（家/人·天）；
+                        ② 前 5 天完成 200 × 5/10 = 100 家 → 原任务只剩 100 家；
+                        ③ 又新增 300 家 → 剩下共 100 + 300 = <b>400</b> 家；
+                        ④ 剩下时间 = 10 − 5 = 5 天 → 需要 400 ÷ (4 × 5) = <b>20</b> 人；
+                        ⑤ 原来只有 5 人 → 需增加 20 − 5 = <b>15</b> 人。
+                        要点：统筹工程题先<b>算出"单人单位时间的产出"</b>，再把"剩余工作量 ÷ 剩余时间 ÷ 单人产出"就是所需人数。<br>特别注意<b>剩下的时间只有 5 天</b>（不是 10 天），这一步错了答案会翻倍。
+                  <span class="correct">答案：B</span>
+                </div>
+              </div>
+            </div>
             <div class="block">
               <div class="block-title">6. 周期循环工程（确定周期型）</div>
               <div class="key-box">
@@ -1353,16 +1365,21 @@
                 ② 算出一个完整周期的总工作量　③ 看需要几个完整周期　④ 剩余部分再单独算
               </div>
             </div>
-            <div class="example">
-              <div class="example-header">📝 例题6 · 周期循环工程</div>
+                        <div class="example">
+              <div class="example-header">📝 例题6 · 周期循环工程（2021 四川下）</div>
               <div class="example-body">
-                <div class="example-q">一项工程甲单独做需 12 天。现甲做 3 天、休息 1 天，如此循环（每 4 天一轮）。问完成这项工程需要多少天？</div>
-                <div class="example-opts">A.14 天　B.15 天　C.16 天　D.18 天</div>
+                <div class="example-q">某项工程，甲、乙、丙三个工程队如单独施工，分别需要 12 小时、10 小时和 8 小时完成。现按「甲—乙—丙—甲……」的顺序让三个工程队轮班，每队施工 1 小时后换班，问该工程完成时，甲工程队的施工时间共计（　　）。</div>
+                <div class="example-opts">A.2 小时 54 分　B.3 小时　C.3 小时 54 分　D.4 小时</div>
                 <div class="example-answer">
-                  <b>解析：</b>甲效率 = 1/12，一轮 4 天只做 3 天 → 一轮完成 3 × (1/12) = <b>1/4</b><br>
-                  3 轮（12 天）完成 3/4，剩 1/4 需 (1/4) ÷ (1/12) = <b>3 天</b>（第 13、14、15 天都在做）<br>
-                  合计 12 + 3 = <b>15 天</b><br>
-                  <span class="correct">答案：B</span>
+                        <b>解析：</b>这是"确定周期型"的周期循环工程，四步走：
+                        ① 求各队效率：甲 1/12、乙 1/10、丙 1/8（也可以赋总量 120，则效率为 10、12、15）；
+                        ② 一个完整周期（3 小时，甲乙丙各 1 小时）完成 1/12 + 1/10 + 1/8 = 37/120；
+                        ③ 3 个完整周期（9 小时）完成 3 × 37/120 = 111/120，剩余 1 − 111/120 = <b>3/40</b>；
+                        ④ 第 10 小时轮到甲：甲 1 小时能做 1/12 = 10/120 &gt; 3/40 = 9/120，做不满 1 小时 →
+                        　 所需时间 = (3/40) ÷ (1/12) = <b>9/10 小时 = 54 分钟</b>。
+                        所以甲共施工 1 + 1 + 1（前三个周期各 1 小时）+ 54 分 = <b>3 小时 54 分</b>。
+                        要点：<b>先把"整个周期"做完再处理尾巴</b>；尾巴落在谁身上，就只算那一个人的时间，别把整个周期都算进去。
+                  <span class="correct">答案：C</span>
                 </div>
               </div>
             </div>
@@ -2412,15 +2429,19 @@
                 <b>注意区分：</b>数量关系中利润率 = 利润/成本；资料分析中利润率 = 利润/收入
               </div>
             </div>
-            <div class="example">
-              <div class="example-header">📝 例题1 · 基础经济利润</div>
+                        <div class="example">
+              <div class="example-header">📝 例题1 · 基础经济利润（2025 联考）</div>
               <div class="example-body">
-                <div class="example-q">某商品进价100元，按定价打八折出售仍能获得20%的利润，问该商品的定价是多少元？</div>
-                <div class="example-opts">A.140　B.150　C.160　D.170</div>
+                <div class="example-q">小明在网络二手交易平台按照每张 150 元的价格转手了两张珍藏版 CD，其中一张盈利 25%，另一张亏损 25%，则小明转手这两张 CD 总的盈亏情况是（　　）。</div>
+                <div class="example-opts">A.不盈不亏　B.盈利 20 元　C.亏损 20 元　D.亏损 25 元</div>
                 <div class="example-answer">
-                  <b>解析：</b>售价=进价×(1+利润率)=100×1.2=120元<br>
-                  定价×折扣=售价 → 定价=120÷0.8=<b>150元</b><br>
-                  <span class="correct">答案：B</span>
+                        <b>解析：</b>150 元是<b>售价</b>，要先用「售价 = 成本 ×(1 ± 利润率)」分别反求两张的成本：
+                        ① 盈利 25% 的那张：成本 = 150 ÷ 1.25 = <b>120</b> 元 → 盈利 150 − 120 = <b>30</b> 元；
+                        ② 亏损 25% 的那张：成本 = 150 ÷ 0.75 = <b>200</b> 元 → 亏损 200 − 150 = <b>50</b> 元；
+                        ③ 合计：+30 − 50 = <b>−20</b> 元，即总共<b>亏损 20 元</b>。
+                        要点：「一张赚 25%、一张亏 25%」<b>绝不是"不盈不亏"</b> —— 同样的售价下，亏损的那张成本更高，亏的绝对额一定更大。
+                        把两个成本都算出来再相加，是这类"一盈一亏"题的固定动作。
+                  <span class="correct">答案：C</span>
                 </div>
               </div>
             </div>
@@ -2450,33 +2471,43 @@
                 </div>
               </div>
             </div>
-            <div class="example">
-        <div class="example-header">📝 例题2 · 三种解法（赋值法）</div>
-        <div class="example-body">
-          <div class="example-q">某商品按成本加价 40% 定价，再打八折出售。它的利润率是多少？</div>
-          <div class="example-opts">A.10%　B.12%　C.15%　D.20%</div>
-          <div class="example-answer">
-            <b>解析：</b>题目只给比例、没给具体钱数 → 用<b>赋值法</b>，赋成本 = 100。<br>定价 = 100 × (1 + 40%) = 140；售价 = 140 × 0.8 = 112。<br>利润 = 112 − 100 = 12，利润率 = 12 ÷ 100 = <b>12%</b>。
-            <br>
-            <span class="correct">答案：B</span>
-          </div>
-        </div>
-      </div>
+                        <div class="example">
+              <div class="example-header">📝 例题2 · 三种解法（赋值法 · 2023 广东事业单位）</div>
+              <div class="example-body">
+                <div class="example-q">五一节期间，某商场开展促销活动，将一款冰箱的价格下调 20% 销售。促销结束后，这款冰箱计划恢复原价销售，那么此时该商品的价格应上调（　　）。</div>
+                <div class="example-opts">A.10%　B.15%　C.20%　D.25%</div>
+                <div class="example-answer">
+                        <b>解析：</b>题目只给百分数、没给具体钱数 → <b>赋值法</b>，赋原价 = 100 元。
+                        ① 下调 20% 后售价 = 100 × (1 − 20%) = <b>80</b> 元；
+                        ② 要从 80 元涨回 100 元，涨的金额 = 20 元；
+                        ③ <b>上涨率要以"当前价"为基数</b>（不是原价）：20 ÷ 80 = <b>25%</b>。
+                        对照三种解法：<br>· <b>赋值法</b>：本例 —— 赋 100 最快；<br>· <b>方程法</b>：设原价 P，P(1−20%)(1+x) = P → 0.8(1+x) = 1 → x = 25%；<br>· <b>资料分析法</b>：把"下调 20%"看作反向的增长率，用基期现期关系直接反推，同样得 25%。
+                        要点：<b>"先降后涨"永远比"先涨后降"的百分数大</b> —— 因为涨的基数变小了。这是本类题的经典陷阱。
+                  <span class="correct">答案：D</span>
+                </div>
+              </div>
+            </div>
             <div class="block">
               <div class="block-title">3. 分段计费</div>
               <div class="key-box">方法：边读边画，找准分段临界点，分区间讨论计算</div>
               <div class="sub-point">涉及水电、资费、提成等</div>
             </div>
-            <div class="example">
-              <div class="example-header">📝 例题3 · 分段计费</div>
+                        <div class="example">
+              <div class="example-header">📝 例题3 · 分段计费（2021 河北 · 稿费纳税）</div>
               <div class="example-body">
-                <div class="example-q">某市水费分段计价：每月10吨以内（含）每吨2元，超过10吨的部分每吨3元。某家庭某月用水15吨，应交水费多少元？</div>
-                <div class="example-opts">A.30　B.35　C.40　D.45</div>
+                <div class="example-q">假设个人出版著作所得稿费纳税方法如下：（1）稿费不超过 800 元不纳税；（2）超过 800 元但不超过 4000 元的部分纳税 10%；（3）超过 4000 元的部分纳税 15%。已知张教授出版一部著作，纳税 620 元，则张教授的这笔稿费是多少元？</div>
+                <div class="example-opts">A.9000　B.8000　C.7000　D.6000</div>
                 <div class="example-answer">
-                  <b>解析：</b>前10吨：10×2=20元<br>
-                  超出5吨：5×3=15元<br>
-                  合计=20+15=<b>35元</b><br>
-                  <span class="correct">答案：B</span>
+                        <b>解析：</b>分段计费的固定做法 —— <b>先算各段的"封顶税额"，判断落在哪一段，再回代</b>：
+                        ① 第一段（0～800）：不纳税；
+                        ② 第二段（800～4000）：最多纳税 (4000 − 800) × 10% = <b>320</b> 元；
+                        ③ 已知纳税 620 元 &gt; 320 元 → 说明<b>稿费一定超过 4000 元</b>，第三段也纳了税；
+                        ④ 第三段纳税额 = 620 − 320 = <b>300</b> 元；
+                        ⑤ 第三段税率 15% → 超过 4000 的部分 = 300 ÷ 15% = <b>2000</b> 元；
+                        ⑥ 稿费 = 4000 + 2000 = <b>6000</b> 元。
+                        要点：<b>别设未知数硬解</b> —— 先把每段的封顶额算出来（320 元），一步就定位到"超过 4000"这一段，再倒推超出部分。
+                        水电费、出租车费、个税、医保自付比例，全都是同一套路。
+                  <span class="correct">答案：D</span>
                 </div>
               </div>
             </div>
@@ -2489,21 +2520,22 @@
                 <b>两点式：</b>y = (a − x)(b + x) 在 x = (x₁ + x₂) ÷ 2 处取最值 —— 不用展开、不用背 −b/(2a)
               </div>
             </div>
-            <div class="example">
-              <div class="example-header">📝 例题4 · 利润最值</div>
+                        <div class="example">
+              <div class="example-header">📝 例题4 · 利润最值（2020 江苏 · 抛物线两点式）</div>
               <div class="example-body">
-                <div class="example-q">某商品定价20元时可卖100件，定价每提高1元销量减少5件。问定价多少时利润最大？（进价10元/件）</div>
+                <div class="example-q">某商品的进货单价为 80 元，销售单价为 100 元，每天可售出 120 件。已知销售单价每降低 1 元，每天可多售出 20 件。若要实现该商品的销售利润最大化，则销售单价应降低的金额是（　　）。</div>
+                <div class="example-opts">A.5 元　B.6 元　C.7 元　D.8 元</div>
                 <div class="example-answer">
-                  <b>解析：</b>设定价提高 x 元，则单件利润 = 10 + x，销量 = 100 − 5x。<br>
-                  利润 y = (10 + x)(100 − 5x) —— 这是一条开口向下的<b>抛物线</b>。<br>
-                  <b>① 令 y = 0（抛物线原理）：</b><br>
-                  · (10 + x) = 0 → x₁ = <b>−10</b>（即降 10 元到进价、利润为 0）<br>
-                  · (100 − 5x) = 0 → x₂ = <b>20</b>（即涨 20 元、销量掉到 0）<br>
-                  <b>② 取中点求对称轴：</b>x = (x₁ + x₂) ÷ 2 = (−10 + 20) ÷ 2 = <b>5</b><br>
-                  <b>③ 回到定价：</b>20 + 5 = <b>25（元）</b><br>
-                  验证：定价 25 元时单件利润 15 元、销量 75 件 → 利润 = 15 × 75 = 1125 元；<br>
-                  定价 24 元时 14 × 80 = 1120 元，定价 26 元时 16 × 70 = 1120 元 —— 确实 25 元最大。<br>
-                  <span class="correct">答案：定价25元时利润最大</span>
+                        <b>解析：</b>设单价降低 x 元，则单件利润 = 20 − x，销量 = 120 + 20x。
+                        利润 y = (20 − x)(120 + 20x) —— 这是一条开口向下的<b>抛物线</b>。
+                        <b>① 令 y = 0（抛物线原理）：</b>
+                        　 · (20 − x) = 0 → x₁ = <b>20</b>（降到进价，单件不赚钱）；
+                        　 · (120 + 20x) = 0 → x₂ = <b>−6</b>（涨 6 元，销量掉到 0）；
+                        <b>② 取中点求对称轴：</b>x = (x₁ + x₂) ÷ 2 = (20 + (−6)) ÷ 2 = <b>7</b>；
+                        <b>③ 结论：</b>单价降低 <b>7 元</b>时利润最大。
+                        验证：降 7 元 → 单利 13 元、销量 260 件 → 利润 3380 元；降 6 元 → 14 × 240 = 3360 元；降 8 元 → 12 × 280 = 3360 元 —— 确实 7 元最大。
+                        要点：<b>不展开二次函数、不背 −b/(2a)</b>，令 y = 0 解出两个根再取中点，两步出答案。
+                  <span class="correct">答案：C</span>
                 </div>
               </div>
             </div>
@@ -3578,18 +3610,22 @@
                 　 判断标准：<b>打乱顺序对结果有影响 → 排列 A；无影响 → 组合 C</b>。<br>
                 灵魂三问：<b>谁？干什么？怎么办？</b>（主体 → 问题 → 分类/分步）—— 排列组合就是"生活里怎么做事"，把它还原成一件具体的事，就不容易乱。</div>
             </div>
-            <div class="example">
-        <div class="example-header">📝 例题1 · 基础概念（A 与 C）</div>
-        <div class="example-body">
-          <div class="example-q">从 5 名同学中选出 2 人，分别担任班长和副班长，共有多少种不同的选法？</div>
-          <div class="example-opts">A.10　B.20　C.25　D.60</div>
-          <div class="example-answer">
-            <b>解析：</b>班长和副班长是<b>不同的职务</b>（有序），用排列：A(5, 2) = 5 × 4 = <b>20</b> 种。<br>若是「选出 2 人负责同一件事」（无序）则用组合 C(5, 2) = 10。判断口诀：<b>有序（排队、任职）用 A，无序（组队、选人）用 C</b>。
-            <br>
-            <span class="correct">答案：B</span>
-          </div>
-        </div>
-      </div>
+                        <div class="example">
+              <div class="example-header">📝 例题1 · 基础概念（2024 广东）</div>
+              <div class="example-body">
+                <div class="example-q">某高校中文系计划从 3 名男生和 3 名女生中选派 4 名学生参加暑期支教活动。如果选派的女生不少于 2 名，则选派方案共有（　　）种。</div>
+                <div class="example-opts">A.4　B.8　C.12　D.16</div>
+                <div class="example-answer">
+                        <b>解析：</b>「女生不少于 2 名」要<b>分类讨论</b>（分类用加法）：
+                        ① 女生 2 名 + 男生 2 名：从 3 女中选 2、从 3 男中选 2 →
+                        　 <b>分步用乘法</b>：C(3,2) × C(3,2) = 3 × 3 = <b>9</b> 种；
+                        ② 女生 3 名 + 男生 1 名：C(3,3) × C(3,1) = 1 × 3 = <b>3</b> 种；
+                        ③ 合计 9 + 3 = <b>12</b> 种。
+                        要点：<b>选派（组队）不排顺序 → 用组合 C</b>；先按条件"分类"，每一类内部再"分步相乘"，最后把各类相加。
+                  <span class="correct">答案：C</span>
+                </div>
+              </div>
+            </div>
             <div class="block">
               <div class="block-title">2. 捆绑法（相邻问题）</div>
               <div class="key-box">
@@ -3656,15 +3692,19 @@
                 <span class="formula">n个相同元素分给m人，每人至少1个 → C(n-1, m-1)</span>
               </div>
             </div>
-            <div class="example">
-              <div class="example-header">📝 例题4 · 插板法</div>
+                        <div class="example">
+              <div class="example-header">📝 例题4 · 插板法（2020 联考）</div>
               <div class="example-body">
-                <div class="example-q">把7个相同的苹果分给3个小朋友，每人至少1个，有多少种分法？</div>
-                <div class="example-opts">A.10　B.15　C.21　D.28</div>
+                <div class="example-q">某城市一条道路上有 4 个十字路口，每个十字路口至少有 1 名交通协管员，现将 8 个协管员名额分配到这 4 个路口，则每个路口协管员名额的分配方案有（　　）。</div>
+                <div class="example-opts">A.35 种　B.70 种　C.96 种　D.114 种</div>
                 <div class="example-answer">
-                  <b>解析：</b>插板法：7个苹果排一排有6个间隙<br>
-                  插2块板分成3份 → C(6,2)=<b>15种</b><br>
-                  <span class="correct">答案：B</span>
+                        <b>解析：</b>「8 个<b>相同的</b>名额分给 4 个<b>不同的</b>路口、每个至少 1 个」—— 标准的<b>插板法</b>。
+                        ① 8 个名额排成一排，它们之间产生 8 − 1 = <b>7 个空</b>；
+                        ② 从中挑 4 − 1 = <b>3 个空</b>插板，就分成 4 组（每组至少 1 个，正好对应"每路口至少 1 名"）；
+                        ③ 方案数 = C(7, 3) = 7 × 6 × 5 ÷ (3 × 2 × 1) = <b>35</b> 种。
+                        要点：记忆公式 <b>n 个相同元素分给 m 组、每组至少 1 个 → C(n−1, m−1)</b>；
+                        若问「可以有空组」，先"借" m 个名额补上再用公式（见下一块同素分堆）。
+                  <span class="correct">答案：A</span>
                 </div>
               </div>
             </div>
@@ -3724,18 +3764,22 @@
               <div class="block-title">8. 枚举法</div>
               <div class="tip-box">限制条件多、选项数据小 → 逐一枚举，别硬套公式</div>
             </div>
-            <div class="example">
-        <div class="example-header">📝 例题8 · 枚举法</div>
-        <div class="example-body">
-          <div class="example-q">用数字 1、2、3 组成没有重复数字的三位数，其中偶数的个数是多少？</div>
-          <div class="example-opts">A.1　B.2　C.3　D.4</div>
-          <div class="example-answer">
-            <b>解析：</b>限制条件多、数据又小 → 直接枚举，别硬套公式。<br>三位数是偶数 ⟺ 个位是偶数，个位只能取 2。个位定住后，百位、十位由 1 和 3 排列，有 2 种：132、312。<br>共 <b>2</b> 个。
-            <br>
-            <span class="correct">答案：B</span>
-          </div>
-        </div>
-      </div>
+                        <div class="example">
+              <div class="example-header">📝 例题8 · 枚举法（2025 国考）</div>
+              <div class="example-body">
+                <div class="example-q">某竞赛由 5 道次序固定的判断题组成，参赛者起始为 0 分，每答对 1 题加 1 分，每答错 1 题扣 1 分。小王作答了所有试题，答完每道题时当前的得分都不低于 1 分。问他的答题情况有多少种不同的可能？</div>
+                <div class="example-opts">A.7　B.6　C.4　D.3</div>
+                <div class="example-answer">
+                        <b>解析：</b>只有 5 题、限制条件又很"紧"，直接<b>枚举</b>最快（用 + 表示答对、− 表示答错）。
+                        ① 第 1 题后分数必须 ≥ 1 → 第 1 题<b>只能答对</b>，此时得 1 分；
+                        ② 剩下 4 题从 1 分出发，要求每一步后仍 ≥ 1（即<b>中途不能掉回 0</b>）：
+                        　 + + + + ：1→2→3→4→5 ✓<br>　 + + + − ：1→2→3→4→3 ✓<br>　 + + − + ：1→2→3→2→3 ✓<br>　 + + − − ：1→2→3→2→1 ✓<br>　 + − + + ：1→2→1→2→3 ✓<br>　 + − + − ：1→2→1→2→1 ✓<br>　 + − − … ：1→2→1→<b>0</b> ✗（后面全部排除）<br>　 − 开头 ：1 分也保不住 ✗
+                        ③ 逐条数下来共 <b>6</b> 种。
+                        要点：<b>限制条件越多、数据越小，越要枚举</b>；枚举时按字典序（先 + 后 −）排着写，不容易漏也不会重。
+                  <span class="correct">答案：B</span>
+                </div>
+              </div>
+            </div>
             <div class="block">
               <div class="block-title">9. 顺序固定（归一法）</div>
               <div class="sub-point">全排列后除以顺序不变的排列数</div>
@@ -3782,15 +3826,19 @@
               </table>
               <div class="tip-box">判断三件事：<b>元素是否相同、组是否相同、是否允许空组</b>。组不同 → 用插板；组相同 → 还要除以组数的全排列（那就是"平均分组"）。</div>
             </div>
-            <div class="example">
-              <div class="example-header">📝 例题11 · 同素分堆（插板法）</div>
+                        <div class="example">
+              <div class="example-header">📝 例题11 · 同素分堆（2024 全国事业单位联考）</div>
               <div class="example-body">
-                <div class="example-q">把 10 个完全相同的名额分给 4 个不同的班级，每个班级至少分到 1 个名额，共有多少种分法？</div>
-                <div class="example-opts">A.84　B.120　C.210　D.286</div>
+                <div class="example-q">某单位将 11 本《党员学习手册》分发给甲、乙、丙共 3 个党支部。已知甲支部至少分得 3 本，乙支部至少分得 2 本，丙支部至少分得 4 本，问一共有多少种不同的分配方式？</div>
+                <div class="example-opts">A.3　B.4　C.5　D.6</div>
                 <div class="example-answer">
-                  <b>解析：</b>10 个相同元素分给 4 组、每组至少 1 个 → C(n−1, m−1)<br>
-                  C(9, 3) = (9×8×7) ÷ (3×2×1) = <b>84</b><br>
-                  <span class="correct">答案：A</span>
+                        <b>解析：</b>这是插板法的<b>变形三（每组至少 k 个）</b>：先"预分"，把下限削平，再套标准公式。
+                        ① <b>预分</b>：先给甲 3 本、乙 2 本、丙 4 本（满足各自下限），共用去 3 + 2 + 4 = <b>9</b> 本；
+                        ② 剩下 11 − 9 = <b>2</b> 本，可以任意分给 3 个支部，<b>允许某支部一本也拿不到</b>（因为下限已经满足）；
+                        ③ 套「分给 m 组、每组至少 0 个」的公式 <b>C(n + m − 1, m − 1)</b>：C(2 + 3 − 1, 3 − 1) = C(4, 2) = <b>6</b> 种。
+                        要点：<b>「每组至少 k 个」= 先给每组预分 (k − 1) 个，余下的用"至少 1 个"（或"至少 0 个"）公式</b>。
+                        本类题判断三件事：元素是否相同、组是否相同、是否允许空组。
+                  <span class="correct">答案：D</span>
                 </div>
               </div>
             </div>
@@ -3833,14 +3881,19 @@
               </div>
               <div class="tip-box">选项中和为1的正确率比较大</div>
             </div>
-            <div class="example">
-              <div class="example-header">📝 例题1 · 基础概率</div>
+                        <div class="example">
+              <div class="example-header">📝 例题1 · 基础概率（2018 国考）</div>
               <div class="example-body">
-                <div class="example-q">从一副扑克牌（54张，含大小王）中随机抽取1张，抽到红心的概率是多少？</div>
-                <div class="example-opts">A.1/4　B.13/54　C.1/2　D.4/13</div>
+                <div class="example-q">某单位的会议室有 5 排共 40 个座位，每排座位数相同。小张和小李随机入座，则他们坐在同一排的概率（　　）。</div>
+                <div class="example-opts">A.不高于 15%　B.高于 15% 但低于 20%　C.正好为 20%　D.高于 20%</div>
                 <div class="example-answer">
-                  <b>解析：</b>红心13张，总54张<br>
-                  P=13/54<br>
+                        <b>解析：</b>「两个人坐同一排 / 同一列 / 同一辆车」有固定套路 —— <b>让一个人先坐好，再看另一个人的可选位置</b>：
+                        ① 每排座位数 = 40 ÷ 5 = <b>8</b> 个；
+                        ② 小张随便坐（40 个位置对称，先坐不影响结果），坐定后还剩 <b>39</b> 个空位；
+                        ③ 其中与小张<b>同一排</b>的空位 = 8 − 1 = <b>7</b> 个；
+                        ④ 概率 = 7 ÷ 39 ≈ <b>17.9%</b> → 落在「高于 15% 但低于 20%」区间。
+                        要点：<b>「先放一个，再放另一个」</b>，分母是"剩下的位置数"，分子是"符合条件的剩下位置数"。
+                        易错点：分母是 <b>39</b> 不是 40 —— 两个人的位置不能重合。
                   <span class="correct">答案：B</span>
                 </div>
               </div>
@@ -3872,16 +3925,20 @@
               </div>
               <div class="key-box">正面复杂就求反："正难则反"</div>
             </div>
-            <div class="example">
-              <div class="example-header">📝 例题3 · 反向概率</div>
+                        <div class="example">
+              <div class="example-header">📝 例题3 · 反向概率（2021 联考）</div>
               <div class="example-body">
-                <div class="example-q">同时掷2枚骰子，至少有1个6的概率是多少？</div>
-                <div class="example-opts">A.1/6　B.1/3　C.11/36　D.1/2</div>
+                <div class="example-q">两个大人带四个孩子去坐只有六个位置的圆型旋转木马，那么两个大人不相邻的概率为（　　）。</div>
+                <div class="example-opts">A.2/5　B.3/5　C.1/3　D.2/3</div>
                 <div class="example-answer">
-                  <b>解析：</b>正难则反 → P(至少1个6)=1-P(都没有6)<br>
-                  P(都没有6)=(5/6)×(5/6)=25/36<br>
-                  P=1-25/36=<b>11/36</b><br>
-                  <span class="correct">答案：C</span>
+                        <b>解析：</b>求「<b>不相邻</b>」正面很麻烦 → <b>正难则反</b>，先算"相邻"再相减。
+                        ① 6 个人<b>环形排列</b>的总数 = (6 − 1)! = <b>120</b> 种；
+                        ② 两大人<b>相邻</b>：把两人捆成一个整体参与环形排列 → (5 − 1)! = 24，再乘内部顺序 2! = 2 → <b>48</b> 种；
+                        ③ 相邻的概率 = 48 ÷ 120 = 2/5；
+                        ④ 不相邻的概率 = 1 − 2/5 = <b>3/5</b>。
+                        要点：看到「<b>不</b>相邻 / <b>不</b>在同一天 / <b>不</b>全对」这类否定问法，先想 <b>1 − P(反面)</b>。
+                        环形排列公式：n 个人围一圈 = <b>(n − 1)!</b>（固定一个人消除旋转重复）。捆成整体后，"人数"要少 1 个再环形排列。
+                  <span class="correct">答案：B</span>
                 </div>
               </div>
             </div>
@@ -3927,18 +3984,23 @@
                 <b>猜题技巧：</b>正确答案选项的分母比较规整
               </div>
             </div>
-            <div class="example">
-        <div class="example-header">📝 例题6 · 抓阄密码类</div>
-        <div class="example-body">
-          <div class="example-q">5 个人依次从 5 张签中抽 1 张（其中只有 1 张中奖签），抽后不放回。第 3 个人中奖的概率是多少？</div>
-          <div class="example-opts">A.1/5　B.1/4　C.3/5　D.1/3</div>
-          <div class="example-answer">
-            <b>解析：</b>抓阄是典型的<b>等可能概率</b>：每个人中奖的概率都等于中奖签占总签数的比例，<b>与先后顺序无关</b>。<br>所以第 3 个人中奖的概率 = 1 ÷ 5 = <b>1/5</b>。<br>（猜题技巧：选项分母比较规整的那个，往往就是答案）
-            <br>
-            <span class="correct">答案：A</span>
-          </div>
-        </div>
-      </div>
+                        <div class="example">
+              <div class="example-header">📝 例题6 · 抓阄密码类（2020 山东）</div>
+              <div class="example-body">
+                <div class="example-q">在 ATM 机上输入银行卡密码时，若连续三次输入错误则会吞卡。老李忘了银行卡密码的末两位数，只记得是两个不相同的奇数，若他在末两位上随意输入两个不同奇数，能在吞卡前猜中正确密码的概率是（　　）。</div>
+                <div class="example-opts">A.3/20　B.1/5　C.1/9　D.2/9</div>
+                <div class="example-answer">
+                        <b>解析：</b>先<b>数清一共有多少种可能的密码</b>，再看有几次机会。
+                        ① 两位是「不相同的奇数」→ 从 1、3、5、7、9 这 5 个奇数中<b>选出 2 个并排顺序</b>（十位、个位不同）：
+                        　 A(5, 2) = 5 × 4 = <b>20</b> 种；
+                        ② 连续三次输错才吞卡 → 吞卡前有 <b>3</b> 次尝试机会；
+                        ③ 猜中的概率 = 3 ÷ 20 = <b>3/20</b>。
+                        要点：<b>「密码 / 抓阄类」= 等可能概率</b>，只与"总情况数"和"机会数"有关，<b>与先后顺序无关</b>。
+                        本题的关键在"总情况数"：末两位<b>有序</b>（12 和 21 是两个不同密码），所以用排列 A(5,2) 而不是组合。
+                  <span class="correct">答案：A</span>
+                </div>
+              </div>
+            </div>
             <div class="block">
               <div class="block-title">7. 跟屁虫问题</div>
               <div class="sub-point">不放回抽样，前面抽到后面就不抽了</div>
@@ -4194,18 +4256,22 @@
               </div>
               <div class="key-box"><b>核心：抓住溶质不变</b></div>
             </div>
-            <div class="example">
-        <div class="example-header">📝 例题1 · 基础公式（浓度）</div>
-        <div class="example-body">
-          <div class="example-q">把 20 克盐溶入 80 克水中，所得盐水的浓度是多少？</div>
-          <div class="example-opts">A.20%　B.25%　C.80%　D.16%</div>
-          <div class="example-answer">
-            <b>解析：</b>关键是分清<b>溶质、溶剂、溶液</b>：溶质 = 20 克盐，溶液 = 20 + 80 = 100 克。<br>浓度 = 溶质 ÷ 溶液 × 100% = 20 ÷ 100 = <b>20%</b>。<br>易错点：80 是溶剂不是溶液，拿 20 ÷ 80 = 25% 就错了。
-            <br>
-            <span class="correct">答案：A</span>
-          </div>
-        </div>
-      </div>
+                        <div class="example">
+              <div class="example-header">📝 例题1 · 基础公式（2020 广东）</div>
+              <div class="example-body">
+                <div class="example-q">现有浓度为 4% 的食盐水 250 克，若向该食盐水添加 10 克食盐，再蒸发掉 160 克水，则新获得的食盐水的浓度为（　　）。</div>
+                <div class="example-opts">A.10%　B.15%　C.20%　D.25%</div>
+                <div class="example-answer">
+                        <b>解析：</b>不管怎么折腾，<b>只跟踪"盐"和"溶液"这两个数</b>，别去算浓度中间变化：
+                        ① 原有盐 = 250 × 4% = <b>10</b> 克；
+                        ② 加 10 克盐 → 盐 = 10 + 10 = <b>20</b> 克（<b>加盐 = 盐和溶液同时增加</b>）；
+                        ③ 蒸发 160 克水 → 溶液 = 250 + 10 − 160 = <b>100</b> 克（<b>蒸发只减溶液，盐不变</b>）；
+                        ④ 新浓度 = 20 ÷ 100 = <b>20%</b>。
+                        要点：「加盐」与「加水 / 蒸发」对分子分母的影响不同 —— <b>加盐两根都涨，加水 / 蒸发只动分母</b>。把这两条分开记，这类题不会错。
+                  <span class="correct">答案：C</span>
+                </div>
+              </div>
+            </div>
             <div class="block">
               <div class="block-title">1. 蒸发稀释类</div>
               <div class="key-box">
@@ -4214,15 +4280,18 @@
                 稀释：溶质不变，溶剂（溶液）增加
               </div>
             </div>
-            <div class="example">
-              <div class="example-header">📝 例题2 · 蒸发稀释</div>
+                        <div class="example">
+              <div class="example-header">📝 例题2 · 蒸发稀释（2024 联考）</div>
               <div class="example-body">
-                <div class="example-q">一杯盐水200克，浓度15%。蒸发掉一部分水后浓度变为20%，问蒸发掉了多少克水？</div>
-                <div class="example-opts">A.30g　B.40g　C.50g　D.60g</div>
+                <div class="example-q">一次化学实验中，稀释一定量的盐水，在此盐水中加入 100 g 水后，其浓度变为原来的 80%，则原盐水质量为（　　）。</div>
+                <div class="example-opts">A.200 g　B.300 g　C.400 g　D.500 g</div>
                 <div class="example-answer">
-                  <b>解析：</b>溶质不变 → 溶质=200×15%=30克<br>
-                  蒸发后：30÷浓度=30÷20%=150克<br>
-                  蒸发量=200-150=<b>50克</b><br>
+                        <b>解析：</b>加水前后<b>溶质（盐）不变</b>，这是本题唯一的抓手。
+                        设原盐水质量为 m 克、原浓度为 c，则盐 = mc（加水后还是 mc）。
+                        加水后：mc ÷ (m + 100) = 80% × c —— 两边 c 直接约掉：
+                        m ÷ (m + 100) = 0.8 → m = 0.8m + 80 → 0.2m = 80 → m = <b>400</b>（克）。
+                        验证：取 c = 10%（随便设）→ 原盐 40 克；加水后溶液 500 克 → 浓度 40/500 = 8% = 10% × 80% ✓
+                        要点：比值型稀释题<b>直接设"盐 = mc"再约掉 c</b>，一步就把浓度消掉，不用真去求浓度。
                   <span class="correct">答案：C</span>
                 </div>
               </div>
@@ -4254,17 +4323,22 @@
               </div>
               <div class="tip-box">三种溶液混合 → 两两混合计算</div>
             </div>
-            <div class="example">
-              <div class="example-header">📝 例题3 · 十字交叉法</div>
+                        <div class="example">
+              <div class="example-header">📝 例题3 · 十字交叉法（2020 浙江选调）</div>
               <div class="example-body">
-                <div class="example-q">将浓度10%和30%的盐水混合成浓度20%的盐水200克，需要两种盐水各多少克？</div>
+                <div class="example-q">实验室内有浓度分别为 10% 和 25% 的盐酸各 500 毫升，从两种溶液中分别倒出一部分配成浓度为 15% 的盐酸 600 毫升。如果将剩余的盐酸混合，则该溶液的浓度为（　　）。</div>
+                <div class="example-opts">A.16.5%　B.18.6%　C.20%　D.21.25%</div>
                 <div class="example-answer">
-                  <b>解析：</b>十字交叉法<br>
-                  10% ── (20-10)=10 ── 混合20%<br>
-                  30% ── (30-20)=10 ──<br>
-                  质量比=10∶10=<b>1∶1</b><br>
-                  各需100克<br>
-                  <span class="correct">答案：各100克</span>
+                        <b>解析：</b>两步 —— 先用<b>十字交叉</b>（线段法）求出配 600 毫升时各用了多少，再算剩余部分。
+                        <b>① 十字交叉</b>：用 10% 和 25% 配成 15%
+                        　 两个浓度到 15% 的"距离"：|10 − 15| = 5、|25 − 15| = 10；
+                        　 <b>距离之比 = 另一边用量之比</b> → 10% 的量 ∶ 25% 的量 = 10 ∶ 5 = <b>2 ∶ 1</b>；
+                        　 600 毫升按 2∶1 分 → <b>10% 用 400 毫升、25% 用 200 毫升</b>；
+                        　 验算：400×10% + 200×25% = 40 + 50 = 90 = 15% × 600 ✓
+                        <b>② 剩余部分</b>：10% 剩 500 − 400 = 100 毫升，25% 剩 500 − 200 = 300 毫升；
+                        <b>③ 混合浓度</b> = (100×10% + 300×25%) ÷ (100 + 300) = (10 + 75) ÷ 400 = <b>21.25%</b>。
+                        要点：十字交叉"<b>距离之比取反</b>"——离目标浓度远的那一边，用量少。这一步方向搞反，答案一定错。
+                  <span class="correct">答案：D</span>
                 </div>
               </div>
             </div>
@@ -4275,15 +4349,20 @@
               </div>
               <div class="tip-box">先约分，后计算！可以灵活转换为浓度</div>
             </div>
-            <div class="example">
-              <div class="example-header">📝 例题4 · 反复倒出</div>
+                        <div class="example">
+              <div class="example-header">📝 例题4 · 反复倒出（2024 联考）</div>
               <div class="example-body">
-                <div class="example-q">一杯盐水1000克，浓度20%。每次倒出200克后加满水，重复3次后浓度变为多少？</div>
+                <div class="example-q">现有一容器，装有 100 克浓度为 75% 的盐水，从中倒出 40 克盐水后，再加入 40 克纯净水，如此反复三次。问此时盐水的浓度是（　　）。</div>
+                <div class="example-opts">A.16.20%　B.9%　C.1.62%　D.0.90%</div>
                 <div class="example-answer">
-                  <b>解析：</b>每次倒出比例=200/1000=1/5<br>
-                  剩余比例=1-1/5=4/5<br>
-                  3次后浓度=20%×(4/5)³=20%×64/125=<b>10.24%</b><br>
-                  <span class="correct">答案：10.24%</span>
+                        <b>解析：</b>每次「倒出 + 加满水」，<b>溶质按固定比例流失</b>，所以可以一步乘方：
+                        ① 每次倒出的比例 = 40 ÷ 100 = <b>2/5</b>；
+                        ② 每次操作后<b>溶质变为原来的</b> 1 − 2/5 = <b>3/5</b>（溶液总量被补回 100 克，所以浓度也乘 3/5）；
+                        ③ 反复 3 次：浓度 = 75% × (3/5)³ = 75% × 27/125 = <b>16.2%</b>。
+                        验证：75% → 45% → 27% → 16.2%（每步乘 0.6）✓
+                        要点：<b>「倒出多少比例、就乘 (1 − 比例) 多少次」</b>，一次乘方搞定，不要一步一步算。
+                        注意区分：如果倒出后<b>加的是同浓度的溶液</b>（而不是清水），浓度就不变了。
+                  <span class="correct">答案：A</span>
                 </div>
               </div>
             </div>
@@ -4291,18 +4370,20 @@
               <div class="block-title">4. 连续稀释</div>
               <div class="sub-point">每次倒出V，加满水，浓度变为原来的 (1-V/总量) 倍</div>
             </div>
-            <div class="example">
-        <div class="example-header">📝 例题5 · 连续稀释</div>
-        <div class="example-body">
-          <div class="example-q">一杯 100 毫升的纯酒精，每次倒出 20 毫升后用水加满，重复 3 次后杯中酒精的浓度是多少？</div>
-          <div class="example-opts">A.51.2%　B.48%　C.64%　D.40%</div>
-          <div class="example-answer">
-            <b>解析：</b>每次倒出 20 毫升再加满水，酒精浓度变为原来的 (1 − 20/100) = 0.8 倍。<br>重复 3 次：0.8³ = 0.512 → 浓度 = <b>51.2%</b>。<br>公式：n 次后浓度 = 原浓度 × (1 − V/总量)ⁿ。
-            <br>
-            <span class="correct">答案：A</span>
-          </div>
-        </div>
-      </div>
+                        <div class="example">
+              <div class="example-header">📝 例题5 · 连续稀释（2018 江西）</div>
+              <div class="example-body">
+                <div class="example-q">从一瓶浓度为 52% 的酒精溶液中倒出 1/3，加满纯净水，再倒出 1/3，又加满纯净水，此时酒精溶液的浓度是多少？</div>
+                <div class="example-opts">A.5.8%　B.23.1%　C.17.3%　D.31.5%</div>
+                <div class="example-answer">
+                        <b>解析：</b>与"反复倒出"同一模型，只是把倒出量换成了<b>比例</b>：
+                        ① 每次倒出 1/3 → 每次操作后浓度变为原来的 1 − 1/3 = <b>2/3</b>；
+                        ② 操作 2 次：浓度 = 52% × (2/3)² = 52% × 4/9 ≈ <b>23.11%</b> ≈ 23.1%。
+                        要点：<b>倒出比例 × 次数 → 直接乘方</b>。若题目问"再加几次才降到 x%"，就用 <b>(2/3)ⁿ = 目标 ÷ 原浓度</b> 反解 n。
+                  <span class="correct">答案：B</span>
+                </div>
+              </div>
+            </div>
     </div>
   </div>
 
@@ -4385,18 +4466,22 @@
               </div>
               <div class="sub-point">m = 原棵数，n = 新棵数；最小公倍数的位置不移动</div>
             </div>
-            <div class="example">
-        <div class="example-header">📝 例题3 · 不移动植树</div>
-        <div class="example-body">
-          <div class="example-q">一条道路原有路灯 25 盏，现要增加到 33 盏，且两端的两盏都不动。不需要移动的路灯有多少盏？</div>
-          <div class="example-opts">A.8　B.9　C.10　D.12</div>
-          <div class="example-answer">
-            <b>解析：</b>两端都植树型：25 盏灯把路分成 25 − 1 = 24 段，33 盏灯分成 33 − 1 = 32 段。<br>不移动的位置就是两种分法的<b>公共分点</b>，个数 = gcd(24, 32) + 1 = 8 + 1 = <b>9</b> 盏。<br>口诀：不移动棵数 = (m − 1) 与 (n − 1) 的最大公约数 + 1。
-            <br>
-            <span class="correct">答案：B</span>
-          </div>
-        </div>
-      </div>
+                        <div class="example">
+              <div class="example-header">📝 例题3 · 不移动植树（2018 广州）</div>
+              <div class="example-body">
+                <div class="example-q">某条道路进行灯光增亮工程，原来间隔 35 米的路灯一共有 21 盏，现要将路灯的间隔缩短为 25 米，那么有几盏路灯无需移动？</div>
+                <div class="example-opts">A.2　B.3　C.4　D.5</div>
+                <div class="example-answer">
+                        <b>解析：</b>不移动植树三步走（讲义原列）：
+                        ① <b>先明确总长度</b>：21 盏灯、间隔 35 米 → 总长 = (21 − 1) × 35 = <b>700</b> 米；
+                        ② <b>求两个间隔长度的最小公倍数</b>：lcm(35, 25) = <b>175</b> 米 —— 相距 175 米的整数倍处，新旧方案的位置重合；
+                        ③ <b>数重合点的个数</b>：0、175、350、525、700，共 <b>5</b> 盏（含两端）。
+                        所以有 <b>5</b> 盏无需移动。
+                        要点：<b>「无需移动」= 位于两个间隔长度最小公倍数的整数倍位置</b>；别忘了两端各有一盏。
+                  <span class="correct">答案：D</span>
+                </div>
+              </div>
+            </div>
             <div class="block">
               <div class="block-title">3. 方阵问题</div>
             <div class="fig-row">
@@ -4438,15 +4523,20 @@
               </div>
               <div class="sub-point">区分实心方阵和空心方阵</div>
             </div>
-            <div class="example">
-              <div class="example-header">📝 例题4 · 方阵问题</div>
+                        <div class="example">
+              <div class="example-header">📝 例题4 · 方阵问题（2020 浙江）</div>
               <div class="example-body">
-                <div class="example-q">一个实心方阵最外层每边有8人，求最外层一圈有多少人？总人数多少？</div>
+                <div class="example-q">某学校要将全体运动员排成方阵，老师按人数粗略估计进行第一次排列，发现多出 99 人，于是又将每行和每列多加了 4 人进行排列，发现缺少 37 人。问学校共有运动员多少人？</div>
+                <div class="example-opts">A.256　B.289　C.324　D.361</div>
                 <div class="example-answer">
-                  <b>解析：</b>最外圈人数=4N-4=4×8-4=<b>28人</b><br>
-                  总人数=N²=8²=<b>64人</b><br>
-                  相邻两层差8人 → 第二层=28-8=20人<br>
-                  <span class="correct">答案：最外层28人，总64人</span>
+                        <b>解析：</b>设第一次排成 n × n 的方阵，用<b>总人数不变</b>列等式：
+                        ① 第一次：总人数 = n² <b>+ 99</b>（多出 99 人）；
+                        ② 第二次：每行每列都加 4 → 边长 (n + 4)，此时<b>缺 37 人</b> → 总人数 = (n + 4)² <b>− 37</b>；
+                        ③ 两边相等：n² + 99 = (n + 4)² − 37 = n² + 8n + 16 − 37 → 99 = 8n − 21 → <b>n = 15</b>；
+                        ④ 总人数 = 15² + 99 = 225 + 99 = <b>324</b>（人）。
+                        验证：19² = 361，361 − 324 = 37 ✓ 正好缺 37 人。
+                        要点：方阵题两种打法 —— <b>①「多出 / 缺少」→ 用总人数不变列等式</b>（本题）；② 直接<b>猜平方数</b>，选项里哪个是完全平方数就是它。
+                  <span class="correct">答案：C</span>
                 </div>
               </div>
             </div>
@@ -4459,16 +4549,19 @@
                 例：60 米的路每隔 4 米植（16 棵）、每隔 6 米植（11 棵），重合处在每 12 米一处 → 60÷12+1 = 6 棵 → 共用 16 + 11 − 6 = <b>21 棵</b>。
               </div>
             </div>
-            <div class="example">
-              <div class="example-header">📝 例题5 · 容斥原理植树</div>
+                        <div class="example">
+              <div class="example-header">📝 例题5 · 容斥原理植树（2024 广东）</div>
               <div class="example-body">
-                <div class="example-q">一条 60 米长的路，方案一每隔 4 米植一棵树，方案二每隔 6 米植一棵树（两方案起点相同、两端都植）。两种方案合起来一共要植多少棵树（重合处只植一棵）？</div>
-                <div class="example-opts">A.19　B.21　C.23　D.27</div>
+                <div class="example-q">某个障碍跑项目需要在 100 米长的跑道上布置障碍（起点和终点均不布置）。如果从起点开始，每隔 4 米布置一个甲障碍，每隔 6 米布置一个乙障碍，甲、乙障碍的重合点则不布置甲障碍。则跑道上总共布置多少个甲障碍？</div>
+                <div class="example-opts">A.16　B.17　C.24　D.25</div>
                 <div class="example-answer">
-                  <b>解析：</b>方案一：60 ÷ 4 + 1 = 16 棵；方案二：60 ÷ 6 + 1 = 11 棵<br>
-                  重合处每 lcm(4,6) = 12 米一处 → 0,12,24,36,48,60 共 6 棵<br>
-                  16 + 11 − 6 = <b>21 棵</b><br>
-                  <span class="correct">答案：B</span>
+                        <b>解析：</b>先各自算、再减去重合（两集合容斥），注意<b>两端都不布置</b>：
+                        ① 甲障碍原本的位置：4、8、12、…、96（<b>不含 0 和 100</b>）→ 100 ÷ 4 = <b>25</b> 个空、两端各去掉一个 → <b>24</b> 个；
+                        ② 重合点 = 4 和 6 的公倍数位置 = lcm(4, 6) = <b>12</b> 的倍数 → 12、24、36、48、60、72、84、96，共 <b>8</b> 个；
+                        ③ 重合点上<b>不布置甲障碍</b> → 甲的个数 = 24 − 8 = <b>16</b>。
+                        要点：<b>「两端都不布置」先各自减 1</b>，再用「公倍数位置」找重合；
+                        如果题目改成"重合点只算一次（两种障碍都布）"，那答案就变成 24 + 16 − 8 = 32，审题时要看清"重合点怎么处理"。
+                  <span class="correct">答案：A</span>
                 </div>
               </div>
             </div>
@@ -4492,16 +4585,20 @@
               </div>
               <div class="sub-point">本质：借瓶法。M瓶喝完有M个空瓶，每N-1个空瓶相当于1瓶酒</div>
             </div>
-            <div class="example">
-              <div class="example-header">📝 例题1 · 空瓶换酒</div>
+                        <div class="example">
+              <div class="example-header">📝 例题1 · 空瓶换酒（2019 山东）</div>
               <div class="example-body">
-                <div class="example-q">超市促销：每4个空瓶可换1瓶啤酒。小明买了24瓶啤酒，最多能喝多少瓶？</div>
-                <div class="example-opts">A.30　B.31　C.32　D.33</div>
+                <div class="example-q">某啤酒厂为促销啤酒，开展 6 个空啤酒瓶换 1 瓶啤酒的活动。孙先生去年花钱先后买了 109 瓶该品牌啤酒，期间不断用空啤酒瓶去换啤酒，请问孙先生去年一共喝掉了多少瓶啤酒？</div>
+                <div class="example-opts">A.127　B.128　C.129　D.130</div>
                 <div class="example-answer">
-                  <b>解析：</b>N=4个空瓶换1瓶 → 公式：M+M/(N-1)<br>
-                  =24+24/(4-1)=24+8=<b>32瓶</b><br>
-                  <div class="tip-box" style="margin-top:4px;">原理：24瓶→喝完24个空瓶→换6瓶→喝完6个空瓶→换1瓶剩2空瓶→喝完3空瓶→差1个，借1个换1瓶喝完还回→共24+6+1+1=32</div>
-                  <span class="correct">答案：C</span>
+                        <b>解析：</b>关键理解一句话：<b>每「换 1 瓶」实际只净消耗 (N − 1) 个空瓶</b>。
+                        因为用 6 个空瓶换到 1 瓶酒，喝完又得到 1 个空瓶 → 净减少 6 − 1 = <b>5</b> 个空瓶。
+                        ① 买 109 瓶 → 喝完得 109 个空瓶；
+                        ② 每 5 个空瓶能"净换" 1 瓶 → 额外能喝 109 ÷ 5 = <b>21</b> 瓶（余 4 个空瓶，不够再换）；
+                        ③ 总共喝掉 109 + 21 = <b>130</b> 瓶。
+                        要点：公式记 <b>x 个空瓶、M 换 1 → 最多再喝 x ÷ (M − 1) 瓶（向下取整）</b>；
+                        等价的说法是"借瓶法"：最后剩的几个空瓶可以先借一个凑整，喝完再还 —— 结论与上面的公式一致。
+                  <span class="correct">答案：D</span>
                 </div>
               </div>
             </div>
@@ -4512,16 +4609,21 @@
                 核心思想：将货物集中在重量最大的一侧<br>（完整解法与例题见 <b>二十、统筹优化</b>）
               </div>
             </div>
-            <div class="example">
-              <div class="example-header">📝 例题2 · 货物集中</div>
+                        <div class="example">
+              <div class="example-header">📝 例题2 · 货物集中（2018 联考）</div>
               <div class="example-body">
-                <div class="example-q">一条公路上有4个仓库，间距均为10km，从左到右货物分别为：A(10吨)、B(20吨)、C(30吨)、D(40吨)。将所有货物集中到一个仓库，运费最少的是哪个？</div>
+                <div class="example-q">在一条公路上每隔 10 里有一个集散地，共有 5 个集散地，其中一号集散地有旅客 10 人，三号集散地有 25 人，五号集散地有 45 人，其余两个集散地没有人。如果把所有人集中到一个集散地，那么所有旅客所走的总里数最少是（　　）。</div>
+                <div class="example-opts">A.1100　B.900　C.800　D.700</div>
                 <div class="example-answer">
-                  <b>解析：</b>核心：轻的向重的方向移动<br>
-                  左侧总重=10+20=30 < 右侧总重=30+40=70 → 向右移<br>
-                  A(10)+B(20)向右移到C → C点集中<br>
-                  验证D：左侧(10+20+30=60) < 右侧(40)？60>40 → 不向D移<br>
-                  <span class="correct">答案：集中在C仓库</span>
+                        <b>解析：</b>「货物集中」的判据是<b>向重的一侧移动</b>：从一端往另一端走，一旦某一侧的重量超过另一侧，就不再往回走。
+                        ① 先看两端：一号 10 人、五号 45 人 → 右边重，所以不会集中到一号，往右走；
+                        ② 比较「左边累计」与「右边累计」：走到三号时，左边（一、二号）= 10 人，右边（四、五号）= 45 人 → 还是右边重；
+                        ③ 走到五号时不用再比 —— 五号本身就是最重的端点 → <b>最优集中点就是五号集散地</b>。
+                        ④ 计算总里数（相邻两站 10 里）：一号的 10 人走 4 段 ×10 = 40 里 → 10 × 40 = 400；
+                        　 三号的 25 人走 2 段 ×10 = 20 里 → 25 × 20 = 500；合计 400 + 500 = <b>900</b> 里。
+                        要点：<b>先按"重量"判位置，再按"人数 × 距离"算总里数</b>。
+                        通用验证法：对每个候选仓库算一遍 Σ(人数 × 距离)，取最小 —— 时间够就两个方法都过一遍，最保险。
+                  <span class="correct">答案：B</span>
                 </div>
               </div>
             </div>
@@ -4571,18 +4673,22 @@
                 1→2, 2→4, 3→7, 4→11, 5→16
               </div>
             </div>
-            <div class="example">
-        <div class="example-header">📝 例题5 · 线切面问题</div>
-        <div class="example-body">
-          <div class="example-q">用刀切一块方形蛋糕，切 4 刀最多能切成多少块？</div>
-          <div class="example-opts">A.8　B.11　C.12　D.16</div>
-          <div class="example-answer">
-            <b>解析：</b>n 刀最多切出 (n² + n + 2) / 2 块。<br>代入 n = 4： (16 + 4 + 2) / 2 = 22 / 2 = <b>11</b> 块。<br>对照记：1 → 2、2 → 4、3 → 7、4 → 11、5 → 16（每次新增的块数依次为 1、2、3、4、5）。
-            <br>
-            <span class="correct">答案：B</span>
-          </div>
-        </div>
-      </div>
+                        <div class="example">
+              <div class="example-header">📝 例题5 · 线切面问题（2020 联考）</div>
+              <div class="example-body">
+                <div class="example-q">一条直线将一个平面分成 2 个部分，两条直线最多将一个平面分成 4 个部分……则 6 条直线最多将一个平面分成的部分为（　　）。</div>
+                <div class="example-opts">A.20　B.21　C.22　D.23</div>
+                <div class="example-answer">
+                        <b>解析：</b>「最多」意味着<b>每条新直线都与此前每条直线都相交，且交点互不重合</b>。
+                        记第 n 条直线把已有的部分多分出 (n − 1) 块（n − 1 个交点把新直线切成 n 段，每段多分出 1 块）：
+                        ① 部分数依次为 2 → 4 → 7 → 11 → 16 → <b>22</b>（每次加的分别是 2、3、4、5、6）；
+                        ② 通项公式：<b>部分数 = (n² + n + 2) ÷ 2</b>，代入 n = 6：(36 + 6 + 2) ÷ 2 = <b>22</b>。
+                        要点：n 条直线最多把平面分成 <b>(n²+n+2)/2</b> 块；
+                        考场上 <b>记数列更快</b>：2、4、7、11、16、22、29……（差值 2、3、4、5、6、7）。
+                  <span class="correct">答案：C</span>
+                </div>
+              </div>
+            </div>
             <div class="block">
               <div class="block-title">6. 标1法</div>
               <div class="sub-point">对未知量赋值为1，简化比例计算</div>
@@ -4867,18 +4973,23 @@
                 <li>时针 1 小时走 30°，分针 1 小时走 360°（比时针多走 330°）。</li>
               </ul>
             </div>
-            <div class="example">
-        <div class="example-header">📝 例题1 · 三个必背数据</div>
-        <div class="example-body">
-          <div class="example-q">3 点整时，钟面上时针与分针的夹角是 90°。经过多少分钟，两针第一次重合？</div>
-          <div class="example-opts">A.15 分钟　B.180/11 分钟　C.16 分钟　D.20 分钟</div>
-          <div class="example-answer">
-            <b>解析：</b>用三个必背数据：分针每分钟走 6°，时针每分钟走 0.5°，速度差 <b>5.5°/分钟</b>。<br>重合即分针追上时针 90°：时间 = 90 ÷ 5.5 = 900/55 = <b>180/11</b> 分钟（约 16 分 22 秒）。<br>记住：所有「重合 / 垂直 / 成直线」的题，都是拿夹角除以 5.5° 或 5.5° 的若干倍。
-            <br>
-            <span class="correct">答案：B</span>
-          </div>
-        </div>
-      </div>
+                        <div class="example">
+              <div class="example-header">📝 例题1 · 三个必背数据（2021 联考）</div>
+              <div class="example-body">
+                <div class="example-q">张爷爷早晨 5 点多外出晨练，出门时钟表上的时针和分针的夹角是 110 度，不到 6 点进门时，钟表上的时针和分针的夹角还是 110 度，则张爷爷外出时间是多少分钟？</div>
+                <div class="example-opts">A.30　B.35　C.40　D.45</div>
+                <div class="example-answer">
+                        <b>解析：</b>时钟问题就是<b>分针追时针的环形跑道</b>：分针 6°/分、时针 0.5°/分，<b>速度差恒为 5.5°/分钟</b>。
+                        ① 出门时夹角 110°：此时分针<b>落在时针后面</b> 110°；
+                        ② 进门时夹角还是 110°：分针已经<b>追上并超过</b>时针 110°；
+                        ③ 所以这期间分针相对时针多走了 110 + 110 = <b>220°</b>；
+                        ④ 时间 = 220 ÷ 5.5 = <b>40</b>（分钟）。
+                        要点：<b>「两次夹角相同」→ 相对多转的角度 = 两个夹角之和</b>（一个在追上前，一个在追上后）。
+                        三个必背数据要脱口而出：分针 <b>6°/分</b>、时针 <b>0.5°/分</b>、速度差 <b>5.5°/分</b>。
+                  <span class="correct">答案：C</span>
+                </div>
+              </div>
+            </div>
             <div class="block">
               <div class="block-title">2. 钟面追及（重合 / 垂直 / 成直线）</div>
 
@@ -5033,16 +5144,21 @@
               </div>
               <div class="tip-box">这类"两个量混在一起、已知两个总数"的题（鸡兔、得分/失分、晴天雨天、大盒小盒）<b>全是同一个模型</b>，直接套假设法。</div>
             </div>
-            <div class="example">
-              <div class="example-header">📝 例题2 · 鸡兔同笼（假设法）</div>
+                        <div class="example">
+              <div class="example-header">📝 例题2 · 鸡兔同笼 / 假设法（2022 北京）</div>
               <div class="example-body">
-                <div class="example-q">笼子里有鸡和兔共 35 只，共有脚 94 只。兔子有多少只？</div>
-                <div class="example-opts">A.12　B.20　C.23　D.24</div>
+                <div class="example-q">某测试共有 100 道题，答对一道题得 3 分，不答或答错一道题扣 2 分，小张测试成绩为 285 分，则他一共答对了多少道题？</div>
+                <div class="example-opts">A.85　B.90　C.95　D.97</div>
                 <div class="example-answer">
-                  <b>解析：</b>假设全是鸡 → 脚数 = 2 × 35 = 70，比实际少 94 − 70 = 24 只脚<br>
-                  每把一只鸡换成兔，脚就增加 2 只 → 兔 = 24 ÷ 2 = <b>12 只</b><br>
-                  （公式：兔 =（总脚数 − 2 × 总只数）÷ 2）<br>
-                  <span class="correct">答案：A</span>
+                        <b>解析：</b>这是鸡兔同笼的典型变形（<b>得分 / 失分</b>模型），用<b>假设法</b>：
+                        ① 假设 100 道<b>全部答对</b>，应得 100 × 3 = <b>300</b> 分；
+                        ② 实际得 285 分 → 比满分少了 300 − 285 = <b>15</b> 分；
+                        ③ 每把一道"答对"换成"答错"，得分的变化 = 3 + 2 = <b>5</b> 分（<b>从 +3 变成 −2，相差 5</b>）；
+                        ④ 答错的题数 = 15 ÷ 5 = <b>3</b> 道 → 答对 = 100 − 3 = <b>97</b> 道。
+                        验证：97 × 3 − 3 × 2 = 291 − 6 = 285 ✓
+                        要点：鸡兔同笼只有一个模型 —— <b>「两个量混在一起、已知两个总数」</b>（鸡兔、得分失分、晴天雨天、大盒小盒）。
+                        假设全是 A，算出的差 ÷「单个差」= 另一个量的个数。<b>别忘了一正一负要相加</b>（3 和 −2 相差 5，不是 1）。
+                  <span class="correct">答案：D</span>
                 </div>
               </div>
             </div>
