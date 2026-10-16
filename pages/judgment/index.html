@@ -366,12 +366,83 @@
     .sec-head h2{font-size:17.5px;}
     .card p,.card li{font-size:13.8px;}
   }
+
+  /* ==========================================================================
+     统一为「数量关系」页风格 · 视觉层覆盖（2026-10-16）
+     仅调整配色 / 卡片 / 顶部渐变头 / 滚动进度条 / 回顶按钮，
+     不改动内容结构、类名与文案。
+     ========================================================================== */
+  :root{
+    --bg:#f0f2f5;
+    --primary:#4f7cff;
+    --primary-light:#e8efff;
+    --primary-dark:#3a5fd9;
+    --text:#1a1a2e;
+    --text-light:#555;
+    --border:#e8e8e8;
+    --shadow:0 2px 12px rgba(0,0,0,.06);
+    --panel:#ffffff;
+    --ink:#1a1a2e;
+    --ink-soft:#555;
+    --line:#e8e8e8;
+    --radius:14px;
+    --primary-deep:#3a5fd9;
+    --primary-soft:#e8efff;
+  }
+  body{ background:var(--bg); }
+
+  /* 顶部渐变头：对齐数量关系页 .banner */
+  .hero{
+    background:linear-gradient(135deg,#4f7cff 0%,#6a5acd 100%) !important;
+    color:#fff !important;
+    text-align:center;
+    border:0 !important;
+    border-radius:16px !important;
+    padding:30px 20px 26px !important;
+    box-shadow:0 2px 16px rgba(79,124,255,.3) !important;
+  }
+  .hero::before, .hero::after{ display:none !important; }
+  .hero h1, .hero h2{ font-size:22px !important; font-weight:700 !important; letter-spacing:.5px; margin:0 0 6px !important; color:#fff !important; }
+  .hero p, .hero .sub{ font-size:13px !important; opacity:.9; color:#eef2ff !important; max-width:none !important; }
+  .hero .tags, .hero .meta, .hero .stats{ justify-content:center !important; margin-top:14px !important; }
+  .hero .tag, .hero .tags span, .hero .meta span, .hero .stat{
+    background:rgba(255,255,255,.16) !important;
+    border:1px solid rgba(255,255,255,.3) !important;
+    color:#fff !important;
+    border-radius:999px !important;
+    backdrop-filter:none !important;
+  }
+  .hero .stat{ border-radius:12px !important; }
+  .hero .stat b{ color:#fff !important; font-size:17px !important; }
+  .hero .kicker{ color:rgba(255,255,255,.78) !important; }
+
+  /* 全站统一的滚动进度条与回顶按钮（自定义类名，避开各页同名样式） */
+  .hub-progress{ position:fixed; top:0; left:0; right:0; height:3px; z-index:300; pointer-events:none; }
+  .hub-progress-fill{ height:100%; width:0; background:linear-gradient(90deg,#4f7cff,#6a5acd); transition:width .1s linear; }
+  .hub-back-top{
+    position:fixed; right:20px; bottom:90px; width:44px; height:44px;
+    border:0; border-radius:50%; background:#4f7cff; color:#fff; font-size:20px; line-height:1;
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer; z-index:200; opacity:0; pointer-events:none;
+    box-shadow:0 4px 12px rgba(79,124,255,.4); transition:opacity .3s;
+  }
+  .hub-back-top.show{ opacity:1; pointer-events:auto; }
+  .hub-back-top:active{ transform:scale(.9); }
+  @media print{ .hub-progress, .hub-back-top{ display:none !important; } }
+
+  /* 本页自有进度条改蓝，与滚动进度条同色系 */
+  .progress-fill{ background:linear-gradient(90deg,#4f7cff,#6a5acd) !important; }
+  /* 公式块由深色底改为浅蓝底，与数量关系页 formula-box 一致 */
+  .formula{ background:#e8efff !important; color:#3a5fd9 !important; border-color:#4f7cff !important; }
+
 </style>
   <link data-study-hub-style rel="stylesheet" href="../../assets/hub-nav.css">
   <link data-page-shell rel="stylesheet" href="../../assets/page-shell.css">
   <link rel="stylesheet" href="../../assets/fig.css">
 </head>
 <body>
+<div class="hub-progress"><div class="hub-progress-fill" id="hubProgressFill"></div></div>
+
 
 <button class="menu-btn" id="menuBtn" aria-label="打开目录">☰</button>
 <div class="mask" id="mask"></div>
@@ -1952,5 +2023,24 @@
 </script>
     <script data-page-shell src="../../assets/page-shell.js"></script>
 <script data-study-hub-script src="../../assets/hub-nav.js"></script>
+
+<button class="hub-back-top" id="hubBackTop" type="button" aria-label="回到顶部" onclick="hubScrollTop()">↑</button>
+<script>
+  /* 全站统一：滚动进度条 + 回顶按钮 */
+  (function () {
+    var fill = document.getElementById('hubProgressFill');
+    var btn = document.getElementById('hubBackTop');
+    function onScroll() {
+      var st = document.documentElement.scrollTop || document.body.scrollTop;
+      var sh = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      if (fill) fill.style.width = (sh > 0 ? (st / sh) * 100 : 0) + '%';
+      if (btn) btn.classList.toggle('show', st > 300);
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    onScroll();
+    window.hubScrollTop = function () { window.scrollTo({ top: 0, behavior: 'smooth' }); };
+  })();
+</script>
 </body>
 </html>
