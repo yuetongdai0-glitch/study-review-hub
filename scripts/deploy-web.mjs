@@ -37,7 +37,7 @@ const remote = run('git', ['remote', 'get-url', 'origin'], repoRoot).trim()
 const version = JSON.parse(run('cat', ['package.json'], repoRoot)).version
 
 console.log('① 构建站点…')
-run(process.execPath, [resolve(repoRoot, 'apps/web/scripts/build.mjs')], repoRoot)
+run('pnpm', ['--filter', '@study-hub/web', 'build'], repoRoot)
 
 const dist = resolve(repoRoot, 'apps/web/dist')
 const stage = await mkdtemp(join(tmpdir(), 'study-hub-pages-'))

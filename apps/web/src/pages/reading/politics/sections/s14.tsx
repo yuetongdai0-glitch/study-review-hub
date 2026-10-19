@@ -1,0 +1,182 @@
+import type { ReactElement } from 'react'
+import { Block, BlockTitle, Callout, DataTable, Example, ExampleAnswer, ExampleBody, ExampleHeader, ExampleOptions, ExampleQuestion, PointList } from '@/components/content'
+
+/**
+ * 十四、经济常识
+ *
+ * @returns 该节正文。
+ */
+export default function S15(): ReactElement {
+  return (
+    <>
+      <Callout variant="key">经济常识只有两类题：<b>概念归属</b>（这个现象叫哪个效应）和<b>政策方向</b>（通胀该加息还是降息）。把「通胀—紧缩、通缩—扩张」这一条主线抓住，一半题直接出答案。</Callout>
+      
+            <Block>
+              <BlockTitle>1. 市场结构类型（四类，看厂商数量与产品差别）</BlockTitle>
+              <PointList>
+                <li><b>完全竞争</b>：厂商<b>无数</b>、产品<b>无差别</b>；<b>无定价权</b>、进出<b>很容易</b>——典型是部分农产品（小麦）。</li>
+                <li><b>垄断竞争</b>：厂商<b>大量</b>、产品<b>有差别</b>（口味、装修、品牌）；<b>部分</b>定价权、进出<b>比较容易</b>——轻工品、零售、连锁咖啡。</li>
+                <li><b>寡头垄断</b>：厂商<b>几家</b>、有/无差别；<b>相当程度</b>定价权、进出<b>比较困难</b>——钢铁、汽车、石油、航空。</li>
+                <li><b>完全垄断</b>：厂商<b>唯一一家</b>、产品唯一；<b>很大程度</b>定价权、进出<b>很困难</b>——公共事业（居民供水）。</li>
+              </PointList>
+              <Callout variant="tip"><b>一句话判型：</b>看「有几家」＋「产品有没有差别」。无数且同质＝完全竞争；几家＝寡头；一家＝完全垄断；大量但有差别＝垄断竞争。</Callout>
+            </Block>
+            <Example>
+              <ExampleHeader>📝 例题73 · 市场结构（冲刺班）</ExampleHeader>
+              <ExampleBody>
+                <ExampleQuestion>下列关于市场结构的判断，正确的是：</ExampleQuestion>
+                <ExampleOptions>A.小麦种植市场——完全竞争，农户可自主定价且产品差异显著<br />B.城市连锁咖啡市场——垄断竞争，企业数量较多、产品有口味与装修差异、新品牌易进入<br />C.某国民用航空市场——寡头垄断，仅 1 家航空公司运营<br />D.某城市居民供水——完全垄断，多家企业竞争、政府价格管制</ExampleOptions>
+                <ExampleAnswer><b>解析：</b>A 错，农产品<b>同质</b>、单个农户<b>无法定价</b>；C 错，仅 1 家是<b>完全垄断</b>；D 错，「多家竞争」与完全垄断矛盾。<br /><span className="correct">答案：B</span></ExampleAnswer>
+              </ExampleBody>
+            </Example>
+      
+            <Block>
+              <BlockTitle>2. 税收</BlockTitle>
+              <PointList>
+                <li>税收是国家<b>凭借政治权力</b>、无偿征收实物或货币以取得财政收入的工具。</li>
+                <li><b>三性</b>：<b>无偿性</b>（核心和基础）、<b>强制性</b>（无偿性的必然要求）、<b>固定性</b>（强制性的必然结果）。</li>
+                <li>按征税对象：<b>流转税</b>（增值税、消费税、关税）、<b>所得税</b>（企业所得税、个人所得税）、<b>财产税</b>、<b>资源税</b>、<b>行为税</b>。</li>
+                <li>按税负能否转嫁：<b>直接税</b>（所得税、财产税，不能转嫁）、<b>间接税</b>（流转税，可转嫁）。</li>
+                <li>按管理权限：<b>中央税</b>（消费税、关税）、<b>地方税</b>、<b>中央与地方共享税</b>（增值税、所得税）。</li>
+              </PointList>
+            </Block>
+            <Example>
+              <ExampleHeader>📝 例题74 · 税收（冲刺班）</ExampleHeader>
+              <ExampleBody>
+                <ExampleQuestion>关于税收，下列说法正确的是：</ExampleQuestion>
+                <ExampleOptions>A.税收的无偿性以强制性为基础，固定性是强制性的必然结果<br />B.增值税、消费税属于流转税，也属于间接税，税负可以转嫁<br />C.个人所得税属于间接税，可以通过提高价格转嫁给消费者<br />D.关税属于地方税，由地方政府征收管理</ExampleOptions>
+                <ExampleAnswer><b>解析：</b>A 错，<b>无偿性是核心和基础</b>，强制性是无偿性的必然要求；C 错，所得税是<b>直接税</b>；D 错，关税是<b>中央税</b>。<br /><span className="correct">答案：B</span></ExampleAnswer>
+              </ExampleBody>
+            </Example>
+      
+            <Block>
+              <BlockTitle>3. 需求与成本</BlockTitle>
+              <PointList>
+                <li>需求影响因素：自身价格（<b>反比</b>）、收入（正比）、<b>替代品价格（正比）</b>、<b>互补品价格（反比）</b>、偏好（正比）、预期（正比）。</li>
+                <li>替代品：洗衣粉与洗衣液、猪肉与鸭肉；互补品：羽毛球与球拍、汽车与汽油。</li>
+                <li><b>机会成本</b>：为做某事而放弃的其他选择中的<b>最大收益</b>。</li>
+                <li><b>沉没成本</b>：已付出且不可收回（「来都来了」）。</li>
+                <li><b>显性成本</b>＝实际货币支出；<b>隐性成本</b>＝自有要素的价格。</li>
+                <li><b>边际成本</b>＝每多生产一单位所增加的成本；平均成本＝总成本 ÷ 产量。</li>
+              </PointList>
+            </Block>
+            <Example>
+              <ExampleHeader>📝 例题75 · 成本（小黑母题）</ExampleHeader>
+              <ExampleBody>
+                <ExampleQuestion>下列表示机会成本的是：</ExampleQuestion>
+                <ExampleOptions>A.雇佣李某每月支付工资 3000 元<br />B.购买原材料支付 10 万元<br />C.自有原料可生产货车或价值 10 万元的小客车，选择生产货车<br />D.银行贷款 10 万元每月付息 1000 元</ExampleOptions>
+                <ExampleAnswer><b>解析：</b>A、B、D 都是实际货币支出（显性成本）；C 是<b>放弃的最大收益</b>，即机会成本。<br /><span className="correct">答案：C</span></ExampleAnswer>
+              </ExampleBody>
+            </Example>
+      
+            <Block>
+              <BlockTitle>4. 经济增长与 GDP</BlockTitle>
+              <PointList>
+                <li>三驾马车：<b>投资、消费、出口</b>；投资 + 消费＝内需，出口＝外需。</li>
+                <li><b>GDP 是地域概念</b>（一国范围内生产的最终产品市场价值）；<b>GNP 是国民概念</b>（本国常住居民的生产要素所生产）。</li>
+                <li>GDP 只算<b>当期、最终产品</b>：二手房买卖、政府转移支付、赌博收益、中间产品<b>不计入</b>；劳动者工资性收入<b>计入</b>。</li>
+                <li>GDP 是<b>流量</b>不是存量。</li>
+              </PointList>
+            </Block>
+            <Example>
+              <ExampleHeader>📝 例题76 · GDP（小黑母题）</ExampleHeader>
+              <ExampleBody>
+                <ExampleQuestion>下列可以计入当年 GDP 的有：</ExampleQuestion>
+                <ExampleOptions>A.二手车买卖　B.政府转移支付　C.赌博收益　D.劳动者工资性收入</ExampleOptions>
+                <ExampleAnswer><b>解析：</b>二手车不是当期生产；转移支付无对等生产；赌博非生产性活动。工资是提供劳务的报酬，计入 GDP。<br /><span className="correct">答案：D</span></ExampleAnswer>
+              </ExampleBody>
+            </Example>
+      
+            <Block>
+              <BlockTitle>5. 通货膨胀</BlockTitle>
+              <PointList>
+                <li>实质：<b>社会总需求大于社会总供给</b>；原因：货币供给大于实际需求；表现：物价<b>持续普遍上涨</b>、货币贬值。</li>
+                <li>衡量：<b>CPI</b>（居民消费价格指数，反映居民生活相关产品与劳务价格）；<b>PPI</b>（工业生产者出厂价格指数，反映生产领域价格变动）；<b>CPI 同比涨幅超过 3% 即判定为通货膨胀，超过 5% 属于严重通货膨胀</b>；低于 1% 且持续则有通缩风险。</li>
+                <li>影响：不利于<b>固定收入者、债权人、工人</b>；有利于<b>变动收入者、债务人、雇主</b>。</li>
+                <li><b>菲利普斯曲线</b>：通胀率与失业率<b>反向</b>变动，只在短期有效、长期无效。</li>
+              </PointList>
+              <Callout variant="tip"><b>一句话记影响：</b>「钱毛了」→ 拿固定工资的亏、欠钱的赚、存钱的亏、借钱的赚。</Callout>
+            </Block>
+            <Example>
+              <ExampleHeader>📝 例题77 · 通货膨胀（小黑母题）</ExampleHeader>
+              <ExampleBody>
+                <ExampleQuestion>下列关于通货膨胀的说法，错误的是：</ExampleQuestion>
+                <ExampleOptions>A.实质是社会总供给小于社会总需求<br />B.原因是流通中的纸币量多于所需货币量<br />C.会直接引起物价下跌，失业率上升<br />D.对策是实行紧缩性货币政策，控制信贷规模</ExampleOptions>
+                <ExampleAnswer><b>解析：</b>C 错。通胀引起物价<b>上涨</b>；「物价下跌、失业率上升」是通缩的特征。<br /><span className="correct">答案：C</span></ExampleAnswer>
+              </ExampleBody>
+            </Example>
+      
+            <Block>
+              <BlockTitle>6. 财政政策、货币政策与收入分配</BlockTitle>
+              <DataTable>
+                <tr><th>形势 · 政策</th><th>财政手段</th><th>货币手段</th></tr>
+                <tr><td><b>通胀</b><br />紧缩</td><td>增税、减发国债、减少支出</td><td>提高存款准备金率、提高再贴现率、提高利率、<b>卖出</b>有价证券</td></tr>
+                <tr><td><b>通缩</b><br />扩张</td><td>减税、增发国债、增加支出</td><td>降低存款准备金率、降低再贴现率、降低利率、<b>买入</b>有价证券</td></tr>
+              </DataTable>
+              <PointList>
+                <li>财政政策工具：税收、国债、政府购买、转移支付；货币政策工具：<b>存款准备金率、再贴现率、公开市场业务、基准利率</b>。</li>
+                <li>收入分配：<b>初次分配</b>（市场，工资/最低工资/企业缴税）→ <b>再分配</b>（政府，个税/社保/转移支付/公务员工资）→ <b>第三次分配</b>（自愿，慈善公益）。</li>
+              </PointList>
+            </Block>
+            <Example>
+              <ExampleHeader>📝 例题78 · 宏观调控（小黑母题）</ExampleHeader>
+              <ExampleBody>
+                <ExampleQuestion>某国面临通货紧缩，下列不可能属于其政策措施的是：</ExampleQuestion>
+                <ExampleOptions>A.降低存款准备金率　B.增加货币供给　C.增加政府支出　D.提高存款准备金率</ExampleOptions>
+                <ExampleAnswer><b>解析：</b>通缩要用<b>扩张性</b>政策；提高存款准备金率是<b>紧缩</b>手段，会进一步减少货币供给。<br /><span className="correct">答案：D</span></ExampleAnswer>
+              </ExampleBody>
+            </Example>
+      
+            <Block>
+              <BlockTitle>7. 汇率</BlockTitle>
+              <PointList>
+                <li>汇率＝两种货币的兑换比率；标价法分直接标价（1 单位外币＝多少本币）与间接标价。</li>
+                <li><b>本币贬值</b>：有利于出口、不利于进口；进口商品物价<b>上涨</b>；资本<b>外流</b>。</li>
+                <li><b>本币升值</b>：有利于进口、不利于出口；进口商品物价<b>下降</b>；资本<b>内流</b>。</li>
+                <li>记忆：<b>贬值利于卖（出口），升值利于买（进口）</b>。</li>
+              </PointList>
+            </Block>
+            <Example>
+              <ExampleHeader>📝 例题79 · 汇率（小黑母题）</ExampleHeader>
+              <ExampleBody>
+                <ExampleQuestion>1 欧元兑人民币由 7.9748 变为 8.0314。若不考虑其他因素，下列推导正确的是：</ExampleQuestion>
+                <ExampleOptions>A.人民币升值→中国企业赴欧投资成本下降→有利于扩大进口欧盟商品<br />B.人民币贬值→中国企业赴欧投资成本上升→不利于中国企业在欧盟投资<br />C.欧元升值→中国商品在欧盟市场价格下降→不利于中国商品出口欧盟<br />D.欧元贬值→欧盟商品在中国市场价格上升→有利于中国进口欧盟商品</ExampleOptions>
+                <ExampleAnswer><b>解析：</b>1 欧元可换更多人民币 → <b>欧元升值、人民币贬值</b>。人民币贬值使赴欧投资成本上升，不利于对外投资。C 中欧元升值应使中国商品在欧盟<b>更便宜</b>、利于出口，后半句矛盾；D 方向错。<br /><span className="correct">答案：B</span></ExampleAnswer>
+              </ExampleBody>
+            </Example>
+      
+            <Block>
+              <BlockTitle>8. 经济名词与经济效应</BlockTitle>
+              <DataTable>
+                <tr><th>名词</th><th>含义 / 警戒线</th></tr>
+                <tr><td>恩格尔系数</td><td>食品支出 ÷ 消费总支出；<b>越大越穷</b>（衡量富裕程度）</td></tr>
+                <tr><td>基尼系数</td><td>衡量<b>收入分配差距</b>，0–1，<b>0.4 为警戒线</b></td></tr>
+                <tr><td>赤字率</td><td>财政赤字 ÷ GDP，<b>3% 为警戒线</b></td></tr>
+                <tr><td>M1 / M2</td><td>M1 是「随时能花的钱」（现实购买力）；M2 是「所有的钱」（潜在购买力）</td></tr>
+                <tr><td>黑天鹅</td><td>罕见、难预测、影响颠覆</td></tr>
+                <tr><td>灰犀牛</td><td>明显、高概率、被忽视的大危机</td></tr>
+                <tr><td>流动性陷阱</td><td>利率近零，货币政策失效</td></tr>
+                <tr><td>拉弗曲线</td><td>税率过高反而使税收减少</td></tr>
+                <tr><td>公共物品</td><td><b>非竞争性 + 非排他性</b></td></tr>
+              </DataTable>
+              <PointList>
+                <li><b>挤出效应</b>：政府支出增加→利率上升→私人投资减少。</li>
+                <li><b>口红效应</b>：经济萧条时廉价「放松消费」反而热卖。</li>
+                <li><b>棘轮效应</b>：消费习惯易上难下（由俭入奢易，由奢入俭难）。</li>
+                <li><b>马太效应</b>：强者愈强、弱者愈弱。</li>
+                <li><b>凡勃伦效应</b>：越贵越买（炫耀性消费）。</li>
+                <li><b>羊群效应</b>：从众跟风。</li>
+                <li><b>外部效应</b>：行为使无关第三方受益（正）或受损（负）。</li>
+              </PointList>
+            </Block>
+            <Example>
+              <ExampleHeader>📝 例题80 · 经济效应（小黑母题）</ExampleHeader>
+              <ExampleBody>
+                <ExampleQuestion>下列经济效应匹配不正确的是：</ExampleQuestion>
+                <ExampleOptions>A.由俭入奢易，由奢入俭难——棘轮效应<br />B.强者愈强、弱者愈弱——马太效应<br />C.商品定价越低越受青睐——凡勃伦效应<br />D.投资喜欢从众跟风——羊群效应</ExampleOptions>
+                <ExampleAnswer><b>解析：</b>C 错。凡勃伦效应是<b>定价越高反而越受青睐</b>（炫耀性消费）。<br /><span className="correct">答案：C</span></ExampleAnswer>
+              </ExampleBody>
+            </Example>
+    </>
+  )
+}

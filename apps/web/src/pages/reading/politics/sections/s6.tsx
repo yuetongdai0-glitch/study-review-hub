@@ -1,0 +1,157 @@
+import type { ReactElement } from 'react'
+import { Block, BlockTitle, Callout, DataTable, Example, ExampleAnswer, ExampleBody, ExampleHeader, ExampleOptions, ExampleQuestion, PointList } from '@/components/content'
+
+/**
+ * 六、历史常识 · 古代
+ *
+ * @returns 该节正文。
+ */
+export default function S7(): ReactElement {
+  return (
+    <>
+      <Callout variant="key">古代史只考两种能力：<b>把事件排对顺序</b>、<b>把人物/朝代与事件对上号</b>。所以下面全部按「朝代 → 关键词」组织，看到朝代先想关键词。</Callout>
+      
+            <Block>
+              <BlockTitle>1. 考古文化遗址（九个必背）</BlockTitle>
+              <DataTable>
+                <tr><th>遗址</th><th>地点</th><th>关键词</th></tr>
+                <tr><td>河姆渡</td><td>浙江余姚</td><td>人工栽培水稻、<b>干栏式建筑</b>（榫卯）</td></tr>
+                <tr><td>仰韶</td><td>河南仰韶村</td><td><b>彩陶文化</b>、半坡遗址、最早种植<b>粟</b>、人面鱼纹彩陶盆</td></tr>
+                <tr><td>红山</td><td>内蒙古中南部</td><td><b>玉猪龙</b></td></tr>
+                <tr><td>良渚</td><td>浙江杭州</td><td>实证中华五千年文明史，<b>玉器</b>为最大特色</td></tr>
+                <tr><td>大汶口</td><td>山东泰安</td><td>中晚期出现<b>夫妻合葬</b>，进入父系氏族，贫富分化</td></tr>
+                <tr><td>龙山</td><td>山东济南</td><td><b>黑陶文化</b>、轮制陶器</td></tr>
+                <tr><td>二里头</td><td>河南偃师</td><td>夏朝中晚期都城、<b>「最早的中国」</b>、最早宫城与青铜礼器群</td></tr>
+                <tr><td>殷墟</td><td>河南安阳</td><td>商代后期都城、<b>甲骨文</b>、<b>后母戊鼎</b>（现存最大最重青铜器）</td></tr>
+                <tr><td>三星堆</td><td>四川广汉</td><td><b>长江文明之源</b>、青铜立人像/神树/纵目面具</td></tr>
+              </DataTable>
+              <Callout variant="tip"><b>两个「最早」别混：</b>最早种<b>粟</b>＝仰韶（半坡）；最早种<b>水稻</b>＝河姆渡。彩陶＝仰韶，黑陶＝龙山。</Callout>
+            </Block>
+            <Example>
+              <ExampleHeader>📝 例题27 · 史前遗址（小黑母题）</ExampleHeader>
+              <ExampleBody>
+                <ExampleQuestion>下列关于我国史前文化与早期王朝遗址的说法，正确的是：</ExampleQuestion>
+                <ExampleOptions>A.河姆渡文化位于黄河流域，是我国最早种植粟的文化遗存<br />B.龙山文化以彩陶为典型特征，被称为「彩陶文化」<br />C.殷墟出土的后母戊鼎是目前中国现存最大、最重的青铜器<br />D.红山文化主要分布于长江下游，代表性器物为玉猪龙</ExampleOptions>
+                <ExampleAnswer><b>解析：</b>A 错，河姆渡在<b>长江流域</b>、种<b>水稻</b>；B 错，龙山是<b>黑陶</b>；D 错，红山在<b>内蒙古中南部</b>。<br /><span className="correct">答案：C</span></ExampleAnswer>
+              </ExampleBody>
+            </Example>
+      
+            <Block>
+              <BlockTitle>2. 古代战役：典故必须对上</BlockTitle>
+              <PointList>
+                <li><b>牧野之战</b>：周武王伐纣，<b>临阵倒戈</b>，商亡。</li>
+                <li><b>巨鹿之战</b>：项羽胜秦，<b>破釜沉舟</b>、作壁上观。</li>
+                <li><b>井陉之战</b>：韩信胜赵，<b>背水一战</b>。</li>
+                <li><b>官渡之战</b>：曹操胜袁绍，<b>夜袭乌巢</b>，奠定统一北方基础。</li>
+                <li><b>赤壁之战</b>：孙刘胜曹操，<b>草船借箭、万事俱备只欠东风</b>，奠定三国鼎立。</li>
+                <li><b>淝水之战</b>：东晋胜前秦，<b>投鞭断流、风声鹤唳、草木皆兵</b>。</li>
+                <li><b>城濮之战</b>：晋胜楚，<b>退避三舍</b>，晋文公称霸。</li>
+                <li><b>桂陵之战</b>：齐胜魏，<b>围魏救赵</b>；<b>马陵之战</b>：孙膑<b>减灶计</b>，庞涓自杀。</li>
+                <li><b>长平之战</b>：秦胜赵，<b>纸上谈兵</b>，古代最早规模最大的围歼战。</li>
+                <li><b>邯郸之战</b>：赵合纵败秦，<b>毛遂自荐</b>。</li>
+              </PointList>
+              <Callout variant="warn"><b>易混：</b>围魏救赵＝桂陵（齐国救赵）；退避三舍＝城濮（晋楚）。「背水一战」是<b>韩信</b>，不是孙膑。</Callout>
+            </Block>
+            <Example>
+              <ExampleHeader>📝 例题28 · 古代战役（小黑母题）</ExampleHeader>
+              <ExampleBody>
+                <ExampleQuestion>下列关于古代战役与典故、影响的对应，有误的是：</ExampleQuestion>
+                <ExampleOptions>A.牧野之战——临阵倒戈——商朝灭亡<br />B.长平之战——纸上谈兵——加速秦统一进程<br />C.城濮之战——围魏救赵——晋国击败楚国<br />D.马陵之战——减灶计——齐国击败魏国</ExampleOptions>
+                <ExampleAnswer><b>解析：</b>C 错。城濮之战的典故是<b>退避三舍</b>；围魏救赵出自<b>桂陵之战</b>。<br /><span className="correct">答案：C</span></ExampleAnswer>
+              </ExampleBody>
+            </Example>
+      
+            <Block>
+              <BlockTitle>3. 政治制度与选官制度</BlockTitle>
+              <PointList>
+                <li>秦：中央<b>三公九卿</b>（丞相行政、太尉军事、御史大夫监察），地方<b>郡县制</b>。</li>
+                <li>汉：初<b>郡国并行</b>；汉武帝颁<b>推恩令</b>削弱诸侯。</li>
+                <li>隋唐：<b>三省六部制</b>——中书省草拟、门下省审核、尚书省执行，下设吏户礼兵刑工六部。</li>
+                <li>宋：<b>枢密使（军）、参知政事（政）、三司使（财）</b>分割相权。<b>枢密院管军事，不是财政</b>。</li>
+                <li>元：中央中书省，地方<b>行中书省</b>（行省制＝中国省制开端）。</li>
+                <li>明：太祖<b>废丞相</b>；成祖<b>内阁</b>正式确立；地方设<b>三司</b>（承宣布政使司、提刑按察使司、都指挥使司）。</li>
+                <li>清：雍正设<b>军机处</b>，标志<b>君主专制发展到顶峰</b>。</li>
+                <li>选官：世卿世禄（先秦）→ 军功爵（战国）→ 察举征辟（两汉）→ 九品中正（魏晋，「上品无寒门」）→ <b>科举（隋唐至清末）</b>。</li>
+                <li>科举：隋炀帝<b>始建进士科</b>（正式形成）；武则天创<b>武举、殿试、糊名</b>；宋行<b>誊录</b>；明清<b>八股取士</b>；<b>1905 年废除</b>。</li>
+                <li>明清科举四级：童试（秀才）→ 乡试（秋闱，举人，第一解元）→ 会试（春闱，贡士，第一会元）→ 殿试（状元、榜眼、探花）。</li>
+              </PointList>
+            </Block>
+            <Example>
+              <ExampleHeader>📝 例题29 · 古代官制（小黑母题）</ExampleHeader>
+              <ExampleBody>
+                <ExampleQuestion>下列对中国古代中央官制演变的叙述，正确的是：</ExampleQuestion>
+                <ExampleOptions>A.西汉「三公」中御史大夫负责军事，太尉掌管监察<br />B.宋朝设参知政事、枢密使、三司使，旨在分割相权、加强皇权<br />C.明朝内阁自设立之初即为法定中央行政机构，可指挥六部<br />D.元朝行省长官拥有独立的军政财政权力，不受中央节制</ExampleOptions>
+                <ExampleAnswer><b>解析：</b>A 错，太尉管军事、御史大夫掌监察；C 错，内阁是<b>皇帝的内侍咨询机构</b>，非法定行政机构；D 错，行省受中央（中书省）节制。<br /><span className="correct">答案：B</span></ExampleAnswer>
+              </ExampleBody>
+            </Example>
+      
+            <Block>
+              <BlockTitle>4. 赋税制度与重大改革</BlockTitle>
+              <DataTable>
+                <tr><th>制度 / 改革</th><th>朝代 · 人物</th><th>核心</th></tr>
+                <tr><td>初税亩</td><td>春秋 · 鲁国</td><td>按土地数量征税，<b>中国征收土地税的开端</b></td></tr>
+                <tr><td>租庸调制</td><td>隋唐前期</td><td>租＝田租、调＝人头税、<b>庸＝纳绢代役</b></td></tr>
+                <tr><td>两税法</td><td>唐后期</td><td>按资产纳户税、按田亩纳地税，夏秋两季征；<b>从「以人丁为主」转向「以财产土地为核心」</b></td></tr>
+                <tr><td>一条鞭法</td><td>明 · 张居正</td><td>田赋徭役杂征合并征银，<b>实物税转向货币税</b></td></tr>
+                <tr><td>摊丁入亩</td><td>清 · 雍正</td><td>丁银摊入田亩，<b>废除延续数千年的人头税</b></td></tr>
+                <tr><td>管仲改革</td><td>春秋 · 齐桓公</td><td>「叁其国而伍其鄙」「<b>相地而衰征</b>」；齐国强盛，齐桓公成为<b>春秋首霸</b></td></tr>
+                <tr><td>商鞅变法</td><td>战国 · 秦孝公</td><td>废井田开阡陌、奖励耕织军功、<b>分户令</b>、县制</td></tr>
+                <tr><td>李悝变法</td><td>战国 · 魏文侯</td><td><b>《法经》</b>——中国第一部系统成文法典；第一次系统地主阶级改革</td></tr>
+                <tr><td>孝文帝改革</td><td>北魏</td><td>均田令、迁都洛阳、汉化；<b>最成功的少数民族汉化改革</b></td></tr>
+                <tr><td>王安石变法</td><td>北宋 · 神宗</td><td>富国：青苗、募役、农田水利、方田均税；强兵：保甲、保马、将兵</td></tr>
+              </DataTable>
+            </Block>
+            <Example>
+              <ExampleHeader>📝 例题30 · 赋税改革（小黑母题）</ExampleHeader>
+              <ExampleBody>
+                <ExampleQuestion>下列赋税制度与其特点对应错误的是：</ExampleQuestion>
+                <ExampleOptions>A.两税法——按户税和地税分夏秋两季征收<br />B.租庸调制——「调」指征收粮食作为人头税<br />C.摊丁入亩——将丁银分摊至田亩征收<br />D.一条鞭法——赋役合并折银征收</ExampleOptions>
+                <ExampleAnswer><b>解析：</b>B 错。「调」是征收<b>绢帛等土产</b>，人头税的说法不准确；「庸」才是纳绢代役。<br /><span className="correct">答案：B</span></ExampleAnswer>
+              </ExampleBody>
+            </Example>
+      
+            <Block>
+              <BlockTitle>5. 边疆治理与对外交流</BlockTitle>
+              <PointList>
+                <li><b>西藏</b>：元设<b>宣政院</b>（西藏正式纳入中央管辖）；清设<b>理藩院</b>、雍正设<b>驻藏大臣</b>。</li>
+                <li><b>新疆</b>：西汉<b>西域都护府</b>（正式归属中央之始）；唐<b>安西都护府</b>（太宗）、<b>北庭都护府</b>（武则天）；清乾隆设<b>伊犁将军</b>，光绪建新疆省。</li>
+                <li><b>台湾</b>：元<b>澎湖巡检司</b>；1662 年郑成功收复；清康熙设<b>台湾府</b>（隶属福建），光绪建台湾省。</li>
+                <li>改土归流：明清在西南废除世袭土司、改设中央任命的流官。</li>
+                <li>西汉张骞两次出使西域，打通陆上丝绸之路，被誉为<b>「凿空之旅」</b>。</li>
+                <li>东汉班超重开丝路（投笔从戎、不入虎穴焉得虎子）；佛教传入，建<b>白马寺</b>。</li>
+                <li>唐：玄奘西行著《大唐西域记》；鉴真东渡日本；日本派<b>遣唐使</b>。</li>
+                <li>宋元：设<b>市舶司</b>管理海外贸易；<b>泉州</b>为「东方第一大港」；《马可·波罗游记》。</li>
+                <li>明：郑和<b>七下西洋</b>，最远到达<b>红海沿岸和非洲东海岸</b>，目的是<b>宣扬国威</b>（不是殖民掠夺）。</li>
+              </PointList>
+            </Block>
+            <Example>
+              <ExampleHeader>📝 例题31 · 对外交流（小黑母题）</ExampleHeader>
+              <ExampleBody>
+                <ExampleQuestion>下列关于中国古代对外交流的表述，正确的是：</ExampleQuestion>
+                <ExampleOptions>A.张骞出使西域时已将造纸术传入欧洲<br />B.班超重开丝绸之路，「投笔从戎」出自其事迹<br />C.鉴真东渡日本，将四大发明全部传入日本<br />D.宋元时期海上丝路鼎盛，广州港成为「东方第一大港」</ExampleOptions>
+                <ExampleAnswer><b>解析：</b>A 错，造纸术西传远晚于张骞；C 错，「全部」绝对化；D 错，应为<b>泉州</b>。<br /><span className="correct">答案：B</span></ExampleAnswer>
+              </ExampleBody>
+            </Example>
+      
+            <Block>
+              <BlockTitle>6. 古代农业与水利</BlockTitle>
+              <PointList>
+                <li>五谷：稻、黍、稷、麦、菽（另一说麻、黍、稷、麦、菽）；<b>稷为五谷之长</b>。</li>
+                <li>作物传入：西汉自西域传入葡萄、石榴、核桃、芝麻、黄瓜、大蒜、茄子；唐传入胡椒、熬糖法；<b>宋传入占城稻</b>（越南）；<b>明传入玉米、甘薯、马铃薯、花生、番茄、辣椒、烟草</b>。</li>
+                <li>耕作：春秋战国出现<b>铁农具与牛耕</b>；两汉<b>耦犁、耧车、代田法</b>（赵过）；隋唐<b>曲辕犁、筒车</b>。</li>
+                <li>水利：楚相孙叔敖修<b>芍陂</b>（最早蓄水灌溉工程）；战国李冰修<b>都江堰</b>、郑国修<b>郑国渠</b>；秦修<b>灵渠</b>（连长江珠江）。</li>
+                <li>都江堰三大工程：<b>鱼嘴分水堤</b>（四六分水）、<b>飞沙堰</b>（排沙 80% 以上）、<b>宝瓶口</b>（控制进水量）；世界现存年代最久、唯一留存、仍在使用的<b>无坝引水</b>工程。</li>
+                <li>大运河：春秋吴王夫差开<b>邗沟</b>（最早河段）；隋炀帝大规模开凿；元朝<b>裁弯取直</b>（济州河、会通河、通惠河）。</li>
+              </PointList>
+            </Block>
+            <Example>
+              <ExampleHeader>📝 例题32 · 农业水利（小黑母题）</ExampleHeader>
+              <ExampleBody>
+                <ExampleQuestion>关于都江堰，下列说法正确的是：</ExampleQuestion>
+                <ExampleOptions>A.由战国时期秦国蜀郡太守李冰主持修建，核心工程灵渠沟通岷江与长江<br />B.鱼嘴分水堤洪水期六成水入内江，枯水期六成水入外江<br />C.飞沙堰是内江的「安全阀」，可将 80% 以上泥沙排入外江<br />D.都江堰是世界现存年代最久的有坝引水工程</ExampleOptions>
+                <ExampleAnswer><b>解析：</b>A 错，灵渠是秦朝另一工程；B 分水比例说反（枯水六成入内江、洪水六成入外江）；D 错，是<b>无坝</b>引水。<br /><span className="correct">答案：C</span></ExampleAnswer>
+              </ExampleBody>
+            </Example>
+    </>
+  )
+}

@@ -37,7 +37,8 @@ export function run(command, args, options = {}) {
 export function ensureWebDist(force = false) {
   const index = resolve(webRoot, 'dist/index.html')
   if (!force && existsSync(index)) return
-  run(process.execPath, [resolve(webRoot, 'scripts/build.mjs')], { cwd: webRoot })
+  // 走 package 脚本：类型检查 + Vite 构建，与网页发布用的是同一条链路。
+  run('pnpm', ['--filter', '@study-hub/web', 'build'], { cwd: repoRoot })
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {

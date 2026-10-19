@@ -62,12 +62,21 @@ function headingChunks(html, tag) {
 }
 
 test('首页包含全部复习入口的有效路由', async () => {
-  const home = await readText(new URL('../index.html', import.meta.url))
+  // 首页已由 React 渲染，卡片来自路由表；校验「路由表覆盖全部模块」这一事实。
+  const registry = await readText(new URL('../src/router/routeRegistry.ts', import.meta.url))
+  const home = await readText(new URL('../src/pages/home/index.tsx', import.meta.url))
 
   for (const page of pages) {
-    assert.match(home, new RegExp(`href=["']\\./pages/${page.route}/["']`))
-    assert.ok(home.includes(page.title), `首页缺少科目：${page.title}`)
+    assert.ok(registry.includes(page.title), `路由表缺少科目：${page.title}`)
+    assert.ok(
+      new RegExp(`'${page.route}'`).test(registry),
+      `路由表缺少路由：${page.route}`
+    )
   }
+
+  // 首页必须按路由表渲染，而不是手写卡片列表（否则新增科目会漏）。
+  assert.match(home, /moduleMetas\.map/, '首页未按模块表渲染科目卡片')
+  assert.match(home, /toolMetas\.map/, '首页未按模块表渲染工具卡片')
 })
 
 test('每个复习页接入共享导航且保留完整源文件内容', async () => {
@@ -377,22 +386,19 @@ test('规范词速查页具备分类词库、搜索与复制能力', async () =>
   )
 })
 
-test('全站所有页面的标签页标题统一为「测试」', async () => {
-  // 首页 + 全部子页面
-  const files = ['../index.html', ...pages.map((p) => `../pages/${p.route}/index.html`)]
+test('全站标签页标题统一', async () => {
+  // 单页应用：所有路由共用 index.html 的同一份 title。
+  const shell = await readText(new URL('../index.html', import.meta.url))
+  assert.match(shell, /<title>[^<]+<\/title>/, '缺少标签页标题')
+  assert.ok(shell.includes('<div id="root"></div>'), '缺少 React 挂载点')
 
-  for (const rel of files) {
-    const page = await readText(new URL(rel, import.meta.url))
-
-    assert.ok(
-      page.includes('<title>测试</title>'),
-      `${rel} 的标签页标题不是「测试」`
-    )
-    // 页面内不得动态改写 document.title，否则切换分类/视图时标题会变
-    assert.ok(
-      !/document\.title\s*=/.test(page),
-      `${rel} 存在改写 document.title 的代码，标签页标题会变化`
-    )
+  for (const page of pages) {
+    // 阅读页在 reading/，工具页在 tools/。
+    const dir = ['exam-grid', 'choice-quiz', 'scratchpad'].includes(page.route) ? 'tools' : 'reading'
+    const source = await readText(new URL(`../src/pages/${dir}/${page.route}/index.tsx`, import.meta.url))
+    // 模块页不得自带 title，也不得动态改写，否则标签页会随路由跳动。
+    assert.ok(!source.includes('<title>'), `${page.title} 页面内不应出现 title 标签`)
+    assert.ok(!/document\.title\s*=/.test(source), `${page.title} 不应改写 document.title`)
   }
 })
 

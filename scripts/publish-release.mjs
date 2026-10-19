@@ -130,7 +130,8 @@ async function readState() {
 
 /* ---------- ① 建站 ---------- */
 console.log('① 构建网页站点…')
-run(process.execPath, [join(webRoot, 'scripts/build.mjs')], repoRoot)
+// 走 package 脚本而不是直接调 vite：类型检查 + 构建一起跑，坏类型不会带进产物。
+run('pnpm', ['--filter', '@study-hub/web', 'build'], repoRoot)
 const webVersion = JSON.parse(await readFile(join(webRoot, 'dist/version.json'), 'utf8'))
 const version = webVersion.version
 console.log(`   版本 ${version} · 构建号 ${webVersion.buildId}`)
