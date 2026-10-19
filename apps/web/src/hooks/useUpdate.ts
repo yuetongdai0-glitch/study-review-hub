@@ -1,11 +1,11 @@
 /**
- * 站点 / 应用更新。
+ * 站点刷新与应用更新。
  *
- * 两条完全不同的路径：
- * - **网页**：HTML 不缓存、资源按构建号缓存，靠轮询 version.json 发现新构建，
- *   再清 Service Worker 缓存重载。
- * - **原生壳**：网页内容随包发布，必须换安装包才能更新。调 Android 原生插件
- *   走「清单 → 下载 APK → 校验 → 系统安装器」，与 codex-pocket 同一套闭环。
+ * 三个层级，用途不同：
+ * 1. **重新加载页面**：只重取 HTML 与静态资源，保留主题、草稿等本地状态。
+ * 2. **重建整个应用**：清空 Service Worker、Cache Storage 与 WebView 缓存后重载，
+ *    内容一定是服务器上最新的。网页更新常被缓存挡住，这一项就是解法。
+ * 3. **更新应用本体**（仅原生壳）：改的是原生代码才需要，走清单 → 下载 → 安装。
  */
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { checkAppUpdate, downloadAndInstall, isNativeApp, reloadWeb } from '@/utils/nativeUpdater'
@@ -16,6 +16,9 @@ const POLL_INTERVAL = 5 * 60 * 1000
 /** 页面重新可见时的最短重查间隔。 */
 const MIN_RECHECK = 2 * 60 * 1000
 
+/** 站点根地址（重建时回到首页，避免停留在已删除的旧路径上）。 */
+const HOME_URL = import.meta.env.BASE_URL
+
 /** 当前构建号，构建时由 vite 插件注入 meta。 */
 export const currentBuild: string =
   document.querySelector<HTMLMetaElement>('meta[name="study-hub-build"]')?.content ?? ''
@@ -24,6 +27,8 @@ export const currentBuild: string =
 const VERSION_URL = `${import.meta.env.BASE_URL}version.json`
 
 export type UpdateState = {
+  /** 当前构建号。 */
+  currentBuild: string
   /** 原生：是否发现新版本。 */
   nativeAvailable: boolean
   /** 原生：新版本号。 */
@@ -34,14 +39,12 @@ export type UpdateState = {
   pendingBuild: string
   /** 是否正在处理。 */
   busy: boolean
-  /** 状态文案，供按钮直接显示。 */
-  label: string
-  /** 刷新网页：清缓存后重新拉取最新内容。 */
-  run: () => Promise<void>
-  /** 检查并安装新的应用版本（仅原生壳，改了原生代码才需要）。 */
+  /** 重新加载页面（保留本地状态）。 */
+  reloadPage: () => Promise<void>
+  /** 清空全部缓存后重建应用。 */
+  rebuildApp: () => Promise<void>
+  /** 检查并安装新的应用版本（仅原生壳）。 */
   upgrade: () => Promise<void>
-  /** 清理缓存并重载（仅网页）。 */
-  clearCache: () => Promise<void>
 }
 
 /**
@@ -66,20 +69,21 @@ async function purge(): Promise<void> {
 }
 
 /**
- * 带时间戳重载，绕开浏览器与 CDN 对 HTML 的任何残留。
+ * 带时间戳重载指定地址，绕开浏览器与 CDN 对 HTML 的任何残留。
  *
+ * @param target 目标地址。
  * @returns 无返回。
  */
-function hardReload(): void {
-  const url = new URL(window.location.href)
+function hardReload(target = window.location.href): void {
+  const url = new URL(target, window.location.origin)
   url.searchParams.set('_r', String(Date.now()))
   window.location.replace(url.toString())
 }
 
 /**
- * 更新中枢 hook。
+ * 刷新与更新中枢。
  *
- * @returns 当前状态与动作。
+ * @returns 状态与三个动作。
  */
 export function useUpdate(): UpdateState {
   const native = isNativeApp() || __STUDY_HUB_MOBILE__
@@ -91,7 +95,7 @@ export function useUpdate(): UpdateState {
   const lastCheck = useRef(0)
 
   /**
-   * 网页：查一次版本清单。
+   * 网页：查一次版本清单，用于提示「有新内容」。
    *
    * @returns 是否有新构建。
    */
@@ -129,29 +133,21 @@ export function useUpdate(): UpdateState {
     }
   }, [])
 
-  const clearCache = useCallback(async () => {
-    setBusy(true)
-    await purge()
-    hardReload()
-  }, [])
-
   /**
-   * 刷新网页：真正回到服务器取最新内容。
+   * 重新加载当前页面。
    *
    * @returns 完成后无返回。
-   * @remarks 原生壳加载的是远程网页，所以 App 内点刷新应当**刷新网页**而不是重装 APK。
-   * 浏览器的 `no-store` 管不到 WebView 的 HTTP 缓存，必须让原生先清缓存再 loadUrl。
+   * @remarks 保留 localStorage（主题、折叠、草稿都在里面），只重取网络资源。
    */
-  const run = useCallback(async () => {
+  const reloadPage = useCallback(async () => {
     if (busy) return
     setBusy(true)
     try {
-      // 先清 SW 与 Cache Storage（网页环境有效），再交给原生清 WebView 缓存。
-      await purge()
+      // 原生壳先清 WebView 的 HTTP 缓存；浏览器的 no-store 管不到它。
       if (await reloadWeb()) return
       hardReload()
     } catch (error) {
-      console.warn('[study-hub] 刷新失败，直接重载', error)
+      console.warn('[study-hub] 重新加载失败，直接重载', error)
       hardReload()
     } finally {
       setBusy(false)
@@ -159,10 +155,32 @@ export function useUpdate(): UpdateState {
   }, [busy])
 
   /**
+   * 清空全部缓存并重建应用。
+   *
+   * @returns 完成后无返回。
+   * @remarks 比「重新加载页面」更彻底：连 SW 与 Cache Storage 一起清掉，
+   * 并回到首页，避免停在旧路径。用来解决「更新了但看到的还是旧页面」。
+   */
+  const rebuildApp = useCallback(async () => {
+    if (busy) return
+    setBusy(true)
+    try {
+      await purge()
+      // 只清网络缓存并重取 HTML，localStorage 原样保留（草稿不会丢）。
+      if (native && (await reloadWeb())) return
+      hardReload(HOME_URL)
+    } catch (error) {
+      console.warn('[study-hub] 重建失败，直接重载', error)
+      hardReload(HOME_URL)
+    } finally {
+      setBusy(false)
+    }
+  }, [busy, native])
+
+  /**
    * 检查并安装新的应用版本（仅原生壳有意义）。
    *
    * @returns 完成后无返回。
-   * @remarks 与「刷新网页」分开：改内容只需刷新网页，改原生代码才需要装包。
    */
   const upgrade = useCallback(async () => {
     if (busy || !native) return
@@ -203,10 +221,15 @@ export function useUpdate(): UpdateState {
     }
   }, [native, checkWeb, checkNative])
 
-  const label = (() => {
-    if (busy) return progress > 0 ? `下载中 ${progress}%` : '正在刷新…'
-    return pendingBuild ? '有新内容 · 刷新' : '刷新网页'
-  })()
-
-  return { nativeAvailable, nativeVersion, progress, pendingBuild, busy, label, run, upgrade, clearCache }
+  return {
+    currentBuild,
+    nativeAvailable,
+    nativeVersion,
+    progress,
+    pendingBuild,
+    busy,
+    reloadPage,
+    rebuildApp,
+    upgrade,
+  }
 }

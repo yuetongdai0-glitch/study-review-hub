@@ -357,16 +357,22 @@ public class AppUpdatePlugin extends Plugin {
             return;
         }
         getActivity().runOnUiThread(() -> {
+            android.webkit.WebView webView = getBridge().getWebView();
             try {
                 // clearCache(true) 清 HTTP 与资源缓存；clearHistory 避免返回到旧页面。
-                getBridge().getWebView().clearCache(true);
-                getBridge().getWebView().clearHistory();
+                webView.clearCache(true);
+                webView.clearHistory();
             } catch (Exception ignored) {
                 // 清缓存失败仍继续重载，用户至少能拿到未缓存部分。
             }
+            /*
+             * 注意：这里**不能**调 clearStorage()。
+             * 草稿纸笔迹、答题纸草稿、答题卡记录都存在 WebStorage 里，
+             * 清缓存是为了拿最新网页，不该把用户的资料一起删掉。
+             */
             // 加时间戳，绕开任何中间层与 Service Worker 对 HTML 的残留。
             String fresh = url + (url.contains("?") ? "&" : "?") + "_r=" + System.currentTimeMillis();
-            getBridge().getWebView().loadUrl(fresh);
+            webView.loadUrl(fresh);
             call.resolve();
         });
     }

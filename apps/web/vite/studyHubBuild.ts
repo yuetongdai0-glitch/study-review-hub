@@ -119,6 +119,11 @@ export function studyHubBuild(options: { base: string; mobile: boolean }): Plugi
   let version = '0.0.0'
   // App 内（Capacitor）资源在包根，不生成路由副本也不注册 SW。
   const isMobile = options.mobile
+  /*
+   * 构建号在 generateBundle 里算出，但那一刻 Vite 还没把 index.html 放进 bundle
+   * （它自己的 html 插件晚一步执行），所以占位符要留到 writeBundle 落盘后再替换。
+   */
+  let buildId = ''
 
   return {
     name: 'study-hub-build',
@@ -140,9 +145,9 @@ export function studyHubBuild(options: { base: string; mobile: boolean }): Plugi
           hash.update(typeof item.source === 'string' ? item.source : Buffer.from(item.source))
         }
       }
-      const buildId = `${version}-${hash.digest('hex').slice(0, 8)}`
+      buildId = `${version}-${hash.digest('hex').slice(0, 8)}`
 
-      // 把占位符换成真实构建号，前端用它和 version.json 比对。
+      // 尽力而为：如果此时 index.html 已在 bundle 里（Vite 版本差异），就地替换。
       const htmlAsset = bundle['index.html']
       if (htmlAsset && htmlAsset.type === 'asset') {
         htmlAsset.source = String(htmlAsset.source).replace('__BUILD_ID__', buildId)
@@ -177,7 +182,11 @@ export function studyHubBuild(options: { base: string; mobile: boolean }): Plugi
     },
 
     async writeBundle() {
-      const html = await readFile(join(outDir, 'index.html'), 'utf8')
+      const raw = await readFile(join(outDir, 'index.html'), 'utf8')
+      // 真正落盘后替换构建号：这是唯一能保证生效的时机。
+      const html = raw.replace('__BUILD_ID__', buildId)
+      if (html !== raw) await writeFile(join(outDir, 'index.html'), html)
+
       const manifest = JSON.parse(await readFile(join(outDir, '.routes.json'), 'utf8')) as {
         routes: string[]
         mobile: boolean

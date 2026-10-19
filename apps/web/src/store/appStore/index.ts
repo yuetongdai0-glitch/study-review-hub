@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
 import { getInitialTheme, persistTheme } from '@/theme/runtime'
-import type { ThemeName } from '@/theme/tokens'
+import type { ThemePreference } from '@/theme/tokens'
 
 /** 主题缓存键。 */
 const THEME_STORAGE_KEY = 'study-hub:theme'
@@ -16,18 +16,20 @@ const COLLAPSE_STORAGE_KEY = 'study-hub:collapsed'
  * 否则 store 会变成一个什么都装的口袋。
  */
 export type AppStoreState = {
-  /** 当前主题。 */
-  theme: ThemeName
+  /** 主题偏好（跟随系统 / 浅色 / 深色）。 */
+  themeMode: ThemePreference
   /** 移动端侧栏是否展开。 */
   sidebarOpen: boolean
+  /** 设置弹层是否打开。 */
+  settingsOpen: boolean
   /** 各模块折叠的章节 id，按模块路径分组。 */
   collapsed: Record<string, string[]>
-  /** 切换主题并同步 DOM 与本地缓存。 */
-  setTheme: (theme: ThemeName) => void
-  /** 在浅色与深色之间切换。 */
-  toggleTheme: () => void
+  /** 设置主题偏好并写入本地缓存。 */
+  setThemeMode: (mode: ThemePreference) => void
   /** 展开或收起移动端侧栏。 */
   setSidebarOpen: (open: boolean) => void
+  /** 打开或关闭设置弹层。 */
+  setSettingsOpen: (open: boolean) => void
   /** 切换某个章节的折叠状态。 */
   toggleSection: (modulePath: string, sectionId: string) => void
   /** 判断章节是否折叠。 */
@@ -57,22 +59,19 @@ function readCollapsed(): Record<string, string[]> {
 export const useAppStore = create<AppStoreState>()(
   persist(
     (set, get) => ({
-      theme: getInitialTheme(THEME_STORAGE_KEY),
+      themeMode: getInitialTheme(THEME_STORAGE_KEY),
       sidebarOpen: false,
+      settingsOpen: false,
       collapsed: readCollapsed(),
 
-      setTheme: (theme) => {
-        persistTheme(THEME_STORAGE_KEY, theme)
-        set({ theme })
-      },
-
-      toggleTheme: () => {
-        const next: ThemeName = get().theme === 'dark' ? 'light' : 'dark'
-        persistTheme(THEME_STORAGE_KEY, next)
-        set({ theme: next })
+      setThemeMode: (mode) => {
+        persistTheme(THEME_STORAGE_KEY, mode)
+        set({ themeMode: mode })
       },
 
       setSidebarOpen: (open) => set({ sidebarOpen: open }),
+
+      setSettingsOpen: (open) => set({ settingsOpen: open }),
 
       toggleSection: (modulePath, sectionId) =>
         set((state) => {

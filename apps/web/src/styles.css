@@ -217,6 +217,171 @@
   .ant-drawer-content {
     border-radius: 12px;
   }
+
+  /* ---------- 设置弹层 ---------- */
+  .hub-settings .ant-modal-content {
+    padding: 20px 20px 16px;
+  }
+
+  .hub-settings .ant-modal-title {
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+
+  .hub-settings-body {
+    padding-top: 4px;
+  }
+
+  .hub-settings-section {
+    padding: 14px 0;
+    border-bottom: 1px solid rgb(var(--c-line-subtle));
+  }
+
+  .hub-settings-section:last-of-type {
+    border-bottom: 0;
+    padding-bottom: 4px;
+  }
+
+  .hub-settings-section h4 {
+    margin: 0 0 10px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.4px;
+    color: rgb(var(--c-ink-3));
+    text-transform: uppercase;
+  }
+
+  .hub-settings-hint {
+    margin: 0 0 10px;
+    font-size: 12.5px;
+    line-height: 1.6;
+    color: rgb(var(--c-ink-3));
+  }
+
+  /* 外观三档：与截图里的分段按钮同构。 */
+  .hub-theme-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+
+  .hub-theme-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 11px 6px;
+    border: 1px solid rgb(var(--c-line));
+    border-radius: 9px;
+    background: rgb(var(--c-surface));
+    color: rgb(var(--c-ink-2));
+    font-size: 12.5px;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s, color 0.15s;
+  }
+
+  .hub-theme-item:hover {
+    border-color: rgb(var(--c-line-strong));
+  }
+
+  .hub-theme-item.active {
+    border-color: rgb(var(--c-brand));
+    background: rgb(var(--c-brand-soft));
+    color: rgb(var(--c-brand));
+    font-weight: 600;
+  }
+
+  /* 刷新动作：主标题 + 一行说明。 */
+  .hub-settings-action {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 11px 13px;
+    margin-top: 8px;
+    border: 1px solid rgb(var(--c-line));
+    border-radius: 9px;
+    background: rgb(var(--c-surface));
+    color: rgb(var(--c-ink));
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+  }
+
+  .hub-settings-action:hover:not(:disabled) {
+    border-color: rgb(var(--c-line-strong));
+    background: rgb(var(--c-sunken));
+  }
+
+  .hub-settings-action:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .hub-settings-action svg {
+    flex: none;
+    margin-top: 2px;
+    color: rgb(var(--c-ink-3));
+  }
+
+  .hub-settings-action strong {
+    display: block;
+    font-size: 13.5px;
+    font-weight: 600;
+  }
+
+  .hub-settings-action em {
+    display: block;
+    margin-top: 2px;
+    font-size: 12px;
+    font-style: normal;
+    line-height: 1.5;
+    color: rgb(var(--c-ink-3));
+  }
+
+  .hub-settings-status {
+    margin: 10px 0 0;
+    font-size: 12.5px;
+    color: rgb(var(--c-brand));
+  }
+
+  .hub-settings-info {
+    margin: 0;
+    display: grid;
+    gap: 7px;
+  }
+
+  .hub-settings-info > div {
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    font-size: 12.5px;
+  }
+
+  .hub-settings-info dt {
+    color: rgb(var(--c-ink-3));
+  }
+
+  .hub-settings-info dd {
+    margin: 0;
+    font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+    font-size: 12px;
+    color: rgb(var(--c-ink-2));
+    text-align: right;
+    word-break: break-all;
+  }
+
+  .hub-settings-foot {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    margin: 12px 0 0;
+    font-size: 11.5px;
+    color: rgb(var(--c-ink-3));
+  }
 }
 
 @layer utilities {
@@ -231,4 +396,113 @@
   .safe-bottom {
     padding-bottom: max(1rem, env(safe-area-inset-bottom));
   }
+}
+
+/* ============================================================
+   2. 深色模式适配
+   ------------------------------------------------------------
+   旧站每个模块用同一批 CSS 变量描述配色（--bg / --card-bg / --text / …），
+   所以深色只需要在 html.dark 下重设这批变量，正文观感就整体翻转。
+   仅有 5 个类硬写了白色背景（.example / .kp / .cmp / .bigcat / .line），
+   单独补一条覆盖。
+   ============================================================ */
+html.dark [class*='legacy-'] {
+  --bg: #14161b;
+  --card-bg: #1c1f26;
+  --text: #e6e8ec;
+  --text-light: #b9bfc9;
+  --text-muted: #858c98;
+  --border: #2c3038;
+  --line: #2c3038;
+  --primary-light: #1e2a44;
+  --accent-light: #35202a;
+  --green-light: #16301f;
+  --orange-light: #33260f;
+  --purple-light: #271e33;
+  --blue-soft: #1b2440;
+  --gold-soft: #332a12;
+  --red-soft: #351d1d;
+  --code-bg: #22252d;
+  --shadow: 0 2px 12px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 4px 20px rgba(0, 0, 0, 0.55);
+}
+
+/* 硬编码白底的少数卡片：跟卡片色对齐，避免深色页面里出现白块。 */
+html.dark [class*='legacy-'] :is(.example, .kp, .cmp, .bigcat, .line) {
+  background: var(--card-bg);
+}
+
+/* 正文里的表格、引用、代码块统一压暗。 */
+html.dark [class*='legacy-'] table {
+  background: var(--card-bg);
+}
+
+html.dark [class*='legacy-'] th {
+  background: #23262e;
+}
+
+html.dark [class*='legacy-'] code,
+html.dark [class*='legacy-'] pre {
+  background: var(--code-bg, #22252d);
+  color: var(--text);
+}
+
+/* 深色下阴影几乎没有意义，用描边代替层级。 */
+html.dark [class*='legacy-'] .section {
+  border: 1px solid var(--border);
+  box-shadow: none;
+}
+
+/* 顶栏与横幅在深色下降低亮度，避免大片高饱和色刺眼。 */
+html.dark .banner {
+  filter: saturate(0.82) brightness(0.86);
+}
+
+/* 首页在深色下的底色与卡片描边。 */
+html.dark body {
+  background: #14161b;
+}
+
+html.dark .site-header,
+html.dark .site-footer {
+  border-color: #2c3038;
+}
+
+/*
+ * 语义强调色：旧站把这批「深色字 + 浅色底」的标签写死了颜色。
+ * 深色模式下底变暗，字必须跟着提亮，否则对比度不足（实测几乎看不清）。
+ * 按语义分组覆盖，类名与旧页完全一致。
+ */
+html.dark [class*='legacy-'] :is(
+  .ans-t, .ans-tag, .derive-t, .kb, .km, .no, .jt,
+  .bc-ov-h, .en-h, .fn, .si-n,
+  .kp-t, .callout.blue, .callout.teal, .chip.blue, .chip.gold, .chip.teal,
+  .skill-t, th, b
+) {
+  color: #d7dbe4;
+}
+
+/* 青绿系（答案 / 关键结论） */
+html.dark [class*='legacy-'] :is(.ans-t, .ans-tag, .derive-t, .kb, .no, .callout.teal, .chip.teal) {
+  color: #6ee7b7;
+}
+
+/* 金色系（提示 / 技巧） */
+html.dark [class*='legacy-'] :is(.chip.gold, .jt, .skill-t) {
+  color: #fcd34d;
+}
+
+/* 紫色系（辨析 / 公式） */
+html.dark [class*='legacy-'] :is(.bc-ov-h, .en-h, .fn, .si-n) {
+  color: #c4b5fd;
+}
+
+/* 蓝色系（要点 / 表头） */
+html.dark [class*='legacy-'] :is(.kp-t, .callout.blue, .chip.blue, th) {
+  color: #93c5fd;
+}
+
+/* 正文加粗也常带语义色，统一走浅色，避免个别段落发黑 */
+html.dark [class*='legacy-'] b {
+  color: #eef0f4;
 }

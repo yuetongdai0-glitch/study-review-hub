@@ -1,20 +1,22 @@
-import { LayoutGrid } from 'lucide-react'
+import { LayoutGrid, Settings } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { allModules } from '@/router/routeRegistry'
+import { useAppStore } from '@/store/appStore'
 
 /**
  * 右下角模块切换器。
  *
- * @returns 浮动按钮 + 科目面板。
+ * @returns 浮动按钮 + 科目面板 + 设置入口。
  * @remarks 复刻旧站 `hub-nav` 的交互与观感：
  * 侧栏只放**当前模块的章节**，全站科目切换放在右下角这个圆钮里。
- * 之前把全部模块塞进侧栏，导致点进一页后目录「什么都有、很乱」。
+ * 设置入口也在这里，因为首页与工具页没有侧栏。
  */
 export default function FloatingNav() {
   const location = useLocation()
   const [open, setOpen] = useState(false)
   const shellRef = useRef<HTMLElement>(null)
+  const setSettingsOpen = useAppStore((state) => state.setSettingsOpen)
 
   /* 点外部 / Esc 关闭。 */
   useEffect(() => {
@@ -74,6 +76,19 @@ export default function FloatingNav() {
             )
           })}
         </ul>
+
+        {/* 设置入口：首页与工具页没有侧栏，从这里进。 */}
+        <button
+          type="button"
+          className="study-hub-settings"
+          onClick={() => {
+            setOpen(false)
+            setSettingsOpen(true)
+          }}
+        >
+          <Settings size={14} aria-hidden="true" />
+          设置 · 刷新与外观
+        </button>
       </div>
 
       <button

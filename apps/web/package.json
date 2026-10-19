@@ -1,6 +1,6 @@
 {
   "name": "@study-hub/web",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "private": true,
   "type": "module",
   "description": "备考复习知识库（React + Vite + Ant Design + Tailwind + Zustand，路由化模块）",

@@ -1,4 +1,4 @@
-import { accentTokens, themeColorTokens, type AccentName, type ThemeName } from './tokens'
+import { accentTokens, themeColorTokens, type AccentName, type ThemeName, type ThemePreference } from './tokens'
 
 /** 科目强调色的 CSS 变量前缀。 */
 const ACCENT_PROPERTY = '--accent'
@@ -36,31 +36,46 @@ export function applyAccentToElement(element: HTMLElement | null, accent: Accent
 }
 
 /**
- * 读取本地缓存的主题名，非法值回退浅色。
+ * 把偏好解析成实际主题。
  *
- * @param storageKey 缓存键。
- * @returns 主题名。
+ * @param preference 偏好（可能为跟随系统）。
+ * @returns 实际主题名。
  */
-export function getInitialTheme(storageKey: string): ThemeName {
+export function resolveTheme(preference: ThemePreference): ThemeName {
+  if (preference !== 'system') return preference
   try {
-    const stored = window.localStorage.getItem(storageKey)
-    return stored === 'dark' ? 'dark' : 'light'
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
   } catch {
-    // 隐私模式禁用存储时按浅色渲染，不影响阅读。
     return 'light'
   }
 }
 
 /**
- * 持久化主题名。
+ * 读取本地缓存的主题偏好，非法值回退跟随系统。
  *
  * @param storageKey 缓存键。
- * @param theme 主题名。
+ * @returns 主题偏好。
+ */
+export function getInitialTheme(storageKey: string): ThemePreference {
+  try {
+    const stored = window.localStorage.getItem(storageKey)
+    return stored === 'dark' || stored === 'light' || stored === 'system' ? stored : 'system'
+  } catch {
+    // 隐私模式禁用存储时按跟随系统处理，不影响阅读。
+    return 'system'
+  }
+}
+
+/**
+ * 持久化主题偏好。
+ *
+ * @param storageKey 缓存键。
+ * @param preference 主题偏好。
  * @returns 无返回值。
  */
-export function persistTheme(storageKey: string, theme: ThemeName): void {
+export function persistTheme(storageKey: string, preference: ThemePreference): void {
   try {
-    window.localStorage.setItem(storageKey, theme)
+    window.localStorage.setItem(storageKey, preference)
   } catch {
     // 写入失败只影响下次启动的默认值，不阻断当前交互。
   }

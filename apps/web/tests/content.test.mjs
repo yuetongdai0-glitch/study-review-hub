@@ -163,6 +163,37 @@ test('样式作用域正确：旧样式不得污染应用壳', async () => {
   assert.ok(/\.container\s*\{/.test(style), 'styles.css 缺少 .container 容器')
 })
 
+test('首页不再放安装包下载入口', async () => {
+  /*
+   * 用户明确要求删掉「装到手机上」这一段与下载链接：
+   * 内容已改为 App 直接加载线上网页，首页不需要再导流到下载页。
+   */
+  const home = await readFile(new URL('../src/pages/home/index.tsx', import.meta.url), 'utf8')
+  for (const banned of ['app-download', 'study-hub-releases', '前往下载页', 'APK']) {
+    assert.ok(!home.includes(banned), `首页不应出现下载相关文案/类名：${banned}`)
+  }
+})
+
+test('刷新与滚动行为的关键实现存在', async () => {
+  // 返回时不恢复上次位置：靠 scrollRestoration = 'manual' + 路由切换回顶。
+  const scroll = await readFile(new URL('../src/components/features/ScrollToTop.tsx', import.meta.url), 'utf8')
+  assert.match(scroll, /scrollRestoration\s*=\s*'manual'/, '缺少 scrollRestoration=manual，返回会停在半截')
+  assert.match(scroll, /scrollTo\(\{\s*top:\s*0/, '路由切换未回到顶部')
+
+  // 主动刷新必须是「重新加载页面 + 重建整个应用」两级，而不是只重载。
+  const update = await readFile(new URL('../src/hooks/useUpdate.ts', import.meta.url), 'utf8')
+  assert.match(update, /reloadPage/, '缺少「重新加载页面」')
+  assert.match(update, /rebuildApp/, '缺少「重建整个应用」')
+  assert.match(update, /purge\(\)/, '重建时未清理缓存')
+  assert.match(update, /reloadWeb/, '原生壳未清 WebView 缓存')
+
+  // 设置面板必须同时提供这两级入口与外观三档。
+  const settings = await readFile(new URL('../src/components/features/SettingsDialog.tsx', import.meta.url), 'utf8')
+  for (const text of ['重新加载页面', '刷新整个应用', '跟随系统', '浅色', '深色']) {
+    assert.ok(settings.includes(text), `设置面板缺少：${text}`)
+  }
+})
+
 test('每个模块都通过统一骨架渲染', async () => {
   for (const route of ROUTES) {
     const source = await readFile(new URL(`../src/pages/reading/${route}/index.tsx`, import.meta.url), 'utf8')

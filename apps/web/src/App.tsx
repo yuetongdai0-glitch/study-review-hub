@@ -3,7 +3,7 @@ import zhCN from 'antd/locale/zh_CN'
 import { useEffect, useLayoutEffect, useMemo } from 'react'
 import { BrowserRouter, HashRouter } from 'react-router-dom'
 import AppRouter from '@/router/AppRouter'
-import { useAppStore } from '@/store/appStore'
+import { useResolvedTheme } from '@/hooks/useResolvedTheme'
 import { applyThemeToDocument } from '@/theme/runtime'
 import { themeColorTokens } from '@/theme/tokens'
 
@@ -24,7 +24,8 @@ const NATIVE = __STUDY_HUB_MOBILE__
  * @returns 已接入 Provider 的应用根节点。
  */
 export default function App() {
-  const theme = useAppStore((state) => state.theme)
+  // 偏好可能是「跟随系统」，这里拿到实际渲染的明暗。
+  const theme = useResolvedTheme()
 
   useLayoutEffect(() => {
     // 在首帧前落 DOM，避免刷新时先亮后暗。

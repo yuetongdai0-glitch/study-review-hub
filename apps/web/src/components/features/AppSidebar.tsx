@@ -1,4 +1,4 @@
-import { Menu, Moon, RefreshCw, Sun } from 'lucide-react'
+import { Menu, Settings } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { findModuleByPath } from '@/router/routeRegistry'
@@ -11,47 +11,21 @@ import type { NavSection } from '@/types/content'
 /**
  * 侧栏底部动作区。
  *
- * @returns 刷新网页、安装新版本（有更新时）、主题切换、回到总览。
- * @remarks 「刷新网页」与「更新 App」是两件事：
- * - 改内容 → 刷新网页即可，壳会重新向服务器取最新 HTML/JS；
- * - 改原生代码 → 才会出现「更新 App」按钮，走应用内更新装新包。
+ * @returns 设置入口、返回总览。
+ * @remarks 刷新（重新加载 / 重建应用）与外观都收进设置弹层，
+ * 底部只留两个入口，不再堆一排按钮。
  */
 function SidebarActions() {
-  const theme = useAppStore((state) => state.theme)
-  const toggleTheme = useAppStore((state) => state.toggleTheme)
-  const { label, busy, pendingBuild, nativeAvailable, nativeVersion, run, upgrade } = useUpdate()
+  const setSettingsOpen = useAppStore((state) => state.setSettingsOpen)
+  const { pendingBuild, nativeAvailable } = useUpdate()
+  const hasUpdate = Boolean(pendingBuild) || nativeAvailable
 
   return (
     <div className="sb-actions">
-      <button
-        type="button"
-        onClick={() => void run()}
-        disabled={busy}
-        data-pending={pendingBuild ? 'true' : 'false'}
-      >
+      <button type="button" onClick={() => setSettingsOpen(true)} data-pending={hasUpdate ? 'true' : 'false'}>
         <span className="inline-flex items-center justify-center gap-1.5">
-          <RefreshCw size={13} className={busy ? 'animate-spin' : ''} />
-          {label}
-        </span>
-      </button>
-
-      {nativeAvailable ? (
-        <button type="button" style={{ marginTop: 8 }} onClick={() => void upgrade()} disabled={busy}>
-          <span className="inline-flex items-center justify-center gap-1.5">
-            更新 App {nativeVersion ? `v${nativeVersion}` : ''}
-          </span>
-        </button>
-      ) : null}
-
-      <button
-        type="button"
-        style={{ marginTop: 8 }}
-        onClick={toggleTheme}
-        aria-label={theme === 'dark' ? '切换到浅色' : '切换到深色'}
-      >
-        <span className="inline-flex items-center justify-center gap-1.5">
-          {theme === 'dark' ? <Sun size={13} /> : <Moon size={13} />}
-          {theme === 'dark' ? '浅色' : '深色'}
+          <Settings size={13} />
+          设置{hasUpdate ? ' · 有新内容' : ''}
         </span>
       </button>
       <Link to="/" className="sb-home" style={{ marginTop: 8, display: 'block', textAlign: 'center' }}>

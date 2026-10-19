@@ -3,9 +3,6 @@ import { allModules, moduleMetas, toolMetas } from '@/router/routeRegistry'
 import type { ModuleMeta } from '@/router/types'
 import { accentTokens } from '@/theme/tokens'
 
-/** 下载页地址（与发布仓库一致）。 */
-const DOWNLOAD_URL = 'https://yuetongdai0-glitch.github.io/study-hub-releases/'
-
 /** 旧首页每个科目卡片的配色类名，保证观感与旧站一致。 */
 const ACCENT_CLASS: Record<string, string> = {
   'graphic-reasoning': 'subject-blue',
@@ -111,22 +108,6 @@ export default function HomePage() {
               <SubjectCard key={module.name} module={module} />
             ))}
           </div>
-        </section>
-
-        {/* 移动端下载入口：视觉沿用旧首页卡片语言 */}
-        <section className="app-download" aria-labelledby="download-title">
-          <div className="app-download-copy">
-            <p className="app-download-kicker">MOBILE / OFFLINE</p>
-            <h2 id="download-title">装到手机上，断网也能翻</h2>
-            <p>安卓 APK 与 iOS 安装包与网页端内容同源，装好后可应用内检查更新。</p>
-          </div>
-          <a className="app-download-action" href={DOWNLOAD_URL} target="_blank" rel="noreferrer">
-            <span className="app-download-platform">Android · iOS</span>
-            <strong>前往下载页</strong>
-            <span className="app-download-arrow" aria-hidden="true">
-              →
-            </span>
-          </a>
         </section>
       </main>
 

@@ -173,3 +173,27 @@
   font-size: 13px;
   line-height: 1.4;
 }
+
+/* 面板底部的设置入口：与上面科目链接用分隔线分开。 */
+.study-hub-settings {
+  width: 100%;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 0;
+  border-top: 1px solid var(--hub-line);
+  background: transparent;
+  color: var(--hub-muted);
+  font: inherit;
+  font-size: 12.5px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.study-hub-settings:hover,
+.study-hub-settings:focus-visible {
+  background: #f3f5f7;
+  color: var(--hub-ink);
+  outline: none;
+}

@@ -83,6 +83,13 @@ export const accentTokens: Record<AccentName, { color: string; soft: string; ink
 export type ThemeName = keyof typeof themeColorTokens
 
 /**
+ * 主题偏好（设置项可选项）。
+ *
+ * @remarks `system` 跟随系统深色模式，实际渲染时再解析成 {@link ThemeName}。
+ */
+export type ThemePreference = ThemeName | 'system'
+
+/**
  * 把 `R G B` 三元组写成 CSS 变量声明块。
  *
  * @param tokens 语义色表。

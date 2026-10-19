@@ -1,0 +1,170 @@
+import { Check, Monitor, Moon, RefreshCw, RotateCcw, Sun, X } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { Modal } from 'antd'
+import { useUpdate } from '@/hooks/useUpdate'
+import { useAppStore } from '@/store/appStore'
+import { useResolvedTheme } from '@/hooks/useResolvedTheme'
+import { allModules } from '@/router/routeRegistry'
+import type { ThemePreference } from '@/theme/tokens'
+
+/** 外观选项。 */
+const THEMES: { value: ThemePreference; label: string; icon: typeof Sun }[] = [
+  { value: 'system', label: '跟随系统', icon: Monitor },
+  { value: 'light', label: '浅色', icon: Sun },
+  { value: 'dark', label: '深色', icon: Moon },
+]
+
+/**
+ * 设置弹层。
+ *
+ * @returns 外观 + 刷新 + 版本信息。
+ * @remarks 刷新分两级，解决「网页更新被缓存挡住」：
+ * - **重新加载页面**：只重取 HTML 与资源，保留本地偏好与草稿；
+ * - **重建整个应用**：清空 Service Worker、Cache Storage 与 WebView 缓存后重载。
+ * 两者都不需要重启 App，比等系统回收进程快得多。
+ */
+export default function SettingsDialog() {
+  const open = useAppStore((state) => state.settingsOpen)
+  const setOpen = useAppStore((state) => state.setSettingsOpen)
+  const themeMode = useAppStore((state) => state.themeMode)
+  const setThemeMode = useAppStore((state) => state.setThemeMode)
+  const resolved = useResolvedTheme()
+  const { currentBuild, reloadPage, rebuildApp, nativeAvailable, nativeVersion, upgrade, busy, progress } = useUpdate()
+  const [status, setStatus] = useState('')
+
+  /* 关闭时清掉临时提示，避免下次打开看到旧文案。 */
+  useEffect(() => {
+    if (!open) setStatus('')
+  }, [open])
+
+  /**
+   * 执行一个带提示的刷新动作。
+   *
+   * @param label 动作名。
+   * @param action 动作。
+   * @returns 无返回值。
+   */
+  const runAction = async (label: string, action: () => Promise<void>) => {
+    setStatus(`${label}…`)
+    try {
+      await action()
+      // 重载会中断执行，走到这里说明是同类操作，给一个兜底提示。
+      setStatus(`${label}完成`)
+    } catch (error) {
+      setStatus(error instanceof Error ? `失败：${error.message}` : '失败')
+    }
+  }
+
+  return (
+    <Modal
+      open={open}
+      onCancel={() => setOpen(false)}
+      footer={null}
+      centered
+      width={420}
+      closeIcon={<X size={18} />}
+      title="设置"
+      className="hub-settings"
+      destroyOnHidden
+    >
+      <div className="hub-settings-body">
+        {/* ---------- 外观 ---------- */}
+        <section className="hub-settings-section">
+          <h4>外观</h4>
+          <div className="hub-theme-row" role="radiogroup" aria-label="外观">
+            {THEMES.map((item) => {
+              const Icon = item.icon
+              const active = themeMode === item.value
+              return (
+                <button
+                  key={item.value}
+                  type="button"
+                  role="radio"
+                  aria-checked={active}
+                  className={active ? 'hub-theme-item active' : 'hub-theme-item'}
+                  onClick={() => setThemeMode(item.value)}
+                >
+                  <Icon size={16} aria-hidden="true" />
+                  <span>{item.label}</span>
+                </button>
+              )
+            })}
+          </div>
+          <p className="hub-settings-hint">
+            当前渲染为{resolved === 'dark' ? '深色' : '浅色'}
+            {themeMode === 'system' ? '（随系统自动切换）' : ''}
+          </p>
+        </section>
+
+        {/* ---------- 刷新 ---------- */}
+        <section className="hub-settings-section">
+          <h4>刷新</h4>
+          <p className="hub-settings-hint">
+            网页更新常被缓存挡住。两项都只清网页缓存，<strong>不会动你的草稿和答题记录</strong>。
+          </p>
+
+          <button
+            type="button"
+            className="hub-settings-action"
+            disabled={busy}
+            onClick={() => void runAction('正在重新加载', reloadPage)}
+          >
+            <RefreshCw size={16} className={busy ? 'animate-spin' : ''} aria-hidden="true" />
+            <span>
+              <strong>重新加载页面</strong>
+              <em>只重取当前页面，最快拿到最新内容</em>
+            </span>
+          </button>
+
+          <button
+            type="button"
+            className="hub-settings-action"
+            disabled={busy}
+            onClick={() => void runAction('正在刷新整个应用', rebuildApp)}
+          >
+            <RotateCcw size={16} aria-hidden="true" />
+            <span>
+              <strong>刷新整个应用</strong>
+              <em>清空网页缓存后重取全部资源，内容一定是最新</em>
+            </span>
+          </button>
+
+          {status ? <p className="hub-settings-status">{status}</p> : null}
+        </section>
+
+        {/* ---------- 版本 ---------- */}
+        <section className="hub-settings-section">
+          <h4>版本</h4>
+          <dl className="hub-settings-info">
+            <div>
+              <dt>内容版本</dt>
+              <dd>{currentBuild || '开发模式'}</dd>
+            </div>
+            <div>
+              <dt>资料</dt>
+              <dd>{allModules.length} 个模块</dd>
+            </div>
+            <div>
+              <dt>运行环境</dt>
+              <dd>{nativeAvailable || nativeVersion ? '手机应用' : '浏览器'}</dd>
+            </div>
+          </dl>
+
+          {nativeAvailable ? (
+            <button type="button" className="hub-settings-action" disabled={busy} onClick={() => void upgrade()}>
+              <RefreshCw size={16} className={progress > 0 ? 'animate-spin' : ''} aria-hidden="true" />
+              <span>
+                <strong>更新到 {nativeVersion}</strong>
+                <em>{progress > 0 ? `下载中 ${progress}%` : '安装新版本的应用本体'}</em>
+              </span>
+            </button>
+          ) : null}
+        </section>
+
+        <p className="hub-settings-foot">
+          <Check size={13} aria-hidden="true" /> 所有改动都会自动保存在本机
+        </p>
+      </div>
+    </Modal>
+  )
+}

@@ -79,12 +79,13 @@ export function manifestUrl(): string {
 }
 
 /**
- * 清缓存并重新加载当前网页。
+ * 清缓存并重新加载网页。
  *
  * @returns 原生环境返回 true（由原生接管），网页环境返回 false（调用方自行重载）。
  * @remarks 壳加载的是远程网页，所以「刷新」= 真的回服务器取最新 HTML/JS/CSS。
  * 关键是要清 **WebView 的 HTTP 缓存**：浏览器的 `cache: 'no-store'` 管不到它，
  * 这正是之前点了刷新还是旧内容的原因。
+ * 只清网络缓存，**不动 localStorage**——草稿、答题记录、主题偏好都在里面。
  */
 export async function reloadWeb(): Promise<boolean> {
   const plugin = updater()
