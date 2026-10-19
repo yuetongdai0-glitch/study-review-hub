@@ -1020,14 +1020,15 @@ for (const { route, ex: exRe } of UNIT_PAGES) {
 test('政治常识页：政治理论 + 常识判断全模块，每个知识点紧跟例题', async () => {
   const page = await readText(new URL('../pages/politics/index.html', import.meta.url))
 
-  // 27 个板块：总览 + 26 个考点模块（与数量关系页同款页壳）
+  // 26 个板块：总览 + 25 个考点模块（与数量关系页同款页壳）
+  // 用户明确「不做公文写作」，公文那一节已整体删除，不要加回来
   const secs = [...page.matchAll(/<div class="section c-[a-z]+" id="(nav|s\d+)">/g)].map(m => m[1])
-  assert.equal(secs.length, 27, `政治常识页板块应为 27 个，实际 ${secs.length} 个`)
+  assert.equal(secs.length, 26, `政治常识页板块应为 26 个，实际 ${secs.length} 个`)
   assert.equal(secs[0], 'nav', '首个板块应为总览 nav')
-  for (let i = 1; i <= 26; i++) assert.ok(secs.includes(`s${i}`), `缺少板块 s${i}`)
+  for (let i = 1; i <= 25; i++) assert.ok(secs.includes(`s${i}`), `缺少板块 s${i}`)
 
   // 页壳：侧栏 23 条 + 7 个分组 + 搜索 + 抽屉
-  assert.equal((page.match(/class="nav-link"/g) || []).length, 27, '侧栏链接应为 27 条')
+  assert.equal((page.match(/class="nav-link"/g) || []).length, 26, '侧栏链接应为 26 条')
   assert.equal((page.match(/class="nav-group"/g) || []).length, 7, '侧栏应有 7 个分组')
   assert.ok(page.includes('class="menu-btn"') && page.includes('class="mask"'), '缺少移动端抽屉结构')
   assert.ok(page.includes('id="navSearch"'), '缺少侧栏搜索框')
@@ -1069,7 +1070,7 @@ test('政治常识页：政治理论 + 常识判断全模块，每个知识点�
       }
     })
   }
-  assert.ok(totalEx >= 130, `政治常识页例题偏少：${totalEx}`)
+  assert.ok(totalEx >= 125, `政治常识页例题偏少：${totalEx}`)
   assert.equal((page.match(/class="example-header"/g) || []).length, totalEx, '每道例题都应有标题行')
   assert.equal((page.match(/class="correct">答案：/g) || []).length, totalEx, '每道例题都应给出答案')
 
@@ -1102,10 +1103,7 @@ test('政治常识页：政治理论 + 常识判断全模块，每个知识点�
     '秘密投票', '一人一票', '撤销', '吊销', '撤回', '注销', '复议找上级',
     '盗窃', '诈骗', '侵占', '抢夺', '信用卡诈骗', '挪用公款罪', '职务侵占',
     '建筑物区分所有权', '拾得遗失物', '分居满二年', '实践合同',
-    // 公文写作与处理
-    '份号', '六角括号', '签发人', '主送机关', '附件说明', '成文日期', '附注',
-    '抄送机关', '印发机关', '决议', '公报', '通告', '批复', '议案', '纪要',
-    '逐级行文', '越级行文', '一文一事', '不得原文转报', '整理归档',
+    // 公文写作已被用户排除：全页不得再出现「公文」相关内容
     // 十五五与 2026 政策
     '以推动高质量发展为主题', '以满足人民日益增长的美好生活需要为根本目的',
     '以改革创新为根本动力', '以全面从严治党为根本保障', '先进制造业为骨干',
@@ -1125,6 +1123,10 @@ test('政治常识页：政治理论 + 常识判断全模块，每个知识点�
   }
 
   // 只用文字与表格承载（不引截图 / 示意图）
+  // 用户明确不做公文写作，这一整块必须彻底移除（含侧栏、总览、数字速记、排坑表）
+  assert.ok(!page.includes('公文'), '政治常识页不应再出现「公文」相关内容（用户明确不做写作）')
+  assert.ok(!page.includes('版头') && !page.includes('版记'), '公文版头/版记内容应已删除')
+
   assert.ok(!page.includes('<img'), '政治常识页不应包含图片')
   assert.ok(!page.includes('<figure'), '政治常识页不应使用示意图')
   assert.ok(!page.includes('fig.css'), '政治常识页无示意图，不应引入 fig.css')
