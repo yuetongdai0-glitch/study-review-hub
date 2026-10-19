@@ -1020,14 +1020,14 @@ for (const { route, ex: exRe } of UNIT_PAGES) {
 test('政治常识页：政治理论 + 常识判断全模块，每个知识点紧跟例题', async () => {
   const page = await readText(new URL('../pages/politics/index.html', import.meta.url))
 
-  // 23 个板块：总览 + 22 个考点模块（与数量关系页同款页壳）
+  // 24 个板块：总览 + 23 个考点模块（与数量关系页同款页壳）
   const secs = [...page.matchAll(/<div class="section c-[a-z]+" id="(nav|s\d+)">/g)].map(m => m[1])
-  assert.equal(secs.length, 23, `政治常识页板块应为 23 个，实际 ${secs.length} 个`)
+  assert.equal(secs.length, 24, `政治常识页板块应为 24 个，实际 ${secs.length} 个`)
   assert.equal(secs[0], 'nav', '首个板块应为总览 nav')
-  for (let i = 1; i <= 22; i++) assert.ok(secs.includes(`s${i}`), `缺少板块 s${i}`)
+  for (let i = 1; i <= 23; i++) assert.ok(secs.includes(`s${i}`), `缺少板块 s${i}`)
 
   // 页壳：侧栏 23 条 + 7 个分组 + 搜索 + 抽屉
-  assert.equal((page.match(/class="nav-link"/g) || []).length, 23, '侧栏链接应为 23 条')
+  assert.equal((page.match(/class="nav-link"/g) || []).length, 24, '侧栏链接应为 24 条')
   assert.equal((page.match(/class="nav-group"/g) || []).length, 7, '侧栏应有 7 个分组')
   assert.ok(page.includes('class="menu-btn"') && page.includes('class="mask"'), '缺少移动端抽屉结构')
   assert.ok(page.includes('id="navSearch"'), '缺少侧栏搜索框')
@@ -1069,7 +1069,7 @@ test('政治常识页：政治理论 + 常识判断全模块，每个知识点�
       }
     })
   }
-  assert.ok(totalEx >= 100, `政治常识页例题偏少：${totalEx}`)
+  assert.ok(totalEx >= 110, `政治常识页例题偏少：${totalEx}`)
   assert.equal((page.match(/class="example-header"/g) || []).length, totalEx, '每道例题都应有标题行')
   assert.equal((page.match(/class="correct">答案：/g) || []).length, totalEx, '每道例题都应给出答案')
 
@@ -1088,7 +1088,20 @@ test('政治常识页：政治理论 + 常识判断全模块，每个知识点�
     '民法典', '诉讼时效', '善意取得', '代位继承',
     '正当防卫', '紧急避险', '犯罪中止', '累犯',
     '行政处罚', '行政复议', '国家赔偿',
-    '宪法宣誓', '特赦', '指引作用'
+    '宪法宣誓', '特赦', '指引作用',
+    // 二轮补漏：中国梦 / 现代化经济体系 / 区域协调 / 新质生产力 / 人工智能
+    '中国梦', '中国道路、弘扬中国精神、凝聚中国力量', '现代化经济体系', '实体经济',
+    '供给侧结构性改革', '产业振兴', '区域协调发展四大板块', '京津冀', '粤港澳大湾区',
+    '主体功能区', '新质生产力', '人工智能与意识', '两点论', '英雄史观', '剩余价值率',
+    '民族区域自治', '全链条、全方位、全覆盖', '百万年的人类史',
+    '三条控制线', '新时代党的建设总要求', '八项规定', '四唯', '全民国家安全教育日',
+    '2027 年建军一百年奋斗目标', '军委主席负责制', '全面管治权', '决不承诺放弃使用武力',
+    '持久和平、普遍安全、共同繁荣、开放包容、清洁美丽', '三种基本形式', '实践三形式'.replace('实践三形式',''),
+    // 提升课补漏
+    '找错误', '中共六大', '中共七大', '出生国籍', '不承认双重国籍', '自治条例和单行条例',
+    '秘密投票', '一人一票', '撤销', '吊销', '撤回', '注销', '复议找上级',
+    '盗窃', '诈骗', '侵占', '抢夺', '信用卡诈骗', '挪用公款罪', '职务侵占',
+    '建筑物区分所有权', '拾得遗失物', '分居满二年', '实践合同'
   ]) {
     assert.ok(page.includes(k), `政治常识页缺少考点：${k}`)
   }
