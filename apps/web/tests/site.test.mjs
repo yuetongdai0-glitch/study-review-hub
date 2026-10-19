@@ -75,8 +75,9 @@ test('首页包含全部复习入口的有效路由', async () => {
   }
 
   // 首页必须按路由表渲染，而不是手写卡片列表（否则新增科目会漏）。
-  assert.match(home, /moduleMetas\.map/, '首页未按模块表渲染科目卡片')
-  assert.match(home, /toolMetas\.map/, '首页未按模块表渲染工具卡片')
+  assert.match(home, /allModules\.map/, '首页未按模块表渲染科目卡片')
+  assert.match(home, /moduleMetas\.length/, '首页未显示模块数量')
+  assert.match(home, /toolMetas\.length/, '首页未显示工具数量')
 })
 
 test('每个复习页接入共享导航且保留完整源文件内容', async () => {

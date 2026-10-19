@@ -1,31 +1,41 @@
 import { Outlet, useLocation } from 'react-router-dom'
-import AppHeader from '@/components/features/AppHeader'
 import AppSidebar from '@/components/features/AppSidebar'
+import FloatingNav from '@/components/features/FloatingNav'
 import { findModuleByPath } from '@/router/routeRegistry'
-import { useSectionStore } from '@/store/sectionStore'
+import { useAppStore } from '@/store/appStore'
 
 /**
  * 应用壳。
  *
- * @returns 顶栏 + 目录 + 内容区。
- * @remarks 工具页是全屏交互页，不挂目录栏，也不给主区留边距。
+ * @returns 深色侧栏 + 内容区 + 右下角科目切换。
+ * @remarks
+ * - 阅读页：`<main class="shell-main">` + 侧栏让位（旧版骨架）。
+ * - 首页 / 工具页：**不用 main 元素、不让位**，因为首页自己带 `<main>`，
+ *   嵌套 main 既不合规范，也会让首页被挤出 268px。
  */
 export default function AppLayout() {
   const location = useLocation()
   const current = findModuleByPath(location.pathname)
-  const sections = useSectionStore((state) => state.sections)
-  // 首页与工具页都不需要目录栏：首页是卡片总览，工具页是全屏交互。
+  const menuOpen = useAppStore((state) => state.sidebarOpen)
   const isHome = location.pathname === '/' || location.pathname === ''
   const isTool = Boolean(current?.tool)
   const showSidebar = !isHome && !isTool
 
   return (
-    <div className="app-shell">
-      <AppHeader />
-      {showSidebar ? <AppSidebar sections={sections} /> : null}
-      <main className={showSidebar ? 'app-main' : 'min-h-screen pt-[var(--header-height)]'}>
-        <Outlet />
-      </main>
+    <div className="app-shell" data-menu={menuOpen ? 'open' : 'closed'} data-shell={showSidebar ? 'true' : 'false'}>
+      {showSidebar ? <AppSidebar /> : null}
+
+      {showSidebar ? (
+        <main className="shell-main">
+          <Outlet />
+        </main>
+      ) : (
+        <div className="shell-plain">
+          <Outlet />
+        </div>
+      )}
+
+      <FloatingNav />
     </div>
   )
 }

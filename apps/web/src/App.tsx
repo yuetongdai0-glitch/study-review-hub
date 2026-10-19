@@ -1,14 +1,22 @@
 import { App as AntdApp, ConfigProvider, theme as antdTheme } from 'antd'
 import zhCN from 'antd/locale/zh_CN'
 import { useEffect, useLayoutEffect, useMemo } from 'react'
-import { BrowserRouter } from 'react-router-dom'
+import { BrowserRouter, HashRouter } from 'react-router-dom'
 import AppRouter from '@/router/AppRouter'
 import { useAppStore } from '@/store/appStore'
 import { applyThemeToDocument } from '@/theme/runtime'
 import { themeColorTokens } from '@/theme/tokens'
 
-/** 部署子路径；GitHub Pages 下必须与 vite base 一致。 */
-const BASENAME = import.meta.env.BASE_URL.replace(/\/$/, '')
+/**
+ * 部署子路径。
+ *
+ * @remarks 网页挂在 GitHub Pages 的 `/study-review-hub/` 下；
+ * App 内 base 为 `/`，且必须用 HashRouter（file:// 下没有服务端路由回退）。
+ */
+const BASE_URL = import.meta.env.BASE_URL
+const BASENAME = BASE_URL.replace(/\/$/, '')
+/** 宿主在构建期确定（vite --mode mobile），不依赖运行时探测。 */
+const NATIVE = __STUDY_HUB_MOBILE__
 
 /**
  * 应用根组件：主题、Ant Design 令牌、路由容器。
@@ -33,6 +41,7 @@ export default function App() {
     () => ({
       algorithm: theme === 'dark' ? antdTheme.darkAlgorithm : antdTheme.defaultAlgorithm,
       token: {
+        // 与旧站保持同一档圆角，避免弹层看起来「太现代」。
         borderRadius: 8,
         colorPrimary: `rgb(${tokens.brand})`,
         colorText: `rgb(${tokens.ink})`,
@@ -51,7 +60,6 @@ export default function App() {
         fontSize: 14,
       },
       components: {
-        // 阅读为主，按钮与卡片不需要 antd 默认那么大的圆角。
         Button: { borderRadius: 8 },
         Card: { borderRadiusLG: 14 },
         Modal: { contentBg: `rgb(${tokens.surface})`, headerBg: `rgb(${tokens.surface})` },
@@ -60,13 +68,19 @@ export default function App() {
     [theme, tokens],
   )
 
+  const router = NATIVE ? (
+    <HashRouter>
+      <AppRouter />
+    </HashRouter>
+  ) : (
+    <BrowserRouter basename={BASENAME}>
+      <AppRouter />
+    </BrowserRouter>
+  )
+
   return (
     <ConfigProvider locale={zhCN} theme={themeConfig}>
-      <AntdApp>
-        <BrowserRouter basename={BASENAME}>
-          <AppRouter />
-        </BrowserRouter>
-      </AntdApp>
+      <AntdApp>{router}</AntdApp>
     </ConfigProvider>
   )
 }

@@ -114,9 +114,11 @@ self.addEventListener('fetch', (event) => {
  *
  * @returns Vite 插件。
  */
-export function studyHubBuild(): Plugin {
+export function studyHubBuild(options: { base: string; mobile: boolean }): Plugin {
   let outDir = 'dist'
   let version = '0.0.0'
+  // App 内（Capacitor）资源在包根，不生成路由副本也不注册 SW。
+  const isMobile = options.mobile
 
   return {
     name: 'study-hub-build',
@@ -163,32 +165,42 @@ export function studyHubBuild(): Plugin {
         )}\n`,
       })
 
-      this.emitFile({ type: 'asset', fileName: 'sw.js', source: workerSource(buildId) })
+      // App 内不需要 Service Worker（内容随包发布，更新走应用内更新）。
+      if (!isMobile) this.emitFile({ type: 'asset', fileName: 'sw.js', source: workerSource(buildId) })
 
       // 路由级 HTML 副本在 writeBundle 阶段落盘（此时资源清单已确定）。
       this.emitFile({
         type: 'asset',
         fileName: '.routes.json',
-        source: JSON.stringify({ buildId, routes: readRoutePaths() }),
+        source: JSON.stringify({ buildId, routes: readRoutePaths(), mobile: isMobile }),
       })
     },
 
     async writeBundle() {
       const html = await readFile(join(outDir, 'index.html'), 'utf8')
-      const manifest = JSON.parse(await readFile(join(outDir, '.routes.json'), 'utf8')) as { routes: string[] }
-
-      for (const route of manifest.routes) {
-        const target = join(outDir, route.replace(/^\//, ''), 'index.html')
-        await mkdir(dirname(target), { recursive: true })
-        await writeFile(target, html)
+      const manifest = JSON.parse(await readFile(join(outDir, '.routes.json'), 'utf8')) as {
+        routes: string[]
+        mobile: boolean
       }
 
-      // 旧路径 /pages/<route>/ 也留一份，保证历史书签直达不 404（页面内会做重定向）。
-      for (const route of manifest.routes) {
-        const name = route.replace('/tools/', '').replace(/^\//, '')
-        const target = join(outDir, 'pages', name, 'index.html')
-        await mkdir(dirname(target), { recursive: true })
-        await writeFile(target, html)
+      /*
+       * 路由副本只对网页宿主有用（GitHub Pages 不会给未知路径回退到 index.html）。
+       * App 里是 file:// 直读包内文件，HashRouter 也不需要副本，多写反而增大包体。
+       */
+      if (!manifest.mobile) {
+        for (const route of manifest.routes) {
+          const target = join(outDir, route.replace(/^\//, ''), 'index.html')
+          await mkdir(dirname(target), { recursive: true })
+          await writeFile(target, html)
+        }
+
+        // 旧路径 /pages/<route>/ 也留一份，保证历史书签直达不 404（页面内会做重定向）。
+        for (const route of manifest.routes) {
+          const name = route.replace('/tools/', '').replace(/^\//, '')
+          const target = join(outDir, 'pages', name, 'index.html')
+          await mkdir(dirname(target), { recursive: true })
+          await writeFile(target, html)
+        }
       }
 
       // .routes.json 只是构建期中间产物，不对外发布。

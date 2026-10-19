@@ -30,15 +30,19 @@ export function run(command, args, options = {}) {
 }
 
 /**
- * 确保网页产物存在；带 --force 时强制重建。
+ * 确保 App 专用网页产物存在；带 --force 时强制重建。
+ *
  * @param {boolean} force 是否强制重建。
  * @returns {void}
+ * @remarks App 必须用 `STUDY_HUB_TARGET=mobile` 构建：
+ * base 为 `/`、HashRouter、不注册 Service Worker。
+ * 之前直接复用了网页版 dist（base 是 `/study-review-hub/`），
+ * 导致 App 内所有 `/study-review-hub/assets/*` 请求 404 —— 表现为样式全丢。
  */
 export function ensureWebDist(force = false) {
-  const index = resolve(webRoot, 'dist/index.html')
+  const index = resolve(webRoot, 'dist-mobile/index.html')
   if (!force && existsSync(index)) return
-  // 走 package 脚本：类型检查 + Vite 构建，与网页发布用的是同一条链路。
-  run('pnpm', ['--filter', '@study-hub/web', 'build'], { cwd: repoRoot })
+  run('pnpm', ['--filter', '@study-hub/web', 'build:mobile'], { cwd: repoRoot })
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {

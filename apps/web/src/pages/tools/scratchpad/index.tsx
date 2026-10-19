@@ -789,7 +789,7 @@ export default function ScratchpadPage() {
   const canRedo = redoRef.current.length > 0
 
   return (
-    <div className="flex h-[calc(100vh-var(--header-height))] flex-col">
+    <div className="flex h-[100dvh] flex-col">
       {/* 工具栏 */}
       <div className="flex flex-wrap items-center gap-2 border-b border-line bg-surface px-3 py-2">
         <div className="flex items-center gap-1">

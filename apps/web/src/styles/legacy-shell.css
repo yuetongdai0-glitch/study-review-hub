@@ -1,0 +1,136 @@
+/* ============================================================
+   全站统一页壳 · page-shell.css
+   「左上角固定侧栏 + 移动端抽屉」——所有科目页共用这一份实现。
+   使用方式（放在 <head> 里、页面自身 <style> 之前，便于各页覆盖）：
+     <link data-page-shell rel="stylesheet" href="../../assets/page-shell.css">
+     <script data-page-shell src="../../assets/page-shell.js" defer></script>
+   页面需自带：
+     <button class="menu-btn" id="menuBtn">☰</button>
+     <div class="mask" id="mask"></div>
+     <aside class="sidebar" id="sidebar"> …见下… </aside>
+   侧栏内部结构：
+     .sb-brand > .t / .s
+     .sb-search > input#navSearch
+     .nav-group > .g-title + a.nav-link[href="#id"][data-kw]
+   ============================================================ */
+
+:root{
+  --side-w: 268px;                 /* 侧栏宽度，各页可覆盖 */
+  --shell-bg: #2b2b33;             /* 侧栏底色 */
+  --shell-bg2: #22222a;            /* 搜索框底色 */
+  --shell-line: #3a3a45;
+  --shell-fg: #c6c6d2;
+  --shell-dim: #8f8f9d;
+  --shell-accent: var(--primary, #c0392b);
+  --shell-anchor: 16px;            /* 锚点定位预留（由脚本按顶栏高度自动改写） */
+}
+
+/* ---------- 侧栏本体 ---------- */
+.sidebar{
+  position:fixed; top:0; left:0; bottom:0; width:var(--side-w);
+  background:var(--shell-bg); color:var(--shell-fg);
+  overflow-y:auto; z-index:50; padding:18px 0 60px;
+  scrollbar-width:thin;
+  -webkit-overflow-scrolling:touch;
+}
+.sidebar::-webkit-scrollbar{width:5px;}
+.sidebar::-webkit-scrollbar-thumb{background:#555;border-radius:3px;}
+.sidebar a{text-decoration:none;}
+
+.sb-brand{padding:6px 20px 14px;border-bottom:1px solid var(--shell-line);margin-bottom:10px;}
+.sb-brand .t{font-size:17px;font-weight:800;color:#fff;letter-spacing:1px;line-height:1.4;}
+.sb-brand .s{font-size:11px;color:var(--shell-dim);margin-top:3px;line-height:1.5;}
+
+.sb-search{margin:10px 14px;}
+.sb-search input{
+  width:100%;padding:8px 12px;border-radius:8px;border:1px solid #4a4a58;
+  background:var(--shell-bg2);color:#eee;font-size:13px;outline:none;min-height:38px;
+}
+.sb-search input:focus{border-color:var(--shell-accent);}
+.sb-search input::placeholder{color:#777;}
+
+.nav-group{margin:8px 0;}
+.nav-group .g-title{
+  font-size:11px;color:var(--shell-dim);padding:6px 20px 4px;
+  letter-spacing:2px;font-weight:700;
+}
+.nav-link{
+  display:block;padding:7px 18px 7px 26px;font-size:13.5px;color:var(--shell-fg);
+  cursor:pointer;border-left:3px solid transparent;transition:background .15s,color .15s;
+  line-height:1.5;
+}
+.nav-link:hover{background:#34343f;color:#fff;}
+.nav-link.active{
+  background:#34343f;                                   /* 回退：不支持 color-mix 时用中性深色 */
+  background:color-mix(in srgb, var(--shell-accent) 26%, #2b2b33);
+  color:#fff;
+  border-left-color:var(--shell-accent);font-weight:600;
+}
+.nav-link .tag{
+  display:inline-block;font-size:10px;padding:0 6px;border-radius:10px;margin-left:6px;
+  background:#4a4a58;color:#bbb;vertical-align:1px;
+}
+/* 可选：序号（章节目录用） */
+.nav-link .no{
+  display:inline-block;min-width:16px;margin-right:7px;
+  font-size:11px;font-weight:700;color:var(--shell-dim);
+}
+/* 可选：知识点掌握状态小圆点（图推页用于标记「本节已掌握」） */
+.nav-link .dot{
+  display:inline-block;width:8px;height:8px;border-radius:50%;background:#4a4a58;
+  margin-right:8px;vertical-align:1px;transition:background .3s;
+}
+.nav-link .dot.done{background:#22a06b;}
+/* 可选：侧栏底部动作区（如「重置全部进度」） */
+.sb-actions{padding:14px 20px 0;border-top:1px solid var(--shell-line);margin-top:14px;}
+.sb-actions button{
+  width:100%;padding:9px;border:0;border-radius:9px;background:#3a3a45;color:var(--shell-fg);
+  font:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:background .15s,color .15s;
+}
+.sb-actions button:hover{background:#454552;color:#fff;}
+.sb-actions button:active{transform:scale(.98);}
+
+/* ---------- 汉堡按钮 / 遮罩 ---------- */
+.menu-btn{
+  display:none;position:fixed;top:12px;left:12px;z-index:140;
+  width:42px;height:42px;border-radius:10px;border:none;
+  background:var(--shell-accent);color:#fff;font-size:19px;cursor:pointer;
+  box-shadow:0 3px 12px rgba(0,0,0,.22);
+  align-items:center;justify-content:center;
+}
+.menu-btn:active{transform:scale(.94);}
+.mask{display:none;position:fixed;inset:0;background:rgba(18,18,26,.52);z-index:125;}
+
+/* ---------- 主体让位（唯一让位机制：body 左内边距） ---------- */
+/* 只有挂侧栏的页面才让位；首页与工具页是全宽容器。 */
+.app-shell[data-shell="true"]{padding-left:var(--side-w);}
+.shell-main{min-width:0;}
+
+/* ---------- 锚点定位：避免被 sticky 顶栏盖住 ---------- */
+[data-shell-anchor]{scroll-margin-top:calc(var(--shell-anchor) + 14px);}
+
+/* ---------- 打印 ---------- */
+@media print{
+  .sidebar,.menu-btn,.mask{display:none!important;}
+  .app-shell[data-shell="true"]{padding-left:0!important;}
+}
+
+/* ---------- 窄屏：侧栏收成抽屉（900px 覆盖手机与平板竖屏） ---------- */
+@media(max-width:900px){
+  .app-shell[data-shell="true"]{padding-left:0;}
+  .menu-btn{display:flex;}
+  .sidebar{
+    width:min(80vw,var(--side-w));transform:translateX(-105%);
+    transition:transform .28s ease;z-index:130;
+    box-shadow:6px 0 26px rgba(0,0,0,.28);
+  }
+  .app-shell[data-menu="open"] .sidebar{transform:translateX(0);}
+  .app-shell[data-menu="open"] .mask{display:block;}
+  .app-shell[data-menu="open"]{overflow:hidden;}
+  .sb-brand{padding-left:64px;}   /* 让开左上角的 ☰ */
+}
+
+@media(prefers-reduced-motion:reduce){
+  .sidebar{transition:none!important;}
+  html{scroll-behavior:auto!important;}
+}

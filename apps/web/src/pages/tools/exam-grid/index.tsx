@@ -367,7 +367,7 @@ export default function ExamGridPage() {
   const cellCount = text.replace(/\s/g, '').length
 
   return (
-    <div className="flex h-[calc(100vh-var(--header-height))] flex-col overflow-hidden bg-sunken">
+    <div className="flex h-[100dvh] flex-col overflow-hidden bg-sunken">
       {/* 工具条：手机端必须换行，横向滚动会挡住右侧按钮 */}
       <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5 border-b border-line bg-surface px-2 py-2 text-[12.5px] sm:px-3">
         <span className="font-num tabular-nums text-ink-3">

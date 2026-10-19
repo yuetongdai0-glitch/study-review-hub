@@ -1,48 +1,51 @@
-import { ArrowRight, Smartphone } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { allModules, moduleMetas, toolMetas } from '@/router/routeRegistry'
+import type { ModuleMeta } from '@/router/types'
 import { accentTokens } from '@/theme/tokens'
 
-/** 下载页地址。 */
+/** 下载页地址（与发布仓库一致）。 */
 const DOWNLOAD_URL = 'https://yuetongdai0-glitch.github.io/study-hub-releases/'
 
+/** 旧首页每个科目卡片的配色类名，保证观感与旧站一致。 */
+const ACCENT_CLASS: Record<string, string> = {
+  'graphic-reasoning': 'subject-blue',
+  'comprehensive-d': 'subject-violet',
+  verbal: 'subject-ochre',
+  quantitative: 'subject-cornflower',
+  judgment: 'subject-brick',
+  analogy: 'subject-grass',
+  'data-analysis': 'subject-teal',
+  'comprehensive-a': 'subject-a',
+  'exam-grid': 'subject-tool',
+  'choice-quiz': 'subject-tool subject-quiz',
+  vocab: 'subject-tool subject-vocab',
+  politics: 'subject-politics',
+  scratchpad: 'subject-tool subject-scratch',
+  words: 'subject-words',
+}
+
 /**
- * 首页科目卡片。
+ * 科目卡片。
  *
  * @param props 模块元信息。
- * @returns 单张卡片。
+ * @returns 旧版 `.subject` 卡片。
+ * @remarks 结构与类名与旧站完全一致（`.subject-number` / `.subject-body` / `.subject-action`），
+ * 颜色由 home.css 里的 `--subject-color` 决定，这里只负责选对配色类名。
  */
-function ModuleCard({ name }: { name: (typeof allModules)[number]['name'] }) {
-  const module = allModules.find((item) => item.name === name)
-  if (!module) return null
-  const accent = accentTokens[module.accent]
+function SubjectCard({ module }: { module: ModuleMeta }) {
+  const accent = ACCENT_CLASS[module.name] ?? 'subject-blue'
+  const featured = module.name === 'graphic-reasoning' ? ' subject-featured' : ''
 
   return (
-    <Link
-      to={module.path}
-      className="group relative flex flex-col gap-2 overflow-hidden rounded-[14px] border border-line bg-surface p-4 transition-all duration-200 hover:-translate-y-0.5 hover:border-transparent hover:shadow-float"
-      style={{ borderTopColor: accent.color, borderTopWidth: 2 }}
-    >
-      <div className="flex items-start justify-between gap-3">
-        <span className="font-num text-[11px] tabular-nums text-ink-3">
-          {String(module.order).padStart(2, '0')}
-        </span>
-        {module.source ? (
-          <span
-            className="rounded-md px-1.5 py-0.5 text-[10.5px] font-medium"
-            style={{ background: accent.soft, color: accent.ink }}
-          >
-            {module.source}
-          </span>
-        ) : null}
-      </div>
-
-      <h3 className="m-0 text-[15.5px] font-bold leading-snug tracking-tight text-ink">{module.title}</h3>
-      <p className="m-0 line-clamp-2 text-[12.5px] leading-relaxed text-ink-3">{module.description}</p>
-
-      <span className="mt-auto inline-flex items-center gap-1 pt-1 text-[12.5px] font-medium text-ink-3 transition-colors group-hover:text-ink">
-        {module.tool ? '去打草稿' : '去复习'}
-        <ArrowRight size={13} className="transition-transform group-hover:translate-x-0.5" />
+    <Link to={module.path} className={`subject ${accent}${featured}`}>
+      <span className="subject-number">{String(module.order).padStart(2, '0')}</span>
+      <span className="subject-body">
+        <span className="subject-source">{module.source ?? '笔记'}</span>
+        <strong>{module.title}</strong>
+        <span className="subject-description">{module.description}</span>
+      </span>
+      <span className="subject-action" aria-hidden="true">
+        {module.tool ? '去打草稿' : '去复习'} <span>→</span>
       </span>
     </Link>
   )
@@ -51,86 +54,86 @@ function ModuleCard({ name }: { name: (typeof allModules)[number]['name'] }) {
 /**
  * 首页。
  *
- * @returns 总览入口与移动端下载入口。
+ * @returns 总览入口。
+ * @remarks 版式沿用旧站 home.css：site-header + intro 双栏 + subject-grid，
+ * 内容改为从路由表读取，新增科目自动出现。
  */
 export default function HomePage() {
+  const accent = accentTokens.blue
+
   return (
-    <div className="app-content">
-      {/* 标题区 */}
-      <section className="mx-auto max-w-[var(--content-width)] py-8 sm:py-12">
-        <p className="mb-3 font-num text-[11px] uppercase tracking-[0.26em] text-ink-3">STUDY INDEX / 2026</p>
-        <h1 className="m-0 max-w-[18ch] text-[30px] font-bold leading-[1.18] tracking-tight sm:text-[38px]">
-          笔记与练习工具，
-          <br />
-          一个入口随时切换
-        </h1>
-        <p className="mt-4 max-w-[62ch] text-[13.5px] leading-relaxed text-ink-3">
-          按模块进入复习手册。每份资料的完整内容都在这里，阅读中可随时切换科目；
-          判断推理已拆出「图形推理」「类比推理」两个独立页；答题纸与答题卡用于限时练笔；草稿纸可以随时随地打草稿。
-        </p>
-      </section>
+    <div className="home-main" style={{ ['--accent' as string]: accent.color }}>
+      <a className="skip-link" href="#subjects">
+        跳到复习科目
+      </a>
 
-      {/* 阅读模块 */}
-      <section aria-labelledby="reading-title" className="mb-10">
-        <div className="mb-3 flex items-baseline justify-between border-b border-line pb-2">
-          <h2 id="reading-title" className="m-0 text-[15px] font-bold tracking-tight">
-            复习科目
-          </h2>
-          <span className="font-num text-[11px] text-ink-3">
-            01 - {String(moduleMetas.length).padStart(2, '0')}
+      <header className="site-header">
+        <a className="brand" href="./" aria-label="返回备考复习总览首页">
+          <span className="brand-mark" aria-hidden="true">
+            复
           </span>
-        </div>
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {moduleMetas.map((module) => (
-            <ModuleCard key={module.name} name={module.name} />
-          ))}
-        </div>
-      </section>
-
-      {/* 工具 */}
-      <section aria-labelledby="tools-title" className="mb-10">
-        <div className="mb-3 flex items-baseline justify-between border-b border-line pb-2">
-          <h2 id="tools-title" className="m-0 text-[15px] font-bold tracking-tight">
-            练习工具
-          </h2>
-          <span className="font-num text-[11px] text-ink-3">全屏交互 · 自动保存</span>
-        </div>
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {toolMetas.map((module) => (
-            <ModuleCard key={module.name} name={module.name} />
-          ))}
-        </div>
-      </section>
-
-      {/* 移动端下载 */}
-      <section className="flex flex-col items-start justify-between gap-5 rounded-[14px] border border-line bg-surface p-6 sm:flex-row sm:items-center">
-        <div className="max-w-[58ch]">
-          <p className="mb-2 flex items-center gap-1.5 text-[11px] uppercase tracking-[0.22em] text-ink-3">
-            <Smartphone size={12} /> MOBILE / OFFLINE
-          </p>
-          <h2 className="m-0 mb-2 text-[19px] font-bold tracking-tight">装到手机上，断网也能翻</h2>
-          <p className="m-0 text-[13px] leading-relaxed text-ink-3">
-            安卓 APK 与 iOS 安装包与网页端内容同源，装好后可应用内检查更新；网页端本身 HTML 不缓存，随时刷新拿最新。
-          </p>
-        </div>
-        <a
-          href={DOWNLOAD_URL}
-          target="_blank"
-          rel="noreferrer"
-          className="inline-flex w-full shrink-0 items-center justify-between gap-3 rounded-[10px] bg-ink px-4 py-3 text-white transition hover:opacity-90 sm:w-auto"
-        >
-          <span className="flex flex-col text-left leading-tight">
-            <span className="text-[10.5px] tracking-wide text-white/60">Android · iOS</span>
-            <strong className="text-[13.5px] font-semibold">前往下载页</strong>
-          </span>
-          <ArrowRight size={15} />
+          <span>备考复习总览</span>
         </a>
-      </section>
+        <div className="note-count">
+          {moduleMetas.length} 份笔记 + {toolMetas.length} 个练习工具
+        </div>
+      </header>
 
-      <footer className="mt-10 flex flex-wrap items-center justify-between gap-3 border-t border-line pt-4 text-[12.5px] text-ink-3">
-        <span>所有笔记均保留原始完整内容</span>
-        <a href="#top" className="hover:text-ink" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-          回到顶部 ↑
+      <main>
+        <section className="intro" aria-labelledby="page-title">
+          <div className="intro-copy">
+            <p className="intro-index" aria-hidden="true">
+              STUDY INDEX / 2026
+            </p>
+            <h1 id="page-title">
+              笔记与练习工具，
+              <br />
+              一个入口随时切换
+            </h1>
+          </div>
+          <p className="intro-note">
+            按模块进入原始复习手册。每份资料均完整保留，阅读中可随时返回总览或切换到其他科目；
+            判断推理已拆出「图形推理」「类比推理」两个独立页；模拟考试答题纸用于平时限时练笔，
+            选择题答题卡用于刷选择题并统计正确率与用时；规范词速查手册可在作答时随时查阅表达。
+          </p>
+        </section>
+
+        <section className="subjects" id="subjects" aria-labelledby="subjects-title">
+          <div className="section-heading">
+            <h2 id="subjects-title">复习科目</h2>
+            <span>
+              01 - {String(allModules.length).padStart(2, '0')}
+            </span>
+          </div>
+
+          <div className="subject-grid">
+            {allModules.map((module) => (
+              <SubjectCard key={module.name} module={module} />
+            ))}
+          </div>
+        </section>
+
+        {/* 移动端下载入口：视觉沿用旧首页卡片语言 */}
+        <section className="app-download" aria-labelledby="download-title">
+          <div className="app-download-copy">
+            <p className="app-download-kicker">MOBILE / OFFLINE</p>
+            <h2 id="download-title">装到手机上，断网也能翻</h2>
+            <p>安卓 APK 与 iOS 安装包与网页端内容同源，装好后可应用内检查更新。</p>
+          </div>
+          <a className="app-download-action" href={DOWNLOAD_URL} target="_blank" rel="noreferrer">
+            <span className="app-download-platform">Android · iOS</span>
+            <strong>前往下载页</strong>
+            <span className="app-download-arrow" aria-hidden="true">
+              →
+            </span>
+          </a>
+        </section>
+      </main>
+
+      <footer className="site-footer">
+        <p>所有笔记均保留原始完整内容</p>
+        <a href="#subjects">
+          回到科目列表 <span aria-hidden="true">↑</span>
         </a>
       </footer>
     </div>

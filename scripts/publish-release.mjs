@@ -295,6 +295,7 @@ if (dryRun) {
   /* ---------- ⑦ 清理本地构建产物 ---------- */
   const junk = [
     join(webRoot, 'dist'),
+    join(webRoot, 'dist-mobile'),
     join(mobileRoot, 'dist'),
     join(mobileRoot, 'build'),
     join(mobileRoot, 'android/app/build'),

@@ -136,6 +136,33 @@ test('迁移后的模块正文与旧页面逐节等价', async () => {
   }
 })
 
+test('样式作用域正确：旧样式不得污染应用壳', async () => {
+  /*
+   * 这两条都是真实事故：
+   * 1. 旧首页的 `main { width: min(100% - 32px) }` 把应用壳的 <main> 也命中，
+   *    与 .container 的 14px 内边距叠加 → 手机端卡片到屏幕变成 30px（应有 14px）。
+   * 2. 侧栏的 body 让位无条件生效 → 首页/工具页在桌面被挤出 268px。
+   */
+  const home = await readFile(new URL('../src/styles/legacy-home.css', import.meta.url), 'utf8')
+  assert.ok(
+    !/^main\s*\{/m.test(home),
+    'legacy-home.css 不得直接写 `main {}`，必须限定为 `.home-main > main`'
+  )
+  assert.ok(home.includes('.home-main > main'), '首页宽容器应作用于 .home-main > main')
+
+  const shell = await readFile(new URL('../src/styles/legacy-shell.css', import.meta.url), 'utf8')
+  assert.ok(
+    !/^\.app-shell\s*\{\s*padding-left/m.test(shell),
+    '侧栏让位必须带 [data-shell="true"] 条件，否则首页也被让位'
+  )
+  assert.ok(shell.includes('.app-shell[data-shell="true"]'), '侧栏让位缺少条件选择器')
+
+  // 不走章节骨架的页面（规范词速查 / 答题卡 / 404）依赖 .app-content 提供内边距。
+  const style = await readFile(new URL('../src/styles.css', import.meta.url), 'utf8')
+  assert.ok(/\.app-content\s*\{/.test(style), 'styles.css 缺少 .app-content 容器')
+  assert.ok(/\.container\s*\{/.test(style), 'styles.css 缺少 .container 容器')
+})
+
 test('每个模块都通过统一骨架渲染', async () => {
   for (const route of ROUTES) {
     const source = await readFile(new URL(`../src/pages/reading/${route}/index.tsx`, import.meta.url), 'utf8')
@@ -151,8 +178,25 @@ test('内容原语集中定义，页面不再自定义视觉', async () => {
     assert.ok(primitives.includes(`export function ${name}`), `缺少内容原语 ${name}`)
   }
 
-  // 视觉定义只允许出现在 styles.css 与模块作用域样式里。
+  /*
+   * 视觉分层（本次修复的核心约定）：
+   * - src/styles.css 只放「应用壳 + 旧站没有的新增件」，不得重复定义正文样式；
+   * - 正文样式在各模块的 module.css（旧页 CSS 原样保留）。
+   * 之前 styles.css 也写了一套 .section/.example，把旧观感盖掉了。
+   */
   const style = await readFile(new URL('../src/styles.css', import.meta.url), 'utf8')
   assert.match(style, /--accent/, '样式层缺少强调色变量')
-  assert.match(style, /\.example-answer/, '样式层缺少例题解析样式')
+  for (const legacyClass of ['.example-answer', '.block-title', '.formula-box']) {
+    assert.ok(
+      !new RegExp(`\\${legacyClass}\\s*\\{`).test(style),
+      `styles.css 不应重复定义 ${legacyClass}（正文样式归 module.css）`
+    )
+  }
+
+  // 各模块必须保留自己的旧样式文件。
+  for (const route of ROUTES) {
+    const css = await readFile(new URL(`../src/pages/reading/${route}/module.css`, import.meta.url), 'utf8')
+    assert.ok(css.length > 500, `${route} 的 module.css 内容异常（可能被抽空）`)
+    assert.match(css, new RegExp(`\\.legacy-${route}`), `${route} 的样式缺少作用域前缀`)
+  }
 })

@@ -12,6 +12,7 @@ pnpm-debug.log*
 
 # 构建产物
 apps/web/dist/
+apps/web/dist-mobile/
 apps/web/.smoke/
 apps/mobile/dist/
 apps/mobile/build/

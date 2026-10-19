@@ -12,6 +12,8 @@ const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 /** 构建产物目录：全部可再生，删掉不影响开发。 */
 const targets = [
   'apps/web/dist',
+  'apps/web/dist-mobile',
+  'apps/web/.smoke',
   'apps/mobile/dist',
   'apps/mobile/build',
   'apps/mobile/android/app/build',

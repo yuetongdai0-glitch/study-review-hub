@@ -342,6 +342,36 @@ public class AppUpdatePlugin extends Plugin {
     }
 
     /**
+     * 清缓存并重新加载线上网页。
+     *
+     * @param call Capacitor 调用。
+     * @remarks 壳加载的是远程页面，「刷新」必须真正回到服务器取最新内容：
+     * WebView 的 HTTP 缓存与资源缓存都要清掉，否则会继续用旧 JS/CSS。
+     * 这正是用户反馈的「点刷新还是旧的」的根因。
+     */
+    @PluginMethod
+    public void reloadWeb(final PluginCall call) {
+        final String url = call.getString("url");
+        if (url == null || !url.startsWith("https://")) {
+            call.reject("刷新地址必须是 HTTPS");
+            return;
+        }
+        getActivity().runOnUiThread(() -> {
+            try {
+                // clearCache(true) 清 HTTP 与资源缓存；clearHistory 避免返回到旧页面。
+                getBridge().getWebView().clearCache(true);
+                getBridge().getWebView().clearHistory();
+            } catch (Exception ignored) {
+                // 清缓存失败仍继续重载，用户至少能拿到未缓存部分。
+            }
+            // 加时间戳，绕开任何中间层与 Service Worker 对 HTML 的残留。
+            String fresh = url + (url.contains("?") ? "&" : "?") + "_r=" + System.currentTimeMillis();
+            getBridge().getWebView().loadUrl(fresh);
+            call.resolve();
+        });
+    }
+
+    /**
      * 取异常文案。
      *
      * @param failure 异常。
