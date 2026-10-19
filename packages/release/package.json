@@ -1,0 +1,10 @@
+{
+  "name": "@study-hub/release",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "description": "发布清单与版本号的共享规则（网页更新检查、安卓应用内更新、发布脚本共用）",
+  "exports": {
+    ".": "./src/index.mjs"
+  }
+}

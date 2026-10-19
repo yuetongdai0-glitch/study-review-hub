@@ -392,3 +392,92 @@ main {
     transition: none;
   }
 }
+
+/* ============================================================
+   移动端下载区：与科目卡片同一套视觉语言，但只占一行高度
+   ============================================================ */
+.app-download {
+  width: min(calc(100% - 48px), var(--content-width));
+  margin: 8px auto 0;
+  padding: 30px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 26px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+}
+
+.app-download-copy {
+  max-width: 58ch;
+}
+
+.app-download-kicker {
+  margin: 0 0 8px;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  color: var(--muted);
+}
+
+.app-download h2 {
+  margin: 0 0 8px;
+  font-size: 21px;
+  letter-spacing: -0.01em;
+}
+
+.app-download p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13.5px;
+  line-height: 1.7;
+}
+
+.app-download-action {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 18px;
+  border-radius: 10px;
+  background: var(--ink);
+  color: #fff;
+  text-decoration: none;
+  transition: transform 140ms ease, opacity 140ms ease;
+}
+
+.app-download-action:hover,
+.app-download-action:focus-visible {
+  transform: translateY(-1px);
+  opacity: 0.94;
+}
+
+.app-download-platform {
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.app-download-action strong {
+  font-size: 13.5px;
+  font-weight: 600;
+}
+
+.app-download-arrow {
+  font-size: 15px;
+}
+
+@media (max-width: 760px) {
+  .app-download {
+    width: min(calc(100% - 32px), var(--content-width));
+    padding: 22px 20px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+  }
+
+  .app-download-action {
+    width: 100%;
+    justify-content: space-between;
+  }
+}

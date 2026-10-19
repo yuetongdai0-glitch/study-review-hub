@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <external-path name="my_images" path="." />
+    <cache-path name="my_cache_images" path="." />
+    <!-- 应用内更新下载的安装包放在 cache 下，需显式授权才能交给系统安装器 -->
+    <cache-path name="study_hub_updates" path="." />
+</paths>

@@ -1,9 +1,25 @@
 {
-  "name": "zl-study-hub",
-  "version": "1.0.0",
+  "name": "study-hub",
+  "version": "2.0.0",
   "private": true,
   "type": "module",
+  "description": "备考复习知识库：静态站点 + 安卓/iOS 移动端 + 独立发布包仓库",
+  "engines": {
+    "node": ">=22.12",
+    "pnpm": ">=10"
+  },
+  "packageManager": "pnpm@10.28.2",
   "scripts": {
-    "test": "node --test tests/site.test.mjs"
+    "dev": "pnpm --filter @study-hub/web dev",
+    "build": "pnpm --filter @study-hub/web build",
+    "preview": "pnpm --filter @study-hub/web preview",
+    "test": "pnpm -r --if-present test",
+    "mobile:sync": "pnpm --filter @study-hub/mobile sync",
+    "mobile:android": "pnpm --filter @study-hub/mobile build:android",
+    "mobile:ios": "pnpm --filter @study-hub/mobile build:ios",
+    "release": "node scripts/publish-release.mjs",
+    "release:web": "node scripts/publish-release.mjs --web-only",
+    "deploy:web": "node scripts/deploy-web.mjs",
+    "clean": "node scripts/clean.mjs"
   }
 }

@@ -1,0 +1,23 @@
+{
+  "name": "@study-hub/mobile",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "description": "备考复习移动端（Capacitor 壳 + 安卓应用内更新），产物供发布仓库分发",
+  "scripts": {
+    "sync": "node scripts/sync.mjs",
+    "build:android": "node scripts/build-android.mjs",
+    "build:ios": "node scripts/build-ios.mjs",
+    "test": "node --test tests/*.test.mjs"
+  },
+  "dependencies": {
+    "@capacitor/android": "^7.6.9",
+    "@capacitor/app": "^7.0.4",
+    "@capacitor/browser": "^7.0.4",
+    "@capacitor/core": "^7.6.9",
+    "@capacitor/ios": "^7.6.9"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^7.6.9"
+  }
+}

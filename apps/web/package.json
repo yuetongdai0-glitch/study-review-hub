@@ -1,0 +1,13 @@
+{
+  "name": "@study-hub/web",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "description": "备考复习知识库静态站点（构建产物供 GitHub Pages 与移动端共用）",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "dev": "node scripts/build.mjs --serve",
+    "preview": "node scripts/serve.mjs dist",
+    "test": "node --test tests/*.test.mjs"
+  }
+}
