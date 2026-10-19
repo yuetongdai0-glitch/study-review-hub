@@ -1186,41 +1186,47 @@ test('草稿纸：白板书写、橡皮擦除、撤销重做、自动保存与�
 test('词语积累页：成语积累 + 易混辨析，每词带例句、每组配例题', async () => {
   const page = await readText(new URL('../pages/words/index.html', import.meta.url))
 
-  // 24 个板块：总览 + 积累 12 讲 + 辨析 8 组 + 实词 + 望文生义 + 复盘
+  // 52 个板块：总览 + 词群 29 讲 + 辨析 16 组 + 实词 + 刷题 + 200组索引 + 实词60组 + 望文生义 + 复盘
   const secIds = [...page.matchAll(/<div class="section c-[a-z]+" id="([^"]+)"/g)].map((m) => m[1])
-  assert.equal(secIds.length, 24, `词语积累页板块应为 24 个，实际 ${secIds.length} 个`)
-  for (const id of ['nav', 'sw', 'mis', 'strategy']) {
+  assert.equal(secIds.length, 58, `词语积累页板块应为 56 个，实际 ${secIds.length} 个`)
+  for (const id of ['nav', 'sw', 'mis', 'strategy', 'q62', 'idx', 'sidx', 'e1', 'e2', 'e3', 'e4', 'e5', 'e6']) {
     assert.ok(secIds.includes(id), `词语积累页缺少板块 ${id}`)
   }
-  for (let i = 1; i <= 12; i++) assert.ok(secIds.includes(`s${i}`), `缺少积累讲 s${i}`)
-  for (let i = 1; i <= 8; i++) assert.ok(secIds.includes(`b${i}`), `缺少辨析组 b${i}`)
+  for (let i = 1; i <= 29; i++) assert.ok(secIds.includes(`s${i}`), `缺少词群 s${i}`)
+  for (let i = 1; i <= 16; i++) assert.ok(secIds.includes(`b${i}`), `缺少辨析组 b${i}`)
 
   // 侧栏目录与锚点一一对应（无死链）
   const navLinks = [...page.matchAll(/class="nav-link"[^>]*href="#([^"]+)"/g)].map((m) => m[1])
-  assert.equal(navLinks.length, 24, `侧栏链接应为 24 条，实为 ${navLinks.length}`)
+  assert.equal(navLinks.length, 58, `侧栏链接应为 56 条，实为 ${navLinks.length}`)
   for (const id of navLinks) assert.ok(page.includes(`id="${id}"`), `侧栏锚点 #${id} 不存在`)
+
+  // 全书总索引：成语辨析 200 组 + 实词 60 组
+  const idxRows = (page.match(/<td class="idx-no">/g) || []).length
+  assert.equal(idxRows, 260, `总索引行数应为 200+60=260，实为 ${idxRows}`)
 
   // 除总览外，每个板块都必须有例题（例题不得堆在页尾）
   const chunks = page.split(/<div class="section c-[a-z]+" id="/).slice(1)
   for (const chunk of chunks) {
     const id = chunk.slice(0, chunk.indexOf('"'))
-    if (id === 'nav') continue
+    if (['nav', 'idx', 'sidx', 'e1', 'e2', 'e3', 'e4', 'e5', 'e6'].includes(id)) continue  // 总览与两张总索引是查表区，不配例题
     assert.ok(chunk.includes('class="example"'), `板块 ${id} 没有例题`)
   }
 
-  // 词卡：每个词都必须有一句例句
+  // 词卡：每个词都必须有一句例句（ref 卡是跳转索引，不要求例句）
   const words = (page.match(/class="wg"/g) || []).length
-  assert.ok(words >= 160, `成语词卡偏少：${words}`)
+  const refCards = (page.match(/class="wg wg-ref"/g) || []).length
+  assert.ok(words >= 700, `带例句的成语词卡偏少：${words}`)
+  assert.ok(words + refCards >= 800, `成语词条（含跳转索引）不足 800：${words + refCards}`)
   const egLines = (page.match(/class="wg-e">/g) || []).length
   assert.equal(egLines, words, '有词卡缺少例句')
 
   // 辨析组：每一组都要有「一句话区别」与侧重表
   const diffs = (page.match(/class="diff">/g) || []).length
-  assert.equal(diffs, 32, `「一句话区别」应为 32 条，实为 ${diffs}`)
+  assert.equal(diffs, 64, `「一句话区别」应为 64 条，实为 ${diffs}`)
 
   // 例题：每题四个选项 + 答案 + 解析；且必须有标注年份的真题
   const total = (page.match(/class="example"/g) || []).length
-  assert.ok(total >= 40, `例题偏少：${total}`)
+  assert.ok(total >= 170, `例题偏少：${total}`)
   assert.equal((page.match(/class="example-answer"/g) || []).length, total, '每道例题都应有解析')
   assert.equal((page.match(/class="example-opts"/g) || []).length, total, '每道例题都应有选项')
   const optCounts = [...page.matchAll(/<div class="example-opts">([\s\S]*?)<\/div>/g)]
