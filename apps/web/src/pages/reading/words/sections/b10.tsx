@@ -33,8 +33,8 @@ export default function S46(): ReactElement {
               <ExampleHeader>例题 · 真题 2021 黑龙江 第 38 题（改）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>跨境电商刚兴起那几年，平台上既有正规品牌，也有大量小作坊，商品质量____，消费者维权十分困难。</ExampleQuestion>
-                <ExampleOptions><span>A. 鱼龙混杂</span><span>B. 鱼目混珠</span><span>C. 良莠不齐</span><span>D. 参差不齐</span></ExampleOptions>
-                <ExampleAnswer><b>答案：<span className="correct">C</span></b><br />解析：句中「<b>既有正规品牌，也有大量小作坊</b>」是明确的<b>好坏混杂</b>，且落点在「质量」，选「良莠不齐」。「参差不齐」只说<b>水平不一致</b>，不含「好坏」判断，语气最轻；「鱼龙混杂」多指<b>人</b>的成分复杂；「鱼目混珠」要求有<b>「拿甲冒充乙」的具体动作</b>，句中只是并存。</ExampleAnswer>
+                <ExampleOptions><span>A. 如数家珍　星罗棋布　代表</span><span>B. 举不胜举　不乏其人　典型</span><span>C. 汗牛充栋　不胜枚举　标杆</span><span>D. 多如牛毛　凤毛麟角　范例</span></ExampleOptions>
+                <ExampleAnswer><b>答案：<span className="correct">B</span></b><br />解析：句中「<b>既有正规品牌，也有大量小作坊</b>」是明确的<b>好坏混杂</b>，且落点在「质量」，选「良莠不齐」。「参差不齐」只说<b>水平不一致</b>，不含「好坏」判断，语气最轻；「鱼龙混杂」多指<b>人</b>的成分复杂；「鱼目混珠」要求有<b>「拿甲冒充乙」的具体动作</b>，句中只是并存。</ExampleAnswer>
               </ExampleBody>
             </Example>
             </Block>

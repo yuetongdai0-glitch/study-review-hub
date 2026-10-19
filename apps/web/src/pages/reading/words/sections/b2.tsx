@@ -32,8 +32,8 @@ export default function S38(): ReactElement {
                 <ExampleHeader>例题 1 · 真题 2021 山东 第 19 题</ExampleHeader>
                 <ExampleBody>
                   <ExampleQuestion>当前，以数字化的知识和信息作为关键生产要素的数字经济蓬勃发展，新技术、新业态、新模式____。各国纷纷将发展数字经济作为推动实体经济提质增效、____核心竞争力的重要举措，推动数字经济取得的创新成果____于实体经济各个领域，围绕新一轮科技和产业制高点展开积极竞合。</ExampleQuestion>
-                  <ExampleOptions><span>A. 纷至沓来　培育　落实</span><span>B. 层出不穷　重塑　融合</span><span>C. 乏善可陈　形成　应用</span><span>D. 方兴未艾　提升　实践</span></ExampleOptions>
-                  <ExampleAnswer><b>答案：<span className="correct">B</span></b><br />解析：第一空前是「<b>新技术、新业态、新模式</b>」这组<b>不断冒出新东西</b>的并列短语，要表达「一个接一个出现」，选「层出不穷」。<br />·「方兴未艾」指<b>整体势头正盛、还没停</b>，是形容「某个事业」，不能说「新模式方兴未艾」（三个新事物各自「方兴未艾」不合逻辑）；<br />·「纷至沓来」多指<b>人、消息</b>接连而来，对象不当；<br />·「乏善可陈」是贬义，与「蓬勃发展」矛盾。<br />第二空「重塑核心竞争力」、第三空「融合于各领域」均可验证。</ExampleAnswer>
+                  <ExampleOptions><span>A. 层出不穷　重塑　融合</span><span>B. 乏善可陈　形成　应用</span><span>C. 方兴未艾　提升　实践</span><span>D. 纷至沓来　培育　落实</span></ExampleOptions>
+                  <ExampleAnswer><b>答案：<span className="correct">A</span></b><br />解析：第一空前是「<b>新技术、新业态、新模式</b>」这组<b>不断冒出新东西</b>的并列短语，要表达「一个接一个出现」，选「层出不穷」。<br />·「方兴未艾」指<b>整体势头正盛、还没停</b>，是形容「某个事业」，不能说「新模式方兴未艾」（三个新事物各自「方兴未艾」不合逻辑）；<br />·「纷至沓来」多指<b>人、消息</b>接连而来，对象不当；<br />·「乏善可陈」是贬义，与「蓬勃发展」矛盾。<br />第二空「重塑核心竞争力」、第三空「融合于各领域」均可验证。</ExampleAnswer>
                 </ExampleBody>
               </Example>
             </Block>
@@ -54,8 +54,8 @@ export default function S38(): ReactElement {
                 <ExampleHeader>例题 2 · 真题 2021 广西（联考）</ExampleHeader>
                 <ExampleBody>
                   <ExampleQuestion>近年来，商业赞助越来越多地____体育运动，在体育市场化、职业化____的当下，如何在追求个人商业价值与体育管理机构利益间取得平衡，是运动员和体育管理机构不能回避的问题。</ExampleQuestion>
-                  <ExampleOptions><span>A. 热衷　欣欣向荣</span><span>B. 垂青　方兴未艾</span><span>C. 觊觎　如日中天</span><span>D. 追逐　高歌猛进</span></ExampleOptions>
-                  <ExampleAnswer><b>答案：<span className="correct">B</span></b><br />解析：第一空「觊觎」是<b>贬义</b>（非分地希望得到），与「商业赞助」的中性色彩不符，排除 C；「热衷」后须带「于」（热衷于……），用法错误，排除 A。<br />第二空形容「体育市场化、职业化」的<b>发展势头</b>，选「方兴未艾」（正兴盛、远未到头）。「高歌猛进」指前进路上充满乐观精神，文段没有「乐观情绪」这层意思；「如日中天」是<b>已到顶峰</b>，而市场化还在推进中，不合。<br /><b>提示：</b>「方兴未艾」只修饰「事业、产业、潮流」这类整体态势，不修饰「一个具体的新模式」。</ExampleAnswer>
+                  <ExampleOptions><span>A. 觊觎　如日中天</span><span>B. 追逐　高歌猛进</span><span>C. 热衷　欣欣向荣</span><span>D. 垂青　方兴未艾</span></ExampleOptions>
+                  <ExampleAnswer><b>答案：<span className="correct">D</span></b><br />解析：第一空「觊觎」是<b>贬义</b>（非分地希望得到），与「商业赞助」的中性色彩不符，排除 C；「热衷」后须带「于」（热衷于……），用法错误，排除 A。<br />第二空形容「体育市场化、职业化」的<b>发展势头</b>，选「方兴未艾」（正兴盛、远未到头）。「高歌猛进」指前进路上充满乐观精神，文段没有「乐观情绪」这层意思；「如日中天」是<b>已到顶峰</b>，而市场化还在推进中，不合。<br /><b>提示：</b>「方兴未艾」只修饰「事业、产业、潮流」这类整体态势，不修饰「一个具体的新模式」。</ExampleAnswer>
                 </ExampleBody>
               </Example>
             </Block>

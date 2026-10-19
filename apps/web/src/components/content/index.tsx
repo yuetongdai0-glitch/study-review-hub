@@ -1,4 +1,5 @@
-import type { ReactNode } from 'react'
+import { ChevronDown } from 'lucide-react'
+import { createContext, useContext, useState, type KeyboardEvent, type ReactNode } from 'react'
 
 /**
  * 内容原语：整站阅读正文的唯一渲染层。
@@ -100,26 +101,87 @@ export function DataTable({
 }
 
 /**
+ * 例题「默认折叠」开关。
+ *
+ * @remarks 只有声明了这一层的页面才会折叠，其余页面的例题行为保持不变。
+ * 用 Context 而不是给 `Example` 加属性，是因为全站有 170+ 处 `<Example>`，
+ * 逐处加属性既容易漏，也让正文源码被样式细节污染。
+ */
+const CollapsibleContext = createContext(false)
+
+/**
+ * 单道例题的展开状态，供 `ExampleHeader` 读取。
+ *
+ * @remarks 为 `null` 时说明这道题不折叠，头部就是普通标题栏。
+ */
+const ToggleContext = createContext<{ open: boolean; toggle: () => void } | null>(null)
+
+/**
+ * 打开「例题默认折叠」。
+ *
+ * @param props 页面内容。
+ * @returns 带折叠能力的子树。
+ */
+export function ExampleCollapsible({ children }: { children: ReactNode }) {
+  return <CollapsibleContext.Provider value={true}>{children}</CollapsibleContext.Provider>
+}
+
+/**
  * 例题容器。
  *
  * @param props 例题各段。
- * @returns 带渐变标题栏的例题卡片。
+ * @returns 带渐变标题栏的例题卡片；页面开启折叠时，默认只显示标题栏。
  */
 export function Example({ children }: ChildrenProps) {
-  return <div className="example">{children}</div>
+  const collapsible = useContext(CollapsibleContext)
+  const [open, setOpen] = useState(false)
+  if (!collapsible) return <div className="example">{children}</div>
+  return (
+    <ToggleContext.Provider value={{ open, toggle: () => setOpen((value) => !value) }}>
+      <div className={open ? 'example example-fold is-open' : 'example example-fold'}>{children}</div>
+    </ToggleContext.Provider>
+  )
 }
 
 /**
  * 例题标题栏。
  *
  * @param props 标题与可选来源标签。
- * @returns 例题头部。
+ * @returns 例题头部；所在例题可折叠时，整条标题栏即开关。
  */
 export function ExampleHeader({ children, source }: { children: ReactNode; source?: ReactNode }) {
+  const toggle = useContext(ToggleContext)
+
+  if (!toggle) {
+    return (
+      <div className="example-header">
+        <span>{children}</span>
+        {source ? <span>{source}</span> : null}
+      </div>
+    )
+  }
+
+  /** 键盘可达：Enter / 空格 与点击等价。 */
+  const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault()
+      toggle.toggle()
+    }
+  }
+
   return (
-    <div className="example-header">
+    <div
+      className="example-header example-toggle"
+      role="button"
+      tabIndex={0}
+      aria-expanded={toggle.open}
+      onClick={toggle.toggle}
+      onKeyDown={handleKeyDown}
+    >
       <span>{children}</span>
       {source ? <span>{source}</span> : null}
+      <span className="example-hint">{toggle.open ? '收起' : '展开'}</span>
+      <ChevronDown size={14} className="example-caret" aria-hidden="true" />
     </div>
   )
 }

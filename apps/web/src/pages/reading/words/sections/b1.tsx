@@ -32,8 +32,8 @@ export default function S37(): ReactElement {
                 <ExampleHeader>例题 1 · 真题 2020 国考（副省级）第 35 题</ExampleHeader>
                 <ExampleBody>
                   <ExampleQuestion>千百年来，乡村承担着对村民行为的引导、规训与教育功能，让人们____、明辨是非善恶。农事活动、节日庆典、民俗习惯、村规民约等，都是维系村落价值取向和有序运行的重要____，它们以____的形式不断强化人们的行为规范，并使之内化为人们的道德准则。</ExampleQuestion>
-                  <ExampleOptions><span>A. 奉公守法　手段　耳濡目染</span><span>B. 循规蹈矩　途径　喜闻乐见</span><span>C. 与人为善　方式　言传身教</span><span>D. 通情达理　载体　潜移默化</span></ExampleOptions>
-                  <ExampleAnswer><b>答案：<span className="correct">D</span></b><br />解析：突破口在第三空。代词「<b>它们</b>」指「农事活动、节日庆典、民俗习惯、村规民约」，这些是<b>事与物</b>，不是人。<br />·「潜移默化」的主体可以是事或物 → 成立；<br />·「耳濡目染」的主体<b>必须是人</b>（谁濡染了谁）→ 与「它们」搭配不当，A 排除；<br />·「言传身教」同样要求主语是人 → C 排除；<br />·「喜闻乐见」指群众喜欢听、乐意看，与「它们」不搭 → B 排除。<br />第二空「载体」与「承载价值取向」呼应，第一空「通情达理」与「明辨是非善恶」并列，全部吻合。<b>这道题把「主体是人是物」这一条考到了极致。</b></ExampleAnswer>
+                  <ExampleOptions><span>A. 循规蹈矩　途径　喜闻乐见</span><span>B. 与人为善　方式　言传身教</span><span>C. 通情达理　载体　潜移默化</span><span>D. 奉公守法　手段　耳濡目染</span></ExampleOptions>
+                  <ExampleAnswer><b>答案：<span className="correct">C</span></b><br />解析：突破口在第三空。代词「<b>它们</b>」指「农事活动、节日庆典、民俗习惯、村规民约」，这些是<b>事与物</b>，不是人。<br />·「潜移默化」的主体可以是事或物 → 成立；<br />·「耳濡目染」的主体<b>必须是人</b>（谁濡染了谁）→ 与「它们」搭配不当，<b>D 项</b>排除；<br />·「言传身教」同样要求主语是人 → <b>B 项</b>排除；<br />·「喜闻乐见」指群众喜欢听、乐意看，与「它们」不搭 → <b>A 项</b>排除。<br />第二空「载体」与「承载价值取向」呼应，第一空「通情达理」与「明辨是非善恶」并列，全部吻合。<b>这道题把「主体是人是物」这一条考到了极致。</b></ExampleAnswer>
                 </ExampleBody>
               </Example>
             </Block>

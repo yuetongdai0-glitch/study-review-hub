@@ -34,8 +34,8 @@ export default function S40(): ReactElement {
                 <ExampleHeader>例题 1 · 真题 2019 吉林（0420 乙级）第 37 题</ExampleHeader>
                 <ExampleBody>
                   <ExampleQuestion>维护网络在线教育市场的正常秩序____。首先需要加强监管，网络在线教育是一个新生事物，是「互联网 + 教育」的新生产业，怎么管、谁来管、管什么等一系列问题，尚待厘清。____是在立法等制度设计层面划定相关准入门槛。</ExampleQuestion>
-                  <ExampleOptions><span>A. 责无旁贷　重中之重</span><span>B. 迫在眉睫　当务之急</span><span>C. 至关重要　燃眉之急</span><span>D. 刻不容缓　首当其冲</span></ExampleOptions>
-                  <ExampleAnswer><b>答案：<span className="correct">B</span></b><br />解析：第一空作「正常秩序」的谓语，要说<b>形势紧迫</b>，「迫在眉睫」「刻不容缓」都对；「至关重要」强调重要性而非紧迫性，「责无旁贷」强调责任不可推卸，均不合。<br />第二空需要一个<b>名词</b>，直接充当「是……」的主语，只有「当务之急」是名词性（当前最急需办的事）；「首当其冲」意为最先受冲击，与文意无关，D 排除。「燃眉之急」「重中之重」虽为名词，但分别侧重「危急程度」「重要性」，与「当前要办的事」不合。<br /><b>这题就是「迫在眉睫作谓语、当务之急作主语」的标准双空考法。</b></ExampleAnswer>
+                  <ExampleOptions><span>A. 迫在眉睫　当务之急</span><span>B. 至关重要　燃眉之急</span><span>C. 刻不容缓　首当其冲</span><span>D. 责无旁贷　重中之重</span></ExampleOptions>
+                  <ExampleAnswer><b>答案：<span className="correct">A</span></b><br />解析：第一空作「正常秩序」的谓语，要说<b>形势紧迫</b>，「迫在眉睫」「刻不容缓」都对；「至关重要」强调重要性而非紧迫性，「责无旁贷」强调责任不可推卸，均不合。<br />第二空需要一个<b>名词</b>，直接充当「是……」的主语，只有「当务之急」是名词性（当前最急需办的事）；「首当其冲」意为最先受冲击，与文意无关，D 排除。「燃眉之急」「重中之重」虽为名词，但分别侧重「危急程度」「重要性」，与「当前要办的事」不合。<br /><b>这题就是「迫在眉睫作谓语、当务之急作主语」的标准双空考法。</b></ExampleAnswer>
                 </ExampleBody>
               </Example>
             </Block>

@@ -202,8 +202,8 @@ export default function S7(): ReactElement {
               <ExampleHeader>例题 · 真题 2018 年 421 联考</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>现代传媒尤其是电子传媒有着比传统纸质传媒更宽广的尺度，____更多批判的意识和更多的异端。无数专家、学者在电子传媒会客厅中针对各种社会现象接受访谈，发表意见，甚至不乏____的声音。分析之深、论证之严密、言论之犀利，传统媒体均无法____。</ExampleQuestion>
-                <ExampleOptions><span>A. 容纳　惊世骇俗　望其项背</span><span>B. 鼓励　特立独行　相提并论</span><span>C. 滋生　针锋相对　同日而语</span><span>D. 允许　振聋发聩　一目了然</span></ExampleOptions>
-                <ExampleAnswer><b>答案：<span className="correct">A</span></b><br />解析：第三空是判分点——传统媒体<b>赶不上</b>电子传媒的深度与犀利，用「无法望其项背」（望其项背＝赶得上，<b>只能用于否定式</b>）。「相提并论」「同日而语」都是「放在一起谈论」，与「比不上」不完全等同，且「无法相提并论」多用于<b>性质不同不可类比</b>；「一目了然」形容看得清楚，与「赶不上」毫无关系，D 直接出局。第一空「容纳……批判意识」、第二空「惊世骇俗的声音」均可验证。<b>记住句式：无法望其项背＝追不上。</b></ExampleAnswer>
+                <ExampleOptions><span>A. 鼓励　特立独行　相提并论</span><span>B. 滋生　针锋相对　同日而语</span><span>C. 允许　振聋发聩　一目了然</span><span>D. 容纳　惊世骇俗　望其项背</span></ExampleOptions>
+                <ExampleAnswer><b>答案：<span className="correct">D</span></b><br />解析：第三空是判分点——传统媒体<b>赶不上</b>电子传媒的深度与犀利，用「无法望其项背」（望其项背＝赶得上，<b>只能用于否定式</b>）。「相提并论」「同日而语」都是「放在一起谈论」，与「比不上」不完全等同，且「无法相提并论」多用于<b>性质不同不可类比</b>；「一目了然」（<b>C 项</b>）形容看得清楚，与「赶不上」毫无关系，可先排除。第一空「容纳……批判意识」、第二空「惊世骇俗的声音」均可验证。<b>记住句式：无法望其项背＝追不上。</b></ExampleAnswer>
               </ExampleBody>
             </Example>
     </>

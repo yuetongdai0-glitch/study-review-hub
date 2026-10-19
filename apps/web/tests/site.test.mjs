@@ -1409,3 +1409,75 @@ test('政治常识页（TSX 源）：点块与例题一一对应，且「建成 
     assert.ok(all.includes(k), `政治常识缺少考点：${k}`)
   }
 })
+
+test('词语积累页（TSX 源）：例题默认折叠、无「已详解」空卡、真题选项与答案自洽', async () => {
+  const read = (p) => readFile(new URL(p, import.meta.url), 'utf8')
+  const page = await read('../src/pages/reading/words/index.tsx')
+  const content = await read('../src/components/content/index.tsx')
+  const css = await read('../src/pages/reading/words/module.css')
+
+  // ① 折叠能力只由页面显式开启，且只有词语页开启
+  assert.ok(content.includes('ExampleCollapsible'), '内容原语缺少 ExampleCollapsible')
+  assert.ok(content.includes('CollapsibleContext'), '内容原语缺少折叠上下文')
+  assert.ok(page.includes('<ExampleCollapsible>'), '词语积累页未开启例题折叠')
+  assert.ok(!content.includes('useState(defaultOpen'), '折叠状态不得由全局默认值控制')
+
+  // ② 折叠实现要点：正文默认 display:none、标题栏可点、高度不塌
+  assert.ok(/\.example-fold \.example-body \{\s*display:\s*none/.test(css), '折叠态未隐藏正文')
+  assert.ok(/\.example-fold\.is-open \.example-body/.test(css), '展开态未恢复正文')
+  assert.ok(css.includes('.example-hint'), '缺少「展开 / 收起」提示')
+  assert.ok(css.includes('.example-caret'), '缺少折叠箭头')
+
+  // ③ 无障碍：标题栏必须是按钮语义，键盘 Enter / 空格可用
+  assert.ok(content.includes('role="button"'), '折叠标题栏缺少 role=button')
+  assert.ok(content.includes('aria-expanded'), '折叠标题栏缺少 aria-expanded')
+  assert.ok(content.includes("event.key === 'Enter'") && content.includes("event.key === ' '"), '折叠标题栏缺少键盘支持')
+
+  // ④ 「已详解」空卡不得回流：那一版只写了一句话，被用户投诉过
+  const sections = await readdir(new URL('../src/pages/reading/words/sections/', import.meta.url))
+  const sources = await Promise.all(
+    sections.map((f) => readFile(new URL(`../src/pages/reading/words/sections/${f}`, import.meta.url), 'utf8')),
+  )
+  const all = sources.join('\n')
+  assert.ok(!all.includes('wg-ref'), '「已详解」空卡不得回流')
+  assert.ok(!all.includes('此处不再重复'), '「此处不再重复」文案不得回流')
+  // 重复讲的词必须带同组区别
+  assert.ok(all.includes('wg-cmp'), '重复讲的词缺少「同组区别」')
+
+  // ⑤ 例题与本节词群必须对得上：答案不得是本节完全没出现的词
+  const answerLetter = /className="correct">([A-D])</
+  for (const [i, src] of sources.entries()) {
+    const file = sections[i]
+    if (!/^s\d+\.tsx$/.test(file)) continue
+    const words = new Set([
+      ...[...src.matchAll(/<div className="wg-h"><b>([^<]+)<\/b>/g)].map((m) => m[1]),
+    ])
+    for (const block of src.matchAll(/<Example>([\s\S]*?)<\/Example>/g)) {
+      const body = block[1]
+      const letter = body.match(answerLetter)
+      const opts = body.match(/<ExampleOptions>([\s\S]*?)<\/ExampleOptions>/)
+      if (!letter || !opts) continue
+      const spans = [...opts[1].matchAll(/<span>(.*?)<\/span>/g)].map((m) => m[1])
+      const answer = (spans[letter[1].charCodeAt(0) - 65] ?? '').replace(/^[A-D][.、]\s*/, '')
+      assert.ok(
+        [...words].some((w) => answer.includes(w)),
+        `${file} 的例题答案「${answer.slice(0, 16)}」不属于本节词群`,
+      )
+    }
+  }
+
+  // ⑥ 标注年份的真题，解析里不得把正确答案也排除掉
+  for (const src of sources) {
+    for (const block of src.matchAll(/<Example>([\s\S]*?)<\/Example>/g)) {
+      const body = block[1]
+      if (!/20\d\d/.test(body)) continue
+      const letter = body.match(answerLetter)
+      const ans = body.match(/<ExampleAnswer>([\s\S]*?)<\/ExampleAnswer>/)
+      if (!letter || !ans) continue
+      const plain = ans[1].replace(/<[^>]+>/g, '')
+      for (const hit of plain.matchAll(/([A-D])\s*(项|排除|直接出局|出局)/g)) {
+        assert.notEqual(hit[1], letter[1], `真题解析把正确答案 ${letter[1]} 也排除了`)
+      }
+    }
+  }
+})

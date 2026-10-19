@@ -173,6 +173,11 @@
     border-bottom: 1px solid var(--border);
   }
 .legacy-words .mini-table tr:last-child td { border-bottom: none; }
+/*
+ * 首列多是「潜移默化」这类四字成语：默认换行会从中间断开成「潜移 / 默化」。
+ * keep-all 只禁止汉字之间断行，遇到空格与斜杠仍可折，长组名不会溢出。
+ */
+.legacy-words .mini-table td:first-child { word-break: keep-all; }
 .legacy-words .example {
     border: 1.5px solid #e0e8ff;
     border-radius: 10px;
@@ -220,6 +225,33 @@
     color: #16a34a;
     font-weight: 700;
   }
+/* ===== 例题默认折叠：只留标题栏，点一下才展开 ===== */
+.legacy-words .example-fold .example-body { display: none; }
+.legacy-words .example-fold.is-open .example-body { display: block; }
+.legacy-words .example-toggle {
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+.legacy-words .example-toggle:hover { filter: brightness(1.07); }
+.legacy-words .example-toggle:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.85);
+    outline-offset: -2px;
+  }
+.legacy-words .example-hint {
+    margin-left: auto;
+    flex: none;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    opacity: 0.82;
+  }
+.legacy-words .example-caret {
+    flex: none;
+    opacity: 0.9;
+    transition: transform 0.2s ease;
+  }
+.legacy-words .example-fold.is-open .example-caret { transform: rotate(180deg); }
 .legacy-words .c-blue .section-icon { background: var(--primary-light); color: var(--primary); }
 .legacy-words .c-blue .section-tag { background: var(--primary-light); color: var(--primary); }
 .legacy-words .c-blue .block-title { color: var(--primary); }

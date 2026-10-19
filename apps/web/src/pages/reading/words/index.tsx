@@ -58,6 +58,7 @@ import S56 from './sections/sidx'
 import S57 from './sections/mis'
 import S58 from './sections/strategy'
 import ReadingPage from '@/components/features/ReadingPage'
+import { ExampleCollapsible } from '@/components/content'
 import { findModuleByPath } from '@/router/routeRegistry'
 import type { SectionContent } from '@/types/content'
 import './module.css'
@@ -479,8 +480,13 @@ const sections: SectionContent[] = [
  * 模块页面。
  *
  * @returns 阅读页骨架。
+ * @remarks 本页例题一律默认折叠，点标题栏展开，避免 176 道题把正文顶得找不到词。
  */
 export default function Page(): ReactNode {
   if (!meta) return null
-  return <ReadingPage meta={meta} sections={sections} scopeClass="legacy-words" />
+  return (
+    <ExampleCollapsible>
+      <ReadingPage meta={meta} sections={sections} scopeClass="legacy-words" />
+    </ExampleCollapsible>
+  )
 }
