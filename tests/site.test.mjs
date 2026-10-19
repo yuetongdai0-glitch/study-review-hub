@@ -1169,3 +1169,65 @@ test('草稿纸：白板书写、橡皮擦除、撤销重做、自动保存与�
   assert.ok(page.includes('data-study-hub-script'), '草稿纸缺少共享导航脚本')
   assert.ok(page.includes('<title>测试</title>'), '草稿纸标签页标题不是「测试」')
 })
+
+test('词语积累页：成语积累 + 易混辨析，每词带例句、每组配例题', async () => {
+  const page = await readText(new URL('../pages/words/index.html', import.meta.url))
+
+  // 24 个板块：总览 + 积累 12 讲 + 辨析 8 组 + 实词 + 望文生义 + 复盘
+  const secIds = [...page.matchAll(/<div class="section c-[a-z]+" id="([^"]+)"/g)].map((m) => m[1])
+  assert.equal(secIds.length, 24, `词语积累页板块应为 24 个，实际 ${secIds.length} 个`)
+  for (const id of ['nav', 'sw', 'mis', 'strategy']) {
+    assert.ok(secIds.includes(id), `词语积累页缺少板块 ${id}`)
+  }
+  for (let i = 1; i <= 12; i++) assert.ok(secIds.includes(`s${i}`), `缺少积累讲 s${i}`)
+  for (let i = 1; i <= 8; i++) assert.ok(secIds.includes(`b${i}`), `缺少辨析组 b${i}`)
+
+  // 侧栏目录与锚点一一对应（无死链）
+  const navLinks = [...page.matchAll(/class="nav-link"[^>]*href="#([^"]+)"/g)].map((m) => m[1])
+  assert.equal(navLinks.length, 24, `侧栏链接应为 24 条，实为 ${navLinks.length}`)
+  for (const id of navLinks) assert.ok(page.includes(`id="${id}"`), `侧栏锚点 #${id} 不存在`)
+
+  // 除总览外，每个板块都必须有例题（例题不得堆在页尾）
+  const chunks = page.split(/<div class="section c-[a-z]+" id="/).slice(1)
+  for (const chunk of chunks) {
+    const id = chunk.slice(0, chunk.indexOf('"'))
+    if (id === 'nav') continue
+    assert.ok(chunk.includes('class="example"'), `板块 ${id} 没有例题`)
+  }
+
+  // 词卡：每个词都必须有一句例句
+  const words = (page.match(/class="wg"/g) || []).length
+  assert.ok(words >= 160, `成语词卡偏少：${words}`)
+  const egLines = (page.match(/class="wg-e">/g) || []).length
+  assert.equal(egLines, words, '有词卡缺少例句')
+
+  // 辨析组：每一组都要有「一句话区别」与侧重表
+  const diffs = (page.match(/class="diff">/g) || []).length
+  assert.equal(diffs, 32, `「一句话区别」应为 32 条，实为 ${diffs}`)
+
+  // 例题：每题四个选项 + 答案 + 解析；且必须有标注年份的真题
+  const total = (page.match(/class="example"/g) || []).length
+  assert.ok(total >= 40, `例题偏少：${total}`)
+  assert.equal((page.match(/class="example-answer"/g) || []).length, total, '每道例题都应有解析')
+  assert.equal((page.match(/class="example-opts"/g) || []).length, total, '每道例题都应有选项')
+  const optCounts = [...page.matchAll(/<div class="example-opts">([\s\S]*?)<\/div>/g)]
+    .map((m) => (m[1].match(/<span>/g) || []).length)
+  assert.ok(optCounts.every((n) => n === 4), '存在非四选项的例题')
+  const dated = [...page.matchAll(/<div class="example-header">([\s\S]*?)<\/div>/g)]
+    .filter((m) => /20\d\d/.test(m[1])).length
+  assert.ok(dated >= 8, `标注年份的真题偏少：${dated}`)
+
+  // 纯文字承载（成语辨析不需要截图），也不引 fig.css
+  assert.ok(!page.includes('<img'), '词语积累页不应包含图片')
+  assert.ok(!page.includes('fig.css'), '词语积累页无示意图，不应引入 fig.css')
+
+  // 搜索接到正文过滤
+  assert.ok(page.includes('id="navSearch"'), '缺少侧栏搜索框')
+  assert.ok(page.includes('window.pageShellContentFilter'), '未把侧栏搜索接到正文过滤')
+
+  // 禁用原生弹窗；相对路径；标题统一
+  assert.ok(!/\bconfirm\s*\(/.test(page), '词语积累页使用了原生 confirm')
+  assert.ok(!/\balert\s*\(/.test(page), '词语积累页使用了原生 alert')
+  assert.ok(page.includes('href="../../assets/hub-nav.css"'), '共享样式未使用相对路径')
+  assert.ok(page.includes('<title>测试</title>'), '标签页标题不是「测试」')
+})
