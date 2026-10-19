@@ -52,9 +52,23 @@ export default function FloatingNav() {
       <div className="study-hub-panel" id="study-hub-panel">
         <div className="study-hub-panel-header">
           <strong>切换复习科目</strong>
-          <Link className="study-hub-home" to="/">
-            返回总览
-          </Link>
+          {/* 设置与「返回总览」并排在头部：列表有 14 条，放底部要滚到底才看得见。 */}
+          <div className="study-hub-panel-actions">
+            <button
+              type="button"
+              className="study-hub-settings"
+              onClick={() => {
+                setOpen(false)
+                setSettingsOpen(true)
+              }}
+            >
+              <Settings size={13} aria-hidden="true" />
+              设置
+            </button>
+            <Link className="study-hub-home" to="/">
+              返回总览
+            </Link>
+          </div>
         </div>
         <ul className="study-hub-links">
           {allModules.map((item) => {
@@ -76,19 +90,6 @@ export default function FloatingNav() {
             )
           })}
         </ul>
-
-        {/* 设置入口：首页与工具页没有侧栏，从这里进。 */}
-        <button
-          type="button"
-          className="study-hub-settings"
-          onClick={() => {
-            setOpen(false)
-            setSettingsOpen(true)
-          }}
-        >
-          <Settings size={14} aria-hidden="true" />
-          设置 · 刷新与外观
-        </button>
       </div>
 
       <button

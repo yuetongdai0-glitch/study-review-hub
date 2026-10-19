@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import { readFile } from 'node:fs/promises'
+import { readFile, readdir } from 'node:fs/promises'
 import { test } from 'node:test'
 
 /**
@@ -1290,4 +1290,90 @@ test('词语积累页：成语积累 + 易混辨析，每词带例句、每组�
   assert.ok(!/\balert\s*\(/.test(page), '词语积累页使用了原生 alert')
   assert.ok(page.includes('href="../../assets/hub-nav.css"'), '共享样式未使用相对路径')
   assert.ok(page.includes('<title>测试</title>'), '标签页标题不是「测试」')
+})
+
+test('政治常识页（TSX 源）：点块与例题一一对应，且「建成 / 基本建成」表述准确', async () => {
+  // 政治常识在 v2.1 之后继续在 TSX 上维护，pages/ 只是旧基线（内容下限）。
+  // 所以结构断言必须直接读组件源码，否则改正文时测试测的是过期文件。
+  const dir = new URL('../src/pages/reading/politics/sections/', import.meta.url)
+  const files = (await readdir(dir)).filter((f) => f.endsWith('.tsx')).sort()
+  const sources = await Promise.all(files.map((f) => readFile(new URL(f, dir), 'utf8')))
+
+  // 26 个节文件：nav + s1..s25
+  assert.equal(files.length, 26, `政治常识应有 26 个节文件，实际 ${files.length}`)
+  for (const id of ['nav', ...Array.from({ length: 25 }, (_, i) => `s${i + 1}`)]) {
+    assert.ok(files.includes(`${id}.tsx`), `缺少节文件 ${id}.tsx`)
+  }
+
+  let totalBlock = 0
+  let totalEx = 0
+  for (let i = 0; i < files.length; i++) {
+    const src = sources[i]
+    const seq = [...src.matchAll(/<BlockTitle>|<ExampleHeader>/g)].map((m) =>
+      m[0].startsWith('<Block') ? 'B' : 'E'
+    )
+    const nb = seq.filter((k) => k === 'B').length
+    const ne = seq.filter((k) => k === 'E').length
+    totalBlock += nb
+    totalEx += ne
+    // 速记 / 排坑 / 计划三节没有例题
+    // 总览 / 速记 / 排坑 / 计划四节是策略性内容，不带例题
+    if (['nav.tsx', 's20.tsx', 's21.tsx', 's22.tsx'].includes(files[i])) continue
+    // 例题可以多于知识点（有的块配两道），但每个知识点后必须紧跟例题
+    assert.ok(ne >= nb, `${files[i]} 例题(${ne})少于知识点(${nb})`)
+    seq.forEach((k, idx) => {
+      if (k === 'B') assert.equal(seq[idx + 1], 'E', `${files[i]} 第 ${idx} 个知识点后没紧跟例题`)
+    })
+  }
+  assert.ok(totalBlock >= 143, `知识点块偏少：${totalBlock}`)
+  assert.ok(totalEx >= 133, `例题偏少：${totalEx}`)
+
+  const all = sources.join('\n')
+
+  // 用户明确「不做写作类」：公文相关内容不得回流
+  assert.ok(!all.includes('公文'), '政治常识不得再出现「公文」相关内容')
+  assert.ok(!all.includes('版头') && !all.includes('版记'), '公文版头/版记不得回流')
+
+  // 2035 年目标的建成 / 基本建成必须分清（易错点，用户当面指出过）
+  assert.ok(all.includes('基本建成'), '2035 法治三项的「基本建成」表述丢失')
+  assert.ok(
+    /建成<\/b>?教育强国、科技强国、人才强国、文化强国、体育强国、健康中国|建成教育强国、科技强国、人才强国、文化强国、体育强国、健康中国/.test(all),
+    '六大强国必须是「建成」且含科技强国'
+  )
+  // 只检查知识点正文（例题里的错误选项是刻意设置的干扰项，不算错）
+  const bulletText = all
+    .split('\n')
+    .filter((line) => line.trim().startsWith('<li>'))
+    .join('\n')
+  assert.ok(!bulletText.includes('建成经济强国'), '六个强国里没有「经济强国」')
+  assert.ok(
+    !/基本建成教育强国|基本建成文化强国|基本建成科技强国/.test(bulletText),
+    '六个强国不能写成「基本建成」'
+  )
+
+  // 分论要点（主书 考点精析 原文）必须落位
+  for (const k of [
+    '先导任务、坚实基础、战略支撑',
+    '人民满意是发展教育的根本尺度',
+    '政府投入为主、社会多渠道投入',
+    '「纲」和「本」',
+    '建国以来首个',
+    '政权安全和制度安全',
+    '国家政权、主权、统一和领土完整、人民福祉、经济社会可持续发展',
+    '依法治军是我们党建军治军的基本方式',
+    '处于最高层次、居于统领地位',
+    '连续性、创新性、统一性、包容性、和平性',
+    '激发创新创造活力',
+    '长期共存、互相监督、肝胆相照、荣辱与共',
+    '团结和民主',
+    '民主选举、民主协商、民主决策、民主管理、民主监督',
+    '大团结大联合',
+    '人心和力量问题',
+    '社会福利＝最高层次',
+    '社会救济＝最低层次',
+    '生态环境问题归根到底是经济发展方式和生活方式问题',
+    '自然保护区为基础',
+  ]) {
+    assert.ok(all.includes(k), `政治常识缺少考点：${k}`)
+  }
 })

@@ -1,5 +1,10 @@
 /**
- * 浮动导航验收：确认右下角按钮能展开面板、能跳到别的模块。
+ * 导航入口验收：设置必须在头部/底部固定可见，不用滚到列表末尾。
+ *
+ * 覆盖：
+ * 1. 浮动面板：设置与「返回总览」同一行，且点在面板顶部附近。
+ * 2. 点设置能打开弹层。
+ * 3. 侧栏：章节很多时（政治 26 节），底部动作区仍固定可见。
  *
  * 用法：node tools/smoke-nav.mjs [baseUrl]
  */
@@ -10,10 +15,10 @@ import { spawn } from 'node:child_process'
 
 const here = dirname(fileURLToPath(import.meta.url))
 const outDir = resolve(here, '../.smoke')
-const base = process.argv[2] ?? 'http://127.0.0.1:8772/study-review-hub'
+const base = process.argv[2] ?? 'http://127.0.0.1:8776/study-review-hub'
 
 const CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
-const port = 9338
+const port = 9341
 const profile = `/tmp/study-hub-nav-${Date.now()}`
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms))
 
@@ -25,7 +30,6 @@ const chrome = spawn(
     '--disable-gpu',
     `--remote-debugging-port=${port}`,
     `--user-data-dir=${profile}`,
-    '--window-size=1440,1000',
     'about:blank',
   ],
   { stdio: 'ignore' },
@@ -70,83 +74,92 @@ function send(method, params = {}, sessionId) {
   })
 }
 
+/**
+ * 求值。
+ *
+ * @param expression 表达式。
+ * @param sessionId 会话。
+ * @returns 结果值。
+ */
+async function evaluate(expression, sessionId) {
+  const result = await send('Runtime.evaluate', { expression, returnByValue: true, awaitPromise: true }, sessionId)
+  return result.result.value
+}
+
 await mkdir(outDir, { recursive: true })
 const { targetId } = await send('Target.createTarget', { url: 'about:blank' })
 const { sessionId } = await send('Target.attachToTarget', { targetId, flatten: true })
 await send('Page.enable', {}, sessionId)
 await send('Runtime.enable', {}, sessionId)
+await send('Emulation.setDeviceMetricsOverride', { width: 390, height: 844, deviceScaleFactor: 2, mobile: true }, sessionId)
 
 const report = {}
 
-await send('Page.navigate', { url: `${base}/quantitative` }, sessionId)
+/* ---------- 浮动面板 ---------- */
+await send('Page.navigate', { url: `${base}/` }, sessionId)
 await sleep(1600)
+await evaluate(`document.querySelector('.study-hub-trigger')?.click()`, sessionId)
+await sleep(500)
 
-/* 侧栏只应有当前模块的章节链接，不含别的科目。 */
-const sidebarState = await send(
-  'Runtime.evaluate',
-  {
-    expression: `(() => {
-      const links = Array.from(document.querySelectorAll('.sidebar .nav-link'));
-      return {
-        count: links.length,
-        titles: links.slice(0, 4).map((a) => a.textContent.trim().slice(0, 16)),
-        hasOtherModules: links.some((a) => /图形推理|政治常识|词语积累/.test(a.textContent)),
-        brand: document.querySelector('.sb-brand .t')?.textContent?.trim(),
-      };
-    })()`,
-    returnByValue: true,
-  },
+report.floating = await evaluate(
+  `(() => {
+    const panel = document.querySelector('.study-hub-panel');
+    const settings = document.querySelector('.study-hub-settings');
+    const home = document.querySelector('.study-hub-home');
+    if (!panel || !settings) return { found: false };
+    const p = panel.getBoundingClientRect();
+    const s = settings.getBoundingClientRect();
+    return {
+      found: true,
+      sameRowAsHome: Math.abs(s.top - home.getBoundingClientRect().top) < 6,
+      settingsTopGap: Math.round(s.top - p.top),
+      insideViewport: s.top >= 0 && s.bottom <= window.innerHeight,
+      panelScrollTop: Math.round(panel.scrollTop),
+      settingsText: settings.textContent.trim(),
+    };
+  })()`,
   sessionId,
 )
-report.sidebar = sidebarState.result.value
 
-/* 点右下角按钮，检查面板展开。 */
-const trigger = await send(
-  'Runtime.evaluate',
-  {
-    expression: `(() => {
-      const btn = document.querySelector('.study-hub-trigger');
-      if (!btn) return { found: false };
-      const r = btn.getBoundingClientRect();
-      return { found: true, x: Math.round(r.x + r.width / 2), y: Math.round(r.y + r.height / 2), count: document.querySelectorAll('.study-hub-link').length };
-    })()`,
-    returnByValue: true,
-  },
+const shot = await send('Page.captureScreenshot', { format: 'png' }, sessionId)
+await writeFile(join(outDir, 'nav-settings-header.png'), Buffer.from(shot.data, 'base64'))
+
+/* ---------- 点设置打开弹层 ---------- */
+await evaluate(`document.querySelector('.study-hub-settings')?.click()`, sessionId)
+await sleep(700)
+report.settingsOpens = await evaluate(
+  `({ open: Boolean(document.querySelector('.hub-settings')), panelClosed: document.querySelector('.study-hub-shell')?.dataset.open })`,
   sessionId,
 )
-report.trigger = trigger.result.value
+await evaluate(`document.querySelector('.ant-modal-close')?.click()`, sessionId)
+await sleep(300)
 
-if (trigger.result.value?.found) {
-  await send(
-    'Input.dispatchMouseEvent',
-    { type: 'mousePressed', x: trigger.result.value.x, y: trigger.result.value.y, button: 'left', clickCount: 1 },
-    sessionId,
-  )
-  await send(
-    'Input.dispatchMouseEvent',
-    { type: 'mouseReleased', x: trigger.result.value.x, y: trigger.result.value.y, button: 'left', clickCount: 1 },
-    sessionId,
-  )
-  await sleep(500)
+/* ---------- 侧栏底部动作区 ---------- */
+await send('Page.navigate', { url: `${base}/politics` }, sessionId)
+await sleep(1700)
 
-  const panel = await send(
-    'Runtime.evaluate',
-    {
-      expression: `(() => {
-        const shell = document.querySelector('.study-hub-shell');
-        const list = document.querySelectorAll('.study-hub-link');
-        const visible = list.length > 0 && getComputedStyle(document.querySelector('.study-hub-panel')).visibility !== 'hidden';
-        return { open: shell?.dataset.open, linkCount: list.length, panelVisible: visible };
-      })()`,
-      returnByValue: true,
-    },
-    sessionId,
-  )
-  report.panel = panel.result.value
+report.sidebar = await evaluate(
+  `(() => {
+    const bar = document.querySelector('.sb-actions');
+    const sidebar = document.querySelector('.sidebar');
+    if (!bar || !sidebar) return { found: false };
+    sidebar.scrollTop = 0;
+    const b = bar.getBoundingClientRect();
+    const s = sidebar.getBoundingClientRect();
+    return {
+      found: true,
+      sections: document.querySelectorAll('.sidebar .nav-link').length,
+      visibleWithoutScroll: b.top < window.innerHeight && b.bottom <= window.innerHeight + 1,
+      insideSidebar: b.bottom <= s.bottom + 1,
+      position: getComputedStyle(bar).position,
+      buttons: Array.from(bar.querySelectorAll('button, a')).map((el) => el.textContent.trim()),
+    };
+  })()`,
+  sessionId,
+)
 
-  const shot = await send('Page.captureScreenshot', { format: 'png' }, sessionId)
-  await writeFile(join(outDir, 'nav-open.png'), Buffer.from(shot.data, 'base64'))
-}
+const shot2 = await send('Page.captureScreenshot', { format: 'png' }, sessionId)
+await writeFile(join(outDir, 'sidebar-actions.png'), Buffer.from(shot2.data, 'base64'))
 
 console.log(JSON.stringify(report, null, 2))
 

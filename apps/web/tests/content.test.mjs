@@ -194,6 +194,27 @@ test('刷新与滚动行为的关键实现存在', async () => {
   }
 })
 
+test('设置入口必须始终可见，不能被长列表挤到末尾', async () => {
+  /*
+   * 用户反馈：浮动面板里「设置」放在 14 条科目下面，「看都看不到」。
+   * 现在设置与「返回总览」并排在面板头部，侧栏底部动作区 sticky 贴底。
+   */
+  const nav = await readFile(new URL('../src/components/features/FloatingNav.tsx', import.meta.url), 'utf8')
+  const headerIndex = nav.indexOf('study-hub-panel-header')
+  const settingsIndex = nav.indexOf('study-hub-settings')
+  const listIndex = nav.indexOf('study-hub-links')
+  assert.ok(headerIndex > 0 && settingsIndex > 0 && listIndex > 0, '浮动面板结构缺失')
+  assert.ok(settingsIndex < listIndex, '设置必须在科目列表之前（头部），不能放列表末尾')
+  assert.ok(settingsIndex > headerIndex, '设置应在面板头部区域内')
+
+  // 侧栏底部动作区必须 sticky，否则章节多时会滚出可视区。
+  const shell = await readFile(new URL('../src/styles/legacy-shell.css', import.meta.url), 'utf8')
+  const actions = shell.match(/\.sb-actions\{[^}]*\}/)
+  assert.ok(actions, '缺少 .sb-actions 样式')
+  assert.match(actions[0], /position:sticky/, '侧栏动作区必须 sticky 固定')
+  assert.match(actions[0], /bottom:0/, '侧栏动作区需贴底')
+})
+
 test('每个模块都通过统一骨架渲染', async () => {
   for (const route of ROUTES) {
     const source = await readFile(new URL(`../src/pages/reading/${route}/index.tsx`, import.meta.url), 'utf8')
