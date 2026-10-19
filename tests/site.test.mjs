@@ -1020,14 +1020,14 @@ for (const { route, ex: exRe } of UNIT_PAGES) {
 test('政治常识页：政治理论 + 常识判断全模块，每个知识点紧跟例题', async () => {
   const page = await readText(new URL('../pages/politics/index.html', import.meta.url))
 
-  // 24 个板块：总览 + 23 个考点模块（与数量关系页同款页壳）
+  // 27 个板块：总览 + 26 个考点模块（与数量关系页同款页壳）
   const secs = [...page.matchAll(/<div class="section c-[a-z]+" id="(nav|s\d+)">/g)].map(m => m[1])
-  assert.equal(secs.length, 24, `政治常识页板块应为 24 个，实际 ${secs.length} 个`)
+  assert.equal(secs.length, 27, `政治常识页板块应为 27 个，实际 ${secs.length} 个`)
   assert.equal(secs[0], 'nav', '首个板块应为总览 nav')
-  for (let i = 1; i <= 23; i++) assert.ok(secs.includes(`s${i}`), `缺少板块 s${i}`)
+  for (let i = 1; i <= 26; i++) assert.ok(secs.includes(`s${i}`), `缺少板块 s${i}`)
 
   // 页壳：侧栏 23 条 + 7 个分组 + 搜索 + 抽屉
-  assert.equal((page.match(/class="nav-link"/g) || []).length, 24, '侧栏链接应为 24 条')
+  assert.equal((page.match(/class="nav-link"/g) || []).length, 27, '侧栏链接应为 27 条')
   assert.equal((page.match(/class="nav-group"/g) || []).length, 7, '侧栏应有 7 个分组')
   assert.ok(page.includes('class="menu-btn"') && page.includes('class="mask"'), '缺少移动端抽屉结构')
   assert.ok(page.includes('id="navSearch"'), '缺少侧栏搜索框')
@@ -1069,7 +1069,7 @@ test('政治常识页：政治理论 + 常识判断全模块，每个知识点�
       }
     })
   }
-  assert.ok(totalEx >= 110, `政治常识页例题偏少：${totalEx}`)
+  assert.ok(totalEx >= 130, `政治常识页例题偏少：${totalEx}`)
   assert.equal((page.match(/class="example-header"/g) || []).length, totalEx, '每道例题都应有标题行')
   assert.equal((page.match(/class="correct">答案：/g) || []).length, totalEx, '每道例题都应给出答案')
 
@@ -1101,7 +1101,25 @@ test('政治常识页：政治理论 + 常识判断全模块，每个知识点�
     '找错误', '中共六大', '中共七大', '出生国籍', '不承认双重国籍', '自治条例和单行条例',
     '秘密投票', '一人一票', '撤销', '吊销', '撤回', '注销', '复议找上级',
     '盗窃', '诈骗', '侵占', '抢夺', '信用卡诈骗', '挪用公款罪', '职务侵占',
-    '建筑物区分所有权', '拾得遗失物', '分居满二年', '实践合同'
+    '建筑物区分所有权', '拾得遗失物', '分居满二年', '实践合同',
+    // 公文写作与处理
+    '份号', '六角括号', '签发人', '主送机关', '附件说明', '成文日期', '附注',
+    '抄送机关', '印发机关', '决议', '公报', '通告', '批复', '议案', '纪要',
+    '逐级行文', '越级行文', '一文一事', '不得原文转报', '整理归档',
+    // 十五五与 2026 政策
+    '以推动高质量发展为主题', '以满足人民日益增长的美好生活需要为根本目的',
+    '以改革创新为根本动力', '以全面从严治党为根本保障', '先进制造业为骨干',
+    '橄榄型', '常住地', '内涵式', '1.45 万亿斤', '67%', '720 个',
+    '140.19 万亿元', '1267 万人', '67.9%', '4.5%–5%', '5.89 万亿元',
+    '2500 亿元', '第 14 个', '最低', '整省试点', '五级书记',
+    // 2026 时政
+    '二十届中央纪委五次全会', '产业出题、科技答题', '事前预防', '习近平党建思想',
+    '105 周年', '贲德', '陈立泉', '世界人工智能大会',
+    '长征十号乙', '灵晟', '哈伊高铁', '平陆运河', '生态环境法典',
+    '天舟九号', '神舟二十三号', '黎家盈', '建设性战略稳定关系', '修昔底德陷阱',
+    '友谊勋章', '社会救助法', '长期护理保险', '92.9%', '米兰冬奥会',
+    '菲尔兹奖', '淄博临淄', '七一勋章', '市场结构', '完全竞争', '寡头垄断',
+    '无偿性', '间接税'
   ]) {
     assert.ok(page.includes(k), `政治常识页缺少考点：${k}`)
   }
