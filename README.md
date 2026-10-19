@@ -1,40 +1,71 @@
 # 备考复习 · Study Hub
 
-pnpm monorepo：一个静态阅读站 + 一个移动端壳 + 一套发布链路。
+pnpm monorepo：一个 React 阅读站 + 一个移动端壳 + 一套发布链路。
 
 ```
 .
 ├── apps/
-│   ├── web/                静态站点（唯一内容源，无框架、无构建依赖）
-│   │   ├── index.html
-│   │   ├── pages/<route>/  14 个科目/工具页
-│   │   ├── assets/         共享 CSS / JS / 图片
-│   │   ├── scripts/        build.mjs（构建+缓存策略）· serve.mjs（本地预览）
-│   │   └── tests/          site.test.mjs（30 条内容与结构断言）
-│   └── mobile/             Capacitor 壳（Android + iOS）
-│       ├── android/        原生工程（含应用内更新插件）
-│       ├── ios/            原生工程
-│       ├── scripts/        打包 / 签名 / 版本同步
-│       └── tests/          发布规则单测（7 条）
-├── packages/release/       版本比对、清单生成、地址白名单（纯函数，两端共用）
-├── scripts/                发布 / 部署 / 清理
-└── 临时资料/               原始 PDF（不入库）
+│   ├── web/                    React + Vite + Ant Design + Tailwind + Zustand
+│   │   ├── src/
+│   │   │   ├── router/         路由常量 + 模块表（侧栏/首页/面包屑同源）
+│   │   │   ├── layouts/        AppLayout（顶栏 + 目录 + 内容区）
+│   │   │   ├── components/
+│   │   │   │   ├── content/    内容原语：Block/Callout/Example/PointList/DataTable…
+│   │   │   │   ├── features/   ModuleHero · ReadingPage · AppHeader · AppSidebar
+│   │   │   │   └── base/       ThemeToggle 等基础件
+│   │   │   ├── pages/
+│   │   │   │   ├── home/       总览
+│   │   │   │   ├── reading/    11 个阅读模块（每节一个组件）
+│   │   │   │   └── tools/      草稿纸 / 答题纸 / 答题卡
+│   │   │   ├── store/          appStore（主题·折叠·侧栏）+ sectionStore（章节锚点）
+│   │   │   ├── theme/          设计令牌 → CSS 变量 → Tailwind → antd token
+│   │   │   └── styles.css      基础层 + 组件层（全站唯一视觉定义处）
+│   │   ├── pages/              旧静态页，仅作内容回归基线（不参与构建）
+│   │   ├── tools/              迁移器 / 内容校验 / 三套渲染验收脚本
+│   │   └── tests/              33 条断言（结构 + 内容无损 + 架构）
+│   └── mobile/                 Capacitor 壳（Android + iOS）
+│       ├── android/            原生工程（含应用内更新插件）
+│       ├── ios/                原生工程
+│       ├── scripts/            打包 / 签名 / 版本同步
+│       └── tests/              发布规则单测（7 条）
+├── packages/release/           版本比对、清单生成、地址白名单（纯函数，两端共用）
+├── scripts/                    发布 / 部署 / 清理
+└── 临时资料/                   原始 PDF（不入库）
 ```
 
 ## 常用命令
 
 | 命令 | 作用 |
 |---|---|
-| `pnpm install` | 安装全部 workspace 依赖 |
-| `pnpm test` | 跑 web 内容断言 + 发布规则单测 |
-| `pnpm dev` | 构建并起本地预览（HTML 不缓存、资源长缓存，跟线上一致） |
-| `pnpm build` | 只构建 `apps/web/dist` |
+| `pnpm install` | 安装全部 workspace 依赖（**本机需 `env -u NODE_OPTIONS`**） |
+| `pnpm test` | 跑 web 33 条 + mobile 7 条断言 |
+| `pnpm dev` | 起 Vite 开发服务器（8770） |
+| `pnpm build` | 类型检查 + 构建 `apps/web/dist` |
 | `pnpm deploy:web` | 构建并推送到主仓库 `gh-pages`，线上生效 |
 | `pnpm release` | 建站 → 判断要不要重新打包 → 出 APK/IPA → 推送发布仓库 → 清理本地 |
 | `pnpm release --force` | 忽略指纹，强制重打包 |
 | `pnpm release --android` / `--ios` | 只打单个平台 |
 | `pnpm release:web` | 只更新网页与下载页，不碰安装包 |
 | `pnpm clean` | 清掉全部可再生的构建产物 |
+
+## 改内容怎么改
+
+- **改某一节正文**：直接编辑 `src/pages/reading/<模块>/sections/<节>.tsx`，一个文件一节。
+- **改版式**：只动 `src/styles.css` 的组件层（`.section` / `.example` / `.key-box` …），全站生效。
+- **加科目**：`src/router/routeRegistry.ts` 加一条 + `routePaths.ts` 加路径 + `src/pages/reading/<新模块>/`，
+  侧栏、首页卡片、面包屑会自动出现，不用改三处。
+- **新增内容原语**：`src/components/content/index.tsx` 加组件 + styles.css 加样式。
+- **回归保护**：`tests/content.test.mjs` 会逐节比对旧 HTML 与 TSX 文本，改版式丢了正文会直接失败。
+
+## 验收脚本
+
+| 脚本 | 检查什么 |
+|---|---|
+| `tools/verify-content.mjs` | 逐页逐节比对旧 HTML 与新 TSX 的可见文本 |
+| `tools/smoke.mjs` | 10 条路由的控制台错误、横向溢出、截图（`.smoke/`） |
+| `tools/smoke-mobile.mjs` | 390 / 768 两档视口的溢出、示意图横滚、表格撑破 |
+| `tools/smoke-interactive.mjs` | 草稿纸真实画笔迹 + 撤销；答题纸中文落格 + 自动存档 |
+| `tools/migrate-legacy.mjs` | 旧 HTML → TSX（内容基线变更时才需要重跑） |
 
 ## 缓存策略（为什么改了就能立刻看到）
 
