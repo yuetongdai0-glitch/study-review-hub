@@ -1178,6 +1178,20 @@ test('草稿纸：白板书写、橡皮擦除、撤销重做、自动保存与�
   assert.ok(/function\s+restore\s*\(/.test(page), '草稿纸缺少草稿恢复逻辑')
   assert.ok(/function\s+validStroke\s*\(/.test(page), '草稿纸恢复时未校验笔迹数据')
 
+  // 工具偏好单独记忆：刷新后笔/橡皮、颜色、粗细、纸张都要保持
+  assert.ok(page.includes('scratchpad:prefs:v1'), '草稿纸缺少工具偏好缓存键')
+  assert.ok(/function\s+savePrefs\s*\(/.test(page), '草稿纸缺少偏好写入函数')
+  assert.ok(/function\s+loadPrefs\s*\(/.test(page), '草稿纸缺少偏好读取函数')
+  for (const field of ['tool:', 'color:', 'custom:', 'size:', 'paper:']) {
+    assert.ok(page.includes(field), `偏好中没有记录 ${field.replace(':', '')}`)
+  }
+  assert.ok(/function\s+validColor\s*\(/.test(page), '草稿纸恢复颜色时未做合法性校验')
+  // 颜色必须在工具之前套用，否则「点色板切回画笔」会把记住的橡皮状态冲掉
+  assert.ok(
+    page.indexOf('setColor(state.color, state.colorCustom)') < page.indexOf('setTool(state.tool)'),
+    '初始化顺序有误：应先套用颜色再设置工具'
+  )
+
   // 纸张样式、颜色、粗细
   for (const marker of ['空白', '横线', '方格', '点阵']) {
     assert.ok(page.includes(marker), `草稿纸缺少纸张样式：${marker}`)

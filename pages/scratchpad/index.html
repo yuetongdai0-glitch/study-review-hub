@@ -299,9 +299,11 @@
   'use strict'
 
   var KEY = 'scratchpad:v1'
+  var PREF_KEY = 'scratchpad:prefs:v1'
   var MAX_UNDO = 300
   var MAX_STROKES = 1200
   var MIN_DIST = 1.1
+  var PAPERS = ['none', 'line', 'grid', 'dot']
 
   var $ = function (id) { return document.getElementById(id) }
   var wrap = $('paperWrap')
@@ -316,7 +318,7 @@
   var toastEl = $('toast')
   var modal = $('modal')
 
-  var state = { tool: 'pen', color: '#1c2333', size: 3, paper: 'none' }
+  var state = { tool: 'pen', color: '#1c2333', colorCustom: false, size: 3, paper: 'none' }
   var strokes = []
   var undoStack = []
   var redoStack = []
@@ -327,7 +329,10 @@
   var w = 0
   var h = 0
   var saveTimer = 0
+  var prefTimer = 0
   var toastTimer = 0
+  var prefsState = 'missing'
+  var restoring = false
 
   /* ============================================================
      画布尺寸与纸张
@@ -646,7 +651,7 @@
   ink.addEventListener('contextmenu', function (e) { e.preventDefault() })
 
   /* ============================================================
-     工具栏状态
+     工具栏状态（工具 / 颜色 / 粗细 / 纸张 都记进本地偏好）
      ============================================================ */
   function setTool(tool) {
     state.tool = tool
@@ -656,36 +661,39 @@
     $('tool-pen').setAttribute('aria-pressed', String(tool === 'pen'))
     $('tool-eraser').setAttribute('aria-pressed', String(tool === 'eraser'))
     ring.hidden = true
+    savePrefs()
   }
 
   function setColor(color, custom) {
     state.color = color
+    state.colorCustom = !!custom
     var dots = document.querySelectorAll('#swatches .dot[data-color]')
     for (var i = 0; i < dots.length; i++) {
       var on = !custom && dots[i].getAttribute('data-color') === color
       dots[i].classList.toggle('is-on', on)
       dots[i].setAttribute('aria-pressed', String(on))
     }
-    if (custom) {
-      document.querySelector('.dot-custom').classList.add('is-on')
-      document.querySelector('.dot-custom').setAttribute('aria-pressed', 'true')
-    } else {
-      document.querySelector('.dot-custom').classList.remove('is-on')
-      document.querySelector('.dot-custom').setAttribute('aria-pressed', 'false')
-    }
-    if (state.tool === 'eraser') setTool('pen')
+    var picker = document.querySelector('.dot-custom')
+    picker.classList.toggle('is-on', !!custom)
+    picker.setAttribute('aria-pressed', String(!!custom))
+    if (custom) $('customColor').value = color
+    // 「点色板就切回画笔」只在用户主动换色时生效；初始化套用记住的颜色时不能动工具
+    if (!restoring && state.tool === 'eraser') setTool('pen')
+    savePrefs()
   }
 
   function setSize(value) {
     state.size = Math.min(24, Math.max(1, Number(value) || 1))
     $('size').value = String(state.size)
     $('sizeOut').textContent = String(state.size)
+    savePrefs()
   }
 
   function setPaper(value) {
-    state.paper = ['none', 'line', 'grid', 'dot'].indexOf(value) >= 0 ? value : 'none'
+    state.paper = PAPERS.indexOf(value) >= 0 ? value : 'none'
     $('paperType').value = state.paper
     paintPaper()
+    savePrefs()
     scheduleSave()
   }
 
@@ -806,6 +814,60 @@
     return true
   }
 
+  function validColor(value) {
+    return typeof value === 'string' && /^#([0-9a-f]{3}|[0-9a-f]{6}|[0-9a-f]{8})$/i.test(value)
+  }
+
+  /* ============================================================
+     工具偏好：工具 / 颜色 / 粗细 / 纸张各自记住，与笔迹分开存
+     （笔迹可能因空间不足被裁剪，但偏好绝不能因此丢失）
+     ============================================================ */
+  function savePrefs() {
+    clearTimeout(prefTimer)
+    prefTimer = setTimeout(writePrefs, 200)
+  }
+
+  /** 立即落盘。页面切走 / 关标签时要走这里，避免 200ms 防抖窗口把最后的改动丢掉。 */
+  function flushPrefs() {
+    clearTimeout(prefTimer)
+    writePrefs()
+  }
+
+  function writePrefs() {
+    try {
+      localStorage.setItem(PREF_KEY, JSON.stringify({
+        v: 1,
+        tool: state.tool,
+        color: state.color,
+        custom: state.colorCustom,
+        size: state.size,
+        paper: state.paper
+      }))
+    } catch (err) {}
+  }
+
+  /**
+   * 读取偏好。返回 'ok' / 'missing' / 'bad' 三态：
+   * 只有「从来没有存过偏好」（旧版升级）才允许用笔迹存档里的纸张兜底；
+   * 偏好存在但解析失败说明数据坏了，宁可回落默认值。
+   */
+  function loadPrefs() {
+    var raw
+    try { raw = localStorage.getItem(PREF_KEY) } catch (err) { return 'missing' }
+    if (!raw) return 'missing'
+    var data
+    try { data = JSON.parse(raw) } catch (err) { return 'bad' }
+    if (!data || typeof data !== 'object') return 'bad'
+
+    if (data.tool === 'pen' || data.tool === 'eraser') state.tool = data.tool
+    if (validColor(data.color)) state.color = data.color
+    state.colorCustom = !!data.custom && validColor(data.color)
+    var size = Number(data.size)
+    if (isFinite(size)) state.size = Math.min(24, Math.max(1, Math.round(size)))
+    if (PAPERS.indexOf(data.paper) >= 0) state.paper = data.paper
+    return 'ok'
+  }
+
   function restore() {
     var raw
     try { raw = localStorage.getItem(KEY) } catch (err) { return false }
@@ -814,7 +876,8 @@
       var data = JSON.parse(raw)
       if (!data || !Array.isArray(data.strokes)) return false
       strokes = data.strokes.filter(validStroke).slice(-MAX_STROKES)
-      if (data.paper) state.paper = ['none', 'line', 'grid', 'dot'].indexOf(data.paper) >= 0 ? data.paper : 'none'
+      // 旧版存档把纸张塞在笔迹里；仅在从未存过偏好时用它兜底
+      if (prefsState === 'missing' && PAPERS.indexOf(data.paper) >= 0) state.paper = data.paper
       return strokes.length > 0
     } catch (err) {
       return false
@@ -938,23 +1001,35 @@
   window.addEventListener('orientationchange', function () { setTimeout(relayout, 120) })
 
   document.addEventListener('visibilitychange', function () {
-    if (document.visibilityState === 'hidden') save()
+    if (document.visibilityState === 'hidden') {
+      flushPrefs()
+      save()
+    }
   })
-  window.addEventListener('pagehide', save)
+  window.addEventListener('pagehide', function () {
+    flushPrefs()
+    save()
+  })
 
   /* ============================================================
      初始化
      ============================================================ */
   function init() {
+    // 先捞偏好（工具/颜色/粗细/纸张），再捞笔迹；颜色要在工具之前套用，
+    // 否则 setColor 里「用色板就切回画笔」的逻辑会把记住的橡皮状态冲掉。
+    prefsState = loadPrefs()
+    restoring = true
     var restored = restore()
-    setPaper(state.paper)
     setSize(state.size)
-    setTool('pen')
-    setColor('#1c2333', false)
+    setColor(state.color, state.colorCustom)
+    setTool(state.tool)
+    restoring = false
+    setPaper(state.paper)
     fitCanvas()
     paintPaper()
     redrawInk()
     syncButtons()
+    flushPrefs()
     if (restored) {
       setStatus('已恢复上次草稿')
       toast('已恢复上次草稿')
