@@ -1,5 +1,5 @@
 import { ChevronDown } from 'lucide-react'
-import { createContext, useContext, useState, type KeyboardEvent, type ReactNode } from 'react'
+import { createContext, useContext, useState, type ReactNode } from 'react'
 
 /**
  * 内容原语：整站阅读正文的唯一渲染层。
@@ -101,87 +101,47 @@ export function DataTable({
 }
 
 /**
- * 例题「默认折叠」开关。
+ * 「答案与解析默认收起」开关。
  *
- * @remarks 只有声明了这一层的页面才会折叠，其余页面的例题行为保持不变。
- * 用 Context 而不是给 `Example` 加属性，是因为全站有 170+ 处 `<Example>`，
- * 逐处加属性既容易漏，也让正文源码被样式细节污染。
+ * @remarks 只有声明了这一层的页面才收起答案，其余页面照常显示。
+ * 用 Context 而不是给 `ExampleAnswer` 加属性，是因为全站有 170+ 处例题，
+ * 逐处加属性既容易漏，也让正文源码被交互细节污染。
+ *
+ * **收起的只能是答案与解析**：题干和选项必须一直显示，否则就没法先自己做一遍。
  */
-const CollapsibleContext = createContext(false)
+const AnswerCollapsibleContext = createContext(false)
 
 /**
- * 单道例题的展开状态，供 `ExampleHeader` 读取。
- *
- * @remarks 为 `null` 时说明这道题不折叠，头部就是普通标题栏。
- */
-const ToggleContext = createContext<{ open: boolean; toggle: () => void } | null>(null)
-
-/**
- * 打开「例题默认折叠」。
+ * 打开「答案与解析默认收起」。
  *
  * @param props 页面内容。
- * @returns 带折叠能力的子树。
+ * @returns 带收起能力的子树。
  */
-export function ExampleCollapsible({ children }: { children: ReactNode }) {
-  return <CollapsibleContext.Provider value={true}>{children}</CollapsibleContext.Provider>
+export function AnswerCollapsible({ children }: { children: ReactNode }) {
+  return <AnswerCollapsibleContext.Provider value={true}>{children}</AnswerCollapsibleContext.Provider>
 }
 
 /**
  * 例题容器。
  *
  * @param props 例题各段。
- * @returns 带渐变标题栏的例题卡片；页面开启折叠时，默认只显示标题栏。
+ * @returns 带渐变标题栏的例题卡片。
  */
 export function Example({ children }: ChildrenProps) {
-  const collapsible = useContext(CollapsibleContext)
-  const [open, setOpen] = useState(false)
-  if (!collapsible) return <div className="example">{children}</div>
-  return (
-    <ToggleContext.Provider value={{ open, toggle: () => setOpen((value) => !value) }}>
-      <div className={open ? 'example example-fold is-open' : 'example example-fold'}>{children}</div>
-    </ToggleContext.Provider>
-  )
+  return <div className="example">{children}</div>
 }
 
 /**
  * 例题标题栏。
  *
  * @param props 标题与可选来源标签。
- * @returns 例题头部；所在例题可折叠时，整条标题栏即开关。
+ * @returns 例题头部。
  */
 export function ExampleHeader({ children, source }: { children: ReactNode; source?: ReactNode }) {
-  const toggle = useContext(ToggleContext)
-
-  if (!toggle) {
-    return (
-      <div className="example-header">
-        <span>{children}</span>
-        {source ? <span>{source}</span> : null}
-      </div>
-    )
-  }
-
-  /** 键盘可达：Enter / 空格 与点击等价。 */
-  const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault()
-      toggle.toggle()
-    }
-  }
-
   return (
-    <div
-      className="example-header example-toggle"
-      role="button"
-      tabIndex={0}
-      aria-expanded={toggle.open}
-      onClick={toggle.toggle}
-      onKeyDown={handleKeyDown}
-    >
+    <div className="example-header">
       <span>{children}</span>
       {source ? <span>{source}</span> : null}
-      <span className="example-hint">{toggle.open ? '收起' : '展开'}</span>
-      <ChevronDown size={14} className="example-caret" aria-hidden="true" />
     </div>
   )
 }
@@ -220,10 +180,29 @@ export function ExampleOptions({ children }: ChildrenProps) {
  * 解析与答案。
  *
  * @param props 解析内容。
- * @returns 蓝底解析块。
+ * @returns 蓝底解析块；页面开启收起时，默认换成「查看答案与解析」一行按钮。
+ * @remarks 题干与选项不受影响，永远可见——先做再看，才有练的意义。
  */
 export function ExampleAnswer({ children }: ChildrenProps) {
-  return <div className="example-answer">{children}</div>
+  const collapsible = useContext(AnswerCollapsibleContext)
+  const [open, setOpen] = useState(false)
+
+  if (!collapsible) return <div className="example-answer">{children}</div>
+
+  return (
+    <div className={open ? 'answer-fold is-open' : 'answer-fold'}>
+      <button
+        type="button"
+        className="answer-toggle"
+        aria-expanded={open}
+        onClick={() => setOpen((value) => !value)}
+      >
+        <span>{open ? '收起答案与解析' : '查看答案与解析'}</span>
+        <ChevronDown size={13} className="answer-caret" aria-hidden="true" />
+      </button>
+      {open ? <div className="example-answer">{children}</div> : null}
+    </div>
+  )
 }
 
 /**

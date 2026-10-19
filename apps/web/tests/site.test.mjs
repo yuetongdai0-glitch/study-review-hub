@@ -1410,28 +1410,37 @@ test('政治常识页（TSX 源）：点块与例题一一对应，且「建成 
   }
 })
 
-test('词语积累页（TSX 源）：例题默认折叠、无「已详解」空卡、真题选项与答案自洽', async () => {
+test('词语积累页（TSX 源）：答案与解析默认收起、题干常显、无「已详解」空卡、真题答案自洽', async () => {
   const read = (p) => readFile(new URL(p, import.meta.url), 'utf8')
   const page = await read('../src/pages/reading/words/index.tsx')
   const content = await read('../src/components/content/index.tsx')
   const css = await read('../src/pages/reading/words/module.css')
 
-  // ① 折叠能力只由页面显式开启，且只有词语页开启
-  assert.ok(content.includes('ExampleCollapsible'), '内容原语缺少 ExampleCollapsible')
-  assert.ok(content.includes('CollapsibleContext'), '内容原语缺少折叠上下文')
-  assert.ok(page.includes('<ExampleCollapsible>'), '词语积累页未开启例题折叠')
-  assert.ok(!content.includes('useState(defaultOpen'), '折叠状态不得由全局默认值控制')
+  // ① 收起能力只由页面显式开启（用 Context，不给 170+ 处例题逐处加属性）
+  assert.ok(content.includes('AnswerCollapsible'), '内容原语缺少 AnswerCollapsible')
+  assert.ok(content.includes('AnswerCollapsibleContext'), '内容原语缺少答案收起上下文')
+  assert.ok(page.includes('<AnswerCollapsible>'), '词语积累页未开启答案收起')
 
-  // ② 折叠实现要点：正文默认 display:none、标题栏可点、高度不塌
-  assert.ok(/\.example-fold \.example-body \{\s*display:\s*none/.test(css), '折叠态未隐藏正文')
-  assert.ok(/\.example-fold\.is-open \.example-body/.test(css), '展开态未恢复正文')
-  assert.ok(css.includes('.example-hint'), '缺少「展开 / 收起」提示')
-  assert.ok(css.includes('.example-caret'), '缺少折叠箭头')
+  // ② 只收答案，不收题目：题干与选项必须无条件渲染
+  //    用户明确纠过：把整道例题折叠起来是错的，题干要留着自己先做。
+  assert.ok(!content.includes('ExampleCollapsible'), '不得再提供「整题折叠」能力')
+  assert.ok(!css.includes('.example-fold'), '不得再有整题折叠样式')
+  assert.ok(
+    /function Example\(\{[\s\S]{0,120}?return <div className="example">\{children\}<\/div>/.test(content),
+    'Example 必须无条件渲染题目，不得挂折叠',
+  )
+  assert.ok(
+    /export function ExampleQuestion[\s\S]{0,160}?example-q/.test(content) &&
+      /export function ExampleOptions[\s\S]{0,160}?example-opts/.test(content),
+    '题干与选项必须始终渲染',
+  )
 
-  // ③ 无障碍：标题栏必须是按钮语义，键盘 Enter / 空格可用
-  assert.ok(content.includes('role="button"'), '折叠标题栏缺少 role=button')
-  assert.ok(content.includes('aria-expanded'), '折叠标题栏缺少 aria-expanded')
-  assert.ok(content.includes("event.key === 'Enter'") && content.includes("event.key === ' '"), '折叠标题栏缺少键盘支持')
+  // ③ 答案收起：未展开时不渲染答案正文，只留一行按钮；带 aria-expanded
+  assert.ok(/className=\{open \? 'answer-fold is-open' : 'answer-fold'\}/.test(content), '答案收起态类名不对')
+  assert.ok(/open \? <div className="example-answer">/.test(content), '未展开时不应渲染答案正文')
+  assert.ok(content.includes('查看答案与解析') && content.includes('收起答案与解析'), '缺少展开 / 收起按钮文案')
+  assert.ok(content.includes('aria-expanded'), '答案按钮缺少 aria-expanded')
+  assert.ok(css.includes('.answer-toggle') && css.includes('.answer-fold'), '缺少答案收起样式')
 
   // ④ 「已详解」空卡不得回流：那一版只写了一句话，被用户投诉过
   const sections = await readdir(new URL('../src/pages/reading/words/sections/', import.meta.url))
