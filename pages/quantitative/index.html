@@ -1711,7 +1711,9 @@
                 两条切线夹角 α 与所夹弧的圆心角互补 → <b>圆心角 = 180° − α</b>。<br>
                 <b>② 直径所对的圆周角 = 90°</b>：看到「直径 / 半圆」就找直角，能直接造出直角三角形。<br>
                 <b>③ 不在同一直线上的三个点确定一个圆</b>（求过三点的圆、找圆心先连两条中垂线）。<br>
-                <b>④ 多边形内角和 = (n − 2) × 180°</b>；正 n 边形每个内角 = (n − 2) × 180° ÷ n。
+                <b>④ 两圆相切：外切 → 圆心距 = r₁ + r₂；内切 → 圆心距 = |r₁ − r₂|</b>（别把外切写成相减）。圆与直线相切 → <b>圆心到直线的距离 = 半径</b>。<br>
+                　　⇒ 两圆外切、且<b>都贴同一条边</b>（或同一条水平线）时，连心线能造出直角三角形：<b>斜边 = r₁ + r₂、竖直直角边 = r₁ − r₂</b>，另一条直角边（水平差）= √((r₁+r₂)² − (r₁−r₂)²) = <b>2√(r₁r₂)</b>（r₁=3、r₂=1 时正好是 2√3）。<br>
+                <b>⑤ 多边形内角和 = (n − 2) × 180°</b>；正 n 边形每个内角 = (n − 2) × 180° ÷ n。
               </div>
             </div>
                                     <div class="example">
@@ -1753,6 +1755,58 @@
                 </div>
               </div>
             </div>
+            <div class="example">
+              <div class="example-header">📝 例题10 · 两圆相切 + 三边相切（矩形围栏 · 2023 浙江）</div>
+              <div class="example-body">
+                <div class="example-q">某地打算在绿地上建两个圆形花坛，如图所示：大圆的直径为 6 米，小圆的直径为 2 米。修建期间暂时在外围设置围栏，已知围栏呈矩形，<b>大圆与围栏的三条边相切，小圆与围栏的两条边相切</b>，且<b>两圆相切</b>，那么矩形围栏的面积是多少平方米？</div>
+                <div class="example-opts">A. 12(2+√3)　B. 12(1+2√3)　C. 12√13　D. 6(3+√13)</div>
+                <div class="example-answer">
+                        <b>解析：</b>大圆 r₁ = 3、小圆 r₂ = 1，两圆<b>外切</b> → <b>圆心距 O₁O₂ = 3 + 1 = 4</b>。<br>
+                        ① <b>矩形的高</b>：大圆同时与上、下两条边相切 → 高 = 2r₁ = <b>6</b>（这条最稳，先把「定值」抓下来）。<br>
+                        ② <b>竖直差</b>：大圆圆心到上边是 3，小圆圆心到上边是 1 → 两圆心的高度差 = 3 − 1 = <b>2</b>。<br>
+                        ③ <b>水平差</b>：连心线是斜边 4、竖直边 2 → 水平边 = √(4² − 2²) = √12 = <b>2√3</b>。<br>
+                        ④ <b>矩形的宽</b> = 3（左边到大圆圆心）+ 2√3（圆心水平差）+ 1（小圆圆心到右边）= <b>4 + 2√3</b>。<br>
+                        ⑤ 面积 = 6 × (4 + 2√3) = 24 + 12√3 = <b>12(2 + √3)</b>。<br>
+                        要点：这类题只有<b>三个动作</b> —— ① 用「同侧两条切线」定死一边（高 = 2r₁）；② 用「外切」得斜边 = r₁ + r₂；③ 用「各自到上边的距离」得竖直差 = r₁ − r₂，勾股求水平差。中间那步的中间量 2√3 不能丢，宽是 3 + 2√3 + 1，不是 3 + 2√3。
+                        <figure class="fig">
+                          <svg viewBox="0 0 356 306" role="img" aria-label="矩形围栏内大圆直径6与上左下三边相切、小圆直径2与上右两边相切、两圆外切；圆心距4、竖直差2、水平差2根号3">
+                            <text x="14" y="22" font-size="13.5" fill="#4f7cff" font-weight="700">大圆 r₁=3 贴上/下/左，小圆 r₂=1 贴上/右，两圆外切</text>
+                            <rect x="66" y="54" width="209" height="168" fill="#f2f7ec" stroke="#1a7a45" stroke-width="1.8"/>
+                            <circle cx="150" cy="138" r="84" fill="#e8efff" stroke="#3f4a5f" stroke-width="1.6" opacity="0.95"/>
+                            <circle cx="247" cy="82" r="28" fill="#eafaf1" stroke="#1a7a45" stroke-width="1.6"/>
+                            <path d="M150 138 L247 82" stroke="#c0392b" stroke-width="2.2"/>
+                            <path d="M150 138 L247 138" stroke="#1a7a45" stroke-width="1.3" stroke-dasharray="5 4"/>
+                            <path d="M150 138 L150 54" stroke="#b8730d" stroke-width="1.2" stroke-dasharray="4 3"/>
+                            <path d="M247 82 L247 54" stroke="#1a7a45" stroke-width="1.2" stroke-dasharray="4 3"/>
+                            <path d="M234 138 L280 138" stroke="#9aa4b5" stroke-width="1" stroke-dasharray="3 3"/>
+                            <circle cx="150" cy="138" r="3.2" fill="#1a1a2e"/>
+                            <circle cx="247" cy="82" r="3.2" fill="#1a1a2e"/>
+                            <text x="132" y="132" font-size="12.5" font-weight="700" fill="#1a1a2e">O₁</text>
+                            <text x="252" y="80" font-size="12.5" font-weight="700" fill="#1a1a2e">O₂</text>
+                            <text x="128" y="98" font-size="12.5" font-weight="700" fill="#b8730d">3</text>
+                            <text x="232" y="72" font-size="12" font-weight="700" fill="#1a7a45">1</text>
+                            <text x="196" y="122" font-size="12.5" font-weight="700" fill="#c0392b">4</text>
+                            <text x="182" y="154" font-size="12" font-weight="700" fill="#1a7a45">2√3</text>
+                            <path d="M48 58 L48 218" fill="none" stroke="#8b3a2e" stroke-width="1.3"/>
+                            <path d="M44 64 L48 54 L52 64 M44 212 L48 222 L52 212" fill="none" stroke="#8b3a2e" stroke-width="1.3"/>
+                            <text x="20" y="144" font-size="12.5" font-weight="700" fill="#8b3a2e">6</text>
+                            <text x="300" y="100" font-size="12" font-weight="700" fill="#c0392b">2</text>
+                            <text x="296" y="120" font-size="11" fill="#8b3a2e">3−1</text>
+                            <path d="M294 84 L294 136" fill="none" stroke="#c0392b" stroke-width="1.3"/>
+                            <path d="M290 90 L294 80 L298 90 M290 130 L294 140 L298 130" fill="none" stroke="#c0392b" stroke-width="1.3"/>
+                            <text x="284" y="176" font-size="11.5" fill="#6b7280">4 = 3 + 1</text>
+                            <text x="284" y="192" font-size="11.5" fill="#6b7280">（外切）</text>
+                            <text x="10" y="246" font-size="12.5" fill="#4a5568">高 = 2r₁ = 6　宽 = 3 + 2√3 + 1 = 4 + 2√3</text>
+                            <text x="10" y="268" font-size="12.5" fill="#4a5568">水平差 = √(4² − 2²) = 2√3</text>
+                            <text x="10" y="292" font-size="12.5" font-weight="700" fill="#c0392b">面积 = 6 × (4 + 2√3) = 12(2 + √3)</text>
+                          </svg>
+                          <figcaption>大圆与上、下、左三边相切 → <b>高 = 2r₁ = 6</b>；两圆外切 → <b>连心线 = r₁ + r₂ = 4</b>；
+                            两圆心到上边的距离分别是 3 和 1 → <b>竖直差 = 2</b>，于是水平差 = √(4² − 2²) = 2√3。</figcaption>
+                        </figure>
+                  <span class="correct">答案：A</span>
+                </div>
+              </div>
+            </div>
 <div class="block">
               <div class="block-title">5. 勾股定理 & 必背勾股数</div>
 
@@ -1781,7 +1835,7 @@
               </div>
             </div>
             <div class="example">
-              <div class="example-header">📝 例题10 · 勾股定理</div>
+              <div class="example-header">📝 例题11 · 勾股定理</div>
               <div class="example-body">
                 <div class="example-q">一个直角三角形的两条直角边分别为 6 和 8，则斜边长为（　　）。</div>
             <div class="example-opts">A.10　B.12　C.14　D.16</div>
@@ -1827,7 +1881,7 @@
               <div class="tip-box">看到 30°／45°／60°／120°／135° 这些角度，或选项里出现 √2、√3，第一反应就是去找特殊直角三角形。</div>
             </div>
             <div class="example">
-              <div class="example-header">📝 例题11 · 特殊角直角三角形（30°-60°-90°）</div>
+              <div class="example-header">📝 例题12 · 特殊角直角三角形（30°-60°-90°）</div>
               <div class="example-body">
                 <div class="example-q">一个直角三角形中，30° 角所对的直角边长为 5，则斜边长与另一条直角边分别是？</div>
                 <div class="example-opts">A.10 和 5√3　B.10 和 5√2　C.5√3 和 10　D.15 和 5√3</div>
@@ -1847,7 +1901,7 @@
               </ul>
             </div>
             <div class="example">
-        <div class="example-header">📝 例题12 · 直角三角形的三个常用结论</div>
+        <div class="example-header">📝 例题13 · 直角三角形的三个常用结论</div>
         <div class="example-body">
           <div class="example-q">直角三角形 ABC 中，∠C = 90°，∠A = 30°，斜边 AB = 12。BC 边长是多少？</div>
           <div class="example-opts">A.4　B.6　C.6√3　D.8</div>
@@ -1884,7 +1938,7 @@
               </ul>
             </div>
             <div class="example">
-              <div class="example-header">📝 例题13 · 相似三角形（灯下影子 · 2022 广东）</div>
+              <div class="example-header">📝 例题14 · 相似三角形（灯下影子 · 2022 广东）</div>
               <div class="example-body">
                 <div class="example-q">楼道上方有一盏灯，小刘径直走向这盏灯。一开始，他发现自己影子的长度为 3.2 米；前进 1 米后，发现影子缩短为 1.6 米。已知小刘身高为 1.6 米，则这盏灯的高度约为（　　）米。</div>
                 <div class="example-opts">A.2.6　B.2.8　C.3.2　D.3.4</div>
@@ -1936,7 +1990,7 @@
               </div>
             </div>
             <div class="example">
-              <div class="example-header">📝 例题14 · 同高三角形面积比</div>
+              <div class="example-header">📝 例题15 · 同高三角形面积比</div>
               <div class="example-body">
                 <div class="example-q">在三角形 ABC 中，D 是边 BC 上一点，且 BD ∶ DC = 2 ∶ 3。若 S△ABD = 8，则 S△ADC 为：</div>
                 <div class="example-opts">A.10　B.12　C.14.4　D.16</div>
@@ -1948,7 +2002,7 @@
               </div>
             </div>
                         <div class="example">
-              <div class="example-header">📝 例题15 · 同底同高（四边形对角线 · 2025 浙江）</div>
+              <div class="example-header">📝 例题16 · 同底同高（四边形对角线 · 2025 浙江）</div>
               <div class="example-body">
                 <div class="example-q">一块四边形田地 ABCD 如下图所示，已知 △AOD、△AOB 和 △COD 的面积分别为 9 平方千米、15 平方千米和 12 平方千米，CD 长 8 千米。问 B 点到 CD 的距离为多少千米？</div>
                 <div class="example-opts">A.6　B.7　C.8　D.9</div>
@@ -2015,7 +2069,7 @@
               </ul>
             </div>
             <div class="example">
-              <div class="example-header">📝 例题16 · 正六边形面积</div>
+              <div class="example-header">📝 例题17 · 正六边形面积</div>
               <div class="example-body">
                 <div class="example-q">正六边形的边长为 2，则其面积为：</div>
                 <div class="example-opts">A.6√3　B.8√3　C.12　D.12√3</div>
@@ -2058,7 +2112,7 @@
               </div>
             </div>
             <div class="example">
-        <div class="example-header">📝 例题17 · 蝴蝶定理（梯形对角线）</div>
+        <div class="example-header">📝 例题18 · 蝴蝶定理（梯形对角线）</div>
         <div class="example-body">
           <div class="example-q">梯形 ABCD 中 AB ∥ CD，对角线交于点 O。已知 AB = 4，CD = 8，S△AOB = 6，则 S△COD 是多少？</div>
           <div class="example-opts">A.12　B.24　C.36　D.48</div>
@@ -2077,7 +2131,7 @@
               <div class="tip-box">几何没思路时的万能兜底：<b>建坐标系把图形代数化</b>——把关键点放到格点上，用距离公式硬算。</div>
             </div>
             <div class="example">
-        <div class="example-header">📝 例题18 · 坐标构造（方位角 · 2024 广东）</div>
+        <div class="example-header">📝 例题19 · 坐标构造（方位角 · 2024 广东）</div>
         <div class="example-body">
           <div class="example-q">甲、乙、丙三艘船在海上航行。某一时刻，甲观测到乙位于它的北偏西 30° 方向，甲、乙相距 6 千米；甲观测到丙位于它的正西方向，甲、丙相距 6 千米。则乙与丙之间的距离为（　　）千米。</div>
           <div class="example-opts">A.3　B.4　C.5　D.6</div>
@@ -2141,7 +2195,7 @@
               </table>
             </div>
             <div class="example">
-              <div class="example-header">📝 例题19 · 正方体涂色</div>
+              <div class="example-header">📝 例题20 · 正方体涂色</div>
               <div class="example-body">
                 <div class="example-q">棱长为 5 的正方体表面全部涂上红漆，再切成 125 个棱长 1 的小正方体。其中恰好两面涂色的有多少个？</div>
                 <div class="example-opts">A.36　B.48　C.54　D.60</div>
@@ -2167,7 +2221,7 @@
               <div class="tip-box">看题干用词：问「<b>是</b>原来的几倍」→ 直接用 N / N² / N³；问「<b>比原来多了 / 增长了</b>几倍」→ <b>再减 1</b>。这一步看错，整题白算。</div>
             </div>
             <div class="example">
-              <div class="example-header">📝 例题20 · 同比例放缩</div>
+              <div class="example-header">📝 例题21 · 同比例放缩</div>
               <div class="example-body">
                 <div class="example-q">一个正方体的棱长扩大为原来的2倍，则表面积扩大为原来的几倍？体积扩大为原来的几倍？</div>
                 <div class="example-opts">A.2倍、4倍　B.4倍、8倍　C.4倍、6倍　D.8倍、12倍</div>
@@ -2178,7 +2232,7 @@
               </div>
             </div>
                         <div class="example">
-              <div class="example-header">📝 例题21 · 同比例放缩（圆锥倒置 · 2025 联考）</div>
+              <div class="example-header">📝 例题22 · 同比例放缩（圆锥倒置 · 2025 联考）</div>
               <div class="example-body">
                 <div class="example-q">一个空的倒置的圆锥形容器，倒入 1 瓶固定容量的水后，水的高度恰好为容器高度的一半。若要使容器盛满水，则需要再倒入水的瓶数为（　　）。</div>
                 <div class="example-opts">A.5 瓶　B.7 瓶　C.8 瓶　D.10 瓶</div>
@@ -2232,7 +2286,7 @@
                 · 记忆锚点：椭圆的面积是 πab，内接矩形的上限就是 2ab（比椭圆小、比正方形大），看到"内接矩形 + 最值"直接写 2ab。</div>
             </div>
             <div class="example">
-              <div class="example-header">📝 例题22 · 几何最值</div>
+              <div class="example-header">📝 例题23 · 几何最值</div>
               <div class="example-body">
                 <div class="example-q">用一根长12米的铁丝围成一个平面图形，围成什么图形面积最大？</div>
                 <div class="example-opts">A.正方形　B.长方形　C.圆形　D.三角形</div>
@@ -2243,7 +2297,7 @@
               </div>
             </div>
             <div class="example">
-              <div class="example-header">📝 例题23 · 几何最值（体积一定求表面积最小）</div>
+              <div class="example-header">📝 例题24 · 几何最值（体积一定求表面积最小）</div>
               <div class="example-body">
                 <div class="example-q">用同样体积的材料做成一个立体，做成下面哪种形状时<b>表面积最小</b>（最省材料）？</div>
                 <div class="example-opts">A.正方体　B.长宽高不等的长方体　C.球体　D.圆柱体</div>
@@ -2286,7 +2340,7 @@
               </div>
             </div>
             <div class="example">
-        <div class="example-header">📝 例题24 · 最短路径（镜像翻折）</div>
+        <div class="example-header">📝 例题25 · 最短路径（镜像翻折）</div>
         <div class="example-body">
           <div class="example-q">在公路 l 的同侧有 A、B 两个村庄，A 到公路的距离为 3 千米，B 到公路的距离为 5 千米，两村在公路上的投影相距 6 千米。要在公路上建一个车站 P，使 PA + PB 最短，最短距离是多少千米？</div>
           <div class="example-opts">A.8　B.9　C.10　D.12</div>
@@ -2307,7 +2361,7 @@
               </table>
             </div>
             <div class="example">
-        <div class="example-header">📝 例题25 · 常用根号（估算）</div>
+        <div class="example-header">📝 例题26 · 常用根号（估算）</div>
         <div class="example-body">
           <div class="example-q">一个直角三角形的两条直角边分别为 2 和 3，则斜边长约为多少？（√13 ≈ 3.61）</div>
           <div class="example-opts">A.3.4　B.3.6　C.3.9　D.4.2</div>
@@ -2332,7 +2386,7 @@
               <div class="tip-box">间隔类裁剪的死穴：只按一个方向排。先按「小边对大边」和「大边对大边」各算一遍，取大的。</div>
             </div>
                                     <div class="example">
-              <div class="example-header">📝 例题26 · 几何最优构造（覆盖型 · 2025 江苏）</div>
+              <div class="example-header">📝 例题27 · 几何最优构造（覆盖型 · 2025 江苏）</div>
               <div class="example-body">
                 <div class="example-q">某单位在边长为 200 米的正方形广场上组织一场招聘会，计划安排若干名工作人员提供咨询服务，每名工作人员入场后将分别随机站在一个位置上，其服务半径不超过 50√2 米。若要确保咨询服务全覆盖，则至少需要安排工作人员（　　）。</div>
                 <div class="example-opts">A.4 名　B.5 名　C.6 名　D.7 名</div>
@@ -2369,7 +2423,7 @@
               </div>
             </div>
             <div class="example">
-              <div class="example-header">📝 例题27 · 几何最优构造（裁剪型 · 2025 四川）</div>
+              <div class="example-header">📝 例题28 · 几何最优构造（裁剪型 · 2025 四川）</div>
               <div class="example-body">
                 <div class="example-q">某工匠计划在 700 × 115 厘米的钢板上裁剪若干大小为 70 × 40 厘米的钢片，且在裁剪时，每块钢片之间还应保留至少 5 厘米的间隔。问最多能裁剪出多少块？</div>
                 <div class="example-opts">A.23　B.24　C.25　D.26</div>
@@ -2428,7 +2482,7 @@
                 例（5,4,3）：√(3²+9²)=√90、√(5²+7²)=√74、√(4²+8²)=√80 → 最短 = √74。</div>
             </div>
               <div class="example">
-              <div class="example-header">📝 例题28 · 切长最短（2006 江西）</div>
+              <div class="example-header">📝 例题29 · 切长最短（2006 江西）</div>
               <div class="example-body">
                 <div class="example-q">右图为长、宽、高分别是 4cm、3cm、5cm 的长方体，如果一只小虫从顶点 A 爬到顶点 B（对角顶点），其爬行的最短距离为：</div>
                 <div class="example-opts">A. 4√5　B. √74　C. 3√10　D. √70</div>
