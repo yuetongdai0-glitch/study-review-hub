@@ -417,7 +417,7 @@
     <a class="nav-link" data-kw="方程法 设未知数 不定方程 整体替换 奇偶 尾数" href="#s2">二、方程法</a>
     <a class="nav-link" data-kw="周期问题 余数 最小公倍数 星期 生肖" href="#s3">三、周期问题</a>
     <a class="nav-link" data-kw="工程问题 赋值 效率 完工时间 周期循环 费用" href="#s4">四、工程问题</a>
-    <a class="nav-link" data-kw="几何 三角形 勾股定理 特殊角 相似 面积 体积 涂色 蝴蝶定理 正六边形 三角函数 正弦 余弦 正切 sin cos tan 仰角 俯角 坡度 垂径定理 弦长 雷达 航行 点到直线距离 四边形 对角线 四块面积 面积比" href="#s5">五、几何问题</a>
+    <a class="nav-link" data-kw="几何 三角形 勾股定理 特殊角 相似 面积 体积 涂色 蝴蝶定理 正六边形 三角函数 正弦 余弦 正切 sin cos tan 仰角 俯角 坡度 垂径定理 弦长 雷达 航行 点到直线距离 四边形 对角线 四块面积 面积比 蝴蝶定理 对角之积" href="#s5">五、几何问题</a>
     <a class="nav-link" data-kw="经济利润 成本 售价 利润 利润率 折扣 打折" href="#s6">六、经济利润问题</a>
   </div>
 
@@ -2285,6 +2285,9 @@
                 <b>① 左右两个三角形面积相等</b>：S△AOD = S△BOC<br>
                 <b>② 上下两个三角形面积比 = 上下底的平方比</b>：S△AOB ∶ S△COD = AB² ∶ CD²
               </div>
+              <div class="key-box" style="margin-top:8px;">
+                <b>★ 蝴蝶定理的一般形式（任意四边形都成立，不限梯形）</b><br>                对角线的四块里，<b>对角两块之积相等</b>：<b>S₁ × S₃ = S₂ × S₄</b>（左上 × 右下 = 右上 × 左下）。<br>                道理很朴素：△ABO、△BCO 共用 BO，高之比 = AO : CO；△CDO、△ADO 共用 DO，高之比也是 AO : CO → 两组"对角块"的乘积里 AO·CO、BO·DO 各出现一次，约掉就相等。<br>                <b>怎么用（给三块求第四块，一条式子结束）：</b>第四块 = <b>对角两块之积 ÷ 已知的第三块</b>。<br>                <b>梯形为什么是特例：</b>AB ∥ CD 时左右两块相等（都等于 S），于是 S_top × S_bottom = S²，而 S_top : S_bottom 又等于 AB² : CD² —— 两条结论天然对得上。<br>                <b>坑：</b>① 是<b>相乘</b>不是相加；② 两条对角线必须真的相交于一点（凸四边形），凹四边形/自交的图不能直接套；③ 别和"并排两块之比 = 对角线上两段之比"混用，两条都能用，但别串。
+              </div>
             </div>
             <div class="example">
         <div class="example-header">📝 例题21 · 蝴蝶定理（梯形对角线）</div>
@@ -2298,7 +2301,47 @@
           </div>
         </div>
       </div>
-            <div class="block">
+                        <div class="example">
+              <div class="example-header">📝 例题22 · 蝴蝶定理一般形式（对角之积 · 2019 江苏）</div>
+              <div class="example-body">
+                <div class="example-q">某民营企业新建一个四边形的厂区，按对角线将整个厂区分为四个功能区（如图所示）。已知<b>生产、仓储和营销</b>三个功能区的面积分别为 <b>26 亩、18 亩和 13 亩</b>，若保留休闲区的 <b>12 亩天然小湖泊</b>，则休闲区可利用的<b>陆地</b>面积是多少亩？</div>
+                <div class="example-opts">A. 36 亩　B. 26 亩　C. 24 亩　D. 23 亩</div>
+                <div class="example-answer">
+                        <b>解析：</b>四块里<b>仓储（18）与生产（26）正好是对角</b>，<b>营销（13）与休闲</b>也是对角 → 直接套蝴蝶定理：<br>
+                        　　18 × 26 = 休闲 × 13 → 休闲 = 468 ÷ 13 = <b>36</b> 亩。<br>
+                        ① 休闲区<b>总面积</b> 36 亩；<br>
+                        ② 其中 12 亩是天然小湖泊，<b>可利用陆地 = 36 − 12 = 24</b> 亩。<br>
+                        要点：这题设了<b>两层</b> —— 第一层"对角之积"求出休闲区总面积，第二层别忘了<b>减掉湖面</b>（选项里 36 就是没减湖的陷阱）。对角怎么认：<b>不共用同一个顶点的两块</b>就是对角；共用顶点（共用 18 与 13 之间的那条边）的是"并排"，并排用的是比例不是乘积。
+                        <figure class="fig">
+                          <svg viewBox="0 0 380 296" role="img" aria-label="四边形厂区被两条对角线分成四块：仓储18、营销13、生产26、休闲36（其中含12亩小湖），对角两块之积相等">
+                            <text x="8" y="20" font-size="12.5" fill="#4f7cff" font-weight="700">对角之积相等：18 × 26 = 36 × 13</text>
+                            <polygon points="40,140 180,56 340,112 190,216" fill="#f9fbff" stroke="#3f4a5f" stroke-width="1.8"/>
+                            <path d="M40 140 L340 112" fill="none" stroke="#4f7cff" stroke-width="1.6"/>
+                            <path d="M180 56 L190 216" fill="none" stroke="#4f7cff" stroke-width="1.6"/>
+                            <circle cx="184" cy="126" r="3" fill="#1a1a2e"/>
+                            <text x="168" y="122" font-size="11" font-weight="700" fill="#1a1a2e">O</text>
+                            <text x="26" y="146" font-size="12" font-weight="700" fill="#1a1a2e">A</text>
+                            <text x="176" y="50" font-size="12" font-weight="700" fill="#1a1a2e">B</text>
+                            <text x="346" y="114" font-size="12" font-weight="700" fill="#1a1a2e">C</text>
+                            <text x="192" y="232" font-size="12" font-weight="700" fill="#1a1a2e">D</text>
+                            <text x="104" y="104" font-size="12.5" font-weight="700" fill="#1a7a45">仓储 18</text>
+                            <text x="104" y="172" font-size="12.5" font-weight="700" fill="#7a4fa0">营销 13</text>
+                            <text x="203" y="168" font-size="12" font-weight="700" fill="#2b4b9b">生产 26</text>
+                            <text x="212" y="118" font-size="12.5" font-weight="700" fill="#c0392b">休闲 36</text>
+                            <ellipse cx="290" cy="99" rx="14" ry="7.5" fill="#dff1fb" stroke="#5aa9d6" stroke-width="1.2" stroke-dasharray="3 2"/>
+                            <path d="M302 152 L292 107" fill="none" stroke="#5aa9d6" stroke-width="1"/>
+                            <text x="296" y="166" font-size="11.5" fill="#2a7ea8">小湖 12</text>
+                            <text x="8" y="256" font-size="12.5" fill="#4a5568">18 × 26 = 468 → 休闲 = 468 ÷ 13 = 36（亩）</text>
+                            <text x="8" y="278" font-size="12.5" font-weight="700" fill="#c0392b">陆地 = 36 − 12 = 24 亩</text>
+                          </svg>
+                          <figcaption>四个功能区里，<b>仓储与生产是对角、营销与休闲是对角</b>；对角两块之积相等，一步求出休闲区总面积，
+                            再减掉湖面才是「可利用陆地」。</figcaption>
+                        </figure>
+                  <span class="correct">答案：C</span>
+                </div>
+              </div>
+            </div>
+<div class="block">
               <div class="block-title">12. 坐标构造（两点间距离）</div>
               <div class="formula-box">
                 <span class="formula">AB = √[ (x₁−x₂)² + (y₁−y₂)² ]</span>
@@ -2306,7 +2349,7 @@
               <div class="tip-box">几何没思路时的万能兜底：<b>建坐标系把图形代数化</b>——把关键点放到格点上，用距离公式硬算。</div>
             </div>
             <div class="example">
-        <div class="example-header">📝 例题22 · 坐标构造（方位角 · 2024 广东）</div>
+        <div class="example-header">📝 例题23 · 坐标构造（方位角 · 2024 广东）</div>
         <div class="example-body">
           <div class="example-q">甲、乙、丙三艘船在海上航行。某一时刻，甲观测到乙位于它的北偏西 30° 方向，甲、乙相距 6 千米；甲观测到丙位于它的正西方向，甲、丙相距 6 千米。则乙与丙之间的距离为（　　）千米。</div>
           <div class="example-opts">A.3　B.4　C.5　D.6</div>
@@ -2370,7 +2413,7 @@
               </table>
             </div>
             <div class="example">
-              <div class="example-header">📝 例题23 · 正方体涂色</div>
+              <div class="example-header">📝 例题24 · 正方体涂色</div>
               <div class="example-body">
                 <div class="example-q">棱长为 5 的正方体表面全部涂上红漆，再切成 125 个棱长 1 的小正方体。其中恰好两面涂色的有多少个？</div>
                 <div class="example-opts">A.36　B.48　C.54　D.60</div>
@@ -2396,7 +2439,7 @@
               <div class="tip-box">看题干用词：问「<b>是</b>原来的几倍」→ 直接用 N / N² / N³；问「<b>比原来多了 / 增长了</b>几倍」→ <b>再减 1</b>。这一步看错，整题白算。</div>
             </div>
             <div class="example">
-              <div class="example-header">📝 例题24 · 同比例放缩</div>
+              <div class="example-header">📝 例题25 · 同比例放缩</div>
               <div class="example-body">
                 <div class="example-q">一个正方体的棱长扩大为原来的2倍，则表面积扩大为原来的几倍？体积扩大为原来的几倍？</div>
                 <div class="example-opts">A.2倍、4倍　B.4倍、8倍　C.4倍、6倍　D.8倍、12倍</div>
@@ -2407,7 +2450,7 @@
               </div>
             </div>
                         <div class="example">
-              <div class="example-header">📝 例题25 · 同比例放缩（圆锥倒置 · 2025 联考）</div>
+              <div class="example-header">📝 例题26 · 同比例放缩（圆锥倒置 · 2025 联考）</div>
               <div class="example-body">
                 <div class="example-q">一个空的倒置的圆锥形容器，倒入 1 瓶固定容量的水后，水的高度恰好为容器高度的一半。若要使容器盛满水，则需要再倒入水的瓶数为（　　）。</div>
                 <div class="example-opts">A.5 瓶　B.7 瓶　C.8 瓶　D.10 瓶</div>
@@ -2461,7 +2504,7 @@
                 · 记忆锚点：椭圆的面积是 πab，内接矩形的上限就是 2ab（比椭圆小、比正方形大），看到"内接矩形 + 最值"直接写 2ab。</div>
             </div>
             <div class="example">
-              <div class="example-header">📝 例题26 · 几何最值</div>
+              <div class="example-header">📝 例题27 · 几何最值</div>
               <div class="example-body">
                 <div class="example-q">用一根长12米的铁丝围成一个平面图形，围成什么图形面积最大？</div>
                 <div class="example-opts">A.正方形　B.长方形　C.圆形　D.三角形</div>
@@ -2472,7 +2515,7 @@
               </div>
             </div>
             <div class="example">
-              <div class="example-header">📝 例题27 · 几何最值（体积一定求表面积最小）</div>
+              <div class="example-header">📝 例题28 · 几何最值（体积一定求表面积最小）</div>
               <div class="example-body">
                 <div class="example-q">用同样体积的材料做成一个立体，做成下面哪种形状时<b>表面积最小</b>（最省材料）？</div>
                 <div class="example-opts">A.正方体　B.长宽高不等的长方体　C.球体　D.圆柱体</div>
@@ -2515,7 +2558,7 @@
               </div>
             </div>
             <div class="example">
-        <div class="example-header">📝 例题28 · 最短路径（镜像翻折）</div>
+        <div class="example-header">📝 例题29 · 最短路径（镜像翻折）</div>
         <div class="example-body">
           <div class="example-q">在公路 l 的同侧有 A、B 两个村庄，A 到公路的距离为 3 千米，B 到公路的距离为 5 千米，两村在公路上的投影相距 6 千米。要在公路上建一个车站 P，使 PA + PB 最短，最短距离是多少千米？</div>
           <div class="example-opts">A.8　B.9　C.10　D.12</div>
@@ -2536,7 +2579,7 @@
               </table>
             </div>
             <div class="example">
-        <div class="example-header">📝 例题29 · 常用根号（估算）</div>
+        <div class="example-header">📝 例题30 · 常用根号（估算）</div>
         <div class="example-body">
           <div class="example-q">一个直角三角形的两条直角边分别为 2 和 3，则斜边长约为多少？（√13 ≈ 3.61）</div>
           <div class="example-opts">A.3.4　B.3.6　C.3.9　D.4.2</div>
@@ -2561,7 +2604,7 @@
               <div class="tip-box">间隔类裁剪的死穴：只按一个方向排。先按「小边对大边」和「大边对大边」各算一遍，取大的。</div>
             </div>
                                     <div class="example">
-              <div class="example-header">📝 例题30 · 几何最优构造（覆盖型 · 2025 江苏）</div>
+              <div class="example-header">📝 例题31 · 几何最优构造（覆盖型 · 2025 江苏）</div>
               <div class="example-body">
                 <div class="example-q">某单位在边长为 200 米的正方形广场上组织一场招聘会，计划安排若干名工作人员提供咨询服务，每名工作人员入场后将分别随机站在一个位置上，其服务半径不超过 50√2 米。若要确保咨询服务全覆盖，则至少需要安排工作人员（　　）。</div>
                 <div class="example-opts">A.4 名　B.5 名　C.6 名　D.7 名</div>
@@ -2598,7 +2641,7 @@
               </div>
             </div>
             <div class="example">
-              <div class="example-header">📝 例题31 · 几何最优构造（裁剪型 · 2025 四川）</div>
+              <div class="example-header">📝 例题32 · 几何最优构造（裁剪型 · 2025 四川）</div>
               <div class="example-body">
                 <div class="example-q">某工匠计划在 700 × 115 厘米的钢板上裁剪若干大小为 70 × 40 厘米的钢片，且在裁剪时，每块钢片之间还应保留至少 5 厘米的间隔。问最多能裁剪出多少块？</div>
                 <div class="example-opts">A.23　B.24　C.25　D.26</div>
@@ -2657,7 +2700,7 @@
                 例（5,4,3）：√(3²+9²)=√90、√(5²+7²)=√74、√(4²+8²)=√80 → 最短 = √74。</div>
             </div>
               <div class="example">
-              <div class="example-header">📝 例题32 · 切长最短（2006 江西）</div>
+              <div class="example-header">📝 例题33 · 切长最短（2006 江西）</div>
               <div class="example-body">
                 <div class="example-q">右图为长、宽、高分别是 4cm、3cm、5cm 的长方体，如果一只小虫从顶点 A 爬到顶点 B（对角顶点），其爬行的最短距离为：</div>
                 <div class="example-opts">A. 4√5　B. √74　C. 3√10　D. √70</div>
