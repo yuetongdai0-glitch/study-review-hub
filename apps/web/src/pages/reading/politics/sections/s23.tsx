@@ -21,7 +21,7 @@ export default function S24(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题111 · 做题法（提升课）</ExampleHeader>
+              <ExampleHeader>📝 例题114 · 做题法（提升课）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>关于政治理论题的作答策略，下列说法最恰当的是：</ExampleQuestion>
                 <ExampleOptions>A.先找表述最「正能量」的选项<br />B.以「找错误」为主，能判定错误就排除，不能判定则视为正确<br />C.四个选项都不确定时应空着<br />D.凡出现「根本」的选项一律判错</ExampleOptions>
@@ -40,7 +40,7 @@ export default function S24(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题112 · 党史（提升课）</ExampleHeader>
+              <ExampleHeader>📝 例题115 · 党史（提升课）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>关于党的全国代表大会，下列说法正确的是：</ExampleQuestion>
                 <ExampleOptions>A.中共六大是唯一一次在国外召开的党代会<br />B.中共七大提出了彻底的反帝反封建民主革命纲领<br />C.中共二大把毛泽东思想写入党章<br />D.中共五大确立了「联俄、联共、扶助农工」三大政策</ExampleOptions>
@@ -59,7 +59,7 @@ export default function S24(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题113 · 宪法细节（提升课）</ExampleHeader>
+              <ExampleHeader>📝 例题116 · 宪法细节（提升课）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>关于我国宪法与选举制度，下列说法正确的是：</ExampleQuestion>
                 <ExampleOptions>A.直接选举适用于县、乡两级，由选举委员会主持<br />B.民族自治地方组织公安部队无需任何批准<br />C.我国公民可以同时拥有中国和外国国籍<br />D.国徽由国旗、天安门、镰刀锤头和谷穗组成</ExampleOptions>
@@ -83,7 +83,7 @@ export default function S24(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题114 · 许可四分（提升课）</ExampleHeader>
+              <ExampleHeader>📝 例题117 · 许可四分（提升课）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>某企业以虚假材料骗得施工许可，后被查实。行政机关收回该许可的行为属于：</ExampleQuestion>
                 <ExampleOptions>A.吊销　B.撤回　C.撤销　D.注销</ExampleOptions>
@@ -108,7 +108,7 @@ export default function S24(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题115 · 财产犯罪（提升课）</ExampleHeader>
+              <ExampleHeader>📝 例题118 · 财产犯罪（提升课）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>甲谎称能帮乙办理入学，乙信以为真交付 5 万元，甲收款后并未办理。甲的行为构成：</ExampleQuestion>
                 <ExampleOptions>A.盗窃罪　B.诈骗罪　C.侵占罪　D.抢夺罪</ExampleOptions>
@@ -127,7 +127,7 @@ export default function S24(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题116 · 民法补漏（提升课）</ExampleHeader>
+              <ExampleHeader>📝 例题119 · 民法补漏（提升课）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>关于民法制度，下列说法正确的是：</ExampleQuestion>
                 <ExampleOptions>A.小区内的道路、绿地、物业服务用房属于业主共有<br />B.拾得遗失物只能请求必要费用，不能请求悬赏报酬<br />C.定金合同自双方签字时成立<br />D.死者的人格利益不受法律保护</ExampleOptions>

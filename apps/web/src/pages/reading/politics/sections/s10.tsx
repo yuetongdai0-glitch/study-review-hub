@@ -26,7 +26,7 @@ export default function S11(): ReactElement {
               <Callout variant="tip"><b>一句话判「惯性」：</b>刹车前倾、绊倒前扑、拍打衣服除尘、纸飞机离手继续飞——都是惯性；「球滚一会儿停下」是摩擦阻力，不是惯性。</Callout>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题52 · 力学（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题55 · 力学（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>下列现象蕴含的科学常识正确的是：</ExampleQuestion>
                 <ExampleOptions>A.湿袜子粘在脚上很难脱，是大气压把袜子压在脚上<br />B.如坐针毡是因为压力一定时受力面积与压强成正比<br />C.书包背带做得宽是为了增大受力面积、减小压力<br />D.空间站附近的「太空压力」比地球正常大气压大</ExampleOptions>
@@ -45,7 +45,7 @@ export default function S11(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题53 · 杠杆（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题56 · 杠杆（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>下列生活用品中属于省力杠杆的是：①铡刀 ②钓鱼竿 ③镊子 ④手推车</ExampleQuestion>
                 <ExampleOptions>A.①②　B.②③　C.②④　D.①④</ExampleOptions>
@@ -73,7 +73,7 @@ export default function S11(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题54 · 物态变化（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题57 · 物态变化（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>下列物态变化对应正确的是：</ExampleQuestion>
                 <ExampleOptions>A.蜡烛燃烧——熔化——放热<br />B.水变成水蒸气——液化——吸热<br />C.冰棍周围冒「白气」——凝华——放热<br />D.衣柜中的樟脑丸变小——升华——吸热</ExampleOptions>
@@ -97,7 +97,7 @@ export default function S11(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题55 · 光学（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题58 · 光学（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>下列属于光的折射现象的是：①猪八戒照镜子 ②从鱼缸侧面看鱼发现鱼变大 ③装满水的泳池底部看起来很浅 ④坐井观天所见甚小</ExampleQuestion>
                 <ExampleOptions>A.①②　B.②③　C.①③　D.③④</ExampleOptions>
@@ -118,7 +118,7 @@ export default function S11(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题56 · 声学（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题59 · 声学（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>下列关于声音的说法错误的是：</ExampleQuestion>
                 <ExampleOptions>A.声音在固体中的传播速度大于在液体中<br />B.超声波方向性好，可用于碎石、清洗、测距<br />C.声音的传播与温度和介质有关<br />D.「高音刺耳」是因为声音的响度发生了变化</ExampleOptions>

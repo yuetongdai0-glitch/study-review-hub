@@ -23,7 +23,7 @@ export default function S8(): ReactElement {
               <Callout variant="tip"><b>「开始—进一步—大大—完全」</b>四级递进，对应上面四个条约，考排序题就靠这八个字。</Callout>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题33 · 不平等条约（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题36 · 不平等条约（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>导致中国完全沦为半殖民地半封建社会的不平等条约及其对应战争是：</ExampleQuestion>
                 <ExampleOptions>A.《南京条约》——鸦片战争<br />B.《北京条约》——第二次鸦片战争<br />C.《马关条约》——甲午中日战争<br />D.《辛丑条约》——八国联军侵华战争</ExampleOptions>
@@ -44,7 +44,7 @@ export default function S8(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题34 · 辛亥革命（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题37 · 辛亥革命（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>下列关于辛亥革命的表述，正确的是：</ExampleQuestion>
                 <ExampleOptions>A.中国同盟会成立于 1905 年，是第一个资产阶级革命团体<br />B.三民主义中「民族主义」是核心，对应「创立民国」<br />C.武昌起义爆发于 1911 年 10 月 10 日，揭开辛亥革命序幕<br />D.1912 年中华民国临时政府成立，定都北京</ExampleOptions>
@@ -65,7 +65,7 @@ export default function S8(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题35 · 中共早期会议（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题38 · 中共早期会议（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>下列关于中共历次全国代表大会及其历史贡献的对应，正确的是：</ExampleQuestion>
                 <ExampleOptions>A.中共一大——通过第一部党章，确立党名为「中国共产党」<br />B.中共二大——第一次明确提出彻底的反帝反封建民主革命纲领<br />C.中共三大——明确提出无产阶级领导权和工农联盟问题<br />D.中共五大——确立「联俄、联共、扶助农工」三大政策</ExampleOptions>
@@ -88,7 +88,7 @@ export default function S8(): ReactElement {
               <Callout variant="warn"><b>三组高频混淆：</b>「第一枪」＝南昌起义；「支部建在连上」＝三湾改编；「思想建党政治建军」＝古田会议。</Callout>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题36 · 遵义会议（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题39 · 遵义会议（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>关于遵义会议，下列说法正确的是：</ExampleQuestion>
                 <ExampleOptions>A.会议确立了毛泽东思想为党的指导思想<br />B.会后成立由毛泽东、朱德、王稼祥组成的三人军事小组<br />C.会议标志中国共产党第一次独立自主地运用马列主义解决中国革命问题<br />D.会议确定建立抗日民族统一战线的策略方针</ExampleOptions>
@@ -121,7 +121,7 @@ export default function S8(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题37 · 抗日战争（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题40 · 抗日战争（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>下列关于抗日战争时期重要事件的表述，正确的是：</ExampleQuestion>
                 <ExampleOptions>A.西安事变的和平解决标志着抗日民族统一战线正式形成<br />B.平型关大捷是抗战以来正面战场取得的最大胜利<br />C.武汉会战结束后，抗日战争进入战略相持阶段<br />D.百团大战是国民党军队发动的规模最大的战役</ExampleOptions>
@@ -129,7 +129,7 @@ export default function S8(): ReactElement {
               </ExampleBody>
             </Example>
             <Example>
-              <ExampleHeader>📝 例题38 · 抗战两阶段（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题41 · 抗战两阶段（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>关于抗日战争，下列说法正确的有：<br />①九一八事变是抗日战争的起点<br />②武汉会战结束后抗日战争进入战略相持阶段<br />③战略相持阶段，正面战场是抗战的主战场<br />④张自忠是抗战以来中国战场牺牲的最高将领</ExampleQuestion>
                 <ExampleOptions>A.①②③　B.①②④　C.②③④　D.①③④</ExampleOptions>
@@ -150,7 +150,7 @@ export default function S8(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题39 · 解放战争（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题42 · 解放战争（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>下列不属于解放战争三大战役的是：</ExampleQuestion>
                 <ExampleOptions>A.辽沈战役　B.济南战役　C.淮海战役　D.平津战役</ExampleOptions>

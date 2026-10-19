@@ -24,7 +24,7 @@ export default function S6(): ReactElement {
               <Callout variant="warn">「有使用价值的东西就是商品」× —— 自给自足的粮食有使用价值但不是商品；商品必须同时是<b>劳动产品 + 用于交换</b>。</Callout>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题23 · 商品二因素（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题26 · 商品二因素（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>关于商品二因素与劳动二重性，下列说法错误的是：</ExampleQuestion>
                 <ExampleOptions>A.使用价值是商品的自然属性<br />B.具体劳动创造商品的使用价值，抽象劳动形成商品的价值<br />C.商品的二因素决定生产商品的劳动二重性<br />D.劳动二重性学说是理解马克思主义政治经济学的枢纽</ExampleOptions>
@@ -42,7 +42,7 @@ export default function S6(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题24 · 价值量（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题27 · 价值量（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>关于商品价值量，下列说法正确的是：</ExampleQuestion>
                 <ExampleOptions>A.由生产该商品的个别劳动时间决定<br />B.与社会劳动生产率成正比<br />C.由社会必要劳动时间决定<br />D.价值围绕价格上下波动</ExampleOptions>
@@ -62,7 +62,7 @@ export default function S6(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题25 · 货币职能（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题28 · 货币职能（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>关于货币职能，下列说法错误的是：</ExampleQuestion>
                 <ExampleOptions>A.价值尺度和流通手段是货币的两个最基本职能<br />B.货币履行价值尺度职能时必须是现实的货币<br />C.货币的本质是一般等价物<br />D.支付手段可用于缴纳租金、税金和发放工资</ExampleOptions>
@@ -84,7 +84,7 @@ export default function S6(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题26 · 剩余价值（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题29 · 剩余价值（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>关于剩余价值，下列说法正确的有：<br />①剩余价值规律是资本主义的基本规律<br />②相对剩余价值以提高全社会劳动生产率为前提<br />③不变资本是以劳动力形态存在的那部分资本<br />④划分不变资本与可变资本为确定剥削程度提供了依据</ExampleQuestion>
                 <ExampleOptions>A.①②③　B.①②④　C.②③④　D.①③④</ExampleOptions>

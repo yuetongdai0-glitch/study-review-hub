@@ -21,7 +21,7 @@ export default function S14(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题67 · 家电（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题70 · 家电（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>关于电器的使用，下列说法正确的是：</ExampleQuestion>
                 <ExampleOptions>A.用微波炉加热利乐枕包装的牛奶<br />B.家用空调应使用单独的专用插座<br />C.食物要等凉透后再放入冰箱<br />D.新冰箱侧面的保护膜应尽量保留</ExampleOptions>
@@ -36,7 +36,7 @@ export default function S14(): ReactElement {
                 <li><b>双闪灯</b>（危险报警闪光灯）：紧急情况或临时停车时提醒他人；<b>远光灯</b>仅用于照明条件极差且不影响他人时，有路灯街道应少用。</li>
                 <li>轮胎花纹、防滑链：<b>增大摩擦力</b>；加油站必须熄火、不打电话、不拍打化纤衣物（防静电）。</li>
                 <li>雷电天气在车内是安全的（<b>法拉第笼</b>效应）。</li>
-                <li>高速故障九字诀：<b>车靠边、人撤离、即报警</b>；三角牌放车后 <b>150 米</b>（恶劣天气 200 米以上）；救援电话 <b>12122</b>。</li>
+                <li>高速故障九字诀：<b>车靠边、人撤离、即报警</b>；<b>三角警示牌</b>放车后 <b>150 米以外</b>（夜间、雨雪雾等恶劣天气延长至 <b>200 米以上</b>）；全国统一救援电话 <b>12122</b>。</li>
                 <li>飞机窗户做成<b>圆形</b>：避免应力集中；机翼上表面流速大压强小，产生升力。</li>
                 <li>火车转弯处<b>外轨高于内轨</b>；车次字母：C 城际、D 动车、G 高铁、Z 直达、T 特快、K 快速、L 临客、Y 旅游。</li>
                 <li><b>交通信号灯</b>：机动车灯（红黄绿圆灯）、非机动车灯（带自行车图案）、人行横道灯（红绿行人图案）、方向指示灯（箭头）。</li>
@@ -44,7 +44,7 @@ export default function S14(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题68 · 交通（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题71 · 交通（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>下列关于交通常识的说法，错误的是：</ExampleQuestion>
                 <ExampleOptions>A.晚上开车为行驶方便，尽量使用远光灯<br />B.汽车加油时不可下车拍打化纤类衣物<br />C.下雪天轮胎加防滑链可增大摩擦力<br />D.汽车行驶时车内一般不开灯，避免挡风玻璃成像</ExampleOptions>
@@ -61,11 +61,13 @@ export default function S14(): ReactElement {
                 <li>洪水：向山坡高地转移；来不及则上屋顶、大树、高墙。</li>
                 <li>泥石流：向<b>与泥石流垂直方向</b>的两侧山坡跑，离开沟谷。</li>
                 <li>地震：低楼层迅速撤到开阔地；高楼层躲<b>小开间</b>（厨房、卫生间、承重墙角）或坚固家具下，护住头部。</li>
-                <li>地震名词：震源、震中、<b>震级只有一个</b>、<b>烈度可有多个</b>；震级差一级能量差约 <b>30 倍</b>；纵波（P）快、上下颠、破坏弱；横波（S）慢、水平摇、破坏强、只能在固体中传播。</li>
+                <li><b>地震成因三类型</b>：<b>构造地震、火山地震、塌陷地震</b>（构造地震最多）。</li>
+                <li><b>世界三大地震带</b>：<b>环太平洋地震带</b>（世界最大，影响我国<b>东部</b>）、<b>欧亚地震带</b>（影响我国<b>西南</b>）、<b>海岭地震带</b>（<b>不影响我国</b>）。</li>
+                <li>地震名词：震源、震中、<b>震级只有一个</b>、<b>烈度可有多个</b>；我国用<b>里氏分级表共 9 个等级</b>，震级差一级能量差约 <b>30 倍</b>；纵波（P）快、上下颠、破坏弱、固液气都能传；横波（S）慢、水平摇、破坏强、<b>只能固体传</b>。</li>
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题69 · 地震（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题72 · 地震（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>下列关于地震的说法，正确的是：</ExampleQuestion>
                 <ExampleOptions>A.欧亚地震带是世界上最大的地震带<br />B.地震时纵波比横波破坏力更强<br />C.震级每增加 1 级，能量约增加 30 倍<br />D.一次地震可以有多个震级</ExampleOptions>
@@ -85,7 +87,7 @@ export default function S14(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题70 · 计算机（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题73 · 计算机（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>下列关于我国计算机成就的表述，正确的是：</ExampleQuestion>
                 <ExampleOptions>A.「银河-I」使我国成为世界上第四个能独立设计制造巨型机的国家<br />B.「天河一号」曾连续 6 次位居 TOP500 世界第一<br />C.「神威·太湖之光」多次问鼎世界第一，核心突破在于核心部件完全国产化<br />D.「祖冲之二号」使我国成为全球第二个实现量子优越性的国家</ExampleOptions>
@@ -107,7 +109,7 @@ export default function S14(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题71 · 生物工程（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题74 · 生物工程（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>下列不涉及微生物发酵的是：</ExampleQuestion>
                 <ExampleOptions>A.豆腐　B.食醋　C.乳酪　D.白酒</ExampleOptions>
@@ -134,7 +136,7 @@ export default function S14(): ReactElement {
               <Callout variant="warn"><b>最易错：</b>「嫦娥五号是世界首次月背采样」×——<b>五号是正面</b>，<b>六号才是世界首次月背</b>采样返回。</Callout>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题72 · 探月工程（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题75 · 探月工程（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>下列关于我国探月工程，说法正确的是：</ExampleQuestion>
                 <ExampleOptions>A.嫦娥一号是我国第一颗人造太阳系小行星<br />B.嫦娥三号是我国首颗实现月球背面软着陆的探测器<br />C.嫦娥五号实现我国首次月球正面采样返回<br />D.嫦娥七号已实施首次月背采样返回</ExampleOptions>

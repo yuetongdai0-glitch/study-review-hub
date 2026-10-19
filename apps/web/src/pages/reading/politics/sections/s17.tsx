@@ -23,7 +23,7 @@ export default function S18(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题94 · 刑法效力（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题97 · 刑法效力（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>关于刑法的效力，下列说法错误的是：</ExampleQuestion>
                 <ExampleOptions>A.我国公民甲教唆美国公民在法国杀害日本人，我国刑法有权追究<br />B.我国公民乙在中欧班列行驶于别国境内时贩售海洛因，应追究刑责<br />C.外国商人在我国领域内犯重婚罪，应适用我国刑法<br />D.法国公民乘坐我国游轮，在船上实施的犯罪行为不适用我国刑法</ExampleOptions>
@@ -42,11 +42,13 @@ export default function S18(): ReactElement {
                 <li>精神病人：完全无辨认控制能力时不负；间歇性精神病人<b>精神正常时</b>犯罪应负；尚未完全丧失的可以从轻或减轻。</li>
                 <li><b>醉酒的人犯罪应当负刑事责任</b>；又聋又哑的人或盲人可以从轻、减轻或免除。</li>
                 <li>主观方面：直接故意（希望）、间接故意（放任）、疏忽大意过失（应预见未预见）、过于自信过失（已预见轻信能避免）；<b>不可抗力与意外事件不是犯罪</b>。</li>
+                <li><b>犯罪四要件</b>：<b>犯罪主体、犯罪主观方面、犯罪客体、犯罪客观方面</b>。<b>犯罪客体</b>＝刑法所保护而被犯罪行为侵害的<b>社会关系</b>；<b>犯罪客观方面</b>＝危害行为、危害结果、因果关系等客观外在事实。</li>
+                <li><b>危害行为</b>是犯罪客观方面的核心：<b>「无行为则无犯罪」</b>；分<b>作为</b>（积极实施禁止行为）与<b>不作为</b>（能履行而不履行）。<b>不作为的义务来源</b>：法律明文规定、职务或业务要求、法律行为（如合同）承担、<b>先行行为</b>引起的义务。</li>
               </PointList>
               <Callout variant="formula"><span className="formula">12 核准 · 14 八罪 · 16 全责 · 18 从轻 · 75 过失应当从轻</span></Callout>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题95 · 责任年龄（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题98 · 责任年龄（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>根据我国《刑法》，下列关于刑事责任能力或年龄的表述，不正确的是：</ExampleQuestion>
                 <ExampleOptions>A.已满 14 周岁未满 16 周岁的人贩卖并运送毒品，应当追究刑事责任<br />B.间歇性精神病人在精神正常时候的犯罪，应当追究刑事责任<br />C.已满 14 周岁未满 16 周岁的人绑架他人，应当追究刑事责任<br />D.尚未完全丧失辨认或控制能力的精神病人犯罪，应追究刑责</ExampleOptions>
@@ -71,7 +73,7 @@ export default function S18(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题96 · 正当防卫（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题99 · 正当防卫（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>李某入室盗窃被发现，为抗拒抓捕当场对赵某使用暴力，扭打中李某昏迷倒地。赵某仍捡起铁棍猛击其头部数下致其死亡。赵某的行为属于：</ExampleQuestion>
                 <ExampleOptions>A.正当防卫，不负刑事责任<br />B.防卫过当，构成过失致人死亡罪<br />C.防卫过当，构成故意伤害致人死亡罪<br />D.故意杀人，应当负刑事责任</ExampleOptions>
@@ -93,7 +95,7 @@ export default function S18(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题97 · 犯罪形态（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题100 · 犯罪形态（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>某男在公交上窃取老人 8000 元，下车后心生悔意，返回将 7500 元塞回老人包中，自留 500 元，后被抓获。其犯罪形态属于：</ExampleQuestion>
                 <ExampleOptions>A.犯罪中止　B.犯罪未遂　C.犯罪预备　D.犯罪既遂</ExampleOptions>
@@ -118,7 +120,7 @@ export default function S18(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题98 · 刑罚（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题101 · 刑罚（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>下列描述中，错误的是：</ExampleQuestion>
                 <ExampleOptions>A.拘役的期限为一个月以上六个月以下<br />B.拘役的刑期从判决执行之日起计算<br />C.有期徒刑的刑期从判决执行之日起计算<br />D.有期徒刑判决执行以前先行羁押的，羁押一日折抵刑期二日</ExampleOptions>
@@ -136,7 +138,8 @@ export default function S18(): ReactElement {
                 <li><b>交通肇事罪</b>：违反交通法规致重大事故；指使强令违章驾驶、指使逃逸致死的以共犯论；<b>肇事后隐藏遗弃被害人致死→故意杀人/伤害</b>。</li>
                 <li><b>危险驾驶罪</b>：追逐竞驶情节恶劣；<b>醉驾（血液酒精含量 ≥80 毫克/100 毫升）</b>；严重超员超速；违规运输危险化学品。</li>
                 <li><b>妨害安全驾驶罪</b>：对行驶中的公共交通工具驾驶人使用暴力或抢控操纵装置。</li>
-                <li><b>间谍罪</b>：参加间谍组织、接受其任务、<b>为敌人指示轰击目标</b>。</li>
+                <li><b>间谍罪</b>：参加间谍组织、接受其任务、<b>为敌人指示轰击目标</b>（三种行为）。</li>
+                <li><b>为境外窃取、刺探、收买、非法提供国家秘密、情报罪</b>：为<b>境外的机构、组织、个人</b>，以<b>窃取、刺探、收买、非法提供</b>方式获取或提供<b>国家秘密或情报</b>。与间谍罪的分界是<b>是否与间谍组织挂钩</b>。</li>
                 <li><b>贪污罪</b>：国家工作人员利用职务便利侵吞窃取骗取公共财物；<b>受赠礼物应交公而不交公</b>数额较大亦以贪污论。</li>
                 <li><b>挪用公款罪</b>：非法活动（不限数额与时间）、营利活动（数额较大）、其他使用（数额较大且<b>超 3 个月未还</b>）。</li>
                 <li><b>受贿罪</b>：索贿或收受财物并为他人谋利（正当与不正当利益均算）；<b>斡旋受贿</b>以受贿论。</li>
@@ -145,7 +148,7 @@ export default function S18(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题99 · 量刑（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题102 · 量刑（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>下列哪一情形可以认定为自首？</ExampleQuestion>
                 <ExampleOptions>A.小孙因聚众斗殴被捕，讯问时主动交代 1 个月前盗窃 10 部手机<br />B.小马主动投案交代电诈，但审讯时隐瞒同伙罪行<br />C.小张醉驾肇事致人死亡后报案，审讯结束后逃跑<br />D.小沈过失致人重伤，被朋友扭送至公安局后交代案情</ExampleOptions>

@@ -30,7 +30,7 @@ export default function S10(): ReactElement {
               <Callout variant="warn">「内圣外王」出自<b>庄子</b>，不是老子；「知己知彼」出自<b>孙武</b>的《孙子兵法》，不是孙膑（孙膑著《孙膑兵法》）。</Callout>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题46 · 诸子百家（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题49 · 诸子百家（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>下列关于先秦诸子百家的叙述，不正确的是：</ExampleQuestion>
                 <ExampleOptions>A.孙武是兵家思想代表人物<br />B.老子提出了「内圣外王」的治国思想<br />C.韩非是法家代表人物，是荀子的学生<br />D.墨家学派组织严密，创始人为墨翟</ExampleOptions>
@@ -52,7 +52,7 @@ export default function S10(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题47 · 古代科技（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题50 · 古代科技（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>关于我国古代科技成就，下列说法正确的是：</ExampleQuestion>
                 <ExampleOptions>A.汉武帝时制定《太初历》，首次把二十四节气定于历法<br />B.祖冲之创制《大明历》，正式把二十四节气定于历法<br />C.僧一行制订《大衍历》，首次引入「岁差」概念<br />D.郭守敬编《授时历》，用科学方法实测地球子午线长度</ExampleOptions>
@@ -77,7 +77,7 @@ export default function S10(): ReactElement {
               <Callout variant="tip">传统医学四大经典：《黄帝内经》《难经》《神农本草经》《伤寒杂病论》。</Callout>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题48 · 古代医学（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题51 · 古代医学（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>下列人物与称号对应正确的是：</ExampleQuestion>
                 <ExampleOptions>A.华佗——医圣<br />B.张仲景——药王<br />C.孙思邈——外科鼻祖<br />D.扁鹊——医祖</ExampleOptions>
@@ -104,7 +104,7 @@ export default function S10(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题49 · 古代称谓（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题52 · 古代称谓（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>下列诗文中不包含月亮别称的是：</ExampleQuestion>
                 <ExampleOptions>A.古曜半升箕斗隐，金乌起灭海山头<br />B.万丈广寒难得到，嫦娥今夜落谁家<br />C.谁为须张烛，凉空有望舒<br />D.但愿人长久，千里共婵娟</ExampleOptions>
@@ -122,14 +122,20 @@ export default function S10(): ReactElement {
                 <li><b>赵州桥</b>：隋李春设计，世界现存年代最久、跨度最大、保存最完整的<b>单孔敞肩石拱桥</b>。</li>
                 <li><b>苏州园林</b>：以<b>拙政园</b>、留园为代表，「文人写意山水园」典范；<b>四大名园</b>＝拙政园、留园、颐和园、承德避暑山庄。</li>
                 <li><b>四大名楼</b>：山西<b>鹳雀楼</b>、江西<b>滕王阁</b>、湖北<b>黄鹤楼</b>、湖南<b>岳阳楼</b>。</li>
+          <li><b>建筑元素（五个必辨）</b>：<b>华表</b>＝宫殿陵墓前的装饰性巨大石柱；<b>牌楼</b>＝用于表彰、纪念、装饰、标识和导向；<b>水榭</b>＝建于水边或水上的亭台；<b>影壁</b>（照壁）＝门外正对大门作屏障的墙壁；<b>城阙</b>＝城门两旁的瞭望阁楼。</li>
                 <li>汉字七体：甲骨文、金文、小篆、隶书、草书、楷书、行书；六书：象形、指事、会意、形声、转注、假借。</li>
                 <li>书法：王羲之「书圣」《兰亭序》＝天下第一行书；颜真卿《祭侄文稿》＝第二；苏轼《寒食帖》＝第三；楷书四家＝欧阳询、颜真卿、柳公权、赵孟頫；颠张醉素＝张旭、怀素；宋四家＝苏轼、黄庭坚、米芾、蔡襄。</li>
-                <li>绘画：顾恺之「以形写神」《女史箴图》《洛神赋图》；展子虔《游春图》＝现存最古老山水画；吴道子「画圣」；张择端《清明上河图》画北宋汴京；王希孟《千里江山图》；黄公望《富春山居图》「画中之兰亭」；郑板桥画兰竹石。</li>
+                <li><b>顾恺之</b>（东晋）：率先提出<b>「以形写神」</b>，被誉为<b>「才绝、画绝、痴绝」</b>；代表作《女史箴图》《洛神赋图》。</li>
+                <li><b>展子虔</b>（隋）：被称为<b>「唐画之祖」</b>；《游春图》是<b>中国现存最古老的山水画</b>，开创<b>青绿山水</b>先河。</li>
+                <li><b>阎立本</b>（唐）：《步辇图》《<b>历代帝王像</b>》。<b>吴道子</b>（唐）：「<b>画圣</b>」，「<b>吴带当风</b>」；《<b>地狱变相图</b>》《<b>送子天王图</b>》。</li>
+                <li><b>韩滉</b>《五牛图》＝中国现存最古老的<b>纸本</b>中国画；<b>顾闳中</b>《韩熙载夜宴图》；<b>张择端</b>《清明上河图》（画北宋都城东京＝汴京，今开封）；<b>王希孟</b>《千里江山图》；<b>黄公望</b>《富春山居图》＝「画中之兰亭」；<b>郑板桥</b>一生只画<b>兰、竹、石</b>。</li>
+                <li>绘画三分类：按题材＝<b>人物画、山水画、花鸟画</b>（<b>人物画出现最早</b>）；按技法＝<b>工笔</b>（求形神兼备，如《千里江山图》）与<b>写意</b>（重神似，如《富春山居图》）。</li>
+                <li>书法工具：毛笔讲<b>「尖、齐、圆、健」四德</b>；生宣吸水适合写意、熟宣经胶矾适合工笔；砚以<b>端砚、歙砚</b>最名贵。</li>
                 <li>中国十大传世名画：《洛神赋图》《清明上河图》《富春山居图》《汉宫春晓图》《百骏图》《步辇图》《唐宫仕女图》《五牛图》《韩熙载夜宴图》《千里江山图》。</li>
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题50 · 建筑书画（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题53 · 建筑书画（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>下列关于我国著名古代建筑的描述，正确的一项是：</ExampleQuestion>
                 <ExampleOptions>A.北京故宫始建于明成祖，天坛始建于明太祖<br />B.承德避暑山庄历经康熙、雍正、乾隆三朝建成<br />C.布达拉宫现存建筑主体保留了吐蕃时期原貌<br />D.赵州桥是唐代桥梁建筑技术的杰出代表</ExampleOptions>
@@ -146,11 +152,12 @@ export default function S10(): ReactElement {
                 <li>越剧（浙江嵊州，才子佳人，《梁祝》）；黄梅戏（湖北黄梅起源、安徽安庆壮大，《天仙配》《女驸马》）；豫剧（河南，第一大地方剧种，《花木兰》《穆桂英挂帅》）。</li>
                 <li>节日：<b>除夕</b>（腊月三十晚，年夜饭、守岁）、春节（正月初一，元日/桃符/屠苏）、元宵（正月十五，赏灯）、寒食（清明前一二日，禁烟火）、清明（踏青插柳）、端午（五月初五，粽子龙舟）、七夕（七月初七，乞巧）、中秋（八月十五）、重阳（九月初九，登高插茱萸）。</li>
                 <li>诗词标志词：元日/桃符/屠苏＝春节；元夕/灯火＝元宵；汨罗/楚江/艾草＝端午；玉盘/桂花＝中秋；登高/茱萸/黄花＝重阳。</li>
+          <li><b>茶</b>：<b>茶圣陆羽</b>著《茶经》（世界现存最早、最完整的茶学专著）；<b>国际茶日 5 月 21 日</b>；分类＝<b>绿茶、白茶、黄茶、红茶、乌龙茶、黑茶、再加工茶</b>；<b>绿茶工艺＝采摘→摊晾→杀青→揉捻→干燥</b>（红茶多<b>发酵</b>、黄茶多<b>闷黄</b>、白茶<b>少杀青</b>）；<b>生普</b>未经发酵（茶性较烈）、<b>熟普</b>发酵后（温和）。</li>
               </PointList>
               <Callout variant="tip"><b>「金吾不禁夜，玉漏莫相催」写的是元宵</b>（取消宵禁），不是寒食——这是最高频的节日坑。</Callout>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题51 · 节日（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题54 · 节日（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>下列诗句内容与传统节日对应错误的是：</ExampleQuestion>
                 <ExampleOptions>A.「金吾不禁夜，玉漏莫相催」——寒食节<br />B.「彩缕碧筠粽，香粳白玉团」——端午节<br />C.「此生此夜不长好，明月明年何处看」——中秋节<br />D.「桂花香馅裹胡桃，江米如珠井水淘」——元宵节</ExampleOptions>

@@ -27,7 +27,7 @@ export default function S5(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题18 · 马原概述（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题21 · 马原概述（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>关于马克思主义，下列说法错误的是：</ExampleQuestion>
                 <ExampleOptions>A.1848 年《共产党宣言》的发表标志着马克思主义的诞生<br />B.马克思主义的直接理论来源包括德国古典哲学、英国古典政治经济学、英法空想社会主义<br />C.马克思的两大发现是唯物史观和剩余价值学说<br />D.马克思主义的理论品质是以实践为基础的科学性和革命性的统一</ExampleOptions>
@@ -50,7 +50,7 @@ export default function S5(): ReactElement {
               <Callout variant="key"><b>一句话区分：</b>物质决定意识（唯物论），意识反作用于物质（辩证法）。凡出现「意识决定物质」「意识第一性」，直接判错。</Callout>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题19 · 物质与意识（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题22 · 物质与意识（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>关于物质与意识，下列说法错误的是：</ExampleQuestion>
                 <ExampleOptions>A.物质的唯一特性是客观实在性<br />B.物质的根本属性和存在方式是运动<br />C.意识对物质起决定作用<br />D.尊重客观规律是正确发挥主观能动性的前提</ExampleOptions>
@@ -77,7 +77,7 @@ export default function S5(): ReactElement {
               <Callout variant="formula"><span className="formula">源泉动力 = 对立统一 ｜ 形式状态 = 量变质变 ｜ 方向道路 = 否定之否定</span><br />这三句是马原最经典的「三对三」连线题。</Callout>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题20 · 三大规律（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题23 · 三大规律（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>关于唯物辩证法的基本规律，下列说法正确的有：<br />①对立统一规律揭示了事物发展的源泉和动力<br />②量变质变规律揭示了事物发展的方向和道路<br />③辩证否定的实质是「扬弃」<br />④矛盾的基本属性是同一性和斗争性</ExampleQuestion>
                 <ExampleOptions>A.①②③　B.①③④　C.②③④　D.①②④</ExampleOptions>
@@ -97,7 +97,7 @@ export default function S5(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题21 · 认识论（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题24 · 认识论（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>关于认识论，下列说法错误的是：</ExampleQuestion>
                 <ExampleOptions>A.物质生产实践是最基本的实践活动<br />B.直接经验是认识的来源<br />C.实践是检验认识真理性的唯一标准<br />D.感性认识有待于发展和深化为理性认识</ExampleOptions>
@@ -122,7 +122,7 @@ export default function S5(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题22 · 唯物史观（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题25 · 唯物史观（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>关于唯物史观，下列说法错误的是：</ExampleQuestion>
                 <ExampleOptions>A.物质生产方式是社会存在和发展的决定力量<br />B.生产资料所有制形式是生产关系的基础<br />C.生产工具是衡量生产力水平的标志<br />D.人民群众是社会变革的领导力量</ExampleOptions>

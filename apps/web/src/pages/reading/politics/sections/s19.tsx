@@ -23,7 +23,7 @@ export default function S20(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题106 · 宪法修改（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题109 · 宪法修改（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>有权提出宪法修改有效议案的主体是：</ExampleQuestion>
                 <ExampleOptions>A.全国人民代表大会常务委员会<br />B.全国人民代表大会的一个代表团<br />C.十分之一以上的全国人大代表<br />D.全国人民代表大会主席团</ExampleOptions>
@@ -45,7 +45,7 @@ export default function S20(): ReactElement {
               <Callout variant="warn"><b>最易错：</b>批准省级建置＝<b>全国人大</b>；批准省级<b>区域划分</b>＝<b>国务院</b>；特赦＝<b>全国人大常委会</b>决定、<b>国家主席</b>发布特赦令。</Callout>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题107 · 国家机构（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题110 · 国家机构（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>根据我国《宪法》，有权发布特赦令的是：</ExampleQuestion>
                 <ExampleOptions>A.全国人民代表大会　B.最高人民法院　C.国家主席　D.国务院</ExampleOptions>
@@ -64,10 +64,11 @@ export default function S20(): ReactElement {
                 <li>选举权条件：<b>年满 18 周岁、中国公民、未被剥夺政治权利</b>。</li>
                 <li>直接选举：<b>不设区的市、市辖区、县、自治县、乡、民族乡、镇</b>（县级及以下）；间接选举：全国、省、设区的市、自治州。</li>
                 <li>直接选举：<b>过半数选民参加投票有效</b>，候选人获<b>参加投票选民过半数</b>当选；间接选举：候选人须获<b>全体代表过半数</b>当选。</li>
+                <li><b>选举权平等原则</b>：<b>2010 年修改选举法实现「一票一权」</b>（城乡按相同人口比例选举）；同时坚持<b>秘密投票（无记名投票）</b>原则。</li>
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题108 · 公民权利（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题111 · 公民权利（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>根据宪法规定，下列不属于我国公民政治权利和自由的是：</ExampleQuestion>
                 <ExampleOptions>A.选举权和被选举权　B.言论、出版、结社自由　C.集会、游行、示威自由　D.迁徙权</ExampleOptions>
@@ -83,11 +84,12 @@ export default function S20(): ReactElement {
                 <li>正式渊源：宪法（制宪机关＝第一届全国人大第一次会议）、法律（基本法律/非基本法律）、行政法规（国务院）、地方性法规（省级/设区的市，市级须报批准）、规章（部门规章/地方政府规章）、自治法规（须报批准）、经济特区法规、特区法律、国际条约惯例。</li>
                 <li>效力层次：<b>宪法 ＞ 法律 ＞ 行政法规 ＞ 地方性法规/规章</b>；地方性法规与部门规章<b>同等效力</b>，冲突时由国务院提出意见，若适用部门规章须提请<b>全国人大常委会裁决</b>。</li>
                 <li>同一位阶：<b>特别法优于一般法、新法优于旧法</b>。</li>
+                <li><b>法律解释权</b>属于<b>全国人大常委会</b>（<b>不是</b>最高法、最高检；两高作出的是「司法解释」，不能与立法解释混为一谈）。</li>
                 <li>法的实施：<b>守法</b>（一切组织和个人）、<b>执法</b>（行政机关）、<b>司法</b>（法院检察院）。</li>
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题109 · 法理（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题112 · 法理（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>法律能够为人们提供既定的行为模式，使人们在法律范围内活动。法律最首要的作用是：</ExampleQuestion>
                 <ExampleOptions>A.教育作用　B.评价作用　C.预测作用　D.指引作用</ExampleOptions>

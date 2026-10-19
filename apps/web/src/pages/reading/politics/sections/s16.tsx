@@ -23,7 +23,7 @@ export default function S17(): ReactElement {
               <Callout variant="formula"><span className="formula">＜8 无 ｜ 8–18 限制 ｜ ≥18 完全 ｜ 16–18 且以劳动收入为主＝视为完全</span></Callout>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题88 · 民事行为能力（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题91 · 民事行为能力（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>张强今年 17 岁，辍学打工，每月收入 3000 元。根据《民法典》，张强：</ExampleQuestion>
                 <ExampleOptions>A.属于无民事行为能力人<br />B.属于限制民事行为能力人<br />C.可视为完全民事行为能力人<br />D.属于部分民事行为能力人</ExampleOptions>
@@ -43,7 +43,7 @@ export default function S17(): ReactElement {
               <Callout variant="tip"><b>一句话分「无效 / 可撤销」：</b>违法背俗、虚假串通、无能力 → <b>无效</b>；被坑被骗被胁迫、自己搞错 → <b>可撤销</b>。</Callout>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题89 · 行为效力（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题92 · 行为效力（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>甲（10 岁）开发出一套游戏软件，以 1000 元卖给某软件公司。下列说法正确的是：</ExampleQuestion>
                 <ExampleOptions>A.该买卖行为有效<br />B.该买卖行为效力待定<br />C.未签署书面合同，行为无效<br />D.甲为限制民事行为能力人，行为无效</ExampleOptions>
@@ -62,7 +62,7 @@ export default function S17(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题90 · 诉讼时效（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题93 · 诉讼时效（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>下列情形不适用诉讼时效的是：①要求邻居拆除妨碍通行的围墙 ②要求物业修复可能致儿童坠落的下水道 ③要求长期占用其房屋的人搬离 ④要求某公司支付专利使用费</ExampleQuestion>
                 <ExampleOptions>A.①③④　B.②③④　C.①②③　D.①②④</ExampleOptions>
@@ -85,7 +85,7 @@ export default function S17(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题91 · 物权与债（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题94 · 物权与债（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>甲将汽车送乙维修厂维修，甲拒付维修费时，乙可以行使什么权利，继续占有汽车并拍卖变卖优先受偿？</ExampleQuestion>
                 <ExampleOptions>A.保证债权　B.抵押权　C.质权　D.留置权</ExampleOptions>
@@ -109,7 +109,7 @@ export default function S17(): ReactElement {
               <Callout variant="warn"><b>代位 vs 转继承</b>：一个「死在前面」（代位），一个「死在后面」（转）。这是继承题唯一的难点。</Callout>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题92 · 继承（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题95 · 继承（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>老张去世未留遗嘱，其妻李某健在，有次子、女儿各一；长子早年去世，留有一子小张。下列属于本案第一顺序继承人的是：</ExampleQuestion>
                 <ExampleOptions>A.李某、次子、女儿、小张<br />B.李某、次子、女儿<br />C.次子、女儿、小张<br />D.李某、次子、女儿、小张的母亲</ExampleOptions>
@@ -133,7 +133,7 @@ export default function S17(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题93 · 侵权责任（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题96 · 侵权责任（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>甲到商场购买项链，试戴后在协商价格时因地面湿滑摔倒骨折。下列说法正确的是：</ExampleQuestion>
                 <ExampleOptions>A.损失全部由甲自行承担<br />B.售货员承担赔偿责任，商场不承担<br />C.甲为完全民事行为能力人，商场不承担<br />D.商场应承担侵权责任</ExampleOptions>

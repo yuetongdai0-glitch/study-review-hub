@@ -28,7 +28,7 @@ export default function S7(): ReactElement {
               <Callout variant="tip"><b>两个「最早」别混：</b>最早种<b>粟</b>＝仰韶（半坡）；最早种<b>水稻</b>＝河姆渡。彩陶＝仰韶，黑陶＝龙山。</Callout>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题27 · 史前遗址（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题30 · 史前遗址（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>下列关于我国史前文化与早期王朝遗址的说法，正确的是：</ExampleQuestion>
                 <ExampleOptions>A.河姆渡文化位于黄河流域，是我国最早种植粟的文化遗存<br />B.龙山文化以彩陶为典型特征，被称为「彩陶文化」<br />C.殷墟出土的后母戊鼎是目前中国现存最大、最重的青铜器<br />D.红山文化主要分布于长江下游，代表性器物为玉猪龙</ExampleOptions>
@@ -53,7 +53,7 @@ export default function S7(): ReactElement {
               <Callout variant="warn"><b>易混：</b>围魏救赵＝桂陵（齐国救赵）；退避三舍＝城濮（晋楚）。「背水一战」是<b>韩信</b>，不是孙膑。</Callout>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题28 · 古代战役（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题31 · 古代战役（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>下列关于古代战役与典故、影响的对应，有误的是：</ExampleQuestion>
                 <ExampleOptions>A.牧野之战——临阵倒戈——商朝灭亡<br />B.长平之战——纸上谈兵——加速秦统一进程<br />C.城濮之战——围魏救赵——晋国击败楚国<br />D.马陵之战——减灶计——齐国击败魏国</ExampleOptions>
@@ -77,7 +77,7 @@ export default function S7(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题29 · 古代官制（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题32 · 古代官制（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>下列对中国古代中央官制演变的叙述，正确的是：</ExampleQuestion>
                 <ExampleOptions>A.西汉「三公」中御史大夫负责军事，太尉掌管监察<br />B.宋朝设参知政事、枢密使、三司使，旨在分割相权、加强皇权<br />C.明朝内阁自设立之初即为法定中央行政机构，可指挥六部<br />D.元朝行省长官拥有独立的军政财政权力，不受中央节制</ExampleOptions>
@@ -99,10 +99,11 @@ export default function S7(): ReactElement {
                 <tr><td>李悝变法</td><td>战国 · 魏文侯</td><td><b>《法经》</b>——中国第一部系统成文法典；第一次系统地主阶级改革</td></tr>
                 <tr><td>孝文帝改革</td><td>北魏</td><td>均田令、迁都洛阳、汉化；<b>最成功的少数民族汉化改革</b></td></tr>
                 <tr><td>王安石变法</td><td>北宋 · 神宗</td><td>富国：青苗、募役、农田水利、方田均税；强兵：保甲、保马、将兵</td></tr>
+          <tr><td>张居正改革</td><td>明 · 神宗万历</td><td>政治上推行<b>考成法</b>；经济上推行<b>一条鞭法</b>（改革的核心内容）</td></tr>
               </DataTable>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题30 · 赋税改革（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题33 · 赋税改革（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>下列赋税制度与其特点对应错误的是：</ExampleQuestion>
                 <ExampleOptions>A.两税法——按户税和地税分夏秋两季征收<br />B.租庸调制——「调」指征收粮食作为人头税<br />C.摊丁入亩——将丁银分摊至田亩征收<br />D.一条鞭法——赋役合并折银征收</ExampleOptions>
@@ -125,7 +126,7 @@ export default function S7(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题31 · 对外交流（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题34 · 对外交流（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>下列关于中国古代对外交流的表述，正确的是：</ExampleQuestion>
                 <ExampleOptions>A.张骞出使西域时已将造纸术传入欧洲<br />B.班超重开丝绸之路，「投笔从戎」出自其事迹<br />C.鉴真东渡日本，将四大发明全部传入日本<br />D.宋元时期海上丝路鼎盛，广州港成为「东方第一大港」</ExampleOptions>
@@ -145,7 +146,7 @@ export default function S7(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题32 · 农业水利（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题35 · 农业水利（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>关于都江堰，下列说法正确的是：</ExampleQuestion>
                 <ExampleOptions>A.由战国时期秦国蜀郡太守李冰主持修建，核心工程灵渠沟通岷江与长江<br />B.鱼嘴分水堤洪水期六成水入内江，枯水期六成水入外江<br />C.飞沙堰是内江的「安全阀」，可将 80% 以上泥沙排入外江<br />D.都江堰是世界现存年代最久的有坝引水工程</ExampleOptions>

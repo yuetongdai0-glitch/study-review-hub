@@ -26,7 +26,7 @@ export default function S4(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题12 · 生态文明（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题13 · 生态文明（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>关于生态文明建设，下列说法错误的是：</ExampleQuestion>
                 <ExampleOptions>A.坚持节约优先、保护优先、人工修复为主的方针<br />B.绿色低碳发展是解决生态环境问题的治本之策<br />C.我国力争 2030 年前实现碳达峰、2060 年前实现碳中和<br />D.构建以国家公园为主体的自然保护地体系</ExampleOptions>
@@ -50,7 +50,7 @@ export default function S4(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题13 · 全面深化改革（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题14 · 全面深化改革（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>关于全面深化改革，下列说法正确的是：</ExampleQuestion>
                 <ExampleOptions>A.以政治体制改革为牵引<br />B.以经济建设为主线<br />C.以促进社会公平正义、增进人民福祉为出发点和落脚点<br />D.改革与开放如鸟之两翼、车之两轮</ExampleOptions>
@@ -75,7 +75,7 @@ export default function S4(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题14 · 依法治国（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题15 · 依法治国（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>关于全面依法治国，下列说法正确的是：</ExampleQuestion>
                 <ExampleOptions>A.人民民主专政是中国特色社会主义法治之魂<br />B.全面推进依法治国的总抓手是推进国家治理体系现代化<br />C.法治社会建设是全面依法治国的重点任务和主体工程<br />D.党的领导是中国特色社会主义法治之魂</ExampleOptions>
@@ -101,7 +101,7 @@ export default function S4(): ReactElement {
               <Callout variant="warn"><b>顺序题：</b>政治建设（根本性，首位）→ 思想建设（基础性）→ 组织建设 → 作风建设 → 纪律建设 → 制度建设（贯穿）→ 反腐败斗争。</Callout>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题15 · 从严治党（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题16 · 从严治党（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>关于全面从严治党，下列说法正确的有：<br />①政治建设是党的根本性建设，要摆在首位<br />②思想建设是党的基础性建设<br />③党执政后的最大危险是腐败<br />④反腐败是最彻底的自我革命</ExampleQuestion>
                 <ExampleOptions>A.①②③　B.①②④　C.②③④　D.①③④</ExampleOptions>
@@ -123,7 +123,7 @@ export default function S4(): ReactElement {
               <Callout variant="warn"><b>两个必错：</b>①「基础教育是龙头、高等教育是基点」×（基点/龙头不能换）；②「人民满意是教育的根本任务」×（根本任务是立德树人，人民满意是<b>根本尺度</b>）。</Callout>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题16 · 教育强国（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题17 · 教育强国（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>关于建设教育强国，下列说法错误的是：</ExampleQuestion>
                 <ExampleOptions>A.建设教育强国是强国建设、民族复兴伟业的先导任务、坚实基础、战略支撑<br />B.要把高等教育作为基点，基础教育作为龙头<br />C.培养什么人、为谁培养人、怎样培养人是教育的根本问题<br />D.人民满意是发展教育的根本尺度</ExampleOptions>
@@ -144,7 +144,7 @@ export default function S4(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题17 · 科技与人才（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题18 · 科技与人才（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>关于建设科技强国、人才强国，下列说法正确的有：<br />①实现高水平科技自立自强是国家强盛和民族复兴的战略基石<br />②基础研究是科技创新的源头，应用研究是转化的桥梁<br />③建设人才强国的「纲」和「本」是坚持党对人才工作的全面领导<br />④人才评价要破除「四唯」，建立以论文、职称、学历、奖项为导向的评价体系</ExampleQuestion>
                 <ExampleOptions>A.①②③　B.①②④　C.②③④　D.①③④</ExampleOptions>
@@ -168,7 +168,7 @@ export default function S4(): ReactElement {
               <Callout variant="warn"><b>三组易错：</b>① 关键和灵魂是「<b>总体</b>」不是「安全」；② 摆在首位的是<b>政治安全</b>不是国土安全；③ 中心任务的重点是防控<b>全局性风险</b>，不是「零风险」。</Callout>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题18 · 总体国家安全观（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题19 · 总体国家安全观（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>关于总体国家安全观，下列说法正确的有：<br />①以国家利益为准则，以政治安全为根本，以经济安全为基础<br />②政治安全的核心是政权安全和制度安全<br />③防范化解国家安全风险，重点是防控所有可能发生的风险，确保零风险<br />④每年 4 月 15 日是全民国家安全教育日</ExampleQuestion>
                 <ExampleOptions>A.①②③　B.①②④　C.②③④　D.①③④</ExampleOptions>
@@ -195,7 +195,7 @@ export default function S4(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题17 · 国防与外交（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题20 · 国防与外交（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>关于强军目标与祖国统一，下列说法错误的是：</ExampleQuestion>
                 <ExampleOptions>A.到 2035 年把人民军队全面建成世界一流军队<br />B.政治建军是人民军队的立军之本<br />C.「一国」是实行「两制」的前提和基础<br />D.党对军队绝对领导的原则发端于南昌起义</ExampleOptions>

@@ -25,7 +25,7 @@ export default function S12(): ReactElement {
               <Callout variant="tip"><b>「最多的元素」三连问：</b>宇宙最多＝氢；地壳/人体/海洋最多＝氧；空气最多＝氮。三个答案各不相同，每年都考。</Callout>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题57 · 非金属（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题60 · 非金属（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>下列关于非金属物质的说法，错误的是：</ExampleQuestion>
                 <ExampleOptions>A.氢是宇宙中含量最多的元素，也是周期表第一个元素<br />B.碳是形成化合物种类最多的元素<br />C.氮是人体、海洋和地壳中含量最多的元素<br />D.除金外的所有金属都能和氧反应生成金属氧化物</ExampleOptions>
@@ -45,7 +45,7 @@ export default function S12(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题58 · 金属（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题61 · 金属（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>下列关于金属材料的说法，错误的是：</ExampleQuestion>
                 <ExampleOptions>A.钛合金可用于制造飞机、火箭结构件<br />B.青铜是金属冶铸史上最早出现的合金<br />C.汞是常温常压下唯一呈液态的金属<br />D.人体中含量最高的金属元素是铁</ExampleOptions>
@@ -73,7 +73,7 @@ export default function S12(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题59 · 酸碱盐（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题62 · 酸碱盐（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>下列化学物质与俗称对应错误的是：</ExampleQuestion>
                 <ExampleOptions>A.碳酸钠——苏打<br />B.碳酸氢钠——小苏打<br />C.氢氧化钠——火碱<br />D.氧化钠——苛性钠</ExampleOptions>
@@ -92,7 +92,7 @@ export default function S12(): ReactElement {
               <Callout variant="warn">「放盆水除甲醛」是错的——甲醛虽溶于水，但室内浓度极低、接触面积小，实际无效；正确做法是<b>通风</b>。</Callout>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题60 · 有机物（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题63 · 有机物（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>关于酒精的说法，不正确的是：</ExampleQuestion>
                 <ExampleOptions>A.酒精能与水以任意比互溶<br />B.医疗上常用体积分数 70%–75% 的乙醇作消毒剂<br />C.工业酒精的成分以甲醇为主，含有少量乙醇<br />D.酒精按生产方法可分为发酵法酒精和合成法酒精</ExampleOptions>

@@ -22,7 +22,7 @@ export default function S16(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题81 · 太阳系（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题84 · 太阳系（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>下列关于八大行星的说法，正确的是：</ExampleQuestion>
                 <ExampleOptions>A.金星是昼夜温差最大的行星<br />B.水星是夜空中最亮的行星<br />C.木星是离地球最近、体积最大的行星<br />D.海王星是唯一利用数学预测而非有计划的观测发现的行星</ExampleOptions>
@@ -42,7 +42,7 @@ export default function S16(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题82 · 地球运动（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题85 · 地球运动（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>下列现象由地球公转引起的是：</ExampleQuestion>
                 <ExampleOptions>A.日月星辰东升西落<br />B.各地昼夜交替<br />C.一年中操场上旗杆影子长短方向随季节改变<br />D.中国球迷上午 9 点观看美国当地时间 20 点的球赛</ExampleOptions>
@@ -62,7 +62,7 @@ export default function S16(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题83 · 月球（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题86 · 月球（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>下列关于月球的描述，有误的是：</ExampleQuestion>
                 <ExampleOptions>A.当部分月球进入地球本影时，就会出现月全食<br />B.月球的自转周期和公转周期基本相等<br />C.月球本身不发光，只反射太阳光<br />D.月球表面的昼夜温差大</ExampleOptions>
@@ -83,7 +83,7 @@ export default function S16(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题84 · 气象灾害（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题87 · 气象灾害（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>关于我国主要气象灾害的时空分布，说法正确的是：</ExampleQuestion>
                 <ExampleOptions>A.洪涝仅集中在夏季长江中下游<br />B.干旱影响范围最广，西南地区最严重<br />C.沙尘暴多在冬春，沙源主要来自西北及蒙古国<br />D.青藏高原海拔高，受寒潮影响最严重</ExampleOptions>
@@ -104,7 +104,7 @@ export default function S16(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题85 · 节气（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题88 · 节气（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>关于二十四节气，下列表述错误的是：</ExampleQuestion>
                 <ExampleOptions>A.惊蛰、小满和处暑是反映物候现象的节气<br />B.夏至是北半球一年中白昼最长的一天<br />C.立春、秋分是反映季节的节气<br />D.白露、寒露、霜降反映气温逐渐下降</ExampleOptions>
@@ -126,11 +126,12 @@ export default function S16(): ReactElement {
                 <li><b>三江源</b>：长江、黄河、澜沧江发源地，「中华水塔」，我国面积最大的天然湿地分布区与最大自然保护区。</li>
                 <li><b>邻国</b>：<b>14 个陆上邻国</b>（朝、蒙、俄、哈、吉、塔、印、尼、不丹、阿、巴、缅、老、越）；<b>6 个隔海相望</b>（日、韩、菲、马、文莱、印尼）。</li>
                 <li>分界线：季风区＝大兴安岭—阴山—贺兰山—巴颜喀拉山—冈底斯山；400 mm＝大兴安岭—张家口—兰州—拉萨—喜马拉雅南坡；200 mm＝阴山—贺兰山—祁连山—巴颜喀拉山—冈底斯山；外流内流≈大兴安岭—阴山—贺兰山—祁连山东端；冬小麦/春小麦＝<b>长城</b>；人口线＝<b>黑河—腾冲（胡焕庸线）</b>，东南约 94% 人口。</li>
+                <li><b>三种典型地貌（成因 + 代表）</b>：<b>喀斯特地貌</b>＝可溶性岩石（石灰岩）被水<b>溶蚀侵蚀</b>，见于温暖湿润区，代表<b>云南石林、广西桂林山水</b>、贵州织金洞；<b>雅丹地貌</b>＝河湖相沉积物被<b>风力吹蚀磨蚀</b>，见于极端干旱荒漠，代表新疆<b>乌尔禾魔鬼城</b>、罗布泊、青海柴达木；<b>丹霞地貌</b>＝红色砂砾岩被<b>流水和重力侵蚀</b>形成陡崖坡，代表<b>广东丹霞山</b>（命名地、「中国红石公园」）、福建武夷山、江西龙虎山、甘肃张掖七彩丹霞。</li>
                 <li>秦岭—淮河：1 月 0℃ 等温线、800 mm 等降水量线、暖温带/亚热带、温带/亚热带季风、半湿润/湿润、旱地/水田、北方/南方。</li>
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题86 · 地理分界线（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题89 · 地理分界线（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>下列关于我国主要地理分界线的说法，正确的是：</ExampleQuestion>
                 <ExampleOptions>A.长江水系和黄河水系的分水岭是南岭<br />B.旱地农业和水田农业的分界线是阴山山脉<br />C.秦岭—淮河一线是我国南方和北方的分界线<br />D.胡焕庸线西北居住着约 94% 的人口</ExampleOptions>
@@ -155,7 +156,7 @@ export default function S16(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题87 · 旅游资源（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题90 · 旅游资源（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>我国下列名胜古迹的说法中错误的是：</ExampleQuestion>
                 <ExampleOptions>A.华山位于陕西省，被誉为「五岳之首」<br />B.云冈石窟位于山西省，创建于北魏<br />C.莫高窟位于敦煌，始建于十六国时期<br />D.三星堆位于四川，与古蜀国文化相关</ExampleOptions>

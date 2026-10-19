@@ -22,7 +22,7 @@ export default function S15(): ReactElement {
               <Callout variant="tip"><b>一句话判型：</b>看「有几家」＋「产品有没有差别」。无数且同质＝完全竞争；几家＝寡头；一家＝完全垄断；大量但有差别＝垄断竞争。</Callout>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题73 · 市场结构（冲刺班）</ExampleHeader>
+              <ExampleHeader>📝 例题76 · 市场结构（冲刺班）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>下列关于市场结构的判断，正确的是：</ExampleQuestion>
                 <ExampleOptions>A.小麦种植市场——完全竞争，农户可自主定价且产品差异显著<br />B.城市连锁咖啡市场——垄断竞争，企业数量较多、产品有口味与装修差异、新品牌易进入<br />C.某国民用航空市场——寡头垄断，仅 1 家航空公司运营<br />D.某城市居民供水——完全垄断，多家企业竞争、政府价格管制</ExampleOptions>
@@ -41,7 +41,7 @@ export default function S15(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题74 · 税收（冲刺班）</ExampleHeader>
+              <ExampleHeader>📝 例题77 · 税收（冲刺班）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>关于税收，下列说法正确的是：</ExampleQuestion>
                 <ExampleOptions>A.税收的无偿性以强制性为基础，固定性是强制性的必然结果<br />B.增值税、消费税属于流转税，也属于间接税，税负可以转嫁<br />C.个人所得税属于间接税，可以通过提高价格转嫁给消费者<br />D.关税属于地方税，由地方政府征收管理</ExampleOptions>
@@ -61,7 +61,7 @@ export default function S15(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题75 · 成本（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题78 · 成本（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>下列表示机会成本的是：</ExampleQuestion>
                 <ExampleOptions>A.雇佣李某每月支付工资 3000 元<br />B.购买原材料支付 10 万元<br />C.自有原料可生产货车或价值 10 万元的小客车，选择生产货车<br />D.银行贷款 10 万元每月付息 1000 元</ExampleOptions>
@@ -79,7 +79,7 @@ export default function S15(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题76 · GDP（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题79 · GDP（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>下列可以计入当年 GDP 的有：</ExampleQuestion>
                 <ExampleOptions>A.二手车买卖　B.政府转移支付　C.赌博收益　D.劳动者工资性收入</ExampleOptions>
@@ -98,7 +98,7 @@ export default function S15(): ReactElement {
               <Callout variant="tip"><b>一句话记影响：</b>「钱毛了」→ 拿固定工资的亏、欠钱的赚、存钱的亏、借钱的赚。</Callout>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题77 · 通货膨胀（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题80 · 通货膨胀（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>下列关于通货膨胀的说法，错误的是：</ExampleQuestion>
                 <ExampleOptions>A.实质是社会总供给小于社会总需求<br />B.原因是流通中的纸币量多于所需货币量<br />C.会直接引起物价下跌，失业率上升<br />D.对策是实行紧缩性货币政策，控制信贷规模</ExampleOptions>
@@ -119,7 +119,7 @@ export default function S15(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题78 · 宏观调控（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题81 · 宏观调控（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>某国面临通货紧缩，下列不可能属于其政策措施的是：</ExampleQuestion>
                 <ExampleOptions>A.降低存款准备金率　B.增加货币供给　C.增加政府支出　D.提高存款准备金率</ExampleOptions>
@@ -137,7 +137,7 @@ export default function S15(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题79 · 汇率（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题82 · 汇率（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>1 欧元兑人民币由 7.9748 变为 8.0314。若不考虑其他因素，下列推导正确的是：</ExampleQuestion>
                 <ExampleOptions>A.人民币升值→中国企业赴欧投资成本下降→有利于扩大进口欧盟商品<br />B.人民币贬值→中国企业赴欧投资成本上升→不利于中国企业在欧盟投资<br />C.欧元升值→中国商品在欧盟市场价格下降→不利于中国商品出口欧盟<br />D.欧元贬值→欧盟商品在中国市场价格上升→有利于中国进口欧盟商品</ExampleOptions>
@@ -170,7 +170,7 @@ export default function S15(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题80 · 经济效应（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题83 · 经济效应（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>下列经济效应匹配不正确的是：</ExampleQuestion>
                 <ExampleOptions>A.由俭入奢易，由奢入俭难——棘轮效应<br />B.强者愈强、弱者愈弱——马太效应<br />C.商品定价越低越受青睐——凡勃伦效应<br />D.投资喜欢从众跟风——羊群效应</ExampleOptions>

@@ -25,7 +25,7 @@ export default function S9(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题40 · 诗经楚辞（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题43 · 诗经楚辞（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>下列说法正确的是：</ExampleQuestion>
                 <ExampleOptions>A.「路曼曼其修远兮，吾将上下而求索」出自《诗经》<br />B.《诗经》是中国最早的一部浪漫主义诗歌总集<br />C.《诗经》分风、雅、颂三类，其中「颂」指宫廷正乐<br />D.火星探测器「天问一号」的名称源于《楚辞·天问》</ExampleOptions>
@@ -46,7 +46,7 @@ export default function S9(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题41 · 唐宋八大家（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题44 · 唐宋八大家（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>下列关于「唐宋八大家」及其代表作品的表述，正确的是：</ExampleQuestion>
                 <ExampleOptions>A.柳宗元是宋代古文运动的代表人物，世称「柳河东」<br />B.韩愈被苏轼誉为「文起八代之衰」，提出「文以载道」<br />C.王安石号「醉翁」，代表作《醉翁亭记》<br />D.欧阳修与韩愈、柳宗元共同倡导了唐代古文运动</ExampleOptions>
@@ -69,7 +69,7 @@ export default function S9(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题42 · 唐诗（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题45 · 唐诗（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>被称为「诗仙」「诗圣」「诗魔」的三位唐代诗人分别是：</ExampleQuestion>
                 <ExampleOptions>A.李白、杜甫、白居易<br />B.杜甫、李白、李贺<br />C.李白、白居易、刘禹锡<br />D.白居易、刘禹锡、李贺</ExampleOptions>
@@ -90,7 +90,7 @@ export default function S9(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题43 · 宋词（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题46 · 宋词（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>关于宋词，下列说法正确的是：</ExampleQuestion>
                 <ExampleOptions>A.「人比黄花瘦」是韦应物的名句<br />B.「奉旨填词」的是柳永<br />C.「樯橹灰飞烟灭」写的是官渡之战<br />D.秦观是「豪放派」的代表人物</ExampleOptions>
@@ -112,7 +112,7 @@ export default function S9(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题44 · 元曲戏曲（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题47 · 元曲戏曲（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>关于文学作品与其作者，下列对应不正确的是：</ExampleQuestion>
                 <ExampleOptions>A.《桃花扇》——孔尚任<br />B.《西厢记》——王实甫<br />C.《牡丹亭》——汤显祖<br />D.《汉宫秋》——关汉卿</ExampleOptions>
@@ -136,7 +136,7 @@ export default function S9(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题45 · 小说史书（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题48 · 小说史书（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>下列关于我国古典文学名著的表述，正确的一项是：</ExampleQuestion>
                 <ExampleOptions>A.《搜神记》是我国最早的文言志人小说集<br />B.《金瓶梅》被誉为明代四大奇书之首，是第一部由文人独立创作的长篇小说<br />C.《聊斋志异》是蒲松龄创作的长篇章回体神魔小说<br />D.《儒林外史》是明代吴敬梓创作的讽刺小说</ExampleOptions>

@@ -22,7 +22,7 @@ export default function S13(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题61 · 遗传（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题64 · 遗传（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>下列关于基因突变的叙述，不正确的是：</ExampleQuestion>
                 <ExampleOptions>A.基因突变是随机发生的、定向的<br />B.自然状态下基因突变频率很低<br />C.基因突变是新基因产生的途径<br />D.基因突变可能破坏生物与环境的协调关系</ExampleOptions>
@@ -41,7 +41,7 @@ export default function S13(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题62 · 新陈代谢（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题65 · 新陈代谢（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>下列现象与无氧呼吸直接相关的是：<br />①剧烈运动后肌肉酸痛　②用糯米和酒曲酿米酒　③切开的苹果放久后变褐　④生水果与熟苹果密封后加快成熟</ExampleQuestion>
                 <ExampleOptions>A.①②　B.②③　C.③④　D.①④</ExampleOptions>
@@ -58,11 +58,11 @@ export default function S13(): ReactElement {
                 <li>运动系统＝骨、关节、骨骼肌，约占体重 60%。</li>
                 <li>激素：<b>胰岛素</b>（胰岛 β 细胞，唯一降血糖；不足→糖尿病，过多→低血糖）；<b>甲状腺素</b>（需碘；不足→呆小症，过多→甲亢）；<b>生长激素</b>（不足→侏儒症，过多→巨人症/肢端肥大）；<b>肾上腺素</b>（应激「急救兵」）。</li>
                 <li>免疫器官：骨髓（发源地）、脾（最大淋巴器官）、淋巴结、扁桃体、胸腺、阑尾。</li>
-                <li>免疫细胞：吞噬细胞、NK 细胞（固有免疫）；T 细胞（细胞免疫）、B 细胞→浆细胞→抗体（体液免疫）。</li>
+                <li><b>免疫细胞两大类</b>：① <b>固有免疫细胞</b>——反应迅速但<b>无特异性</b>：<b>吞噬细胞</b>（巨噬细胞、中性粒细胞，「吃掉」病原体）、<b>NK 细胞</b>（直接杀伤被病毒感染细胞或肿瘤细胞）；② <b>适应性免疫细胞</b>——反应较慢但<b>精准且能记忆</b>：<b>T 细胞</b>（细胞免疫）、<b>B 细胞</b>（体液免疫，分化为<b>浆细胞</b>后产生<b>抗体</b>）。</li>
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题63 · 激素（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题66 · 激素（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>下列疾病中都是由于激素分泌异常导致的是：</ExampleQuestion>
                 <ExampleOptions>A.血友病和佝偻病<br />B.夜盲和色盲<br />C.糖尿病和侏儒症<br />D.坏血病和脚气病</ExampleOptions>
@@ -80,7 +80,7 @@ export default function S13(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题64 · 维生素（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题67 · 维生素（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>下列关于维生素的说法正确的是：</ExampleQuestion>
                 <ExampleOptions>A.严重缺乏维生素 D 可导致夜盲症<br />B.严重缺乏维生素 C 可导致坏血病<br />C.维生素 A 可用于脚气病治疗<br />D.维生素 B₁ 可预防与治疗静脉曲张</ExampleOptions>
@@ -95,14 +95,14 @@ export default function S13(): ReactElement {
                 <li>细菌感染：<b>中性粒细胞</b>比例升高、白细胞总数升高；病毒感染：<b>淋巴细胞</b>比例升高、白细胞正常或降低。</li>
                 <li>缺铁性贫血：平均红细胞体积＜80 fl；巨幼细胞性贫血：＞100 fl。</li>
                 <li><b>生化检查需空腹 8–12 小时</b>：转氨酶（肝细胞损伤）、胆红素（黄疸）、肌酐/尿素氮（肾功能）、血脂四项（低密度脂蛋白是「坏胆固醇」、降脂首要靶点）。</li>
-                <li>血糖：空腹正常 3.9–6.1 mmol/L，诊断糖尿病 ≥7.0；OGTT 2 小时 ≥11.1（<b>金标准</b>）；糖化血红蛋白 ≥6.5%（反映近 8–12 周，<b>无需空腹</b>）。</li>
+                <li><b>血糖三项</b>：① <b>空腹血糖</b> 3.9–6.1 mmol/L，≥7.0 诊断糖尿病（需空腹）；② <b>口服葡萄糖耐量试验（OGTT）</b>：空腹抽血 → 喝 <b>75 g</b> 无水葡萄糖水 → 2 小时再抽，<b>≥11.1 mmol/L</b> 可诊断，是诊断糖尿病<b>「金标准」</b>；③ <b>糖化血红蛋白</b> ≥6.5%，反映近 <b>8–12 周</b>平均血糖，<b>无需空腹、不受短期波动影响</b>。</li>
                 <li>肿瘤标志物：AFP（肝癌）、CEA（消化道/肺腺癌）、CA19-9（胰腺胆管）、CA125（卵巢）。</li>
                 <li>幽门螺杆菌：<b>¹³C/¹⁴C 尿素呼气试验</b>是现症感染与复查金标准（需空腹）；<b>血清抗体只能说明曾感染</b>，不能诊断现症。</li>
                 <li>影像：X 光（肺、骨折，有辐射）；CT（脑出血、肺结节，辐射高于 X 光）；<b>MRI 无电离辐射</b>、查脑梗/脑肿瘤，体内金属禁忌；B 超无辐射，查肝胆、胎儿、甲状腺。</li>
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题65 · 医学检查（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题68 · 医学检查（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>关于医学检查，下列说法错误的是：</ExampleQuestion>
                 <ExampleOptions>A.单纯血常规检查不需要严格空腹<br />B.磁共振检查没有放射性，适用于孕妇、婴幼儿<br />C.血清幽门螺杆菌抗体检测可判断是否为现症感染<br />D.低密度脂蛋白胆固醇是动脉粥样硬化的主因之一</ExampleOptions>
@@ -124,7 +124,7 @@ export default function S13(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题66 · 急救（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题69 · 急救（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>下列急救措施中错误的是：</ExampleQuestion>
                 <ExampleOptions>A.骨折后可用木板作夹板固定再送医<br />B.烫伤后立即用冷水冲洗烫伤部位<br />C.煤气泄漏时立即关闭煤气、开窗通风<br />D.误食重金属后应大量饮水以缓解中毒</ExampleOptions>

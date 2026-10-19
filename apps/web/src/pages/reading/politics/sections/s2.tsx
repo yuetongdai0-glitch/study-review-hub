@@ -24,7 +24,7 @@ export default function S3(): ReactElement {
               <Callout variant="warn"><b>两组必混：</b>根本领导制度＝党的领导制度；根本政治制度＝人民代表大会制度。制度体系的「核心/关键」＝党的领导制度，不是人大制度。</Callout>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题6 · 党的领导（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题7 · 党的领导（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>关于党的领导，下列说法错误的是：</ExampleQuestion>
                 <ExampleOptions>A.中国共产党领导是中国最大的国情<br />B.党中央集中统一领导是党的领导的最高原则<br />C.党的领导制度是我国的根本政治制度<br />D.党的领导制度在中国特色社会主义制度体系中居于统领地位</ExampleOptions>
@@ -46,7 +46,7 @@ export default function S3(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题7 · 共同富裕（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题8 · 共同富裕（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>关于共同富裕，下列说法正确的有：<br />①共同富裕是社会主义的本质要求<br />②共同富裕就是同等富裕、同步富裕<br />③2035 年共同富裕取得明显的实质性进展<br />④实现共同富裕要先切好蛋糕再做大蛋糕</ExampleQuestion>
                 <ExampleOptions>A.①③　B.①②　C.②④　D.③④</ExampleOptions>
@@ -73,7 +73,7 @@ export default function S3(): ReactElement {
               <Callout variant="tip"><b>「五新」口诀：</b>新阶段（全面建设现代化国家）、新理念（创新协调绿色开放共享）、新格局（国内大循环为主体）、新主线（高质量发展）、新动力（改革创新）。</Callout>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题8 · 高质量发展（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题9 · 高质量发展（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>关于构建新发展格局，下列说法正确的是：</ExampleQuestion>
                 <ExampleOptions>A.以国际大循环为主体<br />B.最本质特征是实现高水平的自立自强<br />C.以各地建设自我小循环为基础<br />D.关键是处理好供给和需求的关系</ExampleOptions>
@@ -96,7 +96,7 @@ export default function S3(): ReactElement {
               <Callout variant="tip"><b>「三总」别混：</b>总目标＝农业农村现代化｜总方针＝农业农村优先发展｜总抓手＝乡村振兴战略｜总纲＝农业强国。四个词每年都在选项里互相调换。</Callout>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题9 · 现代化经济体系（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题10 · 现代化经济体系（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>关于建设现代化经济体系与乡村振兴，下列说法错误的是：</ExampleQuestion>
                 <ExampleOptions>A.发展经济的着力点放在实体经济上<br />B.供给侧结构性改革是经济工作的主线<br />C.乡村振兴的总目标是把我国建成农业强国<br />D.乡村振兴包括产业、人才、文化、生态、组织五个振兴</ExampleOptions>
@@ -124,7 +124,7 @@ export default function S3(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题10 · 全过程人民民主（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题11 · 全过程人民民主（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>关于全过程人民民主，下列说法错误的是：</ExampleQuestion>
                 <ExampleOptions>A.全过程人民民主是社会主义民主政治的本质属性<br />B.人民代表大会制度是实现全过程人民民主的重要制度载体<br />C.党内民主是全过程人民民主的重要体现<br />D.协商民主是实践全过程人民民主的重要形式</ExampleOptions>
@@ -156,7 +156,7 @@ export default function S3(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题11 · 民生（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题12 · 民生（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>关于保障和改善民生，下列说法正确的有：<br />①就业是民生之本，是最基本的民生<br />②提高劳动报酬在再分配中的比重<br />③社会保险是社会保障体系的核心内容<br />④健康中国坚持治疗为主的方针</ExampleQuestion>
                 <ExampleOptions>A.①③　B.②④　C.①②　D.③④</ExampleOptions>

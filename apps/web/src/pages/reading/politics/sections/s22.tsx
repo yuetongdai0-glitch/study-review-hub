@@ -22,7 +22,7 @@ export default function S23(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题110 · 综合判断（小黑母题风格）</ExampleHeader>
+              <ExampleHeader>📝 例题113 · 综合判断（小黑母题风格）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>某题选项：A.「党的领导制度是我国的根本政治制度」B.「人民代表大会制度是我国的根本政治制度」C.「政协是我国的国家机关」D.「法治社会是全面依法治国的重点任务和主体工程」。正确答案是：</ExampleQuestion>
                 <ExampleOptions>A　B　C　D</ExampleOptions>

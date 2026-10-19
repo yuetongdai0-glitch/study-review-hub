@@ -24,7 +24,7 @@ export default function S19(): ReactElement {
               <Callout variant="tip"><b>比例原则考法：</b>能用「轻手段」就不用「重手段」。拆一层违建却要求拆整栋楼＝违反比例原则。</Callout>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题100 · 行政法原则（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题103 · 行政法原则（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>下列做法符合比例原则的是：</ExampleQuestion>
                 <ExampleOptions>A.打击盗窃时表示要让盗窃者倾家荡产<br />B.因口角即以扰乱社会秩序为由拘留 15 天<br />C.担心核辐射污染，放弃核电改建成本更低的风电<br />D.私自加建两层，房管局要求拆除整栋楼</ExampleOptions>
@@ -46,7 +46,7 @@ export default function S19(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题101 · 行政处罚（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题104 · 行政处罚（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>关于行政处罚的设定及听证，下列说法错误的是：</ExampleQuestion>
                 <ExampleOptions>A.地方性法规可以设定责令停产停业的处罚<br />B.行政法规可以设定吊销营业执照的处罚<br />C.限制人身自由的处罚只能由法律设定<br />D.当事人要求听证的，由当事人承担行政机关组织听证的费用</ExampleOptions>
@@ -66,7 +66,7 @@ export default function S19(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题102 · 治安处罚（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题105 · 治安处罚（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>根据《治安管理处罚法》，下列说法正确的是：</ExampleQuestion>
                 <ExampleOptions>A.15 周岁张某初次殴打他人致轻微伤，应作出拘留处罚并实际执行<br />B.李某 1 月赌博、3 月被发现，因超过 1 个月追究时效不再处罚<br />C.美国游客汤姆在我国扰乱公共场所秩序，可罚款并处限期出境<br />D.邻里纠纷致轻微伤，公安机关必须先调解再处罚</ExampleOptions>
@@ -77,6 +77,8 @@ export default function S19(): ReactElement {
             <Block>
               <BlockTitle>4. 行政许可与行政强制</BlockTitle>
               <PointList>
+                <li><b>经常性行政许可</b>由<b>法律、行政法规、地方性法规</b>设定。</li>
+                <li><b>非经常性行政许可</b>由<b>国务院决定</b>和<b>省级政府规章</b>设定；省级政府规章设定后实施满 <b>1 年</b>需继续实施的，应提请本级人大及其常委会制定地方性法规。</li>
                 <li>许可决定：受理之日起 <b>20 日内</b>作出，经批准可延长 <b>10 日</b>。</li>
                 <li>许可听证：当事人被告知后 <b>5 日内</b>申请，行政机关 <b>20 日内</b>组织。</li>
                 <li>许可撤销：机关违法（滥用职权、超越职权、违反程序等）<b>可以撤销</b>；申请人欺骗贿赂取得<b>应当撤销</b>，涉及公共安全/人身健康/生命财产的 <b>3 年内不得再申请</b>；撤销可能重大损害公共利益的<b>不予撤销</b>。</li>
@@ -85,7 +87,7 @@ export default function S19(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题103 · 许可与强制（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题106 · 许可与强制（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>关于行政许可与行政强制，下列说法错误的是：</ExampleQuestion>
                 <ExampleOptions>A.行政许可一般应自受理之日起 20 日内作出决定<br />B.以欺骗、贿赂手段取得的许可应当撤销<br />C.行政机关可在夜间实施强制执行，无需任何限制<br />D.不得对居民采取停止供水供电方式迫使履行</ExampleOptions>
@@ -107,7 +109,7 @@ export default function S19(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题104 · 行政复议（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题107 · 行政复议（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>下列行为不服，但不能提起行政复议的是：</ExampleQuestion>
                 <ExampleOptions>A.生态环境局吊销排污许可证<br />B.公安局扣押企业全部生产设备<br />C.派出所调解达成医疗费赔偿协议<br />D.镇政府命令解除农场承包合同</ExampleOptions>
@@ -125,7 +127,7 @@ export default function S19(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题105 · 行政赔偿（小黑母题）</ExampleHeader>
+              <ExampleHeader>📝 例题108 · 行政赔偿（小黑母题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>下列属于国家不承担赔偿责任情形的是：</ExampleQuestion>
                 <ExampleOptions>A.违法征收征用财物<br />B.违法吊销许可证致害<br />C.行政机关工作人员实施的与行使职权无关的个人行为<br />D.行政机关采取暴力致害</ExampleOptions>
