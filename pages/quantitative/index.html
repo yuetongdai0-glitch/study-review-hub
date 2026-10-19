@@ -221,6 +221,8 @@
     border-bottom: 1px solid var(--border);
   }
   .mini-table tr:last-child td { border-bottom: none; }
+  .trig-table td, .trig-table th { text-align: center; white-space: nowrap; }
+  @media (max-width: 560px) { .trig-table { font-size: 12.5px; } .trig-table th, .trig-table td { padding: 5px 4px; } }
 
   /* 例题样式 */
   .example {
@@ -415,7 +417,7 @@
     <a class="nav-link" data-kw="方程法 设未知数 不定方程 整体替换 奇偶 尾数" href="#s2">二、方程法</a>
     <a class="nav-link" data-kw="周期问题 余数 最小公倍数 星期 生肖" href="#s3">三、周期问题</a>
     <a class="nav-link" data-kw="工程问题 赋值 效率 完工时间 周期循环 费用" href="#s4">四、工程问题</a>
-    <a class="nav-link" data-kw="几何 三角形 勾股定理 特殊角 相似 面积 体积 涂色 蝴蝶定理 正六边形" href="#s5">五、几何问题</a>
+    <a class="nav-link" data-kw="几何 三角形 勾股定理 特殊角 相似 面积 体积 涂色 蝴蝶定理 正六边形 三角函数 正弦 余弦 正切 sin cos tan 仰角 俯角 坡度" href="#s5">五、几何问题</a>
     <a class="nav-link" data-kw="经济利润 成本 售价 利润 利润率 折扣 打折" href="#s6">六、经济利润问题</a>
   </div>
 
@@ -1878,6 +1880,29 @@
                 <b>怎么用：</b>已知任意一边，另外两边直接按比例写出来，<b>不用再算勾股定理</b>。<br>
                 例：30° 所对的边为 5 → 斜边 = 10，另一直角边 = 5√3。
               </div>
+              <div class="key-box" style="margin-top:8px;">
+                <b>★ 三角函数 sin / cos / tan —— 仰角、俯角题的唯一入口（不会这三条就真的做不了题）</b><br>
+                直角三角形里取一个锐角 θ，三条边分别是 θ 的<b>对边</b>（θ 正对着的那条）、<b>邻边</b>（挨着 θ 的直角边）、<b>斜边</b>：<br>
+                · <b>sin θ = 对边 ÷ 斜边</b>　· <b>cos θ = 邻边 ÷ 斜边</b>　· <b>tan θ = 对边 ÷ 邻边</b><br>
+                记忆：<b>「正对余邻」</b>——sin 用<b>对</b>边、cos 用<b>邻</b>边，<b>两者分母都是斜边</b>；只有 <b>tan 不碰斜边</b>（就是两条直角边相除）。
+              </div>
+              <table class="mini-table trig-table">
+                <tr><th>θ</th><th>sin θ</th><th>cos θ</th><th>tan θ</th></tr>
+                <tr><td>30°</td><td>0.5</td><td>0.87</td><td>0.58</td></tr>
+                <tr><td>45°</td><td>0.71</td><td>0.71</td><td><b>1</b></td></tr>
+                <tr><td>60°</td><td>0.87</td><td>0.5</td><td>1.73</td></tr>
+                <tr><td>37°</td><td><b>0.6</b></td><td><b>0.8</b></td><td><b>0.75</b></td></tr>
+                <tr><td>53°</td><td><b>0.8</b></td><td><b>0.6</b></td><td>1.33</td></tr>
+              </table>
+              <div class="tip-box" style="margin-top:4px;"><b>sin = 对边 ÷ 斜边，cos = 邻边 ÷ 斜边，tan = 对边 ÷ 邻边</b>。精确值：30° → ½、√3/2、√3/3；45° → √2/2、√2/2、1；60° → √3/2、½、√3；37°/53° 来自 3-4-5 直角三角形（对边 3、邻边 4、斜边 5）。考卷一般直接给小数，按上表记就够。</div>
+              <div class="key-box">
+                <b>仰角 / 俯角 / 坡度（题干关键词 → 用哪个比）</b><br>
+                · <b>仰角</b>＝从<b>低处</b>往上看，视线与<b>水平线</b>的夹角；<b>俯角</b>＝从<b>高处</b>往下看，视线与水平线的夹角。两者都标在<b>视点</b>上；同一个坡，<b>高处的俯角 = 低处的仰角</b>（内错角）。<br>
+                · <b>看到「仰角 / 俯角」→ 一律先用 tan</b>：竖直的<b>高</b>是对边、水平的<b>距离</b>是邻边，所以 <b>tan θ = 高 ÷ 水平距离</b>，即 <b>高 = 水平距离 × tan θ</b>。全程用不到斜边 —— 题目附带的 sin、cos 参考值多半是<b>干扰项</b>。<br>
+                · <b>两步题（同一水平距离用两次）</b>：先用<b>低处</b>那个角求出水平距离，再用<b>高处</b>那个角求高，最后<b>相减</b>。心里默念一句「<b>AD 共用</b>」，顺序就不会乱。<br>
+                · <b>什么时候才用 sin / cos：</b>已知的是<b>斜边</b>（绳长、坡长、梯长）时才用 —— 坡长 100、坡角 30° → 升高 = 100 × sin30° = 50，水平前进 = 100 × cos30° = 50√3。 <b>坡度 i = 高 ÷ 水平距离 = tan θ</b>（不是 sin！）。
+              </div>
+              <div class="tip-box"><b>一句话决策：</b>题目给的是<b>水平距离 / 求高</b> → <b>tan</b>；给的是<b>斜边长</b> → <b>sin / cos</b>。看到 45° 先想到 <b>tan45° = 1</b>（高 = 水平距离，白送一个等量关系）。</div>
               <div class="tip-box">看到 30°／45°／60°／120°／135° 这些角度，或选项里出现 √2、√3，第一反应就是去找特殊直角三角形。</div>
             </div>
             <div class="example">
@@ -1892,7 +1917,55 @@
                 </div>
               </div>
             </div>
-            <div class="block">
+                        <div class="example">
+              <div class="example-header">📝 例题13 · 仰角（两次 tan 共用水平距离 · 2023 联考）</div>
+              <div class="example-body">
+                <div class="example-q">「厦门鼓浪屿郑成功雕像」——测量点 A 与覆鼎岩底部 D 在同一水平线上。已知覆鼎岩高 CD = 24 米，在 A 处测得石像顶部 B 的仰角为 45°、石像底部 C 的仰角为 31°（参考数据：sin31° ≈ 0.52，cos31° ≈ 0.86，tan31° ≈ 0.60）。问石像 BC 的高度约为多少米？</div>
+                <div class="example-opts">A. 20 米　B. 18 米　C. 16 米　D. 14 米</div>
+                <div class="example-answer">
+                        <b>解析：</b>看到「<b>仰角</b>」→ 竖直线是对边、水平线 AD 是邻边 → <b>只用 tan</b>；题里给的 sin31°、cos31° 是干扰项，一个都用不上。<br>
+                        ① <b>先求水平距离</b>（用低处的 C）：tan31° = CD ÷ AD → AD = 24 ÷ 0.60 = <b>40</b> 米。<br>
+                        ② <b>再求到顶部的高</b>（用高处的 B）：tan45° = BD ÷ AD = 1 → BD = AD = <b>40</b> 米。<br>
+                        ③ <b>相减得雕像</b>：BC = BD − CD = 40 − 24 = <b>16</b> 米。<br>
+                        要点：两段<b>共用同一个 AD</b>，所以先算 AD 一次、用两遍；<b>tan45° = 1</b> 意味着「45° 时高 = 水平距离」，这一步是命题人白送的。
+                        <figure class="fig">
+                          <svg viewBox="0 0 380 330" role="img" aria-label="郑成功雕像仰角示意：A 点测得底部 C 的仰角 31 度、顶部 B 的仰角 45 度，CD 为 24 米，AD 水平，求 BC">
+                            <text x="10" y="20" font-size="12.5" fill="#4f7cff" font-weight="700">看 C：31°　看 B：45°　→ 两段共用同一个 AD</text>
+                            <polygon points="70,240 246,240 246,64" fill="#eef4ff" stroke="#3f4a5f" stroke-width="1.7"/>
+                            <path d="M70 240 L246 134" fill="none" stroke="#c0392b" stroke-width="1.9"/>
+                            <path d="M232 240 L232 226 L246 226" fill="none" stroke="#ff6b6b" stroke-width="1.4"/>
+                            <path d="M125 240 A55 55 0 0 0 108.9 201.1" fill="none" stroke="#4f7cff" stroke-width="1.3"/>
+                            <path d="M160 240 A90 90 0 0 0 147.1 193.6" fill="none" stroke="#c0392b" stroke-width="1.3"/>
+                            <text x="118" y="200" font-size="12" font-weight="700" fill="#4f7cff">45°</text>
+                            <text x="150" y="228" font-size="12" font-weight="700" fill="#c0392b">31°</text>
+                            <circle cx="70" cy="240" r="3" fill="#1a1a2e"/>
+                            <circle cx="246" cy="240" r="3" fill="#1a1a2e"/>
+                            <circle cx="246" cy="64" r="3" fill="#1a1a2e"/>
+                            <circle cx="246" cy="134" r="3" fill="#c0392b"/>
+                            <text x="56" y="256" font-size="13" font-weight="700" fill="#1a1a2e">A</text>
+                            <text x="250" y="256" font-size="13" font-weight="700" fill="#1a1a2e">D</text>
+                            <text x="250" y="58" font-size="13" font-weight="700" fill="#1a1a2e">B</text>
+                            <text x="250" y="130" font-size="13" font-weight="700" fill="#c0392b">C</text>
+                            <path d="M266 70 L266 128" fill="none" stroke="#4f7cff" stroke-width="1.3"/>
+                            <path d="M262 76 L266 66 L270 76 M262 122 L266 132 L270 122" fill="none" stroke="#4f7cff" stroke-width="1.3"/>
+                            <text x="274" y="104" font-size="12.5" font-weight="700" fill="#4f7cff">BC = ?</text>
+                            <path d="M266 140 L266 234" fill="none" stroke="#b8730d" stroke-width="1.3"/>
+                            <path d="M262 146 L266 136 L270 146 M262 228 L266 238 L270 228" fill="none" stroke="#b8730d" stroke-width="1.3"/>
+                            <text x="274" y="192" font-size="12.5" font-weight="700" fill="#b8730d">24</text>
+                            <path d="M74 268 L242 268" fill="none" stroke="#1a7a45" stroke-width="1.3"/>
+                            <path d="M80 264 L70 268 L80 272 M236 264 L246 268 L236 272" fill="none" stroke="#1a7a45" stroke-width="1.3"/>
+                            <text x="96" y="286" font-size="12.5" font-weight="700" fill="#1a7a45">AD（共用）</text>
+                            <text x="10" y="308" font-size="12.5" fill="#4a5568">AD = 24 ÷ tan31° = 24 ÷ 0.6 = 40 米</text>
+                            <text x="10" y="326" font-size="12.5" font-weight="700" fill="#c0392b">BC = 40 − 24 = 16 米（tan45° = 1）</text>
+                          </svg>
+                          <figcaption>仰角在<b>水平线</b>上量：<b>C 的仰角 31°</b> 定出水平距离 AD，<b>B 的仰角 45°</b> 定出总高 BD，
+                            相减就是雕像 BC。全程只用 <b>tan</b>。</figcaption>
+                        </figure>
+                  <span class="correct">答案：C</span>
+                </div>
+              </div>
+            </div>
+<div class="block">
               <div class="block-title">7. 直角三角形的三个常用结论</div>
               <ul class="point-list">
                 <li><b>斜边中线定理</b>：斜边上的中线 = 斜边的一半（斜边中点到三个顶点距离相等）。</li>
@@ -1901,7 +1974,7 @@
               </ul>
             </div>
             <div class="example">
-        <div class="example-header">📝 例题13 · 直角三角形的三个常用结论</div>
+        <div class="example-header">📝 例题14 · 直角三角形的三个常用结论</div>
         <div class="example-body">
           <div class="example-q">直角三角形 ABC 中，∠C = 90°，∠A = 30°，斜边 AB = 12。BC 边长是多少？</div>
           <div class="example-opts">A.4　B.6　C.6√3　D.8</div>
@@ -1938,7 +2011,7 @@
               </ul>
             </div>
             <div class="example">
-              <div class="example-header">📝 例题14 · 相似三角形（灯下影子 · 2022 广东）</div>
+              <div class="example-header">📝 例题15 · 相似三角形（灯下影子 · 2022 广东）</div>
               <div class="example-body">
                 <div class="example-q">楼道上方有一盏灯，小刘径直走向这盏灯。一开始，他发现自己影子的长度为 3.2 米；前进 1 米后，发现影子缩短为 1.6 米。已知小刘身高为 1.6 米，则这盏灯的高度约为（　　）米。</div>
                 <div class="example-opts">A.2.6　B.2.8　C.3.2　D.3.4</div>
@@ -1990,7 +2063,7 @@
               </div>
             </div>
             <div class="example">
-              <div class="example-header">📝 例题15 · 同高三角形面积比</div>
+              <div class="example-header">📝 例题16 · 同高三角形面积比</div>
               <div class="example-body">
                 <div class="example-q">在三角形 ABC 中，D 是边 BC 上一点，且 BD ∶ DC = 2 ∶ 3。若 S△ABD = 8，则 S△ADC 为：</div>
                 <div class="example-opts">A.10　B.12　C.14.4　D.16</div>
@@ -2002,7 +2075,7 @@
               </div>
             </div>
                         <div class="example">
-              <div class="example-header">📝 例题16 · 同底同高（四边形对角线 · 2025 浙江）</div>
+              <div class="example-header">📝 例题17 · 同底同高（四边形对角线 · 2025 浙江）</div>
               <div class="example-body">
                 <div class="example-q">一块四边形田地 ABCD 如下图所示，已知 △AOD、△AOB 和 △COD 的面积分别为 9 平方千米、15 平方千米和 12 平方千米，CD 长 8 千米。问 B 点到 CD 的距离为多少千米？</div>
                 <div class="example-opts">A.6　B.7　C.8　D.9</div>
@@ -2069,7 +2142,7 @@
               </ul>
             </div>
             <div class="example">
-              <div class="example-header">📝 例题17 · 正六边形面积</div>
+              <div class="example-header">📝 例题18 · 正六边形面积</div>
               <div class="example-body">
                 <div class="example-q">正六边形的边长为 2，则其面积为：</div>
                 <div class="example-opts">A.6√3　B.8√3　C.12　D.12√3</div>
@@ -2112,7 +2185,7 @@
               </div>
             </div>
             <div class="example">
-        <div class="example-header">📝 例题18 · 蝴蝶定理（梯形对角线）</div>
+        <div class="example-header">📝 例题19 · 蝴蝶定理（梯形对角线）</div>
         <div class="example-body">
           <div class="example-q">梯形 ABCD 中 AB ∥ CD，对角线交于点 O。已知 AB = 4，CD = 8，S△AOB = 6，则 S△COD 是多少？</div>
           <div class="example-opts">A.12　B.24　C.36　D.48</div>
@@ -2131,7 +2204,7 @@
               <div class="tip-box">几何没思路时的万能兜底：<b>建坐标系把图形代数化</b>——把关键点放到格点上，用距离公式硬算。</div>
             </div>
             <div class="example">
-        <div class="example-header">📝 例题19 · 坐标构造（方位角 · 2024 广东）</div>
+        <div class="example-header">📝 例题20 · 坐标构造（方位角 · 2024 广东）</div>
         <div class="example-body">
           <div class="example-q">甲、乙、丙三艘船在海上航行。某一时刻，甲观测到乙位于它的北偏西 30° 方向，甲、乙相距 6 千米；甲观测到丙位于它的正西方向，甲、丙相距 6 千米。则乙与丙之间的距离为（　　）千米。</div>
           <div class="example-opts">A.3　B.4　C.5　D.6</div>
@@ -2195,7 +2268,7 @@
               </table>
             </div>
             <div class="example">
-              <div class="example-header">📝 例题20 · 正方体涂色</div>
+              <div class="example-header">📝 例题21 · 正方体涂色</div>
               <div class="example-body">
                 <div class="example-q">棱长为 5 的正方体表面全部涂上红漆，再切成 125 个棱长 1 的小正方体。其中恰好两面涂色的有多少个？</div>
                 <div class="example-opts">A.36　B.48　C.54　D.60</div>
@@ -2221,7 +2294,7 @@
               <div class="tip-box">看题干用词：问「<b>是</b>原来的几倍」→ 直接用 N / N² / N³；问「<b>比原来多了 / 增长了</b>几倍」→ <b>再减 1</b>。这一步看错，整题白算。</div>
             </div>
             <div class="example">
-              <div class="example-header">📝 例题21 · 同比例放缩</div>
+              <div class="example-header">📝 例题22 · 同比例放缩</div>
               <div class="example-body">
                 <div class="example-q">一个正方体的棱长扩大为原来的2倍，则表面积扩大为原来的几倍？体积扩大为原来的几倍？</div>
                 <div class="example-opts">A.2倍、4倍　B.4倍、8倍　C.4倍、6倍　D.8倍、12倍</div>
@@ -2232,7 +2305,7 @@
               </div>
             </div>
                         <div class="example">
-              <div class="example-header">📝 例题22 · 同比例放缩（圆锥倒置 · 2025 联考）</div>
+              <div class="example-header">📝 例题23 · 同比例放缩（圆锥倒置 · 2025 联考）</div>
               <div class="example-body">
                 <div class="example-q">一个空的倒置的圆锥形容器，倒入 1 瓶固定容量的水后，水的高度恰好为容器高度的一半。若要使容器盛满水，则需要再倒入水的瓶数为（　　）。</div>
                 <div class="example-opts">A.5 瓶　B.7 瓶　C.8 瓶　D.10 瓶</div>
@@ -2286,7 +2359,7 @@
                 · 记忆锚点：椭圆的面积是 πab，内接矩形的上限就是 2ab（比椭圆小、比正方形大），看到"内接矩形 + 最值"直接写 2ab。</div>
             </div>
             <div class="example">
-              <div class="example-header">📝 例题23 · 几何最值</div>
+              <div class="example-header">📝 例题24 · 几何最值</div>
               <div class="example-body">
                 <div class="example-q">用一根长12米的铁丝围成一个平面图形，围成什么图形面积最大？</div>
                 <div class="example-opts">A.正方形　B.长方形　C.圆形　D.三角形</div>
@@ -2297,7 +2370,7 @@
               </div>
             </div>
             <div class="example">
-              <div class="example-header">📝 例题24 · 几何最值（体积一定求表面积最小）</div>
+              <div class="example-header">📝 例题25 · 几何最值（体积一定求表面积最小）</div>
               <div class="example-body">
                 <div class="example-q">用同样体积的材料做成一个立体，做成下面哪种形状时<b>表面积最小</b>（最省材料）？</div>
                 <div class="example-opts">A.正方体　B.长宽高不等的长方体　C.球体　D.圆柱体</div>
@@ -2340,7 +2413,7 @@
               </div>
             </div>
             <div class="example">
-        <div class="example-header">📝 例题25 · 最短路径（镜像翻折）</div>
+        <div class="example-header">📝 例题26 · 最短路径（镜像翻折）</div>
         <div class="example-body">
           <div class="example-q">在公路 l 的同侧有 A、B 两个村庄，A 到公路的距离为 3 千米，B 到公路的距离为 5 千米，两村在公路上的投影相距 6 千米。要在公路上建一个车站 P，使 PA + PB 最短，最短距离是多少千米？</div>
           <div class="example-opts">A.8　B.9　C.10　D.12</div>
@@ -2361,7 +2434,7 @@
               </table>
             </div>
             <div class="example">
-        <div class="example-header">📝 例题26 · 常用根号（估算）</div>
+        <div class="example-header">📝 例题27 · 常用根号（估算）</div>
         <div class="example-body">
           <div class="example-q">一个直角三角形的两条直角边分别为 2 和 3，则斜边长约为多少？（√13 ≈ 3.61）</div>
           <div class="example-opts">A.3.4　B.3.6　C.3.9　D.4.2</div>
@@ -2386,7 +2459,7 @@
               <div class="tip-box">间隔类裁剪的死穴：只按一个方向排。先按「小边对大边」和「大边对大边」各算一遍，取大的。</div>
             </div>
                                     <div class="example">
-              <div class="example-header">📝 例题27 · 几何最优构造（覆盖型 · 2025 江苏）</div>
+              <div class="example-header">📝 例题28 · 几何最优构造（覆盖型 · 2025 江苏）</div>
               <div class="example-body">
                 <div class="example-q">某单位在边长为 200 米的正方形广场上组织一场招聘会，计划安排若干名工作人员提供咨询服务，每名工作人员入场后将分别随机站在一个位置上，其服务半径不超过 50√2 米。若要确保咨询服务全覆盖，则至少需要安排工作人员（　　）。</div>
                 <div class="example-opts">A.4 名　B.5 名　C.6 名　D.7 名</div>
@@ -2423,7 +2496,7 @@
               </div>
             </div>
             <div class="example">
-              <div class="example-header">📝 例题28 · 几何最优构造（裁剪型 · 2025 四川）</div>
+              <div class="example-header">📝 例题29 · 几何最优构造（裁剪型 · 2025 四川）</div>
               <div class="example-body">
                 <div class="example-q">某工匠计划在 700 × 115 厘米的钢板上裁剪若干大小为 70 × 40 厘米的钢片，且在裁剪时，每块钢片之间还应保留至少 5 厘米的间隔。问最多能裁剪出多少块？</div>
                 <div class="example-opts">A.23　B.24　C.25　D.26</div>
@@ -2482,7 +2555,7 @@
                 例（5,4,3）：√(3²+9²)=√90、√(5²+7²)=√74、√(4²+8²)=√80 → 最短 = √74。</div>
             </div>
               <div class="example">
-              <div class="example-header">📝 例题29 · 切长最短（2006 江西）</div>
+              <div class="example-header">📝 例题30 · 切长最短（2006 江西）</div>
               <div class="example-body">
                 <div class="example-q">右图为长、宽、高分别是 4cm、3cm、5cm 的长方体，如果一只小虫从顶点 A 爬到顶点 B（对角顶点），其爬行的最短距离为：</div>
                 <div class="example-opts">A. 4√5　B. √74　C. 3√10　D. √70</div>
