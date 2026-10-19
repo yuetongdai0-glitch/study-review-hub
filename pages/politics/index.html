@@ -1,0 +1,3250 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="light">
+<title>测试</title>
+<style>
+  :root {
+    --bg: #f0f2f5;
+    --card-bg: #ffffff;
+    --primary: #4f7cff;
+    --primary-light: #e8efff;
+    --primary-dark: #3a5fd9;
+    --accent: #ff6b6b;
+    --accent-light: #fff0f0;
+    --green: #2ecc71;
+    --green-light: #eafaf1;
+    --orange: #f39c12;
+    --orange-light: #fef5e7;
+    --purple: #9b59b6;
+    --purple-light: #f5eef8;
+    --text: #1a1a2e;
+    --text-light: #555;
+    --text-muted: #999;
+    --border: #e8e8e8;
+    --radius: 14px;
+    --shadow: 0 2px 12px rgba(0,0,0,0.06);
+    --shadow-lg: 0 4px 20px rgba(0,0,0,0.1);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", "Microsoft YaHei", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 15px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .banner {
+    background: linear-gradient(135deg, #4f7cff 0%, #6a5acd 100%);
+    color: #fff;
+    padding: 34px 20px 28px;
+    text-align: center;
+    box-shadow: 0 2px 16px rgba(79,124,255,0.3);
+    border-radius: 0 0 20px 20px;
+  }
+  .banner h1 { font-size: 22px; font-weight: 700; margin-bottom: 4px; letter-spacing: 1px; }
+  .banner p { font-size: 13px; opacity: 0.85; }
+
+  .container { max-width: 720px; margin: 0 auto; padding: 16px 14px 60px; }
+
+  .section {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 16px;
+    overflow: hidden;
+    scroll-margin-top: 24px;
+  }
+  .section-header {
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .section-icon {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; flex-shrink: 0;
+  }
+  .section-title { font-size: 16px; font-weight: 700; flex: 1; }
+  .section-tag { font-size: 11px; padding: 2px 8px; border-radius: 6px; font-weight: 600; }
+  .section-arrow { transition: transform 0.3s; color: var(--text-muted); font-size: 14px; }
+  .section.collapsed .section-arrow { transform: rotate(-90deg); }
+  .section-body { padding: 0 16px 16px; display: block; }
+  .section.collapsed .section-body { display: none; }
+
+  .block { margin-bottom: 14px; }
+  .block:last-child { margin-bottom: 0; }
+  .block-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .block-title::before {
+    content: '';
+    width: 3px; height: 14px;
+    background: var(--primary);
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  .key-box, .formula-box, .tip-box, .warn-box {
+    border-radius: 8px;
+    padding: 9px 12px;
+    font-size: 13.5px;
+    margin: 6px 0;
+    line-height: 1.8;
+  }
+  .key-box { background: var(--green-light); border-left: 3px solid var(--green); color: #1a7a45; }
+  .formula-box { background: var(--primary-light); border-left: 3px solid var(--primary); }
+  .tip-box { background: var(--orange-light); border-left: 3px solid var(--orange); color: #8a6d3b; }
+  .warn-box { background: var(--accent-light); border-left: 3px solid var(--accent); color: #c0392b; }
+  .formula-box .formula { font-weight: 700; font-size: 15px; color: var(--primary-dark); }
+
+  .point-list { padding-left: 2px; list-style: none; }
+  .point-list li {
+    position: relative;
+    padding-left: 16px;
+    margin-bottom: 4px;
+    font-size: 14px;
+    line-height: 1.8;
+  }
+  .point-list li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: var(--primary);
+    font-weight: bold;
+  }
+  .sub-point {
+    font-size: 13px;
+    color: var(--text-light);
+    margin: 4px 0 4px 8px;
+    padding-left: 10px;
+    border-left: 2px dashed var(--border);
+  }
+
+  .mini-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 6px 0; }
+  .mini-table th {
+    background: var(--primary-light); color: var(--primary-dark);
+    padding: 6px 8px; text-align: left; font-weight: 600; border-radius: 6px 6px 0 0;
+  }
+  .mini-table td { padding: 6px 8px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .mini-table tr:last-child td { border-bottom: none; }
+
+  .example {
+    border: 1.5px solid #e0e8ff;
+    border-radius: 10px;
+    margin: 10px 0;
+    overflow: hidden;
+  }
+  .example-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    padding: 6px 12px;
+    font-size: 13px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .example-body { padding: 10px 12px; font-size: 14px; line-height: 1.8; }
+  .example-q { color: var(--text); margin-bottom: 6px; }
+  .example-opts { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; color: var(--text-light); margin: 4px 0 6px; }
+  .example-answer {
+    background: #f0f9ff;
+    border-left: 3px solid #0ea5e9;
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-size: 13px;
+    line-height: 1.8;
+    color: #0c4a6e;
+  }
+  .example-answer b { color: #0ea5e9; }
+  .example-answer .correct { color: #16a34a; font-weight: 700; }
+
+  .c-blue .section-icon { background: var(--primary-light); color: var(--primary); }
+  .c-blue .section-tag { background: var(--primary-light); color: var(--primary); }
+  .c-blue .block-title { color: var(--primary); }
+  .c-blue .block-title::before { background: var(--primary); }
+
+  .c-red .section-icon { background: var(--accent-light); color: var(--accent); }
+  .c-red .section-tag { background: var(--accent-light); color: var(--accent); }
+  .c-red .block-title { color: var(--accent); }
+  .c-red .block-title::before { background: var(--accent); }
+  .c-red .formula-box { background: var(--accent-light); border-color: var(--accent); }
+  .c-red .formula-box .formula { color: #c0392b; }
+
+  .c-green .section-icon { background: var(--green-light); color: var(--green); }
+  .c-green .section-tag { background: var(--green-light); color: var(--green); }
+  .c-green .block-title { color: var(--green); }
+  .c-green .block-title::before { background: var(--green); }
+
+  .c-orange .section-icon { background: var(--orange-light); color: var(--orange); }
+  .c-orange .section-tag { background: var(--orange-light); color: var(--orange); }
+  .c-orange .block-title { color: var(--orange); }
+  .c-orange .block-title::before { background: var(--orange); }
+
+  .c-purple .section-icon { background: var(--purple-light); color: var(--purple); }
+  .c-purple .section-tag { background: var(--purple-light); color: var(--purple); }
+  .c-purple .block-title { color: var(--purple); }
+  .c-purple .block-title::before { background: var(--purple); }
+
+  .c-teal .section-icon { background: #e6fbf8; color: #12a594; }
+  .c-teal .section-tag { background: #e6fbf8; color: #12a594; }
+  .c-teal .block-title { color: #0f8c7e; }
+  .c-teal .block-title::before { background: #12a594; }
+  .c-teal .key-box { background: #e6fbf8; border-left-color: #12a594; color: #0f6e63; }
+
+  .tag-hot { background: #ff4757 !important; color: #fff !important; }
+  .tag-high { background: #ffa502 !important; color: #fff !important; }
+  .tag-mid { background: #7bed9f !important; color: #333 !important; }
+  .tag-low { background: #dfe4ea !important; color: #666 !important; }
+
+  .footer { text-align: center; padding: 20px; font-size: 12px; color: var(--text-muted); }
+
+  .back-top {
+    position: fixed; bottom: 90px; right: 20px;
+    width: 44px; height: 44px;
+    background: var(--primary); color: #fff;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    box-shadow: 0 4px 12px rgba(79,124,255,0.4);
+    cursor: pointer; z-index: 200; opacity: 0; transition: opacity 0.3s; border: none;
+  }
+  .back-top.show { opacity: 1; }
+  .back-top:active { transform: scale(0.9); }
+
+  .progress-bar { height: 3px; background: rgba(255,255,255,0.2); position: fixed; top: 0; left: 0; z-index: 300; }
+  .progress-fill { height: 100%; background: #ffd700; width: 0%; transition: width 0.1s; }
+
+  @media (max-width: 900px) {
+    .menu-btn { display: flex; }
+    .sb-brand { padding-left: 64px; }
+    .sidebar {
+      width: min(80vw, 280px); transform: translateX(-105%);
+      transition: transform 0.28s ease; z-index: 70;
+      box-shadow: 6px 0 26px rgba(0,0,0,0.28);
+    }
+    body.menu-open .sidebar { transform: translateX(0); }
+    body.menu-open .mask { display: block; }
+    body.menu-open { overflow: hidden; }
+    .main { margin-left: 0; }
+    .container { padding: 14px 12px 60px; }
+    .banner { padding: 26px 18px 22px; border-radius: 0 0 16px 16px; }
+    .banner h1 { font-size: 19px; }
+    .banner { padding-top: 58px; }
+  }
+
+  @media print {
+    .sidebar, .menu-btn, .mask, .back-top { display: none !important; }
+    .main { margin-left: 0; }
+  }
+
+  @media (max-width: 380px) {
+    body { font-size: 14px; }
+    .banner h1 { font-size: 19px; }
+    .section-title { font-size: 15px; }
+  }
+
+  /* 窄屏表格：短表头（时期 / 线 / 形势 这类）若允许折行会被压成一字一竖，
+     改为不折行 + 收紧内边距，把省下的宽度让给正文列。 */
+  @media (max-width: 560px) {
+    .mini-table { font-size: 12.5px; }
+    .mini-table th { white-space: nowrap; padding: 6px 5px; }
+    .mini-table td { padding: 6px 5px; overflow-wrap: break-word; }
+    /* 首列一般是「嫦娥 / 天问 / 战争」这类短标签，宽度不足会被压成一字一竖 */
+    .mini-table tr > *:first-child { min-width: 6.2em; }
+    .mini-table.k2 tr > *:nth-child(2) { min-width: 4.2em; }
+    .mini-table.k1 tr > *:first-child { white-space: nowrap; }
+  }
+</style>
+  <link data-study-hub-style rel="stylesheet" href="../../assets/hub-nav.css">
+  <link data-page-shell rel="stylesheet" href="../../assets/page-shell.css">
+</head>
+<body>
+
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+<button class="menu-btn" id="menuBtn" aria-label="打开目录">☰</button>
+<div class="mask" id="mask"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sb-brand">
+    <div class="t">小黑 · 政治常识</div>
+    <div class="s">政治理论 + 常识判断 · 2026 版</div>
+  </div>
+  <div class="sb-search">
+    <input type="text" id="navSearch" placeholder="搜索考点…">
+  </div>
+
+  <div class="nav-group"><div class="g-title">开篇</div>
+    <a class="nav-link" data-kw="总览 学习地图 考情 分值 三遍法 优先级 资料" href="#nav">总览 · 学习地图</a>
+  </div>
+
+  <div class="nav-group"><div class="g-title">模块一 · 政治理论</div>
+    <a class="nav-link" data-kw="习思想 核心要义 两个结合 十个明确 十四个坚持 中国式现代化" href="#s1">一、习思想 · 总论</a>
+    <a class="nav-link" data-kw="党的领导 以人民为中心 共同富裕 高质量发展 新发展格局 全过程人民民主 文化强国 民生" href="#s2">二、习思想 · 分论（上）</a>
+    <a class="nav-link" data-kw="生态文明 全面深化改革 依法治国 从严治党 教育科技人才 国家安全 国防 一国两制 外交" href="#s3">三、习思想 · 分论（下）</a>
+    <a class="nav-link" data-kw="马原 哲学 唯物主义 唯心主义 辩证法 矛盾 量变质变 否定之否定 认识论 唯物史观" href="#s4">四、马原 · 哲学</a>
+    <a class="nav-link" data-kw="商品 使用价值 价值 劳动二重性 货币 剩余价值 不变资本 可变资本" href="#s5">五、马原 · 政治经济学</a>
+  </div>
+
+  <div class="nav-group"><div class="g-title">模块二 · 文史常识</div>
+    <a class="nav-link" data-kw="遗址 战役 政治制度 选官 科举 赋税 变法 边疆 对外交流 农业 水利" href="#s6">六、历史 · 古代</a>
+    <a class="nav-link" data-kw="不平等条约 洋务运动 戊戌变法 辛亥革命 建党 土地革命 长征 抗战 解放战争" href="#s7">七、历史 · 近现代与党史</a>
+    <a class="nav-link" data-kw="诗经 楚辞 唐诗 宋词 元曲 唐宋八大家 明清小说 史书" href="#s8">八、文学常识</a>
+    <a class="nav-link" data-kw="诸子百家 四大发明 医学 称谓 建筑 书法 绘画 戏曲 节日" href="#s9">九、文化常识</a>
+  </div>
+
+  <div class="nav-group"><div class="g-title">模块三 · 科技常识</div>
+    <a class="nav-link" data-kw="力学 惯性 杠杆 物态变化 热学 光 声 超声波 次声波" href="#s10">十、物理常识</a>
+    <a class="nav-link" data-kw="非金属 金属 酸碱盐 有机物 甲醛 酒精 臭氧" href="#s11">十一、化学常识</a>
+    <a class="nav-link" data-kw="遗传 DNA 新陈代谢 光合作用 呼吸作用 人体系统 营养 维生素 医学检查 急救" href="#s12">十二、生物与医学</a>
+    <a class="nav-link" data-kw="家电 交通 灾害 地震 计算机 新能源 生物工程 探月 天问 载人航天 发射场" href="#s13">十三、生活与高新技术</a>
+  </div>
+
+  <div class="nav-group"><div class="g-title">模块四 · 经济地理</div>
+    <a class="nav-link" data-kw="需求 成本 GDP 通货膨胀 财政政策 货币政策 汇率 恩格尔 基尼 效应" href="#s14">十四、经济常识</a>
+    <a class="nav-link" data-kw="太阳系 地球运动 月球 月相 降水 台风 节气 邻国 地形 河流 分界线 资源 民族 旅游" href="#s15">十五、地理常识</a>
+  </div>
+
+  <div class="nav-group"><div class="g-title">模块五 · 法律常识</div>
+    <a class="nav-link" data-kw="民法典 民事行为能力 效力 诉讼时效 物权 债权 婚姻 继承 侵权" href="#s16">十六、民法</a>
+    <a class="nav-link" data-kw="刑法 罪刑法定 刑事责任年龄 正当防卫 紧急避险 犯罪形态 共同犯罪 刑罚 自首 罪名" href="#s17">十七、刑法</a>
+    <a class="nav-link" data-kw="行政处罚 治安管理 行政许可 行政强制 行政复议 行政诉讼 行政赔偿" href="#s18">十八、行政法</a>
+    <a class="nav-link" data-kw="宪法 修宪 国家机构 公民权利 选举制度 法理学 法律渊源 效力层次" href="#s19">十九、宪法与法理</a>
+  </div>
+
+  <div class="nav-group"><div class="g-title">冲刺 · 复盘</div>
+    <a class="nav-link" data-kw="数字 速记 第一 最 时间 周年 口诀" href="#s20">二十、数字与「第一 / 最」速记</a>
+    <a class="nav-link" data-kw="易混 排坑 对比 陷阱 偷换 主体" href="#s21">二十一、易混排坑对照表</a>
+    <a class="nav-link" data-kw="考场策略 时间分配 蒙猜 21天 复习计划 复盘" href="#s22">二十二、考场策略与 21 天计划</a>
+  </div>
+</aside>
+
+<div class="main" id="main">
+
+<div class="banner">
+  <h1>小黑 · 政治常识全考点</h1>
+  <p>政治理论 + 常识判断 · 先搭框架，再排坑，最后背数字</p>
+</div>
+
+<div class="container">
+
+  <!-- 总览 -->
+  <div class="section c-blue" id="nav">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">📋</div>
+      <div class="section-title">资料地图 + 考情 + 三遍法</div>
+      <span class="section-tag tag-hot">总览</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="key-box">
+        <b>一句话总纲：</b>常识不是「背得多」，而是<b>背得准</b>。本页所有结论都来自小黑《理论讲练》+《消化清单》+《排坑手册》三本书，凡是书里标过的「偷换关键词」，都在 <b>二十一、易混排坑对照表</b> 里集中列出。
+      </div>
+      <div class="block">
+        <div class="block-title">1. 资料地图：54 份 PDF 怎么用</div>
+        <table class="mini-table">
+          <tr><th>资料</th><th>体量</th><th>用法</th></tr>
+          <tr><td>《理论讲练》政治理论&amp;常识判断</td><td>292 页</td><td><b>主教材</b>：考场传真 → 考点精析 → 母题特训，按本篇顺序通读</td></tr>
+          <tr><td>《消化清单》</td><td>167 页</td><td><b>填空自测</b>：同一考点挖空，用来检验「是否真记住」</td></tr>
+          <tr><td>《排坑手册》政治理论</td><td>28 页</td><td><b>最高性价比</b>：全是「错一个词」的判断题，考前只看它</td></tr>
+          <tr><td>小黑笔记 1–21 / 政治理论笔记 1–10</td><td>手写板书</td><td>听课时同步记的框架图，适合二轮回忆</td></tr>
+          <tr><td>专项提升 + 各科刷题卷</td><td>文史/科技/法律/经济地理/习思想/马原</td><td>三轮刷题，只做错题回填到本页对应模块</td></tr>
+        </table>
+      </div>
+      <div class="block">
+        <div class="block-title">2. 考情：常识到底考什么、怎么给分</div>
+        <ul class="point-list">
+          <li><b>国考（副省/地市）常识判断 20 题</b>，政治理论（2025 年起单列）约 10 题，常识判断约 10 题。</li>
+          <li><b>事业单位 / 公基</b>：政治理论 + 法律 + 文史 + 科技 + 经济地理，题量更大、更偏记忆。</li>
+          <li><b>命题趋势</b>：① 政治理论重「原文关键词」；② 法律重「数字与主体」；③ 科技重「生活解释」；④ 文史重「顺序与对应」。</li>
+          <li><b>性价比排序</b>（同样 1 小时，提分从高到低）：政治理论 ＞ 法律 ＞ 科技生活 ＞ 经济 ＞ 地理 ＞ 文学。</li>
+        </ul>
+        <div class="tip-box">常识不设「不会就算」的题：<b>四个选项里至少两个能靠关键词排除</b>，所以「背关键词」比「背整段」重要得多。</div>
+      </div>
+      <div class="block">
+        <div class="block-title">3. 三遍法：本页怎么带你学</div>
+        <ul class="point-list">
+          <li><b>第一遍（框架 · 3 天）</b>：只看每个模块的 <b>加粗结论</b>与表格，目标是「知道有哪几块、每块的骨架」。</li>
+          <li><b>第二遍（排坑 · 7 天）</b>：把每节后面的例题当判断题做，做错的立刻回看上面那条结论，并在 <b>二十一</b> 的对照表里划掉。</li>
+          <li><b>第三遍（数字 · 3 天）</b>：只背 <b>二十、数字速记</b> 与 <b>二十一、排坑表</b>，这两节是全页的「考前 30 分钟」。</li>
+          <li><b>每天固定动作</b>：新学 1 节 → 当天例题全做 → 睡前用「消化清单式提问」自问 5 个关键词。</li>
+        </ul>
+      </div>
+      <div class="block">
+        <div class="block-title">4. 背什么、不背什么（重要）</div>
+        <table class="mini-table">
+          <tr><th>必须精确背</th><th>理解即可</th></tr>
+          <tr><td>「第一/唯一/根本/核心/前提/标志」这类定位词</td><td>政策背景、意义阐述、大段论述</td></tr>
+          <tr><td>法律里的年龄、期限、数额、主体</td><td>法条原文的修饰语</td></tr>
+          <tr><td>历史事件的<b>顺序</b>与<b>人物—作品</b>对应</td><td>事件细节过程</td></tr>
+          <tr><td>科技原理的「一句话解释」</td><td>公式推导</td></tr>
+        </table>
+        <div class="warn-box">最容易失分的地方不是「没背过」，而是 <b>把 A 的定位词安到 B 头上</b>（如「根本领导制度」与「根本政治制度」）。这正是排坑手册存在的理由。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 一、习思想总论 -->
+  <div class="section c-red" id="s1">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">🚩</div>
+      <div class="section-title">一、习近平新时代中国特色社会主义思想 · 总论</div>
+      <span class="section-tag tag-hot">政治理论必考</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="key-box">总论只有四件事：<b>核心要义是什么、为什么叫「两个结合」、科学体系由哪四块组成、中国式现代化怎么考</b>。这四件事几乎每年都出题，且全部考「关键词对不对」。</div>
+
+      <div class="block">
+        <div class="block-title">1. 核心要义与「新时代」</div>
+        <ul class="point-list">
+          <li><b>核心要义：坚持和发展中国特色社会主义</b>（这是改革开放以来党全部理论和实践的鲜明主题）。</li>
+          <li>1982 年<b>党的十二大</b>，邓小平提出「走自己的道路，建设有中国特色的社会主义」。</li>
+          <li><b>党的十八大以来</b>开创了中国特色社会主义新时代；<b>党的十九大</b>作出「中国特色社会主义进入新时代」的重大政治论断。</li>
+          <li>新时代内涵五句：夺取新胜利、决胜全面小康进而全面建设社会主义现代化强国、创造美好生活逐步实现共同富裕、实现民族复兴中国梦、为人类作出更大贡献。</li>
+          <li><b>进入新时代的依据：我国社会主要矛盾的变化</b>；但<b>我国仍处于并将长期处于社会主义初级阶段的基本国情没有变，我国是世界最大发展中国家的国际地位没有变</b>。</li>
+          <li>主要矛盾：<b>人民日益增长的美好生活需要和不平衡不充分的发展之间的矛盾</b>。</li>
+          <li>「四个自信」中，<b>文化自信是更基础、更广泛、更深厚的自信</b>，是最基本、最深沉、最持久的力量。</li>
+        </ul>
+        <div class="warn-box"><b>三个高频偷换：</b>「十八大开创 / 十九大论断」不能互换；「主要矛盾变」不等于「基本国情变」；「最大国情」是<b>党的领导</b>，不是初级阶段。</div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题1 · 总论（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">关于习近平新时代中国特色社会主义思想，下列说法正确的有几项？<br>①核心要义是坚持和发展中国特色社会主义<br>②作出「中国特色社会主义进入新时代」重大政治论断的是党的十九大<br>③新时代我国社会主要矛盾和基本国情都发生了根本变化<br>④文化自信是更基础、更广泛、更深厚的自信</div>
+          <div class="example-opts">A.1 项　B.2 项　C.3 项　D.4 项</div>
+          <div class="example-answer"><b>解析：</b>①对；②对（十八大「开创」、十九大「论断」）；③错，<b>基本国情与国际地位没有变</b>；④对。<br><span class="correct">答案：C</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">2. 「两个结合」：最大法宝</div>
+        <ul class="point-list">
+          <li>内容：把马克思主义基本原理<b>同中国具体实际相结合、同中华优秀传统文化相结合</b>。</li>
+          <li>地位：<b>「两个结合」是我们取得成功的最大法宝</b>。</li>
+          <li>「结合」是深刻的<b>化学反应</b>，造就了新的文化生命体（不是物理反应）。</li>
+          <li>「第二个结合」是<b>新时代首次提出</b>的（第一个结合此前早已提出）。</li>
+          <li>比喻：用<b>马克思主义之「矢」</b>去射<b>新时代中国之「的」</b>——方向不能倒。</li>
+          <li><b>马克思主义是「魂脉」，中华优秀传统文化是「根脉」</b>，二者内在贯通、相互成就。</li>
+        </ul>
+        <div class="key-box"><b>记忆钩子：</b>魂脉＝马克思主义（魂是理论）、根脉＝传统文化（根在本土）。这两个词每年都有人写反。</div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题2 · 两个结合（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">关于「两个结合」，下列说法错误的是：</div>
+          <div class="example-opts">A.「两个结合」是我们取得成功的最大法宝<br>B.「结合」是深刻的化学反应，造就了新的文化生命体<br>C.马克思主义是根脉，中华优秀传统文化是魂脉<br>D.新时代首次提出把马克思主义基本原理同中华优秀传统文化相结合</div>
+          <div class="example-answer"><b>解析：</b>C 把魂脉与根脉写反了：<b>马克思主义是魂脉，中华优秀传统文化是根脉</b>。<br><span class="correct">答案：C</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">3. 科学体系：四个板块各管什么</div>
+        <table class="mini-table">
+          <tr><th>板块</th><th>定位（必背）</th></tr>
+          <tr><td><b>十个明确</b></td><td>主体内容，集中体现主要观点和基本精神，发挥<b>统摄</b>作用</td></tr>
+          <tr><td><b>十四个坚持</b></td><td>基本方略（实践要求层面）</td></tr>
+          <tr><td><b>十三个方面成就</b></td><td>实践成果</td></tr>
+          <tr><td><b>六个必须坚持</b></td><td><b>世界观、方法论</b>（人民至上、自信自立、守正创新、问题导向、系统观念、胸怀天下）</td></tr>
+        </table>
+        <ul class="point-list">
+          <li>「六个必须坚持」中，<b>守正创新</b>体现的是<b>问题导向</b>要求的变与不变？（易错点：守正创新对应「变与不变」，<b>问题导向</b>对应「回答时代之问」）</li>
+          <li><b>系统观念</b>体现辩证唯物主义<b>普遍联系</b>的原理——这一条常考「对应是否正确」。</li>
+          <li>「十个明确」中的硬结论：<b>中国特色社会主义最本质的特征是中国共产党领导</b>；<b>中国特色社会主义制度的最大优势是中国共产党领导</b>。</li>
+          <li>总任务：<b>实现社会主义现代化和中华民族伟大复兴</b>（不是「全面建成小康社会」，那是阶段性目标）。</li>
+          <li>布局不能颠倒：<b>总体布局是「五位一体」，战略布局是「四个全面」</b>。</li>
+          <li>基本经济制度中，<b>市场在资源配置中起决定性作用，政府更好发挥作用</b>。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题3 · 科学体系（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">关于习近平新时代中国特色社会主义思想的科学体系，下列说法错误的是：</div>
+          <div class="example-opts">A.「十个明确」是主体内容，发挥统摄作用<br>B.「六个必须坚持」是这一思想的世界观、方法论<br>C.中国特色社会主义事业的总体布局是「四个全面」<br>D.坚持系统观念体现了普遍联系的原理</div>
+          <div class="example-answer"><b>解析：</b>C 颠倒：<b>总体布局是「五位一体」，战略布局是「四个全面」</b>。<br><span class="correct">答案：C</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">4. 中国式现代化（最高频）</div>
+        <ul class="point-list">
+          <li><b>五个中国特色</b>：人口规模巨大、全体人民共同富裕、物质文明和精神文明相协调、人与自然和谐共生、走和平发展道路。</li>
+          <li><b>本质要求（9 句）</b>：坚持中国共产党领导，坚持中国特色社会主义，实现高质量发展，发展全过程人民民主，丰富人民精神世界，实现全体人民共同富裕，促进人与自然和谐共生，推动构建人类命运共同体，创造人类文明新形态。</li>
+          <li><b>五条重大原则</b>：坚持和加强党的全面领导、坚持中国特色社会主义道路、坚持以人民为中心的发展思想、坚持深化改革开放、坚持发扬斗争精神。</li>
+          <li><b>两步走</b>：2035 年基本实现社会主义现代化；本世纪中叶建成富强民主文明和谐美丽社会主义现代化强国。</li>
+          <li>2035 年目标里要能认出：人均 GDP 达到<b>中等发达国家水平</b>；基本建成法治国家、法治政府、法治社会；建成教育强国、科技强国、人才强国、文化强国、体育强国、健康中国。</li>
+          <li><b>党的领导直接关系中国式现代化的根本方向、前途命运、最终成败</b>——不是「高质量发展」。</li>
+        </ul>
+        <div class="tip-box"><b>易错句式：</b>「中国式现代化是全体人民<b>同等</b>富裕的现代化」×；「是物质文明<b>超越</b>西方国家的现代化」×。正确表述是「共同富裕」「物质文明和精神文明相协调」。</div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题4 · 中国式现代化（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">关于中国式现代化，下列说法正确的有：<br>①是人口规模巨大的现代化<br>②是全体人民同等富裕的现代化<br>③本质要求包括促进人与自然和谐共生<br>④坚持发扬斗争精神是必须牢牢把握的重大原则</div>
+          <div class="example-opts">A.①②③　B.①③④　C.②③④　D.①②④</div>
+          <div class="example-answer"><b>解析：</b>②错，应为<b>全体人民共同富裕</b>（共同富裕≠同等富裕、同步富裕）；①③④均正确。<br><span class="correct">答案：B</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 二、习思想分论上 -->
+  <div class="section c-orange" id="s2">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">🏛️</div>
+      <div class="section-title">二、分论（上）：党的领导 · 人民 · 高质量发展 · 民主 · 文化民生</div>
+      <span class="section-tag tag-high">高频</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="key-box">分论十五节，考法只有一种：<b>把某个「定位词」安到另一件事上</b>。所以下面每条都写成「A 是 B」的句式，背句式即可。</div>
+
+      <div class="block">
+        <div class="block-title">1. 党的全面领导</div>
+        <ul class="point-list">
+          <li>党的领导是<b>中国特色社会主义最本质的特征</b>，是<b>中国特色社会主义制度的最大优势</b>。</li>
+          <li><b>中国共产党领导是中国最大的国情</b>；是实现中华民族伟大复兴的<b>根本保证</b>。</li>
+          <li>党是<b>最高政治领导力量</b>；<b>党中央集中统一领导是党的领导的最高原则</b>。</li>
+          <li><b>党的领导制度是我国的根本领导制度</b>，在中国特色社会主义制度体系中<b>居于统领地位</b>，是制度体系的<b>核心</b>。</li>
+          <li>「党领导一切」≠包揽一切，不是取代国家与政府职能；领导的是<b>全方位、全过程</b>，但<b>不是具体事务</b>。</li>
+        </ul>
+        <div class="warn-box"><b>两组必混：</b>根本领导制度＝党的领导制度；根本政治制度＝人民代表大会制度。制度体系的「核心/关键」＝党的领导制度，不是人大制度。</div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题5 · 党的领导（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">关于党的领导，下列说法错误的是：</div>
+          <div class="example-opts">A.中国共产党领导是中国最大的国情<br>B.党中央集中统一领导是党的领导的最高原则<br>C.党的领导制度是我国的根本政治制度<br>D.党的领导制度在中国特色社会主义制度体系中居于统领地位</div>
+          <div class="example-answer"><b>解析：</b>C 错。党的领导制度是<b>根本领导制度</b>；<b>人民代表大会制度</b>才是根本政治制度。<br><span class="correct">答案：C</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">2. 以人民为中心与共同富裕</div>
+        <ul class="point-list">
+          <li><b>人民性是马克思主义的本质属性</b>和鲜明品格；<b>人民立场</b>是党的<b>根本政治立场</b>，是党区别于其他政党的显著标志。</li>
+          <li><b>党的最大政治优势是密切联系群众，党执政后的最大危险是脱离群众</b>（不是「腐败」）。</li>
+          <li><b>坚持人民至上</b>是新时代党治国理政的<b>根本价值取向</b>；<b>增进民生福祉</b>是发展的<b>根本目的</b>。</li>
+          <li><b>全心全意为人民服务</b>是党的宗旨；<b>群众路线</b>是党的生命线和根本工作路线。</li>
+          <li><b>共同富裕是社会主义的本质要求</b>，是<b>中国式现代化的重要特征</b>；社会主义最大的优越性是共同富裕。</li>
+          <li>共同富裕<b>≠同等富裕、≠同步富裕、≠平均主义</b>；是全体人民的富裕，是物质生活和精神生活都富裕。</li>
+          <li>先把「蛋糕」<b>做大做好</b>，再把「蛋糕」<b>切好分好</b>；构建初次分配、再分配、三次分配协调配套的基础性制度安排；形成<b>中间大、两头小的橄榄型</b>分配结构。</li>
+          <li>时间表：<b>2035 年共同富裕取得明显的实质性进展</b>；本世纪中叶<b>基本实现</b>共同富裕。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题6 · 共同富裕（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">关于共同富裕，下列说法正确的有：<br>①共同富裕是社会主义的本质要求<br>②共同富裕就是同等富裕、同步富裕<br>③2035 年共同富裕取得明显的实质性进展<br>④实现共同富裕要先切好蛋糕再做大蛋糕</div>
+          <div class="example-opts">A.①③　B.①②　C.②④　D.③④</div>
+          <div class="example-answer"><b>解析：</b>②错，共同富裕不等于同等富裕、同步富裕；④颠倒了顺序，应先把蛋糕<b>做大做好</b>再把蛋糕<b>切好分好</b>。<br><span class="correct">答案：A</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">3. 推动高质量发展（考得最密）</div>
+        <ul class="point-list">
+          <li><b>高质量发展是全面建设社会主义现代化国家的首要任务</b>，是经济社会发展的<b>主题</b>。</li>
+          <li>新发展理念：<b>创新</b>是引领发展的第一动力（解决动力问题）；<b>协调</b>是内在要求（解决不平衡）；<b>绿色</b>是必要条件（人与自然和谐）；<b>开放</b>是必由之路（内外联动）；<b>共享</b>是本质要求（社会公平正义）。</li>
+          <li>新发展格局：<b>以国内大循环为主体、国内国际双循环相互促进</b>；<b>最本质特征是实现高水平的自立自强</b>；以<b>全国统一大市场</b>为基础，不是各地搞小循环。</li>
+          <li>基本经济制度三项：公有制为主体多种所有制共同发展、按劳分配为主体多种分配方式并存、社会主义市场经济体制。</li>
+          <li>「两个毫不动摇」：巩固发展公有制经济，鼓励支持引导非公有制经济；<b>公有制主体地位不能动摇，国有经济主导作用不能动摇</b>。</li>
+          <li>民营企业是推进中国式现代化的<b>生力军</b>；<b>国有企业</b>是中国特色社会主义的重要物质基础和政治基础。</li>
+          <li>社会主义市场经济体制<b>关键要处理好政府和市场的关系</b>（不是供给与需求）；<b>市场</b>在资源配置中起决定性作用。</li>
+          <li>三农四句：<b>三农问题是全党工作重中之重</b>；<b>建设农业强国是战略总纲</b>；<b>乡村振兴是总抓手</b>；<b>增加农民收入是中心任务</b>；<b>保障粮食和重要农产品稳定安全供给是头等大事</b>。</li>
+          <li>新型城镇化：以<b>县城</b>为重要载体，把<b>农业转移人口市民化</b>作为首要任务。</li>
+        </ul>
+        <div class="tip-box"><b>「五新」口诀：</b>新阶段（全面建设现代化国家）、新理念（创新协调绿色开放共享）、新格局（国内大循环为主体）、新主线（高质量发展）、新动力（改革创新）。</div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题7 · 高质量发展（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">关于构建新发展格局，下列说法正确的是：</div>
+          <div class="example-opts">A.以国际大循环为主体<br>B.最本质特征是实现高水平的自立自强<br>C.以各地建设自我小循环为基础<br>D.关键是处理好供给和需求的关系</div>
+          <div class="example-answer"><b>解析：</b>A 错，应为<b>国内大循环为主体</b>；C 错，要以<b>全国统一大市场</b>为基础；D 错，关键是处理好<b>政府和市场</b>的关系。<br><span class="correct">答案：B</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">4. 发展全过程人民民主</div>
+        <ul class="point-list">
+          <li><b>全过程人民民主是社会主义民主政治的本质属性</b>。</li>
+          <li><b>人民代表大会制度</b>是实现全过程人民民主的<b>重要制度载体</b>，是我国的<b>根本政治制度</b>。</li>
+          <li><b>协商民主</b>是实践全过程人民民主的<b>重要形式</b>；<b>基层民主</b>是全过程人民民主的<b>重要体现</b>（不是「党内民主」）。</li>
+          <li>政协性质：<b>中国人民爱国统一战线的组织</b>，是<b>协商民主的专门机构</b>，<b>不是国家机关</b>，不是国务院组成部门。</li>
+          <li>政协三大职能：<b>政治协商、民主监督、参政议政</b>（不是「执政议政」）。</li>
+          <li>民族工作主线：<b>铸牢中华民族共同体意识</b>（不是「保障少数民族当家作主」）。</li>
+          <li>基层群众自治组织形式：<b>村民委员会、居民委员会</b>（不是党支部）。</li>
+          <li>统战：关键是<b>求同存异</b>，在尊重<b>多样性</b>中寻求<b>一致性</b>；<b>党的领导</b>是统一战线最鲜明的特征；党对统战的领导主要是<b>政治领导</b>。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题8 · 全过程人民民主（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">关于全过程人民民主，下列说法错误的是：</div>
+          <div class="example-opts">A.全过程人民民主是社会主义民主政治的本质属性<br>B.人民代表大会制度是实现全过程人民民主的重要制度载体<br>C.党内民主是全过程人民民主的重要体现<br>D.协商民主是实践全过程人民民主的重要形式</div>
+          <div class="example-answer"><b>解析：</b>C 错，应为<b>基层民主</b>是全过程人民民主的重要体现。<br><span class="correct">答案：C</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">5. 文化强国与保障改善民生</div>
+        <ul class="point-list">
+          <li><b>中华文明是世界上唯一绵延不断且以国家形态发展至今的伟大文明</b>。</li>
+          <li>意识形态领域指导地位的根本制度：<b>坚持马克思主义在意识形态领域指导地位</b>（不是「社会主义核心价值观」）。</li>
+          <li>文化遗产保护原则：<b>保护第一、合理利用、最小干预</b>；文化发展要把<b>社会效益放在首位</b>、社会效益与经济效益相统一。</li>
+          <li>中国共产党人精神谱系的源头是<b>伟大建党精神</b>（不是抗战精神）。</li>
+          <li>文化强国之「强」最终体现在<b>人民的思想境界、精神状态、文化修养</b>上。</li>
+          <li>民生之本：<b>就业是民生之本，是最基本的民生、最大的民生工程</b>（不是教育）。</li>
+          <li>就业方针：<b>劳动者自主就业、市场调节就业、政府促进就业和鼓励创业</b>。</li>
+          <li>高质量充分就业的着力点：<b>结构性就业矛盾</b>（不是周期性）。</li>
+          <li>社会保障：<b>社会保障体系</b>是人民生活的安全网和社会运行的稳定器；<b>社会保险</b>是社会保障体系的<b>核心内容</b>（不是社会福利）。</li>
+          <li>健康中国：坚持<b>预防为主</b>的方针；提高劳动报酬在<b>初次分配</b>中的比重。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题9 · 民生（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">关于保障和改善民生，下列说法正确的有：<br>①就业是民生之本，是最基本的民生<br>②提高劳动报酬在再分配中的比重<br>③社会保险是社会保障体系的核心内容<br>④健康中国坚持治疗为主的方针</div>
+          <div class="example-opts">A.①③　B.②④　C.①②　D.③④</div>
+          <div class="example-answer"><b>解析：</b>①对；②错，应为<b>初次分配</b>；③对；④错，应为<b>预防为主</b>。<br><span class="correct">答案：A</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 三、习思想分论下 -->
+  <div class="section c-green" id="s3">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">🌏</div>
+      <div class="section-title">三、分论（下）：生态 · 改革 · 法治 · 治党 · 科教 · 安全 · 国防 · 统一 · 外交</div>
+      <span class="section-tag tag-high">高频</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="key-box">这一节的题几乎全是「判断题改一个词」。建议直接背每条的<b>定位词</b>（加粗部分），其余理解即可。</div>
+
+      <div class="block">
+        <div class="block-title">1. 社会主义生态文明</div>
+        <ul class="point-list">
+          <li>生态文明建设是关系中华民族<b>永续发展的根本大计</b>。</li>
+          <li>方针：<b>节约优先、保护优先、自然恢复为主</b>（不是「人工修复为主」）。</li>
+          <li><b>绿色低碳发展</b>是解决生态环境问题的<b>治本之策</b>。</li>
+          <li>双碳目标：<b>2030 年前碳达峰、2060 年前碳中和</b>。</li>
+          <li>自然保护地体系：<b>以国家公园为主体</b>、自然保护区和自然公园为基础/补充。</li>
+          <li>「两山」理念：绿水青山就是金山银山；山水林田湖草沙一体化保护和系统治理。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题10 · 生态文明（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">关于生态文明建设，下列说法错误的是：</div>
+          <div class="example-opts">A.坚持节约优先、保护优先、人工修复为主的方针<br>B.绿色低碳发展是解决生态环境问题的治本之策<br>C.我国力争 2030 年前实现碳达峰、2060 年前实现碳中和<br>D.构建以国家公园为主体的自然保护地体系</div>
+          <div class="example-answer"><b>解析：</b>A 错，应为「<b>自然恢复为主</b>」。<br><span class="correct">答案：A</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">2. 全面深化改革</div>
+        <ul class="point-list">
+          <li><b>党的十一届三中全会是划时代的</b>；<b>党的十八届三中全会</b>开创了新时代全面深化改革新局面。</li>
+          <li>改革开放的性质：<b>社会主义制度的自我完善和发展</b>；是决定当代中国命运的<b>关键一招</b>。</li>
+          <li>全面深化改革以<b>经济体制改革为牵引</b>，以<b>制度建设为主线</b>。</li>
+          <li>出发点和落脚点：<b>促进社会公平正义、增进人民福祉</b>。</li>
+          <li>根本标准：<b>有利于坚持和改善党的全面领导、有利于坚持和完善中国特色社会主义制度</b>。</li>
+          <li>改革与法治如<b>鸟之两翼、车之两轮</b>；把改善人民生活作为处理改革发展稳定关系的<b>结合点</b>。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题11 · 全面深化改革（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">关于全面深化改革，下列说法正确的是：</div>
+          <div class="example-opts">A.以政治体制改革为牵引<br>B.以经济建设为主线<br>C.以促进社会公平正义、增进人民福祉为出发点和落脚点<br>D.改革与开放如鸟之两翼、车之两轮</div>
+          <div class="example-answer"><b>解析：</b>A 错，以<b>经济体制</b>改革为牵引；B 错，以<b>制度建设</b>为主线；D 错，「鸟之两翼」指<b>改革与法治</b>。<br><span class="correct">答案：C</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">3. 全面依法治国</div>
+        <ul class="point-list">
+          <li>全面依法治国是坚持和发展中国特色社会主义的<b>本质要求和重要保障</b>。</li>
+          <li>法治道路的<b>核心要义</b>：坚持党的领导、坚持中国特色社会主义制度、贯彻中国特色社会主义法治理论。</li>
+          <li><b>党的领导是中国特色社会主义法治之魂</b>，是我国法治与西方法治最大的区别。</li>
+          <li>总抓手：<b>建设中国特色社会主义法治体系</b>（不是「推进国家治理现代化」）。</li>
+          <li>依宪治国、依宪执政的<b>首要任务：全面贯彻实施宪法</b>。</li>
+          <li>法治政府是<b>重点任务和主体工程</b>；法治社会是<b>构筑法治国家的基础</b>。</li>
+          <li><b>公正司法</b>是维护社会公平正义的<b>最后一道防线</b>；严格执法是关键。</li>
+          <li>国体＝<b>人民民主专政</b>，政体＝<b>人民代表大会制度</b>（这两个词也常互换）。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题12 · 依法治国（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">关于全面依法治国，下列说法正确的是：</div>
+          <div class="example-opts">A.人民民主专政是中国特色社会主义法治之魂<br>B.全面推进依法治国的总抓手是推进国家治理体系现代化<br>C.法治社会建设是全面依法治国的重点任务和主体工程<br>D.党的领导是中国特色社会主义法治之魂</div>
+          <div class="example-answer"><b>解析：</b>A 错，法治之魂是<b>党的领导</b>；B 错，总抓手是<b>建设中国特色社会主义法治体系</b>；C 错，<b>法治政府</b>才是重点任务和主体工程。<br><span class="correct">答案：D</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">4. 全面从严治党</div>
+        <ul class="point-list">
+          <li><b>全面从严治党</b>是新时代党的建设的<b>鲜明主题</b>。</li>
+          <li>主线：<b>加强党的长期执政能力建设、先进性和纯洁性建设</b>。</li>
+          <li><b>政治建设是根本性建设，摆在首位</b>；<b>思想建设是基础性建设</b>。（这两个最容易写反）</li>
+          <li>思想建设的根本任务：<b>用党的创新理论武装全党</b>。</li>
+          <li>从严治党关键抓<b>领导干部</b>这个「关键少数」。</li>
+          <li>自我革命是跳出历史周期率的<b>第二个答案</b>；<b>勇于自我革命</b>是党最大的优势、最鲜明的品格。</li>
+          <li><b>反腐败是最彻底的自我革命</b>（不是批评与自我批评）。</li>
+          <li>主攻方向：<b>解决大党独有难题</b>；一体推进不敢腐、不能腐、不想腐。</li>
+        </ul>
+        <div class="warn-box"><b>顺序题：</b>政治建设（根本性，首位）→ 思想建设（基础性）→ 组织建设 → 作风建设 → 纪律建设 → 制度建设（贯穿）→ 反腐败斗争。</div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题13 · 从严治党（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">关于全面从严治党，下列说法正确的有：<br>①政治建设是党的根本性建设，要摆在首位<br>②思想建设是党的基础性建设<br>③党执政后的最大危险是腐败<br>④反腐败是最彻底的自我革命</div>
+          <div class="example-opts">A.①②③　B.①②④　C.②③④　D.①③④</div>
+          <div class="example-answer"><b>解析：</b>③错，党执政后的最大危险是<b>脱离群众</b>（最大政治优势是密切联系群众）。<br><span class="correct">答案：B</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">5. 教育科技人才 + 总体国家安全观</div>
+        <ul class="point-list">
+          <li><b>科技是第一生产力、人才是第一资源、创新是第一动力</b>（这三个「第一」每年都考顺序）。</li>
+          <li>教育：<b>立德树人是根本任务</b>，<b>为党育人、为国育才是根本目标</b>；<b>基础教育是基点，高等教育是龙头</b>。</li>
+          <li>科技：<b>基础研究是科技创新的源头</b>；<b>企业是科技创新的主体</b>；高水平研究型大学是基础研究的<b>主力军</b>和重大科技突破的<b>生力军</b>。</li>
+          <li>人才评价导向：<b>创新能力、质量、实效、贡献</b>。</li>
+          <li>总体国家安全观：<b>关键和灵魂在「总体」</b>，突出大安全理念。</li>
+          <li>五位一体安全格局：以<b>人民安全为宗旨</b>、以<b>政治安全为根本</b>、以<b>经济安全为基础</b>、以军事科技文化社会安全为保障、以促进国际安全为依托。</li>
+          <li><b>政治安全</b>摆在首位，是新时代中国国家安全的生命线；<b>防范化解国家安全风险</b>是中心任务。</li>
+          <li>公共安全治理模式向<b>事前预防</b>转型。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题14 · 国家安全（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">关于总体国家安全观，下列说法正确的是：</div>
+          <div class="example-opts">A.以经济安全为根本，以政治安全为基础<br>B.坚持把经济安全摆在首位<br>C.以人民安全为宗旨，以政治安全为根本<br>D.公共安全治理模式向事后治理转型</div>
+          <div class="example-answer"><b>解析：</b>A 颠倒（政治安全为根本、经济安全为基础）；B 错，应把<b>政治安全</b>摆在首位；D 错，应转向<b>事前预防</b>。<br><span class="correct">答案：C</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">6. 国防军队 · 一国两制 · 大国外交</div>
+        <ul class="point-list">
+          <li>强军目标：建设一支<b>听党指挥、能打胜仗、作风优良</b>的人民军队，把人民军队建成世界一流军队。</li>
+          <li>时间表：<b>2035 年基本实现国防和军队现代化</b>；<b>本世纪中叶全面建成世界一流军队</b>。</li>
+          <li><b>政治建军是立军之本</b>；党对军队绝对领导是<b>建军之本、强军之魂</b>。</li>
+          <li>党对军队绝对领导的根本原则和制度：<b>发端于南昌起义、奠基于三湾改编、定型于古田会议</b>。</li>
+          <li>唯一根本标准：<b>战斗力</b>。</li>
+          <li>一国两制：<b>「一国」是实行「两制」的前提和基础</b>；最高原则是<b>维护国家主权、安全、发展利益</b>；构想最早是为解决<b>台湾问题</b>提出的。</li>
+          <li>对台：党中央集中统一领导是<b>根本保证</b>；一个中国原则和「九二共识」是<b>政治基础</b>。</li>
+          <li>外交：周边坚持<b>亲诚惠容</b>、与邻为善以邻为伴；发展中国家坚持<b>真实亲诚</b>和正确义利观。</li>
+          <li>人类命运共同体：以<b>构建新型国际关系</b>为实现路径，以<b>全人类共同价值</b>为普遍遵循，以<b>高质量共建「一带一路」</b>为实践平台。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题15 · 国防与外交（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">关于强军目标与祖国统一，下列说法错误的是：</div>
+          <div class="example-opts">A.到 2035 年把人民军队全面建成世界一流军队<br>B.政治建军是人民军队的立军之本<br>C.「一国」是实行「两制」的前提和基础<br>D.党对军队绝对领导的原则发端于南昌起义</div>
+          <div class="example-answer"><b>解析：</b>A 错。<b>2035 年基本实现国防和军队现代化</b>，<b>本世纪中叶</b>才建成世界一流军队。<br><span class="correct">答案：A</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 四、马原哲学 -->
+  <div class="section c-purple" id="s4">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">🧠</div>
+      <div class="section-title">四、马克思主义基本原理 · 哲学</div>
+      <span class="section-tag tag-hot">概念题重灾区</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="key-box">马原哲学只考「概念归属」：<b>这句话属于哪个原理、哪个规律、哪一派</b>。所以学这一节，重点是给每个原理配一个「标志词」。</div>
+
+      <div class="block">
+        <div class="block-title">1. 马克思主义概述与两大哲学派别</div>
+        <ul class="point-list">
+          <li><b>1848 年《共产党宣言》发表</b>，标志马克思主义的诞生（不是《资本论》）。</li>
+          <li>三大组成部分：马克思主义哲学、马克思主义政治经济学、科学社会主义。</li>
+          <li>三个直接理论来源：<b>德国古典哲学</b>（黑格尔辩证法 + 费尔巴哈唯物主义）、<b>英国古典政治经济学</b>、<b>英法空想社会主义</b>。</li>
+          <li>两大发现：<b>唯物史观</b>和<b>剩余价值学说</b>（不是认识论）。</li>
+          <li>理论特征：以实践为基础的<b>科学性和革命性的统一</b>；理论品质：<b>与时俱进</b>；活的灵魂：<b>具体问题具体分析</b>。</li>
+          <li>哲学基本问题：<b>思维与存在（意识与物质）的关系问题</b>。</li>
+          <li>第一性 → 划分<b>唯物主义 / 唯心主义</b>；同一性 → 划分<b>可知论 / 不可知论</b>。</li>
+          <li>唯物主义三形态：古代朴素（归结为具体实物）、近代形而上学（归结为原子）、辩证唯物主义（唯一特性是客观实在性）。</li>
+          <li>唯心主义两形态：<b>主观唯心</b>（人的精神是本原，如「心外无物」）、<b>客观唯心</b>（客观精神是本原，如「理」「绝对精神」）。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题16 · 马原概述（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">关于马克思主义，下列说法错误的是：</div>
+          <div class="example-opts">A.1848 年《共产党宣言》的发表标志着马克思主义的诞生<br>B.马克思主义的直接理论来源包括德国古典哲学、英国古典政治经济学、英法空想社会主义<br>C.马克思的两大发现是唯物史观和剩余价值学说<br>D.马克思主义的理论品质是以实践为基础的科学性和革命性的统一</div>
+          <div class="example-answer"><b>解析：</b>D 把「理论特征」说成了「理论品质」。<b>理论特征是科学性与革命性的统一，理论品质是与时俱进</b>。<br><span class="correct">答案：D</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">2. 物质与意识</div>
+        <ul class="point-list">
+          <li>物质是标志<b>客观实在</b>的哲学范畴；<b>客观实在性是物质的唯一特性</b>。</li>
+          <li><b>运动是物质的根本属性和存在方式</b>；静止是运动的特殊状态。</li>
+          <li>运动<b>绝对、无条件、永恒</b>；静止<b>相对、有条件、暂时</b>。世界是绝对运动和相对静止的统一。</li>
+          <li>意识的本质：<b>人脑对客观存在的主观映象</b>（不是「人脑的分泌物」）。</li>
+          <li>意识对物质具有<b>能动的反作用</b>（不是决定作用）。</li>
+          <li>方法论：<b>尊重客观规律是正确发挥主观能动性的前提</b>（顺序不能反）。</li>
+        </ul>
+        <div class="key-box"><b>一句话区分：</b>物质决定意识（唯物论），意识反作用于物质（辩证法）。凡出现「意识决定物质」「意识第一性」，直接判错。</div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题17 · 物质与意识（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">关于物质与意识，下列说法错误的是：</div>
+          <div class="example-opts">A.物质的唯一特性是客观实在性<br>B.物质的根本属性和存在方式是运动<br>C.意识对物质起决定作用<br>D.尊重客观规律是正确发挥主观能动性的前提</div>
+          <div class="example-answer"><b>解析：</b>C 错。意识对物质是<b>能动的反作用</b>，决定作用是物质对意识。<br><span class="correct">答案：C</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">3. 唯物辩证法：两大总特征 + 三大规律</div>
+        <ul class="point-list">
+          <li>总特征：<b>联系的观点和发展的观点</b>。</li>
+          <li>联系的特征：<b>客观性、普遍性、多样性、条件性</b>（不是「直接性」——万事万物处于直接联系中是错的）。</li>
+          <li>整体与部分：整体居<b>主导</b>地位、统率部分；<b>关键部分</b>的功能及变化甚至对整体起决定作用（不是任何部分）。</li>
+          <li>发展的实质：<b>新事物的产生和旧事物的灭亡</b>；区分新旧事物的根本标志是<b>是否符合事物发展的必然趋势</b>。</li>
+          <li><b>对立统一规律</b>（矛盾规律）揭示发展的<b>源泉和动力</b>，是唯物辩证法的<b>实质和核心</b>。</li>
+          <li>矛盾基本属性：<b>同一性和斗争性</b>（不是普遍性和特殊性）。</li>
+          <li>矛盾的<b>普遍性</b> → 用矛盾分析法、全面看问题；<b>特殊性</b> → 具体问题具体分析。</li>
+          <li>事物性质由<b>主要矛盾的主要方面</b>决定；内因是根据（第一位），外因是条件。</li>
+          <li><b>量变质变规律</b>揭示发展的<b>形式和状态</b>；区分量变与质变的根本标志是<b>是否超出度的范围</b>；量变是质变的必要准备，量变达到一定程度必然引起质变。</li>
+          <li><b>否定之否定规律</b>揭示发展的<b>方向和道路</b>；辩证否定的实质是<b>「扬弃」</b>；发展表现为<b>螺旋式上升、波浪式前进</b>。</li>
+        </ul>
+        <div class="formula-box"><span class="formula">源泉动力 = 对立统一 ｜ 形式状态 = 量变质变 ｜ 方向道路 = 否定之否定</span><br>这三句是马原最经典的「三对三」连线题。</div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题18 · 三大规律（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">关于唯物辩证法的基本规律，下列说法正确的有：<br>①对立统一规律揭示了事物发展的源泉和动力<br>②量变质变规律揭示了事物发展的方向和道路<br>③辩证否定的实质是「扬弃」<br>④矛盾的基本属性是同一性和斗争性</div>
+          <div class="example-opts">A.①②③　B.①③④　C.②③④　D.①②④</div>
+          <div class="example-answer"><b>解析：</b>②错，量变质变揭示的是<b>形式和状态</b>，方向和道路是<b>否定之否定</b>规律。<br><span class="correct">答案：B</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">4. 认识论：实践、认识、真理</div>
+        <ul class="point-list">
+          <li>实践是<b>人类能动地改造世界</b>的社会性的客观物质活动；<b>物质生产实践</b>是最基本的、首要的实践活动。</li>
+          <li><b>实践是认识的来源</b>（直接经验与间接经验都来自实践）、动力、目的，也是<b>检验认识真理性的唯一标准</b>。</li>
+          <li>认识具有<b>主体差异性</b>（不同主体对同一对象认识可能不同）。</li>
+          <li>两次飞跃：<b>由感性认识到理性认识</b>（第一次）、<b>由理性认识到实践</b>（第二次，更重要）。</li>
+          <li>感性认识是<b>初级阶段</b>（感觉、知觉、表象）；理性认识是高级阶段（概念、判断、推理）。</li>
+          <li>真理：<b>内容客观、形式主观</b>；真理的绝对性与相对性是<b>同一客观真理的两种属性</b>，不是两个真理。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题19 · 认识论（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">关于认识论，下列说法错误的是：</div>
+          <div class="example-opts">A.物质生产实践是最基本的实践活动<br>B.直接经验是认识的来源<br>C.实践是检验认识真理性的唯一标准<br>D.感性认识有待于发展和深化为理性认识</div>
+          <div class="example-answer"><b>解析：</b>B 错。认识的来源是<b>实践</b>，直接经验只是获取认识的途径之一。<br><span class="correct">答案：B</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">5. 唯物史观</div>
+        <ul class="point-list">
+          <li>社会历史观的基本问题：<b>社会存在与社会意识的关系</b>。</li>
+          <li>社会存在包括自然地理环境、人口因素、<b>物质生产方式</b>；<b>物质生产方式是社会存在和发展的基础及决定力量</b>。</li>
+          <li>社会意识具有<b>相对独立性</b>（不是绝对独立）。</li>
+          <li>社会基本矛盾：<b>生产力与生产关系、经济基础与上层建筑</b>；其中<b>生产力与生产关系的矛盾更根本</b>。</li>
+          <li>生产力三要素：<b>劳动者（起主导作用）、劳动资料、劳动对象</b>；<b>生产工具</b>是生产力发展水平的客观标志。</li>
+          <li>生产关系三要素：<b>生产资料所有制形式（基础、区分社会制度的根本标志）</b>、人们在生产中的地位和相互关系、产品分配形式。</li>
+          <li>上层建筑：<b>政治上层建筑居主导地位，国家政权是核心</b>；观念上层建筑包括政治法律思想、道德、艺术、宗教、哲学。</li>
+          <li>人民群众：社会历史的主体，是历史的创造者，对社会发展起<b>决定性</b>作用；是社会物质财富、精神财富的创造者，是社会变革的<b>决定力量</b>（不是领导力量）。</li>
+          <li>群众史观<b>承认</b>个人特别是历史人物的作用（不是否认）。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题20 · 唯物史观（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">关于唯物史观，下列说法错误的是：</div>
+          <div class="example-opts">A.物质生产方式是社会存在和发展的决定力量<br>B.生产资料所有制形式是生产关系的基础<br>C.生产工具是衡量生产力水平的标志<br>D.人民群众是社会变革的领导力量</div>
+          <div class="example-answer"><b>解析：</b>D 错。人民群众是社会变革的<b>决定力量</b>，领导力量是<b>无产阶级政党</b>。<br><span class="correct">答案：D</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 五、马原政经 -->
+  <div class="section c-purple" id="s5">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">💰</div>
+      <div class="section-title">五、马克思主义政治经济学</div>
+      <span class="section-tag tag-mid">记住「谁决定谁」</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="key-box">政经的题几乎都围绕一句：<b>具体劳动创造使用价值，抽象劳动形成价值；价值量由社会必要劳动时间决定</b>。把这条主链记住，其余都是分支。</div>
+
+      <div class="block">
+        <div class="block-title">1. 商品二因素与劳动二重性</div>
+        <ul class="point-list">
+          <li>商品是<b>用来交换的、能满足人的某种需要的劳动产品</b>；二因素＝<b>使用价值 + 价值</b>。</li>
+          <li>使用价值：商品的有用性，是<b>自然属性</b>；价值：凝结在商品中的<b>无差别的一般人类劳动</b>，是<b>社会属性</b>，是商品最本质的因素。</li>
+          <li>二者关系：<b>使用价值是价值的物质承担者</b>，没有合格的使用价值，价值不能实现。</li>
+          <li>劳动二重性：<b>具体劳动</b>创造使用价值，<b>抽象劳动</b>形成价值；二者是<b>同一劳动过程中不可分割的两个方面</b>（不是两种劳动）。</li>
+          <li>逻辑顺序：<b>生产商品的劳动二重性决定商品的二因素</b>（不是反过来）。</li>
+          <li>劳动二重性学说是理解马克思主义政治经济学的<b>枢纽</b>。</li>
+        </ul>
+        <div class="warn-box">「有使用价值的东西就是商品」× —— 自给自足的粮食有使用价值但不是商品；商品必须同时是<b>劳动产品 + 用于交换</b>。</div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题21 · 商品二因素（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">关于商品二因素与劳动二重性，下列说法错误的是：</div>
+          <div class="example-opts">A.使用价值是商品的自然属性<br>B.具体劳动创造商品的使用价值，抽象劳动形成商品的价值<br>C.商品的二因素决定生产商品的劳动二重性<br>D.劳动二重性学说是理解马克思主义政治经济学的枢纽</div>
+          <div class="example-answer"><b>解析：</b>C 因果颠倒。是<b>劳动二重性决定商品二因素</b>。<br><span class="correct">答案：C</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">2. 价值量与价值规律</div>
+        <ul class="point-list">
+          <li>价值量由生产商品的<b>社会必要劳动时间</b>决定（不是个别劳动时间）。</li>
+          <li>单位商品价值量与<b>社会劳动生产率成反比</b>；与个别劳动生产率无关（个别企业提高效率获得超额剩余价值）。</li>
+          <li>价值规律：<b>价值决定价格，价格围绕价值上下波动</b>（不是价值围绕价格）。</li>
+          <li>价值规律的作用：调节资源配置、刺激技术进步、促进优胜劣汰。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题22 · 价值量（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">关于商品价值量，下列说法正确的是：</div>
+          <div class="example-opts">A.由生产该商品的个别劳动时间决定<br>B.与社会劳动生产率成正比<br>C.由社会必要劳动时间决定<br>D.价值围绕价格上下波动</div>
+          <div class="example-answer"><b>解析：</b>A 错，由<b>社会必要劳动时间</b>决定；B 错，成<b>反比</b>；D 错，是<b>价格围绕价值</b>波动。<br><span class="correct">答案：C</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">3. 货币的本质与职能</div>
+        <ul class="point-list">
+          <li>货币是<b>固定地充当一般等价物的商品</b>；本质是<b>一般等价物</b>。</li>
+          <li>五大职能：价值尺度、流通手段、贮藏手段、支付手段、世界货币。</li>
+          <li><b>两个最基本职能：价值尺度 + 流通手段</b>。</li>
+          <li>价值尺度：<b>只需要观念上的货币</b>；流通手段：<b>必须是现实的货币</b>。</li>
+          <li>贮藏手段：必须是<b>足值的金属货币</b>；支付手段：赊购赊销、租金、税金、工资。</li>
+          <li>货币产生后，商品交换从「物物交换」变为「商品—货币—商品」，<b>买和卖在时间与空间上分离</b>，产生了经济危机的可能性。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题23 · 货币职能（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">关于货币职能，下列说法错误的是：</div>
+          <div class="example-opts">A.价值尺度和流通手段是货币的两个最基本职能<br>B.货币履行价值尺度职能时必须是现实的货币<br>C.货币的本质是一般等价物<br>D.支付手段可用于缴纳租金、税金和发放工资</div>
+          <div class="example-answer"><b>解析：</b>B 错。价值尺度<b>只需观念上的货币</b>，流通手段才必须是现实货币。<br><span class="correct">答案：B</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">4. 剩余价值与资本</div>
+        <ul class="point-list">
+          <li>剩余价值是雇佣工人创造的、被资本家<b>无偿占有</b>的超过劳动力价值的那部分价值；体现<b>剥削与被剥削</b>关系。</li>
+          <li><b>剩余价值规律是资本主义的基本规律</b>。</li>
+          <li>绝对剩余价值：<b>必要劳动时间不变，延长劳动日</b>。</li>
+          <li>相对剩余价值：<b>工作日不变，缩短必要劳动时间</b>，靠<b>全社会劳动生产率提高</b>实现。</li>
+          <li>不变资本（c）＝生产资料；可变资本（v）＝劳动力；划分依据是<b>在剩余价值生产中的不同作用</b>，目的是揭示<b>剩余价值的来源</b>和计算<b>剥削程度</b>（m/v）。</li>
+          <li>资本有机构成＝由<b>技术构成决定</b>并反映技术构成变化的<b>价值构成</b>（c∶v）。</li>
+          <li>资本积累 → 资本有机构成提高 → 相对过剩人口 → 两极分化。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题24 · 剩余价值（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">关于剩余价值，下列说法正确的有：<br>①剩余价值规律是资本主义的基本规律<br>②相对剩余价值以提高全社会劳动生产率为前提<br>③不变资本是以劳动力形态存在的那部分资本<br>④划分不变资本与可变资本为确定剥削程度提供了依据</div>
+          <div class="example-opts">A.①②③　B.①②④　C.②③④　D.①③④</div>
+          <div class="example-answer"><b>解析：</b>③错，<b>不变资本是生产资料</b>，可变资本才是劳动力。<br><span class="correct">答案：B</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 六、历史古代 -->
+  <div class="section c-orange" id="s6">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">🏺</div>
+      <div class="section-title">六、历史常识 · 古代</div>
+      <span class="section-tag tag-high">顺序 + 对应</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="key-box">古代史只考两种能力：<b>把事件排对顺序</b>、<b>把人物/朝代与事件对上号</b>。所以下面全部按「朝代 → 关键词」组织，看到朝代先想关键词。</div>
+
+      <div class="block">
+        <div class="block-title">1. 考古文化遗址（九个必背）</div>
+        <table class="mini-table">
+          <tr><th>遗址</th><th>地点</th><th>关键词</th></tr>
+          <tr><td>河姆渡</td><td>浙江余姚</td><td>人工栽培水稻、<b>干栏式建筑</b>（榫卯）</td></tr>
+          <tr><td>仰韶</td><td>河南仰韶村</td><td><b>彩陶文化</b>、半坡遗址、最早种植<b>粟</b>、人面鱼纹彩陶盆</td></tr>
+          <tr><td>红山</td><td>内蒙古中南部</td><td><b>玉猪龙</b></td></tr>
+          <tr><td>良渚</td><td>浙江杭州</td><td>实证中华五千年文明史，<b>玉器</b>为最大特色</td></tr>
+          <tr><td>大汶口</td><td>山东泰安</td><td>中晚期出现<b>夫妻合葬</b>，进入父系氏族，贫富分化</td></tr>
+          <tr><td>龙山</td><td>山东济南</td><td><b>黑陶文化</b>、轮制陶器</td></tr>
+          <tr><td>二里头</td><td>河南偃师</td><td>夏朝中晚期都城、<b>「最早的中国」</b>、最早宫城与青铜礼器群</td></tr>
+          <tr><td>殷墟</td><td>河南安阳</td><td>商代后期都城、<b>甲骨文</b>、<b>后母戊鼎</b>（现存最大最重青铜器）</td></tr>
+          <tr><td>三星堆</td><td>四川广汉</td><td><b>长江文明之源</b>、青铜立人像/神树/纵目面具</td></tr>
+        </table>
+        <div class="tip-box"><b>两个「最早」别混：</b>最早种<b>粟</b>＝仰韶（半坡）；最早种<b>水稻</b>＝河姆渡。彩陶＝仰韶，黑陶＝龙山。</div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题25 · 史前遗址（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">下列关于我国史前文化与早期王朝遗址的说法，正确的是：</div>
+          <div class="example-opts">A.河姆渡文化位于黄河流域，是我国最早种植粟的文化遗存<br>B.龙山文化以彩陶为典型特征，被称为「彩陶文化」<br>C.殷墟出土的后母戊鼎是目前中国现存最大、最重的青铜器<br>D.红山文化主要分布于长江下游，代表性器物为玉猪龙</div>
+          <div class="example-answer"><b>解析：</b>A 错，河姆渡在<b>长江流域</b>、种<b>水稻</b>；B 错，龙山是<b>黑陶</b>；D 错，红山在<b>内蒙古中南部</b>。<br><span class="correct">答案：C</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">2. 古代战役：典故必须对上</div>
+        <ul class="point-list">
+          <li><b>牧野之战</b>：周武王伐纣，<b>临阵倒戈</b>，商亡。</li>
+          <li><b>巨鹿之战</b>：项羽胜秦，<b>破釜沉舟</b>、作壁上观。</li>
+          <li><b>井陉之战</b>：韩信胜赵，<b>背水一战</b>。</li>
+          <li><b>官渡之战</b>：曹操胜袁绍，<b>夜袭乌巢</b>，奠定统一北方基础。</li>
+          <li><b>赤壁之战</b>：孙刘胜曹操，<b>草船借箭、万事俱备只欠东风</b>，奠定三国鼎立。</li>
+          <li><b>淝水之战</b>：东晋胜前秦，<b>投鞭断流、风声鹤唳、草木皆兵</b>。</li>
+          <li><b>城濮之战</b>：晋胜楚，<b>退避三舍</b>，晋文公称霸。</li>
+          <li><b>桂陵之战</b>：齐胜魏，<b>围魏救赵</b>；<b>马陵之战</b>：孙膑<b>减灶计</b>，庞涓自杀。</li>
+          <li><b>长平之战</b>：秦胜赵，<b>纸上谈兵</b>，古代最早规模最大的围歼战。</li>
+          <li><b>邯郸之战</b>：赵合纵败秦，<b>毛遂自荐</b>。</li>
+        </ul>
+        <div class="warn-box"><b>易混：</b>围魏救赵＝桂陵（齐国救赵）；退避三舍＝城濮（晋楚）。「背水一战」是<b>韩信</b>，不是孙膑。</div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题26 · 古代战役（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">下列关于古代战役与典故、影响的对应，有误的是：</div>
+          <div class="example-opts">A.牧野之战——临阵倒戈——商朝灭亡<br>B.长平之战——纸上谈兵——加速秦统一进程<br>C.城濮之战——围魏救赵——晋国击败楚国<br>D.马陵之战——减灶计——齐国击败魏国</div>
+          <div class="example-answer"><b>解析：</b>C 错。城濮之战的典故是<b>退避三舍</b>；围魏救赵出自<b>桂陵之战</b>。<br><span class="correct">答案：C</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">3. 政治制度与选官制度</div>
+        <ul class="point-list">
+          <li>秦：中央<b>三公九卿</b>（丞相行政、太尉军事、御史大夫监察），地方<b>郡县制</b>。</li>
+          <li>汉：初<b>郡国并行</b>；汉武帝颁<b>推恩令</b>削弱诸侯。</li>
+          <li>隋唐：<b>三省六部制</b>——中书省草拟、门下省审核、尚书省执行，下设吏户礼兵刑工六部。</li>
+          <li>宋：<b>枢密使（军）、参知政事（政）、三司使（财）</b>分割相权。<b>枢密院管军事，不是财政</b>。</li>
+          <li>元：中央中书省，地方<b>行中书省</b>（行省制＝中国省制开端）。</li>
+          <li>明：太祖<b>废丞相</b>；成祖<b>内阁</b>正式确立；地方设<b>三司</b>（承宣布政使司、提刑按察使司、都指挥使司）。</li>
+          <li>清：雍正设<b>军机处</b>，标志<b>君主专制发展到顶峰</b>。</li>
+          <li>选官：世卿世禄（先秦）→ 军功爵（战国）→ 察举征辟（两汉）→ 九品中正（魏晋，「上品无寒门」）→ <b>科举（隋唐至清末）</b>。</li>
+          <li>科举：隋炀帝<b>始建进士科</b>（正式形成）；武则天创<b>武举、殿试、糊名</b>；宋行<b>誊录</b>；明清<b>八股取士</b>；<b>1905 年废除</b>。</li>
+          <li>明清科举四级：童试（秀才）→ 乡试（秋闱，举人，第一解元）→ 会试（春闱，贡士，第一会元）→ 殿试（状元、榜眼、探花）。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题27 · 古代官制（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">下列对中国古代中央官制演变的叙述，正确的是：</div>
+          <div class="example-opts">A.西汉「三公」中御史大夫负责军事，太尉掌管监察<br>B.宋朝设参知政事、枢密使、三司使，旨在分割相权、加强皇权<br>C.明朝内阁自设立之初即为法定中央行政机构，可指挥六部<br>D.元朝行省长官拥有独立的军政财政权力，不受中央节制</div>
+          <div class="example-answer"><b>解析：</b>A 错，太尉管军事、御史大夫掌监察；C 错，内阁是<b>皇帝的内侍咨询机构</b>，非法定行政机构；D 错，行省受中央（中书省）节制。<br><span class="correct">答案：B</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">4. 赋税制度与重大改革</div>
+        <table class="mini-table">
+          <tr><th>制度 / 改革</th><th>朝代 · 人物</th><th>核心</th></tr>
+          <tr><td>初税亩</td><td>春秋 · 鲁国</td><td>按土地数量征税，<b>中国征收土地税的开端</b></td></tr>
+          <tr><td>租庸调制</td><td>隋唐前期</td><td>租＝田租、调＝人头税、<b>庸＝纳绢代役</b></td></tr>
+          <tr><td>两税法</td><td>唐后期</td><td>按资产纳户税、按田亩纳地税，夏秋两季征；<b>从「以人丁为主」转向「以财产土地为核心」</b></td></tr>
+          <tr><td>一条鞭法</td><td>明 · 张居正</td><td>田赋徭役杂征合并征银，<b>实物税转向货币税</b></td></tr>
+          <tr><td>摊丁入亩</td><td>清 · 雍正</td><td>丁银摊入田亩，<b>废除延续数千年的人头税</b></td></tr>
+          <tr><td>商鞅变法</td><td>战国 · 秦孝公</td><td>废井田开阡陌、奖励耕织军功、<b>分户令</b>、县制</td></tr>
+          <tr><td>李悝变法</td><td>战国 · 魏文侯</td><td><b>《法经》</b>——中国第一部系统成文法典；第一次系统地主阶级改革</td></tr>
+          <tr><td>孝文帝改革</td><td>北魏</td><td>均田令、迁都洛阳、汉化；<b>最成功的少数民族汉化改革</b></td></tr>
+          <tr><td>王安石变法</td><td>北宋 · 神宗</td><td>富国：青苗、募役、农田水利、方田均税；强兵：保甲、保马、将兵</td></tr>
+        </table>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题28 · 赋税改革（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">下列赋税制度与其特点对应错误的是：</div>
+          <div class="example-opts">A.两税法——按户税和地税分夏秋两季征收<br>B.租庸调制——「调」指征收粮食作为人头税<br>C.摊丁入亩——将丁银分摊至田亩征收<br>D.一条鞭法——赋役合并折银征收</div>
+          <div class="example-answer"><b>解析：</b>B 错。「调」是征收<b>绢帛等土产</b>，人头税的说法不准确；「庸」才是纳绢代役。<br><span class="correct">答案：B</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">5. 边疆治理与对外交流</div>
+        <ul class="point-list">
+          <li><b>西藏</b>：元设<b>宣政院</b>（西藏正式纳入中央管辖）；清设<b>理藩院</b>、雍正设<b>驻藏大臣</b>。</li>
+          <li><b>新疆</b>：西汉<b>西域都护府</b>（正式归属中央之始）；唐<b>安西都护府</b>（太宗）、<b>北庭都护府</b>（武则天）；清乾隆设<b>伊犁将军</b>，光绪建新疆省。</li>
+          <li><b>台湾</b>：元<b>澎湖巡检司</b>；1662 年郑成功收复；清康熙设<b>台湾府</b>（隶属福建），光绪建台湾省。</li>
+          <li>改土归流：明清在西南废除世袭土司、改设中央任命的流官。</li>
+          <li>西汉张骞两次出使西域，打通陆上丝绸之路，被誉为<b>「凿空之旅」</b>。</li>
+          <li>东汉班超重开丝路（投笔从戎、不入虎穴焉得虎子）；佛教传入，建<b>白马寺</b>。</li>
+          <li>唐：玄奘西行著《大唐西域记》；鉴真东渡日本；日本派<b>遣唐使</b>。</li>
+          <li>宋元：设<b>市舶司</b>管理海外贸易；<b>泉州</b>为「东方第一大港」；《马可·波罗游记》。</li>
+          <li>明：郑和<b>七下西洋</b>，最远到达<b>红海沿岸和非洲东海岸</b>，目的是<b>宣扬国威</b>（不是殖民掠夺）。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题29 · 对外交流（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">下列关于中国古代对外交流的表述，正确的是：</div>
+          <div class="example-opts">A.张骞出使西域时已将造纸术传入欧洲<br>B.班超重开丝绸之路，「投笔从戎」出自其事迹<br>C.鉴真东渡日本，将四大发明全部传入日本<br>D.宋元时期海上丝路鼎盛，广州港成为「东方第一大港」</div>
+          <div class="example-answer"><b>解析：</b>A 错，造纸术西传远晚于张骞；C 错，「全部」绝对化；D 错，应为<b>泉州</b>。<br><span class="correct">答案：B</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">6. 古代农业与水利</div>
+        <ul class="point-list">
+          <li>五谷：稻、黍、稷、麦、菽（另一说麻、黍、稷、麦、菽）；<b>稷为五谷之长</b>。</li>
+          <li>作物传入：西汉自西域传入葡萄、石榴、核桃、芝麻、黄瓜、大蒜、茄子；唐传入胡椒、熬糖法；<b>宋传入占城稻</b>（越南）；<b>明传入玉米、甘薯、马铃薯、花生、番茄、辣椒、烟草</b>。</li>
+          <li>耕作：春秋战国出现<b>铁农具与牛耕</b>；两汉<b>耦犁、耧车、代田法</b>（赵过）；隋唐<b>曲辕犁、筒车</b>。</li>
+          <li>水利：楚相孙叔敖修<b>芍陂</b>（最早蓄水灌溉工程）；战国李冰修<b>都江堰</b>、郑国修<b>郑国渠</b>；秦修<b>灵渠</b>（连长江珠江）。</li>
+          <li>都江堰三大工程：<b>鱼嘴分水堤</b>（四六分水）、<b>飞沙堰</b>（排沙 80% 以上）、<b>宝瓶口</b>（控制进水量）；世界现存年代最久、唯一留存、仍在使用的<b>无坝引水</b>工程。</li>
+          <li>大运河：春秋吴王夫差开<b>邗沟</b>（最早河段）；隋炀帝大规模开凿；元朝<b>裁弯取直</b>（济州河、会通河、通惠河）。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题30 · 农业水利（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">关于都江堰，下列说法正确的是：</div>
+          <div class="example-opts">A.由战国时期秦国蜀郡太守李冰主持修建，核心工程灵渠沟通岷江与长江<br>B.鱼嘴分水堤洪水期六成水入内江，枯水期六成水入外江<br>C.飞沙堰是内江的「安全阀」，可将 80% 以上泥沙排入外江<br>D.都江堰是世界现存年代最久的有坝引水工程</div>
+          <div class="example-answer"><b>解析：</b>A 错，灵渠是秦朝另一工程；B 分水比例说反（枯水六成入内江、洪水六成入外江）；D 错，是<b>无坝</b>引水。<br><span class="correct">答案：C</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 七、历史近现代 -->
+  <div class="section c-red" id="s7">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">📜</div>
+      <div class="section-title">七、历史常识 · 近现代与党史</div>
+      <span class="section-tag tag-hot">党史必考</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="key-box">这一段是「时间轴 + 会议定位」。复习方法：把 <b>1921 / 1922 / 1923 / 1924 / 1927 / 1935 / 1937 / 1945 / 1949</b> 这九个年份写在纸上，每个年份后面默写一件大事。</div>
+
+      <div class="block">
+        <div class="block-title">1. 近代不平等条约（四条主线）</div>
+        <table class="mini-table k1">
+          <tr><th>战争 · 条约</th><th>核心条款</th><th>影响</th></tr>
+          <tr><td><b>鸦片战争</b><br>1840–1842<br><b>南京条约</b></td><td>割香港岛、赔 2100 万银元、开广厦福宁上五口、<b>协定关税</b></td><td>近代第一个不平等条约，<b>开始</b>沦为半殖民地半封建社会</td></tr>
+          <tr><td><b>第二次鸦片战争</b><br>1858–1860<br>天津条约 / 北京条约</td><td>公使进京、传教士入内地、商船军舰长江航行；增开天津、割九龙司</td><td>半殖民地化程度<b>进一步加深</b></td></tr>
+          <tr><td><b>甲午中日战争</b><br>1894–1895<br><b>马关条约</b></td><td>割辽东半岛/台湾/澎湖、赔 2 亿两、<b>允许日本在华设厂</b></td><td>经济侵略由<b>商品输出转为资本输出</b>，大大加深</td></tr>
+          <tr><td><b>八国联军</b><br>1900–1901<br><b>辛丑条约</b></td><td>赔 4.5 亿两（本息 9.8 亿）、使馆区驻兵、拆炮台、<b>严禁反帝活动</b></td><td>清政府成为帝国主义统治工具，<b>完全</b>陷入深渊</td></tr>
+        </table>
+        <div class="tip-box"><b>「开始—进一步—大大—完全」</b>四级递进，对应上面四个条约，考排序题就靠这八个字。</div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题31 · 不平等条约（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">导致中国完全沦为半殖民地半封建社会的不平等条约及其对应战争是：</div>
+          <div class="example-opts">A.《南京条约》——鸦片战争<br>B.《北京条约》——第二次鸦片战争<br>C.《马关条约》——甲午中日战争<br>D.《辛丑条约》——八国联军侵华战争</div>
+          <div class="example-answer"><b>解析：</b>「完全」对应<b>《辛丑条约》</b>；《南京条约》是「开始」，《马关条约》是「大大加深」。<br><span class="correct">答案：D</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">2. 旧民主主义革命时期的救亡图存</div>
+        <ul class="point-list">
+          <li><b>林则徐</b>：编译《四洲志》，「开眼看世界的第一人」；<b>魏源</b>：《海国图志》，提出<b>「师夷长技以制夷」</b>。</li>
+          <li><b>洋务运动</b>（19 世纪 60–90 年代）：口号「自强」「求富」，指导思想<b>「中学为体，西学为用」</b>；中央奕䜣，地方曾国藩、李鸿章、左宗棠、张之洞。</li>
+          <li>洋务企业：安庆内军械所（第一个近代军工厂）、江南制造总局（最大兵工厂）、福州船政局、汉阳铁厂（最早官办钢铁企业）。</li>
+          <li><b>戊戌变法</b>：1895 公车上书揭幕；1898 光绪变法 103 天；设<b>京师大学堂</b>（近代第一所国立大学）；戊戌政变失败。</li>
+          <li><b>辛亥革命</b>：1894 兴中会（第一个资产阶级革命团体）→ 1905 同盟会（第一个资产阶级革命政党，纲领「驱除鞑虏，恢复中华，创立民国，平均地权」）→ 三民主义（<b>民权主义是核心</b>）。</li>
+          <li>1911.10.10 武昌起义；1912.1.1 中华民国成立，定都南京；1912.3《中华民国临时约法》（第一部具有资产阶级共和国宪法性质的文件）。</li>
+          <li>辛亥革命意义：推翻清王朝、结束两千多年封建君主专制、民主共和观念深入人心；<b>但没有改变半殖民地半封建社会性质</b>。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题32 · 辛亥革命（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">下列关于辛亥革命的表述，正确的是：</div>
+          <div class="example-opts">A.中国同盟会成立于 1905 年，是第一个资产阶级革命团体<br>B.三民主义中「民族主义」是核心，对应「创立民国」<br>C.武昌起义爆发于 1911 年 10 月 10 日，揭开辛亥革命序幕<br>D.1912 年中华民国临时政府成立，定都北京</div>
+          <div class="example-answer"><b>解析：</b>A 错，同盟会是第一个资产阶级革命<b>政党</b>（团体是兴中会）；B 错，核心是<b>民权主义</b>；D 错，定都<b>南京</b>。<br><span class="correct">答案：C</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">3. 建党与国民大革命（会议定位）</div>
+        <ul class="point-list">
+          <li><b>中共一大</b>（1921.7，上海→嘉兴南湖）：确定党名「中国共产党」，通过第一个纲领，选陈独秀为中央局书记，<b>标志建党</b>。</li>
+          <li>1920.8 陈独秀在<b>上海</b>成立第一个共产党早期组织，创办第一个党刊<b>《共产党》</b>（不是《新青年》）。</li>
+          <li><b>中共二大</b>（1922，上海）：制定最高纲领与最低纲领，<b>第一次明确提出彻底的反帝反封建民主革命纲领</b>；通过第一部党章。</li>
+          <li><b>中共三大</b>（1923，广州）：决定共产党员以个人身份加入国民党，实现国共合作。</li>
+          <li><b>国民党一大</b>（1924，广州）：确立<b>联俄、联共、扶助农工</b>三大政策，标志第一次国共合作正式形成。</li>
+          <li><b>中共四大</b>（1925，上海）：提出<b>无产阶级领导权和工农联盟</b>问题。</li>
+          <li><b>中共五大</b>（1927，武汉）：选举产生第一个中央纪律检查监督机构——<b>中央监察委员会</b>。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题33 · 中共早期会议（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">下列关于中共历次全国代表大会及其历史贡献的对应，正确的是：</div>
+          <div class="example-opts">A.中共一大——通过第一部党章，确立党名为「中国共产党」<br>B.中共二大——第一次明确提出彻底的反帝反封建民主革命纲领<br>C.中共三大——明确提出无产阶级领导权和工农联盟问题<br>D.中共五大——确立「联俄、联共、扶助农工」三大政策</div>
+          <div class="example-answer"><b>解析：</b>A 错，第一部党章是<b>二大</b>；C 错，领导权问题由<b>四大</b>提出；D 错，三大政策由<b>国民党一大</b>确立。<br><span class="correct">答案：B</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">4. 土地革命、长征与遵义会议</div>
+        <ul class="point-list">
+          <li><b>南昌起义</b>（1927.8.1）：打响武装反抗国民党反动派<b>第一枪</b>，是独立领导革命战争、创建人民军队、武装夺取政权的开端。</li>
+          <li><b>八七会议</b>（1927.8.7，汉口）：清算陈独秀右倾错误，毛泽东提出<b>「政权是由枪杆子中取得的」</b>。</li>
+          <li><b>秋收起义</b>（1927.9）：首次公开打出<b>「工农革命军」</b>旗帜。</li>
+          <li><b>三湾改编</b>（1927.9 底）：确立<b>「支部建在连上」</b>，标志毛泽东建设人民军队思想开始形成。</li>
+          <li><b>古田会议</b>（1929.12）：确立<b>思想建党、政治建军</b>原则。</li>
+          <li><b>中华苏维埃共和国</b>（1931.11，瑞金）：第一个全国性红色政权，毛泽东任主席。</li>
+          <li><b>遵义会议</b>（1935.1）：结束「左」倾教条主义军事指挥，成立<b>毛泽东、周恩来、王稼祥</b>三人军事小组；<b>生死攸关的转折点</b>；第一次独立自主运用马列主义解决中国革命问题，标志党在政治上开始走向成熟。</li>
+          <li>长征：1934.10 出发；1936.10 三大主力会师（会宁、将台堡），长征胜利结束。</li>
+        </ul>
+        <div class="warn-box"><b>三组高频混淆：</b>「第一枪」＝南昌起义；「支部建在连上」＝三湾改编；「思想建党政治建军」＝古田会议。</div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题34 · 遵义会议（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">关于遵义会议，下列说法正确的是：</div>
+          <div class="example-opts">A.会议确立了毛泽东思想为党的指导思想<br>B.会后成立由毛泽东、朱德、王稼祥组成的三人军事小组<br>C.会议标志中国共产党第一次独立自主地运用马列主义解决中国革命问题<br>D.会议确定建立抗日民族统一战线的策略方针</div>
+          <div class="example-answer"><b>解析：</b>A 错，确立指导思想是<b>中共七大</b>；B 错，三人小组是<b>毛泽东、周恩来、王稼祥</b>；D 错，那是<b>瓦窑堡会议</b>。<br><span class="correct">答案：C</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">5. 抗日战争（时间轴 + 战役定位）</div>
+        <ul class="point-list">
+          <li><b>九一八事变</b>（1931.9.18）：中国抗日战争<b>起点</b>，揭开世界反法西斯战争序幕。</li>
+          <li><b>七七事变</b>（1937.7.7）：<b>全民族抗战的开端</b>，开辟世界反法西斯战争东方主战场。</li>
+          <li><b>瓦窑堡会议</b>（1935 年底）：确定建立抗日民族统一战线方针。</li>
+          <li><b>西安事变</b>（1936.12.12）：和平解决标志十年内战基本结束、统一战线<b>初步形成</b>。</li>
+          <li><b>洛川会议</b>（1937）：通过《抗日救国十大纲领》，制定全面抗战路线。</li>
+          <li>1937.9 国民党发表《中共中央为公布国共合作宣言》，标志<b>第二次国共合作开始、统一战线正式形成</b>。</li>
+          <li><b>淞沪会战</b>：抗战初期规模最大、最惨烈，粉碎「三个月灭亡中国」。</li>
+          <li><b>平型关大捷</b>（1937.9，属太原会战）：全民族抗战以来中国军队<b>主动对日作战的第一个重大胜利</b>，打破「日军不可战胜」神话。</li>
+          <li><b>台儿庄战役</b>（1938，属徐州会战）：正面战场<b>最大胜利</b>。</li>
+          <li><b>武汉会战</b>（1938）：战后进入<b>战略相持阶段</b>。</li>
+          <li><b>百团大战</b>（1940，彭德怀）：党独立发动的规模最大、持续时间最长、战果最丰富的战役。</li>
+          <li>胜利：1945.8.15 日本宣布无条件投降；9.2 签署投降书；10.25 台湾光复。<b>9 月 3 日为抗战胜利纪念日</b>。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题35 · 抗日战争（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">下列关于抗日战争时期重要事件的表述，正确的是：</div>
+          <div class="example-opts">A.西安事变的和平解决标志着抗日民族统一战线正式形成<br>B.平型关大捷是抗战以来正面战场取得的最大胜利<br>C.武汉会战结束后，抗日战争进入战略相持阶段<br>D.百团大战是国民党军队发动的规模最大的战役</div>
+          <div class="example-answer"><b>解析：</b>A 错，西安事变只是<b>初步形成</b>；B 错，平型关是<b>主动作战的第一个重大胜利</b>，正面战场最大胜利是台儿庄；D 错，百团大战是<b>共产党</b>发动。<br><span class="correct">答案：C</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">6. 解放战争</div>
+        <ul class="point-list">
+          <li><b>重庆谈判</b>（1945.8.28 起，43 天）：达成<b>「双十协定」</b>。</li>
+          <li>1946.6 国民党进攻中原解放区，<b>全面内战爆发</b>。</li>
+          <li>1947.6 <b>刘邓大军挺进大别山</b>，揭开了战略进攻的序幕（由防御转进攻的转折点）。</li>
+          <li><b>三大战役</b>（1948.9–1949.1）：辽沈、淮海、平津；<b>济南战役不在其中</b>。</li>
+          <li>淮海战役：被称为「小推车推出来的胜利」，牺牲最重、歼敌最多、政治影响最大。</li>
+          <li><b>七届二中全会</b>（1949.3，西柏坡）：工作重心由<b>乡村转向城市</b>，以生产建设为中心；提出「两个务必」。</li>
+          <li><b>渡江战役</b>：1949.4.23 占领南京，统治中国 22 年的国民政府覆灭。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题36 · 解放战争（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">下列不属于解放战争三大战役的是：</div>
+          <div class="example-opts">A.辽沈战役　B.济南战役　C.淮海战役　D.平津战役</div>
+          <div class="example-answer"><b>解析：</b>三大战役＝<b>辽沈、淮海、平津</b>；济南战役是三大战役前的攻坚战。<br><span class="correct">答案：B</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 八、文学常识 -->
+  <div class="section c-blue" id="s8">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">📖</div>
+      <div class="section-title">八、文学常识</div>
+      <span class="section-tag tag-mid">人物—作品—名句</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="key-box">文学题的考法：<b>作者—朝代—作品—名句</b>四要素随机对应。背的时候一定「四人一组」背，不要单背作品名。</div>
+
+      <div class="block">
+        <div class="block-title">1. 先秦：《诗经》与《楚辞》</div>
+        <ul class="point-list">
+          <li>《诗经》：我国<b>第一部诗歌总集</b>，收西周初至春秋中叶诗歌 <b>305 篇</b>，开创<b>现实主义</b>源头。</li>
+          <li>六义：<b>风、雅、颂</b>（内容）＋ <b>赋、比、兴</b>（手法）。</li>
+          <li>风＝各地民歌（《关雎》《硕鼠》《蒹葭》）；雅＝正声雅乐（《鹿鸣》《采薇》）；颂＝宗庙祭祀乐歌（《清庙》）。</li>
+          <li>赋＝铺陈直叙；比＝打比方；兴＝<b>先言他物以引起所咏之词</b>（多在全诗开头）。</li>
+          <li>《楚辞》：西汉<b>刘向</b>辑录屈原、宋玉等人辞赋而成，我国第一部<b>浪漫主义</b>诗歌总集。</li>
+          <li>屈原：浪漫主义文学奠基人、辞赋之祖；《离骚》是我国<b>第一首长篇政治抒情诗</b>。</li>
+          <li>「风骚」＝《诗经·国风》＋《楚辞·离骚》。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题37 · 诗经楚辞（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">下列说法正确的是：</div>
+          <div class="example-opts">A.「路曼曼其修远兮，吾将上下而求索」出自《诗经》<br>B.《诗经》是中国最早的一部浪漫主义诗歌总集<br>C.《诗经》分风、雅、颂三类，其中「颂」指宫廷正乐<br>D.火星探测器「天问一号」的名称源于《楚辞·天问》</div>
+          <div class="example-answer"><b>解析：</b>A 错，出自屈原《离骚》；B 错，《诗经》是<b>现实主义</b>源头；C 错，「颂」是<b>宗庙祭祀</b>乐歌，宫廷正乐是「雅」。<br><span class="correct">答案：D</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">2. 魏晋诗歌与唐宋八大家</div>
+        <ul class="point-list">
+          <li><b>三曹</b>：曹操（《短歌行》《观沧海》《龟虽寿》，建安风骨）、曹丕（《燕歌行》最早完整七言诗；《典论·论文》第一部系统文学批评专论）、曹植（《洛神赋》《七步诗》，才高八斗）。</li>
+          <li><b>陶渊明</b>：东晋，第一位<b>田园</b>诗人，「古今隐逸诗人之宗」；《饮酒》《归园田居》《桃花源记》《归去来兮辞》。</li>
+          <li><b>谢灵运</b>：第一位自觉以<b>山水</b>入诗的诗人。</li>
+          <li>唐宋八大家：唐二家<b>韩愈、柳宗元</b>；宋六家<b>欧阳修、苏轼、苏洵、苏辙、王安石、曾巩</b>。</li>
+          <li>韩愈：<b>八大家之首</b>，「文起八代之衰」，主张<b>「文以载道」</b>；《师说》《祭十二郎文》《马说》。</li>
+          <li>柳宗元：《永州八记》《捕蛇者说》《黔之驴》；<b>第一位把寓言写成独立文学作品的作家</b>。</li>
+          <li>欧阳修：号醉翁、六一居士；《醉翁亭记》《卖油翁》。王安石：号半山；《伤仲永》《游褒禅山记》；列宁称其「十一世纪中国最伟大的改革家」。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题38 · 唐宋八大家（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">下列关于「唐宋八大家」及其代表作品的表述，正确的是：</div>
+          <div class="example-opts">A.柳宗元是宋代古文运动的代表人物，世称「柳河东」<br>B.韩愈被苏轼誉为「文起八代之衰」，提出「文以载道」<br>C.王安石号「醉翁」，代表作《醉翁亭记》<br>D.欧阳修与韩愈、柳宗元共同倡导了唐代古文运动</div>
+          <div class="example-answer"><b>解析：</b>A 错，柳宗元是<b>唐代</b>人（唐二家之一）；C 错，醉翁是<b>欧阳修</b>；D 错，欧阳修倡导的是<b>宋代</b>古文运动。<br><span class="correct">答案：B</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">3. 唐诗：按「初盛中晚」记人</div>
+        <table class="mini-table k1">
+          <tr><th>时期</th><th>人物 · 称号</th><th>必背作品 / 名句</th></tr>
+          <tr><td>初唐</td><td><b>初唐四杰</b>：王勃、杨炯、卢照邻、骆宾王（王勃为首，「诗杰」）</td><td>《滕王阁序》落霞与孤鹜齐飞；《送杜少府之任蜀州》海内存知己</td></tr>
+          <tr><td>盛唐</td><td><b>王维</b>「诗佛」；<b>李白</b>「诗仙」；<b>杜甫</b>「诗圣」</td><td>大漠孤烟直；飞流直下三千尺；「三吏三别」、《望岳》</td></tr>
+          <tr><td>中唐</td><td><b>白居易</b>「诗魔/诗王」；<b>刘禹锡</b>「诗豪」</td><td>《长恨歌》《琵琶行》；《陋室铭》《乌衣巷》</td></tr>
+          <tr><td>晚唐</td><td><b>杜牧</b>、<b>李商隐</b>（「小李杜」）</td><td>《清明》《阿房宫赋》；《锦瑟》《夜雨寄北》，创「无题」诗</td></tr>
+        </table>
+        <ul class="point-list">
+          <li>杜甫诗被称为<b>「诗史」</b>；「三吏」＝石壕吏、新安吏、潼关吏；「三别」＝新婚别、无家别、垂老别。</li>
+          <li>白居易与元稹倡导<b>新乐府运动</b>，主张「文章合为时而著，歌诗合为事而作」。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题39 · 唐诗（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">被称为「诗仙」「诗圣」「诗魔」的三位唐代诗人分别是：</div>
+          <div class="example-opts">A.李白、杜甫、白居易<br>B.杜甫、李白、李贺<br>C.李白、白居易、刘禹锡<br>D.白居易、刘禹锡、李贺</div>
+          <div class="example-answer"><b>解析：</b>诗仙＝李白，诗圣＝杜甫，诗魔/诗王＝白居易；刘禹锡是「诗豪」。<br><span class="correct">答案：A</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">4. 宋词：两派四家</div>
+        <ul class="point-list">
+          <li><b>豪放派</b>：苏轼（开创者）、辛弃疾、陆游。苏轼号东坡居士，「三苏」＝苏洵、苏轼、苏辙。</li>
+          <li>辛弃疾：号稼轩，「词中之龙」，与苏轼并称「苏辛」，与李清照并称「济南二安」；<b>第一次把金戈铁马之声带入词</b>。</li>
+          <li><b>婉约派</b>：柳永、李清照、秦观、晏殊。</li>
+          <li>柳永：第一位对宋词<b>全面革新</b>的词人，两宋创用词调最多；「奉旨填词柳三变」。</li>
+          <li>李清照：号易安居士，创<b>「易安体」</b>，「千古第一才女」，称「三瘦」词人。</li>
+          <li>秦观：「苏门四学士」之一（黄庭坚、秦观、晁补之、张耒），《鹊桥仙》。</li>
+          <li>名句归属：<b>「人比黄花瘦」→ 李清照</b>；「樯橹灰飞烟灭」→ 苏轼《念奴娇·赤壁怀古》（写<b>赤壁之战</b>）；「枯藤老树昏鸦」→ <b>马致远</b>（元曲）。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题40 · 宋词（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">关于宋词，下列说法正确的是：</div>
+          <div class="example-opts">A.「人比黄花瘦」是韦应物的名句<br>B.「奉旨填词」的是柳永<br>C.「樯橹灰飞烟灭」写的是官渡之战<br>D.秦观是「豪放派」的代表人物</div>
+          <div class="example-answer"><b>解析：</b>A 是<b>李清照</b>；C 写<b>赤壁之战</b>；D 秦观属<b>婉约派</b>。<br><span class="correct">答案：B</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">5. 元曲与明清戏曲</div>
+        <ul class="point-list">
+          <li>元曲四大家：<b>关汉卿、白朴、郑光祖、马致远</b>。</li>
+          <li>关汉卿「曲圣」：《窦娥冤》《拜月亭》《单刀会》。</li>
+          <li>马致远「曲状元」：《汉宫秋》；小令《天净沙·秋思》被誉为<b>「秋思之祖」</b>。</li>
+          <li>白朴：《梧桐雨》《墙头马上》；郑光祖：《倩女离魂》。</li>
+          <li>王实甫《西厢记》：首次正面提出「愿普天下有情人都成眷属」。</li>
+          <li><b>元曲四大悲剧</b>：《窦娥冤》《汉宫秋》《梧桐雨》《赵氏孤儿》。</li>
+          <li>汤显祖「东方莎士比亚」，「临川四梦」＝《牡丹亭》《紫钗记》《南柯记》《邯郸记》。</li>
+          <li>清：洪昇《长生殿》、孔尚任《桃花扇》（「借离合之情，写兴亡之感」）；二者合称<b>清代戏曲双璧</b>。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题41 · 元曲戏曲（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">关于文学作品与其作者，下列对应不正确的是：</div>
+          <div class="example-opts">A.《桃花扇》——孔尚任<br>B.《西厢记》——王实甫<br>C.《牡丹亭》——汤显祖<br>D.《汉宫秋》——关汉卿</div>
+          <div class="example-answer"><b>解析：</b>D 错，《汉宫秋》是<b>马致远</b>的作品；关汉卿代表作是《窦娥冤》。<br><span class="correct">答案：D</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">6. 古代小说与史学著作</div>
+        <ul class="point-list">
+          <li>雏形：《搜神记》（东晋干宝，<b>志怪</b>小说，开创神话小说先河）；《世说新语》（南朝宋刘义庆，最早<b>志人</b>小说集）。</li>
+          <li><b>明代四大奇书</b>：《水浒传》《三国演义》《西游记》《金瓶梅》；<b>四大名著</b>＝四大奇书去掉《金瓶梅》换成《红楼梦》。</li>
+          <li>《水浒传》施耐庵：第一部用古白话写成的歌颂农民起义的长篇章回小说。</li>
+          <li>《三国演义》罗贯中：<b>第一部长篇历史小说</b>，章回体开山之作；「文不甚深，言不甚俗」。</li>
+          <li>《西游记》吴承恩：浪漫主义神魔小说；鲁迅评「神魔皆有人情，精魅亦通世故」。</li>
+          <li>《金瓶梅》兰陵笑笑生：第一部<b>文人独立创作</b>的章回体长篇小说，四大奇书之首。</li>
+          <li>《红楼梦》曹雪芹：原名《石头记》，「封建社会的百科全书」；「字字看来皆是血，十年辛苦不寻常」出自其《回前诗》。</li>
+          <li>《聊斋志异》蒲松龄：文言短篇小说巅峰；《儒林外史》吴敬梓：长篇讽刺小说（范进中举）。</li>
+          <li>史书体裁：<b>编年体</b>《春秋》（孔子，第一部编年体）、《左传》（第一部叙事详细编年体）、《资治通鉴》（第一部编年体通史）；<b>纪传体</b>《史记》（第一部纪传体通史）、《汉书》（第一部纪传体断代史）；<b>国别体</b>《国语》。</li>
+          <li>《史记》＝十二本纪、三十世家、七十列传、十表、八书；鲁迅评「史家之绝唱，无韵之离骚」；史学双璧＝《史记》《资治通鉴》；前四史＝《史记》《汉书》《后汉书》《三国志》。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题42 · 小说史书（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">下列关于我国古典文学名著的表述，正确的一项是：</div>
+          <div class="example-opts">A.《搜神记》是我国最早的文言志人小说集<br>B.《金瓶梅》被誉为明代四大奇书之首，是第一部由文人独立创作的长篇小说<br>C.《聊斋志异》是蒲松龄创作的长篇章回体神魔小说<br>D.《儒林外史》是明代吴敬梓创作的讽刺小说</div>
+          <div class="example-answer"><b>解析：</b>A 错，《搜神记》是<b>志怪</b>；C 错，是<b>文言短篇</b>小说集；D 错，吴敬梓是<b>清代</b>。<br><span class="correct">答案：B</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 九、文化常识 -->
+  <div class="section c-green" id="s9">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">🏮</div>
+      <div class="section-title">九、文化常识：诸子 · 科技 · 医学 · 称谓 · 建筑书画 · 戏曲节日</div>
+      <span class="section-tag tag-high">量最大</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="key-box">文化常识是「广而不深」，最有效的办法是<b>列表 + 表格对比</b>。本节的六张表，建议直接截图存手机，碎片时间刷。</div>
+
+      <div class="block">
+        <div class="block-title">1. 诸子百家</div>
+        <table class="mini-table">
+          <tr><th>流派</th><th>人物</th><th>主张 / 作品</th></tr>
+          <tr><td>儒家</td><td>孔子（至圣）</td><td>《论语》；<b>仁、礼</b>，为政以德，有教无类、因材施教</td></tr>
+          <tr><td></td><td>孟子（亚圣）</td><td>仁政、<b>民贵君轻</b>、性善论</td></tr>
+          <tr><td></td><td>荀子（后圣）</td><td>礼法并用、天行有常、<b>君舟民水</b>、性恶论</td></tr>
+          <tr><td>道家</td><td>老子</td><td>《道德经》；道是万物本源、<b>无为而治</b></td></tr>
+          <tr><td></td><td>庄子</td><td>《庄子》；逍遥、<b>内圣外王</b></td></tr>
+          <tr><td>墨家</td><td>墨子</td><td><b>兼爱、非攻、尚贤、节用</b></td></tr>
+          <tr><td>法家</td><td>韩非</td><td>以法治国、中央集权专制（荀子学生）</td></tr>
+          <tr><td></td><td>商鞅</td><td>重农抑商、严刑峻法、军功授爵</td></tr>
+          <tr><td>兵家</td><td>孙武（兵圣）</td><td>《孙子兵法》——<b>世界上最早的军事著作</b></td></tr>
+          <tr><td>名家</td><td>公孙龙</td><td>白马非马</td></tr>
+          <tr><td>汉代儒学</td><td>董仲舒</td><td>罢黜百家独尊儒术、三纲五常</td></tr>
+        </table>
+        <div class="warn-box">「内圣外王」出自<b>庄子</b>，不是老子；「知己知彼」出自<b>孙武</b>的《孙子兵法》，不是孙膑（孙膑著《孙膑兵法》）。</div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题43 · 诸子百家（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">下列关于先秦诸子百家的叙述，不正确的是：</div>
+          <div class="example-opts">A.孙武是兵家思想代表人物<br>B.老子提出了「内圣外王」的治国思想<br>C.韩非是法家代表人物，是荀子的学生<br>D.墨家学派组织严密，创始人为墨翟</div>
+          <div class="example-answer"><b>解析：</b>B 错。「内圣外王」是<b>庄子</b>的思想；老子主张无为而治。<br><span class="correct">答案：B</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">2. 古代科技成就</div>
+        <ul class="point-list">
+          <li>造纸术：<b>东汉蔡伦</b> 105 年改进（不是西汉）。</li>
+          <li>印刷术：<b>北宋毕昇</b>发明活字印刷（胶泥），比欧洲早约 400 年。</li>
+          <li>指南针：<b>北宋</b>开始应用于航海，南宋传入欧洲。</li>
+          <li>火药：<b>唐朝</b>发明；南宋发明管形火器<b>「突火枪」</b>。</li>
+          <li>农书：《氾胜之书》（最早农书）、《齐民要术》（北魏贾思勰，现存最早最完整）、《王祯农书》（元）、《农政全书》（明徐光启）。</li>
+          <li>《梦溪笔谈》（北宋沈括）——「中国科学史上的里程碑」；《天工开物》（明末清初宋应星）——「17 世纪中国工艺百科全书」。</li>
+          <li>历法：《太初历》（汉武帝，第一部较完整历书，正月为岁首、二十四节气入历）；《大明历》（祖冲之，首次引入<b>岁差</b>）；《大衍历》（唐僧一行，实测子午线）；《授时历》（元郭守敬）。</li>
+          <li>干支：天干 10（甲乙丙丁戊己庚辛壬癸）、地支 12；纪年法萌芽于西汉初、通行于东汉后。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题44 · 古代科技（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">关于我国古代科技成就，下列说法正确的是：</div>
+          <div class="example-opts">A.汉武帝时制定《太初历》，首次把二十四节气定于历法<br>B.祖冲之创制《大明历》，正式把二十四节气定于历法<br>C.僧一行制订《大衍历》，首次引入「岁差」概念<br>D.郭守敬编《授时历》，用科学方法实测地球子午线长度</div>
+          <div class="example-answer"><b>解析：</b>B 错，节气入历是《太初历》；C 错，岁差由<b>《大明历》</b>引入；D 错，实测子午线是<b>僧一行</b>。<br><span class="correct">答案：A</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">3. 古代医学</div>
+        <table class="mini-table">
+          <tr><th>人物 / 著作</th><th>朝代</th><th>关键词</th></tr>
+          <tr><td>扁鹊</td><td>战国</td><td>望闻问切四诊法；《难经》；<b>医祖、脉学之宗</b></td></tr>
+          <tr><td>华佗</td><td>东汉末</td><td>麻沸散、五禽戏；<b>外科鼻祖</b></td></tr>
+          <tr><td>张仲景</td><td>东汉末</td><td>《伤寒杂病论》，确立<b>辨证论治</b>；<b>医圣</b></td></tr>
+          <tr><td>孙思邈</td><td>唐</td><td>《千金方》，首倡妇儿科分立；<b>药王</b></td></tr>
+          <tr><td>宋慈</td><td>南宋</td><td>《洗冤集录》，<b>世界法医学鼻祖</b></td></tr>
+          <tr><td>《黄帝内经》</td><td>战国</td><td>最早医学典籍；「不治已病治未病」</td></tr>
+          <tr><td>《神农本草经》</td><td>东汉</td><td>第一部完整药物学著作</td></tr>
+          <tr><td>《唐本草》</td><td>唐高宗</td><td><b>世界上最早的由国家颁行的药典</b></td></tr>
+          <tr><td>《本草纲目》</td><td>明 · 李时珍</td><td>总结 16 世纪以前医药学；「东方医药巨典」</td></tr>
+        </table>
+        <div class="tip-box">传统医学四大经典：《黄帝内经》《难经》《神农本草经》《伤寒杂病论》。</div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题45 · 古代医学（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">下列人物与称号对应正确的是：</div>
+          <div class="example-opts">A.华佗——医圣<br>B.张仲景——药王<br>C.孙思邈——外科鼻祖<br>D.扁鹊——医祖</div>
+          <div class="example-answer"><b>解析：</b>华佗＝外科鼻祖；张仲景＝<b>医圣</b>；孙思邈＝<b>药王</b>；扁鹊＝医祖/脉学之宗。<br><span class="correct">答案：D</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">4. 古代称谓（年龄 + 别称）</div>
+        <table class="mini-table">
+          <tr><th>年龄称谓</th><th>岁数</th><th>年龄称谓</th><th>岁数</th></tr>
+          <tr><td>垂髫</td><td>三四岁至八九岁</td><td>不惑</td><td>四十</td></tr>
+          <tr><td>总角</td><td>八九岁至十三四岁</td><td>知天命</td><td>五十</td></tr>
+          <tr><td>豆蔻年华</td><td>女子十三四岁</td><td>耳顺 / 花甲</td><td>六十</td></tr>
+          <tr><td>束发</td><td>十五岁左右（男）</td><td>古稀</td><td>七十</td></tr>
+          <tr><td>及笄</td><td>女子十五</td><td>耄耋</td><td>八九十</td></tr>
+          <tr><td>弱冠</td><td>男子二十</td><td>而立</td><td>三十</td></tr>
+        </table>
+        <ul class="point-list">
+          <li>月亮：银钩、玉钩、玉轮、银盘、蟾宫、桂宫、广寒、婵娟、望舒。</li>
+          <li>百姓：黎民、黔首、布衣、庶民、苍生；故乡：<b>桑梓</b>；朝廷：庙堂；绘画：丹青；音乐：丝竹。</li>
+          <li>女性：巾帼；男性：须眉；生女：弄瓦之喜；生男：弄璋之喜；俘虏：南冠；行医：悬壶；出嫁：于归；送别：折柳。</li>
+          <li>兄弟排行：伯（孟）、仲、叔、季。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题46 · 古代称谓（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">下列诗文中不包含月亮别称的是：</div>
+          <div class="example-opts">A.古曜半升箕斗隐，金乌起灭海山头<br>B.万丈广寒难得到，嫦娥今夜落谁家<br>C.谁为须张烛，凉空有望舒<br>D.但愿人长久，千里共婵娟</div>
+          <div class="example-answer"><b>解析：</b>A 中「金乌」是<b>太阳</b>的别称，不是月亮。广寒、望舒、婵娟均为月亮别称。<br><span class="correct">答案：A</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">5. 古代建筑与书画</div>
+        <ul class="point-list">
+          <li><b>北京故宫</b>：明清皇宫，明成祖始建，世界现存规模最大最完整的古代木构建筑群；外朝三大殿＝太和殿、中和殿、保和殿；内廷后三宫＝乾清宫、交泰殿、坤宁宫。</li>
+          <li><b>天坛</b>：明清祭天祈谷之所，北圆南方（天圆地方），核心建筑祈年殿。</li>
+          <li><b>承德避暑山庄</b>：康熙始建，历经康雍乾三朝，中国现存最大古代皇家园林。</li>
+          <li><b>布达拉宫</b>：松赞干布初建，现存主体为五世达赖时重建，红宫宗教、白宫政治生活。</li>
+          <li><b>赵州桥</b>：隋李春设计，世界现存年代最久、跨度最大、保存最完整的<b>单孔敞肩石拱桥</b>。</li>
+          <li>汉字七体：甲骨文、金文、小篆、隶书、草书、楷书、行书；六书：象形、指事、会意、形声、转注、假借。</li>
+          <li>书法：王羲之「书圣」《兰亭序》＝天下第一行书；颜真卿《祭侄文稿》＝第二；苏轼《寒食帖》＝第三；楷书四家＝欧阳询、颜真卿、柳公权、赵孟頫；颠张醉素＝张旭、怀素；宋四家＝苏轼、黄庭坚、米芾、蔡襄。</li>
+          <li>绘画：顾恺之「以形写神」《女史箴图》《洛神赋图》；展子虔《游春图》＝现存最古老山水画；吴道子「画圣」；张择端《清明上河图》画北宋汴京；王希孟《千里江山图》；黄公望《富春山居图》「画中之兰亭」；郑板桥画兰竹石。</li>
+          <li>中国十大传世名画：《洛神赋图》《清明上河图》《富春山居图》《汉宫春晓图》《百骏图》《步辇图》《唐宫仕女图》《五牛图》《韩熙载夜宴图》《千里江山图》。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题47 · 建筑书画（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">下列关于我国著名古代建筑的描述，正确的一项是：</div>
+          <div class="example-opts">A.北京故宫始建于明成祖，天坛始建于明太祖<br>B.承德避暑山庄历经康熙、雍正、乾隆三朝建成<br>C.布达拉宫现存建筑主体保留了吐蕃时期原貌<br>D.赵州桥是唐代桥梁建筑技术的杰出代表</div>
+          <div class="example-answer"><b>解析：</b>A 错，天坛也始建于<b>明成祖</b>；C 错，现存主体为<b>五世达赖</b>时期重建；D 错，赵州桥是<b>隋朝</b>。<br><span class="correct">答案：B</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">6. 戏曲与节日</div>
+        <ul class="point-list">
+          <li>五大剧种：<b>京剧、越剧、黄梅戏、评剧、豫剧</b>；昆曲被誉为<b>「百戏之祖」</b>。</li>
+          <li>京剧：乾隆年间<b>四大徽班进京</b>标志形成；唱念做打；行当生旦净丑；四大名旦<b>梅兰芳、尚小云、程砚秋、荀慧生</b>。</li>
+          <li>脸谱：红＝忠勇（关羽）；黑＝刚直（包拯、张飞）；白＝奸诈（曹操）；蓝＝刚强；黄＝凶猛；金银＝神怪。</li>
+          <li>越剧（浙江嵊州，才子佳人，《梁祝》）；黄梅戏（湖北黄梅起源、安徽安庆壮大，《天仙配》《女驸马》）；豫剧（河南，第一大地方剧种，《花木兰》《穆桂英挂帅》）。</li>
+          <li>节日：元宵（正月十五，赏灯）、寒食（清明前一二日，禁烟火）、清明（踏青插柳）、端午（五月初五，粽子龙舟）、七夕（七月初七，乞巧）、中秋（八月十五）、重阳（九月初九，登高插茱萸）。</li>
+          <li>诗词标志词：元日/桃符/屠苏＝春节；元夕/灯火＝元宵；汨罗/楚江/艾草＝端午；玉盘/桂花＝中秋；登高/茱萸/黄花＝重阳。</li>
+        </ul>
+        <div class="tip-box"><b>「金吾不禁夜，玉漏莫相催」写的是元宵</b>（取消宵禁），不是寒食——这是最高频的节日坑。</div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题48 · 节日（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">下列诗句内容与传统节日对应错误的是：</div>
+          <div class="example-opts">A.「金吾不禁夜，玉漏莫相催」——寒食节<br>B.「彩缕碧筠粽，香粳白玉团」——端午节<br>C.「此生此夜不长好，明月明年何处看」——中秋节<br>D.「桂花香馅裹胡桃，江米如珠井水淘」——元宵节</div>
+          <div class="example-answer"><b>解析：</b>A 错。「金吾不禁夜」指元宵节取消宵禁，写的是<b>元宵</b>。<br><span class="correct">答案：A</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 十、物理常识 -->
+  <div class="section c-blue" id="s10">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">⚛️</div>
+      <div class="section-title">十、物理常识</div>
+      <span class="section-tag tag-high">生活解释题</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="key-box">物理题的题干永远是「生活现象」，选项永远是「物理原理」。所以只要能把现象<b>归类</b>（力学 / 热学 / 光学 / 声学），大半题就能做。</div>
+
+      <div class="block">
+        <div class="block-title">1. 力学基础</div>
+        <ul class="point-list">
+          <li>牛顿第一定律（<b>惯性定律</b>）：不受外力时保持静止或匀速直线运动。</li>
+          <li>惯性只与<b>质量</b>有关，与速度无关；质量越大惯性越大。</li>
+          <li>牛顿第二定律：a 与 F 成正比、与 m 成反比；第三定律：作用力与反作用力<b>大小相等、方向相反、同一直线</b>。</li>
+          <li>万有引力：与质量乘积成正比，与距离<b>平方成反比</b>。</li>
+          <li>压强＝压力 ÷ 受力面积；<b>流速越大压强越小</b>（飞机升力、龙卷风「吸」物、站台黄线）。</li>
+          <li>摩擦力方向与<b>相对运动（趋势）方向相反</b>；减小摩擦：变滑动为滚动、减小压力、减小粗糙度（轴承上油）。</li>
+          <li>超重：有<b>向上</b>的加速度；失重：有<b>向下</b>的加速度；太空中一切物体处于失重。</li>
+          <li>浮力＝排开液体所受重力（阿基米德原理）；浮力＞重力上浮，＝悬浮/漂浮，＜下沉。</li>
+        </ul>
+        <div class="tip-box"><b>一句话判「惯性」：</b>刹车前倾、绊倒前扑、拍打衣服除尘、纸飞机离手继续飞——都是惯性；「球滚一会儿停下」是摩擦阻力，不是惯性。</div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题49 · 力学（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">下列现象蕴含的科学常识正确的是：</div>
+          <div class="example-opts">A.湿袜子粘在脚上很难脱，是大气压把袜子压在脚上<br>B.如坐针毡是因为压力一定时受力面积与压强成正比<br>C.书包背带做得宽是为了增大受力面积、减小压力<br>D.空间站附近的「太空压力」比地球正常大气压大</div>
+          <div class="example-answer"><b>解析：</b>B 错，受力面积与压强成<b>反比</b>；C 错，是减小<b>压强</b>，压力不变；D 错，太空接近<b>真空</b>。<br><span class="correct">答案：A</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">2. 杠杆与简单机械</div>
+        <ul class="point-list">
+          <li>平衡条件：<b>F₁L₁ = F₂L₂</b>。</li>
+          <li><b>省力杠杆</b>（动力臂＞阻力臂）：撬棍、扳手、钳子、开瓶器、指甲剪、铡刀、手推车。</li>
+          <li><b>费力杠杆</b>（动力臂＜阻力臂）：镊子、筷子、汤勺、鱼竿、船桨、理发剪、起重机吊臂、扫帚。</li>
+          <li><b>等臂杠杆</b>：天平、跷跷板、定滑轮。</li>
+          <li>省力必费距离，费力必省距离——「省力又省距离」的杠杆不存在。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题50 · 杠杆（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">下列生活用品中属于省力杠杆的是：①铡刀 ②钓鱼竿 ③镊子 ④手推车</div>
+          <div class="example-opts">A.①②　B.②③　C.②④　D.①④</div>
+          <div class="example-answer"><b>解析：</b>铡刀、手推车动力臂长，省力；钓鱼竿、镊子动力臂短，费力。<br><span class="correct">答案：D</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">3. 物态变化与热学</div>
+        <table class="mini-table k1">
+          <tr><th>变化</th><th>方向</th><th>吸 / 放热</th><th>例子</th></tr>
+          <tr><td>熔化</td><td>固 → 液</td><td>吸热</td><td>冰化成水</td></tr>
+          <tr><td>凝固</td><td>液 → 固</td><td>放热</td><td>水结冰</td></tr>
+          <tr><td>汽化</td><td>液 → 气</td><td>吸热</td><td>酒精挥发、沸腾</td></tr>
+          <tr><td>液化</td><td>气 → 液</td><td>放热</td><td>雨、露、雾、眼镜起雾</td></tr>
+          <tr><td>升华</td><td>固 → 气</td><td>吸热</td><td>樟脑丸变小、灯丝变细</td></tr>
+          <tr><td>凝华</td><td>气 → 固</td><td>放热</td><td>霜、雪、雾凇</td></tr>
+        </table>
+        <ul class="point-list">
+          <li>汽化两形式：<b>蒸发</b>（任何温度、只在表面、平缓）与<b>沸腾</b>（达到沸点、内部与表面同时、剧烈）。</li>
+          <li>沸点随气压降低而降低（高原水不开、高压锅）。</li>
+          <li>传热三方式：<b>热传导</b>（固体接触）、<b>热对流</b>（流体宏观流动）、<b>热辐射</b>（电磁波，可在真空中传播）。</li>
+          <li>分子热运动：温度越高越剧烈；扩散现象（闻到香味、腌菜入味）。</li>
+          <li>热胀冷缩：路面留缝、夏天电线略下垂、水银体温计、煮熟鸡蛋冷水浸泡易剥壳。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题51 · 物态变化（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">下列物态变化对应正确的是：</div>
+          <div class="example-opts">A.蜡烛燃烧——熔化——放热<br>B.水变成水蒸气——液化——吸热<br>C.冰棍周围冒「白气」——凝华——放热<br>D.衣柜中的樟脑丸变小——升华——吸热</div>
+          <div class="example-answer"><b>解析：</b>A 燃烧是化学变化；B 是<b>汽化</b>；C「白气」是水蒸气<b>液化</b>成的的小水滴。<br><span class="correct">答案：D</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">4. 光</div>
+        <ul class="point-list">
+          <li>电磁波谱（波长由长到短）：无线电波 → 红外线 → 可见光 → 紫外线 → X 射线 → γ 射线。</li>
+          <li>可见光：红橙黄绿青蓝紫（波长递减、频率递增）。</li>
+          <li><b>红外线</b>：热效应强，用于遥控器、感应门、热成像、红外测温。</li>
+          <li><b>紫外线</b>：杀菌消毒、验钞、促进维生素 D 合成；过量有害。</li>
+          <li>红、黄光波长长、穿透力强，故用于警示（尾灯、雾灯）。</li>
+          <li>直线传播：影子、小孔成像、日食月食、激光准直。</li>
+          <li>反射：镜子、水中倒影、潜望镜、杯弓蛇影。</li>
+          <li>折射：筷子弯折、池水变浅、海市蜃楼、彩虹、凸透镜。</li>
+          <li>散射：天空蓝、朝霞晚霞、丁达尔现象。</li>
+          <li>透镜面镜：<b>凸透镜会聚</b>（放大镜、老花镜、照相机）；<b>凹透镜发散</b>（近视镜）；<b>凸面镜发散</b>（后视镜、转弯镜）；<b>凹面镜会聚</b>（手电筒反光罩、太阳灶）。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题52 · 光学（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">下列属于光的折射现象的是：①猪八戒照镜子 ②从鱼缸侧面看鱼发现鱼变大 ③装满水的泳池底部看起来很浅 ④坐井观天所见甚小</div>
+          <div class="example-opts">A.①②　B.②③　C.①③　D.③④</div>
+          <div class="example-answer"><b>解析：</b>①反射；④直线传播；②③均为折射（鱼缸/水层相当于透镜）。<br><span class="correct">答案：B</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">5. 声</div>
+        <ul class="point-list">
+          <li>声音由物体<b>振动</b>产生；传播<b>需要介质</b>，真空不能传声。</li>
+          <li>三要素：<b>音调</b>（频率决定）、<b>响度</b>（振幅决定）、<b>音色</b>（材料与结构决定）。</li>
+          <li>「闻其声知其人」＝音色；「震耳欲聋」＝响度；「男高音」＝音调。</li>
+          <li>声速：固体 ＞ 液体 ＞ 气体（金属中最快）。</li>
+          <li>人耳可听：<b>20 Hz ~ 20 kHz</b>。</li>
+          <li><b>超声波</b>（＞20 kHz）：方向性好、能量集中——测距、清洗、碎石、杀菌、B 超、声呐。</li>
+          <li><b>次声波</b>（＜20 Hz）：传播远、穿透强、可绕过障碍——灾害预警、核爆监测。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题53 · 声学（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">下列关于声音的说法错误的是：</div>
+          <div class="example-opts">A.声音在固体中的传播速度大于在液体中<br>B.超声波方向性好，可用于碎石、清洗、测距<br>C.声音的传播与温度和介质有关<br>D.「高音刺耳」是因为声音的响度发生了变化</div>
+          <div class="example-answer"><b>解析：</b>D 错。「高音」指<b>音调</b>高（频率高），不是响度。<br><span class="correct">答案：D</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 十一、化学常识 -->
+  <div class="section c-green" id="s11">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">🧪</div>
+      <div class="section-title">十一、化学常识</div>
+      <span class="section-tag tag-mid">记元素与俗称</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="key-box">化学只考两件事：<b>元素之「最」</b>与<b>物质俗称 / 用途</b>。把下面两张表背下来，化学常识基本满分。</div>
+
+      <div class="block">
+        <div class="block-title">1. 非金属元素：五组「最」</div>
+        <ul class="point-list">
+          <li><b>氢</b>：宇宙中含量最多的元素，元素周期表第一个；氢气密度最小、极易燃烧。</li>
+          <li><b>碳</b>：形成化合物种类最多的元素，构成细胞最基本的元素；CO 与血红蛋白结合致煤气中毒；干冰（固态 CO₂）用于制冷、人工降雨、舞台烟雾。</li>
+          <li><b>氮</b>：空气中含量最多的元素（空气 78% 氮气、21% 氧气）；氮气化学性质不活泼，用作防腐剂、安全气囊；液氮汽化吸热可作制冷剂。</li>
+          <li><b>氧</b>：<b>人体、海洋、地壳中含量最多的元素</b>；臭氧（O₃）强氧化性，可杀菌消毒，臭氧层吸收紫外线。</li>
+          <li><b>硫</b>：SO₂ 是酸雨主因（pH＜5.6），有漂白性。</li>
+          <li><b>硅</b>：半导体材料，用于芯片、太阳能电池；SiO₂ 用于玻璃、光导纤维。</li>
+          <li>含量排序：人体 O＞C＞H＞N＞Ca；地壳 O＞Si＞Al＞Fe；海洋 O＞H＞Cl＞Na。</li>
+        </ul>
+        <div class="tip-box"><b>「最多的元素」三连问：</b>宇宙最多＝氢；地壳/人体/海洋最多＝氧；空气最多＝氮。三个答案各不相同，每年都考。</div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题54 · 非金属（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">下列关于非金属物质的说法，错误的是：</div>
+          <div class="example-opts">A.氢是宇宙中含量最多的元素，也是周期表第一个元素<br>B.碳是形成化合物种类最多的元素<br>C.氮是人体、海洋和地壳中含量最多的元素<br>D.除金外的所有金属都能和氧反应生成金属氧化物</div>
+          <div class="example-answer"><b>解析：</b>C 错。人体、海洋、地壳中含量最多的元素是<b>氧</b>，氮是<b>空气</b>中最多的元素。<br><span class="correct">答案：C</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">2. 金属元素</div>
+        <ul class="point-list">
+          <li><b>钛</b>：耐高温低温、抗酸碱、高强度低密度，「<b>太空金属</b>」；钛合金用于人造骨骼、飞机火箭结构件。</li>
+          <li><b>铁</b>：应用最广；生铁含碳 2.11%–4.3%（硬脆），钢含碳 0.02%–2.11%（韧）；不锈钢含铬 12%–30%；铁粉可作「双吸剂」（吸氧吸水）。</li>
+          <li><b>铜</b>：纯铜紫红色，导电导热极佳，人类最早使用的金属；黄铜（锌）、白铜（镍）、<b>青铜（锡/铝，最早出现的合金）</b>。</li>
+          <li><b>钙</b>：人体内含量最多的金属元素（骨骼牙齿）。</li>
+          <li><b>汞</b>：俗称水银，常温唯一液态金属，熔点最低。</li>
+          <li><b>铝</b>：地壳中含量最多的金属元素；纯铝导热好、强度低、耐磨差。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题55 · 金属（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">下列关于金属材料的说法，错误的是：</div>
+          <div class="example-opts">A.钛合金可用于制造飞机、火箭结构件<br>B.青铜是金属冶铸史上最早出现的合金<br>C.汞是常温常压下唯一呈液态的金属<br>D.人体中含量最高的金属元素是铁</div>
+          <div class="example-answer"><b>解析：</b>D 错。人体中含量最高的金属元素是<b>钙</b>，铁是微量元素。<br><span class="correct">答案：D</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">3. 酸、碱、盐（俗称必背）</div>
+        <table class="mini-table">
+          <tr><th>物质</th><th>化学式</th><th>俗称 / 用途</th></tr>
+          <tr><td>氢氧化钠</td><td>NaOH</td><td><b>火碱、烧碱、苛性钠</b>；干燥中性/碱性气体</td></tr>
+          <tr><td>氢氧化钙</td><td>Ca(OH)₂</td><td><b>熟石灰、消石灰</b>；澄清石灰水检验 CO₂；改良酸性土壤、波尔多液</td></tr>
+          <tr><td>碳酸钠</td><td>Na₂CO₃</td><td><b>苏打、纯碱</b>（是盐不是碱）</td></tr>
+          <tr><td>碳酸氢钠</td><td>NaHCO₃</td><td><b>小苏打</b>；膨松剂、治胃酸过多</td></tr>
+          <tr><td>氯化钠</td><td>NaCl</td><td>食盐主要成分</td></tr>
+          <tr><td>亚硝酸钠</td><td>NaNO₂</td><td>腌制食品，过量有毒，可生成致癌的亚硝胺</td></tr>
+          <tr><td>碳酸镁</td><td>MgCO₃</td><td>耐火保温材料、干燥剂；运动员防滑粉</td></tr>
+        </table>
+        <ul class="point-list">
+          <li>pH＜7 酸性（越小越酸）；pH＞7 碱性；pH＝7 中性。</li>
+          <li>酸的通性：使石蕊变红、与碱/碱性氧化物反应、与活泼金属反应放出氢气。</li>
+          <li>碱的通性：使石蕊变蓝、酚酞变红、与酸/酸性氧化物反应。</li>
+          <li>浓硫酸稀释：<b>把浓硫酸沿器壁缓缓注入水中</b>并搅拌（不能反向）。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题56 · 酸碱盐（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">下列化学物质与俗称对应错误的是：</div>
+          <div class="example-opts">A.碳酸钠——苏打<br>B.碳酸氢钠——小苏打<br>C.氢氧化钠——火碱<br>D.氧化钠——苛性钠</div>
+          <div class="example-answer"><b>解析：</b>D 错。苛性钠是<b>氢氧化钠（NaOH）</b>，氧化钠是 Na₂O。<br><span class="correct">答案：D</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">4. 有机化合物</div>
+        <ul class="point-list">
+          <li><b>甲烷（CH₄）</b>：最简单的有机物，天然气、沼气、瓦斯的主要成分。</li>
+          <li><b>乙烯（C₂H₄）</b>：植物激素，<b>催熟</b>水果。</li>
+          <li><b>乙醇（C₂H₅OH）</b>：医用酒精体积浓度约 <b>75%</b>（95% 用于器械消毒）；工业酒精含甲醇，有毒；酒越陈越香是因为生成<b>乙酸乙酯</b>。</li>
+          <li><b>甲醛（HCHO）</b>：强烈刺激性，装修污染；福尔马林＝35%–40% 甲醛水溶液，用于防腐消毒。</li>
+        </ul>
+        <div class="warn-box">「放盆水除甲醛」是错的——甲醛虽溶于水，但室内浓度极低、接触面积小，实际无效；正确做法是<b>通风</b>。</div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题57 · 有机物（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">关于酒精的说法，不正确的是：</div>
+          <div class="example-opts">A.酒精能与水以任意比互溶<br>B.医疗上常用体积分数 70%–75% 的乙醇作消毒剂<br>C.工业酒精的成分以甲醇为主，含有少量乙醇<br>D.酒精按生产方法可分为发酵法酒精和合成法酒精</div>
+          <div class="example-answer"><b>解析：</b>C 把主次说反了。工业酒精<b>以乙醇为主</b>，含少量甲醇等杂质。<br><span class="correct">答案：C</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 十二、生物医学 -->
+  <div class="section c-teal" id="s12">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">🧬</div>
+      <div class="section-title">十二、生物与医学常识</div>
+      <span class="section-tag tag-high">性价比高</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="key-box">生物医学是「投入产出比」最高的一块：知识点固定、重复率高。重点抓<b>激素—疾病对应</b>、<b>维生素—缺乏症对应</b>、<b>急救顺序</b>。</div>
+
+      <div class="block">
+        <div class="block-title">1. 遗传物质</div>
+        <ul class="point-list">
+          <li>核酸＝DNA + RNA，基本单位是<b>核苷酸</b>（戊糖 + 含氮碱基 + 磷酸）。</li>
+          <li>DNA 双螺旋，是<b>主要遗传物质</b>；基因是<b>有遗传信息的 DNA 片段</b>，一个 DNA 上有很多基因。</li>
+          <li>基因突变：碱基对的替换、增添、缺失，<b>随机、不定向、低频</b>（说「定向」即错）。</li>
+          <li>基因重组：有性生殖过程中控制不同性状的基因重新组合。</li>
+          <li>「种瓜得瓜」＝遗传；「一母生九子，九子各不同」＝变异。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题58 · 遗传（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">下列关于基因突变的叙述，不正确的是：</div>
+          <div class="example-opts">A.基因突变是随机发生的、定向的<br>B.自然状态下基因突变频率很低<br>C.基因突变是新基因产生的途径<br>D.基因突变可能破坏生物与环境的协调关系</div>
+          <div class="example-answer"><b>解析：</b>A 错。基因突变是<b>不定向</b>的，自然选择才是定向的。<br><span class="correct">答案：A</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">2. 新陈代谢：光合、呼吸、蒸腾</div>
+        <ul class="point-list">
+          <li>新陈代谢是生物区别于非生物<b>最本质的特征</b>，包括同化作用（合成、贮能）与异化作用（分解、放能）。</li>
+          <li>光合作用：光能 → 化学能，CO₂ + H₂O → 有机物 + O₂；影响因素：光照、CO₂ 浓度、温度、水分。</li>
+          <li>有氧呼吸：产物 CO₂ + H₂O；<b>无氧呼吸</b>：产物<b>乳酸</b>（乳酸菌、动物、马铃薯块茎、玉米胚、甜菜块根）或<b>酒精 + CO₂</b>（酵母菌、绝大多数植物）。</li>
+          <li>剧烈运动肌肉酸痛＝乳酸；酿酒＝酒精发酵；泡菜酸奶＝乳酸菌。</li>
+          <li>蒸腾作用：水分以水蒸气形式从叶片散失，受光照、温度、湿度、风影响。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题59 · 新陈代谢（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">下列现象与无氧呼吸直接相关的是：<br>①剧烈运动后肌肉酸痛　②用糯米和酒曲酿米酒　③切开的苹果放久后变褐　④生水果与熟苹果密封后加快成熟</div>
+          <div class="example-opts">A.①②　B.②③　C.③④　D.①④</div>
+          <div class="example-answer"><b>解析：</b>①肌细胞无氧呼吸产生<b>乳酸</b>→酸痛；②酵母菌无氧呼吸产生<b>酒精 + CO₂</b>→酿酒。③是<b>氧化（酶促褐变）</b>，与呼吸类型无关；④是<b>乙烯催熟</b>，属植物激素作用。<br><span class="correct">答案：A</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">3. 人体系统与激素</div>
+        <ul class="point-list">
+          <li>消化：<b>小肠</b>是消化吸收主要场所（最长器官 4–6 米）；<b>肝脏</b>是最大消化腺、最大解毒器官、最大内脏器官；牙齿是最坚硬器官。</li>
+          <li>三大营养物质的消化起点：<b>淀粉→口腔</b>；<b>蛋白质→胃</b>；<b>脂肪→小肠</b>（唯一只在小肠消化）。</li>
+          <li>神经系统基本活动方式＝<b>反射</b>；非条件反射（膝跳、眨眼、吮乳）先天；条件反射后天、需大脑皮层。</li>
+          <li>运动系统＝骨、关节、骨骼肌，约占体重 60%。</li>
+          <li>激素：<b>胰岛素</b>（胰岛 β 细胞，唯一降血糖；不足→糖尿病，过多→低血糖）；<b>甲状腺素</b>（需碘；不足→呆小症，过多→甲亢）；<b>生长激素</b>（不足→侏儒症，过多→巨人症/肢端肥大）；<b>肾上腺素</b>（应激「急救兵」）。</li>
+          <li>免疫器官：骨髓（发源地）、脾（最大淋巴器官）、淋巴结、扁桃体、胸腺、阑尾。</li>
+          <li>免疫细胞：吞噬细胞、NK 细胞（固有免疫）；T 细胞（细胞免疫）、B 细胞→浆细胞→抗体（体液免疫）。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题60 · 激素（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">下列疾病中都是由于激素分泌异常导致的是：</div>
+          <div class="example-opts">A.血友病和佝偻病<br>B.夜盲和色盲<br>C.糖尿病和侏儒症<br>D.坏血病和脚气病</div>
+          <div class="example-answer"><b>解析：</b>糖尿病＝胰岛素不足，侏儒症＝生长激素不足。A 为遗传/营养；B 为维生素 A 缺乏/遗传；D 为维生素 C/B₁ 缺乏。<br><span class="correct">答案：C</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">4. 营养物质与维生素</div>
+        <ul class="point-list">
+          <li>六大营养素：糖类、脂肪、蛋白质、维生素、无机盐、水；其中<b>糖类是最重要供能物质，脂肪是最重要储能物质，蛋白质是生命活动主要承担者</b>。</li>
+          <li>供能顺序（饥饿/冬眠）：<b>糖类 → 脂肪 → 蛋白质</b>。</li>
+          <li>维生素 A（脂溶）→ 夜盲症、干眼症；B₁（水溶）→ 脚气病；B₂ → 口腔溃疡、口角炎；C（水溶）→ 坏血病；D（脂溶）→ 佝偻病（儿童）、骨质疏松（成人）；E → 上皮细胞变性；K → 凝血障碍。</li>
+          <li>微量元素：碘（智慧元素，缺乏→大脖子病）、铁（血红蛋白，缺乏→缺铁性贫血）、锌（生长发育）、硒（长寿元素、抗癌之王，缺乏→克山病）。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题61 · 维生素（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">下列关于维生素的说法正确的是：</div>
+          <div class="example-opts">A.严重缺乏维生素 D 可导致夜盲症<br>B.严重缺乏维生素 C 可导致坏血病<br>C.维生素 A 可用于脚气病治疗<br>D.维生素 B₁ 可预防与治疗静脉曲张</div>
+          <div class="example-answer"><b>解析：</b>A 缺 D→佝偻病/骨质疏松；C 脚气病缺 <b>B₁</b>；D 无此作用。<br><span class="correct">答案：B</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">5. 医学检查（新大纲新增）</div>
+        <ul class="point-list">
+          <li><b>血常规</b>不需要严格空腹：红细胞/血红蛋白（贫血）、白细胞（感染）、血小板（凝血）。</li>
+          <li>细菌感染：<b>中性粒细胞</b>比例升高、白细胞总数升高；病毒感染：<b>淋巴细胞</b>比例升高、白细胞正常或降低。</li>
+          <li>缺铁性贫血：平均红细胞体积＜80 fl；巨幼细胞性贫血：＞100 fl。</li>
+          <li><b>生化检查需空腹 8–12 小时</b>：转氨酶（肝细胞损伤）、胆红素（黄疸）、肌酐/尿素氮（肾功能）、血脂四项（低密度脂蛋白是「坏胆固醇」、降脂首要靶点）。</li>
+          <li>血糖：空腹正常 3.9–6.1 mmol/L，诊断糖尿病 ≥7.0；OGTT 2 小时 ≥11.1（<b>金标准</b>）；糖化血红蛋白 ≥6.5%（反映近 8–12 周，<b>无需空腹</b>）。</li>
+          <li>肿瘤标志物：AFP（肝癌）、CEA（消化道/肺腺癌）、CA19-9（胰腺胆管）、CA125（卵巢）。</li>
+          <li>幽门螺杆菌：<b>¹³C/¹⁴C 尿素呼气试验</b>是现症感染与复查金标准（需空腹）；<b>血清抗体只能说明曾感染</b>，不能诊断现症。</li>
+          <li>影像：X 光（肺、骨折，有辐射）；CT（脑出血、肺结节，辐射高于 X 光）；<b>MRI 无电离辐射</b>、查脑梗/脑肿瘤，体内金属禁忌；B 超无辐射，查肝胆、胎儿、甲状腺。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题62 · 医学检查（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">关于医学检查，下列说法错误的是：</div>
+          <div class="example-opts">A.单纯血常规检查不需要严格空腹<br>B.磁共振检查没有放射性，适用于孕妇、婴幼儿<br>C.血清幽门螺杆菌抗体检测可判断是否为现症感染<br>D.低密度脂蛋白胆固醇是动脉粥样硬化的主因之一</div>
+          <div class="example-answer"><b>解析：</b>C 错。血清抗体只能说明<b>曾经感染</b>，不能区分现症与既往，也不能用于复查。<br><span class="correct">答案：C</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">6. 急救知识（顺序题）</div>
+        <ul class="point-list">
+          <li>烫伤：立即<b>冷水冲洗</b>（约 20℃），不涂药、不挑破水泡、不冰敷。</li>
+          <li>触电：<b>先切断电源</b>，再用不导电物体挑开电线，然后抢救并拨 120。</li>
+          <li>煤气中毒：<b>先开窗通风</b>、转移患者；禁开灯、禁开排风扇、禁打火。</li>
+          <li>骨折：<b>先固定再送医</b>。</li>
+          <li>溺水：清除口鼻异物 → 人工呼吸 → 胸外心脏按摩。</li>
+          <li>扭伤：<b>48 小时内冷敷</b>，不可热敷/按揉/涂红花油；出血停止后再热敷。</li>
+          <li>重金属中毒：<b>补充蛋白质</b>（牛奶、豆浆）。</li>
+          <li>气道异物：成人/1 岁以上<b>海姆立克</b>（5 次拍背 + 5 次腹部冲击交替）；<b>1 岁以下婴儿禁用腹部冲击</b>，用「拍背 + 按胸」；孕妇肥胖者用胸部冲击。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题63 · 急救（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">下列急救措施中错误的是：</div>
+          <div class="example-opts">A.骨折后可用木板作夹板固定再送医<br>B.烫伤后立即用冷水冲洗烫伤部位<br>C.煤气泄漏时立即关闭煤气、开窗通风<br>D.误食重金属后应大量饮水以缓解中毒</div>
+          <div class="example-answer"><b>解析：</b>D 错。应补充<b>蛋白质</b>（牛奶、豆浆）使其与重金属结合，单纯大量饮水无效。<br><span class="correct">答案：D</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 十三、生活与高新技术 -->
+  <div class="section c-orange" id="s13">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">🚀</div>
+      <div class="section-title">十三、生活常识与高新技术</div>
+      <span class="section-tag tag-hot">航天必考</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="key-box">这一节分两半：<b>生活常识靠「常识 + 一个原理」</b>，<b>高新技术靠「编号 + 第一次」</b>。航天部分建议按「嫦娥 / 天问 / 神舟 / 发射场」四条线背。</div>
+
+      <div class="block">
+        <div class="block-title">1. 家用电器</div>
+        <ul class="point-list">
+          <li>冰箱：制冷剂在<b>蒸发器</b>吸热、在<b>冷凝器</b>放热，所以侧面/背面发热；冷藏最佳约 4℃；<b>不必等凉透</b>，不烫手即可密封放入；容量保持 80% 以下。</li>
+          <li>空调：关机后<b>等 3 分钟</b>再启动以保护压缩机；短时外出保持运行更省电；制冷出风口<b>向上</b>、制热出风口<b>向下</b>。</li>
+          <li>微波炉：使水分子剧烈摩擦生热，<b>由内向外</b>同时加热；<b>禁用金属容器</b>（打火）、禁加热密封带壳食物（爆炸）；陶瓷、耐热玻璃、耐热塑料可用。</li>
+          <li>大功率电器（冰箱、空调）应使用<b>单独专用插座</b>。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题64 · 家电（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">关于电器的使用，下列说法正确的是：</div>
+          <div class="example-opts">A.用微波炉加热利乐枕包装的牛奶<br>B.家用空调应使用单独的专用插座<br>C.食物要等凉透后再放入冰箱<br>D.新冰箱侧面的保护膜应尽量保留</div>
+          <div class="example-answer"><b>解析：</b>A 利乐枕含金属箔，会打火；C 不烫手即可放入；D 保护膜应尽快撕掉（影响散热）。<br><span class="correct">答案：B</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">2. 交通常识</div>
+        <ul class="point-list">
+          <li>汽车前窗倾斜：避免<b>平面镜成像</b>干扰视线；夜间车内不开灯同理。</li>
+          <li>轮胎花纹、防滑链：<b>增大摩擦力</b>；加油站必须熄火、不打电话、不拍打化纤衣物（防静电）。</li>
+          <li>雷电天气在车内是安全的（<b>法拉第笼</b>效应）。</li>
+          <li>高速故障九字诀：<b>车靠边、人撤离、即报警</b>；三角牌放车后 <b>150 米</b>（恶劣天气 200 米以上）；救援电话 <b>12122</b>。</li>
+          <li>飞机窗户做成<b>圆形</b>：避免应力集中；机翼上表面流速大压强小，产生升力。</li>
+          <li>火车转弯处<b>外轨高于内轨</b>；车次字母：C 城际、D 动车、G 高铁、Z 直达、T 特快、K 快速、L 临客、Y 旅游。</li>
+          <li>红灯禁止直行与左转，<b>不妨碍行人和车辆时允许右转</b>；黄灯持续闪烁＝警告，瞭望后通过。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题65 · 交通（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">下列关于交通常识的说法，错误的是：</div>
+          <div class="example-opts">A.晚上开车为行驶方便，尽量使用远光灯<br>B.汽车加油时不可下车拍打化纤类衣物<br>C.下雪天轮胎加防滑链可增大摩擦力<br>D.汽车行驶时车内一般不开灯，避免挡风玻璃成像</div>
+          <div class="example-answer"><b>解析：</b>A 错。有路灯的街道应<b>少用远光灯</b>，避免影响对向驾驶员。<br><span class="correct">答案：A</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">3. 灾害应对</div>
+        <ul class="point-list">
+          <li>火灾：疏散顺序<b>着火层 → 上层 → 下层</b>；不乘电梯、不跳楼；湿毛巾捂口鼻、低姿匍匐；身上着火就地打滚。</li>
+          <li>灭火器对准<b>火焰根部</b>；二氧化碳灭火器适用图书档案/精密仪器/电气（不适用过氧化物）；泡沫灭火器不适用电气与忌水物质；干粉适用面最广（不适用金属燃烧）。</li>
+          <li>雷电：室外蹲低、双脚并拢、远离金属与大树；室内不打电话、拔插头、不开门窗。</li>
+          <li>洪水：向山坡高地转移；来不及则上屋顶、大树、高墙。</li>
+          <li>泥石流：向<b>与泥石流垂直方向</b>的两侧山坡跑，离开沟谷。</li>
+          <li>地震：低楼层迅速撤到开阔地；高楼层躲<b>小开间</b>（厨房、卫生间、承重墙角）或坚固家具下，护住头部。</li>
+          <li>地震名词：震源、震中、<b>震级只有一个</b>、<b>烈度可有多个</b>；震级差一级能量差约 <b>30 倍</b>；纵波（P）快、上下颠、破坏弱；横波（S）慢、水平摇、破坏强、只能在固体中传播。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题66 · 地震（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">下列关于地震的说法，正确的是：</div>
+          <div class="example-opts">A.欧亚地震带是世界上最大的地震带<br>B.地震时纵波比横波破坏力更强<br>C.震级每增加 1 级，能量约增加 30 倍<br>D.一次地震可以有多个震级</div>
+          <div class="example-answer"><b>解析：</b>A 最大的是<b>环太平洋地震带</b>；B 横波破坏更强；D 震级只有一个，<b>烈度</b>可有多个。<br><span class="correct">答案：C</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">4. 计算机技术</div>
+        <ul class="point-list">
+          <li>硬件：运算器 + 控制器＝<b>CPU</b>；存储器分内存（快、贵、小）与外存。</li>
+          <li><b>ROM</b> 断电不丢失；<b>RAM</b> 断电丢失。</li>
+          <li>单位：1 B = 8 bit；1 KB = 1024 B；1 MB = 1024 KB；1 GB = 1024 MB；1 TB = 1024 GB；<b>1 个汉字 = 2 B</b>。</li>
+          <li>快捷键：复制 Ctrl+C、粘贴 Ctrl+V、剪切 Ctrl+X、全选 Ctrl+A、撤销 Ctrl+Z、保存 Ctrl+S、打印 Ctrl+P、查找 Ctrl+F、替换 <b>Ctrl+H</b>。</li>
+          <li>中国超算：<b>银河-I</b>（1983，首台亿次巨型机，世界第三个）；<b>天河一号</b>（2010，首台千万亿次，首次 TOP500 第一）；<b>天河二号</b>（2013，连续 6 次第一）；<b>神威·太湖之光</b>（2016，核心部件完全国产化）。</li>
+          <li>量子计算：<b>九章一号</b>（2020，光量子优越性，全球第二个）；<b>祖冲之二号</b>（2021，唯一在超导与光量子两条路线都实现优越性）；<b>本源悟空</b>（2024，量子算力全球开放）。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题67 · 计算机（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">下列关于我国计算机成就的表述，正确的是：</div>
+          <div class="example-opts">A.「银河-I」使我国成为世界上第四个能独立设计制造巨型机的国家<br>B.「天河一号」曾连续 6 次位居 TOP500 世界第一<br>C.「神威·太湖之光」多次问鼎世界第一，核心突破在于核心部件完全国产化<br>D.「祖冲之二号」使我国成为全球第二个实现量子优越性的国家</div>
+          <div class="example-answer"><b>解析：</b>A 错，是<b>第三个</b>；B 错，连续 6 次第一的是<b>天河二号</b>；D 错，全球第二个是<b>九章一号</b>。<br><span class="correct">答案：C</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">5. 新能源与生物工程</div>
+        <ul class="point-list">
+          <li>能源分类：<b>一次能源</b>（自然界本来就有：煤、石油、天然气、太阳能、风能、核能、潮汐）；<b>二次能源</b>（加工转化：电力、汽油、煤气、沼气、蒸汽、焦炭）。</li>
+          <li>可再生：太阳能、水能、风能、生物质能、地热能、海洋能；不可再生：化石能源、核能。</li>
+          <li>核裂变用于核电站（燃料<b>铀</b>）；核聚变尚未受控（氢弹已实现）。</li>
+          <li>核能里程碑：1942 美国首座可控裂变反应堆；1954 苏联奥布灵斯克（世界首座核电站）；1991 秦山（中国大陆第一座）；1994 大亚湾（第一座大型商用）；2021 华龙一号（福清 5 号）。</li>
+          <li>生物质能是<b>唯一可再生的碳源</b>，也是人类最早使用的能源；可燃冰主要成分<b>甲烷</b>。</li>
+          <li>生物工程四类：<b>基因工程</b>（核心，DNA 重组，转基因/基因治疗）、<b>细胞工程</b>（克隆、干细胞、体细胞杂交）、<b>发酵工程</b>（最悠久、最广泛：酒/醋/酸奶/泡菜/酱油/面包/腐乳/味精）、<b>酶工程</b>（加酶洗衣粉、血糖试纸）。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题68 · 生物工程（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">下列不涉及微生物发酵的是：</div>
+          <div class="example-opts">A.豆腐　B.食醋　C.乳酪　D.白酒</div>
+          <div class="example-answer"><b>解析：</b>豆腐是<b>大豆蛋白凝固</b>（点卤）制成，不涉及发酵；腐乳才是发酵产品。<br><span class="correct">答案：A</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">6. 中国航天（四条线）</div>
+        <table class="mini-table k1">
+          <tr><th>线</th><th>关键节点（必背）</th></tr>
+          <tr><td><b>嫦娥探月</b></td><td>一号（2007）首颗月球探测器；三号（2013）首次月面软着陆；<b>四号（2018）世界首次月背软着陆</b>；<b>五号（2020）首次月面采样返回</b>，发现「嫦娥石」；<b>六号（2024）世界首次月背采样返回</b>（玄武岩纤维「石头版」国旗）；鹊桥二号（2024）环月大椭圆冻结轨道</td></tr>
+          <tr><td><b>天问行星</b></td><td>天问一号（2020 文昌，长五）火星「绕、着、巡」一次完成，「祝融号」；天问二号（2025 西昌）小行星 2016HO3 采样返回 + 主带彗星 311P</td></tr>
+          <tr><td><b>神舟载人</b></td><td>神五（2003）首次载人（杨利伟）；神七（2008）首次出舱（翟志刚）；神九（2012）首次载人交会对接；神十（2013）首次太空授课；神十二（2021）首次进入自己空间站；神十三（2021）首次在轨 6 个月；神十五（2022）首次在轨轮换；神十六（2023）首次「驾驶员+工程师+科学家」三角色；神十七（2023）首次舱外维修；神十八（2024）首次在轨水生生态；神二十（2025）首次涡虫再生；神二十一（2025）首次啮齿类哺乳动物实验</td></tr>
+          <tr><td><b>发射场</b></td><td>酒泉（甘肃，最早最大、唯一载人）；太原（山西，太阳同步轨道）；西昌（四川，<b>北斗母港、探月母港</b>）；文昌（海南，首个滨海、低纬度）；东方航天港（山东，唯一海上发射母港）</td></tr>
+        </table>
+        <ul class="point-list">
+          <li>空间站「天宫」＝<b>天和核心舱 + 问天实验舱 + 梦天实验舱</b>，2022 年底全面建成。</li>
+          <li>货运飞船「天舟」：文昌、长征七号；载人飞船「神舟」：酒泉、长征二号 F。</li>
+          <li>航天员「第一」：首位进太空杨利伟；首位女航天员刘洋；首位太空行走翟志刚；首位太空行走女航天员王亚平；首位飞行工程师朱杨柱；首位载荷专家<b>桂海潮</b>；进入太空次数最多<b>景海鹏</b>。</li>
+        </ul>
+        <div class="warn-box"><b>最易错：</b>「嫦娥五号是世界首次月背采样」×——<b>五号是正面</b>，<b>六号才是世界首次月背</b>采样返回。</div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题69 · 探月工程（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">下列关于我国探月工程，说法正确的是：</div>
+          <div class="example-opts">A.嫦娥一号是我国第一颗人造太阳系小行星<br>B.嫦娥三号是我国首颗实现月球背面软着陆的探测器<br>C.嫦娥五号实现我国首次月球正面采样返回<br>D.嫦娥七号已实施首次月背采样返回</div>
+          <div class="example-answer"><b>解析：</b>A 是人造太阳系小行星的是<b>嫦娥二号</b>；B 月背软着陆是<b>嫦娥四号</b>；D 月背采样返回是<b>嫦娥六号</b>。<br><span class="correct">答案：C</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 十四、经济常识 -->
+  <div class="section c-red" id="s14">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">📈</div>
+      <div class="section-title">十四、经济常识</div>
+      <span class="section-tag tag-high">概念 + 反向推理</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="key-box">经济常识只有两类题：<b>概念归属</b>（这个现象叫哪个效应）和<b>政策方向</b>（通胀该加息还是降息）。把「通胀—紧缩、通缩—扩张」这一条主线抓住，一半题直接出答案。</div>
+
+      <div class="block">
+        <div class="block-title">1. 需求与成本</div>
+        <ul class="point-list">
+          <li>需求影响因素：自身价格（<b>反比</b>）、收入（正比）、<b>替代品价格（正比）</b>、<b>互补品价格（反比）</b>、偏好（正比）、预期（正比）。</li>
+          <li>替代品：洗衣粉与洗衣液、猪肉与鸭肉；互补品：羽毛球与球拍、汽车与汽油。</li>
+          <li><b>机会成本</b>：为做某事而放弃的其他选择中的<b>最大收益</b>。</li>
+          <li><b>沉没成本</b>：已付出且不可收回（「来都来了」）。</li>
+          <li><b>显性成本</b>＝实际货币支出；<b>隐性成本</b>＝自有要素的价格。</li>
+          <li><b>边际成本</b>＝每多生产一单位所增加的成本；平均成本＝总成本 ÷ 产量。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题70 · 成本（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">下列表示机会成本的是：</div>
+          <div class="example-opts">A.雇佣李某每月支付工资 3000 元<br>B.购买原材料支付 10 万元<br>C.自有原料可生产货车或价值 10 万元的小客车，选择生产货车<br>D.银行贷款 10 万元每月付息 1000 元</div>
+          <div class="example-answer"><b>解析：</b>A、B、D 都是实际货币支出（显性成本）；C 是<b>放弃的最大收益</b>，即机会成本。<br><span class="correct">答案：C</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">2. 经济增长与 GDP</div>
+        <ul class="point-list">
+          <li>三驾马车：<b>投资、消费、出口</b>；投资 + 消费＝内需，出口＝外需。</li>
+          <li><b>GDP 是地域概念</b>（一国范围内生产的最终产品市场价值）；<b>GNP 是国民概念</b>（本国常住居民的生产要素所生产）。</li>
+          <li>GDP 只算<b>当期、最终产品</b>：二手房买卖、政府转移支付、赌博收益、中间产品<b>不计入</b>；劳动者工资性收入<b>计入</b>。</li>
+          <li>GDP 是<b>流量</b>不是存量。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题71 · GDP（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">下列可以计入当年 GDP 的有：</div>
+          <div class="example-opts">A.二手车买卖　B.政府转移支付　C.赌博收益　D.劳动者工资性收入</div>
+          <div class="example-answer"><b>解析：</b>二手车不是当期生产；转移支付无对等生产；赌博非生产性活动。工资是提供劳务的报酬，计入 GDP。<br><span class="correct">答案：D</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">3. 通货膨胀</div>
+        <ul class="point-list">
+          <li>实质：<b>社会总需求大于社会总供给</b>；原因：货币供给大于实际需求；表现：物价<b>持续普遍上涨</b>、货币贬值。</li>
+          <li>衡量：CPI（居民消费价格指数）；<b>CPI 增幅连续超过 3% 视为通胀</b>；低于 1% 且持续则有通缩风险。</li>
+          <li>影响：不利于<b>固定收入者、债权人、工人</b>；有利于<b>变动收入者、债务人、雇主</b>。</li>
+          <li><b>菲利普斯曲线</b>：通胀率与失业率<b>反向</b>变动，只在短期有效、长期无效。</li>
+        </ul>
+        <div class="tip-box"><b>一句话记影响：</b>「钱毛了」→ 拿固定工资的亏、欠钱的赚、存钱的亏、借钱的赚。</div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题72 · 通货膨胀（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">下列关于通货膨胀的说法，错误的是：</div>
+          <div class="example-opts">A.实质是社会总供给小于社会总需求<br>B.原因是流通中的纸币量多于所需货币量<br>C.会直接引起物价下跌，失业率上升<br>D.对策是实行紧缩性货币政策，控制信贷规模</div>
+          <div class="example-answer"><b>解析：</b>C 错。通胀引起物价<b>上涨</b>；「物价下跌、失业率上升」是通缩的特征。<br><span class="correct">答案：C</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">4. 财政政策、货币政策与收入分配</div>
+        <table class="mini-table k1">
+          <tr><th>形势 · 政策</th><th>财政手段</th><th>货币手段</th></tr>
+          <tr><td><b>通胀</b><br>紧缩</td><td>增税、减发国债、减少支出</td><td>提高存款准备金率、提高再贴现率、提高利率、<b>卖出</b>有价证券</td></tr>
+          <tr><td><b>通缩</b><br>扩张</td><td>减税、增发国债、增加支出</td><td>降低存款准备金率、降低再贴现率、降低利率、<b>买入</b>有价证券</td></tr>
+        </table>
+        <ul class="point-list">
+          <li>财政政策工具：税收、国债、政府购买、转移支付；货币政策工具：<b>存款准备金率、再贴现率、公开市场业务、基准利率</b>。</li>
+          <li>收入分配：<b>初次分配</b>（市场，工资/最低工资/企业缴税）→ <b>再分配</b>（政府，个税/社保/转移支付/公务员工资）→ <b>第三次分配</b>（自愿，慈善公益）。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题73 · 宏观调控（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">某国面临通货紧缩，下列不可能属于其政策措施的是：</div>
+          <div class="example-opts">A.降低存款准备金率　B.增加货币供给　C.增加政府支出　D.提高存款准备金率</div>
+          <div class="example-answer"><b>解析：</b>通缩要用<b>扩张性</b>政策；提高存款准备金率是<b>紧缩</b>手段，会进一步减少货币供给。<br><span class="correct">答案：D</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">5. 汇率</div>
+        <ul class="point-list">
+          <li>汇率＝两种货币的兑换比率；标价法分直接标价（1 单位外币＝多少本币）与间接标价。</li>
+          <li><b>本币贬值</b>：有利于出口、不利于进口；进口商品物价<b>上涨</b>；资本<b>外流</b>。</li>
+          <li><b>本币升值</b>：有利于进口、不利于出口；进口商品物价<b>下降</b>；资本<b>内流</b>。</li>
+          <li>记忆：<b>贬值利于卖（出口），升值利于买（进口）</b>。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题74 · 汇率（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">1 欧元兑人民币由 7.9748 变为 8.0314。若不考虑其他因素，下列推导正确的是：</div>
+          <div class="example-opts">A.人民币升值→中国企业赴欧投资成本下降→有利于扩大进口欧盟商品<br>B.人民币贬值→中国企业赴欧投资成本上升→不利于中国企业在欧盟投资<br>C.欧元升值→中国商品在欧盟市场价格下降→不利于中国商品出口欧盟<br>D.欧元贬值→欧盟商品在中国市场价格上升→有利于中国进口欧盟商品</div>
+          <div class="example-answer"><b>解析：</b>1 欧元可换更多人民币 → <b>欧元升值、人民币贬值</b>。人民币贬值使赴欧投资成本上升，不利于对外投资。C 中欧元升值应使中国商品在欧盟<b>更便宜</b>、利于出口，后半句矛盾；D 方向错。<br><span class="correct">答案：B</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">6. 经济名词与经济效应</div>
+        <table class="mini-table">
+          <tr><th>名词</th><th>含义 / 警戒线</th></tr>
+          <tr><td>恩格尔系数</td><td>食品支出 ÷ 消费总支出；<b>越大越穷</b>（衡量富裕程度）</td></tr>
+          <tr><td>基尼系数</td><td>衡量<b>收入分配差距</b>，0–1，<b>0.4 为警戒线</b></td></tr>
+          <tr><td>赤字率</td><td>财政赤字 ÷ GDP，<b>3% 为警戒线</b></td></tr>
+          <tr><td>M1 / M2</td><td>M1 是「随时能花的钱」（现实购买力）；M2 是「所有的钱」（潜在购买力）</td></tr>
+          <tr><td>黑天鹅</td><td>罕见、难预测、影响颠覆</td></tr>
+          <tr><td>灰犀牛</td><td>明显、高概率、被忽视的大危机</td></tr>
+          <tr><td>流动性陷阱</td><td>利率近零，货币政策失效</td></tr>
+          <tr><td>拉弗曲线</td><td>税率过高反而使税收减少</td></tr>
+          <tr><td>公共物品</td><td><b>非竞争性 + 非排他性</b></td></tr>
+        </table>
+        <ul class="point-list">
+          <li><b>挤出效应</b>：政府支出增加→利率上升→私人投资减少。</li>
+          <li><b>口红效应</b>：经济萧条时廉价「放松消费」反而热卖。</li>
+          <li><b>棘轮效应</b>：消费习惯易上难下（由俭入奢易，由奢入俭难）。</li>
+          <li><b>马太效应</b>：强者愈强、弱者愈弱。</li>
+          <li><b>凡勃伦效应</b>：越贵越买（炫耀性消费）。</li>
+          <li><b>羊群效应</b>：从众跟风。</li>
+          <li><b>外部效应</b>：行为使无关第三方受益（正）或受损（负）。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题75 · 经济效应（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">下列经济效应匹配不正确的是：</div>
+          <div class="example-opts">A.由俭入奢易，由奢入俭难——棘轮效应<br>B.强者愈强、弱者愈弱——马太效应<br>C.商品定价越低越受青睐——凡勃伦效应<br>D.投资喜欢从众跟风——羊群效应</div>
+          <div class="example-answer"><b>解析：</b>C 错。凡勃伦效应是<b>定价越高反而越受青睐</b>（炫耀性消费）。<br><span class="correct">答案：C</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 十五、地理常识 -->
+  <div class="section c-green" id="s15">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">🌍</div>
+      <div class="section-title">十五、地理常识</div>
+      <span class="section-tag tag-high">「最」与「线」</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="key-box">地理题 80% 考两类：<b>中国的「最」</b>（最大盆地/最长河流/最低湖泊）和<b>分界线</b>（秦岭—淮河、季风区、胡焕庸线）。把下面两张表背到条件反射即可。</div>
+
+      <div class="block">
+        <div class="block-title">1. 太阳系与八大行星</div>
+        <ul class="point-list">
+          <li>顺序（近→远）：<b>水、金、地、火、木、土、天王、海王</b>。</li>
+          <li>太阳结构：核心、辐射区、对流层（内部）+ 光球层、色球层、日冕层（大气）；光球层是肉眼可见的太阳表面。</li>
+          <li>太阳能量来自<b>氢核聚变</b>；太阳活动周期约 <b>11 年</b>；黑子（光球层）与耀斑（色球层）是主要标志。</li>
+          <li>行星之最：水星离太阳最近、公转最快、昼夜温差最大；金星自转自东向西、最亮（长庚/启明/太白）；<b>木星体积质量最大、自转最快</b>；土星行星环最亮；<b>海王星风速最快，唯一靠数学预测发现</b>。</li>
+          <li>小行星带位于<b>火星与木星之间</b>；C 型碳质（75%）、S 型硅酸盐（17%）、M 型金属（铁镍）。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题76 · 太阳系（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">下列关于八大行星的说法，正确的是：</div>
+          <div class="example-opts">A.金星是昼夜温差最大的行星<br>B.水星是夜空中最亮的行星<br>C.木星是离地球最近、体积最大的行星<br>D.海王星是唯一利用数学预测而非有计划的观测发现的行星</div>
+          <div class="example-answer"><b>解析：</b>A 昼夜温差最大是<b>水星</b>；B 最亮是<b>金星</b>；C 离地球最近是<b>金星</b>。<br><span class="correct">答案：D</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">2. 地球运动</div>
+        <ul class="point-list">
+          <li><b>自转</b>（自西向东，约 24 小时）：昼夜交替、时差（24 时区，每区 15 经度，相邻差 1 小时，<b>东早西晚</b>）、地转偏向力。</li>
+          <li>地转偏向力：北半球向<b>右</b>、南半球向<b>左</b>、赤道不偏；极地最显著。</li>
+          <li>河流地貌：北半球冲刷<b>右岸</b>（右岸陡、宜建港与防洪堤），堆积左岸（聚落、挖沙）。</li>
+          <li><b>公转</b>（约 365 天）：昼夜长短变化、正午太阳高度变化、四季更替、五带划分。</li>
+          <li>近日点 <b>1 月初</b>（公转最快），远日点 <b>7 月初</b>（最慢）。</li>
+          <li>黄赤交角约 <b>23°26′</b>，导致太阳直射点在南北回归线之间移动。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题77 · 地球运动（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">下列现象由地球公转引起的是：</div>
+          <div class="example-opts">A.日月星辰东升西落<br>B.各地昼夜交替<br>C.一年中操场上旗杆影子长短方向随季节改变<br>D.中国球迷上午 9 点观看美国当地时间 20 点的球赛</div>
+          <div class="example-answer"><b>解析：</b>A、B、D 都由<b>自转</b>引起（东升西落、昼夜交替、时差）；影子随季节变化才由公转引起。<br><span class="correct">答案：C</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">3. 月球与月相</div>
+        <ul class="point-list">
+          <li>月球是地球唯一天然卫星；本身不发光，反射太阳光；环形山是最显著地貌；昼夜温差极大。</li>
+          <li>自转与公转周期都约 <b>27 天 7 小时</b>，因此永远<b>同一面朝向地球</b>（潮汐锁定）。</li>
+          <li>月相周期＝朔望月 <b>29.53 天</b>：初一新月（朔）不可见；初七八上弦（亮面朝西）；十五六满月（望）；二十二三下弦（亮面朝东）。</li>
+          <li><b>日食</b>：月球在日地之间，只发生在<b>农历初一</b>；<b>月食</b>：地球在日月之间，只发生在<b>农历十五前后</b>。</li>
+          <li>潮汐主要由<b>月球引力</b>引起。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题78 · 月球（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">下列关于月球的描述，有误的是：</div>
+          <div class="example-opts">A.当部分月球进入地球本影时，就会出现月全食<br>B.月球的自转周期和公转周期基本相等<br>C.月球本身不发光，只反射太阳光<br>D.月球表面的昼夜温差大</div>
+          <div class="example-answer"><b>解析：</b>A 错。部分进入本影是<b>月偏食</b>，完全进入才是月全食。<br><span class="correct">答案：A</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">4. 降水类型与气象灾害</div>
+        <ul class="point-list">
+          <li><b>对流雨</b>：空气受热上升，多在夏季午后，赤道全年为主，雨区小、雨时短。</li>
+          <li><b>地形雨</b>：迎风坡多雨、背风坡少雨（焚风）。</li>
+          <li><b>锋面雨</b>：冷暖空气相遇，雨区呈<b>带状</b>、范围大、时间长（梅雨、春雨）。</li>
+          <li><b>台风雨</b>：集中在<b>云墙区</b>，台风眼晴朗无风。</li>
+          <li>暴雨等级：24 小时 50–99.9 mm 为暴雨，100–249.9 为大暴雨，≥250 为特大暴雨；预警蓝黄橙红，<b>红色最高</b>。</li>
+          <li>台风：热带气旋，中心附近风力 ≥12 级；我国东南沿海夏秋多发；北半球逆时针、南半球顺时针；西太平洋称台风，大西洋称飓风。</li>
+          <li>干旱是影响范围最广、频率最高、持续时间最长的气象灾害；沙尘暴多在冬春、西北；寒潮冬半年（24h 降温 ≥8℃ 且最低 ≤4℃）。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题79 · 气象灾害（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">关于我国主要气象灾害的时空分布，说法正确的是：</div>
+          <div class="example-opts">A.洪涝仅集中在夏季长江中下游<br>B.干旱影响范围最广，西南地区最严重<br>C.沙尘暴多在冬春，沙源主要来自西北及蒙古国<br>D.青藏高原海拔高，受寒潮影响最严重</div>
+          <div class="example-answer"><b>解析：</b>A 错，四季都可能发生、主要夏秋；B 错，干旱以<b>西北、华北、东北</b>为主；D 错，青藏高原地势高，寒潮影响<b>较小</b>。<br><span class="correct">答案：C</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">5. 二十四节气</div>
+        <ul class="point-list">
+          <li>顺序：立春、雨水、惊蛰、春分、清明、谷雨 → 立夏、小满、芒种、夏至、小暑、大暑 → 立秋、处暑、白露、秋分、寒露、霜降 → 立冬、小雪、大雪、冬至、小寒、大寒。</li>
+          <li>节气歌：<b>春雨惊春清谷天，夏满芒夏暑相连。秋处露秋寒霜降，冬雪雪冬小大寒。</b></li>
+          <li>反映季节：立春、春分、立夏、夏至、立秋、秋分、立冬、冬至（四立即四季开始）。</li>
+          <li>反映太阳直射点：<b>春分、夏至、秋分、冬至</b>。</li>
+          <li>反映温度：小暑、大暑、处暑、小寒、大寒。</li>
+          <li>反映天气：雨水、谷雨、白露、寒露、霜降、小雪、大雪。</li>
+          <li>反映物候：<b>惊蛰、清明、小满、芒种</b>。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题80 · 节气（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">关于二十四节气，下列表述错误的是：</div>
+          <div class="example-opts">A.惊蛰、小满和处暑是反映物候现象的节气<br>B.夏至是北半球一年中白昼最长的一天<br>C.立春、秋分是反映季节的节气<br>D.白露、寒露、霜降反映气温逐渐下降</div>
+          <div class="example-answer"><b>解析：</b>A 错。<b>处暑反映温度变化</b>，物候类是惊蛰、清明、小满、芒种。<br><span class="correct">答案：A</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">6. 中国地形、河流与分界线</div>
+        <ul class="point-list">
+          <li>地势三级阶梯：一二级分界<b>昆仑山—祁连山—横断山</b>；二三级分界<b>大兴安岭—太行山—巫山—雪峰山</b>。</li>
+          <li>四大高原：青藏（世界屋脊）、内蒙古（最平坦、风蚀）、黄土（千沟万壑）、云贵（喀斯特、坝子）。</li>
+          <li>四大盆地：塔里木（最大、最大内流）、准噶尔（最北）、柴达木（最高、「聚宝盆」）、四川（最低、最大外流）。</li>
+          <li>三大平原：东北（最大、黑土）、华北（黄淮海）、长江中下游（鱼米之乡）。</li>
+          <li>长江：唐古拉山→东海（崇明岛），11 省区，第一长河；汉江最长支流、嘉陵江流域面积最大、岷江径流量最大。</li>
+          <li>黄河：巴颜喀拉山→渤海（东营），9 省区，「几」字形，含沙量世界最大，有凌汛；渭河最长支流。</li>
+          <li>其他：珠江「三龙吐珠、八门入海」、汛期最长；雅鲁藏布江世界最高大河；<b>塔里木河最长内流河</b>；<b>额尔齐斯河唯一注入北冰洋</b>；京杭大运河最长人工运河。</li>
+          <li>湖泊：鄱阳湖（最大淡水湖）、青海湖（最大湖、最大咸水湖）、纳木错（最高咸水湖）、艾丁湖（最低）、赛里木湖（「大西洋最后一滴眼泪」）。</li>
+          <li>分界线：季风区＝大兴安岭—阴山—贺兰山—巴颜喀拉山—冈底斯山；400 mm＝大兴安岭—张家口—兰州—拉萨—喜马拉雅南坡；200 mm＝阴山—贺兰山—祁连山—巴颜喀拉山—冈底斯山；外流内流≈大兴安岭—阴山—贺兰山—祁连山东端；冬小麦/春小麦＝<b>长城</b>；人口线＝<b>黑河—腾冲（胡焕庸线）</b>，东南约 94% 人口。</li>
+          <li>秦岭—淮河：1 月 0℃ 等温线、800 mm 等降水量线、暖温带/亚热带、温带/亚热带季风、半湿润/湿润、旱地/水田、北方/南方。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题81 · 地理分界线（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">下列关于我国主要地理分界线的说法，正确的是：</div>
+          <div class="example-opts">A.长江水系和黄河水系的分水岭是南岭<br>B.旱地农业和水田农业的分界线是阴山山脉<br>C.秦岭—淮河一线是我国南方和北方的分界线<br>D.胡焕庸线西北居住着约 94% 的人口</div>
+          <div class="example-answer"><b>解析：</b>A 错，长珠分水岭是南岭，长黄分水岭是<b>巴颜喀拉山—秦岭</b>；B 错，旱作与水田分界是<b>秦岭—淮河</b>；D 错，东南约 94%。<br><span class="correct">答案：C</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">7. 资源、民族与旅游资源</div>
+        <ul class="point-list">
+          <li>土地：总量大人均少、山地多于平地、耕地比例小、后备资源有限。</li>
+          <li>水资源：南多北少、东多西少、夏秋多冬春少；与耕地分布<b>不匹配</b>（耕地南少北多）。</li>
+          <li>矿产：<b>富煤、少油、缺气</b>；煤「工业的粮食」，产量世界第一，北多南少；稀土「工业维生素」，储量产量加工能力世界第一，<b>白云鄂博</b>世界最大稀土矿。</li>
+          <li>能源：水能蕴藏量世界第一（西南最多，长江水系近 40%）；太阳能青藏高原最高、四川盆地最低；风能北多南少、冬春大于夏秋。</li>
+          <li>民族：<b>大杂居、小聚居、交错杂居</b>；人口最多的少数民族<b>壮族</b>，分布最广<b>回族</b>，种类最多<b>云南</b>，少数民族总人口最多<b>广西</b>。</li>
+          <li>民族节日：蒙古族那达慕（献哈达、马头琴）、藏族雪顿节（锅庄、酥油茶、唐卡）、回族古尔邦/开斋节、苗族苗年（银饰、蜡染）、维吾尔族肉孜节（十二木卡姆）、壮族三月三、傣族泼水节（干栏建筑）、白族三月街/火把节（三道茶）、彝族火把节。</li>
+          <li>五岳：东岳泰山（五岳之首）、西岳华山、北岳恒山、南岳衡山、中岳嵩山。</li>
+          <li>四大佛教名山：五台山、普陀山、峨眉山、九华山；四大道教名山：齐云山、武当山、青城山、龙虎山。</li>
+          <li>四大石窟：莫高窟（规模最大）、云冈（北魏皇室开凿）、龙门（窟龛最多、「古碑林」）、麦积山（「东方雕塑陈列馆」）。</li>
+          <li>世界遗产：截至 2025 年 7 月共 <b>60 项</b>（文化 41、自然 15、双遗产 4）；双遗产＝泰山（首个）、黄山、峨眉山—乐山大佛、武夷山。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题82 · 旅游资源（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">我国下列名胜古迹的说法中错误的是：</div>
+          <div class="example-opts">A.华山位于陕西省，被誉为「五岳之首」<br>B.云冈石窟位于山西省，创建于北魏<br>C.莫高窟位于敦煌，始建于十六国时期<br>D.三星堆位于四川，与古蜀国文化相关</div>
+          <div class="example-answer"><b>解析：</b>A 错。「五岳之首」是<b>泰山</b>（山东），华山是西岳。<br><span class="correct">答案：A</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 十六、民法 -->
+  <div class="section c-orange" id="s16">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">⚖️</div>
+      <div class="section-title">十六、民法（民法典）</div>
+      <span class="section-tag tag-hot">数字最多</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="key-box">民法是「数字 + 主体」的考试：<b>8 岁、18 岁、16 岁、3 年、20 年、30 日、20%</b>。每个数字后面都要能说出一件事，否则等于没背。</div>
+
+      <div class="block">
+        <div class="block-title">1. 民事权利能力与行为能力（数字核心）</div>
+        <ul class="point-list">
+          <li>权利能力：<b>始于出生、终于死亡</b>；涉及遗产继承、接受赠与，<b>胎儿视为具有</b>权利能力，但娩出时为死体的自始不存在。</li>
+          <li><b>完全</b>民事行为能力：已满 <b>18 周岁</b>；或 <b>16 周岁以上</b>并以自己的劳动收入为主要生活来源（视为完全）。</li>
+          <li><b>限制</b>民事行为能力：<b>8 周岁以上不满 18 周岁</b>；不能完全辨认自己行为的成年人。</li>
+          <li><b>无</b>民事行为能力：<b>不满 8 周岁</b>；不能辨认自己行为的成年人及 8 周岁以上不能辨认的未成年人。</li>
+          <li>考点延伸：6 岁儿童获奖，奖金归<b>其本人</b>（权利能力自出生即有），父母代为管理。</li>
+        </ul>
+        <div class="formula-box"><span class="formula">＜8 无 ｜ 8–18 限制 ｜ ≥18 完全 ｜ 16–18 且以劳动收入为主＝视为完全</span></div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题83 · 民事行为能力（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">张强今年 17 岁，辍学打工，每月收入 3000 元。根据《民法典》，张强：</div>
+          <div class="example-opts">A.属于无民事行为能力人<br>B.属于限制民事行为能力人<br>C.可视为完全民事行为能力人<br>D.属于部分民事行为能力人</div>
+          <div class="example-answer"><b>解析：</b>16 周岁以上、以自己的劳动收入为主要生活来源的，<b>视为完全民事行为能力人</b>。<br><span class="correct">答案：C</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">2. 民事法律行为的效力（四分类）</div>
+        <ul class="point-list">
+          <li><b>有效</b>三要件：有相应行为能力、意思表示真实、不违反强制性规定与公序良俗。</li>
+          <li><b>无效</b>：无行为能力人实施；虚假意思表示；违反强制性规定；违背公序良俗；<b>恶意串通损害他人</b>。</li>
+          <li><b>效力待定</b>：限制行为能力人超越能力范围；无权代理。相对人可催告，<b>30 日内</b>未表示视为拒绝追认；善意相对人可撤销。</li>
+          <li><b>可撤销</b>：重大误解（90 日）、欺诈（1 年）、显失公平（1 年）、胁迫（自胁迫终止起 1 年）；<b>最长 5 年</b>（自行为发生起）。</li>
+          <li>欺诈签订的合同<b>可撤销而非当然无效</b>；已过户的，善意取得制度可能保护受让人。</li>
+        </ul>
+        <div class="tip-box"><b>一句话分「无效 / 可撤销」：</b>违法背俗、虚假串通、无能力 → <b>无效</b>；被坑被骗被胁迫、自己搞错 → <b>可撤销</b>。</div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题84 · 行为效力（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">甲（10 岁）开发出一套游戏软件，以 1000 元卖给某软件公司。下列说法正确的是：</div>
+          <div class="example-opts">A.该买卖行为有效<br>B.该买卖行为效力待定<br>C.未签署书面合同，行为无效<br>D.甲为限制民事行为能力人，行为无效</div>
+          <div class="example-answer"><b>解析：</b>10 岁属限制行为能力人，出卖软件超越其能力范围，属<b>效力待定</b>，经法定代理人追认后有效。<br><span class="correct">答案：B</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">3. 诉讼时效</div>
+        <ul class="point-list">
+          <li>普通诉讼时效：<b>3 年</b>，自知道或应当知道权利受损害<b>及义务人</b>之日起算。</li>
+          <li>最长保护期间：<b>20 年</b>，自权利受损害之日起算，特殊情况可申请延长。</li>
+          <li>特殊起算：分期履行的自<b>最后一期</b>届满起算；对法定代理人的请求权自<b>代理终止</b>起算；未成年人遭性侵的损害赔偿自<b>年满 18 周岁</b>起算。</li>
+          <li><b>不适用</b>诉讼时效：停止侵害/排除妨碍/消除危险；<b>不动产物权和登记的动产物权</b>请求返还财产；请求支付抚养费、赡养费、扶养费。</li>
+          <li>中止与中断：中止＝障碍（不可抗力）消除后满 6 个月届满；中断＝重新起算 3 年（主张权利、起诉、对方同意履行）。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题85 · 诉讼时效（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">下列情形不适用诉讼时效的是：①要求邻居拆除妨碍通行的围墙 ②要求物业修复可能致儿童坠落的下水道 ③要求长期占用其房屋的人搬离 ④要求某公司支付专利使用费</div>
+          <div class="example-opts">A.①③④　B.②③④　C.①②③　D.①②④</div>
+          <div class="example-answer"><b>解析：</b>①②属停止侵害、排除妨碍、消除危险；③属不动产物权请求返还财产；④是债权请求权，<b>适用</b>诉讼时效。<br><span class="correct">答案：C</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">4. 物权与债权</div>
+        <ul class="point-list">
+          <li>物权变动：<b>不动产登记生效</b>；<b>动产交付生效</b>；船舶、航空器、机动车未经登记<b>不得对抗善意第三人</b>。</li>
+          <li><b>善意取得</b>四要件：出让人无处分权、受让人善意、合理价格、已登记或已交付；<b>遗失物、盗赃物、埋藏物不适用</b>。</li>
+          <li>拾得遗失物应返还；招领公告之日起<b>1 年</b>无人认领归<b>国家</b>。</li>
+          <li>共有：无约定且无家庭/继承/夫妻关系，<b>视为按份共有</b>；转让份额时其他共有人有<b>优先购买权</b>。</li>
+          <li>抵押：不动产<b>登记设立</b>；动产<b>合同生效设立</b>，未登记不得对抗善意第三人。质押：<b>交付/登记设立</b>。留置：<b>法定担保物权</b>（修车不给钱可留置）。</li>
+          <li>定金：不得超过主合同标的额 <b>20%</b>；<b>定金与违约金不能并用</b>；收定金方违约<b>双倍返还</b>。</li>
+          <li>债的发生：合同、侵权、<b>不当得利</b>、<b>无因管理</b>。</li>
+          <li>不当得利：无合法根据获利、他人受损、有因果、无依据；返还利益。</li>
+          <li>无因管理：无法定或约定义务、为他人谋利、管理他人事务；管理人可请求<b>必要费用</b>与<b>适当补偿</b>（<b>不能要报酬</b>）。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题86 · 物权与债（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">甲将汽车送乙维修厂维修，甲拒付维修费时，乙可以行使什么权利，继续占有汽车并拍卖变卖优先受偿？</div>
+          <div class="example-opts">A.保证债权　B.抵押权　C.质权　D.留置权</div>
+          <div class="example-answer"><b>解析：</b>债权人合法占有债务人财产、债务已届清偿期而未获清偿，可<b>留置</b>该财产并优先受偿，属法定担保物权。<br><span class="correct">答案：D</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">5. 婚姻与继承</div>
+        <ul class="point-list">
+          <li>结婚年龄：<b>男不得早于 22 周岁，女不得早于 20 周岁</b>；直系血亲和<b>三代以内旁系血亲</b>禁止结婚。</li>
+          <li>无效婚姻：重婚、有禁止结婚的亲属关系、未到法定婚龄。</li>
+          <li>可撤销婚姻：胁迫（自胁迫终止起 1 年；被限制人身自由的自恢复自由起 1 年）；隐瞒重大疾病（自知道起 1 年）。</li>
+          <li>协议离婚：<b>30 日冷静期</b>；期满后 30 日内双方亲自申请发证，未申请视为撤回。</li>
+          <li>夫妻共同财产：工资奖金劳务报酬、生产经营投资收益、知识产权收益、继承或受赠（未指明归一方的）。</li>
+          <li>个人财产：婚前财产、人身损害赔偿、遗嘱/赠与指明只归一方、专用生活用品。</li>
+          <li>法定继承顺序：<b>第一顺序＝配偶、子女、父母</b>；第二顺序＝兄弟姐妹、祖父母、外祖父母；<b>丧偶儿媳/女婿尽主要赡养义务的，为第一顺序</b>。</li>
+          <li><b>代位继承</b>：被继承人子女<b>先于</b>被继承人死亡，由其直系晚辈血亲代位（兄弟姐妹先死，由其子女代位）。</li>
+          <li><b>转继承</b>：继承人在被继承人死亡<b>后、遗产分割前</b>死亡，其应继份额转由其合法继承人继承。</li>
+        </ul>
+        <div class="warn-box"><b>代位 vs 转继承</b>：一个「死在前面」（代位），一个「死在后面」（转）。这是继承题唯一的难点。</div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题87 · 继承（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">老张去世未留遗嘱，其妻李某健在，有次子、女儿各一；长子早年去世，留有一子小张。下列属于本案第一顺序继承人的是：</div>
+          <div class="example-opts">A.李某、次子、女儿、小张<br>B.李某、次子、女儿<br>C.次子、女儿、小张<br>D.李某、次子、女儿、小张的母亲</div>
+          <div class="example-answer"><b>解析：</b>第一顺序为<b>配偶、子女、父母</b>。长子先于被继承人死亡，其子小张<b>代位继承</b>，仍在第一顺序内；小张的母亲不是老张的继承人（她只能通过转继承取得长子的份额，且本案长子先死、不适用）。<br><span class="correct">答案：A</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">6. 侵权责任（归责原则是题眼）</div>
+        <ul class="point-list">
+          <li>监护人责任：无/限制行为能力人致害，由监护人承担（尽到监护职责可减轻）。</li>
+          <li>职务侵权：用人单位承担；可向<b>故意或重大过失</b>的工作人员追偿。</li>
+          <li>产品责任：<b>无过错责任</b>，可向生产者或销售者索赔，内部可追偿。</li>
+          <li>机动车：机动车之间<b>过错责任</b>；机动车与非机动车/行人<b>无过错责任</b>。</li>
+          <li>饲养动物：一般<b>无过错</b>；<b>动物园过错推定</b>（能证明尽到管理职责则免责）；第三人过错可双向索赔。</li>
+          <li>教育机构：<b>无行为能力人</b>在校受伤→<b>过错推定</b>；<b>限制行为能力人</b>→<b>过错责任</b>；第三人致害→第三人承担，机构未尽管理职责承担<b>补充责任</b>。</li>
+          <li>高空抛物：难以确定侵权人时，由<b>可能加害的建筑物使用人补偿</b>（能证明自己不是的除外），物业未尽安全保障义务承担相应责任。</li>
+          <li>公共场所施工：不能证明设置明显标志和采取安全措施的，承担侵权责任；窨井管理人不能证明尽到管理职责的，承担责任。</li>
+          <li>经营场所/群众性活动：未尽安全保障义务承担责任；第三人致害的承担<b>补充责任</b>。</li>
+          <li>环境污染：<b>无过错责任</b>，故意污染造成严重后果可适用<b>惩罚性赔偿</b>。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题88 · 侵权责任（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">甲到商场购买项链，试戴后在协商价格时因地面湿滑摔倒骨折。下列说法正确的是：</div>
+          <div class="example-opts">A.损失全部由甲自行承担<br>B.售货员承担赔偿责任，商场不承担<br>C.甲为完全民事行为能力人，商场不承担<br>D.商场应承担侵权责任</div>
+          <div class="example-answer"><b>解析：</b>商场未尽<b>安全保障义务</b>（地面湿滑未处理），应承担侵权责任。<br><span class="correct">答案：D</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 十七、刑法 -->
+  <div class="section c-red" id="s17">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">🚔</div>
+      <div class="section-title">十七、刑法</div>
+      <span class="section-tag tag-hot">年龄 + 形态</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="key-box">刑法高频只有四块：<b>责任年龄（12/14/16）、正当防卫与紧急避险、犯罪形态（预备/中止/未遂/既遂）、刑罚数字</b>。把这四块拿下，70% 的题可做。</div>
+
+      <div class="block">
+        <div class="block-title">1. 基本原则与效力范围</div>
+        <ul class="point-list">
+          <li>三原则：<b>罪刑法定</b>、刑法面前人人平等（<b>适用</b>法律上一律平等）、罪责刑相适应。</li>
+          <li>属地管辖：领域内犯罪（领陆领水领空 + 我国船舶航空器）；<b>行为或结果有一项</b>发生在我国即可。</li>
+          <li>属人管辖：我国公民在境外犯罪适用我国刑法；最高刑 <b>3 年以下</b>可以不予追究；<b>国家工作人员和军人一律追究</b>。</li>
+          <li>保护管辖：外国人在境外对我国国家或公民犯罪，<b>最低刑 3 年以上</b>且犯罪地也处罚。</li>
+          <li>普遍管辖：我国缔结或参加的国际条约所规定的罪行。</li>
+          <li>时间效力：<b>从旧兼从轻</b>。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题89 · 刑法效力（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">关于刑法的效力，下列说法错误的是：</div>
+          <div class="example-opts">A.我国公民甲教唆美国公民在法国杀害日本人，我国刑法有权追究<br>B.我国公民乙在中欧班列行驶于别国境内时贩售海洛因，应追究刑责<br>C.外国商人在我国领域内犯重婚罪，应适用我国刑法<br>D.法国公民乘坐我国游轮，在船上实施的犯罪行为不适用我国刑法</div>
+          <div class="example-answer"><b>解析：</b>D 错。我国<b>船舶、航空器</b>内犯罪适用属地管辖（拟制领土）。<br><span class="correct">答案：D</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">2. 犯罪构成：年龄与能力</div>
+        <ul class="point-list">
+          <li><b>不满 12 周岁</b>：不负刑事责任。</li>
+          <li><b>12–14 周岁</b>：仅对故意杀人、故意伤害<b>致人死亡或以特别残忍手段致人重伤造成严重残疾</b>、情节恶劣，且经<b>最高人民检察院核准追诉</b>的，负刑事责任。</li>
+          <li><b>14–16 周岁</b>：仅对八种严重犯罪负责——<b>故意杀人、故意伤害致人重伤或死亡、抢劫、强奸、贩卖毒品、放火、爆炸、投放危险物质</b>（<b>不含绑架、盗窃、诈骗、运输毒品</b>）。</li>
+          <li><b>已满 16 周岁</b>：完全负刑事责任；不满 18 周岁应当<b>从轻或减轻</b>。</li>
+          <li>已满 <b>75 周岁</b>：故意犯罪可从轻或减轻；过失犯罪<b>应当</b>从轻或减轻。</li>
+          <li>精神病人：完全无辨认控制能力时不负；间歇性精神病人<b>精神正常时</b>犯罪应负；尚未完全丧失的可以从轻或减轻。</li>
+          <li><b>醉酒的人犯罪应当负刑事责任</b>；又聋又哑的人或盲人可以从轻、减轻或免除。</li>
+          <li>主观方面：直接故意（希望）、间接故意（放任）、疏忽大意过失（应预见未预见）、过于自信过失（已预见轻信能避免）；<b>不可抗力与意外事件不是犯罪</b>。</li>
+        </ul>
+        <div class="formula-box"><span class="formula">12 核准 · 14 八罪 · 16 全责 · 18 从轻 · 75 过失应当从轻</span></div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题90 · 责任年龄（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">根据我国《刑法》，下列关于刑事责任能力或年龄的表述，不正确的是：</div>
+          <div class="example-opts">A.已满 14 周岁未满 16 周岁的人贩卖并运送毒品，应当追究刑事责任<br>B.间歇性精神病人在精神正常时候的犯罪，应当追究刑事责任<br>C.已满 14 周岁未满 16 周岁的人绑架他人，应当追究刑事责任<br>D.尚未完全丧失辨认或控制能力的精神病人犯罪，应追究刑责</div>
+          <div class="example-answer"><b>解析：</b>C 错。<b>绑架不在八种犯罪之列</b>，14–16 周岁的人绑架不负刑事责任（若撕票则按故意杀人评价）。A 中贩卖毒品在列。<br><span class="correct">答案：C</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">3. 犯罪排除事由：正当防卫与紧急避险</div>
+        <table class="mini-table">
+          <tr><th></th><th>正当防卫</th><th>紧急避险</th></tr>
+          <tr><td>起因</td><td>不法侵害现实存在</td><td>现实危险</td></tr>
+          <tr><td>时间</td><td>已开始、未结束</td><td>已发生、未结束</td></tr>
+          <tr><td>对象</td><td><b>不法侵害者本人</b></td><td><b>无辜第三人</b>的合法权益</td></tr>
+          <tr><td>限度</td><td>未明显超过必要限度造成重大损害</td><td>未超过必要限度造成不应有损害</td></tr>
+          <tr><td>过当后果</td><td>应减轻或免除处罚（无「防卫过当罪」）</td><td>应减轻或免除处罚</td></tr>
+        </table>
+        <ul class="point-list">
+          <li><b>特殊防卫</b>：对正在进行的行凶、杀人、抢劫、强奸、绑架等严重危及人身安全的暴力犯罪，造成侵害人伤亡的<b>不属于防卫过当</b>。</li>
+          <li>防卫时机：侵害人已失去侵害能力（如已昏迷）后再加害，属<b>事后防卫</b>，可能构成故意犯罪。</li>
+          <li>紧急避险须<b>迫不得已</b>；避险对象是无辜第三人。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题91 · 正当防卫（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">李某入室盗窃被发现，为抗拒抓捕当场对赵某使用暴力，扭打中李某昏迷倒地。赵某仍捡起铁棍猛击其头部数下致其死亡。赵某的行为属于：</div>
+          <div class="example-opts">A.正当防卫，不负刑事责任<br>B.防卫过当，构成过失致人死亡罪<br>C.防卫过当，构成故意伤害致人死亡罪<br>D.故意杀人，应当负刑事责任</div>
+          <div class="example-answer"><b>解析：</b>李某已昏迷、侵害已结束，赵某此时加害属<b>事后防卫</b>，具有杀人故意，构成故意杀人。<br><span class="correct">答案：D</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">4. 犯罪形态与共同犯罪</div>
+        <ul class="point-list">
+          <li><b>犯罪预备</b>：为犯罪准备工具、制造条件，因<b>意志以外</b>原因未着手；可比照既遂从轻、减轻或免除。</li>
+          <li><b>犯罪中止</b>：<b>自动</b>放弃或<b>自动有效</b>防止结果；没有造成损害<b>应当免除</b>，造成损害<b>应当减轻</b>。</li>
+          <li><b>犯罪未遂</b>：已着手，因<b>意志以外</b>原因未得逞；可比照既遂从轻或减轻。</li>
+          <li><b>犯罪既遂</b>：齐备全部分则要件。<b>既遂后返还不成立中止</b>（盗窃后返还仍为既遂）。</li>
+          <li>只有<b>直接故意</b>犯罪才有预备/未遂/中止；过失犯罪、间接故意没有。</li>
+          <li>共同犯罪＝<b>二人以上共同故意</b>；共同过失、超出共同故意的行为、同时犯、间接正犯<b>不成立</b>共犯。</li>
+          <li>分类：主犯、从犯（应当从轻、减轻或免除）、胁从犯（应当减轻或免除）、教唆犯。</li>
+          <li>教唆不满 18 周岁的人犯罪<b>应当从重</b>；被教唆人未犯被教唆之罪，教唆犯可以从轻或减轻（<b>无「教唆罪」</b>）。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题92 · 犯罪形态（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">某男在公交上窃取老人 8000 元，下车后心生悔意，返回将 7500 元塞回老人包中，自留 500 元，后被抓获。其犯罪形态属于：</div>
+          <div class="example-opts">A.犯罪中止　B.犯罪未遂　C.犯罪预备　D.犯罪既遂</div>
+          <div class="example-answer"><b>解析：</b>财物已脱离控制、犯罪已<b>既遂</b>；既遂后返还不成立中止（返还数额只影响量刑）。<br><span class="correct">答案：D</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">5. 刑罚（数字密集）</div>
+        <table class="mini-table k1">
+          <tr><th>主刑</th><th>期限</th><th>要点</th></tr>
+          <tr><td>管制</td><td><b>3 个月–2 年</b>（数罪并罚不超 3 年）</td><td>不关押、社区矫正、<b>同工同酬</b>；羁押 1 日折抵 2 日</td></tr>
+          <tr><td>拘役</td><td><b>1–6 个月</b>（并罚不超 1 年）</td><td>公安机关就近执行；每月可回家 1–2 天；羁押 1 日折抵 1 日</td></tr>
+          <tr><td>有期徒刑</td><td><b>6 个月–15 年</b>；并罚总和＜35 年最高 20 年，≥35 年最高 25 年</td><td>羁押 1 日折抵 1 日</td></tr>
+          <tr><td>无期徒刑</td><td>终身</td><td>羁押<b>不折抵</b>；必须附加剥夺政治权利终身</td></tr>
+          <tr><td>死刑</td><td>—</td><td>不满 18 周岁、审判时怀孕妇女不适用；审判时已满 75 周岁原则上不适用（特别残忍致人死亡除外）；死缓 2 年</td></tr>
+        </table>
+        <ul class="point-list">
+          <li>附加刑四种：<b>罚金、剥夺政治权利、没收财产、驱逐出境</b>（可独立适用）。</li>
+          <li>应当附加剥夺政治权利：<b>危害国家安全</b>的犯罪分子、被判处<b>死刑或无期徒刑</b>者。</li>
+          <li>剥夺政治权利内容：选举权与被选举权；言论出版集会结社游行示威自由；担任国家机关职务；担任国有单位领导职务。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题93 · 刑罚（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">下列描述中，错误的是：</div>
+          <div class="example-opts">A.拘役的期限为一个月以上六个月以下<br>B.拘役的刑期从判决执行之日起计算<br>C.有期徒刑的刑期从判决执行之日起计算<br>D.有期徒刑判决执行以前先行羁押的，羁押一日折抵刑期二日</div>
+          <div class="example-answer"><b>解析：</b>D 错。有期徒刑羁押 1 日折抵 <b>1 日</b>；折抵 2 日的是<b>管制</b>。<br><span class="correct">答案：D</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">6. 量刑与高频罪名</div>
+        <ul class="point-list">
+          <li><b>一般累犯</b>：前罪有期徒刑以上、刑罚执行完毕或赦免后 <b>5 年内</b>再犯应判有期徒刑以上之罪。<b>特别累犯</b>：危害国家安全、恐怖活动、黑社会性质组织犯罪，<b>任何时候</b>再犯同类。</li>
+          <li>累犯<b>应当从重</b>，<b>不适用缓刑和假释</b>。</li>
+          <li><b>自首</b>：自动投案 + 如实供述（含被采取强制措施后供述司法机关未掌握的其他罪行）；可以从轻或减轻，犯罪较轻可免除。<b>被扭送不算自动投案</b>。</li>
+          <li>立功：揭发他人犯罪查证属实、提供重要线索破案；可以从轻或减轻，重大立功可减轻或免除。</li>
+          <li><b>交通肇事罪</b>：违反交通法规致重大事故；指使强令违章驾驶、指使逃逸致死的以共犯论；<b>肇事后隐藏遗弃被害人致死→故意杀人/伤害</b>。</li>
+          <li><b>危险驾驶罪</b>：追逐竞驶情节恶劣；<b>醉驾（血液酒精 ≥80 mg/100ml）</b>；严重超员超速；违规运输危险化学品。</li>
+          <li><b>妨害安全驾驶罪</b>：对行驶中的公共交通工具驾驶人使用暴力或抢控操纵装置。</li>
+          <li><b>间谍罪</b>：参加间谍组织、接受其任务、<b>为敌人指示轰击目标</b>。</li>
+          <li><b>贪污罪</b>：国家工作人员利用职务便利侵吞窃取骗取公共财物；<b>受赠礼物应交公而不交公</b>数额较大亦以贪污论。</li>
+          <li><b>挪用公款罪</b>：非法活动（不限数额与时间）、营利活动（数额较大）、其他使用（数额较大且<b>超 3 个月未还</b>）。</li>
+          <li><b>受贿罪</b>：索贿或收受财物并为他人谋利（正当与不正当利益均算）；<b>斡旋受贿</b>以受贿论。</li>
+          <li><b>行贿罪</b>：为谋取<b>不正当利益</b>给予财物；被勒索且未获不正当利益<b>不是行贿</b>；为正当利益给予财物<b>不是行贿</b>。</li>
+          <li><b>利用影响力受贿罪</b>：近亲属或其他关系密切人，通过国家工作人员职务行为为请托人谋取<b>不正当利益</b>收受财物。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题94 · 量刑（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">下列哪一情形可以认定为自首？</div>
+          <div class="example-opts">A.小孙因聚众斗殴被捕，讯问时主动交代 1 个月前盗窃 10 部手机<br>B.小马主动投案交代电诈，但审讯时隐瞒同伙罪行<br>C.小张醉驾肇事致人死亡后报案，审讯结束后逃跑<br>D.小沈过失致人重伤，被朋友扭送至公安局后交代案情</div>
+          <div class="example-answer"><b>解析：</b>A 属「被采取强制措施后如实供述司法机关<b>还未掌握</b>的其他罪行」，以自首论。B 未如实供述；C 未接受审查、逃避；D 被扭送不属自动投案。<br><span class="correct">答案：A</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 十八、行政法 -->
+  <div class="section c-purple" id="s18">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">🏢</div>
+      <div class="section-title">十八、行政法</div>
+      <span class="section-tag tag-high">期限 + 主体</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="key-box">行政法只考两件事：<b>这件事归谁管</b>、<b>多少天之内</b>。把「60 日申请复议 / 5 日受理 / 60 日决定 / 6 个月起诉」这条链背顺，行政法就稳了。</div>
+
+      <div class="block">
+        <div class="block-title">1. 概述与六大原则</div>
+        <ul class="point-list">
+          <li>抽象行政行为＝制定行政法规、规章、有普遍约束力的决定命令（<b>不可直接起诉</b>）；具体行政行为＝对特定人特定事项作出的单方行为（<b>可诉</b>）。</li>
+          <li>效力：<b>拘束力</b>（必须遵守）、<b>确定力</b>（非经法定程序不得随意变更）、<b>执行力</b>（可强制执行）。</li>
+          <li>合法行政：法律优先（法已规定不可违）、法律保留（法无规定不可为）。</li>
+          <li>合理行政：公平公正、考虑相关因素、<b>比例原则</b>（合目的、适当、损害最小）。</li>
+          <li>程序正当：公开、公众参与、回避。</li>
+          <li>其他：高效便民、诚实守信（信赖保护）、权责统一。</li>
+        </ul>
+        <div class="tip-box"><b>比例原则考法：</b>能用「轻手段」就不用「重手段」。拆一层违建却要求拆整栋楼＝违反比例原则。</div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题95 · 行政法原则（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">下列做法符合比例原则的是：</div>
+          <div class="example-opts">A.打击盗窃时表示要让盗窃者倾家荡产<br>B.因口角即以扰乱社会秩序为由拘留 15 天<br>C.担心核辐射污染，放弃核电改建成本更低的风电<br>D.私自加建两层，房管局要求拆除整栋楼</div>
+          <div class="example-answer"><b>解析：</b>A、B 属过度处罚；D 手段明显超过必要限度。C 选择了损害更小的方式。<br><span class="correct">答案：C</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">2. 行政处罚</div>
+        <ul class="point-list">
+          <li>种类：<b>警告</b>（精神罚）；<b>罚款、没收违法所得与非法财物</b>（财产罚）；<b>责令停产停业、暂扣或吊销许可证执照</b>（行为罚）；<b>行政拘留</b>（人身自由罚，只能由公安机关决定执行，1–15 日）。</li>
+          <li><b>一事不再罚</b>：同一违法行为不得给予两次以上<b>罚款</b>；违反多个规范应按罚款数额高的规定处罚。</li>
+          <li>设定权：法律可设各种；行政法规除<b>限制人身自由</b>外；地方性法规除<b>限制人身自由、吊销营业执照</b>外；规章只能设<b>警告、通报批评、一定数额罚款</b>。</li>
+          <li>不予处罚：<b>不满 14 周岁</b>、精神病人发病时；违法行为轻微 + 及时纠正 + 无危害后果；无主观过错（法律另有规定除外）。</li>
+          <li>追责时效：<b>2 年</b>内未被发现不再处罚（涉及公民生命健康安全、金融安全且有危害后果的为 <b>5 年</b>）。</li>
+          <li>简易程序：<b>一人执法、当场决定、当场送达</b>；公民罚款 <b>200 元以下</b>、法人或其他组织 <b>3000 元以下</b>。</li>
+          <li>听证：当事人应在被告知后 <b>5 日内</b>提出；行政机关应在听证 <b>7 日前</b>通知；听证<b>公开</b>举行（涉密除外）；<b>听证费用由行政机关承担</b>。</li>
+          <li>执行：罚缴分离；当场收缴限 <b>100 元以下</b>罚款或不当场收缴事后难以执行。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题96 · 行政处罚（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">关于行政处罚的设定及听证，下列说法错误的是：</div>
+          <div class="example-opts">A.地方性法规可以设定责令停产停业的处罚<br>B.行政法规可以设定吊销营业执照的处罚<br>C.限制人身自由的处罚只能由法律设定<br>D.当事人要求听证的，由当事人承担行政机关组织听证的费用</div>
+          <div class="example-answer"><b>解析：</b>D 错。听证费用由<b>行政机关</b>承担，申请人不付费。<br><span class="correct">答案：D</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">3. 治安管理处罚</div>
+        <ul class="point-list">
+          <li>主罚：<b>警告、罚款、行政拘留、吊销公安机关发放的许可证</b>；附加罚：<b>限期出境或驱逐出境</b>（仅限外国人）。</li>
+          <li><b>不满 14 周岁</b>不予处罚，责令监护人严加管教；<b>14–18 周岁从轻或减轻</b>。</li>
+          <li>从重情形：有较严重后果；教唆胁迫诱骗他人；打击报复报案人举报人证人；<b>一年内曾受过治安管理处罚</b>。</li>
+          <li><b>应当给予拘留但不执行</b>：14–16 周岁；16–18 周岁<b>初次</b>违反；<b>70 周岁以上</b>；怀孕或哺乳自己不满 1 周岁婴儿。</li>
+          <li>追究时效：<b>6 个月</b>内未被发现不再处罚。</li>
+          <li>因民间纠纷引起的，公安机关<b>可以</b>调解（不是必须）。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题97 · 治安处罚（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">根据《治安管理处罚法》，下列说法正确的是：</div>
+          <div class="example-opts">A.15 周岁张某初次殴打他人致轻微伤，应作出拘留处罚并实际执行<br>B.李某 1 月赌博、3 月被发现，因超过 1 个月追究时效不再处罚<br>C.美国游客汤姆在我国扰乱公共场所秩序，可罚款并处限期出境<br>D.邻里纠纷致轻微伤，公安机关必须先调解再处罚</div>
+          <div class="example-answer"><b>解析：</b>A 错，14–16 周岁<b>应当给予拘留但不执行</b>；B 错，治安处罚追究时效是<b>6 个月</b>，不是 1 个月；D 错，调解是「<b>可以</b>」不是「必须」。<br><span class="correct">答案：C</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">4. 行政许可与行政强制</div>
+        <ul class="point-list">
+          <li>许可决定：受理之日起 <b>20 日内</b>作出，经批准可延长 <b>10 日</b>。</li>
+          <li>许可听证：当事人被告知后 <b>5 日内</b>申请，行政机关 <b>20 日内</b>组织。</li>
+          <li>许可撤销：机关违法（滥用职权、超越职权、违反程序等）<b>可以撤销</b>；申请人欺骗贿赂取得<b>应当撤销</b>，涉及公共安全/人身健康/生命财产的 <b>3 年内不得再申请</b>；撤销可能重大损害公共利益的<b>不予撤销</b>。</li>
+          <li>行政强制措施：限制人身自由、查封、扣押、冻结（<b>暂时性控制</b>）；不得查封扣押生活必需品；不得重复冻结。</li>
+          <li>行政强制执行：加处罚款/滞纳金、划拨存款、拍卖、排除妨碍恢复原状、代履行；<b>不得在夜间或法定节假日实施</b>（紧急除外）；<b>不得停水停电停热停气</b>迫使履行。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题98 · 许可与强制（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">关于行政许可与行政强制，下列说法错误的是：</div>
+          <div class="example-opts">A.行政许可一般应自受理之日起 20 日内作出决定<br>B.以欺骗、贿赂手段取得的许可应当撤销<br>C.行政机关可在夜间实施强制执行，无需任何限制<br>D.不得对居民采取停止供水供电方式迫使履行</div>
+          <div class="example-answer"><b>解析：</b>C 错。除情况紧急外，<b>不得在夜间或法定节假日</b>实施行政强制执行。<br><span class="correct">答案：C</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">5. 行政复议与行政诉讼</div>
+        <ul class="point-list">
+          <li>复议范围：具体行为、不作为、行政协议、政府信息公开；<b>附带审查</b>部分抽象行为（<b>不含规章</b>）；<b>不审查</b>抽象行为、国防外交、<b>行政处分</b>、行政调解。</li>
+          <li>复议期限：知道行为之日起 <b>60 日</b>内申请；机关 <b>5 日</b>内决定是否受理；受理后 <b>60 日</b>内作出决定。</li>
+          <li><b>复议前置</b>五种：当场作出的处罚、侵犯已取得自然资源所有权/使用权的决定、未履行法定职责、政府信息公开不予公开、法律行政法规规定的其他情形。</li>
+          <li>诉讼被告：复议<b>改变</b>→复议机关；复议<b>维持</b>→原机关与复议机关<b>共同被告</b>；复议机关不作为→按起诉对象确定。</li>
+          <li>委托组织行为→<b>委托的行政机关</b>为被告；授权组织→<b>该组织</b>；经上级批准→<b>署名机关</b>；共同行为→共同被告。</li>
+          <li>管辖：对国务院部门或县级以上地方政府提起诉讼、海关案件→<b>中级人民法院</b>；不动产→不动产所在地；限制人身自由→被告所在地或原告所在地。</li>
+          <li>行政机关负责人应<b>出庭应诉</b>（告官要见官）。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题99 · 行政复议（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">下列行为不服，但不能提起行政复议的是：</div>
+          <div class="example-opts">A.生态环境局吊销排污许可证<br>B.公安局扣押企业全部生产设备<br>C.派出所调解达成医疗费赔偿协议<br>D.镇政府命令解除农场承包合同</div>
+          <div class="example-answer"><b>解析：</b>C 属<b>行政调解</b>，不在复议范围（调解靠自愿履行/民事诉讼）。<br><span class="correct">答案：C</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">6. 行政赔偿</div>
+        <ul class="point-list">
+          <li>国家承担：行使职权侵犯人身权、财产权；不履行或拖延履行法定职责。</li>
+          <li>国家不承担：<b>与行使职权无关的个人行为</b>；因当事人自己行为致害；法律规定的其他情形。</li>
+          <li>赔偿义务机关：谁侵权找谁；<b>受委托组织/个人侵权→委托的行政机关</b>；派出机构侵权→派出它的机关；共同侵权→共同赔偿。</li>
+          <li>复议情形：未加重→原机关；<b>加重→原机关赔、复议机关对加重部分赔</b>。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题100 · 行政赔偿（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">下列属于国家不承担赔偿责任情形的是：</div>
+          <div class="example-opts">A.违法征收征用财物<br>B.违法吊销许可证致害<br>C.行政机关工作人员实施的与行使职权无关的个人行为<br>D.行政机关采取暴力致害</div>
+          <div class="example-answer"><b>解析：</b>与职权无关的个人行为由个人承担，国家不赔。<br><span class="correct">答案：C</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 十九、宪法与法理 -->
+  <div class="section c-blue" id="s19">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">📕</div>
+      <div class="section-title">十九、宪法与法理学</div>
+      <span class="section-tag tag-high">职位 + 比例</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="key-box">宪法考「谁有权做什么」，法理考「这句话体现哪个作用」。前者背职权表，后者背五个「作用对象」。</div>
+
+      <div class="block">
+        <div class="block-title">1. 宪法的特点与修改</div>
+        <ul class="point-list">
+          <li>三大特点：内容最根本、<b>效力最高</b>、制定修改程序最严格。</li>
+          <li>效力最高三层：普通法律的依据；不得与宪法原则相违背；一切机关团体公民的<b>最高行为准则</b>。</li>
+          <li>修改：<b>全国人大常委会或 1/5 以上全国人大代表提议</b>，<b>全国人大全体代表 2/3 以上</b>通过（普通法律为过半数）。</li>
+          <li>历史：1949《共同纲领》（临时宪法）→ 1954 宪法（<b>第一部社会主义类型宪法</b>）→ 1975、1978 → <b>1982 现行宪法</b>。</li>
+          <li>五次修正：<b>1988、1993、1999、2004、2018</b>。</li>
+          <li>2018 修正要点：确立习近平新时代中国特色社会主义思想；<b>中国共产党领导是中国特色社会主义最本质的特征</b>写入宪法；增加<b>监察委员会</b>；国家工作人员<b>宪法宣誓</b>；主席副主席任期同全国人大每届任期相同（删去「连续任职不得超过两届」）。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题101 · 宪法修改（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">有权提出宪法修改有效议案的主体是：</div>
+          <div class="example-opts">A.全国人民代表大会常务委员会<br>B.全国人民代表大会的一个代表团<br>C.十分之一以上的全国人大代表<br>D.全国人民代表大会主席团</div>
+          <div class="example-answer"><b>解析：</b>宪法修改由<b>全国人大常委会或 1/5 以上全国人大代表</b>提议。<br><span class="correct">答案：A</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">2. 国家机构（职权对照）</div>
+        <table class="mini-table">
+          <tr><th>机关</th><th>性质</th><th>关键职权</th></tr>
+          <tr><td><b>全国人大</b></td><td>最高国家权力机关、最高立法机关</td><td>修改宪法、制定基本法律；选举主席/副主席、军委主席、监委主任、最高法院长、最高检检察长；<b>批准省自治区直辖市建置</b>、决定特别行政区设立、决定战争与和平</td></tr>
+          <tr><td><b>全国人大常委会</b></td><td>全国人大的常设机关</td><td><b>解释宪法和法律</b>；制定非基本法律；决定<b>特赦</b>、宣布战争状态、决定动员、决定紧急状态；任免其他国家机关副职</td></tr>
+          <tr><td><b>国家主席</b></td><td>国家元首，独立机关</td><td>公布法律、发布命令、任免国务院组成人员与驻外全权代表、外交权、荣典权（<b>与常委会共同行使</b>）</td></tr>
+          <tr><td><b>国务院</b></td><td>最高权力机关的执行机关、最高行政机关</td><td>制定行政法规；<b>批准省级区域划分、自治州县的建置与区域划分</b>；决定省级范围内部分地区紧急状态</td></tr>
+          <tr><td><b>监察委</b></td><td>最高监察机关</td><td>领导地方各级监委；主任连续任职不得超过两届</td></tr>
+          <tr><td><b>法院 / 检察院</b></td><td>审判机关 / 法律监督机关</td><td>上级法院<b>监督</b>下级；上级检察院<b>领导</b>下级</td></tr>
+        </table>
+        <div class="warn-box"><b>最易错：</b>批准省级建置＝<b>全国人大</b>；批准省级<b>区域划分</b>＝<b>国务院</b>；特赦＝<b>全国人大常委会</b>决定、<b>国家主席</b>发布特赦令。</div>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题102 · 国家机构（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">根据我国《宪法》，有权发布特赦令的是：</div>
+          <div class="example-opts">A.全国人民代表大会　B.最高人民法院　C.国家主席　D.国务院</div>
+          <div class="example-answer"><b>解析：</b><b>全国人大常委会决定特赦</b>，<b>国家主席发布特赦令</b>。题干问「发布」，故选国家主席。<br><span class="correct">答案：C</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">3. 公民权利与选举制度</div>
+        <ul class="point-list">
+          <li>平等权：<b>法律面前一律平等</b>，<b>不包括立法平等</b>。</li>
+          <li>政治权利与自由：选举权与被选举权；言论、出版、集会、结社、游行、示威自由（<b>没有迁徙权</b>）。</li>
+          <li>人身自由：人身、人格尊严、住宅、通信自由与通信秘密。</li>
+          <li>社会经济权利：劳动权（既是权利也是义务）、休息权、物质帮助权；受教育权（既是权利也是义务）。</li>
+          <li>选举权条件：<b>年满 18 周岁、中国公民、未被剥夺政治权利</b>。</li>
+          <li>直接选举：<b>不设区的市、市辖区、县、自治县、乡、民族乡、镇</b>（县级及以下）；间接选举：全国、省、设区的市、自治州。</li>
+          <li>直接选举：<b>过半数选民参加投票有效</b>，候选人获<b>参加投票选民过半数</b>当选；间接选举：候选人须获<b>全体代表过半数</b>当选。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题103 · 公民权利（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">根据宪法规定，下列不属于我国公民政治权利和自由的是：</div>
+          <div class="example-opts">A.选举权和被选举权　B.言论、出版、结社自由　C.集会、游行、示威自由　D.迁徙权</div>
+          <div class="example-answer"><b>解析：</b>我国宪法<b>未规定迁徙自由</b>为基本权利。<br><span class="correct">答案：D</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">4. 法理学：作用、渊源与效力</div>
+        <ul class="point-list">
+          <li>五个规范作用（看<b>对象</b>）：<b>指引</b>——自己的行为；<b>评价</b>——他人的行为；<b>预测</b>——人们相互间的行为；<b>教育</b>——一般人的行为；<b>强制</b>——违法犯罪者的行为。</li>
+          <li><b>指引作用是最首要的作用</b>。</li>
+          <li>正式渊源：宪法（制宪机关＝第一届全国人大第一次会议）、法律（基本法律/非基本法律）、行政法规（国务院）、地方性法规（省级/设区的市，市级须报批准）、规章（部门规章/地方政府规章）、自治法规（须报批准）、经济特区法规、特区法律、国际条约惯例。</li>
+          <li>效力层次：<b>宪法 ＞ 法律 ＞ 行政法规 ＞ 地方性法规/规章</b>；地方性法规与部门规章<b>同等效力</b>，冲突时由国务院提出意见，若适用部门规章须提请<b>全国人大常委会裁决</b>。</li>
+          <li>同一位阶：<b>特别法优于一般法、新法优于旧法</b>。</li>
+          <li>法的实施：<b>守法</b>（一切组织和个人）、<b>执法</b>（行政机关）、<b>司法</b>（法院检察院）。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题104 · 法理（小黑母题）</div>
+        <div class="example-body">
+          <div class="example-q">法律能够为人们提供既定的行为模式，使人们在法律范围内活动。法律最首要的作用是：</div>
+          <div class="example-opts">A.教育作用　B.评价作用　C.预测作用　D.指引作用</div>
+          <div class="example-answer"><b>解析：</b>为行为人本人提供行为模式，是<b>指引作用</b>，也是法最首要的作用。<br><span class="correct">答案：D</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 二十、数字速记 -->
+  <div class="section c-orange" id="s20">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">🔢</div>
+      <div class="section-title">二十、数字与「第一 / 最」速记（考前 30 分钟）</div>
+      <span class="section-tag tag-hot">冲刺专用</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="key-box">这一节不讲解，只罗列。考前只看这三块：<b>法律数字</b>、<b>时间节点</b>、<b>「第一 / 最」</b>。</div>
+
+      <div class="block">
+        <div class="block-title">1. 法律数字（一张表全收）</div>
+        <table class="mini-table">
+          <tr><th>数字</th><th>对应规则</th></tr>
+          <tr><td>8 / 18 / 16</td><td>民事行为能力：＜8 无、8–18 限制、≥18 完全、16 以上以劳动收入为主视为完全</td></tr>
+          <tr><td>3 年 / 20 年</td><td>普通诉讼时效 / 最长保护期间</td></tr>
+          <tr><td>30 日</td><td>效力待定催告期；离婚冷静期</td></tr>
+          <tr><td>90 日 / 1 年 / 5 年</td><td>重大误解撤销 / 欺诈胁迫显失公平撤销 / 撤销权最长期间</td></tr>
+          <tr><td>20%</td><td>定金上限（超过部分不产生定金效力）</td></tr>
+          <tr><td>1 年</td><td>遗失物招领公告期满归国家</td></tr>
+          <tr><td>12 / 14 / 16 / 18 / 75</td><td>刑责年龄节点</td></tr>
+          <tr><td>3 个月–2 年 / 1–6 个月 / 6 个月–15 年</td><td>管制 / 拘役 / 有期徒刑</td></tr>
+          <tr><td>5 年</td><td>一般累犯期限</td></tr>
+          <tr><td>80 mg/100ml</td><td>醉驾标准（危险驾驶罪）</td></tr>
+          <tr><td>2 年 / 5 年 / 6 个月</td><td>行政处罚追责时效 / 涉生命健康金融安全 / 治安处罚时效</td></tr>
+          <tr><td>200 元 / 3000 元</td><td>简易程序罚款上限（公民 / 法人组织）</td></tr>
+          <tr><td>5 日 / 7 日</td><td>听证申请 / 听证通知</td></tr>
+          <tr><td>20 + 10 日</td><td>行政许可决定期限（可延长 10 日）</td></tr>
+          <tr><td>60 日 / 5 日 / 60 日</td><td>复议申请 / 受理审查 / 作出决定</td></tr>
+          <tr><td>1/5 提议、2/3 通过</td><td>宪法修改</td></tr>
+          <tr><td>18 周岁</td><td>选举权年龄；未成年人性侵赔偿时效起算</td></tr>
+        </table>
+      </div>
+
+      <div class="block">
+        <div class="block-title">2. 时间节点（周年最容易考）</div>
+        <table class="mini-table">
+          <tr><th>年份</th><th>事件</th></tr>
+          <tr><td>1840 / 1842</td><td>鸦片战争 / 《南京条约》</td></tr>
+          <tr><td>1894 / 1895</td><td>甲午战争 / 《马关条约》；兴中会成立</td></tr>
+          <tr><td>1901</td><td>《辛丑条约》</td></tr>
+          <tr><td>1911 / 1912</td><td>武昌起义 / 中华民国成立、《临时约法》</td></tr>
+          <tr><td>1919 / 1921</td><td>五四运动 / 中共成立</td></tr>
+          <tr><td>1927 / 1935 / 1937 / 1945 / 1949</td><td>三大起义与井冈山 / 遵义会议 / 七七事变 / 抗战胜利 / 新中国成立</td></tr>
+          <tr><td>1954 / 1982</td><td>第一部社会主义宪法 / 现行宪法</td></tr>
+          <tr><td>2003 / 2008 / 2020 / 2024</td><td>神五首次载人 / 神七首次出舱 / 嫦娥五号采样返回 / 嫦娥六号月背采样</td></tr>
+        </table>
+      </div>
+
+      <div class="block">
+        <div class="block-title">3. 「第一 / 唯一 / 最」清单</div>
+        <ul class="point-list">
+          <li>第一部诗歌总集《诗经》；第一部浪漫主义诗歌总集《楚辞》；第一首长篇政治抒情诗《离骚》。</li>
+          <li>第一部纪传体通史《史记》；第一部编年体通史《资治通鉴》；第一部纪传体断代史《汉书》；第一部国别体《国语》。</li>
+          <li>第一部长篇历史小说《三国演义》；第一部文人独立创作的长篇章回小说《金瓶梅》；文言短篇巅峰《聊斋志异》。</li>
+          <li>第一部系统成文法典《法经》；第一部完整药物学著作《神农本草经》；世界上最早由国家颁行的药典《唐本草》。</li>
+          <li>世界上最早的军事著作《孙子兵法》；世界上现存最古老的山水画《游春图》；现存最古老纸本中国画《五牛图》。</li>
+          <li>中国最长河流长江；含沙量最大黄河；最长内流河塔里木河；唯一注入北冰洋额尔齐斯河；最大淡水湖鄱阳湖；最大咸水湖青海湖；最低湖泊艾丁湖。</li>
+          <li>最大盆地塔里木；最高盆地柴达木；最低盆地四川；最大平原东北平原；最高高原青藏高原；最平坦高原内蒙古高原。</li>
+          <li>世界最大稀土矿白云鄂博；世界最大单口径射电望远镜 FAST（中国天眼）。</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 二十一、易混排坑 -->
+  <div class="section c-red" id="s21">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">🕳️</div>
+      <div class="section-title">二十一、易混排坑对照表（小黑排坑手册精华）</div>
+      <span class="section-tag tag-hot">错题本</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="key-box">这一节就是把《排坑手册》28 页压成四张表。做题时若在两个选项之间犹豫，<b>回来查这张表</b>，比重新看讲义快十倍。</div>
+
+      <div class="block">
+        <div class="block-title">1. 政治理论：定位词不能搬家</div>
+        <table class="mini-table">
+          <tr><th>表述</th><th>正确说法</th></tr>
+          <tr><td>最本质的特征 / 制度的最大优势</td><td>都是<b>中国共产党领导</b></td></tr>
+          <tr><td>最大的国情</td><td><b>中国共产党领导</b>（不是初级阶段）</td></tr>
+          <tr><td>根本领导制度 / 根本政治制度</td><td>党的领导制度 / 人民代表大会制度</td></tr>
+          <tr><td>制度体系中的核心与统领</td><td><b>党的领导制度</b></td></tr>
+          <tr><td>党治国理政的根本价值取向</td><td><b>坚持人民至上</b>（不是高质量发展）</td></tr>
+          <tr><td>发展的根本目的</td><td><b>增进民生福祉</b></td></tr>
+          <tr><td>最大政治优势 / 执政后最大危险</td><td>密切联系群众 / <b>脱离群众</b>（不是腐败）</td></tr>
+          <tr><td>首要任务 / 主题</td><td>高质量发展是<b>首要任务</b>、经济社会发展的<b>主题</b></td></tr>
+          <tr><td>新发展格局最本质特征</td><td><b>高水平自立自强</b></td></tr>
+          <tr><td>社会主义民主政治的本质属性</td><td><b>全过程人民民主</b></td></tr>
+          <tr><td>全过程人民民主的重要体现</td><td><b>基层民主</b>（不是党内民主）</td></tr>
+          <tr><td>意识形态领域指导地位的根本制度</td><td><b>马克思主义</b>（不是核心价值观）</td></tr>
+          <tr><td>民生之本 / 最基本民生</td><td><b>就业</b>（不是教育）</td></tr>
+          <tr><td>社会保障体系核心</td><td><b>社会保险</b>（不是社会福利）</td></tr>
+          <tr><td>生态文明方针</td><td>节约优先、保护优先、<b>自然恢复为主</b></td></tr>
+          <tr><td>全面深化改革牵引 / 主线</td><td><b>经济体制</b>改革 / <b>制度建设</b></td></tr>
+          <tr><td>法治之魂 / 总抓手</td><td><b>党的领导</b> / 建设中国特色社会主义法治体系</td></tr>
+          <tr><td>法治政府 / 法治社会</td><td>重点任务与主体工程 / 法治国家的基础</td></tr>
+          <tr><td>最后一道防线</td><td><b>公正司法</b>（不是严格执法）</td></tr>
+          <tr><td>政治建设 / 思想建设</td><td><b>根本性</b>建设（首位）/ <b>基础性</b>建设</td></tr>
+          <tr><td>最彻底的自我革命</td><td><b>反腐败</b>（不是批评与自我批评）</td></tr>
+          <tr><td>国家安全关键与灵魂</td><td><b>「总体」</b>；政治安全为根本、经济安全为基础</td></tr>
+          <tr><td>强军「立军之本」</td><td><b>政治建军</b></td></tr>
+          <tr><td>2035 年 / 本世纪中叶（军队）</td><td>基本实现国防和军队现代化 / 建成世界一流军队</td></tr>
+          <tr><td>一国两制前提 / 最高原则</td><td><b>一国</b> / 维护国家主权、安全、发展利益</td></tr>
+          <tr><td>人类命运共同体：路径 / 遵循 / 平台</td><td>新型国际关系 / 全人类共同价值 / 高质量共建「一带一路」</td></tr>
+        </table>
+      </div>
+
+      <div class="block">
+        <div class="block-title">2. 马原：三对「谁决定谁」</div>
+        <table class="mini-table">
+          <tr><th>易错表述</th><th>纠正</th></tr>
+          <tr><td>物质的根本属性是客观实在性</td><td>客观实在性是<b>唯一特性</b>，根本属性是<b>运动</b></td></tr>
+          <tr><td>意识对物质起决定作用</td><td>意识是<b>能动反作用</b></td></tr>
+          <tr><td>哲学基本问题＝物质和意识是否同一</td><td>基本问题＝<b>思维与存在的关系</b>，含第一性与同一性两问</td></tr>
+          <tr><td>矛盾基本属性＝普遍性与特殊性</td><td><b>同一性与斗争性</b></td></tr>
+          <tr><td>对立统一揭示形式与状态</td><td>揭示<b>源泉与动力</b>；形式状态是量变质变；方向道路是否定之否定</td></tr>
+          <tr><td>辩证否定的实质是全盘否定</td><td><b>扬弃</b></td></tr>
+          <tr><td>直接经验是认识的来源</td><td>来源是<b>实践</b></td></tr>
+          <tr><td>「有用」是检验真理的标准</td><td><b>实践</b>是唯一标准</td></tr>
+          <tr><td>人口因素是社会发展的决定力量</td><td><b>物质生产方式</b></td></tr>
+          <tr><td>劳动者是衡量生产力水平的标志</td><td><b>生产工具</b>是标志，劳动者是主导</td></tr>
+          <tr><td>产品分配形式是生产关系的基础</td><td><b>生产资料所有制</b>是基础</td></tr>
+          <tr><td>观念上层建筑居主导、政治法律思想是核心</td><td><b>政治上层建筑</b>居主导，<b>国家政权</b>是核心</td></tr>
+          <tr><td>人民群众是社会变革的领导力量</td><td><b>决定力量</b></td></tr>
+          <tr><td>商品的二因素决定劳动二重性</td><td><b>劳动二重性决定商品二因素</b></td></tr>
+          <tr><td>价值围绕价格波动</td><td><b>价格围绕价值</b>波动</td></tr>
+          <tr><td>价值尺度需要现实货币</td><td>只需<b>观念上</b>的货币</td></tr>
+          <tr><td>不变资本是劳动力</td><td>不变资本＝<b>生产资料</b></td></tr>
+        </table>
+      </div>
+
+      <div class="block">
+        <div class="block-title">3. 法律：主体与期限陷阱</div>
+        <table class="mini-table">
+          <tr><th>易错点</th><th>正确</th></tr>
+          <tr><td>行政拘留可由市场监管局作出</td><td>只能<b>公安机关</b></td></tr>
+          <tr><td>行政法规可设限制人身自由的处罚</td><td>只有<b>法律</b>可设</td></tr>
+          <tr><td>听证费用由申请人承担</td><td><b>行政机关</b>承担</td></tr>
+          <tr><td>治安案件追究时效 2 年</td><td><b>6 个月</b>（一般行政处罚才是 2 年）</td></tr>
+          <tr><td>14–16 周岁违反治安一律不执行拘留</td><td>是「<b>应当给予拘留但不执行</b>」，不是不处罚</td></tr>
+          <tr><td>复议申请期限 60 日、起诉期限 3 个月</td><td>复议 <b>60 日</b>；行政诉讼起诉期限一般为 <b>6 个月</b></td></tr>
+          <tr><td>复议维持时只告原机关</td><td>原机关与复议机关<b>共同被告</b></td></tr>
+          <tr><td>受委托组织侵权，告该组织</td><td>告<b>委托的行政机关</b></td></tr>
+          <tr><td>民警下班撞人，国家赔偿</td><td>与职权无关的<b>个人行为</b>，国家不赔</td></tr>
+          <tr><td>14–16 周岁绑架要负刑责</td><td>八罪中<b>无绑架</b></td></tr>
+          <tr><td>犯罪既遂后返还财物成立中止</td><td>仍为<b>既遂</b></td></tr>
+          <tr><td>防卫过当构成「防卫过当罪」</td><td>无此罪名，按具体罪名（过失/故意伤害）定罪，<b>应当减轻或免除</b></td></tr>
+          <tr><td>被扭送公安算自首</td><td>不属<b>自动投案</b></td></tr>
+          <tr><td>有期徒刑羁押 1 日折抵 2 日</td><td>折抵 <b>1 日</b>（管制才折 2 日）</td></tr>
+          <tr><td>欺诈订立的合同当然无效</td><td><b>可撤销</b></td></tr>
+          <tr><td>遗失物适用善意取得</td><td><b>不适用</b>（盗赃物、埋藏物也不适用）</td></tr>
+          <tr><td>无因管理可请求报酬</td><td>只能请求<b>必要费用</b>与适当补偿</td></tr>
+          <tr><td>代位继承＝转继承</td><td>代位＝子女<b>先死</b>；转＝继承人<b>后死</b>（分割前）</td></tr>
+        </table>
+      </div>
+
+      <div class="block">
+        <div class="block-title">4. 文史科技：对应关系陷阱</div>
+        <table class="mini-table">
+          <tr><th>易错对应</th><th>正确对应</th></tr>
+          <tr><td>最早种粟＝河姆渡</td><td>河姆渡＝水稻；粟＝<b>仰韶（半坡）</b></td></tr>
+          <tr><td>彩陶＝龙山</td><td>彩陶＝仰韶；黑陶＝龙山</td></tr>
+          <tr><td>围魏救赵＝城濮之战</td><td><b>桂陵之战</b>；城濮＝退避三舍</td></tr>
+          <tr><td>背水一战＝孙膑</td><td><b>韩信</b>（井陉之战）</td></tr>
+          <tr><td>枢密院管财政</td><td>管<b>军事</b>；财政是三司使</td></tr>
+          <tr><td>内阁是法定行政机构</td><td>皇帝的内侍<b>咨询机构</b></td></tr>
+          <tr><td>调＝人头税（粮食）</td><td>调＝<b>绢帛土产</b>；庸＝纳绢代役</td></tr>
+          <tr><td>宣政院管新疆</td><td>管<b>西藏</b>；新疆＝西域都护府</td></tr>
+          <tr><td>郑和下西洋为殖民掠夺</td><td><b>宣扬国威</b></td></tr>
+          <tr><td>《汉宫秋》＝关汉卿</td><td><b>马致远</b></td></tr>
+          <tr><td>「内圣外王」＝老子</td><td><b>庄子</b></td></tr>
+          <tr><td>《孙子兵法》＝孙膑</td><td><b>孙武</b></td></tr>
+          <tr><td>医圣＝华佗、药王＝张仲景</td><td>医圣＝<b>张仲景</b>、药王＝<b>孙思邈</b></td></tr>
+          <tr><td>《汉宫秋》与《窦娥冤》作者互换</td><td>关汉卿＝窦娥冤；马致远＝汉宫秋</td></tr>
+          <tr><td>金乌＝月亮</td><td><b>太阳</b>；月亮＝玉兔/婵娟/望舒/广寒</td></tr>
+          <tr><td>「金吾不禁夜」＝寒食</td><td><b>元宵</b></td></tr>
+          <tr><td>宇宙最多元素＝氧</td><td><b>氢</b>；地壳/人体最多＝氧；空气最多＝氮</td></tr>
+          <tr><td>人体最多金属元素＝铁</td><td><b>钙</b></td></tr>
+          <tr><td>苛性钠＝氧化钠</td><td><b>氢氧化钠</b></td></tr>
+          <tr><td>水星最亮 / 金星温差最大</td><td>最亮＝<b>金星</b>；温差最大＝<b>水星</b></td></tr>
+          <tr><td>最大淡水湖＝洞庭湖</td><td><b>鄱阳湖</b></td></tr>
+          <tr><td>五岳之首＝华山</td><td><b>泰山</b></td></tr>
+          <tr><td>嫦娥五号＝月背采样</td><td><b>嫦娥六号</b>是月背；五号是正面</td></tr>
+          <tr><td>连续 6 次 TOP500 第一＝天河一号</td><td><b>天河二号</b>；天河一号是首次第一</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- 二十二、考场策略 -->
+  <div class="section c-green" id="s22">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">🎯</div>
+      <div class="section-title">二十二、考场策略与 21 天计划</div>
+      <span class="section-tag tag-high">收尾</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="key-box">常识的正确率不是「知识量」决定的，而是<b>做题节奏 + 排除能力</b>决定的。20 题常识，建议 <b>10–12 分钟</b>做完，平均 30–35 秒一题。</div>
+
+      <div class="block">
+        <div class="block-title">1. 考场四条纪律</div>
+        <ul class="point-list">
+          <li><b>先做会做的</b>：一轮扫过去，30 秒内没思路的直接标记跳过，不要在一道题上耗 2 分钟。</li>
+          <li><b>「绝对化」多半错</b>：出现「唯一」「全部」「都」「必须」「一律」时提高警惕（但法律条文里的「应当」是真的）。</li>
+          <li><b>「偷换主体」最常见</b>：把「党」换成「政府」、把「人大」换成「政协」、把「司法」换成「执法」，都是标准错项。</li>
+          <li><b>「本省/本地」优先</b>：省考常考本省地理、历史人物、非遗；考前 1 天专门看本省概况。</li>
+          <li><b>不会就选「最像政策原文」的</b>：政治理论题里，表述最规范、最接近文件语言的选项正确率最高。</li>
+        </ul>
+      </div>
+      <div class="example">
+        <div class="example-header">📝 例题105 · 综合判断（小黑母题风格）</div>
+        <div class="example-body">
+          <div class="example-q">某题选项：A.「党的领导制度是我国的根本政治制度」B.「人民代表大会制度是我国的根本政治制度」C.「政协是我国的国家机关」D.「法治社会是全面依法治国的重点任务和主体工程」。正确答案是：</div>
+          <div class="example-opts">A　B　C　D</div>
+          <div class="example-answer"><b>解析：</b>A 混了「根本领导制度」；C 政协不是国家机关；D 法治政府才是重点任务和主体工程。<br><span class="correct">答案：B</span></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">2. 21 天计划（可直接照做）</div>
+        <table class="mini-table k1">
+          <tr><th>阶段</th><th>天数</th><th>任务</th></tr>
+          <tr><td>搭框架</td><td>D1–D3</td><td>本页 一～三（政治理论）+ 二十、数字速记，每天 1 个模块，只记加粗结论</td></tr>
+          <tr><td>攻法律</td><td>D4–D7</td><td>十六～十九（民法/刑法/行政法/宪法），每天 1 节 + 当天例题全做</td></tr>
+          <tr><td>补文史</td><td>D8–D11</td><td>六～九（古代史/近现代史/文学/文化），用表格横向对比记</td></tr>
+          <tr><td>补科技</td><td>D12–D14</td><td>十～十三（物理/化学/生物医学/生活高新），只记「一句话原理」</td></tr>
+          <tr><td>补经济地理</td><td>D15–D16</td><td>十四～十五，重点 GDP、通胀、汇率、秦岭淮河、中国之最</td></tr>
+          <tr><td>排坑</td><td>D17–D19</td><td>只看二十一（四张表），错一题回填一处；配合《排坑手册》原书</td></tr>
+          <tr><td>套卷</td><td>D20</td><td>限时 12 分钟做 20 题常识，统计错题类型（知识型 / 排除型 / 粗心型）</td></tr>
+          <tr><td>考前</td><td>D21</td><td>只看二十（数字）+ 二十一（排坑），不做新题</td></tr>
+        </table>
+        <div class="tip-box"><b>每天 40 分钟的结构：</b>15 分钟看本页 → 15 分钟做例题 → 10 分钟口述复述（合上页面，把这一节的 5 个关键词说出来）。口述比默读有效得多。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    内容整理自小黑《理论讲练》《消化清单》《排坑手册》及配套笔记 · 仅供个人复习使用
+  </div>
+
+</div>
+
+</div>
+
+<button class="back-top" id="backTop" aria-label="回到顶部" onclick="scrollToTop()">↑</button>
+
+<script>
+  function toggleSection(header) {
+    const section = header.parentElement;
+    section.classList.toggle('collapsed');
+  }
+
+  const backTop = document.getElementById('backTop');
+  const progressFill = document.getElementById('progressFill');
+
+  window.addEventListener('scroll', function () {
+    const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+    const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    progressFill.style.width = (scrollTop / scrollHeight) * 100 + '%';
+    backTop.classList.toggle('show', scrollTop > 300);
+  });
+
+  function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  const searchInput = document.getElementById('navSearch');
+  const allSections = document.querySelectorAll('.section');
+  const navLinks = document.querySelectorAll('.nav-link');
+
+  function resetSearch() {
+    allSections.forEach(sec => {
+      sec.style.display = '';
+      sec.classList.remove('collapsed');
+      sec.querySelectorAll('.block').forEach(b => { b.style.opacity = '1'; });
+    });
+    navLinks.forEach(l => { l.style.display = 'block'; });
+    document.querySelectorAll('.nav-group').forEach(g => { g.style.display = ''; });
+  }
+
+  searchInput.addEventListener('input', function () {
+    const keyword = this.value.trim().toLowerCase();
+    if (!keyword) { resetSearch(); return; }
+
+    navLinks.forEach(l => {
+      const kw = (l.dataset.kw || '').toLowerCase();
+      const hit = kw.includes(keyword) || l.textContent.toLowerCase().includes(keyword);
+      l.style.display = hit ? 'block' : 'none';
+    });
+    document.querySelectorAll('.nav-group').forEach(g => {
+      const any = [...g.querySelectorAll('.nav-link')].some(l => l.style.display !== 'none');
+      g.style.display = any ? '' : 'none';
+    });
+
+    allSections.forEach(sec => {
+      if (sec.textContent.toLowerCase().includes(keyword)) {
+        sec.style.display = '';
+        sec.classList.remove('collapsed');
+        sec.querySelectorAll('.block').forEach(b => {
+          b.style.opacity = b.textContent.toLowerCase().includes(keyword) ? '1' : '0.3';
+        });
+      } else {
+        sec.style.display = 'none';
+      }
+    });
+  });
+
+  searchInput.addEventListener('blur', function () {
+    if (!this.value.trim()) resetSearch();
+  });
+</script>
+
+    <script data-page-shell src="../../assets/page-shell.js"></script>
+<script data-study-hub-script src="../../assets/hub-nav.js"></script>
+</body>
+</html>

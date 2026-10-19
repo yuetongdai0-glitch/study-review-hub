@@ -12,7 +12,10 @@ const studyPages = [
   { route: 'comprehensive-a', label: '综应 A 类' },
   { route: 'exam-grid', label: '模拟考试答题纸' },
   { route: 'choice-quiz', label: '选择题答题卡' },
-  { route: 'vocab', label: '综应A 规范词速查' }
+  { route: 'vocab', label: '综应A 规范词速查' },
+  { route: 'politics', label: '政治常识' },
+  { route: 'words', label: '词语积累' },
+  { route: 'scratchpad', label: '草稿纸' }
 ]
 
 /**

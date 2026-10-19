@@ -16,14 +16,17 @@ const pages = [
   { route: 'comprehensive-a', title: '综应 A 类' },
   { route: 'exam-grid', title: '模拟考试答题纸' },
   { route: 'choice-quiz', title: '选择题答题卡' },
-  { route: 'vocab', title: '综应A 规范词速查' }
+  { route: 'vocab', title: '综应A 规范词速查' },
+  { route: 'politics', title: '政治常识' },
+  { route: 'words', title: '词语积累' },
+  { route: 'scratchpad', title: '草稿纸' }
 ]
 
 /**
  * 阅读型科目页（带左上角共享侧栏目录）。
  * exam-grid / choice-quiz 是练习工具（答题纸 / 答题卡），全屏单页布局，不适用侧栏目录。
  */
-const shellPages = pages.filter((p) => !['exam-grid', 'choice-quiz'].includes(p.route))
+const shellPages = pages.filter((p) => !['exam-grid', 'choice-quiz', 'scratchpad'].includes(p.route))
 
 /**
  * 侧栏目录锚点由页面脚本在运行时生成的页面：
@@ -1013,3 +1016,156 @@ for (const { route, ex: exRe } of UNIT_PAGES) {
     assert.deepEqual(bad, [], `${route} 页存在「N 条知识点配不足 N 道例题」的小节：\n  ` + bad.join('\n  '))
   })
 }
+
+test('政治常识页：政治理论 + 常识判断全模块，每个知识点紧跟例题', async () => {
+  const page = await readText(new URL('../pages/politics/index.html', import.meta.url))
+
+  // 23 个板块：总览 + 22 个考点模块（与数量关系页同款页壳）
+  const secs = [...page.matchAll(/<div class="section c-[a-z]+" id="(nav|s\d+)">/g)].map(m => m[1])
+  assert.equal(secs.length, 23, `政治常识页板块应为 23 个，实际 ${secs.length} 个`)
+  assert.equal(secs[0], 'nav', '首个板块应为总览 nav')
+  for (let i = 1; i <= 22; i++) assert.ok(secs.includes(`s${i}`), `缺少板块 s${i}`)
+
+  // 页壳：侧栏 23 条 + 7 个分组 + 搜索 + 抽屉
+  assert.equal((page.match(/class="nav-link"/g) || []).length, 23, '侧栏链接应为 23 条')
+  assert.equal((page.match(/class="nav-group"/g) || []).length, 7, '侧栏应有 7 个分组')
+  assert.ok(page.includes('class="menu-btn"') && page.includes('class="mask"'), '缺少移动端抽屉结构')
+  assert.ok(page.includes('id="navSearch"'), '缺少侧栏搜索框')
+
+  // 知识块与例题：内容模块（s1–s19）每个知识点后面必须紧跟一道例题
+  const blocks = page.split(/<div class="section c-[a-z]+" id="/).slice(1)
+  let totalEx = 0
+  for (const chunk of blocks) {
+    const id = chunk.slice(0, chunk.indexOf('"'))
+    const body = chunk
+    const nb = (body.match(/class="block-title"/g) || []).length
+    const ne = (body.match(/class="example"/g) || []).length
+    totalEx += ne
+    if (id === 'nav' || id === 's20' || id === 's21' || id === 's22') continue
+    assert.ok(nb >= 3, `模块 ${id} 知识点过少：${nb}`)
+    assert.ok(ne >= nb, `模块 ${id} 例题数(${ne})少于知识点数(${nb})`)
+    // 按 DOM 顺序做「知识点 → 例题」的相邻校验
+    const re = /<div\b[^>]*>|<\/div>/g
+    const i0 = body.indexOf('<div class="section-body">')
+    re.lastIndex = i0
+    let depth = 0
+    const seq = []
+    let m
+    while ((m = re.exec(body))) {
+      if (m[0] === '</div>') {
+        if (depth === 0) break
+        depth -= 1
+        continue
+      }
+      if (depth === 0) {
+        const cls = (m[0].match(/class="([^"]*)"/) || [null, ''])[1].split(/\s+/)
+        seq.push(cls.includes('block') ? 'B' : cls.includes('example') ? 'E' : 'O')
+      }
+      depth += 1
+    }
+    seq.forEach((k, idx) => {
+      if (k === 'B' && idx + 1 < seq.length) {
+        assert.equal(seq[idx + 1], 'E', `模块 ${id} 第 ${seq.slice(0, idx + 1).filter(x => x === 'B').length} 个知识点后面没有紧跟例题`)
+      }
+    })
+  }
+  assert.ok(totalEx >= 100, `政治常识页例题偏少：${totalEx}`)
+  assert.equal((page.match(/class="example-header"/g) || []).length, totalEx, '每道例题都应有标题行')
+  assert.equal((page.match(/class="correct">答案：/g) || []).length, totalEx, '每道例题都应给出答案')
+
+  // 三本书的核心考点必须落到页面上
+  for (const k of [
+    '坚持和发展中国特色社会主义', '两个结合', '十个明确', '六个必须坚持', '中国式现代化',
+    '共同富裕', '新发展格局', '全过程人民民主', '总体国家安全观', '人类命运共同体',
+    '唯物主义', '对立统一', '量变质变', '否定之否定', '唯物史观', '剩余价值',
+    '良渚', '科举', '摊丁入亩', '南京条约', '辛丑条约', '遵义会议', '百团大战',
+    '诗经', '唐宋八大家', '元曲四大家', '二十四节气',
+    '惯性', '杠杆', '升华', '超声波', '苏打', '甲醛',
+    '维生素', '海姆立克', '微波炉', '地震', '核聚变',
+    '嫦娥六号', '天问一号', '神舟', '文昌',
+    'GDP', '恩格尔系数', '基尼系数', '菲利普斯曲线',
+    '秦岭', '胡焕庸线', '鄱阳湖',
+    '民法典', '诉讼时效', '善意取得', '代位继承',
+    '正当防卫', '紧急避险', '犯罪中止', '累犯',
+    '行政处罚', '行政复议', '国家赔偿',
+    '宪法宣誓', '特赦', '指引作用'
+  ]) {
+    assert.ok(page.includes(k), `政治常识页缺少考点：${k}`)
+  }
+
+  // 只用文字与表格承载（不引截图 / 示意图）
+  assert.ok(!page.includes('<img'), '政治常识页不应包含图片')
+  assert.ok(!page.includes('<figure'), '政治常识页不应使用示意图')
+  assert.ok(!page.includes('fig.css'), '政治常识页无示意图，不应引入 fig.css')
+
+  // 禁用原生弹窗 + 相对路径引用共享样式
+  assert.ok(!/\bconfirm\s*\(/.test(page), '政治常识页使用了原生 confirm')
+  assert.ok(!/\balert\s*\(/.test(page), '政治常识页使用了原生 alert')
+  assert.ok(page.includes('href="../../assets/hub-nav.css"'), '政治常识页共享样式未使用相对路径')
+})
+
+test('草稿纸：白板书写、橡皮擦除、撤销重做、自动保存与导出图片', async () => {
+  const page = await readText(new URL('../pages/scratchpad/index.html', import.meta.url))
+
+  // 双层画布：纸张（网格）与笔迹分离，橡皮才不会把纸擦穿
+  assert.ok(page.includes('id="paper"'), '草稿纸缺少纸张画布')
+  assert.ok(page.includes('id="ink"'), '草稿纸缺少笔迹画布')
+  assert.ok(page.includes("getContext('2d')"), '草稿纸未使用 Canvas 2D 绘制')
+
+  // 书写：只认鼠标左键 + 指针事件（单指 / 手写笔）
+  assert.ok(page.includes("addEventListener('pointerdown'"), '草稿纸缺少 pointerdown 书写入口')
+  assert.ok(page.includes("addEventListener('pointermove'"), '草稿纸缺少 pointermove 轨迹')
+  assert.ok(page.includes("addEventListener('pointerup'"), '草稿纸缺少 pointerup 落笔收尾')
+  assert.ok(
+    /e\.pointerType === 'mouse' && e\.button !== 0/.test(page),
+    '草稿纸未限制鼠标仅左键书写'
+  )
+  assert.ok(page.includes('setPointerCapture'), '草稿纸未捕获指针，拖出画布会断笔')
+  assert.ok(page.includes("getCoalescedEvents"), '草稿纸未取合并事件，快速书写会画成折线')
+
+  // 橡皮：destination-out 局部擦除（不是整页清空）
+  assert.ok(page.includes("'eraser'"), '草稿纸缺少橡皮工具')
+  assert.ok(page.includes('destination-out'), '草稿纸橡皮未使用 destination-out 局部擦除')
+  assert.ok(page.includes('id="tool-eraser"'), '草稿纸缺少橡皮按钮')
+  assert.ok(page.includes('id="ring"'), '草稿纸缺少橡皮光标圈')
+
+  // 撤销 / 重做 / 清空
+  assert.ok(page.includes("type: 'add'") && page.includes("type: 'clear'"), '草稿纸撤销栈缺少命令类型')
+  assert.ok(/function\s+undo\s*\(/.test(page) && /function\s+redo\s*\(/.test(page), '草稿纸缺少撤销/重做实现')
+  assert.ok(page.includes('id="undo"') && page.includes('id="redo"'), '草稿纸缺少撤销/重做按钮')
+  assert.ok(/MAX_UNDO\s*=\s*300/.test(page), '草稿纸撤销步数上限不是 300')
+  // 清空必须走自绘确认框，不能直接抹掉
+  assert.ok(page.includes('id="clear"') && page.includes('id="modalOk"'), '草稿纸清空缺少自绘确认框')
+  assert.ok(!/\bconfirm\s*\(/.test(page), '草稿纸使用了原生 confirm')
+  assert.ok(!/\balert\s*\(/.test(page), '草稿纸使用了原生 alert')
+
+  // 本地自动保存与恢复
+  assert.ok(page.includes('localStorage'), '草稿纸未使用 localStorage 自动保存')
+  assert.ok(page.includes('scratchpad:v1'), '草稿纸缺少本地缓存键版本号')
+  assert.ok(/function\s+restore\s*\(/.test(page), '草稿纸缺少草稿恢复逻辑')
+  assert.ok(/function\s+validStroke\s*\(/.test(page), '草稿纸恢复时未校验笔迹数据')
+
+  // 纸张样式、颜色、粗细
+  for (const marker of ['空白', '横线', '方格', '点阵']) {
+    assert.ok(page.includes(marker), `草稿纸缺少纸张样式：${marker}`)
+  }
+  assert.ok(page.includes('id="paperType"'), '草稿纸缺少纸张切换控件')
+  assert.ok(page.includes('id="size"') && page.includes('type="range"'), '草稿纸缺少粗细调节')
+  assert.ok(page.includes('type="color"'), '草稿纸缺少自定义颜色')
+
+  // 导出图片：把纸张与笔迹合成后下载
+  assert.ok(/function\s+exportPng\s*\(/.test(page), '草稿纸缺少导出图片实现')
+  assert.ok(page.includes('toBlob'), '草稿纸导出未使用 toBlob')
+  assert.ok(page.includes('drawImage(ink'), '草稿纸导出未合成笔迹层')
+
+  // 快捷键与移动端
+  assert.ok(page.includes("key === 'z'"), '草稿纸缺少 Ctrl/⌘+Z 快捷键')
+  assert.ok(page.includes('touch-action:none'), '草稿纸画布未禁用触摸滚动，手机上会边画边滚')
+  assert.ok(page.includes('dvh'), '草稿纸未适配手机动态视口高度')
+  assert.ok(page.includes('ResizeObserver'), '草稿纸未监听尺寸变化，旋转屏幕会错位')
+
+  // 仍是全站统一页壳与相对路径
+  assert.ok(page.includes('href="../../assets/hub-nav.css"'), '草稿纸共享样式未使用相对路径')
+  assert.ok(page.includes('data-study-hub-script'), '草稿纸缺少共享导航脚本')
+  assert.ok(page.includes('<title>测试</title>'), '草稿纸标签页标题不是「测试」')
+})
