@@ -1,0 +1,2925 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="light">
+<title>测试</title>
+<style>
+
+  :root {
+    --bg: #f0f2f5;
+    --card-bg: #ffffff;
+    --primary: #4f7cff;
+    --primary-light: #e8efff;
+    --primary-dark: #3a5fd9;
+    --accent: #ff6b6b;
+    --accent-light: #fff0f0;
+    --green: #2ecc71;
+    --green-light: #eafaf1;
+    --orange: #f39c12;
+    --orange-light: #fef5e7;
+    --purple: #9b59b6;
+    --purple-light: #f5eef8;
+    --text: #1a1a2e;
+    --text-light: #555;
+    --text-muted: #999;
+    --border: #e8e8e8;
+    --radius: 14px;
+    --shadow: 0 2px 12px rgba(0,0,0,0.06);
+    --shadow-lg: 0 4px 20px rgba(0,0,0,0.1);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", "Microsoft YaHei", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 15px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* 顶部 Banner（不再吸顶，导航交给左侧目录） */
+  .banner {
+    background: linear-gradient(135deg, #4f7cff 0%, #6a5acd 100%);
+    color: #fff;
+    padding: 34px 20px 28px;
+    text-align: center;
+    box-shadow: 0 2px 16px rgba(79,124,255,0.3);
+    border-radius: 0 0 20px 20px;
+  }
+  .banner h1 { font-size: 22px; font-weight: 700; margin-bottom: 4px; letter-spacing: 1px; }
+  .banner p { font-size: 13px; opacity: 0.85; }
+
+  /* ===== 示意图 ===== */
+  .fig {
+    margin: 10px 0; padding: 12px 12px 8px; background: #fbfcff;
+    border: 1px solid #e4ebff; border-radius: 10px;
+  }
+  .fig svg { display: block; width: 100%; height: auto; max-width: 460px; margin: 0 auto; }
+  .fig figcaption { margin-top: 8px; font-size: 12.5px; color: var(--text-muted); text-align: center; line-height: 1.6; }
+  .fig text { font-family: inherit; }
+  .fig-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: stretch; }
+  .fig-row > .fig { flex: 1 1 210px; margin: 8px 0; }
+
+  /* 主体：让出左侧目录宽度 */
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 16px 14px 60px;
+  }
+
+  /* 章节卡片 */
+  .section {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 16px;
+    overflow: hidden;
+    scroll-margin-top: 24px;
+  }
+  .section-header {
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .section-icon {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; flex-shrink: 0;
+  }
+  .section-title {
+    font-size: 16px; font-weight: 700; flex: 1;
+  }
+  .section-tag {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-weight: 600;
+  }
+  .section-arrow {
+    transition: transform 0.3s;
+    color: var(--text-muted);
+    font-size: 14px;
+  }
+  .section.collapsed .section-arrow { transform: rotate(-90deg); }
+  .section-body {
+    padding: 0 16px 16px;
+    display: block;
+  }
+  .section.collapsed .section-body { display: none; }
+
+  /* 内容块 */
+  .block { margin-bottom: 14px; }
+  .block:last-child { margin-bottom: 0; }
+  .block-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .block-title::before {
+    content: '';
+    width: 3px; height: 14px;
+    background: var(--primary);
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  .formula-box {
+    background: var(--primary-light);
+    border-left: 3px solid var(--primary);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 14px;
+    margin: 6px 0;
+    line-height: 1.8;
+  }
+  .formula-box .formula {
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--primary-dark);
+  }
+  .tip-box {
+    background: var(--orange-light);
+    border-left: 3px solid var(--orange);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 13px;
+    margin: 6px 0;
+    color: #8a6d3b;
+  }
+  .key-box {
+    background: var(--green-light);
+    border-left: 3px solid var(--green);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 13px;
+    margin: 6px 0;
+    color: #1a7a45;
+  }
+  .warn-box {
+    background: var(--accent-light);
+    border-left: 3px solid var(--accent);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 13px;
+    margin: 6px 0;
+    color: #c0392b;
+  }
+
+  .point-list { padding-left: 2px; list-style: none; }
+  .point-list li {
+    position: relative;
+    padding-left: 16px;
+    margin-bottom: 4px;
+    font-size: 14px;
+    line-height: 1.8;
+  }
+  .point-list li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: var(--primary);
+    font-weight: bold;
+  }
+
+  .sub-point {
+    font-size: 13px;
+    color: var(--text-light);
+    margin: 4px 0 4px 8px;
+    padding-left: 10px;
+    border-left: 2px dashed var(--border);
+  }
+
+  /* 表格 */
+  .mini-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin: 6px 0;
+  }
+  .mini-table th {
+    background: var(--primary-light);
+    color: var(--primary-dark);
+    padding: 6px 8px;
+    text-align: left;
+    font-weight: 600;
+    border-radius: 6px 6px 0 0;
+  }
+  .mini-table td {
+    padding: 6px 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .mini-table tr:last-child td { border-bottom: none; }
+
+  /* 例题样式 */
+  .example {
+    border: 1.5px solid #e0e8ff;
+    border-radius: 10px;
+    margin: 10px 0;
+    overflow: hidden;
+  }
+  .example-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    padding: 6px 12px;
+    font-size: 13px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .example-body {
+    padding: 10px 12px;
+    font-size: 14px;
+    line-height: 1.8;
+  }
+  .example-q {
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  .example-opts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 16px;
+    font-size: 13px;
+    color: var(--text-light);
+    margin: 4px 0 6px;
+  }
+  .example-answer {
+    background: #f0f9ff;
+    border-left: 3px solid #0ea5e9;
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-size: 13px;
+    line-height: 1.8;
+    color: #0c4a6e;
+  }
+  .example-answer b { color: #0ea5e9; }
+  .example-answer .correct {
+    color: #16a34a;
+    font-weight: 700;
+  }
+
+  /* 颜色方案 */
+  .c-blue .section-icon { background: var(--primary-light); color: var(--primary); }
+  .c-blue .section-tag { background: var(--primary-light); color: var(--primary); }
+  .c-blue .block-title { color: var(--primary); }
+  .c-blue .block-title::before { background: var(--primary); }
+
+  .c-red .section-icon { background: var(--accent-light); color: var(--accent); }
+  .c-red .section-tag { background: var(--accent-light); color: var(--accent); }
+  .c-red .block-title { color: var(--accent); }
+  .c-red .block-title::before { background: var(--accent); }
+  .c-red .formula-box { background: var(--accent-light); border-color: var(--accent); }
+  .c-red .formula-box .formula { color: #c0392b; }
+
+  .c-green .section-icon { background: var(--green-light); color: var(--green); }
+  .c-green .section-tag { background: var(--green-light); color: var(--green); }
+  .c-green .block-title { color: var(--green); }
+  .c-green .block-title::before { background: var(--green); }
+
+  .c-orange .section-icon { background: var(--orange-light); color: var(--orange); }
+  .c-orange .section-tag { background: var(--orange-light); color: var(--orange); }
+  .c-orange .block-title { color: var(--orange); }
+  .c-orange .block-title::before { background: var(--orange); }
+
+  .c-purple .section-icon { background: var(--purple-light); color: var(--purple); }
+  .c-purple .section-tag { background: var(--purple-light); color: var(--purple); }
+  .c-purple .block-title { color: var(--purple); }
+  .c-purple .block-title::before { background: var(--purple); }
+
+  /* 考频标签 */
+  .tag-hot { background: #ff4757 !important; color: #fff !important; }
+  .tag-high { background: #ffa502 !important; color: #fff !important; }
+  .tag-mid { background: #7bed9f !important; color: #333 !important; }
+  .tag-low { background: #dfe4ea !important; color: #666 !important; }
+
+  /* 底部 */
+  .footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  /* 搜索框已移入左侧目录（.sb-search） */
+
+  /* 回到顶部 */
+  .back-top {
+    position: fixed;
+    bottom: 90px;
+    right: 20px;
+    width: 44px; height: 44px;
+    background: var(--primary);
+    color: #fff;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    box-shadow: 0 4px 12px rgba(79,124,255,0.4);
+    cursor: pointer;
+    z-index: 200;
+    opacity: 0;
+    transition: opacity 0.3s;
+    border: none;
+  }
+  .back-top.show { opacity: 1; }
+  .back-top:active { transform: scale(0.9); }
+
+  /* 进度条 */
+  .progress-bar {
+    height: 3px;
+    background: rgba(255,255,255,0.2);
+    position: fixed;
+    top: 0; left: 0;
+    z-index: 300;
+    transition: width 0.1s;
+  }
+  .progress-fill {
+    height: 100%;
+    background: #ffd700;
+    width: 0%;
+    transition: width 0.1s;
+  }
+
+  /* ===== 移动端 / 平板：目录变抽屉 ===== */
+  @media (max-width: 900px) {
+    .menu-btn { display: flex; }
+    .sb-brand { padding-left: 64px; }
+    .sidebar {
+      width: min(80vw, 280px); transform: translateX(-105%);
+      transition: transform 0.28s ease; z-index: 70;
+      box-shadow: 6px 0 26px rgba(0,0,0,0.28);
+    }
+    body.menu-open .sidebar { transform: translateX(0); }
+    body.menu-open .mask { display: block; }
+    body.menu-open { overflow: hidden; }
+    .main { margin-left: 0; }
+    .container { padding: 14px 12px 60px; }
+    .banner { padding: 26px 18px 22px; border-radius: 0 0 16px 16px; }
+    .banner h1 { font-size: 19px; }
+    .fig svg { max-width: 100%; }
+  }
+
+  @media print {
+    .sidebar, .menu-btn, .mask, .back-top { display: none !important; }
+    .main { margin-left: 0; }
+  }
+
+  @media (max-width: 380px) {
+    body { font-size: 14px; }
+    .banner h1 { font-size: 19px; }
+    .section-title { font-size: 15px; }
+  }
+
+  .wrong { display: inline-block; margin-top: 2px; font-size: 11.5px; color: #c0392b; }
+  .mini-table td em { color: #0284c7; font-style: normal; font-weight: 700; }
+
+
+  /* ===== 词语卡（本页新增） ===== */
+  .wg {
+    background: #fbfcff; border: 1px solid #e8eefc; border-left: 3px solid var(--primary);
+    border-radius: 10px; padding: 9px 11px; margin: 8px 0;
+  }
+  .wg-h { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-bottom: 3px; }
+  .wg-h b { font-size: 15px; color: var(--primary-dark); letter-spacing: .5px; }
+  .wg-t { font-size: 10.5px; padding: 1px 6px; border-radius: 5px; font-weight: 600; line-height: 1.7; }
+  .t-bao { background: #eafaf1; color: #1a7a45; }
+  .t-bian { background: #fff0f0; color: #c0392b; }
+  .t-zhong { background: #eef2f8; color: #5a6b85; }
+  .t-obj { background: #f5eef8; color: #7d4a9b; }
+  .wg-d { font-size: 13.5px; color: var(--text-light); line-height: 1.78; }
+  .wg-d b { color: #c0392b; font-weight: 700; }
+  .wg-e {
+    font-size: 13px; color: #0c4a6e; background: #f0f9ff;
+    border-radius: 6px; padding: 5px 8px; margin-top: 5px; line-height: 1.72;
+  }
+  .wg-e b { color: #0284c7; }
+  .wg-e::before { content: '例 '; color: #7dd3fc; font-weight: 700; }
+
+  /* 一句话区别 */
+  .diff {
+    background: linear-gradient(135deg, #fff7ed, #fef2f2);
+    border: 1px solid #fed7aa; border-radius: 9px;
+    padding: 8px 11px; font-size: 13.5px; line-height: 1.85; color: #8a4b12; margin: 6px 0;
+  }
+  .diff b { color: #c2410c; }
+
+  /* 例句对照 */
+  .egs { margin: 6px 0 4px; }
+  .egs div {
+    font-size: 13px; line-height: 1.78; padding: 4px 0 4px 10px;
+    border-left: 2px solid #dbe4ff; margin-bottom: 3px; color: var(--text-light);
+  }
+  .egs div b:first-child { color: var(--primary-dark); }
+  .egs em { color: #0284c7; font-style: normal; font-weight: 700; }
+
+  /* 辨析表：窄屏也保持可读 */
+  .mini-table.diff-tab th { font-size: 12.5px; white-space: nowrap; }
+  .mini-table.diff-tab td { font-size: 12.5px; line-height: 1.7; vertical-align: top; }
+  .mini-table.diff-tab td:first-child { white-space: nowrap; color: var(--primary-dark); font-weight: 700; }
+
+  /* 记忆口诀条 */
+  .memo {
+    background: #f5f3ff; border-left: 3px solid #8b5cf6; border-radius: 8px;
+    padding: 7px 11px; font-size: 13px; line-height: 1.8; color: #5b21b6; margin: 6px 0;
+  }
+  .memo b { color: #6d28d9; }
+
+  @media (max-width: 520px) {
+    .mini-table.diff-tab th, .mini-table.diff-tab td { font-size: 12px; padding: 5px 6px; }
+    .wg-h b { font-size: 14.5px; }
+    .diff { font-size: 13px; }
+  }
+</style>
+  <link data-study-hub-style rel="stylesheet" href="../../assets/hub-nav.css">
+  <link data-page-shell rel="stylesheet" href="../../assets/page-shell.css">
+</head>
+<body>
+
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+<button class="menu-btn" id="menuBtn" aria-label="打开目录">☰</button>
+<div class="mask" id="mask"></div>
+
+<!-- 左侧目录 -->
+<aside class="sidebar" id="sidebar">
+  <div class="sb-brand">
+    <div class="t">雨菲 · 词语积累</div>
+    <div class="s">高频成语 800 · 辨析版</div>
+  </div>
+  <div class="sb-search">
+    <input type="text" id="navSearch" placeholder="搜索词语 / 释义 / 例句…">
+  </div>
+
+  <div class="nav-group"><div class="g-title">开篇</div>
+    <a class="nav-link" data-kw="总览 三步记词法 误用陷阱 褒贬 对象 望文生义 学习路线" href="#nav">总览 · 三步记词法</a>
+  </div>
+
+  <div class="nav-group"><div class="g-title">成语积累 · 十二讲</div>
+    <a class="nav-link" data-kw="源远流长 连绵不绝 博大精深 历久弥新 兼容并蓄 一脉相承 薪火相传 不绝如缕 陈陈相因 衣钵相传 后继无人 难以为继 继往开来 承上启下 传承" href="#s1">一、文明 · 传承</a>
+    <a class="nav-link" data-kw="推陈出新 吐故纳新 革故鼎新 弃旧图新 去芜存菁 除旧布新 激浊扬清 另辟蹊径 标新立异 与时俱进 别出心裁 独树一帜 不落窠臼 自成一家 别开生面 创新" href="#s2">二、创新 · 变革</a>
+    <a class="nav-link" data-kw="墨守成规 抱残守缺 固步自封 因循守旧 食古不化 安于现状 按图索骥 按部就班 循规蹈矩 亦步亦趋 照本宣科 守旧" href="#s3">三、守旧 · 固守</a>
+    <a class="nav-link" data-kw="循序渐进 有条不紊 望而生畏 畏首畏尾 裹足不前 瞻前顾后 举步维艰 寸步难行 骑虎难下 进退维谷 进退失据 稳扎稳打 推进" href="#s4">四、秩序 · 推进</a>
+    <a class="nav-link" data-kw="岌岌可危 危如累卵 命悬一线 奄奄一息 风雨飘摇 危在旦夕 危若朝露 积重难返 尾大不掉 一盘散沙 桀骜不驯 四面楚歌 困境" href="#s5">五、困境 · 危局</a>
+    <a class="nav-link" data-kw="雨后春笋 横空出世 异军突起 应运而生 高歌猛进 如火如荼 蒸蒸日上 如日中天 势如破竹 突飞猛进 一日千里 日新月异 方兴未艾 悄然兴起 兴盛" href="#s6">六、兴起 · 兴盛</a>
+    <a class="nav-link" data-kw="日薄西山 江河日下 每况愈下 一落千丈 明日黄花 强弩之末 风光不再 惨淡经营 门可罗雀 无人问津 曲高和寡 昙花一现 衰落" href="#s7">七、衰落 · 低谷</a>
+    <a class="nav-link" data-kw="相形见绌 出类拔萃 无与伦比 脱颖而出 崭露头角 大显身手 望其项背 望尘莫及 相提并论 同日而语 等量齐观 一概而论 力有不逮 爱莫能助 鞭长莫及 望洋兴叹 首当其冲 比较" href="#s8">八、比较 · 地位</a>
+    <a class="nav-link" data-kw="浮光掠影 走马观花 蜻蜓点水 浅尝辄止 囫囵吞枣 不求甚解 举一反三 融会贯通 触类旁通 相辅相成 相得益彰 锦上添花 珠联璧合 互为表里 交相辉映 相映成趣 双峰并峙 印象" href="#s9">九、印象 · 效果</a>
+    <a class="nav-link" data-kw="并行不悖 齐头并进 双管齐下 并驾齐驱 一马当先 本末倒置 舍本逐末 喧宾夺主 得不偿失 分道扬镳 背道而驰 南辕北辙 各自为政 配合" href="#s10">十、配合 · 并行</a>
+    <a class="nav-link" data-kw="含糊其辞 闪烁其词 振聋发聩 掷地有声 广开言路 从善如流 耳提面命 言传身教 文不加点 下笔千言 一针见血 入木三分 言之凿凿 空穴来风 不刊之论 不经之谈 表达" href="#s11">十一、言语 · 表达</a>
+    <a class="nav-link" data-kw="琳琅满目 汗牛充栋 浩如烟海 比比皆是 不一而足 不计其数 屈指可数 凤毛麟角 吉光片羽 寥寥无几 鳞次栉比 星罗棋布 数量" href="#s12">十二、数量 · 状态</a>
+  </div>
+
+  <div class="nav-group"><div class="g-title">易混辨析 · 四十组（每组配真题）</div>
+    <a class="nav-link" data-kw="潜移默化 耳濡目染 耳闻目睹 人云亦云 随波逐流 亦步亦趋 拾人牙慧 浮光掠影 走马观花 蜻蜓点水 浅尝辄止 眼花缭乱 扑朔迷离 目不暇接 影响与感知" href="#b1">辨析一 · 影响与感知</a>
+    <a class="nav-link" data-kw="层出不穷 此消彼长 此起彼伏 方兴未艾 悄然兴起 应运而生 横空出世 粉墨登场 一蹴而就 一劳永逸 立竿见影 轻而易举 变化与兴衰" href="#b2">辨析二 · 变化与兴衰</a>
+    <a class="nav-link" data-kw="大相径庭 相去甚远 截然相反 独树一帜 标新立异 别出心裁 不拘一格 不落窠臼 独具一格 自成一家 移花接木 偷梁换柱 混淆是非 牵强附会 差异与独特" href="#b3">辨析三 · 差异与独特</a>
+    <a class="nav-link" data-kw="迫在眉睫 当务之急 时不我待 迫不及待 急功近利 好高骛远 好大喜功 贪大求全 有的放矢 一针见血 对症下药 量体裁衣 因地制宜 因势利导 因时制宜 紧迫与时机" href="#b4">辨析四 · 紧迫与时机</a>
+    <a class="nav-link" data-kw="脱颖而出 与众不同 出类拔萃 卓尔不群 相形见绌 望尘莫及 望其项背 独一无二 无与伦比 不可替代 本末倒置 舍本逐末 喧宾夺主 强弱与取舍" href="#b5">辨析五 · 强弱与取舍</a>
+    <a class="nav-link" data-kw="水到渠成 顺理成章 听之任之 顺其自然 缘木求鱼 竭泽而渔 寅吃卯粮 杀鸡取卵 墨守成规 抱残守缺 固步自封 陈陈相因 融会贯通 举一反三 触类旁通 方法与路径" href="#b6">辨析六 · 方法与路径</a>
+    <a class="nav-link" data-kw="息息相关 休戚与共 唇齿相依 琳琅满目 汗牛充栋 浩如烟海 泰然自若 安之若素 随遇而安 顾此失彼 捉襟见肘 左支右绌 状态与关系" href="#b7">辨析七 · 状态与关系</a>
+    <a class="nav-link" data-kw="含糊其辞 闪烁其词 猝不及防 始料不及 出其不意 措手不及 众望所归 实至名归 耳提面命 言传身教 春风化雨 表达与评议" href="#b8">辨析八 · 表达与评议</a>
+  </div>
+
+  <div class="nav-group"><div class="g-title">实词 · 易错</div>
+    <a class="nav-link" data-kw="积淀 沉淀 积累 积聚 折射 反射 影射 遏制 遏止 扼制 甄别 鉴别 辨别 启用 起用 权利 权力 以至 以致 考察 考查 必需 必须 实词" href="#sw">实词辨析 · 十组</a>
+    <a class="nav-link" data-kw="望文生义 易错成语 空穴来风 七月流火 差强人意 首当其冲 不刊之论 屡试不爽 明日黄花 无所不至 危言危行 目无全牛 曾几何时 久假不归 不足为训 三人成虎" href="#mis">望文生义 · 二十四例</a>
+  </div>
+
+  <div class="nav-group"><div class="g-title">冲刺 · 复盘</div>
+    <a class="nav-link" data-kw="考场策略 三步辨词法 时间分配 蒙猜 复盘 错题" href="#strategy">考场三步辨词法</a>
+  </div>
+</aside>
+
+<div class="main" id="main">
+
+<!-- Banner -->
+<div class="banner">
+  <h1>高频成语 · 词语积累 800</h1>
+  <p>一词语一句例句 · 一组词一道真题 · 能背得下、看得出区别</p>
+</div>
+
+<div class="container">
+  <!-- 总览 -->
+  <div class="section c-blue" id="nav">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">📋</div>
+      <div class="section-title">三步记词法 + 六大误用陷阱</div>
+      <span class="section-tag tag-hot">先看这页</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="key-box">
+        <b>这套资料怎么用：</b>本页把雨菲《高频成语 800》的「积累篇 + 辨析篇」重排成三层——
+        <b>① 按主题攒词</b>（每词配一句带语境的例句，先混个脸熟）；
+        <b>② 按混淆组拆词</b>（一组词先给一句「一句话区别」，再用表格拆侧重、拆搭配，最后用真题反查）；
+        <b>③ 按陷阱兜底</b>（望文生义、褒贬误用、对象误用）。<br>
+        <b>记不住不是背得少，是没有「对比锚点」。</b>单词硬背三天就忘，放进一组里对比，一次就记住。
+      </div>
+
+      <div class="block">
+        <div class="block-title">1. 三步记词法（每个混淆组都照这个顺序走）</div>
+        <ul class="point-list">
+          <li><b>第一步：先记「一句话区别」。</b>每组开头那条橙色框，只回答一个问题——<b>这几个词的差别到底在哪个字上</b>。例：潜移默化＝<b>变了</b>；耳濡目染＝<b>染上了</b>；耳闻目睹＝<b>知道了</b>。</li>
+          <li><b>第二步：记一句例句，不记释义。</b>释义是抽象概括，例句是具体场景。考场上你回忆起来的永远是场景，不是定义。</li>
+          <li><b>第三步：用例题反查。</b>做完先别看答案，先问自己「这题考的是<b>侧重</b>还是<b>对象</b>还是<b>褒贬</b>」，再对答案。做错的题，把错的那个选项抄到该组旁边。</li>
+        </ul>
+        <div class="tip-box">
+          <b>复习节奏建议：</b>一天 2 个积累讲 + 2 个辨析组（约 8 词 + 8 词 + 2 题），20 天走完一遍；
+          第二遍只看<b>橙色「一句话区别」</b>与<b>蓝色例句</b>；第三遍只看<b>例题</b>。
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">2. 六大误用陷阱（辨析题的六个出题口）</div>
+        <table class="mini-table diff-tab">
+          <tr><th>陷阱</th><th>怎么考</th><th>典型例子</th></tr>
+          <tr><td>望文生义</td><td>按字面理解，与真义相反</td><td>七月流火（天气转凉，不是天热）、差强人意（大体满意，不是不满意）、不刊之论（不能改动，不是不能刊登）</td></tr>
+          <tr><td>褒贬误用</td><td>贬词褒用 / 褒词贬用</td><td>无所不至（贬）、处心积虑（贬）、叹为观止（褒）、蔚然成风（褒）</td></tr>
+          <tr><td>对象误用</td><td>适用对象不对</td><td>汗牛充栋（只指书）、豆蔻年华（只指十三四岁女子）、相敬如宾（只指夫妻）、罄竹难书（只指罪恶）</td></tr>
+          <tr><td>语义重复</td><td>与句中某词意思重叠</td><td>「更加弥足珍贵」「被人贻笑大方」「让人望其项背」「大约 500 人左右」</td></tr>
+          <tr><td>语法不合</td><td>不及物、不能带宾语</td><td>「望其项背」多用于否定；「相形见绌」后不能再带宾语；「首当其冲」不能当「首先」用</td></tr>
+          <tr><td>谦敬错位</td><td>敬辞用于自己 / 谦辞用于他人</td><td>蓬荜生辉（谦，说自己家）、抛砖引玉（谦）、鼎力相助（敬，说别人）</td></tr>
+        </table>
+      </div>
+
+      <div class="block">
+        <div class="block-title">3. 例题怎么看：原题 vs 仿题</div>
+        <table class="mini-table diff-tab">
+          <tr><th>标题写法</th><th>含义</th><th>用法</th></tr>
+          <tr><td>真题 + 年份地区</td><td>往年<b>公考 / 事业单位联考原题</b>，题目与选项按原卷</td><td>先按考场节奏做，做完再对解析；这类题的选项设置最「毒」</td></tr>
+          <tr><td>真题改编 · 同考点仿题</td><td>按同一考点<b>改写</b>的仿题，题干换了、考点没换</td><td>用来「定点练」，专治某一个词的错用</td></tr>
+        </table>
+        <div class="tip-box">
+          本页已收录 <b>9 道原题</b>（2020 国考副省级、2018 年 421 联考、2021 山东、2021 广西联考、2021 黑龙江、2019 吉林、2018 广东 等），
+          其余各组配「同考点仿题」，保证<b>每一组混淆词都有题可练</b>。
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">4. 本页结构（24 个板块）</div>
+        <table class="mini-table diff-tab">
+          <tr><th>部分</th><th>内容</th><th>怎么练</th></tr>
+          <tr><td>积累 · 十二讲</td><td>按主题分 12 组，约 160 个高频成语，<b>每词一句例句</b></td><td>先遮住释义，只看例句猜词；猜错再回头看释义</td></tr>
+          <tr><td>辨析 · 四十组</td><td>32 组最易混的成语，<b>每组一句区别 + 一张侧重表 + 例句对照 + 一道例题</b></td><td>读完区别立刻做题，做完再读一遍区别</td></tr>
+          <tr><td>实词 · 十组</td><td>积淀/沉淀、遏制/遏止、启用/起用等实词辨析</td><td>背「搭配」而不是背意思</td></tr>
+          <tr><td>望文生义 · 24 例</td><td>最容易按字面理解的成语速查表</td><td>考前 10 分钟扫一遍</td></tr>
+        </table>
+        <div class="memo">
+          <b>一句话总纲：</b>辨析题的答案，八成不在「意思」，而在<b>侧重、对象、褒贬、搭配</b>这四把尺子上。
+          拿不准的时候，不要想「这个词什么意思」，而要想「<b>这个词能不能这样用</b>」。
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 一、文明 · 传承 -->
+  <div class="section c-blue" id="s1">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">🏛️</div>
+      <div class="section-title">一、文明 · 传承</div>
+      <span class="section-tag tag-hot">最高频</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="key-box">
+        <b>这组的核心矛盾：</b>「长」还是「传」。「源远流长」说<b>历史悠久</b>，「一脉相承 / 薪火相传」说<b>往下传</b>，
+        「后继无人 / 难以为继」说<b>传不下去</b>。考场上先判断句子讲的是「时间跨度」还是「传承动作」。
+      </div>
+
+      <div class="wg">
+        <div class="wg-h"><b>源远流长</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">历史·文明·传统</span></div>
+        <div class="wg-d">源头很远、水流很长。形容<b>历史悠久、根底深厚</b>。</div>
+        <div class="wg-e">中华文明<b>源远流长</b>，五千多年从未中断。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>连绵不绝</b><span class="wg-t t-zhong">中性</span><span class="wg-t t-obj">山脉·雨丝·队伍</span></div>
+        <div class="wg-d">接连不断，一个接一个。<b>多指具体事物</b>的连续，不指历史。</div>
+        <div class="wg-e">秦岭山脉<b>连绵不绝</b>，横亘千里。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>博大精深</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">思想·学说·理论</span></div>
+        <div class="wg-d">广博又高深。<b>只能形容抽象的知识体系</b>，不能形容人。</div>
+        <div class="wg-e">《黄帝内经》所蕴含的养生思想<b>博大精深</b>。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>历久弥新</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">经典·精神·价值</span></div>
+        <div class="wg-d">经历的<b>时间越久越显出新意与价值</b>。重在「越久越新」。</div>
+        <div class="wg-e">这些经典之所以<b>历久弥新</b>，是因为它们触及了人性的共通处。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>兼容并蓄</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">文化·胸怀·政策</span></div>
+        <div class="wg-d">把不同的人、事物、学说<b>都吸收容纳</b>进来。重在「容」。</div>
+        <div class="wg-e">盛唐气象的底色，正是<b>兼容并蓄</b>的文化自信。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>一脉相承</b><span class="wg-t t-zhong">中性</span><span class="wg-t t-obj">思想·传统·流派</span></div>
+        <div class="wg-d">由同一个血统、派系<b>递相承接</b>下来。重在「同一来源、不断线」。</div>
+        <div class="wg-e">从《诗经》到现代诗，现实主义的传统<b>一脉相承</b>。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>薪火相传</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">技艺·学问·精神</span></div>
+        <div class="wg-d">前代把火种交给后代，比喻<b>技艺、学问、精神代代传下去</b>。重在「传的动作」。</div>
+        <div class="wg-e">这门手艺靠师徒<b>薪火相传</b>，已延续六代。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>不绝如缕</b><span class="wg-t t-zhong">中性偏贬</span><span class="wg-t t-obj">声音·气息·技艺</span></div>
+        <div class="wg-d">像细线一样连着，差点断掉。① 声音、气息<b>微弱悠长</b>；② 传统、技艺<b>仅存一线</b>。</div>
+        <div class="wg-e">深夜的琴声<b>不绝如缕</b>，一直飘到巷口。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>陈陈相因</b><span class="wg-t t-bian">贬</span><span class="wg-t t-obj">做法·文风·制度</span></div>
+        <div class="wg-d">沿袭老一套，<b>没有改进</b>。不是「互相因循」这么温和，是明确批评。</div>
+        <div class="wg-e">若只是<b>陈陈相因</b>，学术便难有真正的突破。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>衣钵相传</b><span class="wg-t t-zhong">中性</span><span class="wg-t t-obj">师徒·父子·学派</span></div>
+        <div class="wg-d">原指佛教师徒传法，泛指<b>思想、技艺、学问的继承</b>。多用于具体师承关系。</div>
+        <div class="wg-e">他的书法得自父亲<b>衣钵相传</b>，一笔一画都有来历。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>后继无人</b><span class="wg-t t-bian">贬</span><span class="wg-t t-obj">事业·技艺·岗位</span></div>
+        <div class="wg-d">没有后来人接续。<b>强调「缺人」</b>，主语多是一门手艺、一项事业。</div>
+        <div class="wg-e">老匠人年事已高，这门手艺面临<b>后继无人</b>的困境。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>难以为继</b><span class="wg-t t-zhong">中性</span><span class="wg-t t-obj">模式·局面·生活</span></div>
+        <div class="wg-d">难以继续下去。<b>强调「撑不住」</b>，多指局面、模式、经费。</div>
+        <div class="wg-e">靠补贴维持的运营模式已<b>难以为继</b>。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>继往开来</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">事业·学术·时代</span></div>
+        <div class="wg-d">继承前人的事业，<b>开辟未来的道路</b>。重在「往前开」。</div>
+        <div class="wg-e">新一代学者当<b>继往开来</b>，把冷门绝学接住。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>承上启下</b><span class="wg-t t-zhong">中性</span><span class="wg-t t-obj">文章·结构·阶段</span></div>
+        <div class="wg-d">承接上面的、引出下面的。<b>多用于文章结构与工作阶段</b>的衔接。</div>
+        <div class="wg-e">这一段在全文结构中起<b>承上启下</b>的作用。</div>
+      </div>
+
+      <div class="memo">
+        <b>口诀：</b>源远流长看<b>年头</b>，一脉相承看<b>源头</b>，薪火相传看<b>火种</b>，后继无人看<b>缺人</b>，难以为继看<b>撑不住</b>。
+      </div>
+    </div>
+  </div>
+
+  <!-- 二、创新 · 变革 -->
+  <div class="section c-purple" id="s2">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">💡</div>
+      <div class="section-title">二、创新 · 变革</div>
+      <span class="section-tag tag-hot">超高频</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="key-box">
+        <b>这组的核心矛盾：</b>「破旧立新」的<b>程度与对象</b>。
+        推陈出新、革故鼎新、除旧布新都带「破旧」，但对象不同：<b>文化技艺</b>用推陈出新，<b>制度政治</b>用革故鼎新，
+        <b>风气</b>用激浊扬清；而「别出心裁 / 独树一帜 / 自成一家」说的是<b>独特性</b>，与破旧无关。
+      </div>
+
+      <div class="wg">
+        <div class="wg-h"><b>推陈出新</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">文艺·技艺·产品</span></div>
+        <div class="wg-d">去掉旧的糟粕，推出新的。<b>对象是文化、艺术、技术</b>，含「扬弃」意味。</div>
+        <div class="wg-e">老字号要活下去，就得在工艺上<b>推陈出新</b>。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>吐故纳新</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">肌体·组织·队伍</span></div>
+        <div class="wg-d">原指呼出浊气、吸入清气，比喻<b>扬弃旧的、吸收新的</b>。多用于组织、队伍的新陈代谢。</div>
+        <div class="wg-e">一个健康的肌体需要不断<b>吐故纳新</b>。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>革故鼎新</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">制度·政治·体制</span></div>
+        <div class="wg-d">破除旧的、建立新的。<b>用于制度层面的重大变革</b>，语气最重。</div>
+        <div class="wg-e">商鞅变法<b>革故鼎新</b>，奠定了秦国的强盛。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>弃旧图新</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">人·道路·错误</span></div>
+        <div class="wg-d">抛弃旧的、谋求新的。<b>多指走过错路的人改过自新</b>，主语通常是人或团体。</div>
+        <div class="wg-e">他决心<b>弃旧图新</b>，把过去那段彻底翻篇。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>去芜存菁</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">文献·资料·内容</span></div>
+        <div class="wg-d">去掉杂质、保留精华。<b>多用于整理材料、筛选内容</b>。</div>
+        <div class="wg-e">整理古籍要<b>去芜存菁</b>，不能泥沙俱下。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>除旧布新</b><span class="wg-t t-zhong">中性</span><span class="wg-t t-obj">风俗·气象·举措</span></div>
+        <div class="wg-d">清除旧的、建立新的。<b>不强调「精华糟粕」的判断</b>，只讲新旧更替。</div>
+        <div class="wg-e">岁末<b>除旧布新</b>，家家扫尘贴联。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>激浊扬清</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">风气·舆论·吏治</span></div>
+        <div class="wg-d">冲去浊水、扬起清水，比喻<b>清除坏的、发扬好的</b>。对象是<b>社会风气</b>。</div>
+        <div class="wg-e">舆论监督的意义，正在于<b>激浊扬清</b>。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>另辟蹊径</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">方法·路径·风格</span></div>
+        <div class="wg-d">另外开辟一条路，比喻<b>另找一种方法或风格</b>。重在「换路走」。</div>
+        <div class="wg-e">他没有跟着做短视频，而是<b>另辟蹊径</b>做起了音频课。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>标新立异</b><span class="wg-t t-zhong">中性偏贬</span><span class="wg-t t-obj">主张·设计·提法</span></div>
+        <div class="wg-d">提出新奇主张，表示与众不同。<b>看语境</b>：讲创新时中性，讲故意博眼球时贬。</div>
+        <div class="wg-e">设计上适度<b>标新立异</b>，反而更容易被记住。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>与时俱进</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">理念·制度·教材</span></div>
+        <div class="wg-d">随着时代一起前进。<b>强调「跟上时代」</b>，不强调创新本身。</div>
+        <div class="wg-e">教材必须<b>与时俱进</b>，及时吸收新的研究成果。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>别出心裁</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">构思·设计·办法</span></div>
+        <div class="wg-d">另有一种独特的构思。<b>重在「心思巧」</b>，多指具体的做法、设计、布局。</div>
+        <div class="wg-e">这场展览的布展方式<b>别出心裁</b>，观众要打着手电看。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>独树一帜</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">风格·流派·画风</span></div>
+        <div class="wg-d">单独树立起一面旗帜，比喻<b>自成一家、风格独特</b>。重在「旗帜鲜明地独立」。</div>
+        <div class="wg-e">他的山水画<b>独树一帜</b>，苍茫中见温润。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>不落窠臼</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">文章·艺术·叙事</span></div>
+        <div class="wg-d">不落俗套。<b>多用于文章、艺术作品</b>，「窠臼」＝旧格式。</div>
+        <div class="wg-e">这部小说的叙事<b>不落窠臼</b>，读来毫不腻味。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>自成一家</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">学问·技艺·书法</span></div>
+        <div class="wg-d">在学问、技艺上有独到之处，<b>能自成体系</b>。重在「成了体系」。</div>
+        <div class="wg-e">他浸淫篆刻四十年，已<b>自成一家</b>。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>别开生面</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">局面·形式·活动</span></div>
+        <div class="wg-d">另外开创新的局面或形式。<b>重在「焕然一新」</b>，多指活动、场面。</div>
+        <div class="wg-e">这档节目用说唱讲文物，可谓<b>别开生面</b>。</div>
+      </div>
+
+      <div class="memo">
+        <b>口诀：</b>文化推陈出新，制度革故鼎新，风气激浊扬清，材料去芜存菁；
+        讲<b>巧</b>用别出心裁，讲<b>独</b>用独树一帜，讲<b>体系</b>用自成一家，讲<b>不俗</b>用不落窠臼。
+      </div>
+    </div>
+  </div>
+
+  <!-- 三、守旧 · 固守 -->
+  <div class="section c-orange" id="s3">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">🧱</div>
+      <div class="section-title">三、守旧 · 固守</div>
+      <span class="section-tag tag-high">高频</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="key-box">
+        <b>这组的核心矛盾：</b>「守着什么不放」。守<b>规矩</b>是墨守成规、循规蹈矩；守<b>残缺的旧学</b>是抱残守缺；
+        守<b>自己的小圈子</b>是固步自封；守<b>旧例</b>是因循守旧。中性词只有「按部就班」「循规蹈矩」。
+      </div>
+
+      <div class="wg">
+        <div class="wg-h"><b>墨守成规</b><span class="wg-t t-bian">贬</span><span class="wg-t t-obj">办法·流程·思路</span></div>
+        <div class="wg-d">守着老规矩不肯改变。<b>重在「不知变通」</b>。</div>
+        <div class="wg-e">审批流程若一味<b>墨守成规</b>，就会拖慢创新。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>抱残守缺</b><span class="wg-t t-bian">贬</span><span class="wg-t t-obj">旧说·旧学·旧物</span></div>
+        <div class="wg-d">守着<b>残缺陈旧</b>的东西不放。<b>对象多是思想、学说、旧物</b>，语气比墨守成规更重。</div>
+        <div class="wg-e">对旧说<b>抱残守缺</b>，是学术停滞的根源。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>固步自封</b><span class="wg-t t-bian">贬</span><span class="wg-t t-obj">地区·企业·心态</span></div>
+        <div class="wg-d">自己把自己限制在旧圈子里，不求进步。<b>重在「自我封闭」</b>。</div>
+        <div class="wg-e">越是开放的城市，越不会<b>固步自封</b>。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>因循守旧</b><span class="wg-t t-bian">贬</span><span class="wg-t t-obj">制度·办法·作风</span></div>
+        <div class="wg-d">沿袭旧例、不求改进。<b>重在「照旧例办」</b>，多用于工作作风。</div>
+        <div class="wg-e"><b>因循守旧</b>的考核办法，早已不适应新形势。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>食古不化</b><span class="wg-t t-bian">贬</span><span class="wg-t t-obj">读书·治学·学古人</span></div>
+        <div class="wg-d">学了古代的东西却不善于运用。<b>专指「学古而不会用」</b>。</div>
+        <div class="wg-e">读古书最怕<b>食古不化</b>，句句照搬却不解其意。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>安于现状</b><span class="wg-t t-bian">贬</span><span class="wg-t t-obj">人·心态</span></div>
+        <div class="wg-d">满足于眼前状况，不求进取。<b>主语多是人</b>。</div>
+        <div class="wg-e">他不愿<b>安于现状</b>，辞职去读了一个学位。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>按图索骥</b><span class="wg-t t-zhong">中性偏贬</span><span class="wg-t t-obj">查找·办事</span></div>
+        <div class="wg-d">按图样找好马。① 按线索寻找（中性）；② <b>办事拘泥成法、不知变通</b>（贬）。</div>
+        <div class="wg-e"><b>按图索骥</b>式的招商，往往招不来真正合适的企业。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>按部就班</b><span class="wg-t t-zhong">中性</span><span class="wg-t t-obj">工作·学习·流程</span></div>
+        <div class="wg-d">按一定条理、步骤进行。<b>中性偏褒</b>，强调「有序」。</div>
+        <div class="wg-e">基础研究必须<b>按部就班</b>，急不得。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>循规蹈矩</b><span class="wg-t t-zhong">中性偏贬</span><span class="wg-t t-obj">人·做事</span></div>
+        <div class="wg-d">遵守规矩，不敢稍有逾越。<b>中性</b>；说人「没有创造力」时就带贬义。</div>
+        <div class="wg-e">他做事<b>循规蹈矩</b>，从不出错，也少有惊喜。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>亦步亦趋</b><span class="wg-t t-bian">贬</span><span class="wg-t t-obj">模仿·跟随</span></div>
+        <div class="wg-d">别人慢走也跟着慢走，别人快走也跟着快走。比喻<b>缺乏主见、处处模仿</b>。</div>
+        <div class="wg-e">跟在别人后面<b>亦步亦趋</b>，永远只能做第二。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>照本宣科</b><span class="wg-t t-bian">贬</span><span class="wg-t t-obj">讲课·宣讲·汇报</span></div>
+        <div class="wg-d">照着本子念。<b>专指讲话、讲课死板照搬</b>，不结合实际。</div>
+        <div class="wg-e">宣讲不能<b>照本宣科</b>，要讲群众听得懂的话。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>胶柱鼓瑟</b><span class="wg-t t-bian">贬</span><span class="wg-t t-obj">做事·用兵</span></div>
+        <div class="wg-d">把瑟上的柱粘住再弹，比喻<b>拘泥固执、不知变通</b>。生僻但真题出现过。</div>
+        <div class="wg-e">情况已变，仍<b>胶柱鼓瑟</b>地照老方案执行，只会越做越僵。</div>
+      </div>
+
+      <div class="memo">
+        <b>口诀：</b>守<b>规矩</b>＝墨守成规，守<b>残缺</b>＝抱残守缺，守<b>小圈子</b>＝固步自封，守<b>旧例</b>＝因循守旧，
+        学<b>古人不用</b>＝食古不化，跟着<b>别人走</b>＝亦步亦趋。
+      </div>
+    </div>
+  </div>
+  <!-- 四、秩序 · 推进 -->
+  <div class="section c-green" id="s4">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">📐</div>
+      <div class="section-title">四、秩序 · 推进</div>
+      <span class="section-tag tag-high">高频</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="key-box">
+        <b>这组的核心矛盾：</b>「推进」还是「推不动」。前面三个是<b>有秩序地往前走</b>（循序渐进、有条不紊、稳扎稳打），
+        中间四个是<b>不敢走 / 走不了</b>（望而生畏、畏首畏尾、裹足不前、瞻前顾后），后面四个是<b>已经卡住</b>（举步维艰、寸步难行、骑虎难下、进退维谷）。
+      </div>
+
+      <div class="wg">
+        <div class="wg-h"><b>循序渐进</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">学习·教学·改革</span></div>
+        <div class="wg-d">按一定次序、步骤<b>逐渐深入</b>。重在「由浅入深、不跳跃」。</div>
+        <div class="wg-e">识字教学要<b>循序渐进</b>，不能一上来就讲篇章。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>有条不紊</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">工作·组织·安排</span></div>
+        <div class="wg-d">有条理、一点不乱。重在「<b>乱中不乱</b>」，多形容事务性工作。</div>
+        <div class="wg-e">安置工作<b>有条不紊</b>地推进，三天内全部到位。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>稳扎稳打</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">经营·作战·推进</span></div>
+        <div class="wg-d">步步踏实、有把握地做。重在「<b>扎实、不冒进</b>」。</div>
+        <div class="wg-e">与其铺摊子，不如<b>稳扎稳打</b>做透一个市场。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>望而生畏</b><span class="wg-t t-zhong">中性</span><span class="wg-t t-obj">气势·难度·门槛</span></div>
+        <div class="wg-d">看见了就害怕。<b>对象是「事物」</b>——门槛高、气势盛，让人不敢接近。</div>
+        <div class="wg-e">那套申报程序复杂得让人<b>望而生畏</b>。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>畏首畏尾</b><span class="wg-t t-bian">贬</span><span class="wg-t t-obj">人·做事</span></div>
+        <div class="wg-d">前也怕、后也怕，<b>顾虑太多</b>。重在「怕」。</div>
+        <div class="wg-e">改革不能<b>畏首畏尾</b>，该碰的硬骨头迟早要碰。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>裹足不前</b><span class="wg-t t-bian">贬</span><span class="wg-t t-obj">人·事业·行动</span></div>
+        <div class="wg-d">停步不往前。<b>重在「停住」</b>，多因顾虑、条件限制。</div>
+        <div class="wg-e">担心失败而<b>裹足不前</b>，机会就悄悄溜走了。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>瞻前顾后</b><span class="wg-t t-zhong">中性偏贬</span><span class="wg-t t-obj">决策·处事</span></div>
+        <div class="wg-d">看看前面又看看后面。① <b>顾虑太多、犹豫不决</b>（贬）；② 考虑周密（中性，较少考）。</div>
+        <div class="wg-e">他<b>瞻前顾后</b>，错过了最佳的下手时机。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>举步维艰</b><span class="wg-t t-zhong">中性</span><span class="wg-t t-obj">企业·事业·处境</span></div>
+        <div class="wg-d">抬脚走路都十分困难，比喻<b>处境艰难</b>。重在「难，但还能挪」。</div>
+        <div class="wg-e">融资渠道收窄，中小企业<b>举步维艰</b>。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>寸步难行</b><span class="wg-t t-zhong">中性</span><span class="wg-t t-obj">处境·信用·环境</span></div>
+        <div class="wg-d">一步也走不了。<b>程度比举步维艰重</b>，近乎「完全动不了」。</div>
+        <div class="wg-e">没有信誉，在市场上<b>寸步难行</b>。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>骑虎难下</b><span class="wg-t t-zhong">中性</span><span class="wg-t t-obj">项目·局面</span></div>
+        <div class="wg-d">骑在虎背上难下来，比喻事情中途遇到困难，<b>又不能中止</b>。重在「<b>停不下来</b>」。</div>
+        <div class="wg-e">项目已投入过半，如今<b>骑虎难下</b>，只能硬着头皮走完。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>进退维谷</b><span class="wg-t t-zhong">中性</span><span class="wg-t t-obj">选择·决策</span></div>
+        <div class="wg-d">进退都处在困难的境地。重在「<b>两难</b>」——两条路都难走。</div>
+        <div class="wg-e">涨价丢客户、不涨亏成本，企业<b>进退维谷</b>。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>进退失据</b><span class="wg-t t-zhong">中性</span><span class="wg-t t-obj">政策·立场·处境</span></div>
+        <div class="wg-d">前进后退都失去依据。重在「<b>没抓手、没依据</b>」，比进退维谷更强调「无所适从」。</div>
+        <div class="wg-e">政策反复摇摆，企业<b>进退失据</b>。</div>
+      </div>
+
+      <div class="memo">
+        <b>口诀：</b>有序＝循序渐进 / 有条不紊 / 稳扎稳打；不敢走＝望而生畏（怕事） / 畏首畏尾（怕错） / 裹足不前（停住）；
+        卡住了＝举步维艰（难走） / 寸步难行（走不了） / 骑虎难下（停不下） / 进退维谷（两难） / 进退失据（没依据）。
+      </div>
+    </div>
+  </div>
+
+  <!-- 五、困境 · 危局 -->
+  <div class="section c-red" id="s5">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">⚠️</div>
+      <div class="section-title">五、困境 · 危局</div>
+      <span class="section-tag tag-high">高频</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="key-box">
+        <b>这组的核心矛盾：</b>「危险到什么程度、危险怎么来」。
+        岌岌可危 / 危如累卵（<b>随时会垮</b>）；命悬一线 / 奄奄一息（<b>只剩一口气</b>）；
+        危在旦夕（<b>就在眼前</b>）；危若朝露（<b>很快消失</b>）；风雨飘摇（<b>局势动荡</b>）。
+      </div>
+
+      <div class="wg">
+        <div class="wg-h"><b>岌岌可危</b><span class="wg-t t-zhong">中性</span><span class="wg-t t-obj">地位·政权·建筑</span></div>
+        <div class="wg-d">十分危险，快要倾覆。<b>多指地位、政权、形势</b>，也指建筑。</div>
+        <div class="wg-e">这座千年木塔倾斜严重，已<b>岌岌可危</b>。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>危如累卵</b><span class="wg-t t-zhong">中性</span><span class="wg-t t-obj">局势·处境</span></div>
+        <div class="wg-d">危险得像堆起来的蛋。<b>强调「随时会塌」</b>，比岌岌可危更具画面感。</div>
+        <div class="wg-e">资金链一旦断裂，公司处境<b>危如累卵</b>。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>命悬一线</b><span class="wg-t t-zhong">中性</span><span class="wg-t t-obj">人·生命</span></div>
+        <div class="wg-d">性命悬在一根线上。<b>只能指人</b>，强调生死只在一线之间。</div>
+        <div class="wg-e">洪水中的被困者<b>命悬一线</b>，救援队连夜突入。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>奄奄一息</b><span class="wg-t t-zhong">中性</span><span class="wg-t t-obj">人·企业·行业</span></div>
+        <div class="wg-d">只剩下一口气，临近死亡。<b>可用于人，也可用于濒于消亡的事物</b>。</div>
+        <div class="wg-e">这家老厂订单锐减，已<b>奄奄一息</b>。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>风雨飘摇</b><span class="wg-t t-zhong">中性</span><span class="wg-t t-obj">政权·局势·局面</span></div>
+        <div class="wg-d">在风雨中飘荡不定，比喻<b>局势动荡不安</b>。重在「不稳」。</div>
+        <div class="wg-e">那个政权内外交困，已是<b>风雨飘摇</b>。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>危在旦夕</b><span class="wg-t t-zhong">中性</span><span class="wg-t t-obj">生命·城市·防线</span></div>
+        <div class="wg-d">危险就在早晚之间。<b>强调「迫在眼前」</b>，时间上最近。</div>
+        <div class="wg-e">堤防出现管涌，下游村庄<b>危在旦夕</b>。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>危若朝露</b><span class="wg-t t-zhong">中性</span><span class="wg-t t-obj">富贵·繁荣·局面</span></div>
+        <div class="wg-d">危险得像早晨的露水，太阳一晒就消失。<b>强调「很快消亡」</b>。</div>
+        <div class="wg-e">靠高杠杆撑起的繁荣，<b>危若朝露</b>。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>积重难返</b><span class="wg-t t-bian">贬</span><span class="wg-t t-obj">问题·风气·弊病</span></div>
+        <div class="wg-d">长期形成的不良风气、问题<b>很难改变</b>。<b>对象是「坏东西」</b>，不能说「经验积重难返」。</div>
+        <div class="wg-e">形式主义<b>积重难返</b>，必须久久为功。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>尾大不掉</b><span class="wg-t t-bian">贬</span><span class="wg-t t-obj">机构·下属·组织</span></div>
+        <div class="wg-d">尾巴太大就摇不动，比喻<b>机构庞大或下属势力强，指挥不动</b>。</div>
+        <div class="wg-e">机构层层叠叠，早已<b>尾大不掉</b>。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>一盘散沙</b><span class="wg-t t-bian">贬</span><span class="wg-t t-obj">队伍·人心·社会</span></div>
+        <div class="wg-d">像一盘散开的沙子。<b>强调「没有组织、人心不齐」</b>。</div>
+        <div class="wg-e">没有共同目标，队伍就是一<b>盘散沙</b>。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>桀骜不驯</b><span class="wg-t t-bian">贬</span><span class="wg-t t-obj">人·性情·野马</span></div>
+        <div class="wg-d">性情倔强，不驯服。<b>多指人性格</b>，也可指野马。</div>
+        <div class="wg-e">这匹野马<b>桀骜不驯</b>，换了三个骑手都压不住。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>四面楚歌</b><span class="wg-t t-zhong">中性偏贬</span><span class="wg-t t-obj">处境·人·企业</span></div>
+        <div class="wg-d">陷入<b>孤立无援</b>的困境。重在「被包围、没人帮」。</div>
+        <div class="wg-e">失去盟友之后，他陷入<b>四面楚歌</b>的境地。</div>
+      </div>
+
+      <div class="memo">
+        <b>口诀：</b>要垮＝岌岌可危 / 危如累卵；要死＝命悬一线（人） / 奄奄一息（还可指事物）；
+        要快来＝危在旦夕；要快没＝危若朝露；不稳＝风雨飘摇。
+      </div>
+    </div>
+  </div>
+
+  <!-- 六、兴起 · 兴盛 -->
+  <div class="section c-green" id="s6">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">🌱</div>
+      <div class="section-title">六、兴起 · 兴盛</div>
+      <span class="section-tag tag-hot">超高频</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="key-box">
+        <b>这组的核心矛盾：</b>「<b>怎么起来的</b>」和「<b>起来多久了</b>」。
+        雨后春笋（<b>又多又快</b>）；横空出世 / 异军突起（<b>突然冒出</b>）；应运而生（<b>顺应需要</b>）；
+        方兴未艾（<b>势头正盛、还没停</b>）；悄然兴起（<b>不声不响</b>）；如日中天（<b>已到顶峰</b>）。
+      </div>
+
+      <div class="wg">
+        <div class="wg-h"><b>雨后春笋</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">新生事物·数量多</span></div>
+        <div class="wg-d">春天下雨后竹笋长得又多又快，比喻<b>新事物大量涌现</b>。多作「如雨后春笋般」。</div>
+        <div class="wg-e">乡村民宿如<b>雨后春笋</b>般冒出来，一年翻了两倍。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>横空出世</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">作品·人物·产品</span></div>
+        <div class="wg-d">突然出现，气势宏大。<b>常用于伟大的作品、杰出的人物</b>，含惊叹意味。</div>
+        <div class="wg-e">这部小说<b>横空出世</b>，一时洛阳纸贵。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>异军突起</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">力量·企业·流派</span></div>
+        <div class="wg-d">另一支力量突然崛起。<b>重在「新的一支」</b>，原本不在主流视野里。</div>
+        <div class="wg-e">短视频平台<b>异军突起</b>，改变了整个内容生态。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>应运而生</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">事物·行业·制度</span></div>
+        <div class="wg-d">顺应时机而出现。<b>强调「有需求才有它」</b>，前后常有因果。</div>
+        <div class="wg-e">共享单车<b>应运而生</b>，解决了出行「最后一公里」。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>高歌猛进</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">队伍·事业·势头</span></div>
+        <div class="wg-d">情绪高涨、勇猛前进。<b>多指整体的推进势头</b>。</div>
+        <div class="wg-e">球队一路<b>高歌猛进</b>，闯入决赛。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>如火如荼</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">活动·建设·运动</span></div>
+        <div class="wg-d">像火那样红、像荼那样白，形容<b>气势旺盛、气氛热烈</b>。多指正在进行的活动。</div>
+        <div class="wg-e">春耕生产<b>如火如荼</b>，田间处处是农机。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>蒸蒸日上</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">事业·生意·生活</span></div>
+        <div class="wg-d">一天天向上发展。<b>强调「持续变好」</b>。</div>
+        <div class="wg-e">小店的生意<b>蒸蒸日上</b>，去年又开了分店。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>如日中天</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">事业·声望·人</span></div>
+        <div class="wg-d">像太阳正当正午，比喻<b>正处在最兴盛的阶段</b>。已是顶点，不再上升。</div>
+        <div class="wg-e">那时的他<b>如日中天</b>，片约不断。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>势如破竹</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">进攻·推进·销售</span></div>
+        <div class="wg-d">劈竹子顺着头几节剖开，下面都跟着裂开。比喻<b>节节胜利、毫无阻碍</b>。</div>
+        <div class="wg-e">新产品上市后<b>势如破竹</b>，三个月拿下三成份额。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>突飞猛进</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">技术·成绩·进步</span></div>
+        <div class="wg-d">进步、发展<b>极其迅速</b>。重在「快」。</div>
+        <div class="wg-e">人工智能近十年<b>突飞猛进</b>，边界一再被推开。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>一日千里</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">进展·形势</span></div>
+        <div class="wg-d">一天能走一千里，形容<b>进展极快</b>。与突飞猛进近义，更偏「形势变化」。</div>
+        <div class="wg-e">高铁技术<b>一日千里</b>，十年前不敢想的速度已成日常。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>日新月异</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">面貌·科技·城市</span></div>
+        <div class="wg-d">每天每月都有新变化。<b>强调「不断出现新东西」</b>。</div>
+        <div class="wg-e">这座城市的面貌<b>日新月异</b>，三年不回就认不出路。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>方兴未艾</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">事业·潮流·产业</span></div>
+        <div class="wg-d">正在兴起，还没有停止。<b>强调「势头正盛、远未到头」</b>，是目前最热考点之一。</div>
+        <div class="wg-e">低空经济<b>方兴未艾</b>，各地都在抢先布局。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>悄然兴起</b><span class="wg-t t-zhong">中性</span><span class="wg-t t-obj">风气·方式·现象</span></div>
+        <div class="wg-d">不知不觉中兴起。<b>强调「不声不响、没人注意」</b>，与「声势浩大」相反。</div>
+        <div class="wg-e">一种新的阅读方式正在年轻人中<b>悄然兴起</b>。</div>
+      </div>
+
+<div class="example">
+          <div class="example-header">例题 · 真题 2021 黑龙江 第 35 题</div>
+          <div class="example-body">
+            <div class="example-q">在讨论疫情会给经济社会带来什么变化时，有人认为一些企业会____，一些行业会破茧成蝶。比如，远程协同办公软件迎来新机遇，网络视频步入发展的黄金时期，医疗健康网络应用____，因此，可以说危机与风险中也蕴含着机遇。</div>
+            <div class="example-opts"><span>A. 振翅高飞　方兴未艾</span><span>B. 浴火重生　蓬勃发展</span><span>C. 脱胎换骨　欣欣向荣</span><span>D. 凤凰涅槃　愈挫愈勇</span></div>
+            <div class="example-answer"><b>答案：<span class="correct">B</span></b><br>解析：第一空与「<b>破茧成蝶</b>」并列，要表达「从困境里重生」，只有「浴火重生」贴切；「振翅高飞」只讲飞得高，不含「从难中脱出」；「脱胎换骨」侧重彻底改造，方向不对。<br>第二空形容「医疗健康网络应用」在疫情中<b>旺盛发展</b>，用「蓬勃发展」。<br><b>注意 A 项：</b>「方兴未艾」本身是形容「行业势头正盛」，放在这里语义并不错，但第一空「振翅高飞」与「破茧成蝶」的「重生」语义断层——<b>双空题里，两个空都要成立才叫对，一个空勉强不算赢。</b></div>
+          </div>
+        </div>
+
+      <div class="memo">
+        <b>口诀：</b>多而快＝雨后春笋；突然＝横空出世 / 异军突起；顺需要＝应运而生；
+        还没到头＝方兴未艾；不出声＝悄然兴起；到顶了＝如日中天。
+      </div>
+    </div>
+  </div>
+  <!-- 七、衰落 · 低谷 -->
+  <div class="section c-orange" id="s7">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">🍂</div>
+      <div class="section-title">七、衰落 · 低谷</div>
+      <span class="section-tag tag-high">高频</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="key-box">
+        <b>这组最容易被望文生义：</b>「惨淡经营」是<b>费尽心力地经营</b>（褒），不是「生意惨淡」；
+        「明日黄花」是<b>过时之物</b>，不是「明天的希望」；「强弩之末」是<b>力量已尽</b>，不是「最后的猛攻」。
+      </div>
+
+      <div class="wg">
+        <div class="wg-h"><b>日薄西山</b><span class="wg-t t-bian">贬</span><span class="wg-t t-obj">势力·制度·行业</span></div>
+        <div class="wg-d">太阳快落山了，比喻<b>事物接近衰亡</b>。与「如日中天」相对。</div>
+        <div class="wg-e">传统纸媒一度被认为<b>日薄西山</b>，如今靠深度报道又活回来了。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>江河日下</b><span class="wg-t t-bian">贬</span><span class="wg-t t-obj">风气·局面·国势</span></div>
+        <div class="wg-d">像江水一天天往下流，比喻<b>情况一天天坏下去</b>。多指风气、局面。</div>
+        <div class="wg-e">若不加约束，行业风气将<b>江河日下</b>。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>每况愈下</b><span class="wg-t t-bian">贬</span><span class="wg-t t-obj">身体·状况·形势</span></div>
+        <div class="wg-d">情况越来越坏。<b>适用范围最广</b>，身体、经济、形势都能用。</div>
+        <div class="wg-e">停药之后，他的身体状况<b>每况愈下</b>。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>一落千丈</b><span class="wg-t t-bian">贬</span><span class="wg-t t-obj">地位·声誉·成绩</span></div>
+        <div class="wg-d">一下子跌得很惨。<b>强调「跌得急、幅度大」</b>。</div>
+        <div class="wg-e">丑闻曝光后，他的口碑<b>一落千丈</b>。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>明日黄花</b><span class="wg-t t-bian">贬</span><span class="wg-t t-obj">事物·消息·方案</span></div>
+        <div class="wg-d">原指重阳节后的菊花，比喻<b>过时的事物</b>。<b>常被误写作「昨日黄花」</b>。</div>
+        <div class="wg-e">这套方案放到今天已是<b>明日黄花</b>，没人再提。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>强弩之末</b><span class="wg-t t-zhong">中性</span><span class="wg-t t-obj">力量·攻势·势头</span></div>
+        <div class="wg-d">强弩射出的箭到了末程，连薄绢都穿不透。比喻<b>强大的力量已经衰竭</b>。</div>
+        <div class="wg-e">对手的攻势已是<b>强弩之末</b>，撑不过这个季度。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>风光不再</b><span class="wg-t t-zhong">中性</span><span class="wg-t t-obj">场所·人物·行业</span></div>
+        <div class="wg-d">昔日的盛况已不复存在。口语化，多用于今昔对比。</div>
+        <div class="wg-e">随着新商圈崛起，老街的商铺<b>风光不再</b>。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>惨淡经营</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">事业·店铺·创作</span></div>
+        <div class="wg-d">费尽心力地谋划、经营。<b>是褒义</b>，绝不是「经营不景气」。</div>
+        <div class="wg-e">这家书店<b>惨淡经营</b>二十年，终于有了起色。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>门可罗雀</b><span class="wg-t t-zhong">中性</span><span class="wg-t t-obj">场所·门店</span></div>
+        <div class="wg-d">门前可以张网捕雀，形容<b>来客稀少、十分冷落</b>。与「门庭若市」相对。</div>
+        <div class="wg-e">景区一过旺季便<b>门可罗雀</b>，商户纷纷关门。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>无人问津</b><span class="wg-t t-zhong">中性</span><span class="wg-t t-obj">商品·作品·事情</span></div>
+        <div class="wg-d">没人过问、没人尝试。<b>重在「没人理」</b>，不限于场所。</div>
+        <div class="wg-e">好书若无人推介，也可能长期<b>无人问津</b>。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>曲高和寡</b><span class="wg-t t-zhong">中性</span><span class="wg-t t-obj">作品·言论·艺术</span></div>
+        <div class="wg-d">曲调越高深，能跟着唱的人越少。比喻<b>言论、作品高深，理解的人少</b>。</div>
+        <div class="wg-e">这档人文节目<b>曲高和寡</b>，收视不高但口碑极佳。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>昙花一现</b><span class="wg-t t-zhong">中性偏贬</span><span class="wg-t t-obj">现象·人物·产品</span></div>
+        <div class="wg-d">昙花开放时间极短，比喻<b>美好事物出现不久就消失</b>。</div>
+        <div class="wg-e">网红店若只靠流量，多半<b>昙花一现</b>。</div>
+      </div>
+
+      <div class="memo">
+        <b>口诀：</b>快落山＝日薄西山；越来越坏＝江河日下 / 每况愈下；跌得狠＝一落千丈；
+        过时了＝明日黄花；力尽了＝强弩之末；费心力＝惨淡经营（褒）。
+      </div>
+    </div>
+  </div>
+
+  <!-- 八、比较 · 地位 -->
+  <div class="section c-blue" id="s8">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">⚖️</div>
+      <div class="section-title">八、比较 · 地位</div>
+      <span class="section-tag tag-hot">超高频</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="key-box">
+        <b>这组的核心矛盾：</b>「比下去」还是「比得上」，以及<b>能不能用于否定句</b>。
+        <b>必背：</b>望其项背、相提并论、同日而语、等量齐观、一概而论——<b>五个词全都多用于否定句</b>，
+        一旦看到「可以望其项背」「不能相提并论」，就知道命题人在考这个点。
+      </div>
+
+      <div class="wg">
+        <div class="wg-h"><b>相形见绌</b><span class="wg-t t-zhong">中性</span><span class="wg-t t-obj">同类比较</span></div>
+        <div class="wg-d">和同类相比显得不足。<b>后面不能再带宾语</b>，不说「相形见绌于…」。</div>
+        <div class="wg-e">与新款相比，旧机型<b>相形见绌</b>。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>出类拔萃</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">人·才能·品格</span></div>
+        <div class="wg-d">才能高出同类。<b>几乎只用于人</b>，不能形容产品、风景。</div>
+        <div class="wg-e">他在同期学员中<b>出类拔萃</b>，一毕业就被点名要走。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>无与伦比</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">价值·美·成就</span></div>
+        <div class="wg-d">没有能与之相比的。<b>程度最重的褒扬</b>，可用于人也可用于事物。</div>
+        <div class="wg-e">敦煌壁画的艺术价值<b>无与伦比</b>。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>脱颖而出</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">人·人才·作品</span></div>
+        <div class="wg-d">锥尖从布袋里露出来，比喻<b>才能全部显露</b>。<b>强调「在竞争中冒出来」</b>。</div>
+        <div class="wg-e">她在千人海选中<b>脱颖而出</b>，拿下唯一的名额。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>崭露头角</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">年轻人·新人</span></div>
+        <div class="wg-d">初次显露出才能。<b>强调「刚刚起步」</b>，多指年轻人。</div>
+        <div class="wg-e">这位 90 后导演去年<b>崭露头角</b>，今年就拿了奖。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>大显身手</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">人·本领</span></div>
+        <div class="wg-d">充分显示本领。<b>强调「有地方施展」</b>，常与「舞台、赛场」搭配。</div>
+        <div class="wg-e">技能大赛成了年轻技工<b>大显身手</b>的舞台。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>望其项背</b><span class="wg-t t-zhong">中性</span><span class="wg-t t-obj">水平·成就</span></div>
+        <div class="wg-d">能看见对方的颈背，比喻<b>赶得上</b>。<b>必背：多用于否定</b>——「难以望其项背」。</div>
+        <div class="wg-e">其工艺之精，今人<b>难以望其项背</b>。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>望尘莫及</b><span class="wg-t t-zhong">中性</span><span class="wg-t t-obj">水平·速度</span></div>
+        <div class="wg-d">只望见前面的尘土而追赶不上。<b>可直接用于肯定句</b>，这是与望其项背最大的区别。</div>
+        <div class="wg-e">技术代差之下，后来者只能<b>望尘莫及</b>。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>相提并论</b><span class="wg-t t-zhong">中性</span><span class="wg-t t-obj">人事比较</span></div>
+        <div class="wg-d">把不同的人或事放在一起谈论。<b>多用于否定</b>：不能 / 不可相提并论。</div>
+        <div class="wg-e">流量与口碑<b>不能相提并论</b>。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>同日而语</b><span class="wg-t t-zhong">中性</span><span class="wg-t t-obj">前后对比</span></div>
+        <div class="wg-d">放在同一时间谈论。<b>多用于否定，且强调「前后差距大」</b>：不可同日而语。</div>
+        <div class="wg-e">如今的小城，与十年前已<b>不可同日而语</b>。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>等量齐观</b><span class="wg-t t-zhong">中性</span><span class="wg-t t-obj">性质不同的事物</span></div>
+        <div class="wg-d">对不同的事物同等看待。<b>多用于否定</b>：不能等量齐观。</div>
+        <div class="wg-e">娱乐与教育<b>不能等量齐观</b>。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>一概而论</b><span class="wg-t t-zhong">中性</span><span class="wg-t t-obj">处理·判断</span></div>
+        <div class="wg-d">用同一标准对待或处理。<b>多用于否定</b>：不能一概而论。</div>
+        <div class="wg-e">各地情况差异很大，<b>不能一概而论</b>。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>力有不逮</b><span class="wg-t t-zhong">中性/谦</span><span class="wg-t t-obj">能力·任务</span></div>
+        <div class="wg-d">能力达不到。<b>可用于自谦</b>，也可客观陈述。</div>
+        <div class="wg-e">此事千头万绪，恐<b>力有不逮</b>，还请另请高明。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>爱莫能助</b><span class="wg-t t-zhong">中性</span><span class="wg-t t-obj">帮助·援手</span></div>
+        <div class="wg-d">心里同情却无力帮助。<b>强调「想帮但帮不上」</b>，含情感色彩。</div>
+        <div class="wg-e">我很想替他分担，可惜<b>爱莫能助</b>。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>鞭长莫及</b><span class="wg-t t-zhong">中性</span><span class="wg-t t-obj">管辖·监管·救援</span></div>
+        <div class="wg-d">鞭子虽长，打不到马肚子。比喻<b>力量达不到</b>。<b>多指管辖范围之外</b>。</div>
+        <div class="wg-e">异地维权，本地监管往往<b>鞭长莫及</b>。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>望洋兴叹</b><span class="wg-t t-zhong">中性</span><span class="wg-t t-obj">面对宏大事物</span></div>
+        <div class="wg-d">面对伟大的事物感叹自己渺小。<b>重在「感叹」</b>，多因对象太大而无可奈何。</div>
+        <div class="wg-e">面对浩如烟海的典籍，初学者常<b>望洋兴叹</b>。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>首当其冲</b><span class="wg-t t-zhong">中性</span><span class="wg-t t-obj">受灾·受冲击</span></div>
+        <div class="wg-d"><b>最先受到攻击或遭遇灾难</b>。<b>绝不能当「首先、第一个做」用</b>，这是最高频误用。</div>
+        <div class="wg-e">台风登陆，沿海城市<b>首当其冲</b>。</div>
+      </div>
+
+      <div class="memo">
+        <b>口诀：</b>比下去＝相形见绌；比得上＝望其项背（<b>只用于否定</b>）；追不上＝望尘莫及（<b>可用于肯定</b>）；
+        谈不到一块＝相提并论 / 同日而语 / 等量齐观 / 一概而论（<b>四个都多用于否定</b>）。
+      </div>
+    </div>
+  </div>
+
+  <!-- 九、印象 · 效果 -->
+  <div class="section c-purple" id="s9">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">👁️</div>
+      <div class="section-title">九、印象 · 效果</div>
+      <span class="section-tag tag-hot">超高频</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="key-box">
+        <b>这组的核心矛盾：</b>「不深的三种不深」与「配合的四种配合」。
+        浮光掠影＝<b>印象浅</b>（结果）；走马观花＝<b>看得快</b>（过程）；蜻蜓点水＝<b>只碰一下</b>（程度）；浅尝辄止＝<b>主动停下</b>（态度）。
+      </div>
+
+      <div class="wg">
+        <div class="wg-h"><b>浮光掠影</b><span class="wg-t t-bian">贬</span><span class="wg-t t-obj">印象·观察</span></div>
+        <div class="wg-d">水面上的光和一闪而过的影子。<b>强调「印象不深」</b>，多作定语（浮光掠影的印象）。</div>
+        <div class="wg-e">走马观花式的调研，只能留下<b>浮光掠影</b>的印象。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>走马观花</b><span class="wg-t t-bian">贬</span><span class="wg-t t-obj">参观·调研·阅读</span></div>
+        <div class="wg-d">骑在马上看花，<b>粗略地看</b>。<b>强调「看的动作快」</b>，多作状语。</div>
+        <div class="wg-e">三天跑五个县，难免<b>走马观花</b>。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>蜻蜓点水</b><span class="wg-t t-bian">贬</span><span class="wg-t t-obj">做事·帮扶·检查</span></div>
+        <div class="wg-d">像蜻蜓在水面轻轻一点。<b>强调「接触一下就完事」</b>，多指工作作风。</div>
+        <div class="wg-e">帮扶不能<b>蜻蜓点水</b>，要一竿子插到底。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>浅尝辄止</b><span class="wg-t t-bian">贬</span><span class="wg-t t-obj">学习·研究·尝试</span></div>
+        <div class="wg-d">稍微尝试一下就停止。<b>强调「主动放弃深入」</b>。</div>
+        <div class="wg-e">做学问最忌<b>浅尝辄止</b>，半途而废等于没做。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>囫囵吞枣</b><span class="wg-t t-bian">贬</span><span class="wg-t t-obj">读书·学习</span></div>
+        <div class="wg-d">把枣整个吞下去，<b>不加分析地笼统接受</b>。</div>
+        <div class="wg-e">读经典不能<b>囫囵吞枣</b>，一句没读懂就别翻页。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>不求甚解</b><span class="wg-t t-zhong">中性</span><span class="wg-t t-obj">读书·理解</span></div>
+        <div class="wg-d">只求懂个大概，不在字句上深究。<b>原为褒义</b>（陶渊明自况），今多中性。</div>
+        <div class="wg-e">他读书<b>不求甚解</b>，却自有会心之处。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>举一反三</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">学习·教学</span></div>
+        <div class="wg-d">从一件事类推而知道许多。<b>强调「由一推多」</b>。</div>
+        <div class="wg-e">好老师教的不是答案，是<b>举一反三</b>的能力。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>融会贯通</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">知识·学问</span></div>
+        <div class="wg-d">把各方面的知识<b>融合贯穿</b>，得到透彻理解。<b>强调「融合」</b>。</div>
+        <div class="wg-e">把文史哲打通，才能真正<b>融会贯通</b>。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>触类旁通</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">知识·技能</span></div>
+        <div class="wg-d">掌握一类事物的规律，就能推知同类。<b>强调「横向类推」</b>。</div>
+        <div class="wg-e">学会一门乐器，再学别的往往<b>触类旁通</b>。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>相辅相成</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">两事物·两方面</span></div>
+        <div class="wg-d">互相补充、互相配合，<b>缺一不可</b>。<b>强调「缺了不行」</b>。</div>
+        <div class="wg-e">制度与技术<b>相辅相成</b>，只靠一边都推不动。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>相得益彰</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">两方面·长处</span></div>
+        <div class="wg-d">互相配合，<b>各自的长处更加显现</b>。<b>强调「1+1>2」</b>，不强调缺一不可。</div>
+        <div class="wg-e">水墨与留白<b>相得益彰</b>，画面反而更满。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>锦上添花</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">好事·附加</span></div>
+        <div class="wg-d">在锦上再绣花，比喻<b>好上加好</b>。<b>含「非必需」意味</b>。</div>
+        <div class="wg-e">这个功能只是<b>锦上添花</b>，不是产品的核心。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>珠联璧合</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">人才·作品·合作</span></div>
+        <div class="wg-d">珍珠联成串、美玉合在一起，比喻<b>美好的人或事物结合</b>。</div>
+        <div class="wg-e">两位大师的合作，堪称<b>珠联璧合</b>。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>互为表里</b><span class="wg-t t-zhong">中性</span><span class="wg-t t-obj">两事物·内外</span></div>
+        <div class="wg-d">互相为外表和内里，<b>关系密切、内外一体</b>。</div>
+        <div class="wg-e">形式与内容<b>互为表里</b>，割裂开来谈都是空话。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>交相辉映</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">光亮·色彩·景物</span></div>
+        <div class="wg-d">各种光亮、色彩互相映照，也指美好事物互相衬托。</div>
+        <div class="wg-e">岸上灯火与江面波光<b>交相辉映</b>。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>相映成趣</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">景物·事物</span></div>
+        <div class="wg-d">互相衬托，<b>显得更有情趣</b>。多用于景物、画面。</div>
+        <div class="wg-e">白墙黛瓦与远处青山<b>相映成趣</b>。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>双峰并峙</b><span class="wg-t t-zhong">中性</span><span class="wg-t t-obj">两个高峰·两种成就</span></div>
+        <div class="wg-d">两座高峰相对而立，比喻<b>两种事物并立、难分高下</b>。</div>
+        <div class="wg-e">唐诗与宋词<b>双峰并峙</b>，各有各的江山。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>事半功倍</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">做事·效率</span></div>
+        <div class="wg-d">费力小而收效大。与「事倍功半」相对。</div>
+        <div class="wg-e">方法对了，往往<b>事半功倍</b>。</div>
+      </div>
+
+<div class="example">
+          <div class="example-header">例题 · 真题改编（相辅相成 / 相得益彰）</div>
+          <div class="example-body">
+            <div class="example-q">如今的辽河老街，新老建筑____，自然环境舒适宜人，戏院、茶馆、客栈、咖啡馆、古玩店应有尽有，成了营口对外展示形象的最亮丽的名片。</div>
+            <div class="example-opts"><span>A. 相得益彰</span><span>B. 相辅相成</span><span>C. 相伴而生</span><span>D. 相差无几</span></div>
+            <div class="example-answer"><b>答案：<span class="correct">A</span></b><br>解析：空处要表达「新老建筑<b>配合之后效果更好</b>」，这正是「相得益彰」（1+1 大于 2）。<br>·「相辅相成」只说明<b>互相配合、缺一不可</b>，不体现「结合后更好」的结果；<br>·「相伴而生」指一起产生，新建筑和老建筑不可能同时诞生，事实错；<br>·「相差无几」指彼此差别不大，与「配合」无关。<br><b>一句话锁死：</b>「相辅相成」＝缺一不可（1+1），「相得益彰」＝效果更好（1+1 大于 2）。</div>
+          </div>
+        </div>
+
+      <div class="memo">
+        <b>口诀：</b>印象浅＝浮光掠影；看得快＝走马观花；只碰一下＝蜻蜓点水；主动停＝浅尝辄止；
+        缺一不可＝相辅相成；1+1&gt;2＝相得益彰；好上加好＝锦上添花。
+      </div>
+    </div>
+  </div>
+  <!-- 十、配合 · 并行 -->
+  <div class="section c-green" id="s10">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">🤝</div>
+      <div class="section-title">十、配合 · 并行</div>
+      <span class="section-tag tag-high">高频</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="key-box">
+        <b>这组最好区分：</b>看「<b>方向</b>」。同一方向一起走＝并行不悖 / 齐头并进 / 并驾齐驱；
+        <b>两条手段一起用</b>＝双管齐下；<b>走最前</b>＝一马当先；<b>方向相反</b>＝背道而驰 / 南辕北辙；<b>各走各路</b>＝分道扬镳。
+      </div>
+
+      <div class="wg">
+        <div class="wg-h"><b>并行不悖</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">两件事·两种原则</span></div>
+        <div class="wg-d">同时进行而<b>不冲突</b>。强调「不矛盾」，多用于抽象事物。</div>
+        <div class="wg-e">保护与开发可以<b>并行不悖</b>，关键在怎么定规矩。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>齐头并进</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">工作·事业·指标</span></div>
+        <div class="wg-d">几个方面<b>同时进行</b>。强调「进度一致」。</div>
+        <div class="wg-e">经济与民生要<b>齐头并进</b>，不能一条腿长一条腿短。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>双管齐下</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">措施·手段</span></div>
+        <div class="wg-d">两支笔同时下笔，比喻<b>两种办法同时使用</b>。对象是措施、手段。</div>
+        <div class="wg-e">治超要<b>双管齐下</b>，既查车也查源头。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>并驾齐驱</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">水平·实力·企业</span></div>
+        <div class="wg-d">几匹马并排拉车，<b>不分先后地前进</b>。强调「水平相当」。</div>
+        <div class="wg-e">两家企业在新能源赛道上<b>并驾齐驱</b>。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>一马当先</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">人·带头</span></div>
+        <div class="wg-d">策马走在最前面，比喻<b>起带头作用</b>。</div>
+        <div class="wg-e">他在技术攻关中<b>一马当先</b>，连着熬了七个通宵。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>本末倒置</b><span class="wg-t t-bian">贬</span><span class="wg-t t-obj">主次·轻重</span></div>
+        <div class="wg-d">把根本的和枝节的<b>弄颠倒了</b>。强调「颠倒」。</div>
+        <div class="wg-e">重形式轻内容，就是<b>本末倒置</b>。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>舍本逐末</b><span class="wg-t t-bian">贬</span><span class="wg-t t-obj">做法·策略</span></div>
+        <div class="wg-d"><b>舍弃根本、追求枝节</b>。强调「主动放弃根本」。</div>
+        <div class="wg-e">只抓流量不抓品质，是典型的<b>舍本逐末</b>。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>喧宾夺主</b><span class="wg-t t-bian">贬</span><span class="wg-t t-obj">次要的·陪衬</span></div>
+        <div class="wg-d"><b>次要的压倒了主要的</b>。多指外来者、配角抢了主角的位置。</div>
+        <div class="wg-e">配乐铺得太满，反而<b>喧宾夺主</b>。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>得不偿失</b><span class="wg-t t-bian">贬</span><span class="wg-t t-obj">得失·代价</span></div>
+        <div class="wg-d">得到的抵不上失去的。强调「<b>算总账不划算</b>」。</div>
+        <div class="wg-e">为省成本偷工减料，最终<b>得不偿失</b>。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>分道扬镳</b><span class="wg-t t-zhong">中性</span><span class="wg-t t-obj">人·团体·路线</span></div>
+        <div class="wg-d">分路而行，比喻<b>因目标不同而各走各的路</b>。多指人、团体分开。</div>
+        <div class="wg-e">理念不合，两位创始人最终<b>分道扬镳</b>。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>背道而驰</b><span class="wg-t t-bian">贬</span><span class="wg-t t-obj">行为·方向·目标</span></div>
+        <div class="wg-d">朝着<b>相反的方向</b>跑。多指行为与目标、初衷相反。</div>
+        <div class="wg-e">这种做法与初衷<b>背道而驰</b>。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>南辕北辙</b><span class="wg-t t-bian">贬</span><span class="wg-t t-obj">行动·目的</span></div>
+        <div class="wg-d">想往南去，车子却往北走。比喻<b>行动和目的完全相反</b>。与背道而驰近义，更强调「<b>做法把事情推向反面</b>」。</div>
+        <div class="wg-e">想给学生减负却层层加码，无异于<b>南辕北辙</b>。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>各自为政</b><span class="wg-t t-bian">贬</span><span class="wg-t t-obj">部门·单位</span></div>
+        <div class="wg-d">各按自己的主张办事，<b>不互相配合</b>。</div>
+        <div class="wg-e">部门<b>各自为政</b>，数据一直打不通。</div>
+      </div>
+
+<div class="example">
+          <div class="example-header">例题 · 真题 2021 山东 第 18 题</div>
+          <div class="example-body">
+            <div class="example-q">文学研究一直离不开两个维度：一个倾向于艺术的、内部结构的审美研究；另一个倾向于社会的、外部关系的意义揭示。两者原本可以____，互为补充，但在不同时代，由于对文学本体的追问，以及文学的主体性和文学的社会价值性上思考不同，使两者关系变得复杂，甚至紧张和____。</div>
+            <div class="example-opts"><span>A. 珠联璧合　僵持</span><span>B. 相得益彰　对立</span><span>C. 互通有无　尖锐</span><span>D. 并行不悖　冲突</span></div>
+            <div class="example-answer"><b>答案：<span class="correct">D</span></b><br>解析：第一空后有「<b>互为补充</b>」作同义复现，说明两种研究<b>可以同时并存而不冲突</b>，选「并行不悖」。「珠联璧合」指美好的人或事物结合，多用于人才、作品的搭配，不用于「两种研究路径」；「相通有无」指互相交换有无，对象是物资、信息，不合。<br>第二空与「紧张」并列，且程度递进（复杂 → 紧张 → 冲突），选「冲突」。「僵持」多指双方对峙不下，缺少「二者相悖」的意味。<br><b>提示：</b>空后出现「互为补充」，先想「并行不悖」；出现「缺一不可」，才想「相辅相成」。</div>
+          </div>
+        </div>
+
+      <div class="memo">
+        <b>口诀：</b>不冲突＝并行不悖；同进度＝齐头并进；两手段＝双管齐下；同水平＝并驾齐驱；
+        带头＝一马当先；颠倒＝本末倒置；弃根本＝舍本逐末；抢戏＝喧宾夺主；各走各路＝分道扬镳。
+      </div>
+    </div>
+  </div>
+
+  <!-- 十一、言语 · 表达 -->
+  <div class="section c-blue" id="s11">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">🗣️</div>
+      <div class="section-title">十一、言语 · 表达</div>
+      <span class="section-tag tag-hot">超高频</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="key-box">
+        <b>这组全是「望文生义重灾区」：</b>文不加点（<b>不用涂改</b>，不是不加标点）、不刊之论（<b>不可改动</b>，不是不能刊登）、
+        空穴来风（<b>事出有因</b>，不是毫无根据）、言之凿凿（<b>说得像有根据</b>，不一定真有）。
+      </div>
+
+      <div class="wg">
+        <div class="wg-h"><b>含糊其辞</b><span class="wg-t t-bian">贬</span><span class="wg-t t-obj">回答·表态</span></div>
+        <div class="wg-d">话说得<b>不明确</b>，有意回避。重在「内容不清」。</div>
+        <div class="wg-e">问到关键处，他<b>含糊其辞</b>，绕了三圈也没说清。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>闪烁其词</b><span class="wg-t t-bian">贬</span><span class="wg-t t-obj">回答·追问</span></div>
+        <div class="wg-d">说话吞吞吐吐、躲躲闪闪。重在「<b>不敢明说</b>」。</div>
+        <div class="wg-e">面对追问，他<b>闪烁其词</b>，眼神一直往门口飘。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>振聋发聩</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">言论·文章</span></div>
+        <div class="wg-d">声音大得连聋人也听得见，比喻<b>用言论唤醒麻木的人</b>。</div>
+        <div class="wg-e">鲁迅的文字至今<b>振聋发聩</b>。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>掷地有声</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">话语·文章·表态</span></div>
+        <div class="wg-d">扔到地上有金石声，形容<b>话语坚定有力</b>，也指文辞铿锵。</div>
+        <div class="wg-e">他那句「一个都不能少」<b>掷地有声</b>。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>广开言路</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">政府·组织·渠道</span></div>
+        <div class="wg-d"><b>广泛开辟进言的渠道</b>。重在「渠道多」。</div>
+        <div class="wg-e">政府<b>广开言路</b>，把民生建议征集到社区网格。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>从善如流</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">人·领导·态度</span></div>
+        <div class="wg-d">乐于接受别人好的意见，<b>像水往低处流那样自然</b>。重在「肯听」。</div>
+        <div class="wg-e">他能<b>从善如流</b>，方案前后改了三稿。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>耳提面命</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">长辈·师长·上级</span></div>
+        <div class="wg-d">提着耳朵、当面教导，形容<b>恳切地教导</b>。<b>只能用于上对下</b>。</div>
+        <div class="wg-e">临行前父亲<b>耳提面命</b>，叮嘱再三。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>言传身教</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">师长·父母</span></div>
+        <div class="wg-d">既用言语教导，又以行动示范。<b>强调「说做一致」</b>。</div>
+        <div class="wg-e">师者的力量，正在于<b>言传身教</b>。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>文不加点</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">写作·文思</span></div>
+        <div class="wg-d">写文章一气呵成，<b>不用涂改</b>。<b>「点」是涂改，不是标点</b>。</div>
+        <div class="wg-e">他倚马千言，<b>文不加点</b>，一气写到深夜。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>下笔千言</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">写作·才思</span></div>
+        <div class="wg-d">一动笔就写出很长篇幅，形容<b>才思敏捷</b>。</div>
+        <div class="wg-e">这位记者<b>下笔千言</b>，倚马可待。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>一针见血</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">评论·批评·指出</span></div>
+        <div class="wg-d">一针就扎到血管，比喻<b>说话写文章直击要害</b>。</div>
+        <div class="wg-e">评论<b>一针见血</b>，指出问题的真正症结。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>入木三分</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">见解·刻画·书法</span></div>
+        <div class="wg-d">原指书法笔力遒劲，后比喻<b>见解、描写深刻有力</b>。</div>
+        <div class="wg-e">这段人物刻画<b>入木三分</b>，读来如见其人。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>言之凿凿</b><span class="wg-t t-zhong">中性</span><span class="wg-t t-obj">陈述·说法</span></div>
+        <div class="wg-d">话说得<b>非常肯定、像有根据</b>。<b>不代表真的有根据</b>，常用于「说得很肯定却没证据」。</div>
+        <div class="wg-e">他<b>言之凿凿</b>，却始终拿不出一份凭证。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>空穴来风</b><span class="wg-t t-zhong">中性</span><span class="wg-t t-obj">传言·消息</span></div>
+        <div class="wg-d">有了洞穴才有风进来，比喻<b>传言并非完全没有原因</b>。<b>不是「毫无根据」</b>，这是最常考的反转点。</div>
+        <div class="wg-e">此类传闻并非<b>空穴来风</b>，早有人私下提过。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>不刊之论</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">言论·著作</span></div>
+        <div class="wg-d">不可改动的言论，形容<b>言论精当、无法删改</b>。<b>「刊」是削除，不是刊登</b>。</div>
+        <div class="wg-e">这篇文章被学界誉为<b>不刊之论</b>。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>不经之谈</b><span class="wg-t t-bian">贬</span><span class="wg-t t-obj">说法·传言</span></div>
+        <div class="wg-d">荒诞<b>没有根据</b>的话。<b>这才是「毫无根据」的正确表达</b>。</div>
+        <div class="wg-e">那些「包治百病」的说法，纯属<b>不经之谈</b>。</div>
+      </div>
+
+      <div class="memo">
+        <b>口诀：</b>内容不清＝含糊其辞；不敢说＝闪烁其词；唤醒人＝振聋发聩；有力量＝掷地有声；
+        不涂改＝文不加点；不可改＝不刊之论；<b>有原因＝空穴来风，没根据＝不经之谈</b>。
+      </div>
+    </div>
+  </div>
+
+  <!-- 十二、数量 · 状态 -->
+  <div class="section c-orange" id="s12">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">🔢</div>
+      <div class="section-title">十二、数量 · 状态</div>
+      <span class="section-tag tag-high">高频</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="key-box">
+        <b>必须锁死对象：</b>汗牛充栋＝<b>只指书</b>；浩如烟海＝<b>只指文献典籍</b>；琳琅满目＝<b>多指商品、展品</b>；
+        凤毛麟角＝<b>稀少而珍贵</b>；吉光片羽＝<b>残存而珍贵</b>。对象一错，句子必错。
+      </div>
+
+      <div class="wg">
+        <div class="wg-h"><b>琳琅满目</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">商品·展品·书籍</span></div>
+        <div class="wg-d">满眼都是美好的东西。<b>多指商品、陈列品</b>，强调「多而好」。</div>
+        <div class="wg-e">展柜里的文创产品<b>琳琅满目</b>，几乎每样都想带走。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>汗牛充栋</b><span class="wg-t t-zhong">中性</span><span class="wg-t t-obj">只指书籍</span></div>
+        <div class="wg-d">书多得牛马出汗、堆到屋顶。<b>只能形容书多</b>，不能形容商品、文章数量。</div>
+        <div class="wg-e">乾嘉学者的著述<b>汗牛充栋</b>，光目录就有十几卷。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>浩如烟海</b><span class="wg-t t-zhong">中性</span><span class="wg-t t-obj">文献·典籍·史料</span></div>
+        <div class="wg-d">像烟雾和海洋那样浩繁。<b>多指文献、典籍、史料</b>，比汗牛充栋更强调「难以穷尽」。</div>
+        <div class="wg-e">中医古籍<b>浩如烟海</b>，一个人一辈子也读不完。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>比比皆是</b><span class="wg-t t-zhong">中性偏贬</span><span class="wg-t t-obj">现象·人或物</span></div>
+        <div class="wg-d">到处都是，强调「<b>密度高</b>」。多用于不好或平常的现象。</div>
+        <div class="wg-e">类似的「网红打卡地」<b>比比皆是</b>，能活过一年的不多。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>不一而足</b><span class="wg-t t-zhong">中性</span><span class="wg-t t-obj">列举·收尾</span></div>
+        <div class="wg-d">不止一种或一次，而是很多。<b>用于列举之后的收尾</b>，不能作谓语修饰单个数。</div>
+        <div class="wg-e">文山会海、层层加码、过度留痕，形式主义的表现<b>不一而足</b>。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>不计其数</b><span class="wg-t t-zhong">中性</span><span class="wg-t t-obj">数量</span></div>
+        <div class="wg-d">无法计算数目，形容极多。<b>多指可数之物</b>。</div>
+        <div class="wg-e">这样的无名捐资者<b>不计其数</b>。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>屈指可数</b><span class="wg-t t-zhong">中性</span><span class="wg-t t-obj">数量少</span></div>
+        <div class="wg-d">扳手指就能数清，形容<b>数量很少</b>。</div>
+        <div class="wg-e">真正从头读完这部书的人<b>屈指可数</b>。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>凤毛麟角</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">人才·珍稀事物</span></div>
+        <div class="wg-d">凤凰的毛、麒麟的角。<b>稀少而珍贵</b>，与「屈指可数」的区别是<b>带褒义</b>。</div>
+        <div class="wg-e">能贯通文史的大家，如今已是<b>凤毛麟角</b>。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>吉光片羽</b><span class="wg-t t-bao">褒</span><span class="wg-t t-obj">残存文物·稀有材料</span></div>
+        <div class="wg-d">神兽吉光身上的一片羽毛，比喻<b>残存的珍贵文物或零星材料</b>。<b>强调「残」+「贵」</b>。</div>
+        <div class="wg-e">敦煌残卷虽只<b>吉光片羽</b>，却价值连城。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>寥寥无几</b><span class="wg-t t-zhong">中性</span><span class="wg-t t-obj">人·数量</span></div>
+        <div class="wg-d">非常少。比「屈指可数」更口语，不强调可数。</div>
+        <div class="wg-e">能坚持十年的人<b>寥寥无几</b>。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>鳞次栉比</b><span class="wg-t t-zhong">中性</span><span class="wg-t t-obj">房屋·船只·建筑</span></div>
+        <div class="wg-d">像鱼鳞和梳齿那样<b>密集整齐地排列</b>。<b>多指建筑</b>。</div>
+        <div class="wg-e">江边高楼<b>鳞次栉比</b>，十年前这里还是一片滩涂。</div>
+      </div>
+      <div class="wg">
+        <div class="wg-h"><b>星罗棋布</b><span class="wg-t t-zhong">中性</span><span class="wg-t t-obj">分布·点位</span></div>
+        <div class="wg-d">像星星、棋子那样散布。<b>强调「分布广而散」</b>，不强调整齐。</div>
+        <div class="wg-e">山间的民宿<b>星罗棋布</b>，几乎每个村都有。</div>
+      </div>
+
+      <div class="memo">
+        <b>口诀：</b>书多＝汗牛充栋（只能书） / 浩如烟海（文献）；商品多＝琳琅满目；
+        少而贵＝凤毛麟角；残而贵＝吉光片羽；多而密＝鳞次栉比（建筑） / 星罗棋布（分布）。
+      </div>
+    </div>
+  </div>
+  <!-- 辨析一 -->
+  <div class="section c-red" id="b1">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">🔍</div>
+      <div class="section-title">辨析一 · 影响与感知</div>
+      <span class="section-tag tag-hot">必考</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="key-box">
+        这一组全在考「<b>影响的方式与结果</b>」。先问自己三句话：是<b>变了</b>、是<b>染上了</b>、还是<b>只是知道</b>？
+        是<b>没主见</b>、是<b>跟潮流</b>、还是<b>抄别人</b>？
+      </div>
+
+      <div class="block">
+        <div class="block-title">1. 潜移默化 / 耳濡目染 / 耳闻目睹</div>
+        <div class="diff"><b>一句话区别：</b>潜移默化＝<b>变了</b>（性格思想无形中改变，重结果）；耳濡目染＝<b>染上了</b>（长期用眼看耳听，技能风气上身，重过程）；耳闻目睹＝<b>知道了</b>（只是听见看见，不一定受影响）。</div>
+        <table class="mini-table diff-tab">
+          <tr><th>词语</th><th>核心侧重</th><th>典型搭配</th></tr>
+          <tr><td>潜移默化</td><td>无形、缓慢的影响 → <b>结果变了</b></td><td>潜移默化地影响 / 熏陶 / 塑造</td></tr>
+          <tr><td>耳濡目染</td><td>长期用耳听、用眼看 → <b>染上了</b></td><td>从小耳濡目染 / 耳濡目染，深受影响</td></tr>
+          <tr><td>耳闻目睹</td><td>只是听到、看到 → <b>知情</b></td><td>耳闻目睹了这一切 / 亲历亲见</td></tr>
+        </table>
+        <div class="egs">
+          <div><b>潜移默化</b>　家风不是写在纸上的规矩，而是在一日三餐里<em>潜移默化</em>地塑造着孩子。</div>
+          <div><b>耳濡目染</b>　他从小在剧场后台长大，<em>耳濡目染</em>，十岁便能登台。</div>
+          <div><b>耳闻目睹</b>　驻村两年，他<em>耳闻目睹</em>了乡村最真实的变化。</div>
+        </div>
+        <div class="example">
+          <div class="example-header">例题 1 · 真题 2020 国考（副省级）第 35 题</div>
+          <div class="example-body">
+            <div class="example-q">千百年来，乡村承担着对村民行为的引导、规训与教育功能，让人们____、明辨是非善恶。农事活动、节日庆典、民俗习惯、村规民约等，都是维系村落价值取向和有序运行的重要____，它们以____的形式不断强化人们的行为规范，并使之内化为人们的道德准则。</div>
+            <div class="example-opts"><span>A. 循规蹈矩　途径　喜闻乐见</span><span>B. 与人为善　方式　言传身教</span><span>C. 通情达理　载体　潜移默化</span><span>D. 奉公守法　手段　耳濡目染</span></div>
+            <div class="example-answer"><b>答案：<span class="correct">C</span></b><br>解析：突破口在第三空。代词「<b>它们</b>」指「农事活动、节日庆典、民俗习惯、村规民约」，这些是<b>事与物</b>，不是人。<br>·「潜移默化」的主体可以是事或物 → 成立；<br>·「耳濡目染」的主体<b>必须是人</b>（谁濡染了谁）→ 与「它们」搭配不当，D 排除；<br>·「言传身教」同样要求主语是人 → B 排除；<br>·「喜闻乐见」指群众喜欢听、乐意看，与「它们」不搭 → A 排除。<br>第二空「载体」与「承载价值取向」呼应，第一空「通情达理」与「明辨是非善恶」并列，全部吻合。<b>这道题把「主体是人是物」这一条考到了极致。</b></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">2. 人云亦云 / 随波逐流 / 亦步亦趋 / 拾人牙慧</div>
+        <div class="diff"><b>一句话区别：</b>人云亦云＝<b>别人怎么说我就怎么说</b>（没主见，针对「话」）；随波逐流＝<b>大家怎么做我就怎么做</b>（没立场，针对「潮流」）；亦步亦趋＝<b>别人怎么做我就照着做</b>（处处模仿，针对「做法」）；拾人牙慧＝<b>把别人的话当自己的话</b>（抄袭，针对「言论」）。</div>
+        <table class="mini-table diff-tab">
+          <tr><th>词语</th><th>核心侧重</th><th>典型搭配</th></tr>
+          <tr><td>人云亦云</td><td>没主见，跟着别人<b>说</b></td><td>人云亦云，毫无己见</td></tr>
+          <tr><td>随波逐流</td><td>没立场，跟着<b>潮流走</b></td><td>随波逐流，随大流</td></tr>
+          <tr><td>亦步亦趋</td><td>处处<b>模仿、追随</b></td><td>亦步亦趋地模仿 / 跟在后面亦步亦趋</td></tr>
+          <tr><td>拾人牙慧</td><td>把别人现成的言论<b>当自己的</b></td><td>拾人牙慧，了无新意</td></tr>
+        </table>
+        <div class="egs">
+          <div><b>人云亦云</b>　会上没人提反对意见，大多是怕出错而<em>人云亦云</em>。</div>
+          <div><b>随波逐流</b>　他不愿<em>随波逐流</em>，索性把社交账号全关了。</div>
+          <div><b>亦步亦趋</b>　跟在行业龙头后面<em>亦步亦趋</em>，很难做出自己的品牌。</div>
+          <div><b>拾人牙慧</b>　这篇文章并无新见，多是<em>拾人牙慧</em>。</div>
+        </div>
+        <div class="example">
+          <div class="example-header">例题 2 · 真题改编 · 同考点仿题</div>
+          <div class="example-body">
+            <div class="example-q">他的论文看似洋洋万言，实则只是把国外学者的观点换个说法，通篇____，读不出一句自己的判断。</div>
+            <div class="example-opts"><span>A. 人云亦云</span><span>B. 随波逐流</span><span>C. 亦步亦趋</span><span>D. 拾人牙慧</span></div>
+            <div class="example-answer"><b>答案：<span class="correct">D</span></b><br>解析：空处与「把国外学者的观点换个说法」「读不出自己的判断」形成解释关系，强调的是<b>把别人现成的言论拿来当自己的</b>，只有「拾人牙慧」对得上。「人云亦云」侧重别人怎么说自己怎么说，对象是「意见、态度」，不指抄袭；「随波逐流」侧重跟着潮流走，对象是「立场、行为」；「亦步亦趋」侧重步步模仿做法，不针对文字言论。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">3. 浮光掠影 / 走马观花 / 蜻蜓点水 / 浅尝辄止</div>
+        <div class="diff"><b>一句话区别：</b>浮光掠影＝<b>印象浅</b>（重结果，常作定语）；走马观花＝<b>看得快</b>（重过程，常作状语）；蜻蜓点水＝<b>只碰一下</b>（重程度，多指工作作风）；浅尝辄止＝<b>主动停下</b>（重态度，多指学习研究）。</div>
+        <table class="mini-table diff-tab">
+          <tr><th>词语</th><th>核心侧重</th><th>典型搭配</th></tr>
+          <tr><td>浮光掠影</td><td>印象不深（结果）</td><td>浮光掠影的印象 / 只留下浮光掠影</td></tr>
+          <tr><td>走马观花</td><td>粗略地看（过程快）</td><td>走马观花地看 / 难免走马观花</td></tr>
+          <tr><td>蜻蜓点水</td><td>接触一下即止（不深入）</td><td>蜻蜓点水式的调研 / 帮扶蜻蜓点水</td></tr>
+          <tr><td>浅尝辄止</td><td>尝试一下就放弃（主动）</td><td>浅尝辄止，不肯深入</td></tr>
+        </table>
+        <div class="egs">
+          <div><b>浮光掠影</b>　走马观花式的调研，只能留下<em>浮光掠影</em>的印象。</div>
+          <div><b>走马观花</b>　三天跑五个县，难免<em>走马观花</em>。</div>
+          <div><b>蜻蜓点水</b>　帮扶不能<em>蜻蜓点水</em>，要一竿子插到底。</div>
+          <div><b>浅尝辄止</b>　做学问最忌<em>浅尝辄止</em>，半途而废等于没做。</div>
+        </div>
+        <div class="example">
+          <div class="example-header">例题 3 · 真题改编 · 同考点仿题</div>
+          <div class="example-body">
+            <div class="example-q">这次调研只用了半天，跑了三个点、听了两场汇报，____，回来后写的材料里全是「高度重视」「成效明显」一类套话。</div>
+            <div class="example-opts"><span>A. 浮光掠影</span><span>B. 走马观花</span><span>C. 蜻蜓点水</span><span>D. 浅尝辄止</span></div>
+            <div class="example-answer"><b>答案：<span class="correct">B</span></b><br>解析：前文「只用了半天，跑了三个点」强调的是<b>行程赶、看得粗</b>，对应「走马观花」。「浮光掠影」指印象浅，多作定语（浮光掠影的印象），此处需一个概括<b>行为过程</b>的词；「蜻蜓点水」多指工作作风浮在表面，与「跑点、听汇报」这种<b>看</b>的动作不贴；「浅尝辄止」强调主动放弃深入，主语应是人面对学问、尝试，而不是「调研」这个行为本身。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">4. 眼花缭乱 / 扑朔迷离 / 目不暇接</div>
+        <div class="diff"><b>一句话区别：</b>眼花缭乱＝<b>看乱了</b>（主观感受，对象多而杂）；扑朔迷离＝<b>看不清真相</b>（客观复杂，多指案情、局势）；目不暇接＝<b>来不及看</b>（客观太多太快，来不及，含赞叹）。</div>
+        <table class="mini-table diff-tab">
+          <tr><th>词语</th><th>核心侧重</th><th>典型搭配</th></tr>
+          <tr><td>眼花缭乱</td><td>看着迷乱，<b>分不清</b></td><td>令人眼花缭乱 / 看得眼花缭乱</td></tr>
+          <tr><td>扑朔迷离</td><td>错综复杂，<b>真相难明</b></td><td>案情扑朔迷离 / 局势扑朔迷离</td></tr>
+          <tr><td>目不暇接</td><td>东西太多太快，<b>看不过来</b></td><td>美景令人目不暇接 / 新品目不暇接</td></tr>
+        </table>
+        <div class="egs">
+          <div><b>眼花缭乱</b>　直播间里灯光闪烁、话术翻飞，看得人<em>眼花缭乱</em>。</div>
+          <div><b>扑朔迷离</b>　案情三次反转，证词又互相矛盾，真相愈发<em>扑朔迷离</em>。</div>
+          <div><b>目不暇接</b>　车过峡谷，两侧奇峰一个接一个，令人<em>目不暇接</em>。</div>
+        </div>
+        <div class="example">
+          <div class="example-header">例题 4 · 真题改编 · 同考点仿题</div>
+          <div class="example-body">
+            <div class="example-q">这起案件的经过前后三次反转，几名证人的说法又彼此矛盾，原本清晰的真相变得____。</div>
+            <div class="example-opts"><span>A. 眼花缭乱</span><span>B. 扑朔迷离</span><span>C. 目不暇接</span><span>D. 错综复杂</span></div>
+            <div class="example-answer"><b>答案：<span class="correct">B</span></b><br>解析：空处要与「真相」搭配，强调<b>看不清、辨不明</b>，选「扑朔迷离」。「眼花缭乱」的主语应是<b>人的眼睛</b>或令人迷乱的事物，不能说「真相变得眼花缭乱」；「目不暇接」强调<b>看不过来</b>，对象是数量多、变化快的美好事物，与「真相」不搭；「错综复杂」只讲关系复杂，不含「真相难明」这层意思，且与「真相变得」搭配生硬。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 辨析二 -->
+  <div class="section c-orange" id="b2">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">📈</div>
+      <div class="section-title">辨析二 · 变化与兴衰</div>
+      <span class="section-tag tag-hot">必考</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="key-box">
+        这一组的关键是「<b>变化的方向与速度</b>」。此消彼长（<b>一涨一落</b>）、此起彼伏（<b>轮着来</b>）、层出不穷（<b>不断出现新的</b>）——
+        三个词常在同一道题里当干扰项，一定要分清「谁在变」。
+      </div>
+
+      <div class="block">
+        <div class="block-title">5. 层出不穷 / 此消彼长 / 此起彼伏</div>
+        <div class="diff"><b>一句话区别：</b>层出不穷＝<b>新的不断出现</b>（数量，越出越多）；此消彼长＝<b>这个下去那个上来</b>（总量不变，一方减少一方增加）；此起彼伏＝<b>这边停那边起</b>（轮流出现，多指声音、事件、浪潮）。</div>
+        <table class="mini-table diff-tab">
+          <tr><th>词语</th><th>核心侧重</th><th>典型搭配</th></tr>
+          <tr><td>层出不穷</td><td>新事物不断出现</td><td>问题层出不穷 / 花样层出不穷</td></tr>
+          <tr><td>此消彼长</td><td>一方减少、一方增加</td><td>两者此消彼长 / 此消彼长之势</td></tr>
+          <tr><td>此起彼伏</td><td>交替出现、连续不断</td><td>呼声此起彼伏 / 掌声此起彼伏</td></tr>
+        </table>
+        <div class="egs">
+          <div><b>层出不穷</b>　技术迭代加快，新的应用场景<em>层出不穷</em>。</div>
+          <div><b>此消彼长</b>　线上消费上升，线下客流下降，两者呈<em>此消彼长</em>之势。</div>
+          <div><b>此起彼伏</b>　发布会现场，掌声与欢呼<em>此起彼伏</em>。</div>
+        </div>
+        <div class="example">
+          <div class="example-header">例题 1 · 真题 2021 山东 第 19 题</div>
+          <div class="example-body">
+            <div class="example-q">当前，以数字化的知识和信息作为关键生产要素的数字经济蓬勃发展，新技术、新业态、新模式____。各国纷纷将发展数字经济作为推动实体经济提质增效、____核心竞争力的重要举措，推动数字经济取得的创新成果____于实体经济各个领域，围绕新一轮科技和产业制高点展开积极竞合。</div>
+            <div class="example-opts"><span>A. 层出不穷　重塑　融合</span><span>B. 乏善可陈　形成　应用</span><span>C. 方兴未艾　提升　实践</span><span>D. 纷至沓来　培育　落实</span></div>
+            <div class="example-answer"><b>答案：<span class="correct">A</span></b><br>解析：第一空前是「<b>新技术、新业态、新模式</b>」这组<b>不断冒出新东西</b>的并列短语，要表达「一个接一个出现」，选「层出不穷」。<br>·「方兴未艾」指<b>整体势头正盛、还没停</b>，是形容「某个事业」，不能说「新模式方兴未艾」（三个新事物各自「方兴未艾」不合逻辑）；<br>·「纷至沓来」多指<b>人、消息</b>接连而来，对象不当；<br>·「乏善可陈」是贬义，与「蓬勃发展」矛盾。<br>第二空「重塑核心竞争力」、第三空「融合于各领域」均可验证。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">6. 方兴未艾 / 悄然兴起</div>
+        <div class="diff"><b>一句话区别：</b>方兴未艾＝<b>正兴盛、远没到头</b>（褒，强调势头；常与「产业、事业、潮流」搭配）；悄然兴起＝<b>不知不觉地出现</b>（中性，强调「没人注意」，常与「风气、方式、现象」搭配）。</div>
+        <table class="mini-table diff-tab">
+          <tr><th>词语</th><th>核心侧重</th><th>典型搭配</th></tr>
+          <tr><td>方兴未艾</td><td>势头正盛、还在发展</td><td>产业方兴未艾 / 建设方兴未艾</td></tr>
+          <tr><td>悄然兴起</td><td>无声无息地开始流行</td><td>悄然兴起的新风尚 / 正在悄然兴起</td></tr>
+        </table>
+        <div class="egs">
+          <div><b>方兴未艾</b>　低空经济<em>方兴未艾</em>，各地都在抢先布局。</div>
+          <div><b>悄然兴起</b>　一种「周末去县城」的旅行方式，正在年轻人中<em>悄然兴起</em>。</div>
+        </div>
+        <div class="example">
+          <div class="example-header">例题 2 · 真题 2021 广西（联考）</div>
+          <div class="example-body">
+            <div class="example-q">近年来，商业赞助越来越多地____体育运动，在体育市场化、职业化____的当下，如何在追求个人商业价值与体育管理机构利益间取得平衡，是运动员和体育管理机构不能回避的问题。</div>
+            <div class="example-opts"><span>A. 觊觎　如日中天</span><span>B. 追逐　高歌猛进</span><span>C. 热衷　欣欣向荣</span><span>D. 垂青　方兴未艾</span></div>
+            <div class="example-answer"><b>答案：<span class="correct">D</span></b><br>解析：第一空「觊觎」是<b>贬义</b>（非分地希望得到），与「商业赞助」的中性色彩不符，排除 A；「热衷」后须带「于」（热衷于……），用法错误，排除 C。<br>第二空形容「体育市场化、职业化」的<b>发展势头</b>，选「方兴未艾」（正兴盛、远未到头）。「高歌猛进」指前进路上充满乐观精神，文段没有「乐观情绪」这层意思；「如日中天」是<b>已到顶峰</b>，而市场化还在推进中，不合。<br><b>提示：</b>「方兴未艾」只修饰「事业、产业、潮流」这类整体态势，不修饰「一个具体的新模式」。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">7. 应运而生 / 横空出世 / 粉墨登场</div>
+        <div class="diff"><b>一句话区别：</b>应运而生＝<b>有需要才有它</b>（褒，强调顺应时势）；横空出世＝<b>突然出现且气势非凡</b>（褒，强调震撼）；粉墨登场＝<b>化好妆上台</b>（贬，指坏人登上政治舞台，或含讥讽）。</div>
+        <table class="mini-table diff-tab">
+          <tr><th>词语</th><th>核心侧重</th><th>典型搭配</th></tr>
+          <tr><td>应运而生</td><td>顺应需要、时势而出现</td><td>……应运而生 / 行业应运而生</td></tr>
+          <tr><td>横空出世</td><td>突然出现，气势宏大</td><td>横空出世的杰作 / 横空出世的天才</td></tr>
+          <tr><td>粉墨登场</td><td>乔装打扮后登台（贬）</td><td>反派粉墨登场 / 各种论调粉墨登场</td></tr>
+        </table>
+        <div class="egs">
+          <div><b>应运而生</b>　城市通勤距离拉长，共享单车<b>应运而生</b>。</div>
+          <div><b>横空出世</b>　这部小说<b>横空出世</b>，一时洛阳纸贵。</div>
+          <div><b>粉墨登场</b>　每逢选举，各种投机政客便<b>粉墨登场</b>。</div>
+        </div>
+        <div class="example">
+          <div class="example-header">例题 3 · 真题改编 · 同考点仿题</div>
+          <div class="example-body">
+            <div class="example-q">随着老龄人口快速增加，陪诊、助浴、适老化改造等新服务____，短短三年就形成了完整的产业链。</div>
+            <div class="example-opts"><span>A. 应运而生</span><span>B. 横空出世</span><span>C. 粉墨登场</span><span>D. 异军突起</span></div>
+            <div class="example-answer"><b>答案：<span class="correct">A</span></b><br>解析：前半句「<b>随着老龄人口快速增加</b>」是明确的原因，说明这些服务是<b>顺应需求而出现</b>的，选「应运而生」。「横空出世」强调突然出现、气势宏大，多用于杰出的作品或人物，不用于「一类服务」；「粉墨登场」是贬义，指坏人上台，感情色彩不合；「异军突起」指<b>新的一支力量</b>崛起，前提是原本已有多支力量，此处是从无到有，不贴。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">8. 一蹴而就 / 一劳永逸 / 立竿见影 / 轻而易举</div>
+        <div class="diff"><b>一句话区别：</b>一蹴而就＝<b>一步就成</b>（多用于否定：不能一蹴而就）；一劳永逸＝<b>干一次永远省事</b>（多用于否定：没有一劳永逸的办法）；立竿见影＝<b>立刻见效</b>（中性，强调效果快）；轻而易举＝<b>毫不费力</b>（中性，强调容易）。</div>
+        <table class="mini-table diff-tab">
+          <tr><th>词语</th><th>核心侧重</th><th>典型搭配</th></tr>
+          <tr><td>一蹴而就</td><td>一下子成功（重「快」）</td><td>不可能一蹴而就 / 非一蹴而就</td></tr>
+          <tr><td>一劳永逸</td><td>一次付出，永久省事</td><td>没有一劳永逸的办法</td></tr>
+          <tr><td>立竿见影</td><td>立刻见到效果</td><td>效果立竿见影 / 立竿见影之效</td></tr>
+          <tr><td>轻而易举</td><td>做起来毫不费力</td><td>轻而易举地完成 / 并非轻而易举</td></tr>
+        </table>
+        <div class="egs">
+          <div><b>一蹴而就</b>　能力建设不可能<em>一蹴而就</em>，得靠一次次实战磨出来。</div>
+          <div><b>一劳永逸</b>　世上没有<em>一劳永逸</em>的改革，问题总会以新形态出现。</div>
+          <div><b>立竿见影</b>　这项政策的效果<em>立竿见影</em>，当月投诉量就降了四成。</div>
+          <div><b>轻而易举</b>　把实验室成果变成量产产品，绝非<em>轻而易举</em>。</div>
+        </div>
+        <div class="example">
+          <div class="example-header">例题 4 · 真题改编 · 同考点仿题</div>
+          <div class="example-body">
+            <div class="example-q">作风问题具有反复性和顽固性，抓一抓就好转、松一松就反弹，指望一次整治就____，是不现实的。</div>
+            <div class="example-opts"><span>A. 一蹴而就</span><span>B. 一劳永逸</span><span>C. 立竿见影</span><span>D. 轻而易举</span></div>
+            <div class="example-answer"><b>答案：<span class="correct">B</span></b><br>解析：空处要与「抓一抓就好转、松一松就反弹」形成对照，说的是<b>想靠一次整治换来永久太平</b>，选「一劳永逸」。「一蹴而就」强调<b>一下子成功</b>，重心在「快」，与「反复性、顽固性」的呼应不如「一劳永逸」贴切；「立竿见影」是说效果快，本身并不含贬义，用「不现实」来否定它，语义上变成「效果不可能快」，与「反弹」不呼应；「轻而易举」只讲容易，与「一次整治」的时间维度无关。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 辨析三 -->
+  <div class="section c-purple" id="b3">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">🧩</div>
+      <div class="section-title">辨析三 · 差异与独特</div>
+      <span class="section-tag tag-hot">必考</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="key-box">
+        这一组的分水岭是「<b>差得远</b>」还是「<b>反着来</b>」，以及「独特」到底独特在<b>风格、构思还是体系</b>。
+        大相径庭（差得远）≠ 截然相反（正相反），这一对几乎年年出现。
+      </div>
+
+      <div class="block">
+        <div class="block-title">9. 大相径庭 / 相去甚远 / 截然相反</div>
+        <div class="diff"><b>一句话区别：</b>大相径庭＝<b>大不相同</b>（多指说法、做法、结果彼此差得远）；相去甚远＝<b>差距很大</b>（多指数量、水平、程度）；截然相反＝<b>完全对立</b>（多指观点、方向、性质正相反）。</div>
+        <table class="mini-table diff-tab">
+          <tr><th>词语</th><th>核心侧重</th><th>典型搭配</th></tr>
+          <tr><td>大相径庭</td><td>彼此差别很大（不一致）</td><td>说法大相径庭 / 结论大相径庭</td></tr>
+          <tr><td>相去甚远</td><td>距离、差距很大（有刻度）</td><td>与目标相去甚远 / 水平相去甚远</td></tr>
+          <tr><td>截然相反</td><td>完全对立（正相反）</td><td>结论截然相反 / 态度截然相反</td></tr>
+        </table>
+        <div class="egs">
+          <div><b>大相径庭</b>　同一份材料，两位学者的解读<em>大相径庭</em>，一个看到衰退，一个看到转型。</div>
+          <div><b>相去甚远</b>　项目实际投入不到预算的三成，与最初的设想<em>相去甚远</em>。</div>
+          <div><b>截然相反</b>　两份检测报告给出的结论<em>截然相反</em>，一份合格，一份严重超标。</div>
+        </div>
+        <div class="example">
+          <div class="example-header">例题 1 · 真题改编 · 同考点仿题</div>
+          <div class="example-body">
+            <div class="example-q">两种方案的预算____：一种需要三千万元，另一种不到一千万元，差距之大远超预期。</div>
+            <div class="example-opts"><span>A. 大相径庭</span><span>B. 相去甚远</span><span>C. 截然相反</span><span>D. 天壤之别</span></div>
+            <div class="example-answer"><b>答案：<span class="correct">B</span></b><br>解析：空后直接给出「三千万」与「一千万」两个<b>具体数字</b>，是在<b>数量上拉开差距</b>，选「相去甚远」。「大相径庭」强调彼此<b>不一致、不一样</b>，多用于说法、做法、结论，不适合直接量化比较；「截然相反」指<b>正相反</b>，数字之间不存在「相反」；「天壤之别」程度过重，多用于性质、境遇的极端差别，且与后文「差距之大远超预期」语义重复。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">10. 独树一帜 / 标新立异 / 别出心裁 / 不拘一格</div>
+        <div class="diff"><b>一句话区别：</b>独树一帜＝<b>风格自成一家</b>（画风、流派、学派）；标新立异＝<b>提出新奇主张</b>（可褒可贬，看语境）；别出心裁＝<b>构思巧妙独特</b>（设计、办法、布局）；不拘一格＝<b>不局限于一种规格</b>（多指选拔人才、用人）。</div>
+        <table class="mini-table diff-tab">
+          <tr><th>词语</th><th>核心侧重</th><th>典型搭配</th></tr>
+          <tr><td>独树一帜</td><td>风格独立，自成一家</td><td>画风独树一帜 / 独树一帜的流派</td></tr>
+          <tr><td>标新立异</td><td>提出新奇主张以示不同</td><td>刻意标新立异 / 标新立异的提法</td></tr>
+          <tr><td>别出心裁</td><td>构思、设计与众不同</td><td>别出心裁的设计 / 别出心裁的布置</td></tr>
+          <tr><td>不拘一格</td><td>打破规格，不限一种</td><td>不拘一格降人才 / 不拘一格选人</td></tr>
+        </table>
+        <div class="egs">
+          <div><b>独树一帜</b>　他的山水画<em>独树一帜</em>，苍茫中见温润。</div>
+          <div><b>标新立异</b>　为了流量而刻意<em>标新立异</em>，往往很快被观众看穿。</div>
+          <div><b>别出心裁</b>　这场展览的布展方式<em>别出心裁</em>，观众要打着手电看。</div>
+          <div><b>不拘一格</b>　选拔人才要<em>不拘一格</em>，不能只盯着学历和出身。</div>
+        </div>
+        <div class="example">
+          <div class="example-header">例题 2 · 真题改编 · 同考点仿题</div>
+          <div class="example-body">
+            <div class="example-q">「我劝天公重抖擞，____降人才。」龚自珍这句诗，道出了用人当打破常规、唯才是举的道理。</div>
+            <div class="example-opts"><span>A. 独树一帜</span><span>B. 标新立异</span><span>C. 别出心裁</span><span>D. 不拘一格</span></div>
+            <div class="example-answer"><b>答案：<span class="correct">D</span></b><br>解析：后文「<b>打破常规、唯才是举</b>」是对空处的直接解释，说的是用人<b>不限于一种规格</b>，选「不拘一格」。「独树一帜」指风格自成一家，对象是画风、流派；「标新立异」指提出新奇主张，含贬义风险，与「唯才是举」的正面语气不合；「别出心裁」指构思巧妙，对象是设计、办法，不能修饰「降人才」。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">11. 不落窠臼 / 别具一格 / 自成一家</div>
+        <div class="diff"><b>一句话区别：</b>不落窠臼＝<b>不落旧格式</b>（多指文章、艺术，重「不俗套」）；别具一格＝<b>另有一种风格</b>（多指设计、建筑、文风，重「风格新」）；自成一家＝<b>形成了自己的体系</b>（多指学问、技艺，重「成体系」）。</div>
+        <table class="mini-table diff-tab">
+          <tr><th>词语</th><th>核心侧重</th><th>典型搭配</th></tr>
+          <tr><td>不落窠臼</td><td>不落俗套、跳出旧格</td><td>构思不落窠臼 / 叙事不落窠臼</td></tr>
+          <tr><td>别具一格</td><td>另有一种独特风格</td><td>设计别具一格 / 建筑别具一格</td></tr>
+          <tr><td>自成一家</td><td>学问技艺形成体系</td><td>书法自成一家 / 画风自成一家</td></tr>
+        </table>
+        <div class="egs">
+          <div><b>不落窠臼</b>　这部小说的叙事<em>不落窠臼</em>，读来毫不腻味。</div>
+          <div><b>别具一格</b>　这座美术馆的设计<em>别具一格</em>，把整面外墙做成了书架。</div>
+          <div><b>自成一家</b>　他浸淫篆刻四十年，刀法已<em>自成一家</em>。</div>
+        </div>
+        <div class="example">
+          <div class="example-header">例题 3 · 真题改编 · 同考点仿题</div>
+          <div class="example-body">
+            <div class="example-q">这座山地美术馆____：整面外墙被做成巨大的书架，展厅顺着山势层层跌落，参观路线本身就是一条溪谷。</div>
+            <div class="example-opts"><span>A. 不落窠臼</span><span>B. 别具一格</span><span>C. 自成一家</span><span>D. 别开生面</span></div>
+            <div class="example-answer"><b>答案：<span class="correct">B</span></b><br>解析：冒号后的内容全在描述这座建筑的<b>独特外观与空间风格</b>，选「别具一格」最贴。「不落窠臼」侧重不落<b>旧格式、俗套</b>，多用于文章、叙事，用来概括建筑外观不如「别具一格」准确；「自成一家」指<b>学问、技艺形成体系</b>，主语应是人或其学问，不能是一座建筑；「别开生面」指开创一种新局面、新形式，多用于活动、场面。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">12. 移花接木 / 偷梁换柱 / 混淆是非 / 牵强附会</div>
+        <div class="diff"><b>一句话区别：</b>移花接木＝<b>暗中换掉人或物</b>（调包，贬）；偷梁换柱＝<b>暗中改变事物的内容性质</b>（比移花接木更重，含欺骗）；混淆是非＝<b>把对的说成错的</b>（搅乱判断）；牵强附会＝<b>把不相干的硬拉到一起</b>（多指解释、论证）。</div>
+        <table class="mini-table diff-tab">
+          <tr><th>词语</th><th>核心侧重</th><th>典型搭配</th></tr>
+          <tr><td>移花接木</td><td>暗中调换对象</td><td>移花接木，偷换概念</td></tr>
+          <tr><td>偷梁换柱</td><td>暗中改变内容、性质</td><td>偷梁换柱，以次充好</td></tr>
+          <tr><td>混淆是非</td><td>搅乱对错界限</td><td>混淆是非，颠倒黑白</td></tr>
+          <tr><td>牵强附会</td><td>硬把无关的说成有关</td><td>解释牵强附会 / 论证牵强附会</td></tr>
+        </table>
+        <div class="egs">
+          <div><b>移花接木</b>　他把别人的实验数据<em>移花接木</em>到自己论文里，很快被查了出来。</div>
+          <div><b>偷梁换柱</b>　合同里<em>偷梁换柱</em>，把「保修三年」改成了「保修三个月」。</div>
+          <div><b>混淆是非</b>　故意<em>混淆是非</em>，把正当维权说成无理取闹。</div>
+          <div><b>牵强附会</b>　把两千年前的一句话硬套到今天的经济现象上，未免<em>牵强附会</em>。</div>
+        </div>
+        <div class="example">
+          <div class="example-header">例题 4 · 真题改编 · 同考点仿题</div>
+          <div class="example-body">
+            <div class="example-q">有人为了证明「古人早已预见全球化」，把《史记》里一句关于货物流通的记载，硬解释成世界市场的雏形，这种论证未免____。</div>
+            <div class="example-opts"><span>A. 移花接木</span><span>B. 偷梁换柱</span><span>C. 混淆是非</span><span>D. 牵强附会</span></div>
+            <div class="example-answer"><b>答案：<span class="correct">D</span></b><br>解析：句中「<b>硬解释成</b>」「硬套」是关键提示，说的是<b>把本来不相干的东西强行拉到一起</b>，选「牵强附会」。「移花接木」指暗中<b>调换对象</b>，这里并没有替换，只是曲解；「偷梁换柱」指暗中<b>改变内容性质</b>，多用于合同、方案等实体对象；「混淆是非」指故意搅乱<b>对错</b>，而本句的问题是「论证不成立」，不是「颠倒是非」。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 辨析四 -->
+  <div class="section c-red" id="b4">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">⏰</div>
+      <div class="section-title">辨析四 · 紧迫与时机</div>
+      <span class="section-tag tag-hot">必考</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="key-box">
+        「迫在眉睫 / 当务之急」是最经典的一对：前者形容<b>事情紧迫</b>（可作定语、谓语），后者是<b>名词</b>（「是/成为/作为」的宾语）。
+        句中只要有「已成为」「是」，答案基本锁定「当务之急」。
+      </div>
+
+      <div class="block">
+        <div class="block-title">13. 迫在眉睫 / 当务之急 / 时不我待 / 迫不及待</div>
+        <div class="diff"><b>一句话区别：</b>迫在眉睫＝<b>事情已逼到眼前</b>（形容词性，形容「事」）；当务之急＝<b>当前最急要办的事</b>（名词性，作宾语）；时不我待＝<b>时间不等人</b>（多用于勉励、抓紧）；迫不及待＝<b>急得等不了</b>（主语是人，形容心情）。</div>
+        <table class="mini-table diff-tab">
+          <tr><th>词语</th><th>核心侧重</th><th>典型搭配</th></tr>
+          <tr><td>迫在眉睫</td><td>事情紧迫，就在眼前</td><td>形势迫在眉睫 / 迫在眉睫的任务</td></tr>
+          <tr><td>当务之急</td><td>当前最急迫的事（名词）</td><td>当务之急是…… / 成为当务之急</td></tr>
+          <tr><td>时不我待</td><td>时间不等人</td><td>时不我待，只争朝夕</td></tr>
+          <tr><td>迫不及待</td><td>心情急切，等不了</td><td>迫不及待地打开 / 迫不及待想知道</td></tr>
+        </table>
+        <div class="egs">
+          <div><b>迫在眉睫</b>　汛期将至，加固堤防已是<em>迫在眉睫</em>的任务。</div>
+          <div><b>当务之急</b>　灾后重建千头万绪，<em>当务之急</em>是让群众有房住、有水喝。</div>
+          <div><b>时不我待</b>　技术窗口期只有两三年，<em>时不我待</em>，必须马上动手。</div>
+          <div><b>迫不及待</b>　新书刚到家，他就<em>迫不及待</em>地拆了封。</div>
+        </div>
+        <div class="example">
+          <div class="example-header">例题 1 · 真题 2019 吉林（0420 乙级）第 37 题</div>
+          <div class="example-body">
+            <div class="example-q">维护网络在线教育市场的正常秩序____。首先需要加强监管，网络在线教育是一个新生事物，是「互联网 + 教育」的新生产业，怎么管、谁来管、管什么等一系列问题，尚待厘清。____是在立法等制度设计层面划定相关准入门槛。</div>
+            <div class="example-opts"><span>A. 迫在眉睫　当务之急</span><span>B. 至关重要　燃眉之急</span><span>C. 刻不容缓　首当其冲</span><span>D. 责无旁贷　重中之重</span></div>
+            <div class="example-answer"><b>答案：<span class="correct">A</span></b><br>解析：第一空作「正常秩序」的谓语，要说<b>形势紧迫</b>，「迫在眉睫」「刻不容缓」都对；「至关重要」强调重要性而非紧迫性，「责无旁贷」强调责任不可推卸，均不合。<br>第二空需要一个<b>名词</b>，直接充当「是……」的主语，只有「当务之急」是名词性（当前最急需办的事）；「首当其冲」意为最先受冲击，与文意无关，C 排除。「燃眉之急」「重中之重」虽为名词，但分别侧重「危急程度」「重要性」，与「当前要办的事」不合。<br><b>这题就是「迫在眉睫作谓语、当务之急作主语」的标准双空考法。</b></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">14. 急功近利 / 好高骛远 / 好大喜功 / 贪大求全</div>
+        <div class="diff"><b>一句话区别：</b>急功近利＝<b>急于要眼前的好处</b>（重「快」）；好高骛远＝<b>目标定得不切实际</b>（重「高」，多指个人）；好大喜功＝<b>喜欢做大事、立大功</b>（重「显绩」，多指当政者）；贪大求全＝<b>贪规模大、门类全</b>（重「大而全」，多指项目、规划）。</div>
+        <table class="mini-table diff-tab">
+          <tr><th>词语</th><th>核心侧重</th><th>典型搭配</th></tr>
+          <tr><td>急功近利</td><td>急于求成，图眼前</td><td>急功近利的做法 / 短视而急功近利</td></tr>
+          <tr><td>好高骛远</td><td>目标过高，不切实际</td><td>好高骛远，不切实际</td></tr>
+          <tr><td>好大喜功</td><td>爱做大事、立大功</td><td>好大喜功的政绩工程</td></tr>
+          <tr><td>贪大求全</td><td>贪图规模大、门类全</td><td>贪大求全的产业园</td></tr>
+        </table>
+        <div class="egs">
+          <div><b>急功近利</b>　基础研究最忌<em>急功近利</em>，出成果往往要十年。</div>
+          <div><b>好高骛远</b>　刚入行就想做总导演，未免<em>好高骛远</em>。</div>
+          <div><b>好大喜功</b>　有的地方热衷上大项目、铺大摊子，<em>好大喜功</em>的心态一目了然。</div>
+          <div><b>贪大求全</b>　县城也规划千亿级产业园，这种<em>贪大求全</em>的毛病该改改了。</div>
+        </div>
+        <div class="example">
+          <div class="example-header">例题 2 · 真题改编 · 同考点仿题</div>
+          <div class="example-body">
+            <div class="example-q">有的地方主政者热衷于上大项目、铺大摊子，追求任期内看得见、数得着的显性政绩，这种____的心态，往往留下一堆烂尾工程。</div>
+            <div class="example-opts"><span>A. 急功近利</span><span>B. 好高骛远</span><span>C. 好大喜功</span><span>D. 贪大求全</span></div>
+            <div class="example-answer"><b>答案：<span class="correct">C</span></b><br>解析：句中「<b>上大项目、铺大摊子</b>」「追求任期内显性政绩」正是「好大喜功」的典型表现——爱做大事、爱立大功，且主语是「主政者」。「急功近利」侧重<b>图眼前利益</b>，不强调「大」；「好高骛远」侧重<b>目标定得不切实际</b>，多指个人志向，与「政绩工程」不贴；「贪大求全」侧重<b>规模大、门类全</b>，适合形容产业园、规划，不适合概括「心态」。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">15. 有的放矢 / 一针见血 / 对症下药 / 量体裁衣</div>
+        <div class="diff"><b>一句话区别：</b>有的放矢＝<b>有目标才射箭</b>（办事、措施有针对性）；一针见血＝<b>话说到要害</b>（评论、批评）；对症下药＝<b>针对问题开方子</b>（解决具体毛病）；量体裁衣＝<b>照身材做衣服</b>（按实际情况定方案）。</div>
+        <table class="mini-table diff-tab">
+          <tr><th>词语</th><th>核心侧重</th><th>典型搭配</th></tr>
+          <tr><td>有的放矢</td><td>有目标、有针对性</td><td>有的放矢地开展工作</td></tr>
+          <tr><td>一针见血</td><td>说话直击要害</td><td>批评一针见血 / 指出得一针见血</td></tr>
+          <tr><td>对症下药</td><td>针对病症给方案</td><td>对症下药，精准施策</td></tr>
+          <tr><td>量体裁衣</td><td>按实际条件量身定制</td><td>量体裁衣式的帮扶</td></tr>
+        </table>
+        <div class="egs">
+          <div><b>有的放矢</b>　只有把问题摸清，调研才能<em>有的放矢</em>。</div>
+          <div><b>一针见血</b>　他的点评<em>一针见血</em>，直接点出了方案的逻辑漏洞。</div>
+          <div><b>对症下药</b>　治理城市内涝要<em>对症下药</em>，先查清是管网问题还是地势问题。</div>
+          <div><b>量体裁衣</b>　帮扶要<em>量体裁衣</em>，有的户缺技术，有的户缺销路。</div>
+        </div>
+        <div class="example">
+          <div class="example-header">例题 3 · 真题改编 · 同考点仿题</div>
+          <div class="example-body">
+            <div class="example-q">批评不能泛泛而谈，更不能隔靴搔痒，而要____，指出问题的症结在哪里、责任在谁身上。</div>
+            <div class="example-opts"><span>A. 有的放矢</span><span>B. 一针见血</span><span>C. 对症下药</span><span>D. 量体裁衣</span></div>
+            <div class="example-answer"><b>答案：<span class="correct">B</span></b><br>解析：空处与「泛泛而谈」「隔靴搔痒」相反，且后文「指出症结在哪里」直接对应<b>说话直击要害</b>，选「一针见血」。「有的放矢」强调<b>有目标、有准备</b>，重心在「不盲目」，与「指出症结」的锋利感不合；「对症下药」强调<b>给出解决方案</b>，而句中只要求「指出问题」，还没有开方；「量体裁衣」强调按对象定制方案，与「批评」这个言语行为不搭。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">16. 因地制宜 / 因势利导 / 因时制宜</div>
+        <div class="diff"><b>一句话区别：</b>因地制宜＝<b>按地点条件</b>办（空间）；因势利导＝<b>顺着趋势引导</b>（方向）；因时制宜＝<b>按时期不同</b>办（时间）。三个词的差别只在「因」的那个字后面——<b>地 / 势 / 时</b>。</div>
+        <table class="mini-table diff-tab">
+          <tr><th>词语</th><th>核心侧重</th><th>典型搭配</th></tr>
+          <tr><td>因地制宜</td><td>依各地条件不同而变</td><td>因地制宜，宜林则林</td></tr>
+          <tr><td>因势利导</td><td>顺着趋势加以引导</td><td>因势利导，化危为机</td></tr>
+          <tr><td>因时制宜</td><td>依时期不同而调整</td><td>因时制宜，动态调整</td></tr>
+        </table>
+        <div class="egs">
+          <div><b>因地制宜</b>　山区发展产业要<em>因地制宜</em>，宜林则林、宜牧则牧。</div>
+          <div><b>因势利导</b>　面对直播带货的热潮，与其一味禁止，不如<em>因势利导</em>，把它纳入规范。</div>
+          <div><b>因时制宜</b>　调控政策要<em>因时制宜</em>，过热时收紧、下行时托底。</div>
+        </div>
+        <div class="example">
+          <div class="example-header">例题 4 · 真题 2018 广东</div>
+          <div class="example-body">
+            <div class="example-q">开展国土绿化行动，既要注重数量，更要注重质量，坚持科学绿化、规划引导、____，走科学、生态、借鉴的绿化发展之路，久久为功，善做善成，不断____森林面积，不断____森林质量，不断提升生态系统质量和稳定性。</div>
+            <div class="example-opts"><span>A. 因地制宜　扩大　提高</span><span>B. 因势利导　加大　增强</span><span>C. 因地制宜　扩充　强化</span><span>D. 因势利导　增加　改善</span></div>
+            <div class="example-answer"><b>答案：<span class="correct">A</span></b><br>解析：第一空与「科学绿化、规划引导」并列，讲的是<b>按各地不同条件定办法</b>（南方宜阔叶、北方宜针叶、干旱区宜灌木），选「因地制宜」。「因势利导」是<b>顺着趋势去引导</b>，对象是「势头、潮流」，用于「绿化」不合。<br>第二空「扩大面积」、第三空「提高质量」是固定搭配；「扩充」多用于编制、队伍，「强化」多用于意识、管理，「加大」多与力度、投入搭配——B、C、D 的组合都有一处搭配错。<br><b>提示：</b>「因地制宜」后面常接「宜林则林、宜牧则牧」这类按条件分类的表达。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 辨析五 -->
+  <div class="section c-blue" id="b5">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">🏆</div>
+      <div class="section-title">辨析五 · 强弱与取舍</div>
+      <span class="section-tag tag-hot">必考</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="key-box">
+        「望其项背 / 望尘莫及」是<b>同一道题里的固定双煞</b>：一个只能用于否定（赶得上），一个可用于肯定（追不上）。
+        看到「难以____」就选望其项背，看到「只能____」就选望尘莫及。
+      </div>
+
+      <div class="block">
+        <div class="block-title">17. 脱颖而出 / 与众不同 / 出类拔萃 / 卓尔不群</div>
+        <div class="diff"><b>一句话区别：</b>脱颖而出＝<b>在竞争中冒出来</b>（重「显露」，强调从人群里出头）；与众不同＝<b>跟别人不一样</b>（中性，不一定更好）；出类拔萃＝<b>才能高出同类</b>（褒，重「高出」）；卓尔不群＝<b>才德超群、不随流俗</b>（褒，重「超然独立」）。</div>
+        <table class="mini-table diff-tab">
+          <tr><th>词语</th><th>核心侧重</th><th>典型搭配</th></tr>
+          <tr><td>脱颖而出</td><td>从众人中显露出来</td><td>在……中脱颖而出</td></tr>
+          <tr><td>与众不同</td><td>跟别人不一样</td><td>与众不同的设计 / 与众不同的人</td></tr>
+          <tr><td>出类拔萃</td><td>才能超过同类</td><td>出类拔萃的人才</td></tr>
+          <tr><td>卓尔不群</td><td>才德超群，独立不随</td><td>卓尔不群的品格</td></tr>
+        </table>
+        <div class="egs">
+          <div><b>脱颖而出</b>　她在千人海选中<em>脱颖而出</em>，拿下唯一的名额。</div>
+          <div><b>与众不同</b>　这间咖啡馆的<em>与众不同</em>之处，是不放背景音乐。</div>
+          <div><b>出类拔萃</b>　他在同期学员中<em>出类拔萃</em>，一毕业就被点名要走。</div>
+          <div><b>卓尔不群</b>　他一生不赴宴、不题字，<em>卓尔不群</em>的品格令人敬重。</div>
+        </div>
+        <div class="example">
+          <div class="example-header">例题 1 · 真题改编 · 同考点仿题</div>
+          <div class="example-body">
+            <div class="example-q">在两千多名应聘者中，她凭借扎实的专业功底和出色的临场应变____，成为唯一被录用的应届毕业生。</div>
+            <div class="example-opts"><span>A. 脱颖而出</span><span>B. 与众不同</span><span>C. 出类拔萃</span><span>D. 卓尔不群</span></div>
+            <div class="example-answer"><b>答案：<span class="correct">A</span></b><br>解析：句中有明确的<b>竞争场景</b>（两千多名应聘者）和<b>结果</b>（唯一被录用），要表达「从众人中显露出来」，选「脱颖而出」。「与众不同」只说明不一样，<b>不含优劣</b>，与「唯一被录用」的优胜结果不匹配；「出类拔萃」形容<b>才能本身高出同类</b>，多作定语（出类拔萃的人才），不能直接说「她凭借……出类拔萃」；「卓尔不群」侧重<b>品格超然、不随流俗</b>，用于应聘选拔的语境过重。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">18. 相形见绌 / 望尘莫及 / 望其项背</div>
+        <div class="diff"><b>一句话区别：</b>相形见绌＝<b>和同类一比就下去</b>（后面不能带宾语）；望尘莫及＝<b>远远追不上</b>（<b>可用于肯定句</b>）；望其项背＝<b>赶得上</b>（<b>只用于否定</b>：难以望其项背）。</div>
+        <table class="mini-table diff-tab">
+          <tr><th>词语</th><th>核心侧重</th><th>典型搭配</th></tr>
+          <tr><td>相形见绌</td><td>与同类相比显得不足</td><td>与……相比相形见绌</td></tr>
+          <tr><td>望尘莫及</td><td>落后很远，赶不上</td><td>令人望尘莫及 / 只能望尘莫及</td></tr>
+          <tr><td>望其项背</td><td>能赶得上（多否定）</td><td>难以望其项背 / 不能望其项背</td></tr>
+        </table>
+        <div class="egs">
+          <div><b>相形见绌</b>　与新款相比，旧机型<em>相形见绌</em>。</div>
+          <div><b>望尘莫及</b>　技术代差之下，后来者只能<em>望尘莫及</em>。</div>
+          <div><b>望其项背</b>　其工艺之精，今人<em>难以望其项背</em>。</div>
+        </div>
+        <div class="example">
+          <div class="example-header">例题 2 · 真题 2018 年 421 联考</div>
+          <div class="example-body">
+            <div class="example-q">现代传媒尤其是电子传媒有着比传统纸质传媒更宽广的尺度，____更多批判的意识和更多的异端。无数专家、学者在电子传媒会客厅中针对各种社会现象接受访谈，发表意见，甚至不乏____的声音。分析之深、论证之严密、言论之犀利，传统媒体均无法____。</div>
+            <div class="example-opts"><span>A. 鼓励　特立独行　相提并论</span><span>B. 滋生　针锋相对　同日而语</span><span>C. 允许　振聋发聩　一目了然</span><span>D. 容纳　惊世骇俗　望其项背</span></div>
+            <div class="example-answer"><b>答案：<span class="correct">D</span></b><br>解析：第三空是本题的判分点——传统媒体<b>赶不上</b>电子传媒的深度与犀利，用「无法望其项背」（望其项背＝赶得上，<b>只能用于否定式</b>）。<br>·「相提并论」「同日而语」都是「放在一起谈论」，与「比不上」不完全等同，且「无法相提并论」多用于<b>性质不同不可类比</b>，此处是比较高低，不如「望其项背」准；<br>·「一目了然」形容看得清楚，与「赶不上」毫无关系，C 直接出局。<br>第一空「容纳……批判意识」、第二空「惊世骇俗的声音」（言论惊人、超出常规）均可验证。<b>记住这个句式：无法望其项背＝追不上。</b></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">19. 独一无二 / 无与伦比 / 不可替代</div>
+        <div class="diff"><b>一句话区别：</b>独一无二＝<b>只有这一个</b>（唯一性，重「没有第二个」）；无与伦比＝<b>没有能比的</b>（程度最高，重「最好」）；不可替代＝<b>换不了</b>（功能性，重「不可被取代」）。</div>
+        <table class="mini-table diff-tab">
+          <tr><th>词语</th><th>核心侧重</th><th>典型搭配</th></tr>
+          <tr><td>独一无二</td><td>唯一，没有第二个</td><td>独一无二的优势 / 独一无二的存在</td></tr>
+          <tr><td>无与伦比</td><td>没有能与之相比的</td><td>无与伦比的价值 / 美得无与伦比</td></tr>
+          <tr><td>不可替代</td><td>不能被别的取代</td><td>不可替代的作用 / 不可替代性</td></tr>
+        </table>
+        <div class="egs">
+          <div><b>独一无二</b>　这里的丹霞地貌在全世界都是<em>独一无二</em>的。</div>
+          <div><b>无与伦比</b>　敦煌壁画的艺术价值<em>无与伦比</em>。</div>
+          <div><b>不可替代</b>　母亲在孩子早期成长中的作用<em>不可替代</em>。</div>
+        </div>
+        <div class="example">
+          <div class="example-header">例题 3 · 真题改编 · 同考点仿题</div>
+          <div class="example-body">
+            <div class="example-q">这片湿地承担着调蓄洪水、净化水质、维护生物多样性等多重功能，对下游三百万人的饮水安全具有____的作用。</div>
+            <div class="example-opts"><span>A. 独一无二</span><span>B. 无与伦比</span><span>C. 不可替代</span><span>D. 举足轻重</span></div>
+            <div class="example-answer"><b>答案：<span class="correct">C</span></b><br>解析：空处修饰「<b>作用</b>」，且前文列举的多重功能说明它<b>没法被别的东西顶替</b>，选「不可替代」。「独一无二」强调<b>只有这一个</b>，句中没有与其他湿地比较唯一性；「无与伦比」强调<b>程度最高、没有能比的</b>，多用于价值、美、成就，修饰「作用」不合；「举足轻重」只说明<b>地位重要</b>，不含「换不掉」的意思，与「饮水安全」的刚性需求呼应不足。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">20. 本末倒置 / 舍本逐末 / 喧宾夺主</div>
+        <div class="diff"><b>一句话区别：</b>本末倒置＝<b>主次弄颠倒了</b>（重「颠倒」，客观上摆错了位置）；舍本逐末＝<b>主动放弃根本去追枝节</b>（重「主动」）；喧宾夺主＝<b>次要的压过主要的</b>（重「抢位」，多指外来者或陪衬）。</div>
+        <table class="mini-table diff-tab">
+          <tr><th>词语</th><th>核心侧重</th><th>典型搭配</th></tr>
+          <tr><td>本末倒置</td><td>轻重位置颠倒</td><td>重形式轻内容，本末倒置</td></tr>
+          <tr><td>舍本逐末</td><td>放弃根本，追求枝节</td><td>舍本逐末的做法</td></tr>
+          <tr><td>喧宾夺主</td><td>次要的抢了主要的位置</td><td>配乐喧宾夺主 / 广告喧宾夺主</td></tr>
+        </table>
+        <div class="egs">
+          <div><b>本末倒置</b>　总结会上 PPT 做了八十页，实际工作只讲了五分钟，实在<em>本末倒置</em>。</div>
+          <div><b>舍本逐末</b>　只抓流量不抓品质，是典型的<em>舍本逐末</em>。</div>
+          <div><b>喧宾夺主</b>　配乐铺得太满，反而<em>喧宾夺主</em>。</div>
+        </div>
+        <div class="example">
+          <div class="example-header">例题 4 · 真题改编 · 同考点仿题</div>
+          <div class="example-body">
+            <div class="example-q">有的地方搞文明创建，把大量精力放在刷标语、做展板上，对群众真正关心的停车难、买菜难却视而不见，这种____的做法必须纠正。</div>
+            <div class="example-opts"><span>A. 本末倒置</span><span>B. 舍本逐末</span><span>C. 喧宾夺主</span><span>D. 缘木求鱼</span></div>
+            <div class="example-answer"><b>答案：<span class="correct">B</span></b><br>解析：句中是「<b>把精力放在刷标语</b>（末）而<b>无视群众疾苦</b>（本）」，属于<b>主动放弃根本、追求枝节</b>，选「舍本逐末」。「本末倒置」只强调主次<b>摆错了位置</b>，不含「明知根本在哪却主动放弃」的意味，语气略轻；「喧宾夺主」要求有一个「宾」抢了「主」的位置，句中没有外来者抢占的意味；「缘木求鱼」指<b>方向方法根本错误、必然徒劳</b>，而刷标语并非毫无效果，只是抓错了重点。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 辨析六 -->
+  <div class="section c-green" id="b6">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">🛠️</div>
+      <div class="section-title">辨析六 · 方法与路径</div>
+      <span class="section-tag tag-hot">必考</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="key-box">
+        「缘木求鱼 / 竭泽而渔 / 寅吃卯粮 / 杀鸡取卵」四个都是贬义且都带比喻，靠<b>喻体</b>区分：
+        上树找鱼（方向错）／放干水捉鱼（耗尽资源）／吃明天的粮（透支）／杀鸡取蛋（毁掉根基）。
+      </div>
+
+      <div class="block">
+        <div class="block-title">21. 水到渠成 / 顺理成章 / 听之任之 / 顺其自然</div>
+        <div class="diff"><b>一句话区别：</b>水到渠成＝<b>条件成熟，结果自然来</b>（褒，重「功到自然成」）；顺理成章＝<b>合乎条理，自然推出</b>（中性，多指文章、逻辑）；听之任之＝<b>放任不管</b>（贬）；顺其自然＝<b>不刻意干预</b>（中性，顺应规律）。</div>
+        <table class="mini-table diff-tab">
+          <tr><th>词语</th><th>核心侧重</th><th>典型搭配</th></tr>
+          <tr><td>水到渠成</td><td>条件具备，自然成功</td><td>功到自然成、水到渠成</td></tr>
+          <tr><td>顺理成章</td><td>合乎逻辑，自然发展</td><td>顺理成章地成为 / 顺理成章的结论</td></tr>
+          <tr><td>听之任之</td><td>放任不管（贬）</td><td>不能听之任之</td></tr>
+          <tr><td>顺其自然</td><td>顺应规律，不强求</td><td>顺其自然，不必强求</td></tr>
+        </table>
+        <div class="egs">
+          <div><b>水到渠成</b>　把基础打牢，能力提升是<em>水到渠成</em>的事。</div>
+          <div><b>顺理成章</b>　前期论证做扎实了，结论便<em>顺理成章</em>。</div>
+          <div><b>听之任之</b>　对网络谣言不能<em>听之任之</em>。</div>
+          <div><b>顺其自然</b>　孩子的发展有其节奏，不妨<em>顺其自然</em>。</div>
+        </div>
+        <div class="example">
+          <div class="example-header">例题 1 · 真题改编 · 同考点仿题</div>
+          <div class="example-body">
+            <div class="example-q">基本功练到一定程度，成绩的提高便是____的事，急也急不来。</div>
+            <div class="example-opts"><span>A. 水到渠成</span><span>B. 顺理成章</span><span>C. 听之任之</span><span>D. 顺其自然</span></div>
+            <div class="example-answer"><b>答案：<span class="correct">A</span></b><br>解析：前文「<b>基本功练到一定程度</b>」是条件，「成绩提高」是结果，正是「条件成熟、结果自然到来」的比喻，选「水到渠成」，且与「急也急不来」呼应。「顺理成章」侧重<b>合乎逻辑、顺乎条理</b>，多用于文章结构、论证推导；「听之任之」是贬义，指放任错误发展，感情色彩不合；「顺其自然」侧重<b>不刻意强求的心态</b>，与「练到一定程度」这种主动积累不搭。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">22. 缘木求鱼 / 竭泽而渔 / 寅吃卯粮 / 杀鸡取卵</div>
+        <div class="diff"><b>一句话区别：</b>缘木求鱼＝<b>方向方法错，必然徒劳</b>；竭泽而渔＝<b>耗尽资源换眼前</b>（重「把资源用光」）；寅吃卯粮＝<b>提前支用未来的钱粮</b>（重「透支」）；杀鸡取卵＝<b>贪眼前小利，毁掉根本</b>（重「自断生路」）。</div>
+        <table class="mini-table diff-tab">
+          <tr><th>词语</th><th>核心侧重</th><th>典型搭配</th></tr>
+          <tr><td>缘木求鱼</td><td>方向错，白费力气</td><td>无异于缘木求鱼</td></tr>
+          <tr><td>竭泽而渔</td><td>耗尽资源，不顾长远</td><td>竭泽而渔式开发</td></tr>
+          <tr><td>寅吃卯粮</td><td>透支未来收入</td><td>寅吃卯粮，入不敷出</td></tr>
+          <tr><td>杀鸡取卵</td><td>贪小利而毁根本</td><td>杀鸡取卵的做法</td></tr>
+        </table>
+        <div class="egs">
+          <div><b>缘木求鱼</b>　想靠加印钞票解决结构性问题，无异于<em>缘木求鱼</em>。</div>
+          <div><b>竭泽而渔</b>　为了短期税收放干湖水搞养殖，是<em>竭泽而渔</em>。</div>
+          <div><b>寅吃卯粮</b>　靠借新债还旧息，本质是<em>寅吃卯粮</em>。</div>
+          <div><b>杀鸡取卵</b>　为省成本砍掉研发，等于<em>杀鸡取卵</em>。</div>
+        </div>
+        <div class="example">
+          <div class="example-header">例题 2 · 真题改编 · 同考点仿题</div>
+          <div class="example-body">
+            <div class="example-q">为了完成今年的营收指标，个别企业把明年的订单提前确认收入，账面上好看了，实则是____，风险全压到了下一年。</div>
+            <div class="example-opts"><span>A. 缘木求鱼</span><span>B. 竭泽而渔</span><span>C. 寅吃卯粮</span><span>D. 杀鸡取卵</span></div>
+            <div class="example-answer"><b>答案：<span class="correct">C</span></b><br>解析：句中「<b>把明年的订单提前确认</b>」「风险全压到下一年」是典型的<b>提前支用未来</b>，选「寅吃卯粮」。「缘木求鱼」强调<b>方向方法错误</b>，而提前确认收入确实能做出账面利润，方法并非无效；「竭泽而渔」强调<b>把资源耗尽</b>，侧重「用光」而不是「预支」；「杀鸡取卵」强调<b>毁掉根本</b>，语气过重，且「鸡」与「订单」的喻体不贴。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">23. 墨守成规 / 抱残守缺 / 固步自封 / 陈陈相因</div>
+        <div class="diff"><b>一句话区别：</b>墨守成规＝<b>守老规矩不变通</b>（重「不变通」）；抱残守缺＝<b>守着残缺旧物旧说</b>（重「残缺还当宝」）；固步自封＝<b>自我封闭不求进</b>（重「封闭」）；陈陈相因＝<b>一代代沿袭老一套</b>（重「因袭、无改进」，多指文风、做法）。</div>
+        <table class="mini-table diff-tab">
+          <tr><th>词语</th><th>核心侧重</th><th>典型搭配</th></tr>
+          <tr><td>墨守成规</td><td>死守旧规，不知变通</td><td>墨守成规，不敢越雷池</td></tr>
+          <tr><td>抱残守缺</td><td>守着残缺的旧东西</td><td>对旧说抱残守缺</td></tr>
+          <tr><td>固步自封</td><td>自我封闭，不求进步</td><td>固步自封，夜郎自大</td></tr>
+          <tr><td>陈陈相因</td><td>沿袭老一套，没有改进</td><td>文风陈陈相因</td></tr>
+        </table>
+        <div class="egs">
+          <div><b>墨守成规</b>　审批流程一味<em>墨守成规</em>，就会拖慢创新。</div>
+          <div><b>抱残守缺</b>　对旧说<em>抱残守缺</em>，是学术停滞的根源。</div>
+          <div><b>固步自封</b>　越是开放的城市，越不会<em>固步自封</em>。</div>
+          <div><b>陈陈相因</b>　若只是<em>陈陈相因</em>，学术便难有真正的突破。</div>
+        </div>
+        <div class="example">
+          <div class="example-header">例题 3 · 真题改编 · 同考点仿题</div>
+          <div class="example-body">
+            <div class="example-q">学术研究若只在前人搭好的框架里打转，题目、方法、结论都照着旧例来，____，就很难产生真正有原创性的成果。</div>
+            <div class="example-opts"><span>A. 墨守成规</span><span>B. 抱残守缺</span><span>C. 固步自封</span><span>D. 陈陈相因</span></div>
+            <div class="example-answer"><b>答案：<span class="correct">D</span></b><br>解析：句中「<b>题目、方法、结论都照着旧例来</b>」强调的是一代代<b>沿袭、因袭而无改进</b>，选「陈陈相因」。「墨守成规」侧重<b>守着规矩不肯变通</b>，多指办事流程、制度，不针对学术沿袭；「抱残守缺」侧重<b>守着残缺的旧东西</b>，前提是「残缺」，句中并未说前人框架有缺陷；「固步自封」侧重<b>自我封闭、不与外界交流</b>，句中并无「封闭」的表述。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">24. 融会贯通 / 举一反三 / 触类旁通</div>
+        <div class="diff"><b>一句话区别：</b>融会贯通＝<b>把各块知识打通</b>（重「融合」，由散到整）；举一反三＝<b>由一件事推知许多</b>（重「推得多」）；触类旁通＝<b>掌握一类规律，推知同类</b>（重「横向类推」）。</div>
+        <table class="mini-table diff-tab">
+          <tr><th>词语</th><th>核心侧重</th><th>典型搭配</th></tr>
+          <tr><td>融会贯通</td><td>融合各方面，透彻理解</td><td>把……融会贯通</td></tr>
+          <tr><td>举一反三</td><td>由一推多</td><td>举一反三的能力</td></tr>
+          <tr><td>触类旁通</td><td>由此类推知同类</td><td>触类旁通，一通百通</td></tr>
+        </table>
+        <div class="egs">
+          <div><b>融会贯通</b>　把文史哲打通，才能真正<em>融会贯通</em>。</div>
+          <div><b>举一反三</b>　好老师教的不是答案，是<em>举一反三</em>的能力。</div>
+          <div><b>触类旁通</b>　学会一门乐器，再学别的往往<em>触类旁通</em>。</div>
+        </div>
+        <div class="example">
+          <div class="example-header">例题 4 · 真题改编 · 同考点仿题</div>
+          <div class="example-body">
+            <div class="example-q">学古文不能只背注释。字词、句式、篇章、典章制度，各块都要串起来看，串通了才能____，读出文字背后的意思。</div>
+            <div class="example-opts"><span>A. 融会贯通</span><span>B. 举一反三</span><span>C. 触类旁通</span><span>D. 学以致用</span></div>
+            <div class="example-answer"><b>答案：<span class="correct">A</span></b><br>解析：前文列举「字词、句式、篇章、典章制度」并强调「<b>串起来看、串通了</b>」，正是把分散的知识<b>融合成整体</b>，选「融会贯通」。「举一反三」侧重<b>由一件事推出许多事</b>，句中没有「推」的动作；「触类旁通」侧重<b>由一类推知同类</b>，强调横向迁移，与「各块串起来」的纵向整合不同；「学以致用」指把学到的用到实践中，句中没有「用」的语境。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 辨析七 -->
+  <div class="section c-orange" id="b7">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">🔗</div>
+      <div class="section-title">辨析七 · 状态与关系</div>
+      <span class="section-tag tag-high">高频</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="key-box">
+        「息息相关 / 休戚与共 / 唇齿相依」三个都表示关系近，区别在<b>有没有感情与利害</b>：
+        息息相关＝只是关联紧；休戚与共＝同甘共苦（有祸福）；唇齿相依＝互相依存（多指地理、安全）。
+      </div>
+
+      <div class="block">
+        <div class="block-title">25. 息息相关 / 休戚与共 / 唇齿相依</div>
+        <div class="diff"><b>一句话区别：</b>息息相关＝<b>关系非常密切</b>（中性，可用于事物）；休戚与共＝<b>同甘共苦、利害一致</b>（多指人、国家，带感情）；唇齿相依＝<b>像嘴唇和牙齿一样互相依存</b>（多指地理、安全上的依存）。</div>
+        <table class="mini-table diff-tab">
+          <tr><th>词语</th><th>核心侧重</th><th>典型搭配</th></tr>
+          <tr><td>息息相关</td><td>关联紧密</td><td>与……息息相关 / 息息相关的生活</td></tr>
+          <tr><td>休戚与共</td><td>祸福相同，利害一致</td><td>休戚与共的命运共同体</td></tr>
+          <tr><td>唇齿相依</td><td>互相依存，缺一不可</td><td>唇齿相依，唇亡齿寒</td></tr>
+        </table>
+        <div class="egs">
+          <div><b>息息相关</b>　空气质量与每个人的健康<em>息息相关</em>。</div>
+          <div><b>休戚与共</b>　两个村子共守一座山口，一荣俱荣、一损俱损，早已是<em>休戚与共</em>的命运共同体。</div>
+          <div><b>唇齿相依</b>　这两座城市隔江相望，产业互补，可谓<em>唇齿相依</em>。</div>
+        </div>
+        <div class="example">
+          <div class="example-header">例题 1 · 真题改编 · 同考点仿题</div>
+          <div class="example-body">
+            <div class="example-q">上下游同处一条流域，上游污染，下游必然遭殃；下游发展，上游也跟着受益。这种____的关系，决定了治水必须全流域一盘棋。</div>
+            <div class="example-opts"><span>A. 息息相关</span><span>B. 休戚与共</span><span>C. 唇齿相依</span><span>D. 相辅相成</span></div>
+            <div class="example-answer"><b>答案：<span class="correct">C</span></b><br>解析：句中强调「<b>上游污染下游遭殃，下游发展上游受益</b>」，是<b>地理上互相依存、缺一不可</b>，选「唇齿相依」最贴。「息息相关」只说关联紧密，<b>不含「互相依存」的刚性</b>，力度不够；「休戚与共」侧重<b>同甘共苦的情感与利害一致</b>，多用于人、民族、国家，用于上下游的地理关系偏「情」；「相辅相成」指互相配合、缺一不可，但要求双方<b>互相成全</b>，与「污染遭殃」的负面传导不合。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">26. 琳琅满目 / 汗牛充栋 / 浩如烟海</div>
+        <div class="diff"><b>一句话区别：</b>琳琅满目＝<b>好东西多而美</b>（多指商品、展品）；汗牛充栋＝<b>书多得搬不动</b>（<b>只指书</b>）；浩如烟海＝<b>文献典籍浩繁</b>（多指典籍、史料，重「读不完」）。</div>
+        <table class="mini-table diff-tab">
+          <tr><th>词语</th><th>核心侧重</th><th>典型搭配</th></tr>
+          <tr><td>琳琅满目</td><td>美好之物多而杂</td><td>商品琳琅满目 / 展品琳琅满目</td></tr>
+          <tr><td>汗牛充栋</td><td>书籍极多</td><td>著述汗牛充栋</td></tr>
+          <tr><td>浩如烟海</td><td>文献典籍浩繁</td><td>古籍浩如烟海</td></tr>
+        </table>
+        <div class="egs">
+          <div><b>琳琅满目</b>　展柜里的文创产品<em>琳琅满目</em>，几乎每样都想带走。</div>
+          <div><b>汗牛充栋</b>　乾嘉学者的著述<em>汗牛充栋</em>，光目录就有十几卷。</div>
+          <div><b>浩如烟海</b>　中医古籍<em>浩如烟海</em>，一个人一辈子也读不完。</div>
+        </div>
+        <div class="example">
+          <div class="example-header">例题 2 · 真题 2021 黑龙江 第 38 题</div>
+          <div class="example-body">
+            <div class="example-q">从古至今，靠苦读起家的事例____。然而，正如著名学者彼得拉克所说：「书籍使人博学多识，但也使一些食而不化之人疯疯癫癫。」历史上，由苦读而弄得「疯疯癫癫」的也____，名家笔下的范进、孔乙己，正是被「死读书」坑了一辈子的____。</div>
+            <div class="example-opts"><span>A. 如数家珍　星罗棋布　代表</span><span>B. 举不胜举　不乏其人　典型</span><span>C. 汗牛充栋　不胜枚举　标杆</span><span>D. 多如牛毛　凤毛麟角　范例</span></div>
+            <div class="example-answer"><b>答案：<span class="correct">B</span></b><br>解析：第一空形容「事例」多，用「举不胜举」（举不完，形容很多）或「多如牛毛」。<br><b>本题最大的坑是 C 的「汗牛充栋」——它只能形容「书多」，不能形容「事例多」，这是典型的对象误用。</b>「如数家珍」指<b>对熟悉的事物一一列举</b>，主语是人，A 排除。<br>第二空要表达「这样的人也为数不少」，用「不乏其人」（不缺少那样的人）；「凤毛麟角」指稀少而珍贵，与「为数不少」相反，D 排除。<br>第三空「典型」指有代表性的人物，与「范进、孔乙己」的例子性质吻合；「标杆」是褒义的学习榜样，与「被坑了一辈子」矛盾。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">27. 泰然自若 / 安之若素 / 随遇而安</div>
+        <div class="diff"><b>一句话区别：</b>泰然自若＝<b>遇到紧急情况仍镇定如常</b>（重「临事不乱」）；安之若素＝<b>遇到反常或不利的情况，像平常一样对待</b>（重「不以为意」）；随遇而安＝<b>到哪都能适应</b>（重「适应环境」）。</div>
+        <table class="mini-table diff-tab">
+          <tr><th>词语</th><th>核心侧重</th><th>典型搭配</th></tr>
+          <tr><td>泰然自若</td><td>危急时神色不变</td><td>泰然自若地应对</td></tr>
+          <tr><td>安之若素</td><td>对反常、困境毫不在意</td><td>安之若素，处之泰然</td></tr>
+          <tr><td>随遇而安</td><td>顺应环境，到哪都能安</td><td>随遇而安的性格</td></tr>
+        </table>
+        <div class="egs">
+          <div><b>泰然自若</b>　检查组的车刚进院，他仍在会客室里<em>泰然自若</em>地泡茶。</div>
+          <div><b>安之若素</b>　住在漏雨的宿舍里，他一住三年，<em>安之若素</em>。</div>
+          <div><b>随遇而安</b>　他性子淡，调到哪个岗位都<em>随遇而安</em>。</div>
+        </div>
+        <div class="example">
+          <div class="example-header">例题 3 · 真题改编 · 同考点仿题</div>
+          <div class="example-body">
+            <div class="example-q">暗访组的车已经停在楼下，会议室里的气氛骤然紧张，只有他依旧____，不紧不慢地翻着手里的材料。</div>
+            <div class="example-opts"><span>A. 泰然自若</span><span>B. 安之若素</span><span>C. 随遇而安</span><span>D. 无动于衷</span></div>
+            <div class="example-answer"><b>答案：<span class="correct">A</span></b><br>解析：句中有明确的<b>突发紧张情境</b>（暗访组到楼下、气氛骤然紧张），要表达<b>临事镇定、神色不变</b>，选「泰然自若」。「安之若素」侧重对<b>反常或不利处境长期不以为意</b>，不强调「当下这一刻的镇定」；「随遇而安」侧重<b>适应不同环境</b>，与「暗访突至」无关；「无动于衷」指<b>心里毫不触动</b>，含冷漠、该有反应却没反应的贬义，与「不紧不慢翻材料」的从容不同。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">28. 顾此失彼 / 捉襟见肘 / 左支右绌</div>
+        <div class="diff"><b>一句话区别：</b>顾此失彼＝<b>顾了这个丢了那个</b>（重「两头顾不上」）；捉襟见肘＝<b>拉一下衣襟就露胳膊肘</b>（原指衣服破烂，比喻<b>困难重重、穷于应付</b>，多指财力、能力不足）；左支右绌＝<b>应付了这边那边又出问题</b>（重「力量不足、处处漏洞」）。</div>
+        <table class="mini-table diff-tab">
+          <tr><th>词语</th><th>核心侧重</th><th>典型搭配</th></tr>
+          <tr><td>顾此失彼</td><td>照顾不周，丢一头</td><td>顾此失彼，疲于奔命</td></tr>
+          <tr><td>捉襟见肘</td><td>资源匮乏，难以应付</td><td>资金捉襟见肘 / 人力捉襟见肘</td></tr>
+          <tr><td>左支右绌</td><td>力量不足，处处出问题</td><td>左支右绌，疲于应付</td></tr>
+        </table>
+        <div class="egs">
+          <div><b>顾此失彼</b>　既要抓进度又要抓安全，人手不够就容易<em>顾此失彼</em>。</div>
+          <div><b>捉襟见肘</b>　县财政本就<em>捉襟见肘</em>，再上大项目只会雪上加霜。</div>
+          <div><b>左支右绌</b>　预算一砍再砍，既要保进度又要保质量，项目组<em>左支右绌</em>。</div>
+        </div>
+        <div class="example">
+          <div class="example-header">例题 4 · 真题改编 · 同考点仿题</div>
+          <div class="example-body">
+            <div class="example-q">预算一砍再砍，既要保工期，又要保质量，还要应付接连不断的检查，项目组渐渐____，问题一个接一个冒出来。</div>
+            <div class="example-opts"><span>A. 顾此失彼</span><span>B. 捉襟见肘</span><span>C. 左支右绌</span><span>D. 力不从心</span></div>
+            <div class="example-answer"><b>答案：<span class="correct">C</span></b><br>解析：句中同时给了「保工期／保质量／应付检查」<b>三头压力</b>，并说「问题一个接一个冒出来」，强调<b>力量不足、处处出漏洞</b>，选「左支右绌」。「顾此失彼」只强调<b>丢了一头</b>，是「二选一」的结构，与三头压力不符；「捉襟见肘」多指<b>财力、物力匮乏</b>，一般作谓语或定语（资金捉襟见肘），很少说「渐渐捉襟见肘」；「力不从心」侧重<b>主观上想干但能力不够</b>，与句中「预算被砍」的客观资源约束不完全对应。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 辨析八 -->
+  <div class="section c-purple" id="b8">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">💬</div>
+      <div class="section-title">辨析八 · 表达与评议</div>
+      <span class="section-tag tag-high">高频</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="key-box">
+        「猝不及防 / 始料不及 / 出其不意 / 措手不及」四个常同题出现，抓一个点：
+        <b>猝不及防</b>＝事来得突然（客观）；<b>始料不及</b>＝没想到（主观预判）；<b>出其不意</b>＝主动袭击对方（战术）；<b>措手不及</b>＝被弄得手忙脚乱（结果）。
+      </div>
+
+      <div class="block">
+        <div class="block-title">29. 含糊其辞 / 闪烁其词</div>
+        <div class="diff"><b>一句话区别：</b>含糊其辞＝<b>话说得内容不清</b>（有意模糊，重「不清」）；闪烁其词＝<b>说话吞吞吐吐、躲躲闪闪</b>（重「不敢明说」，常伴「回避」）。</div>
+        <table class="mini-table diff-tab">
+          <tr><th>词语</th><th>核心侧重</th><th>典型搭配</th></tr>
+          <tr><td>含糊其辞</td><td>表达模糊，不明确</td><td>含糊其辞，语焉不详</td></tr>
+          <tr><td>闪烁其词</td><td>躲闪回避，不肯明说</td><td>闪烁其词，避而不答</td></tr>
+        </table>
+        <div class="egs">
+          <div><b>含糊其辞</b>　报告里对这一笔支出<em>含糊其辞</em>，只写「其他费用」四个字。</div>
+          <div><b>闪烁其词</b>　面对追问，他<em>闪烁其词</em>，眼神一直往门口飘。</div>
+        </div>
+        <div class="example">
+          <div class="example-header">例题 1 · 真题改编 · 同考点仿题</div>
+          <div class="example-body">
+            <div class="example-q">记者三次追问资金的具体去向，负责人始终不肯正面回答，____，最后只说了一句「都按程序办了」。</div>
+            <div class="example-opts"><span>A. 含糊其辞</span><span>B. 闪烁其词</span><span>C. 讳莫如深</span><span>D. 语焉不详</span></div>
+            <div class="example-answer"><b>答案：<span class="correct">B</span></b><br>解析：句中「<b>不肯正面回答</b>」「只说了一句」强调的是<b>躲闪、回避</b>，选「闪烁其词」。「含糊其辞」侧重<b>说出来的话本身模糊</b>，而这里是「不肯说」，不是「说不清」；「讳莫如深」指<b>隐瞒得很紧、绝口不谈</b>，程度更重，且后面一般不接「最后只说了一句」这种「还是说了点」的表述；「语焉不详」指<b>说得不详细</b>，侧重「简略」而非「躲闪」。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">30. 猝不及防 / 始料不及 / 出其不意 / 措手不及</div>
+        <div class="diff"><b>一句话区别：</b>猝不及防＝<b>事来得太突然，来不及防</b>（客观突发）；始料不及＝<b>事先没料到</b>（主观预判落空）；出其不意＝<b>趁对方不注意出手</b>（主动战术，多指一方对另一方）；措手不及＝<b>被弄得手忙脚乱</b>（重「应对不上」的结果）。</div>
+        <table class="mini-table diff-tab">
+          <tr><th>词语</th><th>核心侧重</th><th>典型搭配</th></tr>
+          <tr><td>猝不及防</td><td>突然发生，来不及防</td><td>令人猝不及防 / 猝不及防的打击</td></tr>
+          <tr><td>始料不及</td><td>事先没料到</td><td>结果始料不及</td></tr>
+          <tr><td>出其不意</td><td>趁人不备，主动出手</td><td>出其不意，攻其不备</td></tr>
+          <tr><td>措手不及</td><td>临时应付不了</td><td>打得措手不及</td></tr>
+        </table>
+        <div class="egs">
+          <div><b>猝不及防</b>　暴雨在凌晨突袭，山洪来得<em>猝不及防</em>，村民们还在睡梦中。</div>
+          <div><b>始料不及</b>　谁也没想到，一场小感冒会拖成肺炎，结果<em>始料不及</em>。</div>
+          <div><b>出其不意</b>　球队下半场突然改打高位逼抢，<em>出其不意</em>，连进两球。</div>
+          <div><b>措手不及</b>　政策突然收紧，不少企业被打了个<em>措手不及</em>。</div>
+        </div>
+        <div class="example">
+          <div class="example-header">例题 2 · 真题改编 · 同考点仿题</div>
+          <div class="example-body">
+            <div class="example-q">暴雨在凌晨突袭山谷，山洪裹着碎石冲下来，来得____，村里不少人还在睡梦中。</div>
+            <div class="example-opts"><span>A. 猝不及防</span><span>B. 始料不及</span><span>C. 出其不意</span><span>D. 措手不及</span></div>
+            <div class="example-answer"><b>答案：<span class="correct">A</span></b><br>解析：句中「<b>凌晨突袭</b>」「还在睡梦中」强调<b>事发突然、来不及防备</b>，选「猝不及防」。「始料不及」侧重<b>事先没料到</b>，是个判断性评价，不强调「来不及防」的紧迫；「出其不意」是<b>主动的一方用战术</b>，山洪没有「主动设计」；「措手不及」侧重<b>被弄得手忙脚乱</b>，是人的应对结果，而句中人们还在睡觉，谈不上「应对」。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">31. 众望所归 / 实至名归</div>
+        <div class="diff"><b>一句话区别：</b>众望所归＝<b>大家一致期望他得到</b>（重「人心所向」，多指担任某职）；实至名归＝<b>有了真本事，名誉自然来</b>（重「名副其实」，多指获奖、称号）。</div>
+        <table class="mini-table diff-tab">
+          <tr><th>词语</th><th>核心侧重</th><th>典型搭配</th></tr>
+          <tr><td>众望所归</td><td>众人期望，人心所向</td><td>当选是众望所归</td></tr>
+          <tr><td>实至名归</td><td>名副其实，荣誉配得上</td><td>获此殊荣，实至名归</td></tr>
+        </table>
+        <div class="egs">
+          <div><b>众望所归</b>　他德高望重，出任理事长是<em>众望所归</em>。</div>
+          <div><b>实至名归</b>　他深耕小麦育种四十年，这次获颁国家最高科学技术奖，可谓<em>实至名归</em>。</div>
+        </div>
+        <div class="example">
+          <div class="example-header">例题 3 · 真题改编 · 同考点仿题</div>
+          <div class="example-body">
+            <div class="example-q">他把大半辈子交给了小麦育种，育成的品种累计推广三亿多亩。这次获颁国家最高科学技术奖，可谓____。</div>
+            <div class="example-opts"><span>A. 众望所归</span><span>B. 实至名归</span><span>C. 名副其实</span><span>D. 当之无愧</span></div>
+            <div class="example-answer"><b>答案：<span class="correct">B</span></b><br>解析：句中强调的是「<b>贡献实在，奖项配得上</b>」，选「实至名归」。「众望所归」侧重<b>众人的期望</b>，多用于担任某个职位，句中没有「大家盼着他得奖」这层信息；「名副其实」只说明名与实相符，<b>不含「因贡献而获誉」的褒扬过程</b>，且多作定语；「当之无愧」虽也合适，但它侧重「承担得起、不惭愧」，与「实至名归」相比少了「荣誉自然到来」的意味，在「可谓」后搭配「实至名归」更定式。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">32. 耳提面命 / 言传身教 / 春风化雨</div>
+        <div class="diff"><b>一句话区别：</b>耳提面命＝<b>当面恳切教导</b>（重「说」，上对下）；言传身教＝<b>既讲道理又做示范</b>（重「说做一致」）；春风化雨＝<b>良好的教育像春风细雨滋润人心</b>（重「潜移默化的教化」，多作定语或宾语）。</div>
+        <table class="mini-table diff-tab">
+          <tr><th>词语</th><th>核心侧重</th><th>典型搭配</th></tr>
+          <tr><td>耳提面命</td><td>当面教诲，恳切叮嘱</td><td>耳提面命，谆谆告诫</td></tr>
+          <tr><td>言传身教</td><td>言语教导＋行动示范</td><td>言传身教，以身作则</td></tr>
+          <tr><td>春风化雨</td><td>教化滋润，润物无声</td><td>春风化雨般的教育</td></tr>
+        </table>
+        <div class="egs">
+          <div><b>耳提面命</b>　临行前父亲<em>耳提面命</em>，叮嘱再三。</div>
+          <div><b>言传身教</b>　他从不讲大道理，只是每天最早到实验室、最晚离开，这种<em>言传身教</em>，学生都看在眼里。</div>
+          <div><b>春风化雨</b>　老师的<em>春风化雨</em>，让一个原本自卑的孩子慢慢抬起了头。</div>
+        </div>
+        <div class="example">
+          <div class="example-header">例题 4 · 真题改编 · 同考点仿题</div>
+          <div class="example-body">
+            <div class="example-q">他很少给学生讲大道理，只是每天最早到实验室、最晚一个离开，实验记录一笔一画写得工工整整。这种____，学生们都看在眼里。</div>
+            <div class="example-opts"><span>A. 耳提面命</span><span>B. 言传身教</span><span>C. 春风化雨</span><span>D. 潜移默化</span></div>
+            <div class="example-answer"><b>答案：<span class="correct">B</span></b><br>解析：句中先否定「讲大道理」（无「言传」），再强调「<b>每天最早到、最晚走</b>」（有「身教」），一正一反正对应「言传身教」。「耳提面命」侧重<b>当面反复叮嘱</b>，与「很少讲大道理」矛盾；「春风化雨」侧重<b>教化滋润、润物无声的效果</b>，多作定语（春风化雨般的教育），不能直接指「这种行为」；「潜移默化」是<b>方式状语</b>（潜移默化地影响），不能作「这种____」的中心语。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 实词辨析 -->
+  <div class="section c-blue" id="sw">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">🔤</div>
+      <div class="section-title">实词辨析 · 十组（最容易丢分的「同音近义」）</div>
+      <span class="section-tag tag-high">易错</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="key-box">
+        <b>实词辨析不要背意思，要背搭配。</b>意思往往一样，能接什么词完全不一样。
+        判断口诀：<b>看后面跟的是「人」还是「物」，是「好结果」还是「坏结果」，是「已经发生」还是「将要发生」。</b>
+      </div>
+
+      <div class="block">
+        <div class="block-title">1. 积淀 / 沉淀 / 积累 / 积聚</div>
+        <table class="mini-table diff-tab">
+          <tr><th>词语</th><th>区别</th><th>例句</th></tr>
+          <tr><td>积淀</td><td>长期积累<b>形成的厚重成果</b>（文化、情感、经验）</td><td>千年文脉的<em>积淀</em>，让这座小城处处有来历。</td></tr>
+          <tr><td>沉淀</td><td>比喻<b>沉下来、凝聚下来</b>（思想、情感、心情）</td><td>喧闹散去，心里才慢慢<em>沉淀</em>出一点想法。</td></tr>
+          <tr><td>积累</td><td><b>逐渐聚集</b>（最通用：知识、资金、经验）</td><td>他十几年<em>积累</em>的客户资源，一夜之间归零。</td></tr>
+          <tr><td>积聚</td><td>由少到多<b>堆起来</b>（力量、财富、云气）</td><td>乌云<em>积聚</em>，眼看要下暴雨。</td></tr>
+        </table>
+      </div>
+
+      <div class="block">
+        <div class="block-title">2. 折射 / 反射 / 影射</div>
+        <table class="mini-table diff-tab">
+          <tr><th>词语</th><th>区别</th><th>例句</th></tr>
+          <tr><td>折射</td><td>通过某事物<b>把本质照出来</b>（抽象义最常考）</td><td>一份小小的账单，<em>折射</em>出的是作风问题。</td></tr>
+          <tr><td>反射</td><td>物理上的光线回射；也指<b>条件反射</b></td><td>阳光照在雪面上，<em>反射</em>得人睁不开眼。</td></tr>
+          <tr><td>影射</td><td><b>借甲说乙</b>，暗指某人某事（贬）</td><td>这篇文章<em>影射</em>了当时的一位权贵。</td></tr>
+        </table>
+      </div>
+
+      <div class="block">
+        <div class="block-title">3. 遏制 / 遏止 / 扼制</div>
+        <table class="mini-table diff-tab">
+          <tr><th>词语</th><th>区别</th><th>例句</th></tr>
+          <tr><td>遏制</td><td><b>控制住不让发展</b>（势头、蔓延、增长）</td><td>必须坚决<em>遏制</em>房价过快上涨的势头。</td></tr>
+          <tr><td>遏止</td><td><b>用力使其中止</b>，语气更重（趋势、脚步）</td><td>任何力量都无法<em>遏止</em>历史前进的脚步。</td></tr>
+          <tr><td>扼制</td><td><b>扼守、控制要害</b>（要地、咽喉）</td><td><em>扼制</em>住交通咽喉，就掌握了主动。</td></tr>
+        </table>
+      </div>
+
+      <div class="block">
+        <div class="block-title">4. 甄别 / 鉴别 / 辨别</div>
+        <table class="mini-table diff-tab">
+          <tr><th>词语</th><th>区别</th><th>例句</th></tr>
+          <tr><td>甄别</td><td><b>审查辨别</b>真伪优劣（多对人、材料，书面）</td><td>招聘时要仔细<em>甄别</em>简历的真伪。</td></tr>
+          <tr><td>鉴别</td><td>辨别<b>真假、好坏、年代</b>（多对物品、文物）</td><td>专家正在<em>鉴别</em>这批文物的年代。</td></tr>
+          <tr><td>辨别</td><td>分辨<b>方向、声音、是非</b>（最通用）</td><td>光线太暗，很难<em>辨别</em>方向。</td></tr>
+        </table>
+      </div>
+
+      <div class="block">
+        <div class="block-title">5. 启用 / 起用</div>
+        <table class="mini-table diff-tab">
+          <tr><th>词语</th><th>区别</th><th>例句</th></tr>
+          <tr><td>启用</td><td>开始使用<b>事物</b>（设备、印章、新校区）</td><td>新航站楼将于年底<em>启用</em>。</td></tr>
+          <tr><td>起用</td><td>重新任用或提拔<b>人</b></td><td>球队<em>起用</em>了三名年轻球员。</td></tr>
+        </table>
+        <div class="tip-box"><b>记法：</b>「启」对物（开启使用），「起」对人（起而用之）。</div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">6. 权利 / 权力</div>
+        <table class="mini-table diff-tab">
+          <tr><th>词语</th><th>区别</th><th>例句</th></tr>
+          <tr><td>权利</td><td>依法享有的<b>权益</b>（与「义务」相对）</td><td>消费者有权依法维护自己的<em>权利</em>。</td></tr>
+          <tr><td>权力</td><td><b>强制力量、职权</b></td><td><em>权力</em>必须在阳光下运行。</td></tr>
+        </table>
+      </div>
+
+      <div class="block">
+        <div class="block-title">7. 以至 / 以致</div>
+        <table class="mini-table diff-tab">
+          <tr><th>词语</th><th>区别</th><th>例句</th></tr>
+          <tr><td>以至</td><td>程度加深导致的<b>自然结果</b>（中性，可作「以至于」）</td><td>他读得太投入，<em>以至</em>忘了吃饭。</td></tr>
+          <tr><td>以致</td><td>导致<b>不好的结果</b>（贬，含因果）</td><td>他工作疏忽，<em>以致</em>造成了重大损失。</td></tr>
+        </table>
+        <div class="tip-box"><b>记法：</b>后面是坏事，用「以致」；中性或好事，用「以至」。</div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">8. 考察 / 考查</div>
+        <table class="mini-table diff-tab">
+          <tr><th>词语</th><th>区别</th><th>例句</th></tr>
+          <tr><td>考察</td><td><b>实地观察调查</b>（也指细致观察）</td><td>代表团赴南方<em>考察</em>产业转型。</td></tr>
+          <tr><td>考查</td><td>用一定标准<b>检查衡量</b>（成绩、能力）</td><td>期末<em>考查</em>以课程论文为主。</td></tr>
+        </table>
+      </div>
+
+      <div class="block">
+        <div class="block-title">9. 表明 / 标明</div>
+        <table class="mini-table diff-tab">
+          <tr><th>词语</th><th>区别</th><th>例句</th></tr>
+          <tr><td>表明</td><td>把<b>态度、立场、结果</b>表示清楚</td><td>数据<em>表明</em>，政策已初见成效。</td></tr>
+          <tr><td>标明</td><td>做出<b>记号或文字</b>让人知道（价格、方向）</td><td>货架上<em>标明</em>了产地和价格。</td></tr>
+        </table>
+      </div>
+
+      <div class="block">
+        <div class="block-title">10. 必需 / 必须</div>
+        <table class="mini-table diff-tab">
+          <tr><th>词语</th><th>区别</th><th>例句</th></tr>
+          <tr><td>必需</td><td><b>形容词</b>，一定要有的（修饰名词）</td><td>水是生命<em>必需</em>的资源。</td></tr>
+          <tr><td>必须</td><td><b>副词</b>，一定要（修饰动词）</td><td>你<em>必须</em>今天交稿。</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- 望文生义速查 -->
+  <div class="section c-red" id="mis">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">🕳️</div>
+      <div class="section-title">望文生义 · 二十四例速查（考前扫一遍）</div>
+      <span class="section-tag tag-hot">必背</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="key-box">
+        这些词<b>只要按字面理解，必错</b>。看的时候别看词，直接看「真实义」那一栏，把错误理解当成「坑」记住。
+      </div>
+      <table class="mini-table diff-tab">
+        <tr><th>词语</th><th>真实含义</th><th>例句</th></tr>
+        <tr><td>七月流火</td><td>天气<b>转凉</b>（大火星向西沉）<br><span class="wrong">✗ 误作：天气炎热</span></td><td>「七月流火，九月授衣」，说的正是暑气渐退。</td></tr>
+        <tr><td>差强人意</td><td><b>大体上还能使人满意</b><br><span class="wrong">✗ 误作：不令人满意</span></td><td>这份初稿虽不完美，但已差强人意，可以往下推进。</td></tr>
+        <tr><td>不刊之论</td><td><b>不可改动的言论</b>（刊＝削除）<br><span class="wrong">✗ 误作：不能刊登的言论</span></td><td>这篇文章被学界誉为不刊之论。</td></tr>
+        <tr><td>空穴来风</td><td><b>事出有因</b>（有了洞才有风）<br><span class="wrong">✗ 误作：毫无根据</span></td><td>此类传闻并非空穴来风，早有人私下提过。</td></tr>
+        <tr><td>首当其冲</td><td><b>最先受到冲击</b><br><span class="wrong">✗ 误作：首先、带头</span></td><td>台风登陆，沿海城市首当其冲。</td></tr>
+        <tr><td>屡试不爽</td><td>每次试验都<b>没有差错</b>（爽＝差错）<br><span class="wrong">✗ 误作：屡次不成功</span></td><td>这个配方屡试不爽，从没失手。</td></tr>
+        <tr><td>明日黄花</td><td><b>过时的事物</b><br><span class="wrong">✗ 误作：未来的希望</span></td><td>这套方案放到今天已是明日黄花。</td></tr>
+        <tr><td>无所不至</td><td><b>什么坏事都干得出来</b>（贬）<br><span class="wrong">✗ 误作：到处都到、关怀周到</span></td><td>这伙人敲诈勒索，无所不至。</td></tr>
+        <tr><td>危言危行</td><td>说<b>正直</b>的话、做<b>正直</b>的事（危＝正）<br><span class="wrong">✗ 误作：危险的言行</span></td><td>他一生危言危行，不肯随人俯仰。</td></tr>
+        <tr><td>目无全牛</td><td>技艺<b>纯熟</b>到了得心应手<br><span class="wrong">✗ 误作：眼里没有全局</span></td><td>老师傅刀法纯熟，早已目无全牛。</td></tr>
+        <tr><td>曾几何时</td><td>时间<b>没过多久</b><br><span class="wrong">✗ 误作：曾经、从前</span></td><td>曾几何时，这里还是一片荒滩。</td></tr>
+        <tr><td>久假不归</td><td>长期<b>借用不还</b>（假＝借）<br><span class="wrong">✗ 误作：长期请假不归</span></td><td>那批档案被他久假不归，至今未还。</td></tr>
+        <tr><td>不足为训</td><td>不值得<b>作为准则</b>（训＝准则）<br><span class="wrong">✗ 误作：不值得作为教训</span></td><td>这种侥幸取胜的做法，不足为训。</td></tr>
+        <tr><td>三人成虎</td><td>谣言<b>重复多次</b>就使人信以为真<br><span class="wrong">✗ 误作：三个人力量大</span></td><td>三人成虎，一条假消息传了三轮就成了「事实」。</td></tr>
+        <tr><td>望其项背</td><td><b>赶得上</b>（多用于否定）<br><span class="wrong">✗ 误作：难以企及</span></td><td>其工艺之精，今人难以望其项背。</td></tr>
+        <tr><td>惨淡经营</td><td><b>费尽心力地经营</b>（褒）<br><span class="wrong">✗ 误作：经营不景气</span></td><td>这家书店惨淡经营二十年，终于有了起色。</td></tr>
+        <tr><td>一文不名</td><td><b>一个钱都没有</b>（名＝占有）<br><span class="wrong">✗ 误作：一文不值</span></td><td>他初到城里时一文不名，靠摆摊起家。</td></tr>
+        <tr><td>大方之家</td><td>懂得大道理的<b>内行人</b><br><span class="wrong">✗ 误作：慷慨大方的人</span></td><td>这点雕虫小技，恐贻笑于大方之家。</td></tr>
+        <tr><td>火中取栗</td><td><b>冒险为别人出力，自己吃亏</b><br><span class="wrong">✗ 误作：冒险获取利益</span></td><td>替人火中取栗，最后落得两手空空。</td></tr>
+        <tr><td>弹冠相庆</td><td><b>坏人因即将得势而互相庆贺</b>（贬）<br><span class="wrong">✗ 误作：互相庆祝好事</span></td><td>案件尚未了结，几个同伙已在弹冠相庆。</td></tr>
+        <tr><td>罄竹难书</td><td><b>罪恶多得写不完</b><br><span class="wrong">✗ 误作：功绩卓著</span></td><td>其罪行罄竹难书，判决书足足念了两个小时。</td></tr>
+        <tr><td>炙手可热</td><td><b>权势大、气焰盛</b>（贬）<br><span class="wrong">✗ 误作：热门抢手</span></td><td>他当年炙手可热，门前车马不断。</td></tr>
+        <tr><td>处心积虑</td><td><b>长期谋划（干坏事）</b>（贬）<br><span class="wrong">✗ 误作：费尽心思（褒）</span></td><td>他处心积虑要挤走对手，手段并不光彩。</td></tr>
+        <tr><td>面面相觑</td><td>惊惧或无奈地<b>互相对看</b><br><span class="wrong">✗ 误作：相视而笑</span></td><td>数据一出，会议室里众人面面相觑。</td></tr>
+      </table>
+    </div>
+  </div>
+  <!-- 考场策略 -->
+  <div class="section c-green" id="strategy">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">🎯</div>
+      <div class="section-title">考场三步辨词法（逻辑填空落笔前的 30 秒）</div>
+      <span class="section-tag tag-hot">冲刺</span>
+      <span class="section-arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="key-box">
+        <b>第一步：找提示。</b>空处附近一定有一个词、一个分句、一个冒号在「解释」它。
+        看到「没有宣传、没有推广」→ 悄然兴起；看到「已成为」→ 当务之急；看到「难以」→ 望其项背。
+        <b>空处的答案，永远藏在前后的语境里，不在你的记忆里。</b>
+      </div>
+
+      <div class="block">
+        <div class="block-title">1. 三步辨词法</div>
+        <table class="mini-table diff-tab">
+          <tr><th>步骤</th><th>动作</th><th>示例</th></tr>
+          <tr><td>① 找提示</td><td>圈出与空处呼应的词、分句、标点</td><td>「没有宣传，没有推广」→ 指向「悄然」</td></tr>
+          <tr><td>② 定维度</td><td>判断命题人在考哪把尺子：<b>侧重 / 对象 / 褒贬 / 搭配 / 语法</b></td><td>「汗牛充栋」形容商品 → 对象错</td></tr>
+          <tr><td>③ 排干扰</td><td>先排「对象不对」「褒贬不对」的，再比「侧重」</td><td>剩两个近义词时，看<b>谁能带宾语、谁只能作定语</b></td></tr>
+        </table>
+        <div class="memo">
+          <b>考场口诀：</b>先看搭配对不对，再看对象配不配，最后才比意思近不近。
+          <b>八成错题，死在前两步，而不是「不认识这个词」。</b>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">2. 高频「一句口诀」总表（考前 10 分钟扫）</div>
+        <table class="mini-table diff-tab">
+          <tr><th>易混组</th><th>一句话锁死</th></tr>
+          <tr><td>潜移默化 / 耳濡目染</td><td>变了 / 染上了</td></tr>
+          <tr><td>走马观花 / 浮光掠影</td><td>看得快 / 印象浅</td></tr>
+          <tr><td>层出不穷 / 此消彼长</td><td>不断出新 / 一涨一落</td></tr>
+          <tr><td>方兴未艾 / 悄然兴起</td><td>势头正盛 / 无声无息</td></tr>
+          <tr><td>一蹴而就 / 一劳永逸</td><td>一步就成 / 一劳永逸（都多用于否定）</td></tr>
+          <tr><td>大相径庭 / 截然相反</td><td>差得远 / 正相反</td></tr>
+          <tr><td>别出心裁 / 独树一帜</td><td>构思巧 / 风格独立</td></tr>
+          <tr><td>迫在眉睫 / 当务之急</td><td>形容词 / 名词（作宾语）</td></tr>
+          <tr><td>好大喜功 / 贪大求全</td><td>爱立大功 / 贪大而全</td></tr>
+          <tr><td>因地制宜 / 因势利导</td><td>按地点 / 顺趋势</td></tr>
+          <tr><td>望其项背 / 望尘莫及</td><td>只否定 / 可肯定</td></tr>
+          <tr><td>汗牛充栋 / 琳琅满目</td><td>只指书 / 多指商品</td></tr>
+          <tr><td>相辅相成 / 相得益彰</td><td>缺一不可 / 1+1 大于 2</td></tr>
+          <tr><td>本末倒置 / 舍本逐末</td><td>摆错了 / 主动弃</td></tr>
+          <tr><td>寅吃卯粮 / 杀鸡取卵</td><td>透支未来 / 毁掉根基</td></tr>
+          <tr><td>泰然自若 / 随遇而安</td><td>临事不乱 / 到哪都能安</td></tr>
+          <tr><td>猝不及防 / 措手不及</td><td>事太突然 / 人应对不上</td></tr>
+          <tr><td>实至名归 / 众望所归</td><td>名副其实 / 人心所向</td></tr>
+          <tr><td>言传身教 / 耳提面命</td><td>说做一致 / 当面叮嘱</td></tr>
+          <tr><td>启用 / 起用</td><td>对物 / 对人</td></tr>
+        </table>
+      </div>
+
+      <div class="block">
+        <div class="block-title">3. 复习与时间安排</div>
+        <div class="tip-box">
+          <b>逻辑填空单题 40～50 秒。</b>超过 1 分钟还在两个选项间犹豫，说明这题的考点你没抓住，先选一个标记，回头再看。<br>
+          <b>每天固定 20 分钟：</b>2 个积累讲（8～10 词）+ 2 个辨析组（含 2 道题）。<br>
+          <b>每三天回滚一次：</b>只翻「一句话区别」那一行，能一眼说出差别就算过；说不出的，把那组例句重读一遍。<br>
+          <b>错题只记一句话：</b>「我错在把 A 当成了 B」，不要抄整道题。
+        </div>
+        <div class="key-box" style="margin-top:8px;">
+          <b>复盘表怎么填：</b>每组辨析后面留一行，做错就写「<b>错因维度</b>」——
+          是<b>对象</b>（如把汗牛充栋用于商品）、<b>褒贬</b>（如把粉墨登场当褒义）、
+          <b>语法</b>（如给相形见绌带宾语）、还是<b>侧重</b>（如把一劳永逸当一蹴而就）。
+          维度一归类，你会发现自己的错题其实只有两三类，针对性补两三天就能提上来。
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">4. 这一页没覆盖到的部分怎么办</div>
+        <div class="tip-box">
+          雨菲《高频成语 800》原书共 <b>200 组辨析 + 实词篇</b>（约 592 页）。本页已把其中<b>最高频、最容易混</b>的
+          32 组辨析、约 160 个积累词、10 组实词、24 个望文生义陷阱完整落地，并把「一词语一句例句、一组词一道题」的结构固定下来。<br>
+          后续补录时，只需在对应板块按同样结构追加：<b>一句话区别 → 侧重表 → 例句对照 → 例题</b>，页面风格与检索会自动生效。
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /.container -->
+
+<div class="footer">
+  基于雨菲《高频成语 800》整理 · 积累篇 + 辨析篇重排<br>
+  一词语一句例句，一组词一道题 · 祝你成功上岸 🎉
+</div>
+
+</div><!-- /.main -->
+
+<button class="back-top" id="backTop" onclick="scrollToTop()">↑</button>
+
+<script>
+  // 折叠 / 展开
+  function toggleSection(header) {
+    var section = header.parentElement;
+    section.classList.toggle('collapsed');
+  }
+
+  // 回到顶部 / 顶部进度条
+  var backTop = document.getElementById('backTop');
+  var progressFill = document.getElementById('progressFill');
+
+  window.addEventListener('scroll', function () {
+    var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+    var scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    if (scrollHeight > 0) progressFill.style.width = (scrollTop / scrollHeight) * 100 + '%';
+    backTop.classList.toggle('show', scrollTop > 300);
+  });
+
+  function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // 侧栏搜索：同时过滤正文（词卡 / 辨析组 / 例题）
+  window.pageShellContentFilter = function (kw) {
+    var sections = document.querySelectorAll('.section');
+    if (!kw) {
+      sections.forEach(function (sec) {
+        sec.style.display = '';
+        sec.querySelectorAll('.block, .wg').forEach(function (el) { el.style.display = ''; });
+      });
+      return;
+    }
+    sections.forEach(function (sec) {
+      var hit = sec.textContent.toLowerCase().indexOf(kw) !== -1;
+      sec.style.display = hit ? '' : 'none';
+      if (!hit) return;
+      sec.classList.remove('collapsed');
+      sec.querySelectorAll('.wg').forEach(function (w) {
+        w.style.display = w.textContent.toLowerCase().indexOf(kw) !== -1 ? '' : 'none';
+      });
+      sec.querySelectorAll('.block').forEach(function (b) {
+        var self = b.textContent.toLowerCase().indexOf(kw) !== -1;
+        var anyChild = b.querySelectorAll('.wg').length > 0
+          && [].some.call(b.querySelectorAll('.wg'), function (w) { return w.style.display !== 'none'; });
+        b.style.display = (self || anyChild) ? '' : 'none';
+      });
+    });
+  };
+</script>
+
+<script data-page-shell src="../../assets/page-shell.js"></script>
+<script data-study-hub-script src="../../assets/hub-nav.js"></script>
+</body>
+</html>
