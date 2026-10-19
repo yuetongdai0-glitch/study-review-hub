@@ -417,7 +417,7 @@
     <a class="nav-link" data-kw="方程法 设未知数 不定方程 整体替换 奇偶 尾数" href="#s2">二、方程法</a>
     <a class="nav-link" data-kw="周期问题 余数 最小公倍数 星期 生肖" href="#s3">三、周期问题</a>
     <a class="nav-link" data-kw="工程问题 赋值 效率 完工时间 周期循环 费用" href="#s4">四、工程问题</a>
-    <a class="nav-link" data-kw="几何 三角形 勾股定理 特殊角 相似 面积 体积 涂色 蝴蝶定理 正六边形 三角函数 正弦 余弦 正切 sin cos tan 仰角 俯角 坡度" href="#s5">五、几何问题</a>
+    <a class="nav-link" data-kw="几何 三角形 勾股定理 特殊角 相似 面积 体积 涂色 蝴蝶定理 正六边形 三角函数 正弦 余弦 正切 sin cos tan 仰角 俯角 坡度 垂径定理 弦长 雷达 航行 点到直线距离 四边形 对角线 四块面积 面积比" href="#s5">五、几何问题</a>
     <a class="nav-link" data-kw="经济利润 成本 售价 利润 利润率 折扣 打折" href="#s6">六、经济利润问题</a>
   </div>
 
@@ -1716,6 +1716,11 @@
                 <b>④ 两圆相切：外切 → 圆心距 = r₁ + r₂；内切 → 圆心距 = |r₁ − r₂|</b>（别把外切写成相减）。圆与直线相切 → <b>圆心到直线的距离 = 半径</b>。<br>
                 　　⇒ 两圆外切、且<b>都贴同一条边</b>（或同一条水平线）时，连心线能造出直角三角形：<b>斜边 = r₁ + r₂、竖直直角边 = r₁ − r₂</b>，另一条直角边（水平差）= √((r₁+r₂)² − (r₁−r₂)²) = <b>2√(r₁r₂)</b>（r₁=3、r₂=1 时正好是 2√3）。<br>
                 <b>⑤ 多边形内角和 = (n − 2) × 180°</b>；正 n 边形每个内角 = (n − 2) × 180° ÷ n。
+                <b>⑥ 垂径定理（弦长公式，「航海 / 雷达探测」必用）</b>：过圆心作弦的垂线必<b>平分</b>弦 → <b>弦长 = 2√(r² − d²)</b>，d 是圆心到这条弦的距离（题目里就是<b>圆心到航线的垂直距离</b>）。<br>
+                　　⇒ <b>d 怎么求：</b>d = 起点到圆心的距离 × sin(航线偏离「起点—圆心」连线的夹角)。本题 240 × sin30° = 120。<br>
+                　　⇒ <b>先比 d 和 r：</b>d &gt; r → 航线压根进不了圆，0 小时；d = r → 只擦过一个点；d &lt; r → 有进出两点，<b>时长 = 2√(r² − d²) ÷ 速度</b>。<br>
+                　　⇒ <b>「向东偏南 30°」= 从正东方向往南转 30°</b>（与正东的夹角是 30°），不是与正南夹角 30° —— 方向角读错，这题必错。<br>
+                　　⇒ <b>坑：</b>「起点距 A 240、雷达半径 200，所以先进 40」→ 错！航线斜着走，<b>离 A 最近只有 120</b>，别把 240 − 200 当成能探测的那一段。
               </div>
             </div>
                                     <div class="example">
@@ -1809,6 +1814,51 @@
                 </div>
               </div>
             </div>
+            <div class="example">
+              <div class="example-header">📝 例题11 · 垂径定理 / 弦长（雷达探测时长 · 2025 浙江事业单位）</div>
+              <div class="example-body">
+                <div class="example-q">一艘科考船从钻井平台 A 的<b>正西方向 240 千米</b>处出发，以 <b>50 千米/小时</b> 的速度向<b>东偏南 30°</b> 方向匀速航行。已知科考船上配备的雷达可以探测 <b>200 千米</b> 范围内的海上建筑，那么科考船在航行过程中，可以探测到 A 的时长在以下哪个范围内？</div>
+                <div class="example-opts">A. 小于 4 小时　B. 4–5 小时　C. 5–6 小时　D. 大于 6 小时</div>
+                <div class="example-answer">
+                        <b>解析：</b>把「雷达可探测 200 千米」看成一个<b>以 A 为圆心、r = 200 的圆</b>，船在圆内航行的时间就是要问的时长。<br>
+                        ① <b>判位置关系</b>：作 A 到航线的垂线，垂距 d = 240 × sin30° = <b>120 &lt; 200</b> → 航线穿过圆，有进、出两个交点。<br>
+                        ② <b>求弦长</b>（＝能探测到的航程）：2√(200² − 120²) = 2 × 160 = <b>320</b> 千米（120、160、200 就是 3-4-5 的 40 倍，不用硬开根号）。<br>
+                        ③ <b>求时长</b>：320 ÷ 50 = <b>6.4 小时</b> → 大于 6 小时。<br>
+                        （换个算法验证：垂足在上游 240 × cos30° ≈ 208 千米处，半弦 160 → 进圆在 48 千米、出圆在 368 千米 → 0.96 h 进、7.36 h 出，相减仍是 6.4 h。题目只问时长，第 ③ 步一步到位就行，不用算两个时刻。）<br>
+                        要点：<b>弦的两端关于垂足对称</b>，所以时长只跟 d、r、速度有关，与起点在圆外多远没关系（只要起点确实在圆外）。最容易错的：把 <b>240 − 200 = 40</b> 当成能探测的航程 —— 航线是斜的，最近点只有 120。
+                        <figure class="fig">
+                          <svg viewBox="0 0 380 302" role="img" aria-label="科考船从 A 正西 240 千米处向东偏南 30 度航行，雷达半径 200 的圆截航线得弦长 320 千米">
+                            <text x="8" y="20" font-size="12.5" fill="#4f7cff" font-weight="700">d = 240·sin30° = 120 &lt; 200 → 航线穿过探测圆</text>
+                            <circle cx="250" cy="130" r="110" fill="#f2f7ff" stroke="#4f7cff" stroke-width="1.3" stroke-dasharray="6 4"/>
+                            <path d="M118 130 L250 130" fill="none" stroke="#9aa4b5" stroke-width="1.2" stroke-dasharray="5 4"/>
+                            <path d="M118 130 L322 247" fill="none" stroke="#3f4a5f" stroke-width="1.8"/>
+                            <path d="M141 143 L293 231" fill="none" stroke="#c0392b" stroke-width="5.5" stroke-linecap="round"/>
+                            <path d="M250 130 L217 187" fill="none" stroke="#b8730d" stroke-width="1.6" stroke-dasharray="4 3"/>
+                            <path d="M224 191 L228 184 L221 180" fill="none" stroke="#b8730d" stroke-width="1.3"/>
+                            <path d="M158 130 A40 40 0 0 1 152.6 150" fill="none" stroke="#ff6b6b" stroke-width="1.4"/>
+                            <circle cx="118" cy="130" r="3.4" fill="#1a1a2e"/>
+                            <circle cx="250" cy="130" r="3.6" fill="#4f7cff"/>
+                            <circle cx="141" cy="143" r="3.2" fill="#c0392b"/>
+                            <circle cx="293" cy="231" r="3.2" fill="#c0392b"/>
+                            <text x="100" y="124" font-size="12.5" font-weight="700" fill="#1a1a2e">出发点</text>
+                            <text x="256" y="126" font-size="13" font-weight="700" fill="#4f7cff">A</text>
+                            <text x="212" y="176" font-size="11.5" fill="#8b3a2e">120</text>
+                            <text x="164" y="126" font-size="12.5" font-weight="700" fill="#1a7a45">240</text>
+                            <text x="136" y="158" font-size="12" font-weight="700" fill="#ff6b6b">30°</text>
+                            <text x="8" y="212" font-size="12" font-weight="700" fill="#c0392b">弦长 320</text>
+                            <text x="8" y="228" font-size="12" font-weight="700" fill="#c0392b">（可探测段）</text>
+                            <text x="300" y="184" font-size="11.5" fill="#6b7280">r=200</text>
+                            <text x="8" y="254" font-size="12.5" fill="#4a5568">d = 240 × sin30° = 120（千米）</text>
+                            <text x="8" y="274" font-size="12.5" fill="#4a5568">弦长 = 2√(200² − 120²) = 2 × 160 = 320</text>
+                            <text x="8" y="294" font-size="12.5" font-weight="700" fill="#c0392b">t = 320 ÷ 50 = 6.4 小时 ＞ 6 小时</text>
+                          </svg>
+                          <figcaption>船的航线是一条<b>直线</b>，雷达范围是<b>圆</b>；两者相交的部分就是<b>弦</b>。
+                            先求 A 到航线的垂距 d，再套 <b>弦长 = 2√(r² − d²)</b>，最后除以速度。</figcaption>
+                        </figure>
+                  <span class="correct">答案：D</span>
+                </div>
+              </div>
+            </div>
 <div class="block">
               <div class="block-title">5. 勾股定理 & 必背勾股数</div>
 
@@ -1837,7 +1887,7 @@
               </div>
             </div>
             <div class="example">
-              <div class="example-header">📝 例题11 · 勾股定理</div>
+              <div class="example-header">📝 例题12 · 勾股定理</div>
               <div class="example-body">
                 <div class="example-q">一个直角三角形的两条直角边分别为 6 和 8，则斜边长为（　　）。</div>
             <div class="example-opts">A.10　B.12　C.14　D.16</div>
@@ -1906,7 +1956,7 @@
               <div class="tip-box">看到 30°／45°／60°／120°／135° 这些角度，或选项里出现 √2、√3，第一反应就是去找特殊直角三角形。</div>
             </div>
             <div class="example">
-              <div class="example-header">📝 例题12 · 特殊角直角三角形（30°-60°-90°）</div>
+              <div class="example-header">📝 例题13 · 特殊角直角三角形（30°-60°-90°）</div>
               <div class="example-body">
                 <div class="example-q">一个直角三角形中，30° 角所对的直角边长为 5，则斜边长与另一条直角边分别是？</div>
                 <div class="example-opts">A.10 和 5√3　B.10 和 5√2　C.5√3 和 10　D.15 和 5√3</div>
@@ -1918,7 +1968,7 @@
               </div>
             </div>
                         <div class="example">
-              <div class="example-header">📝 例题13 · 仰角（两次 tan 共用水平距离 · 2023 联考）</div>
+              <div class="example-header">📝 例题14 · 仰角（两次 tan 共用水平距离 · 2023 联考）</div>
               <div class="example-body">
                 <div class="example-q">「厦门鼓浪屿郑成功雕像」——测量点 A 与覆鼎岩底部 D 在同一水平线上。已知覆鼎岩高 CD = 24 米，在 A 处测得石像顶部 B 的仰角为 45°、石像底部 C 的仰角为 31°（参考数据：sin31° ≈ 0.52，cos31° ≈ 0.86，tan31° ≈ 0.60）。问石像 BC 的高度约为多少米？</div>
                 <div class="example-opts">A. 20 米　B. 18 米　C. 16 米　D. 14 米</div>
@@ -1974,7 +2024,7 @@
               </ul>
             </div>
             <div class="example">
-        <div class="example-header">📝 例题14 · 直角三角形的三个常用结论</div>
+        <div class="example-header">📝 例题15 · 直角三角形的三个常用结论</div>
         <div class="example-body">
           <div class="example-q">直角三角形 ABC 中，∠C = 90°，∠A = 30°，斜边 AB = 12。BC 边长是多少？</div>
           <div class="example-opts">A.4　B.6　C.6√3　D.8</div>
@@ -2011,7 +2061,7 @@
               </ul>
             </div>
             <div class="example">
-              <div class="example-header">📝 例题15 · 相似三角形（灯下影子 · 2022 广东）</div>
+              <div class="example-header">📝 例题16 · 相似三角形（灯下影子 · 2022 广东）</div>
               <div class="example-body">
                 <div class="example-q">楼道上方有一盏灯，小刘径直走向这盏灯。一开始，他发现自己影子的长度为 3.2 米；前进 1 米后，发现影子缩短为 1.6 米。已知小刘身高为 1.6 米，则这盏灯的高度约为（　　）米。</div>
                 <div class="example-opts">A.2.6　B.2.8　C.3.2　D.3.4</div>
@@ -2061,9 +2111,22 @@
                 <b>同高（等高）</b>的两个三角形 → <b>面积比 = 底之比</b><br>
                 <b>等底等高必等面积</b>——这是求不规则图形面积最常用的突破口
               </div>
+              <div class="key-box" style="margin-top:8px;">
+                <b>★ 四边形对角线四块（给两块求另外两块，几乎年年考）</b><br>
+                两条对角线 AC、BD 交于 O，切出 4 块：<b>左 △ABO、上 △BCO、右 △CDO、下 △ADO</b>。<br>
+                <b>① 共用一小段的两块，比值相同</b>：△ABO 与 △BCO 共用底 <b>BO</b>，高分别是 A、C 到 BD 的距离，而 ∠AOB 与 ∠COB 互补（正弦相等）→ 高之比 = <b>AO : CO</b>；<br>
+                　　同理 △ADO 与 △CDO 共用底 <b>DO</b>，高之比也是 <b>AO : CO</b>。<br>
+                　　所以 <b>ABO : BCO = ADO : CDO = AO : CO</b>（两对的比一模一样，比值会“传染”）。<br>
+                <b>② 左右两对同理</b>：<b>ABO : ADO = BCO : CDO = BO : DO</b>。<br>
+                <b>③ 推论（最好记）：</b>对角两块之积相等 → <b>S₁ × S₃ = S₂ × S₄</b>。<br>
+                <b>怎么用：</b>已知相邻两块（如 70、90）→ 它们的比 = 另一条对角线上两段之比（7 : 9）→ <b>与它们"并排"的另一对也是 7 : 9</b>；
+                设成 7x、9x，用「<b>16x + 已知两块 = 总面积</b>」解出 x。<br>
+                <b>坑：</b>① 只能是<b>并排（共用 O 那一小段）</b>的两块互传比值，别拿"斜对角"的两块去设 x；
+                ② 对角两块之积相等 ≠ 对角两块相等。
+              </div>
             </div>
             <div class="example">
-              <div class="example-header">📝 例题16 · 同高三角形面积比</div>
+              <div class="example-header">📝 例题17 · 同高三角形面积比</div>
               <div class="example-body">
                 <div class="example-q">在三角形 ABC 中，D 是边 BC 上一点，且 BD ∶ DC = 2 ∶ 3。若 S△ABD = 8，则 S△ADC 为：</div>
                 <div class="example-opts">A.10　B.12　C.14.4　D.16</div>
@@ -2075,7 +2138,7 @@
               </div>
             </div>
                         <div class="example">
-              <div class="example-header">📝 例题17 · 同底同高（四边形对角线 · 2025 浙江）</div>
+              <div class="example-header">📝 例题18 · 同底同高（四边形对角线 · 2025 浙江）</div>
               <div class="example-body">
                 <div class="example-q">一块四边形田地 ABCD 如下图所示，已知 △AOD、△AOB 和 △COD 的面积分别为 9 平方千米、15 平方千米和 12 平方千米，CD 长 8 千米。问 B 点到 CD 的距离为多少千米？</div>
                 <div class="example-opts">A.6　B.7　C.8　D.9</div>
@@ -2116,6 +2179,45 @@
                 </div>
               </div>
             </div>
+            <div class="example">
+              <div class="example-header">📝 例题19 · 四边形对角线四块（7 : 9 传比 · 2017 广东）</div>
+              <div class="example-body">
+                <div class="example-q">公园有一块四边形的草坪，由四块三角形的小草坪组成（如图所示）。已知四边形草坪的面积为 480 平方米，其中两个小三角形草坪的面积分别为 70 平方米和 90 平方米，则四块三角形小草坪中<b>最大的一块</b>面积为多少平方米？</div>
+                <div class="example-opts">A. 120　B. 150　C. 180　D. 210</div>
+                <div class="example-answer">
+                        <b>解析：</b>70 与 90 是<b>并排的两块</b>（共用 CO 这一段），都以 CO 为底；高分别是 B、D 到 AC 的距离，而 ∠BOC 与 ∠DOC 互补（正弦相等），所以<br>
+                        　　S△BCO : S△CDO = <b>BO : DO</b> = 70 : 90 = <b>7 : 9</b>。<br>
+                        ① <b>同理传染到另一对</b>：△ABO 与 △ADO 共用 AO，高也是 B、D 到 AC 的距离 → 面积比同样是 <b>BO : DO = 7 : 9</b>，设成 <b>7x、9x</b>。<br>
+                        ② <b>总数</b>：70 + 90 + 7x + 9x = 480 → 160 + 16x = 480 → 16x = 320 → <b>x = 20</b>。<br>
+                        ③ 两块分别是 <b>140</b>、<b>180</b> → 四块为 70、90、140、180，<b>最大 180</b>。<br>
+                        （验算：140 × 90 = 12600 = 70 × 180，对角之积相等 ✓）<br>
+                        要点：比只传一次 —— 7 : 9 从「共用 CO 的那对」搬到「共用 AO 的那对」，<b>16x 是这两块之和的系数（7 + 9）</b>，用总面积减掉已知两块就是 16x。
+                        <figure class="fig">
+                          <svg viewBox="0 0 380 306" role="img" aria-label="四边形 ABCD 两条对角线交于 O，四块草坪中并排两块为 70 与 90，另两块面积比为 7 比 9，分别为 140 与 180">
+                            <text x="8" y="20" font-size="12.5" fill="#4f7cff" font-weight="700">70 : 90 = 7 : 9　→　并排的另一对也是 7x : 9x</text>
+                            <polygon points="40,196 176,42 340,92 300,244" fill="#f7faff" stroke="#3f4a5f" stroke-width="1.8"/>
+                            <path d="M40 196 L340 92 M176 42 L300 244" fill="none" stroke="#4f7cff" stroke-width="1.6"/>
+                            <circle cx="230" cy="130" r="3.4" fill="#1a1a2e"/>
+                            <text x="236" y="126" font-size="12" font-weight="700" fill="#1a1a2e">O</text>
+                            <text x="24" y="206" font-size="13" font-weight="700" fill="#1a1a2e">A</text>
+                            <text x="172" y="36" font-size="13" font-weight="700" fill="#1a1a2e">B</text>
+                            <text x="346" y="94" font-size="13" font-weight="700" fill="#1a1a2e">C</text>
+                            <text x="300" y="260" font-size="13" font-weight="700" fill="#1a1a2e">D</text>
+                            <text x="118" y="122" font-size="13.5" font-weight="700" fill="#1a7a45">7x</text>
+                            <text x="238" y="86" font-size="13.5" font-weight="700" fill="#2b4b9b">70</text>
+                            <text x="284" y="152" font-size="13.5" font-weight="700" fill="#2b4b9b">90</text>
+                            <text x="186" y="202" font-size="13.5" font-weight="700" fill="#1a7a45">9x</text>
+                            <text x="8" y="256" font-size="12.5" fill="#4a5568">70 + 90 + 7x + 9x = 480 → 16x = 320 → x = 20</text>
+                            <text x="8" y="278" font-size="12.5" fill="#4a5568">两块 = 140、180　→　四块：70 / 90 / 140 / 180</text>
+                            <text x="8" y="300" font-size="12.5" font-weight="700" fill="#c0392b">最大 180 平方米（140 × 90 = 70 × 180 验算 ✓）</text>
+                          </svg>
+                          <figcaption>两条对角线切出四块。<b>并排的两块</b>（共用 O 那一小段）面积比 = <b>另一条对角线上两段之比</b>：
+                            70 : 90 = BO : DO = 7 : 9，另一对（共用 AO）也是 7 : 9。</figcaption>
+                        </figure>
+                  <span class="correct">答案：C</span>
+                </div>
+              </div>
+            </div>
 <div class="block">
               <div class="block-title">10. 正六边形与正多边形</div>
 
@@ -2142,7 +2244,7 @@
               </ul>
             </div>
             <div class="example">
-              <div class="example-header">📝 例题18 · 正六边形面积</div>
+              <div class="example-header">📝 例题20 · 正六边形面积</div>
               <div class="example-body">
                 <div class="example-q">正六边形的边长为 2，则其面积为：</div>
                 <div class="example-opts">A.6√3　B.8√3　C.12　D.12√3</div>
@@ -2185,7 +2287,7 @@
               </div>
             </div>
             <div class="example">
-        <div class="example-header">📝 例题19 · 蝴蝶定理（梯形对角线）</div>
+        <div class="example-header">📝 例题21 · 蝴蝶定理（梯形对角线）</div>
         <div class="example-body">
           <div class="example-q">梯形 ABCD 中 AB ∥ CD，对角线交于点 O。已知 AB = 4，CD = 8，S△AOB = 6，则 S△COD 是多少？</div>
           <div class="example-opts">A.12　B.24　C.36　D.48</div>
@@ -2204,7 +2306,7 @@
               <div class="tip-box">几何没思路时的万能兜底：<b>建坐标系把图形代数化</b>——把关键点放到格点上，用距离公式硬算。</div>
             </div>
             <div class="example">
-        <div class="example-header">📝 例题20 · 坐标构造（方位角 · 2024 广东）</div>
+        <div class="example-header">📝 例题22 · 坐标构造（方位角 · 2024 广东）</div>
         <div class="example-body">
           <div class="example-q">甲、乙、丙三艘船在海上航行。某一时刻，甲观测到乙位于它的北偏西 30° 方向，甲、乙相距 6 千米；甲观测到丙位于它的正西方向，甲、丙相距 6 千米。则乙与丙之间的距离为（　　）千米。</div>
           <div class="example-opts">A.3　B.4　C.5　D.6</div>
@@ -2268,7 +2370,7 @@
               </table>
             </div>
             <div class="example">
-              <div class="example-header">📝 例题21 · 正方体涂色</div>
+              <div class="example-header">📝 例题23 · 正方体涂色</div>
               <div class="example-body">
                 <div class="example-q">棱长为 5 的正方体表面全部涂上红漆，再切成 125 个棱长 1 的小正方体。其中恰好两面涂色的有多少个？</div>
                 <div class="example-opts">A.36　B.48　C.54　D.60</div>
@@ -2294,7 +2396,7 @@
               <div class="tip-box">看题干用词：问「<b>是</b>原来的几倍」→ 直接用 N / N² / N³；问「<b>比原来多了 / 增长了</b>几倍」→ <b>再减 1</b>。这一步看错，整题白算。</div>
             </div>
             <div class="example">
-              <div class="example-header">📝 例题22 · 同比例放缩</div>
+              <div class="example-header">📝 例题24 · 同比例放缩</div>
               <div class="example-body">
                 <div class="example-q">一个正方体的棱长扩大为原来的2倍，则表面积扩大为原来的几倍？体积扩大为原来的几倍？</div>
                 <div class="example-opts">A.2倍、4倍　B.4倍、8倍　C.4倍、6倍　D.8倍、12倍</div>
@@ -2305,7 +2407,7 @@
               </div>
             </div>
                         <div class="example">
-              <div class="example-header">📝 例题23 · 同比例放缩（圆锥倒置 · 2025 联考）</div>
+              <div class="example-header">📝 例题25 · 同比例放缩（圆锥倒置 · 2025 联考）</div>
               <div class="example-body">
                 <div class="example-q">一个空的倒置的圆锥形容器，倒入 1 瓶固定容量的水后，水的高度恰好为容器高度的一半。若要使容器盛满水，则需要再倒入水的瓶数为（　　）。</div>
                 <div class="example-opts">A.5 瓶　B.7 瓶　C.8 瓶　D.10 瓶</div>
@@ -2359,7 +2461,7 @@
                 · 记忆锚点：椭圆的面积是 πab，内接矩形的上限就是 2ab（比椭圆小、比正方形大），看到"内接矩形 + 最值"直接写 2ab。</div>
             </div>
             <div class="example">
-              <div class="example-header">📝 例题24 · 几何最值</div>
+              <div class="example-header">📝 例题26 · 几何最值</div>
               <div class="example-body">
                 <div class="example-q">用一根长12米的铁丝围成一个平面图形，围成什么图形面积最大？</div>
                 <div class="example-opts">A.正方形　B.长方形　C.圆形　D.三角形</div>
@@ -2370,7 +2472,7 @@
               </div>
             </div>
             <div class="example">
-              <div class="example-header">📝 例题25 · 几何最值（体积一定求表面积最小）</div>
+              <div class="example-header">📝 例题27 · 几何最值（体积一定求表面积最小）</div>
               <div class="example-body">
                 <div class="example-q">用同样体积的材料做成一个立体，做成下面哪种形状时<b>表面积最小</b>（最省材料）？</div>
                 <div class="example-opts">A.正方体　B.长宽高不等的长方体　C.球体　D.圆柱体</div>
@@ -2413,7 +2515,7 @@
               </div>
             </div>
             <div class="example">
-        <div class="example-header">📝 例题26 · 最短路径（镜像翻折）</div>
+        <div class="example-header">📝 例题28 · 最短路径（镜像翻折）</div>
         <div class="example-body">
           <div class="example-q">在公路 l 的同侧有 A、B 两个村庄，A 到公路的距离为 3 千米，B 到公路的距离为 5 千米，两村在公路上的投影相距 6 千米。要在公路上建一个车站 P，使 PA + PB 最短，最短距离是多少千米？</div>
           <div class="example-opts">A.8　B.9　C.10　D.12</div>
@@ -2434,7 +2536,7 @@
               </table>
             </div>
             <div class="example">
-        <div class="example-header">📝 例题27 · 常用根号（估算）</div>
+        <div class="example-header">📝 例题29 · 常用根号（估算）</div>
         <div class="example-body">
           <div class="example-q">一个直角三角形的两条直角边分别为 2 和 3，则斜边长约为多少？（√13 ≈ 3.61）</div>
           <div class="example-opts">A.3.4　B.3.6　C.3.9　D.4.2</div>
@@ -2459,7 +2561,7 @@
               <div class="tip-box">间隔类裁剪的死穴：只按一个方向排。先按「小边对大边」和「大边对大边」各算一遍，取大的。</div>
             </div>
                                     <div class="example">
-              <div class="example-header">📝 例题28 · 几何最优构造（覆盖型 · 2025 江苏）</div>
+              <div class="example-header">📝 例题30 · 几何最优构造（覆盖型 · 2025 江苏）</div>
               <div class="example-body">
                 <div class="example-q">某单位在边长为 200 米的正方形广场上组织一场招聘会，计划安排若干名工作人员提供咨询服务，每名工作人员入场后将分别随机站在一个位置上，其服务半径不超过 50√2 米。若要确保咨询服务全覆盖，则至少需要安排工作人员（　　）。</div>
                 <div class="example-opts">A.4 名　B.5 名　C.6 名　D.7 名</div>
@@ -2496,7 +2598,7 @@
               </div>
             </div>
             <div class="example">
-              <div class="example-header">📝 例题29 · 几何最优构造（裁剪型 · 2025 四川）</div>
+              <div class="example-header">📝 例题31 · 几何最优构造（裁剪型 · 2025 四川）</div>
               <div class="example-body">
                 <div class="example-q">某工匠计划在 700 × 115 厘米的钢板上裁剪若干大小为 70 × 40 厘米的钢片，且在裁剪时，每块钢片之间还应保留至少 5 厘米的间隔。问最多能裁剪出多少块？</div>
                 <div class="example-opts">A.23　B.24　C.25　D.26</div>
@@ -2555,7 +2657,7 @@
                 例（5,4,3）：√(3²+9²)=√90、√(5²+7²)=√74、√(4²+8²)=√80 → 最短 = √74。</div>
             </div>
               <div class="example">
-              <div class="example-header">📝 例题30 · 切长最短（2006 江西）</div>
+              <div class="example-header">📝 例题32 · 切长最短（2006 江西）</div>
               <div class="example-body">
                 <div class="example-q">右图为长、宽、高分别是 4cm、3cm、5cm 的长方体，如果一只小虫从顶点 A 爬到顶点 B（对角顶点），其爬行的最短距离为：</div>
                 <div class="example-opts">A. 4√5　B. √74　C. 3√10　D. √70</div>
