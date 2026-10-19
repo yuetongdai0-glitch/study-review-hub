@@ -14,7 +14,7 @@ export default function S12(): ReactElement {
             </Callout>
       
             <Block>
-              <BlockTitle>本讲词群 1（共 31 词）</BlockTitle>
+              <BlockTitle>词群 1（本讲共 31 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>量力而行</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">做事分寸</span></div>
               <div className="wg-d">按自己力量的大小去做，不逞强</div>
@@ -47,7 +47,7 @@ export default function S12(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 2（共 31 词）</BlockTitle>
+              <BlockTitle>词群 2（本讲共 31 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>过犹不及</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">分寸</span></div>
               <div className="wg-d">做过了头跟做得不够一样不好</div>
@@ -80,7 +80,7 @@ export default function S12(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 3（共 31 词）</BlockTitle>
+              <BlockTitle>词群 3（本讲共 31 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>以身作则</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">榜样</span></div>
               <div className="wg-d">用自己的行动做出榜样，强调「做给别人看」</div>
@@ -113,7 +113,7 @@ export default function S12(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 4（共 31 词）</BlockTitle>
+              <BlockTitle>词群 4（本讲共 31 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>坚定不移</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">坚定</span></div>
               <div className="wg-d">立场、主张非常坚定，毫不动摇</div>
@@ -146,7 +146,7 @@ export default function S12(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 5（共 31 词）</BlockTitle>
+              <BlockTitle>词群 5（本讲共 31 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>踔厉奋发</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">精神状态</span></div>
               <div className="wg-d">精神振奋、斗志昂扬地奋发向前</div>
@@ -179,7 +179,7 @@ export default function S12(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 6（共 31 词）</BlockTitle>
+              <BlockTitle>词群 6（本讲共 31 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>一鼓作气</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">趁势</span></div>
               <div className="wg-d">敲第一通鼓时士气最盛，比喻趁劲头大时一口气做成</div>

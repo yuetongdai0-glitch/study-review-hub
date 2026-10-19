@@ -14,7 +14,7 @@ export default function S20(): ReactElement {
             </Callout>
       
             <Block>
-              <BlockTitle>本讲词群 1（共 26 词）</BlockTitle>
+              <BlockTitle>词群 1（本讲共 28 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>毋庸置疑</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">不必怀疑</span></div>
               <div className="wg-d">不必怀疑，强调<b>判断的确信</b></div>
@@ -47,7 +47,7 @@ export default function S20(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 2（共 26 词）</BlockTitle>
+              <BlockTitle>词群 2（本讲共 28 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>一目了然</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">一看就清</span></div>
               <div className="wg-d">一眼就看得很清楚</div>
@@ -80,7 +80,7 @@ export default function S20(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 3（共 26 词）</BlockTitle>
+              <BlockTitle>词群 3（本讲共 28 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>视而不见</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">装没看见</span></div>
               <div className="wg-d">看见了当作没看见，<b>强调「看见了」</b></div>
@@ -113,7 +113,7 @@ export default function S20(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 4（共 26 词）</BlockTitle>
+              <BlockTitle>词群 4（本讲共 28 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>嗤之以鼻</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">轻视</span></div>
               <div className="wg-d">用鼻子吭气，表示<b>轻视、看不起</b></div>
@@ -146,7 +146,7 @@ export default function S20(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 5（共 26 词）</BlockTitle>
+              <BlockTitle>词群 5（本讲共 28 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>视若珍宝</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">珍视</span></div>
               <div className="wg-d">看作珍贵的宝物，形容非常珍视</div>
@@ -159,14 +159,18 @@ export default function S20(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>已在辨析组详解（点词跳转，不重复说）</BlockTitle>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>含糊其辞</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b8">辨析八</a>，对照辨析表与例句，此处不再重复。</div>
+              <BlockTitle>同组易混词（这几个也在别处讲过，这里再讲一遍，就地记）</BlockTitle>
+            <div className="wg">
+              <div className="wg-h"><b>含糊其辞</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">回答表态</span></div>
+              <div className="wg-d">话说得<b>内容不明确</b>，有意回避，重在「内容不清」。</div>
+              <div className="wg-e">报告里对这一笔支出含糊其辞，只写「其他费用」四个字。</div>
+              <div className="wg-cmp">同组区别：重「说不清」；「闪烁其词」重「不敢说」，「语焉不详」重「说得不细」（<a href="#b8">见辨析八</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>闪烁其词</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b8">辨析八</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>闪烁其词</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">追问回避</span></div>
+              <div className="wg-d">说话吞吞吐吐、躲躲闪闪，<b>重在「不敢明说」</b>。</div>
+              <div className="wg-e">面对追问，他闪烁其词，眼神一直往门口飘。</div>
+              <div className="wg-cmp">同组区别：重「躲闪」；「含糊其辞」是「说得模糊」，不强调「躲」（<a href="#b8">见辨析八</a>）</div>
             </div>
             </Block>
       

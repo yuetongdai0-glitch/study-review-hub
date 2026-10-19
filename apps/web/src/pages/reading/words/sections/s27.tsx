@@ -14,7 +14,7 @@ export default function S28(): ReactElement {
             </Callout>
       
             <Block>
-              <BlockTitle>本讲词群 1（共 25 词）</BlockTitle>
+              <BlockTitle>词群 1（本讲共 29 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>颠沛流离</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">流浪困苦</span></div>
               <div className="wg-d">生活困苦、到处流浪（颠沛＝困顿）</div>
@@ -47,7 +47,7 @@ export default function S28(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 2（共 25 词）</BlockTitle>
+              <BlockTitle>词群 2（本讲共 29 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>安土重迁</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">不愿搬</span></div>
               <div className="wg-d">安于故土、不愿轻易搬迁（重＝看重）</div>
@@ -80,7 +80,7 @@ export default function S28(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 3（共 25 词）</BlockTitle>
+              <BlockTitle>词群 3（本讲共 29 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>相濡以沫</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">困境互扶</span></div>
               <div className="wg-d">泉水干了，鱼用唾沫互相润湿，比喻<b>在困境中互相扶持</b></div>
@@ -113,7 +113,7 @@ export default function S28(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 4（共 25 词）</BlockTitle>
+              <BlockTitle>词群 4（本讲共 29 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>沆瀣一气</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">勾结</span></div>
               <div className="wg-d">比喻<b>臭味相投的人勾结在一起</b>（贬）</div>
@@ -146,7 +146,7 @@ export default function S28(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 5（共 25 词）</BlockTitle>
+              <BlockTitle>词群 5（本讲共 29 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>唇齿相依</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">互相依存</span></div>
               <div className="wg-d">像嘴唇和牙齿一样互相依存（见辨析七）</div>
@@ -154,23 +154,29 @@ export default function S28(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>已在辨析组详解（点词跳转，不重复说）</BlockTitle>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>息息相关</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b7">辨析七</a>，对照辨析表与例句，此处不再重复。</div>
+              <BlockTitle>同组易混词（这几个也在别处讲过，这里再讲一遍，就地记）</BlockTitle>
+            <div className="wg">
+              <div className="wg-h"><b>息息相关</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">关联紧密</span></div>
+              <div className="wg-d">关系非常密切，<b>中性</b>，可用于事物之间。</div>
+              <div className="wg-e">空气质量与每个人的健康息息相关。</div>
+              <div className="wg-cmp">同组区别：重「关联紧」；「休戚与共」重「利害一致」，「唇齿相依」重「互相依存」（<a href="#b7">见辨析七</a>）</div>
             </div>
             <div className="wg">
               <div className="wg-h"><b>休戚相关</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">利害相连</span></div>
               <div className="wg-d">忧喜祸福相互关联，形容关系密切、利害相同</div>
               <div className="wg-e">流域上下游休戚相关，一方污染，全流域受害。</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>休戚与共</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b7">辨析七</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>休戚与共</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">同甘共苦</span></div>
+              <div className="wg-d">忧喜祸福彼此共同承担，<b>多指人、民族、国家，带感情</b>。</div>
+              <div className="wg-e">两个村子共守一座山口，一荣俱荣、一损俱损，早已是休戚与共的命运共同体。</div>
+              <div className="wg-cmp">同组区别：重「利害一致」；「息息相关」只讲关联，不含「同甘共苦」（<a href="#b7">见辨析七</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>唇齿相依</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b7">辨析七</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>唇齿相依</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">互相依存</span></div>
+              <div className="wg-d">像嘴唇和牙齿一样互相依存，<b>多指地理、安全</b>。</div>
+              <div className="wg-e">这两座城市隔江相望，产业互补，可谓唇齿相依。</div>
+              <div className="wg-cmp">同组区别：重「缺一不可的依存」；「休戚与共」偏「情」，「息息相关」偏「关联」（<a href="#b7">见辨析七</a>）</div>
             </div>
             </Block>
       

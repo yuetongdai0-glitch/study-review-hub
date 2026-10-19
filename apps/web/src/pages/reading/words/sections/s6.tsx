@@ -14,7 +14,7 @@ export default function S7(): ReactElement {
             </Callout>
       
             <Block>
-              <BlockTitle>本讲词群 1（共 18 词）</BlockTitle>
+              <BlockTitle>词群 1（本讲共 31 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>崭露头角</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">年轻人新人</span></div>
               <div className="wg-d">初次显露出才能，强调「刚刚起步」，多指年轻人</div>
@@ -47,7 +47,7 @@ export default function S7(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 2（共 18 词）</BlockTitle>
+              <BlockTitle>词群 2（本讲共 31 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>应接不暇</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">人多事多</span></div>
               <div className="wg-d">原指景物繁多来不及观赏，后指人或事太多应付不过来</div>
@@ -80,7 +80,7 @@ export default function S7(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 3（共 18 词）</BlockTitle>
+              <BlockTitle>词群 3（本讲共 31 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>伯仲之间</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">水平</span></div>
               <div className="wg-d">兄弟之间，比喻不相上下（伯仲＝兄弟次第）</div>
@@ -113,58 +113,84 @@ export default function S7(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>已在辨析组详解（点词跳转，不重复说）</BlockTitle>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>相形见绌</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b5">辨析五</a>，对照辨析表与例句，此处不再重复。</div>
+              <BlockTitle>同组易混词（这几个也在别处讲过，这里再讲一遍，就地记）</BlockTitle>
+            <div className="wg">
+              <div className="wg-h"><b>相形见绌</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">同类比较</span></div>
+              <div className="wg-d">和同类相比显得不足，<b>后面不能再带宾语</b>。</div>
+              <div className="wg-e">与新款相比，旧机型相形见绌。</div>
+              <div className="wg-cmp">同组区别：重「比下去」；「望尘莫及」重「追不上」，「自惭形秽」重「自觉惭愧」（<a href="#b5">见辨析五</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>出类拔萃</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b5">辨析五</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>出类拔萃</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">人·才能</span></div>
+              <div className="wg-d">才能高出同类，<b>几乎只用于人</b>。</div>
+              <div className="wg-e">他在同期学员中出类拔萃，一毕业就被点名要走。</div>
+              <div className="wg-cmp">同组区别：重「高出同类」；「脱颖而出」重「从竞争中冒出」，「卓尔不群」重「品格超然」（<a href="#b5">见辨析五</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>无与伦比</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b5">辨析五</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>无与伦比</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">价值成就</span></div>
+              <div className="wg-d">没有能与之相比的，<b>程度最重的褒扬</b>。</div>
+              <div className="wg-e">敦煌壁画的艺术价值无与伦比。</div>
+              <div className="wg-cmp">同组区别：重「最好、无以复加」；「独一无二」重「只有这一个」，「不可替代」重「换不掉」（<a href="#b5">见辨析五</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>脱颖而出</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b5">辨析五</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>脱颖而出</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">竞争显露</span></div>
+              <div className="wg-d">锥尖从布袋里露出来，比喻<b>才能全部显露、从众人中出头</b>。</div>
+              <div className="wg-e">她在千人海选中脱颖而出，拿下唯一的名额。</div>
+              <div className="wg-cmp">同组区别：重「在竞争中冒出来」；「崭露头角」重「初次显露」，程度更轻（<a href="#b5">见辨析五</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>望其项背</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b5">辨析五</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>望其项背</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">水平差距</span></div>
+              <div className="wg-d">能看见对方的颈背，比喻<b>赶得上</b>，<b>多用于否定句</b>。</div>
+              <div className="wg-e">其工艺之精，今人难以望其项背。</div>
+              <div className="wg-cmp">同组区别：重「赶得上」（只否定）；「望尘莫及」是「追不上」，可用于肯定（<a href="#b5">见辨析五</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>望尘莫及</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b5">辨析五</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>望尘莫及</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">水平速度</span></div>
+              <div className="wg-d">只望见前面的尘土而追赶不上，<b>可直接用于肯定句</b>。</div>
+              <div className="wg-e">技术代差之下，后来者只能望尘莫及。</div>
+              <div className="wg-cmp">同组区别：重「追不上」（可肯定）；「望其项背」是「赶得上」，须配否定词（<a href="#b5">见辨析五</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>独一无二</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b5">辨析五</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>独一无二</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">唯一性</span></div>
+              <div className="wg-d">只有这一个、没有第二个，<b>强调唯一</b>。</div>
+              <div className="wg-e">这里的丹霞地貌在全世界都是独一无二的。</div>
+              <div className="wg-cmp">同组区别：重「唯一」；「无与伦比」重「最好」，「不可替代」重「功能性不可取代」（<a href="#b5">见辨析五</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>不可替代</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b5">辨析五</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>不可替代</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">功能性</span></div>
+              <div className="wg-d">不能被别的取代，<b>强调功能上的唯一必要</b>。</div>
+              <div className="wg-e">母亲在孩子早期成长中的作用不可替代。</div>
+              <div className="wg-cmp">同组区别：重「换不掉」；「独一无二」重「只有这一个」，「不可或缺」重「不能缺」（<a href="#b5">见辨析五</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>卓尔不群</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b5">辨析五</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>卓尔不群</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">才德品格</span></div>
+              <div className="wg-d">才德超出常人、不随流俗，<b>重「超然独立」</b>。</div>
+              <div className="wg-e">他一生不赴宴、不题字，卓尔不群的品格令人敬重。</div>
+              <div className="wg-cmp">同组区别：重「品格超然」；「出类拔萃」重「才能高出」，「特立独行」可含贬义（<a href="#b5">见辨析五</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>与众不同</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b5">辨析五</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>与众不同</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">差异</span></div>
+              <div className="wg-d">跟别人不一样，<b>中性，不一定更好</b>。</div>
+              <div className="wg-e">这间咖啡馆的与众不同之处，是不放背景音乐。</div>
+              <div className="wg-cmp">同组区别：只讲「不一样」，不含优劣；「出类拔萃」含明确的褒义（<a href="#b5">见辨析五</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>大相径庭</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b3">辨析三</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>大相径庭</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">说法做法</span></div>
+              <div className="wg-d">彼此差别很大、很不一致，多指说法、做法、结果。</div>
+              <div className="wg-e">同一份材料，两位学者的解读大相径庭，一个看到衰退，一个看到转型。</div>
+              <div className="wg-cmp">同组区别：重「不一致」；「相去甚远」重「有刻度的差距」，「截然相反」重「正相反」（<a href="#b3">见辨析三</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>相去甚远</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b3">辨析三</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>相去甚远</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">数量水平</span></div>
+              <div className="wg-d">距离、差距很大，多指数量、水平、程度，可量化比较。</div>
+              <div className="wg-e">项目实际投入不到预算的三成，与最初的设想相去甚远。</div>
+              <div className="wg-cmp">同组区别：重「有刻度」；「大相径庭」重「不一致」，「天壤之别」程度更重（<a href="#b3">见辨析三</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>截然相反</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b3">辨析三</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>截然相反</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">性质结论</span></div>
+              <div className="wg-d">像被切断一样完全对立，多指观点、方向、性质的正相反。</div>
+              <div className="wg-e">两份检测报告给出的结论截然相反，一份合格，一份严重超标。</div>
+              <div className="wg-cmp">同组区别：重「正相反」；「大相径庭」只是「差得远」，不要求方向相反（<a href="#b3">见辨析三</a>）</div>
             </div>
             </Block>
       

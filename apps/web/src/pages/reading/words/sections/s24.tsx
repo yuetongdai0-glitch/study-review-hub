@@ -14,7 +14,7 @@ export default function S25(): ReactElement {
             </Callout>
       
             <Block>
-              <BlockTitle>本讲词群 1（共 25 词）</BlockTitle>
+              <BlockTitle>词群 1（本讲共 25 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>只言片语</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">话少</span></div>
               <div className="wg-d">简短零碎的话语、文字，形容极少</div>
@@ -47,7 +47,7 @@ export default function S25(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 2（共 25 词）</BlockTitle>
+              <BlockTitle>词群 2（本讲共 25 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>惜墨如金</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">不肯多写</span></div>
               <div className="wg-d">爱惜笔墨像爱惜金子，形容<b>下笔极慎重、不多写</b></div>
@@ -80,7 +80,7 @@ export default function S25(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 3（共 25 词）</BlockTitle>
+              <BlockTitle>词群 3（本讲共 25 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>下笔成章</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">文思敏</span></div>
               <div className="wg-d">一动笔就写成文章，形容文思敏捷</div>
@@ -113,7 +113,7 @@ export default function S25(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 4（共 25 词）</BlockTitle>
+              <BlockTitle>词群 4（本讲共 25 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>言简意赅</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">简练</span></div>
               <div className="wg-d">言语简练而意思完备（赅＝完备）</div>
@@ -146,7 +146,7 @@ export default function S25(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 5（共 25 词）</BlockTitle>
+              <BlockTitle>词群 5（本讲共 25 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>别具只眼</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">眼光独到</span></div>
               <div className="wg-d">另有一番独到的眼光</div>
@@ -159,11 +159,11 @@ export default function S25(): ReactElement {
             </div>
       
             <Example>
-              <ExampleHeader>例题 · 真题改编 · 同考点仿题</ExampleHeader>
+              <ExampleHeader>例题 · 真题改编 · 同考点仿题（本讲词群：文不加点 / 一挥而就）</ExampleHeader>
               <ExampleBody>
-                <ExampleQuestion>他那篇文章被同行称作「____」：通篇没有一个字需要改动，逻辑、材料、分寸都恰到好处。</ExampleQuestion>
-                <ExampleOptions><span>A. 不刊之论</span><span>B. 一气呵成</span><span>C. 字字珠玑</span><span>D. 文不加点</span></ExampleOptions>
-                <ExampleAnswer><b>答案：<span className="correct">A</span></b><br />解析：空后「<b>没有一个字需要改动</b>」是对空处的直接解释，只有「不刊之论」（刊＝削除，不可删改的言论）对得上。「文不加点」是<b>写文章不用涂改</b>，说的是<b>写作过程</b>一气呵成，不是「内容不可改」——这是本题最大的干扰项；「一气呵成」只讲<b>连贯不断</b>，不含「不可改」；「字字珠玑」指<b>文辞优美</b>，与「不需改动」无关。</ExampleAnswer>
+                <ExampleQuestion>他写这类千字短文，从来不打草稿，落笔即成，通篇没有一处涂改，同行都说这是____的功夫。</ExampleQuestion>
+                <ExampleOptions><span>A. 文不加点</span><span>B. 一挥而就</span><span>C. 一气呵成</span><span>D. 倚马可待</span></ExampleOptions>
+                <ExampleAnswer><b>答案：<span className="correct">A</span></b><br />解析：空前的「<b>通篇没有一处涂改</b>」正是「<b>文不加点</b>」的本义（点＝涂改，不是标点），这是本题唯一的判分点。「一挥而就」指一动笔就写成，强调「快」，但<b>不包含「不用改」</b>；「一气呵成」强调「连贯不断」；「倚马可待」形容文思敏捷，多作谓语（此人倚马可待），不直接作「功夫」的定语。</ExampleAnswer>
               </ExampleBody>
             </Example>
     </>

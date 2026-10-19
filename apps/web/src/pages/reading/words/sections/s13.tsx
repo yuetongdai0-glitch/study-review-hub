@@ -14,7 +14,7 @@ export default function S14(): ReactElement {
             </Callout>
       
             <Block>
-              <BlockTitle>本讲词群 1（共 25 词）</BlockTitle>
+              <BlockTitle>词群 1（本讲共 28 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>从谏如流</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">纳谏</span></div>
               <div className="wg-d">乐于接受别人的规劝，像水往低处流那样自然</div>
@@ -47,7 +47,7 @@ export default function S14(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 2（共 25 词）</BlockTitle>
+              <BlockTitle>词群 2（本讲共 28 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>改头换面</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">只换外表</span></div>
               <div className="wg-d">只改外表形式、<b>内容不变</b>（贬）</div>
@@ -80,7 +80,7 @@ export default function S14(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 3（共 25 词）</BlockTitle>
+              <BlockTitle>词群 3（本讲共 28 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>瞬息万变</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">变化快</span></div>
               <div className="wg-d">极短的时间内变化极多</div>
@@ -113,7 +113,7 @@ export default function S14(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 4（共 25 词）</BlockTitle>
+              <BlockTitle>词群 4（本讲共 28 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>时过境迁</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">境况变</span></div>
               <div className="wg-d">时间过去、境况改变</div>
@@ -146,7 +146,7 @@ export default function S14(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 5（共 25 词）</BlockTitle>
+              <BlockTitle>词群 5（本讲共 28 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>积习难改</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">习惯</span></div>
               <div className="wg-d">长期形成的习惯难以改变</div>
@@ -154,18 +154,24 @@ export default function S14(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>已在辨析组详解（点词跳转，不重复说）</BlockTitle>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>积重难返</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#s4">s4</a>，对照辨析表与例句，此处不再重复。</div>
+              <BlockTitle>同组易混词（这几个也在别处讲过，这里再讲一遍，就地记）</BlockTitle>
+            <div className="wg">
+              <div className="wg-h"><b>积重难返</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">问题风气</span></div>
+              <div className="wg-d">长期形成的不良风气、问题很难改变，只用于「坏东西」</div>
+              <div className="wg-e">形式主义积重难返，必须久久为功。</div>
+              <div className="wg-cmp">同组还有：岌岌可危 / 危如累卵 / 命悬一线。整组对照见 <a href="#s4">第 4 讲</a>（此处再讲一遍，省得来回翻）。</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>每况愈下</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#s5">s5</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>每况愈下</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">身体状况</span></div>
+              <div className="wg-d">情况越来越坏，适用范围最广</div>
+              <div className="wg-e">停药之后，他的身体状况每况愈下。</div>
+              <div className="wg-cmp">同组还有：层出不穷 / 风起云涌 / 雨后春笋。整组对照见 <a href="#s5">第 5 讲</a>（此处再讲一遍，省得来回翻）。</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>江河日下</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#s5">s5</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>江河日下</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">风气局面</span></div>
+              <div className="wg-d">像江水一天天往下流，多指风气、局面</div>
+              <div className="wg-e">若不加约束，行业风气将江河日下。</div>
+              <div className="wg-cmp">同组还有：层出不穷 / 风起云涌 / 雨后春笋。整组对照见 <a href="#s5">第 5 讲</a>（此处再讲一遍，省得来回翻）。</div>
             </div>
             </Block>
       

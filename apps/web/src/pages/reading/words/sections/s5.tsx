@@ -14,7 +14,7 @@ export default function S6(): ReactElement {
             </Callout>
       
             <Block>
-              <BlockTitle>本讲词群 1（共 28 词）</BlockTitle>
+              <BlockTitle>词群 1（本讲共 35 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>层出不穷</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">新事物</span></div>
               <div className="wg-d">接连不断地出现，没有穷尽，重在「不断出新的」</div>
@@ -47,7 +47,7 @@ export default function S6(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 2（共 28 词）</BlockTitle>
+              <BlockTitle>词群 2（本讲共 35 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>蒸蒸日上</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">事业生意</span></div>
               <div className="wg-d">一天天向上发展，强调「持续变好」</div>
@@ -80,7 +80,7 @@ export default function S6(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 3（共 28 词）</BlockTitle>
+              <BlockTitle>词群 3（本讲共 35 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>阪上走丸</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">形势</span></div>
               <div className="wg-d">在斜坡上滚弹丸，比喻形势发展极快（多指顺利推进）</div>
@@ -113,7 +113,7 @@ export default function S6(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 4（共 28 词）</BlockTitle>
+              <BlockTitle>词群 4（本讲共 35 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>柳暗花明</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">转机</span></div>
               <div className="wg-d">绿柳成荫、繁花似锦，比喻在困境中出现转机</div>
@@ -146,7 +146,7 @@ export default function S6(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 5（共 28 词）</BlockTitle>
+              <BlockTitle>词群 5（本讲共 35 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>惨淡经营</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">事业店铺</span></div>
               <div className="wg-d">费尽心力地谋划、经营，<b>是褒义</b></div>
@@ -169,34 +169,48 @@ export default function S6(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>已在辨析组详解（点词跳转，不重复说）</BlockTitle>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>方兴未艾</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b2">辨析二</a>，对照辨析表与例句，此处不再重复。</div>
+              <BlockTitle>同组易混词（这几个也在别处讲过，这里再讲一遍，就地记）</BlockTitle>
+            <div className="wg">
+              <div className="wg-h"><b>方兴未艾</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">事业潮流</span></div>
+              <div className="wg-d">正在兴起、远未停止，<b>强调势头正盛、还没到头</b>。</div>
+              <div className="wg-e">低空经济方兴未艾，各地都在抢先布局。</div>
+              <div className="wg-cmp">同组区别：重「势头正盛」；「悄然兴起」重「不声不响」，「如火如荼」重「场面热烈」（<a href="#b2">见辨析二</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>横空出世</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b2">辨析二</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>横空出世</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">作品人物</span></div>
+              <div className="wg-d">突然出现且气势宏大，多用于伟大的作品、杰出的人物。</div>
+              <div className="wg-e">这部小说横空出世，一时洛阳纸贵。</div>
+              <div className="wg-cmp">同组区别：重「突然震撼」；「异军突起」重「新的一支力量」，「应运而生」重「顺应需要」（<a href="#b2">见辨析二</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>应运而生</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b2">辨析二</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>应运而生</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">顺应需要</span></div>
+              <div className="wg-d">顺应时机而出现，<b>强调「有需求才有它」</b>，前后常有因果。</div>
+              <div className="wg-e">城市通勤距离拉长，共享单车应运而生。</div>
+              <div className="wg-cmp">同组区别：重「顺需要」；「横空出世」不含因果，「异军突起」强调「原不在主流」（<a href="#b2">见辨析二</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>此消彼长</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b2">辨析二</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>此消彼长</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">一涨一落</span></div>
+              <div className="wg-d">这个下去、那个上来，<b>总量不变</b>，一方减少一方增加。</div>
+              <div className="wg-e">线上消费上升，线下客流下降，两者呈此消彼长之势。</div>
+              <div className="wg-cmp">同组区别：重「一涨一落」；「此起彼伏」重「轮着来」，「层出不穷」重「不断出新」（<a href="#b2">见辨析二</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>悄然兴起</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b2">辨析二</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>悄然兴起</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">风气方式</span></div>
+              <div className="wg-d">不知不觉中兴起，<b>强调「不声不响、没人注意」</b>。</div>
+              <div className="wg-e">一种「周末去县城」的旅行方式，正在年轻人中悄然兴起。</div>
+              <div className="wg-cmp">同组区别：重「无声无息」；「方兴未艾」重「势头正盛」，与「声势浩大」相反（<a href="#b2">见辨析二</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>粉墨登场</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b5">辨析五</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>粉墨登场</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">坏人上台</span></div>
+              <div className="wg-d">化好妆上台演戏，比喻<b>坏人登上政治舞台</b>，或含讥讽。</div>
+              <div className="wg-e">每逢选举，各种投机政客便粉墨登场。</div>
+              <div className="wg-cmp">同组区别：重「乔装上台」（贬）；「横空出世」是褒义，「应运而生」是顺应需要（<a href="#b5">见辨析五</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>一落千丈</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b5">辨析五</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>一落千丈</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">地位声誉</span></div>
+              <div className="wg-d">一下子跌得很惨，<b>强调「跌得急、幅度大」</b>。</div>
+              <div className="wg-e"></div>
+              <div className="wg-cmp">同组区别：重「急跌」；「每况愈下」重「持续变坏」，「日薄西山」重「接近衰亡」（<a href="#b5">见辨析五</a>）</div>
             </div>
             </Block>
       
@@ -205,11 +219,11 @@ export default function S6(): ReactElement {
             </div>
       
             <Example>
-              <ExampleHeader>例题 · 真题 2021 黑龙江 第 35 题</ExampleHeader>
+              <ExampleHeader>例题 · 真题改编 · 同考点仿题（本讲词群：明日黄花 / 强弩之末）</ExampleHeader>
               <ExampleBody>
-                <ExampleQuestion>在讨论疫情会给经济社会带来什么变化时，有人认为一些企业会____，一些行业会破茧成蝶。比如，远程协同办公软件迎来新机遇，网络视频步入发展的黄金时期，医疗健康网络应用____，因此，可以说危机与风险中也蕴含着机遇。</ExampleQuestion>
-                <ExampleOptions><span>A. 振翅高飞　方兴未艾</span><span>B. 浴火重生　蓬勃发展</span><span>C. 脱胎换骨　欣欣向荣</span><span>D. 凤凰涅槃　愈挫愈勇</span></ExampleOptions>
-                <ExampleAnswer><b>答案：<span className="correct">B</span></b><br />解析：第一空与「<b>破茧成蝶</b>」并列，要表达「从困境里重生」，只有「浴火重生」贴切；「振翅高飞」只讲飞得高，不含「从难中脱出」；「脱胎换骨」侧重彻底改造，方向不对。第二空形容医疗健康网络应用在疫情中<b>旺盛发展</b>，用「蓬勃发展」。<br /><b>注意 A 项：</b>「方兴未艾」本身形容势头正盛，放在这里语义不算错，但第一空「振翅高飞」与「破茧成蝶」的「重生」语义断层——<b>双空题里两个空都要成立才叫对，一个空勉强不算赢。</b></ExampleAnswer>
+                <ExampleQuestion>这条商业街的辉煌停在十年前。如今新商圈一个个崛起，老商户撤了大半，当年「一铺养三代」的说法早已成了____；而曾经最火的那家百货，也已是____，撑不过下一个租期。</ExampleQuestion>
+                <ExampleOptions><span>A. 明日黄花　强弩之末</span><span>B. 昨日黄花　强弩之末</span><span>C. 明日黄花　昙花一现</span><span>D. 过眼云烟　日薄西山</span></ExampleOptions>
+                <ExampleAnswer><b>答案：<span className="correct">A</span></b><br />解析：第一空要表达「<b>过时、没人再提</b>」，用「<b>明日黄花</b>」（重阳节后的菊花，比喻过时之物）；注意 B 项的「昨日黄花」是<b>错误写法</b>，成语只有「明日黄花」。第二空「<b>撑不过下一个租期</b>」说明力量已经耗尽 → 「<b>强弩之末</b>」；「昙花一现」指存在时间极短，而那家百货火了十年，不能算「一现」；「日薄西山」虽也指接近衰亡，但第一空已被「明日黄花」锁定。</ExampleAnswer>
               </ExampleBody>
             </Example>
     </>

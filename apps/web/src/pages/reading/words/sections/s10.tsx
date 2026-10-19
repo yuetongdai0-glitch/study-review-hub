@@ -14,7 +14,7 @@ export default function S11(): ReactElement {
             </Callout>
       
             <Block>
-              <BlockTitle>本讲词群 1（共 32 词）</BlockTitle>
+              <BlockTitle>词群 1（本讲共 32 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>如履薄冰</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">谨慎戒惧</span></div>
               <div className="wg-d">像走在薄冰上，比喻处境极谨慎、心存戒惧</div>
@@ -47,7 +47,7 @@ export default function S11(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 2（共 32 词）</BlockTitle>
+              <BlockTitle>词群 2（本讲共 32 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>废寝忘食</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">投入</span></div>
               <div className="wg-d">顾不上睡觉吃饭，形容非常专心努力</div>
@@ -80,7 +80,7 @@ export default function S11(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 3（共 32 词）</BlockTitle>
+              <BlockTitle>词群 3（本讲共 32 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>焚膏继晷</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">勤学</span></div>
               <div className="wg-d">点上油灯接续白天，形容夜以继日地学习工作</div>
@@ -113,7 +113,7 @@ export default function S11(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 4（共 32 词）</BlockTitle>
+              <BlockTitle>词群 4（本讲共 32 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>栉风沐雨</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">奔波劳碌</span></div>
               <div className="wg-d">用风梳头、用雨洗头，形容奔波劳碌</div>
@@ -146,7 +146,7 @@ export default function S11(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 5（共 32 词）</BlockTitle>
+              <BlockTitle>词群 5（本讲共 32 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>条分缕析</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">分析细致</span></div>
               <div className="wg-d">一条条、一缕缕地分析，形容分析细致有条理</div>
@@ -179,7 +179,7 @@ export default function S11(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 6（共 32 词）</BlockTitle>
+              <BlockTitle>词群 6（本讲共 32 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>博采众长</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">学习吸收</span></div>
               <div className="wg-d">广泛吸取各家的长处</div>

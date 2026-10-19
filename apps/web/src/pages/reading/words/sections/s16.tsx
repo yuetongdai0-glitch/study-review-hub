@@ -14,7 +14,7 @@ export default function S17(): ReactElement {
             </Callout>
       
             <Block>
-              <BlockTitle>本讲词群 1（共 22 词）</BlockTitle>
+              <BlockTitle>词群 1（本讲共 25 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>人迹罕至</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">偏僻</span></div>
               <div className="wg-d">偏僻荒凉、很少有人到</div>
@@ -47,7 +47,7 @@ export default function S17(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 2（共 22 词）</BlockTitle>
+              <BlockTitle>词群 2（本讲共 25 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>人头攒动</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">人多</span></div>
               <div className="wg-d">人头聚在一起晃动，形容人很多</div>
@@ -95,7 +95,7 @@ export default function S17(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 3（共 22 词）</BlockTitle>
+              <BlockTitle>词群 3（本讲共 25 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>茕茕孑立</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">无依靠</span></div>
               <div className="wg-d">孤身一人、无依无靠（茕茕＝孤单）</div>
@@ -128,7 +128,7 @@ export default function S17(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 4（共 22 词）</BlockTitle>
+              <BlockTitle>词群 4（本讲共 25 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>鱼龙混杂</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">好坏混杂</span></div>
               <div className="wg-d">鱼和龙混在一起，比喻好人坏人混杂</div>

@@ -14,7 +14,7 @@ export default function S16(): ReactElement {
             </Callout>
       
             <Block>
-              <BlockTitle>本讲词群 1（共 21 词）</BlockTitle>
+              <BlockTitle>词群 1（本讲共 23 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>各行其是</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">不统一</span></div>
               <div className="wg-d">各人按自己认为对的去做，<b>贬</b></div>
@@ -47,7 +47,7 @@ export default function S16(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 2（共 21 词）</BlockTitle>
+              <BlockTitle>词群 2（本讲共 23 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>独当一面</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">能力</span></div>
               <div className="wg-d">单独负责一个方面的工作</div>
@@ -80,7 +80,7 @@ export default function S16(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 3（共 21 词）</BlockTitle>
+              <BlockTitle>词群 3（本讲共 23 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>空中楼阁</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">不切实际</span></div>
               <div className="wg-d">悬在半空的楼阁，比喻虚幻的事物或不切实际的计划</div>
@@ -113,7 +113,7 @@ export default function S16(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 4（共 21 词）</BlockTitle>
+              <BlockTitle>词群 4（本讲共 23 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>蜂拥而至</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">拥挤而来</span></div>
               <div className="wg-d">像蜂群一样拥挤着到来</div>
@@ -131,14 +131,18 @@ export default function S16(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>已在辨析组详解（点词跳转，不重复说）</BlockTitle>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>无人问津</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#s5">s5</a>，对照辨析表与例句，此处不再重复。</div>
+              <BlockTitle>同组易混词（这几个也在别处讲过，这里再讲一遍，就地记）</BlockTitle>
+            <div className="wg">
+              <div className="wg-h"><b>无人问津</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">商品作品</span></div>
+              <div className="wg-d">没人过问、没人尝试，重在「没人理」</div>
+              <div className="wg-e">好书若无人推介，也可能长期无人问津。</div>
+              <div className="wg-cmp">同组还有：层出不穷 / 风起云涌 / 雨后春笋。整组对照见 <a href="#s5">第 5 讲</a>（此处再讲一遍，省得来回翻）。</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>门可罗雀</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#s5">s5</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>门可罗雀</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">场所门店</span></div>
+              <div className="wg-d">门前可以张网捕雀，形容来客稀少、十分冷落</div>
+              <div className="wg-e">景区一过旺季便门可罗雀，商户纷纷关门。</div>
+              <div className="wg-cmp">同组还有：层出不穷 / 风起云涌 / 雨后春笋。整组对照见 <a href="#s5">第 5 讲</a>（此处再讲一遍，省得来回翻）。</div>
             </div>
             </Block>
       

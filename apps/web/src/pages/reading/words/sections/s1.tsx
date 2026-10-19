@@ -14,7 +14,7 @@ export default function S2(): ReactElement {
             </Callout>
       
             <Block>
-              <BlockTitle>本讲词群 1（共 26 词）</BlockTitle>
+              <BlockTitle>词群 1（本讲共 31 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>源远流长</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">历史文明</span></div>
               <div className="wg-d">源头远、水流长，形容历史悠久、根底深厚</div>
@@ -47,7 +47,7 @@ export default function S2(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 2（共 26 词）</BlockTitle>
+              <BlockTitle>词群 2（本讲共 31 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>血脉相通</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">亲属民族</span></div>
               <div className="wg-d">血统相连，比喻关系极亲近</div>
@@ -80,7 +80,7 @@ export default function S2(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 3（共 26 词）</BlockTitle>
+              <BlockTitle>词群 3（本讲共 31 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>难以为继</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">模式局面</span></div>
               <div className="wg-d">难以继续下去，强调「撑不住」</div>
@@ -113,7 +113,7 @@ export default function S2(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 4（共 26 词）</BlockTitle>
+              <BlockTitle>词群 4（本讲共 31 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>弃旧图新</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">人·道路</span></div>
               <div className="wg-d">抛弃旧的、谋求新的，多指走过错路的人改过</div>
@@ -146,7 +146,7 @@ export default function S2(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 5（共 26 词）</BlockTitle>
+              <BlockTitle>词群 5（本讲共 31 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>剑走偏锋</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">策略</span></div>
               <div className="wg-d">不走常规路子，另找冷门角度（多含冒险意味）</div>
@@ -159,26 +159,36 @@ export default function S2(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>已在辨析组详解（点词跳转，不重复说）</BlockTitle>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>标新立异</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b3">辨析三</a>，对照辨析表与例句，此处不再重复。</div>
+              <BlockTitle>同组易混词（这几个也在别处讲过，这里再讲一遍，就地记）</BlockTitle>
+            <div className="wg">
+              <div className="wg-h"><b>标新立异</b><span className="wg-t t-bian">中偏贬</span><span className="wg-t t-obj">主张设计</span></div>
+              <div className="wg-d">提出新奇的主张，表示与众不同。看语境：讲创新时中性，为博眼球时带贬。</div>
+              <div className="wg-e">为了流量而刻意标新立异，往往很快被观众看穿。</div>
+              <div className="wg-cmp">同组区别：重「提新主张」；与「独树一帜」（风格独立）、「别出心裁」（构思巧）分工不同（<a href="#b3">见辨析三</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>别出心裁</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b3">辨析三</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>别出心裁</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">构思设计</span></div>
+              <div className="wg-d">另有一种独特的构思，重在<b>心思巧</b>，多指具体的做法、设计、布局。</div>
+              <div className="wg-e">这场展览的布展方式别出心裁，观众要打着手电看。</div>
+              <div className="wg-cmp">同组区别：重「巧」；「独树一帜」重「独立成家」，「标新立异」重「提主张」（<a href="#b3">见辨析三</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>独树一帜</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b3">辨析三</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>独树一帜</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">风格流派</span></div>
+              <div className="wg-d">单独树起一面旗帜，比喻<b>自成一家、风格独特</b>，重在「旗帜鲜明地独立」。</div>
+              <div className="wg-e">他的山水画独树一帜，苍茫中见温润。</div>
+              <div className="wg-cmp">同组区别：重「风格独立」；「自成一家」重「成了体系」，「别出心裁」重「构思巧」（<a href="#b3">见辨析三</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>不拘一格</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b3">辨析三</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>不拘一格</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">选人用人</span></div>
+              <div className="wg-d">不局限于一种规格、方式，多指打破常规<b>选拔人才</b>。</div>
+              <div className="wg-e">选拔人才要不拘一格，不能只盯着学历和出身。</div>
+              <div className="wg-cmp">同组区别：只用于「规格、方式不限」；不能像「别出心裁」那样形容构思（<a href="#b3">见辨析三</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>自成一家</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b3">辨析三</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>自成一家</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">学问技艺</span></div>
+              <div className="wg-d">在学问、技艺上有独到之处，<b>能自成体系</b>，重在「成了体系」。</div>
+              <div className="wg-e">他浸淫篆刻四十年，刀法已自成一家。</div>
+              <div className="wg-cmp">同组区别：重「成体系」；「独树一帜」重「旗帜独立」，「不落窠臼」只要求「不俗套」（<a href="#b3">见辨析三</a>）</div>
             </div>
             </Block>
       
@@ -187,11 +197,11 @@ export default function S2(): ReactElement {
             </div>
       
             <Example>
-              <ExampleHeader>例题 · 真题 2020 国考（副省级）第 35 题</ExampleHeader>
+              <ExampleHeader>例题 · 真题改编 · 同考点仿题（本讲词群：推陈出新 / 革故鼎新）</ExampleHeader>
               <ExampleBody>
-                <ExampleQuestion>千百年来，乡村承担着对村民行为的引导、规训与教育功能，让人们____、明辨是非善恶。农事活动、节日庆典、民俗习惯、村规民约等，都是维系村落价值取向和有序运行的重要____，它们以____的形式不断强化人们的行为规范，并使之内化为人们的道德准则。</ExampleQuestion>
-                <ExampleOptions><span>A. 循规蹈矩　途径　喜闻乐见</span><span>B. 与人为善　方式　言传身教</span><span>C. 通情达理　载体　潜移默化</span><span>D. 奉公守法　手段　耳濡目染</span></ExampleOptions>
-                <ExampleAnswer><b>答案：<span className="correct">C</span></b><br />解析：突破口在第三空。代词「<b>它们</b>」指「农事活动、节日庆典、民俗习惯、村规民约」，这些是<b>事与物</b>，不是人。「潜移默化」的主体可以是事或物 → 成立；「耳濡目染」「言传身教」的主体<b>必须是人</b>，与「它们」搭配不当，B、D 排除；「喜闻乐见」指群众喜欢听、乐意看，与「它们」也不搭，A 排除。第二空「载体」与「承载价值取向」呼应，第一空「通情达理」与「明辨是非善恶」并列。<b>这道题把「主体是人是物」考到了极致。</b></ExampleAnswer>
+                <ExampleQuestion>老字号要活下来，靠的不是把招牌供起来，而是在工艺上不断____，让老味道跟上新口味；而要让这类手艺真正值钱，还得在产权制度上____，把老师傅的手艺变成可入股、可分红的资产。</ExampleQuestion>
+                <ExampleOptions><span>A. 推陈出新　革故鼎新</span><span>B. 革故鼎新　推陈出新</span><span>C. 吐故纳新　除旧布新</span><span>D. 与时俱进　激浊扬清</span></ExampleOptions>
+                <ExampleAnswer><b>答案：<span className="correct">A</span></b><br />解析：第一空的对象是「<b>工艺、老味道</b>」，属于文化技艺层面 → 用「<b>推陈出新</b>」（去糟粕、出新意）；第二空的对象是「<b>产权制度</b>」，属于制度层面 → 用「<b>革故鼎新</b>」（破除旧制、建立新制）。「吐故纳新」多指组织、队伍的新陈代谢，不用于工艺改良；「除旧布新」只讲新旧更替，不强调「扬弃糟粕」；「激浊扬清」的对象是风气、舆论，与产权制度不搭。<b>一句话锁死：文化用推陈，制度用革故。</b></ExampleAnswer>
               </ExampleBody>
             </Example>
     </>

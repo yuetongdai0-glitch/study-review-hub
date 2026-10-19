@@ -14,7 +14,7 @@ export default function S19(): ReactElement {
             </Callout>
       
             <Block>
-              <BlockTitle>本讲词群 1（共 13 词）</BlockTitle>
+              <BlockTitle>词群 1（本讲共 14 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>灰飞烟灭</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">彻底消灭</span></div>
               <div className="wg-d">像灰烬飞散、烟雾消失，形容<b>彻底消灭</b></div>
@@ -47,7 +47,7 @@ export default function S19(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 2（共 13 词）</BlockTitle>
+              <BlockTitle>词群 2（本讲共 14 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>偃旗息鼓</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">停止行动</span></div>
               <div className="wg-d">放倒旗子、停止敲鼓，比喻<b>停止行动、不再声张</b></div>
@@ -80,7 +80,7 @@ export default function S19(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 3（共 13 词）</BlockTitle>
+              <BlockTitle>词群 3（本讲共 14 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>分崩离析</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">内部分裂</span></div>
               <div className="wg-d">分裂崩溃、人心离散，多指国家、集团内部</div>
@@ -88,10 +88,12 @@ export default function S19(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>已在辨析组详解（点词跳转，不重复说）</BlockTitle>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>昙花一现</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#s5">s5</a>，对照辨析表与例句，此处不再重复。</div>
+              <BlockTitle>同组易混词（这几个也在别处讲过，这里再讲一遍，就地记）</BlockTitle>
+            <div className="wg">
+              <div className="wg-h"><b>昙花一现</b><span className="wg-t t-bian">中偏贬</span><span className="wg-t t-obj">现象人物</span></div>
+              <div className="wg-d">昙花开放时间极短，比喻美好事物出现不久就消失</div>
+              <div className="wg-e">网红店若只靠流量，多半昙花一现。</div>
+              <div className="wg-cmp">同组还有：层出不穷 / 风起云涌 / 雨后春笋。整组对照见 <a href="#s5">第 5 讲</a>（此处再讲一遍，省得来回翻）。</div>
             </div>
             </Block>
       

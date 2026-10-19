@@ -14,7 +14,7 @@ export default function S3(): ReactElement {
             </Callout>
       
             <Block>
-              <BlockTitle>本讲词群 1（共 10 词）</BlockTitle>
+              <BlockTitle>词群 1（本讲共 18 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>因循守旧</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">制度作风</span></div>
               <div className="wg-d">沿袭旧例、不求改进，多指工作作风</div>
@@ -47,7 +47,7 @@ export default function S3(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 2（共 10 词）</BlockTitle>
+              <BlockTitle>词群 2（本讲共 18 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>胶柱鼓瑟</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">做事用兵</span></div>
               <div className="wg-d">把瑟上的柱粘住再弹，比喻拘泥固执、不知变通</div>
@@ -70,38 +70,54 @@ export default function S3(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>已在辨析组详解（点词跳转，不重复说）</BlockTitle>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>墨守成规</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b6">辨析六</a>，对照辨析表与例句，此处不再重复。</div>
+              <BlockTitle>同组易混词（这几个也在别处讲过，这里再讲一遍，就地记）</BlockTitle>
+            <div className="wg">
+              <div className="wg-h"><b>墨守成规</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">办法流程</span></div>
+              <div className="wg-d">守着老规矩不肯改变，<b>重在「不知变通」</b>。</div>
+              <div className="wg-e">审批流程一味墨守成规，就会拖慢创新。</div>
+              <div className="wg-cmp">同组区别：重「不变通」；「抱残守缺」重「守残缺」，「因循守旧」重「照旧例」（<a href="#b6">见辨析六</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>抱残守缺</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b6">辨析六</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>抱残守缺</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">旧说旧学</span></div>
+              <div className="wg-d">守着残缺陈旧的东西不放，对象多是思想、学说、旧物。</div>
+              <div className="wg-e">对旧说抱残守缺，是学术停滞的根源。</div>
+              <div className="wg-cmp">同组区别：重「残缺还当宝」；「墨守成规」不要求「残缺」（<a href="#b6">见辨析六</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>固步自封</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b6">辨析六</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>固步自封</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">地区企业</span></div>
+              <div className="wg-d">自己把自己限制在旧圈子里，不求进步，<b>重在自我封闭</b>。</div>
+              <div className="wg-e">越是开放的城市，越不会固步自封。</div>
+              <div className="wg-cmp">同组区别：重「封闭」；「墨守成规」重「守规矩」，「夜郎自大」重「自大」（<a href="#b6">见辨析六</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>陈陈相因</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b6">辨析六</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>陈陈相因</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">文风制度</span></div>
+              <div className="wg-d">沿袭老一套、没有改进，多指文风、做法。</div>
+              <div className="wg-e">若只是陈陈相因，学术便难有真正的突破。</div>
+              <div className="wg-cmp">同组区别：重「一代代沿袭无改进」；「墨守成规」重「死守规矩」（<a href="#b6">见辨析六</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>不落窠臼</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b3">辨析三</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>不落窠臼</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">文章艺术</span></div>
+              <div className="wg-d">不落俗套（窠臼＝旧格式），多用于文章、艺术作品。</div>
+              <div className="wg-e">这部小说的叙事不落窠臼，读来毫不腻味。</div>
+              <div className="wg-cmp">同组区别：重「不俗套」；「别具一格」重「有独特风格」，二者常可互换但对象略有别（<a href="#b3">见辨析三</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>别具一格</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b3">辨析三</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>别具一格</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">设计文风</span></div>
+              <div className="wg-d">另有一种独特的风格，多指设计、建筑、文风。</div>
+              <div className="wg-e">这座美术馆的设计别具一格，把整面外墙做成了书架。</div>
+              <div className="wg-cmp">同组区别：重「风格新」；「不落窠臼」重「不落旧格」，程度略轻（<a href="#b3">见辨析三</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>自成一家</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b3">辨析三</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>自成一家</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">学问技艺</span></div>
+              <div className="wg-d">在学问、技艺上有独到之处，<b>能自成体系</b>，重在「成了体系」。</div>
+              <div className="wg-e">他浸淫篆刻四十年，刀法已自成一家。</div>
+              <div className="wg-cmp">同组区别：重「成体系」；「独树一帜」重「旗帜独立」，「不落窠臼」只要求「不俗套」（<a href="#b3">见辨析三</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>独树一帜</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b3">辨析三</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>独树一帜</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">风格流派</span></div>
+              <div className="wg-d">单独树起一面旗帜，比喻<b>自成一家、风格独特</b>，重在「旗帜鲜明地独立」。</div>
+              <div className="wg-e">他的山水画独树一帜，苍茫中见温润。</div>
+              <div className="wg-cmp">同组区别：重「风格独立」；「自成一家」重「成了体系」，「别出心裁」重「构思巧」（<a href="#b3">见辨析三</a>）</div>
             </div>
             </Block>
       

@@ -14,7 +14,7 @@ export default function S29(): ReactElement {
             </Callout>
       
             <Block>
-              <BlockTitle>本讲词群 1（共 27 词）</BlockTitle>
+              <BlockTitle>词群 1（本讲共 31 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>保驾护航</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">保障</span></div>
               <div className="wg-d">为某事顺利推进提供保障</div>
@@ -47,7 +47,7 @@ export default function S29(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 2（共 27 词）</BlockTitle>
+              <BlockTitle>词群 2（本讲共 31 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>开源节流</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">理财</span></div>
               <div className="wg-d">开辟财源、节省开支</div>
@@ -80,7 +80,7 @@ export default function S29(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 3（共 27 词）</BlockTitle>
+              <BlockTitle>词群 3（本讲共 31 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>迎刃而解</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">顺利解决</span></div>
               <div className="wg-d">劈竹子迎刃而开，比喻<b>主要问题解决后其他问题顺利解决</b></div>
@@ -113,7 +113,7 @@ export default function S29(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 4（共 27 词）</BlockTitle>
+              <BlockTitle>词群 4（本讲共 31 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>信手拈来</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">运用自如</span></div>
               <div className="wg-d">随手拿来，形容<b>素材、词句运用自如</b></div>
@@ -146,7 +146,7 @@ export default function S29(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 5（共 27 词）</BlockTitle>
+              <BlockTitle>词群 5（本讲共 31 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>适得其反</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">与预期反</span></div>
               <div className="wg-d">结果与预期的正好相反</div>
@@ -164,22 +164,30 @@ export default function S29(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>已在辨析组详解（点词跳转，不重复说）</BlockTitle>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>对症下药</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b4">辨析四</a>，对照辨析表与例句，此处不再重复。</div>
+              <BlockTitle>同组易混词（这几个也在别处讲过，这里再讲一遍，就地记）</BlockTitle>
+            <div className="wg">
+              <div className="wg-h"><b>对症下药</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">解决毛病</span></div>
+              <div className="wg-d">针对具体病症开方子，比喻针对问题给<b>解决方案</b>。</div>
+              <div className="wg-e">治理城市内涝要对症下药，先查清是管网问题还是地势问题。</div>
+              <div className="wg-cmp">同组区别：重「给方案」；「有的放矢」重「有目标」，「一针见血」重「说到要害」（<a href="#b4">见辨析四</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>有的放矢</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b4">辨析四</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>有的放矢</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">办事措施</span></div>
+              <div className="wg-d">有了靶子才射箭，比喻办事、措施<b>有针对性、不盲目</b>。</div>
+              <div className="wg-e">只有把问题摸清，调研才能有的放矢。</div>
+              <div className="wg-cmp">同组区别：重「有目标」；「对症下药」重「开方子」，程度更进一步（<a href="#b4">见辨析四</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>因地制宜</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b4">辨析四</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>因地制宜</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">地域条件</span></div>
+              <div className="wg-d">根据各地具体情况制定适宜办法，重「按地点」。</div>
+              <div className="wg-e">山区发展产业要因地制宜，宜林则林、宜牧则牧。</div>
+              <div className="wg-cmp">同组区别：重「按地点」；「因势利导」重「顺趋势」，「因时制宜」重「按时期」（<a href="#b4">见辨析四</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>量体裁衣</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b4">辨析四</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>量体裁衣</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">按条件定制</span></div>
+              <div className="wg-d">照身材做衣服，比喻按实际情况<b>定方案</b>。</div>
+              <div className="wg-e">帮扶要量体裁衣，有的户缺技术，有的户缺销路。</div>
+              <div className="wg-cmp">同组区别：重「量身定制」；「因地制宜」重「按地点」，「对症下药」重「按毛病」（<a href="#b4">见辨析四</a>）</div>
             </div>
             </Block>
       
@@ -188,11 +196,11 @@ export default function S29(): ReactElement {
             </div>
       
             <Example>
-              <ExampleHeader>例题 · 真题改编 · 同考点仿题</ExampleHeader>
+              <ExampleHeader>例题 · 真题改编 · 同考点仿题（本讲词群：釜底抽薪 / 标本兼治）</ExampleHeader>
               <ExampleBody>
-                <ExampleQuestion>只查末端门店、不查上游供货，查到一批罚一批，过几天又冒出来——这样的整治____，必须从源头下手。</ExampleQuestion>
-                <ExampleOptions><span>A. 扬汤止沸</span><span>B. 功亏一篑</span><span>C. 事与愿违</span><span>D. 隔靴搔痒</span></ExampleOptions>
-                <ExampleAnswer><b>答案：<span className="correct">A</span></b><br />解析：句中「<b>只查末端、不查上游</b>」「<b>罚一批又冒出来</b>」说明办法<b>只压住了表面，没有断根</b>，正是「扬汤止沸」（舀起开水再倒回去止沸）。「隔靴搔痒」侧重<b>没抓到关键、不解决问题</b>，但不含「反复发作」的循环感；「功亏一篑」指<b>差最后一步没成</b>，句中是「反复」，不是「差一步」；「事与愿违」指<b>结果与愿望相反</b>，而这里确实有效果，只是不彻底。<b>与「釜底抽薪」相对的那个词，就是「扬汤止沸」。</b></ExampleAnswer>
+                <ExampleQuestion>只查末端门店、不查上游供货，罚一批又冒一批，这样的整治只是____；要真正见效，必须____，把非法添加的原料供应链一并切断。</ExampleQuestion>
+                <ExampleOptions><span>A. 扬汤止沸　釜底抽薪</span><span>B. 隔靴搔痒　标本兼治</span><span>C. 缘木求鱼　正本清源</span><span>D. 江心补漏　迎刃而解</span></ExampleOptions>
+                <ExampleAnswer><b>答案：<span className="correct">A</span></b><br />解析：第一空「<b>罚一批又冒一批</b>」说明办法<b>只压住表面、没有断根</b> → 「<b>扬汤止沸</b>」（舀起开水再倒回去止沸，治标不治本），与第二空的「<b>釜底抽薪</b>」（抽掉锅底柴火，从根本解决）正相反对。「隔靴搔痒」侧重「没抓到关键」，但不含「反复发作」的循环感；「缘木求鱼」是<b>方向方法完全错误</b>，而末端查处并非无效；「标本兼治」要求标和本一起治，与「只是____」的转折不符；「迎刃而解」指问题顺利解决，不能接「必须」。</ExampleAnswer>
               </ExampleBody>
             </Example>
     </>

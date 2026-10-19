@@ -28,13 +28,13 @@ export default function S51(): ReactElement {
                 <div><b>泾渭分明</b>　公与私的界限必须<b>泾渭分明</b>。</div>
               </div>
             <Example>
-              <ExampleHeader>例题 · 真题改编 · 同考点仿题</ExampleHeader>
-              <ExampleBody>
-                <ExampleQuestion>在他的画里，一笔是工笔的细密，一笔是写意的奔放，两种语言却____，看不出拼接的痕迹。</ExampleQuestion>
-                <ExampleOptions><span>A. 相得益彰</span><span>B. 判若云泥</span><span>C. 天壤之别</span><span>D. 泾渭分明</span></ExampleOptions>
-                <ExampleAnswer><b>答案：<span className="correct">A</span></b><br />解析：句中「<b>两种语言却看不出拼接痕迹</b>」，说明两者<b>配合之后效果更好</b>，选「相得益彰」。「判若云泥」「天壤之别」都指<b>差别大</b>，与「融合无痕」相反；「泾渭分明」指<b>界限清楚</b>，也与「看不出痕迹」相反。<b>看到「却」这个转折，先判断是「差得远」还是「合得好」——本题是后者。</b></ExampleAnswer>
-              </ExampleBody>
-            </Example>
+                <ExampleHeader>例题 1 · 真题改编 · 同考点仿题（本组：泾渭分明 / 判若云泥 / 天壤之别）</ExampleHeader>
+                <ExampleBody>
+                  <ExampleQuestion>公与私的界限必须____：公家的钱一分不能动，自家的事一点不能沾；界限一模糊，问题就跟着来了。</ExampleQuestion>
+                  <ExampleOptions><span>A. 泾渭分明</span><span>B. 判若云泥</span><span>C. 天壤之别</span><span>D. 大相径庭</span></ExampleOptions>
+                  <ExampleAnswer><b>答案：<span className="correct">A</span></b><br />解析：空处要表达「<b>界限清楚、不混淆</b>」，选「<b>泾渭分明</b>」（泾水清、渭水浊，交汇处界线分明）。「判若云泥」「天壤之别」都只指<b>差别极大</b>，甚至含高下之分，说的不是「界限清」；「大相径庭」指彼此<b>不一致</b>，多用于说法、做法。<b>这一组最阴的坑：三个都长得像「差不多」，但只有「泾渭分明」讲的是「分得清」，另外两个讲的是「差得远」。</b></ExampleAnswer>
+                </ExampleBody>
+              </Example>
             </Block>
       
             <Block>

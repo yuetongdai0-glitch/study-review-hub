@@ -14,7 +14,7 @@ export default function S23(): ReactElement {
             </Callout>
       
             <Block>
-              <BlockTitle>本讲词群 1（共 34 词）</BlockTitle>
+              <BlockTitle>词群 1（本讲共 40 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>车载斗量</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">数量多</span></div>
               <div className="wg-d">用车装、用斗量，形容数量很多（多指具体物）</div>
@@ -47,7 +47,7 @@ export default function S23(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 2（共 34 词）</BlockTitle>
+              <BlockTitle>词群 2（本讲共 40 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>包罗万象</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">内容丰富</span></div>
               <div className="wg-d">内容丰富、应有尽有</div>
@@ -80,7 +80,7 @@ export default function S23(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 3（共 34 词）</BlockTitle>
+              <BlockTitle>词群 3（本讲共 40 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>卷帙浩繁</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">书籍多</span></div>
               <div className="wg-d">书籍篇幅繁多（卷帙＝书册）</div>
@@ -113,7 +113,7 @@ export default function S23(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 4（共 34 词）</BlockTitle>
+              <BlockTitle>词群 4（本讲共 40 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>雕梁画栋</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">装饰华美</span></div>
               <div className="wg-d">梁上雕刻、栋上彩绘，形容建筑装饰华美</div>
@@ -146,7 +146,7 @@ export default function S23(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 5（共 34 词）</BlockTitle>
+              <BlockTitle>词群 5（本讲共 40 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>殊途同归</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">结果同</span></div>
               <div className="wg-d">走不同的路到达同一目的地，指方法不同结果相同</div>
@@ -179,7 +179,7 @@ export default function S23(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 6（共 34 词）</BlockTitle>
+              <BlockTitle>词群 6（本讲共 40 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>伯仲之间</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">不相上下</span></div>
               <div className="wg-d">兄弟之间，比喻不相上下</div>
@@ -202,30 +202,42 @@ export default function S23(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>已在辨析组详解（点词跳转，不重复说）</BlockTitle>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>汗牛充栋</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b7">辨析七</a>，对照辨析表与例句，此处不再重复。</div>
+              <BlockTitle>同组易混词（这几个也在别处讲过，这里再讲一遍，就地记）</BlockTitle>
+            <div className="wg">
+              <div className="wg-h"><b>汗牛充栋</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">只指书籍</span></div>
+              <div className="wg-d">书多得牛马出汗、堆到屋顶，<b>只能形容书多</b>。</div>
+              <div className="wg-e">乾嘉学者的著述汗牛充栋，光目录就有十几卷。</div>
+              <div className="wg-cmp">同组区别：重「书多」；「浩如烟海」多指文献典籍且强调「读不完」，「琳琅满目」指商品（<a href="#b7">见辨析七</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>浩如烟海</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b7">辨析七</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>浩如烟海</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">文献典籍</span></div>
+              <div className="wg-d">像烟雾和海洋那样浩繁，多指文献、典籍、史料，<b>强调难以穷尽</b>。</div>
+              <div className="wg-e">中医古籍浩如烟海，一个人一辈子也读不完。</div>
+              <div className="wg-cmp">同组区别：重「读不完」；「汗牛充栋」只讲「搬运累」，「卷帙浩繁」指篇幅多（<a href="#b7">见辨析七</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>琳琅满目</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b7">辨析七</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>琳琅满目</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">商品展品</span></div>
+              <div className="wg-d">满眼都是美好的东西，<b>多指商品、陈列品</b>，强调多而好。</div>
+              <div className="wg-e">展柜里的文创产品琳琅满目，几乎每样都想带走。</div>
+              <div className="wg-cmp">同组区别：重「多而好」；「汗牛充栋」只能指书，「鳞次栉比」指建筑密排（<a href="#b7">见辨析七</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>大相径庭</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b3">辨析三</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>大相径庭</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">说法做法</span></div>
+              <div className="wg-d">彼此差别很大、很不一致，多指说法、做法、结果。</div>
+              <div className="wg-e">同一份材料，两位学者的解读大相径庭，一个看到衰退，一个看到转型。</div>
+              <div className="wg-cmp">同组区别：重「不一致」；「相去甚远」重「有刻度的差距」，「截然相反」重「正相反」（<a href="#b3">见辨析三</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>相去甚远</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b3">辨析三</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>相去甚远</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">数量水平</span></div>
+              <div className="wg-d">距离、差距很大，多指数量、水平、程度，可量化比较。</div>
+              <div className="wg-e">项目实际投入不到预算的三成，与最初的设想相去甚远。</div>
+              <div className="wg-cmp">同组区别：重「有刻度」；「大相径庭」重「不一致」，「天壤之别」程度更重（<a href="#b3">见辨析三</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>吉光片羽</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#s26">s26</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>吉光片羽</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">残而珍贵</span></div>
+              <div className="wg-d">神兽吉光身上的一片羽毛，比喻<b>残存的珍贵文物或零星材料</b></div>
+              <div className="wg-e">敦煌残卷虽只吉光片羽，却价值连城。</div>
+              <div className="wg-cmp">同组还有：肆无忌惮 / 肆意妄为 / 刨根问底。整组对照见 <a href="#s26">第 26 讲</a>（此处再讲一遍，省得来回翻）。</div>
             </div>
             </Block>
       
@@ -234,11 +246,11 @@ export default function S23(): ReactElement {
             </div>
       
             <Example>
-              <ExampleHeader>例题 · 真题 2021 黑龙江 第 38 题</ExampleHeader>
+              <ExampleHeader>例题 · 真题改编 · 同考点仿题（本讲词群：异曲同工 / 千篇一律）</ExampleHeader>
               <ExampleBody>
-                <ExampleQuestion>从古至今，靠苦读起家的事例____。然而，正如著名学者彼得拉克所说：「书籍使人博学多识，但也使一些食而不化之人疯疯癫癫。」历史上，由苦读而弄得「疯疯癫癫」的也____，名家笔下的范进、孔乙己，正是被「死读书」坑了一辈子的____。</ExampleQuestion>
-                <ExampleOptions><span>A. 多如牛毛　凤毛麟角　范例</span><span>B. 如数家珍　星罗棋布　代表</span><span>C. 举不胜举　不乏其人　典型</span><span>D. 汗牛充栋　不胜枚举　标杆</span></ExampleOptions>
-                <ExampleAnswer><b>答案：<span className="correct">C</span></b><br />解析：第一空形容「<b>事例</b>」多，用「举不胜举」。<b>本题最大的坑是 D 的「汗牛充栋」——它只能形容「书多」，不能形容「事例多」，这是典型对象误用。</b>「如数家珍」指<b>对熟悉的事物一一列举</b>，主语是人，B 排除。第二空要表达「这样的人也为数不少」，用「不乏其人」；「凤毛麟角」指稀少而珍贵，与「为数不少」相反，A 排除。第三空「典型」指有代表性的人物，与「范进、孔乙己」吻合；「标杆」是褒义的学习榜样，与「被坑了一辈子」矛盾。</ExampleAnswer>
+                <ExampleQuestion>两地的非遗工坊，一个走「师傅带徒」，一个走「学校开课」，路径完全不同，却____，都保住了核心工序；反倒是那些照着模板复制的「非遗小镇」，看着热闹，实则____，游客去一次就不再来。</ExampleQuestion>
+                <ExampleOptions><span>A. 异曲同工　千篇一律</span><span>B. 殊途同归　如出一辙</span><span>C. 不谋而合　大同小异</span><span>D. 如出一辙　千篇一律</span></ExampleOptions>
+                <ExampleAnswer><b>答案：<span className="correct">A</span></b><br />解析：第一空「<b>路径完全不同，却都保住了核心工序</b>」——做法不同、<b>效果同样好</b> → 「<b>异曲同工</b>」；「殊途同归」只说「结果相同」，不含「效果好」；「不谋而合」指没商量却想法一致，主语应是人或主张，不能是「两地工坊的做法」。第二空「<b>照着模板复制</b>」「去一次不再来」是明显的贬义 → 「<b>千篇一律</b>」（公式化、没变化）；「大同小异」只讲差别小，不含贬义；「如出一辙」指几乎一样，多用于言论、做法，不修饰「小镇」。</ExampleAnswer>
               </ExampleBody>
             </Example>
     </>

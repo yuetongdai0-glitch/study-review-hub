@@ -14,7 +14,7 @@ export default function S9(): ReactElement {
             </Callout>
       
             <Block>
-              <BlockTitle>本讲词群 1（共 28 词）</BlockTitle>
+              <BlockTitle>词群 1（本讲共 40 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>因小失大</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">得失</span></div>
               <div className="wg-d">为了小利益造成大损失</div>
@@ -47,7 +47,7 @@ export default function S9(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 2（共 28 词）</BlockTitle>
+              <BlockTitle>词群 2（本讲共 40 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>越俎代庖</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">职权</span></div>
               <div className="wg-d">越过自己的职权范围去处理别人的事</div>
@@ -80,7 +80,7 @@ export default function S9(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 3（共 28 词）</BlockTitle>
+              <BlockTitle>词群 3（本讲共 40 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>邯郸学步</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">模仿</span></div>
               <div className="wg-d">到邯郸学走路，结果连原来的走法也忘了</div>
@@ -113,7 +113,7 @@ export default function S9(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 4（共 28 词）</BlockTitle>
+              <BlockTitle>词群 4（本讲共 40 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>临渊羡鱼</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">只想不做</span></div>
               <div className="wg-d">站在水边想得到鱼，比喻只有愿望没有行动</div>
@@ -151,7 +151,7 @@ export default function S9(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 5（共 28 词）</BlockTitle>
+              <BlockTitle>词群 5（本讲共 40 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>生搬硬套</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">照搬</span></div>
               <div className="wg-d">不顾实际机械地照搬别人的经验、办法</div>
@@ -174,50 +174,72 @@ export default function S9(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>已在辨析组详解（点词跳转，不重复说）</BlockTitle>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>缘木求鱼</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b6">辨析六</a>，对照辨析表与例句，此处不再重复。</div>
+              <BlockTitle>同组易混词（这几个也在别处讲过，这里再讲一遍，就地记）</BlockTitle>
+            <div className="wg">
+              <div className="wg-h"><b>缘木求鱼</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">方向方法</span></div>
+              <div className="wg-d">爬到树上去找鱼，比喻<b>方向、方法错误，必然徒劳</b>。</div>
+              <div className="wg-e">想靠加印钞票解决结构性问题，无异于缘木求鱼。</div>
+              <div className="wg-cmp">同组区别：重「方向错」；「竭泽而渔」重「耗尽资源」，「杀鸡取卵」重「毁掉根本」（<a href="#b6">见辨析六</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>竭泽而渔</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b6">辨析六</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>竭泽而渔</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">资源开发</span></div>
+              <div className="wg-d">放干池水捉鱼，比喻<b>耗尽资源换取眼前利益</b>。</div>
+              <div className="wg-e">为了短期税收放干湖水搞养殖，是竭泽而渔。</div>
+              <div className="wg-cmp">同组区别：重「把资源用光」；「寅吃卯粮」重「透支未来」，「杀鸡取卵」重「毁根基」（<a href="#b6">见辨析六</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>寅吃卯粮</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b6">辨析六</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>寅吃卯粮</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">财务透支</span></div>
+              <div className="wg-d">寅年吃了卯年的粮，比喻<b>提前支用未来的钱粮</b>。</div>
+              <div className="wg-e">靠借新债还旧息，本质是寅吃卯粮。</div>
+              <div className="wg-cmp">同组区别：重「透支」；「竭泽而渔」重「耗资源」，「杀鸡取卵」重「毁根本」（<a href="#b6">见辨析六</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>杀鸡取卵</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b6">辨析六</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>杀鸡取卵</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">贪小失大</span></div>
+              <div className="wg-d">为了取蛋把鸡杀了，比喻<b>贪图眼前小利而毁掉根本</b>。</div>
+              <div className="wg-e">为省成本砍掉研发，等于杀鸡取卵。</div>
+              <div className="wg-cmp">同组区别：重「毁掉生蛋的鸡」；「寅吃卯粮」只是「预支」，未必毁根（<a href="#b6">见辨析六</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>一蹴而就</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b2">辨析二</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>一蹴而就</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">快速成功</span></div>
+              <div className="wg-d">踏一步就成功，比喻<b>一下子就能完成</b>，多用于否定。</div>
+              <div className="wg-e">能力建设不可能一蹴而就，得靠一次次实战磨出来。</div>
+              <div className="wg-cmp">同组区别：重「一步就成」；「一劳永逸」重「干一次永久省事」，「立竿见影」重「立刻见效」（<a href="#b2">见辨析二</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>一劳永逸</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b2">辨析二</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>一劳永逸</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">永久省事</span></div>
+              <div className="wg-d">一次付出、永久省事，多用于否定，<b>强调「不再反复」</b>。</div>
+              <div className="wg-e">世上没有一劳永逸的改革，问题总会以新形态出现。</div>
+              <div className="wg-cmp">同组区别：重「永久」；「一蹴而就」重「快」，「立竿见影」重「效果快」（<a href="#b2">见辨析二</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>轻而易举</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b2">辨析二</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>轻而易举</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">毫不费力</span></div>
+              <div className="wg-d">做起来毫不费力，<b>强调「容易」</b>。</div>
+              <div className="wg-e">把实验室成果变成量产产品，绝非轻而易举。</div>
+              <div className="wg-cmp">同组区别：重「容易」；「一蹴而就」重「一次成」，「唾手可得」重「易到手」（<a href="#b2">见辨析二</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>好高骛远</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b4">辨析四</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>好高骛远</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">个人目标</span></div>
+              <div className="wg-d">目标定得过高、不切实际，多指个人志向。</div>
+              <div className="wg-e">刚入行就想做总导演，未免好高骛远。</div>
+              <div className="wg-cmp">同组区别：重「目标高」；「好大喜功」重「爱立大功」，「贪大求全」重「大而全」（<a href="#b4">见辨析四</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>好大喜功</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b4">辨析四</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>好大喜功</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">政绩工程</span></div>
+              <div className="wg-d">喜欢做大事、立大功，多指当政者追求显性政绩。</div>
+              <div className="wg-e">有的地方热衷上大项目、铺大摊子，好大喜功的心态一目了然。</div>
+              <div className="wg-cmp">同组区别：重「爱立功」；「急功近利」重「图眼前」，「贪大求全」重「贪规模」（<a href="#b4">见辨析四</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>贪大求全</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b4">辨析四</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>贪大求全</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">项目规划</span></div>
+              <div className="wg-d">贪图规模大、门类全，多指项目、规划。</div>
+              <div className="wg-e">县城也规划千亿级产业园，这种贪大求全的毛病该改改了。</div>
+              <div className="wg-cmp">同组区别：重「大而全」；「好大喜功」重「爱立功」，「好高骛远」重「目标过高」（<a href="#b4">见辨析四</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>急功近利</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b4">辨析四</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>急功近利</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">做法心态</span></div>
+              <div className="wg-d">急于求得眼前的成效和利益，重「快」。</div>
+              <div className="wg-e">基础研究最忌急功近利，出成果往往要十年。</div>
+              <div className="wg-cmp">同组区别：重「图眼前」；「好高骛远」重「目标高」，二者常同题作干扰（<a href="#b4">见辨析四</a>）</div>
             </div>
             </Block>
       

@@ -14,7 +14,7 @@ export default function S18(): ReactElement {
             </Callout>
       
             <Block>
-              <BlockTitle>本讲词群 1（共 23 词）</BlockTitle>
+              <BlockTitle>词群 1（本讲共 25 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>蔚然成风</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">良好风气</span></div>
               <div className="wg-d">某事物逐渐发展、盛行，形成良好风气（褒）</div>
@@ -47,7 +47,7 @@ export default function S18(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 2（共 23 词）</BlockTitle>
+              <BlockTitle>词群 2（本讲共 25 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>大行其道</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">盛行</span></div>
               <div className="wg-d">某种观点、风气广泛流行（多含贬义）</div>
@@ -80,7 +80,7 @@ export default function S18(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 3（共 23 词）</BlockTitle>
+              <BlockTitle>词群 3（本讲共 25 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>以讹传讹</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">传错</span></div>
               <div className="wg-d">把本来就不正确的话又错误地传出去，越传越错</div>
@@ -113,7 +113,7 @@ export default function S18(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 4（共 23 词）</BlockTitle>
+              <BlockTitle>词群 4（本讲共 25 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>逸闻轶事</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">轶事</span></div>
               <div className="wg-d">散失流传、不见于正式记载的事迹</div>
@@ -141,14 +141,18 @@ export default function S18(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>已在辨析组详解（点词跳转，不重复说）</BlockTitle>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>家喻户晓</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#s20">s20</a>，对照辨析表与例句，此处不再重复。</div>
+              <BlockTitle>同组易混词（这几个也在别处讲过，这里再讲一遍，就地记）</BlockTitle>
+            <div className="wg">
+              <div className="wg-h"><b>家喻户晓</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">广为人知</span></div>
+              <div className="wg-d">家家户户都知道，指<b>名声、事迹广为人知</b></div>
+              <div className="wg-e">这位劳模的事迹家喻户晓。</div>
+              <div className="wg-cmp">同组还有：举足轻重 / 无足轻重 / 细枝末节。整组对照见 <a href="#s20">第 20 讲</a>（此处再讲一遍，省得来回翻）。</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>妇孺皆知</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#s20">s20</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>妇孺皆知</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">流传广</span></div>
+              <div className="wg-d">妇女小孩都知道，形容<b>流传极广</b></div>
+              <div className="wg-e">「粒粒皆辛苦」妇孺皆知。</div>
+              <div className="wg-cmp">同组还有：举足轻重 / 无足轻重 / 细枝末节。整组对照见 <a href="#s20">第 20 讲</a>（此处再讲一遍，省得来回翻）。</div>
             </div>
             </Block>
       

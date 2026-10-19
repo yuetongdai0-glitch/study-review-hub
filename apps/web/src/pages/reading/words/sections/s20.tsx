@@ -14,7 +14,7 @@ export default function S21(): ReactElement {
             </Callout>
       
             <Block>
-              <BlockTitle>本讲词群 1（共 25 词）</BlockTitle>
+              <BlockTitle>词群 1（本讲共 25 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>举足轻重</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">地位重要</span></div>
               <div className="wg-d">所处地位重要，一举一动都影响全局</div>
@@ -47,7 +47,7 @@ export default function S21(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 2（共 25 词）</BlockTitle>
+              <BlockTitle>词群 2（本讲共 25 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>耳熟能详</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">听得多</span></div>
               <div className="wg-d">听得多了，能详尽地说出来</div>
@@ -80,7 +80,7 @@ export default function S21(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 3（共 25 词）</BlockTitle>
+              <BlockTitle>词群 3（本讲共 25 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>一无所知</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">完全不知</span></div>
               <div className="wg-d">什么都不知道</div>
@@ -113,7 +113,7 @@ export default function S21(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 4（共 25 词）</BlockTitle>
+              <BlockTitle>词群 4（本讲共 25 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>司空见惯</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">见惯</span></div>
               <div className="wg-d">看惯了就不觉得奇怪，<b>强调「见得多」</b></div>
@@ -146,7 +146,7 @@ export default function S21(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 5（共 25 词）</BlockTitle>
+              <BlockTitle>词群 5（本讲共 25 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>习焉不察</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">习惯不觉</span></div>
               <div className="wg-d">习惯了就察觉不到问题（焉＝于此）</div>

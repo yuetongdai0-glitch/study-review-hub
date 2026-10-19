@@ -53,11 +53,11 @@ export default function S43(): ReactElement {
                 <div><b>浩如烟海</b>　中医古籍<em>浩如烟海</em>，一个人一辈子也读不完。</div>
               </div>
               <Example>
-                <ExampleHeader>例题 2 · 真题 2021 黑龙江 第 38 题</ExampleHeader>
+                <ExampleHeader>例题 2 · 真题改编 · 同考点仿题（本组：汗牛充栋 只指书）</ExampleHeader>
                 <ExampleBody>
-                  <ExampleQuestion>从古至今，靠苦读起家的事例____。然而，正如著名学者彼得拉克所说：「书籍使人博学多识，但也使一些食而不化之人疯疯癫癫。」历史上，由苦读而弄得「疯疯癫癫」的也____，名家笔下的范进、孔乙己，正是被「死读书」坑了一辈子的____。</ExampleQuestion>
-                  <ExampleOptions><span>A. 汗牛充栋　不胜枚举　标杆</span><span>B. 多如牛毛　凤毛麟角　范例</span><span>C. 如数家珍　星罗棋布　代表</span><span>D. 举不胜举　不乏其人　典型</span></ExampleOptions>
-                  <ExampleAnswer><b>答案：<span className="correct">D</span></b><br />解析：第一空形容「事例」多，用「举不胜举」（举不完，形容很多）或「多如牛毛」。<br /><b>本题最大的坑是 A 的「汗牛充栋」——它只能形容「书多」，不能形容「事例多」，这是典型的对象误用。</b>「如数家珍」指<b>对熟悉的事物一一列举</b>，主语是人，C 排除。<br />第二空要表达「这样的人也为数不少」，用「不乏其人」（不缺少那样的人）；「凤毛麟角」指稀少而珍贵，与「为数不少」相反，B 排除。<br />第三空「典型」指有代表性的人物，与「范进、孔乙己」的例子性质吻合；「标杆」是褒义的学习榜样，与「被坑了一辈子」矛盾。</ExampleAnswer>
+                  <ExampleQuestion>关于这座城的文献，正史之外还有大量方志、族谱、碑刻与契约文书，仅目录就有七十余卷，真可谓____；若论「一个人一辈子也读不完」，则又当得起「浩如烟海」四个字。</ExampleQuestion>
+                  <ExampleOptions><span>A. 汗牛充栋</span><span>B. 琳琅满目</span><span>C. 鳞次栉比</span><span>D. 美轮美奂</span></ExampleOptions>
+                  <ExampleAnswer><b>答案：<span className="correct">A</span></b><br />解析：空处对象是「<b>文献、目录</b>」，是<b>书册</b>，只能选「<b>汗牛充栋</b>」——它只形容书多，连商品、文章数量都不能用。「琳琅满目」多指商品、陈列品多而好看；「鳞次栉比」形容房屋、船只密集整齐地排列；「美轮美奂」只能形容建筑高大华美。<b>对象一错，句子必错——这一组的分全部落在「能不能这么用」上。</b>（原真题 2021 黑龙江 38 中的干扰项正是「汗牛充栋」，用来形容「事例多」，属典型对象误用。）</ExampleAnswer>
                 </ExampleBody>
               </Example>
             </Block>

@@ -14,7 +14,7 @@ export default function S26(): ReactElement {
             </Callout>
       
             <Block>
-              <BlockTitle>本讲词群 1（共 25 词）</BlockTitle>
+              <BlockTitle>词群 1（本讲共 28 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>身无长物</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">清贫</span></div>
               <div className="wg-d">身上没有多余的东西，形容<b>贫穷或清廉</b>（长物＝多余之物）</div>
@@ -47,7 +47,7 @@ export default function S26(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 2（共 25 词）</BlockTitle>
+              <BlockTitle>词群 2（本讲共 28 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>肥马轻裘</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">豪华</span></div>
               <div className="wg-d">驾肥马、穿轻暖皮衣，形容<b>生活豪华</b></div>
@@ -80,7 +80,7 @@ export default function S26(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 3（共 25 词）</BlockTitle>
+              <BlockTitle>词群 3（本讲共 28 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>神色自若</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">镇定</span></div>
               <div className="wg-d">神情自然、不变常态</div>
@@ -113,7 +113,7 @@ export default function S26(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 4（共 25 词）</BlockTitle>
+              <BlockTitle>词群 4（本讲共 28 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>如芒在背</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">极不安</span></div>
               <div className="wg-d">像有芒刺扎在背上，形容<b>极度不安</b></div>
@@ -146,7 +146,7 @@ export default function S26(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 5（共 25 词）</BlockTitle>
+              <BlockTitle>词群 5（本讲共 28 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>诚惶诚恐</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">惶恐</span></div>
               <div className="wg-d">非常小心谨慎以至于惶恐不安（原为臣下对君上的敬语）</div>
@@ -154,18 +154,24 @@ export default function S26(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>已在辨析组详解（点词跳转，不重复说）</BlockTitle>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>随遇而安</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b7">辨析七</a>，对照辨析表与例句，此处不再重复。</div>
+              <BlockTitle>同组易混词（这几个也在别处讲过，这里再讲一遍，就地记）</BlockTitle>
+            <div className="wg">
+              <div className="wg-h"><b>随遇而安</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">适应环境</span></div>
+              <div className="wg-d">到哪都能适应，<b>重在「随」</b>。</div>
+              <div className="wg-e">他性子淡，调到哪个岗位都随遇而安。</div>
+              <div className="wg-cmp">同组区别：重「适应」；「泰然自若」重「临事不乱」，「安之若素」重「不以为意」（<a href="#b7">见辨析七</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>安之若素</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b7">辨析七</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>安之若素</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">反常处境</span></div>
+              <div className="wg-d">遇到反常或不利的情况，像平常一样对待，<b>重在「不以为意」</b>。</div>
+              <div className="wg-e">住在漏雨的宿舍里，他一住三年，安之若素。</div>
+              <div className="wg-cmp">同组区别：重「不当回事」；「随遇而安」重「随环境」，「泰然自若」重「神色不变」（<a href="#b7">见辨析七</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>泰然自若</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b7">辨析七</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>泰然自若</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">临事镇定</span></div>
+              <div className="wg-d">遇到紧急情况仍镇定如常，<b>重在「临事不乱」</b>。</div>
+              <div className="wg-e">检查组的车刚进院，他仍在会客室里泰然自若地泡茶。</div>
+              <div className="wg-cmp">同组区别：重「当下镇定」；「安之若素」重「长期不以为意」，「从容不迫」只讲「不慌」（<a href="#b7">见辨析七</a>）</div>
             </div>
             </Block>
       

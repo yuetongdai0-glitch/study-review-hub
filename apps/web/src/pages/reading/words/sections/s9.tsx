@@ -14,7 +14,7 @@ export default function S10(): ReactElement {
             </Callout>
       
             <Block>
-              <BlockTitle>本讲词群 1（共 32 词）</BlockTitle>
+              <BlockTitle>词群 1（本讲共 40 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>如沐春风</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">感受教益</span></div>
               <div className="wg-d">像沐浴在和暖的春风里，比喻受到良好教益或亲切对待</div>
@@ -47,7 +47,7 @@ export default function S10(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 2（共 32 词）</BlockTitle>
+              <BlockTitle>词群 2（本讲共 40 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>和风细雨</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">方式</span></div>
               <div className="wg-d">微风细雨，比喻方式和缓、不粗暴</div>
@@ -80,7 +80,7 @@ export default function S10(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 3（共 32 词）</BlockTitle>
+              <BlockTitle>词群 3（本讲共 40 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>侃侃而谈</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">从容说话</span></div>
               <div className="wg-d">理直气壮、从容不迫地说话（褒）</div>
@@ -113,7 +113,7 @@ export default function S10(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 4（共 32 词）</BlockTitle>
+              <BlockTitle>词群 4（本讲共 40 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>娓娓道来</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">讲述</span></div>
               <div className="wg-d">连续不倦地、从容地讲述，听着舒服</div>
@@ -146,7 +146,7 @@ export default function S10(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 5（共 32 词）</BlockTitle>
+              <BlockTitle>词群 5（本讲共 40 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>陈词滥调</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">言论</span></div>
               <div className="wg-d">陈旧空泛的言词（滥＝空泛）</div>
@@ -179,7 +179,7 @@ export default function S10(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 6（共 32 词）</BlockTitle>
+              <BlockTitle>词群 6（本讲共 40 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>有声有色</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">叙述表演</span></div>
               <div className="wg-d">既好听又好看，形容叙述、表演生动精彩</div>
@@ -192,38 +192,54 @@ export default function S10(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>已在辨析组详解（点词跳转，不重复说）</BlockTitle>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>潜移默化</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b1">辨析一</a>，对照辨析表与例句，此处不再重复。</div>
+              <BlockTitle>同组易混词（这几个也在别处讲过，这里再讲一遍，就地记）</BlockTitle>
+            <div className="wg">
+              <div className="wg-h"><b>潜移默化</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">思想性格</span></div>
+              <div className="wg-d">人的思想、性格在不知不觉中受到感染而<b>发生变化</b>，重结果，主体可为事或物。</div>
+              <div className="wg-e">家风不是写在纸上的规矩，而是在一日三餐里潜移默化地塑造着孩子。</div>
+              <div className="wg-cmp">同组区别：重「变了」；「耳濡目染」重「染上了」且主体须是人，「耳闻目睹」只讲「知道」（<a href="#b1">见辨析一</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>耳濡目染</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b1">辨析一</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>耳濡目染</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">技能风气</span></div>
+              <div className="wg-d">耳朵经常听到、眼睛经常看到，不知不觉受到影响，<b>主体必须是人</b>。</div>
+              <div className="wg-e">他从小在剧场后台长大，耳濡目染，十岁便能登台。</div>
+              <div className="wg-cmp">同组区别：重「染上了」；「潜移默化」主体可为事物，「耳闻目睹」不含「受影响」（<a href="#b1">见辨析一</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>耳提面命</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b8">辨析八</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>耳提面命</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">长辈教导</span></div>
+              <div className="wg-d">提着耳朵、当面教导，形容<b>恳切地教导</b>，<b>只能用于上对下</b>。</div>
+              <div className="wg-e">临行前父亲耳提面命，叮嘱再三。</div>
+              <div className="wg-cmp">同组区别：重「当面叮嘱」；「言传身教」重「说做一致」，「春风化雨」重「润物无声」（<a href="#b8">见辨析八</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>言传身教</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b8">辨析八</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>言传身教</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">师长示范</span></div>
+              <div className="wg-d">既用言语教导，又以行动示范，<b>强调「说做一致」</b>。</div>
+              <div className="wg-e">他从不讲大道理，只是每天最早到实验室、最晚离开，这种言传身教，学生都看在眼里。</div>
+              <div className="wg-cmp">同组区别：重「说做一致」；「耳提面命」只有「说」，「身体力行」只讲「自己做」（<a href="#b8">见辨析八</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>人云亦云</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b1">辨析一</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>人云亦云</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">意见态度</span></div>
+              <div className="wg-d">别人怎么说就跟着怎么说，<b>没有主见</b>，对象是「话」。</div>
+              <div className="wg-e">会上没人提反对意见，大多是怕出错而人云亦云。</div>
+              <div className="wg-cmp">同组区别：重「跟着说」；「随波逐流」重「跟着走」，「拾人牙慧」重「抄人话当自己的」（<a href="#b1">见辨析一</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>拾人牙慧</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b1">辨析一</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>拾人牙慧</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">言论文字</span></div>
+              <div className="wg-d">拾取别人现成的言论当作自己的话，<b>含抄袭意味</b>。</div>
+              <div className="wg-e">这篇文章并无新见，多是拾人牙慧。</div>
+              <div className="wg-cmp">同组区别：重「把别人的话当自己的」；「人云亦云」只是附和，不涉及据为己有（<a href="#b1">见辨析一</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>含糊其辞</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b8">辨析八</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>含糊其辞</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">回答表态</span></div>
+              <div className="wg-d">话说得<b>内容不明确</b>，有意回避，重在「内容不清」。</div>
+              <div className="wg-e">报告里对这一笔支出含糊其辞，只写「其他费用」四个字。</div>
+              <div className="wg-cmp">同组区别：重「说不清」；「闪烁其词」重「不敢说」，「语焉不详」重「说得不细」（<a href="#b8">见辨析八</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>闪烁其词</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b8">辨析八</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>闪烁其词</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">追问回避</span></div>
+              <div className="wg-d">说话吞吞吐吐、躲躲闪闪，<b>重在「不敢明说」</b>。</div>
+              <div className="wg-e">面对追问，他闪烁其词，眼神一直往门口飘。</div>
+              <div className="wg-cmp">同组区别：重「躲闪」；「含糊其辞」是「说得模糊」，不强调「躲」（<a href="#b8">见辨析八</a>）</div>
             </div>
             </Block>
       

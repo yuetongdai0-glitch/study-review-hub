@@ -14,7 +14,7 @@ export default function S24(): ReactElement {
             </Callout>
       
             <Block>
-              <BlockTitle>本讲词群 1（共 22 词）</BlockTitle>
+              <BlockTitle>词群 1（本讲共 25 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>巧夺天工</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">人工精巧</span></div>
               <div className="wg-d">人工的精巧胜过天然，<b>只能形容人工制品</b></div>
@@ -47,7 +47,7 @@ export default function S24(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 2（共 22 词）</BlockTitle>
+              <BlockTitle>词群 2（本讲共 25 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>登峰造极</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">到极点</span></div>
               <div className="wg-d">登上顶峰、到达极点，<b>可褒可贬</b>（贬指坏到极点）</div>
@@ -80,7 +80,7 @@ export default function S24(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 3（共 22 词）</BlockTitle>
+              <BlockTitle>词群 3（本讲共 25 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>引人入胜</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">吸引人</span></div>
               <div className="wg-d">引人进入美妙的境地，形容<b>内容、风景特别吸引人</b></div>
@@ -113,7 +113,7 @@ export default function S24(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 4（共 22 词）</BlockTitle>
+              <BlockTitle>词群 4（本讲共 25 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>脍炙人口</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">人人称道</span></div>
               <div className="wg-d">人人爱吃，比喻作品人人称道传诵</div>
@@ -136,18 +136,24 @@ export default function S24(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>已在辨析组详解（点词跳转，不重复说）</BlockTitle>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>琳琅满目</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b7">辨析七</a>，对照辨析表与例句，此处不再重复。</div>
+              <BlockTitle>同组易混词（这几个也在别处讲过，这里再讲一遍，就地记）</BlockTitle>
+            <div className="wg">
+              <div className="wg-h"><b>琳琅满目</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">商品展品</span></div>
+              <div className="wg-d">满眼都是美好的东西，<b>多指商品、陈列品</b>，强调多而好。</div>
+              <div className="wg-e">展柜里的文创产品琳琅满目，几乎每样都想带走。</div>
+              <div className="wg-cmp">同组区别：重「多而好」；「汗牛充栋」只能指书，「鳞次栉比」指建筑密排（<a href="#b7">见辨析七</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>目不暇接</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b1">辨析一</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>目不暇接</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">景物众多</span></div>
+              <div className="wg-d">东西太多太快，来不及看，含赞叹，对象是美好事物。</div>
+              <div className="wg-e">车过峡谷，两侧奇峰一个接一个，令人目不暇接。</div>
+              <div className="wg-cmp">同组区别：重「来不及看」；「眼花缭乱」重「看乱了」，「扑朔迷离」重「真相难明」（<a href="#b1">见辨析一</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>眼花缭乱</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b1">辨析一</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>眼花缭乱</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">纷杂迷乱</span></div>
+              <div className="wg-d">看着迷乱、分不清，是主观感受，对象多而杂。</div>
+              <div className="wg-e">直播间里灯光闪烁、话术翻飞，看得人眼花缭乱。</div>
+              <div className="wg-cmp">同组区别：重「分不清」；「目不暇接」重「来不及」，不含「迷乱」（<a href="#b1">见辨析一</a>）</div>
             </div>
             </Block>
       

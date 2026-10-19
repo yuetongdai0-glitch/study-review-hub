@@ -14,7 +14,7 @@ export default function S5(): ReactElement {
             </Callout>
       
             <Block>
-              <BlockTitle>本讲词群 1（共 19 词）</BlockTitle>
+              <BlockTitle>词群 1（本讲共 19 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>岌岌可危</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">地位政权</span></div>
               <div className="wg-d">十分危险、快要倾覆，多指地位、政权、建筑</div>
@@ -47,7 +47,7 @@ export default function S5(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 2（共 19 词）</BlockTitle>
+              <BlockTitle>词群 2（本讲共 19 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>危若朝露</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">繁荣局面</span></div>
               <div className="wg-d">危险得像早晨的露水，太阳一晒就消失</div>
@@ -80,7 +80,7 @@ export default function S5(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 3（共 19 词）</BlockTitle>
+              <BlockTitle>词群 3（本讲共 19 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>独木难支</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">力量</span></div>
               <div className="wg-d">一根木头支不住大厦，比喻一个人的力量撑不起全局</div>
@@ -113,7 +113,7 @@ export default function S5(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 4（共 19 词）</BlockTitle>
+              <BlockTitle>词群 4（本讲共 19 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>望洋兴叹</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">面对宏大</span></div>
               <div className="wg-d">面对宏大的事物感叹自己渺小，重在「感叹」</div>

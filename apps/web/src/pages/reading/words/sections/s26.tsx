@@ -14,7 +14,7 @@ export default function S27(): ReactElement {
             </Callout>
       
             <Block>
-              <BlockTitle>本讲词群 1（共 39 词）</BlockTitle>
+              <BlockTitle>词群 1（本讲共 45 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>肆无忌惮</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">妄为</span></div>
               <div className="wg-d">毫无顾忌、任意妄为（惮＝怕）</div>
@@ -47,7 +47,7 @@ export default function S27(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 2（共 39 词）</BlockTitle>
+              <BlockTitle>词群 2（本讲共 45 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>妄自菲薄</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">看轻自己</span></div>
               <div className="wg-d">过分看轻自己（菲薄＝轻视）</div>
@@ -80,7 +80,7 @@ export default function S27(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 3（共 39 词）</BlockTitle>
+              <BlockTitle>词群 3（本讲共 45 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>盛气凌人</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">骄横</span></div>
               <div className="wg-d">以骄横的气势压人</div>
@@ -113,7 +113,7 @@ export default function S27(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 4（共 39 词）</BlockTitle>
+              <BlockTitle>词群 4（本讲共 45 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>百花齐放</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">文艺繁荣</span></div>
               <div className="wg-d">各种花同时开放，比喻<b>不同风格、形式自由发展</b></div>
@@ -146,7 +146,7 @@ export default function S27(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 5（共 39 词）</BlockTitle>
+              <BlockTitle>词群 5（本讲共 45 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>夕惕若厉</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">戒惧</span></div>
               <div className="wg-d">到了晚上仍警惕戒惧，像有危险一样</div>
@@ -179,7 +179,7 @@ export default function S27(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 6（共 39 词）</BlockTitle>
+              <BlockTitle>词群 6（本讲共 45 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>张冠李戴</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">弄错对象</span></div>
               <div className="wg-d">把张家的帽子戴到李家头上，比喻<b>弄错了对象或事实</b></div>
@@ -212,7 +212,7 @@ export default function S27(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 7（共 39 词）</BlockTitle>
+              <BlockTitle>词群 7（本讲共 45 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>瑕瑜互见</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">优劣并存</span></div>
               <div className="wg-d">优点和缺点同时存在（瑕＝玉上斑点，瑜＝美玉）</div>
@@ -230,30 +230,41 @@ export default function S27(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>已在辨析组详解（点词跳转，不重复说）</BlockTitle>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>粉墨登场</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b2">辨析二</a>，对照辨析表与例句，此处不再重复。</div>
+              <BlockTitle>同组易混词（这几个也在别处讲过，这里再讲一遍，就地记）</BlockTitle>
+            <div className="wg">
+              <div className="wg-h"><b>粉墨登场</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">坏人上台</span></div>
+              <div className="wg-d">化好妆上台演戏，比喻<b>坏人登上政治舞台</b>，或含讥讽。</div>
+              <div className="wg-e">每逢选举，各种投机政客便粉墨登场。</div>
+              <div className="wg-cmp">同组区别：重「乔装上台」（贬）；「横空出世」是褒义，「应运而生」是顺应需要（<a href="#b2">见辨析二</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>曲高和寡</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#s5">s5</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>曲高和寡</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">艺术作品</span></div>
+              <div className="wg-d">曲调越高深，能跟着唱的人越少，比喻作品高深、懂的人少</div>
+              <div className="wg-e">这档人文节目曲高和寡，收视不高但口碑极佳。</div>
+              <div className="wg-cmp">同组还有：层出不穷 / 风起云涌 / 雨后春笋。整组对照见 <a href="#s5">第 5 讲</a>（此处再讲一遍，省得来回翻）。</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>阳春白雪</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#s5">s5</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>阳春白雪</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">文艺作品</span></div>
+              <div className="wg-d">古代楚国的高雅乐曲，比喻高深的文艺作品（与「下里巴人」相对）</div>
+              <div className="wg-e">这些诗作属阳春白雪，普通读者读来吃力。</div>
+              <div className="wg-cmp">同组还有：层出不穷 / 风起云涌 / 雨后春笋。整组对照见 <a href="#s5">第 5 讲</a>（此处再讲一遍，省得来回翻）。</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>移花接木</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b3">辨析三</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>移花接木</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">见辨析</span></div>
+              <div className="wg-d">暗中调换对象</div>
+              <div className="wg-e">他把别人的实验数据移花接木到自己论文里，很快被查了出来。</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>偷梁换柱</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b3">辨析三</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>偷梁换柱</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">合同方案</span></div>
+              <div className="wg-d">暗中改变事物的内容、性质，比「移花接木」更重，含欺骗。</div>
+              <div className="wg-e">合同里偷梁换柱，把「保修三年」改成了「保修三个月」。</div>
+              <div className="wg-cmp">同组区别：重「改内容性质」；「移花接木」重「换对象」，「改头换面」只换外表（<a href="#b3">见辨析三</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>咎由自取</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#s12">s12</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>咎由自取</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">自招</span></div>
+              <div className="wg-d">罪过、灾祸是自己招来的</div>
+              <div className="wg-e">被骗的钱追不回来，也算咎由自取。</div>
+              <div className="wg-cmp">同组还有：沽名钓誉 / 附庸风雅 / 独善其身。整组对照见 <a href="#s12">第 12 讲</a>（此处再讲一遍，省得来回翻）。</div>
             </div>
             </Block>
       

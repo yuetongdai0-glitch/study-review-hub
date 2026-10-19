@@ -14,7 +14,7 @@ export default function S30(): ReactElement {
             </Callout>
       
             <Block>
-              <BlockTitle>本讲词群 1（共 14 词）</BlockTitle>
+              <BlockTitle>词群 1（本讲共 18 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>高屋建瓴</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">居高临下</span></div>
               <div className="wg-d">在屋顶上倒瓶子里的水，形容<b>居高临下、势不可挡</b>，也指把握全局</div>
@@ -47,7 +47,7 @@ export default function S30(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 2（共 14 词）</BlockTitle>
+              <BlockTitle>词群 2（本讲共 18 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>有恃无恐</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">有靠山</span></div>
               <div className="wg-d">因为有所依仗而毫不害怕（恃＝依仗）</div>
@@ -80,7 +80,7 @@ export default function S30(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 3（共 14 词）</BlockTitle>
+              <BlockTitle>词群 3（本讲共 18 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>瞻前顾后</b><span className="wg-t t-bian">中偏贬</span><span className="wg-t t-obj">犹豫</span></div>
               <div className="wg-d">① 顾虑太多、犹豫不决 ② 考虑周密</div>
@@ -93,22 +93,30 @@ export default function S30(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>已在辨析组详解（点词跳转，不重复说）</BlockTitle>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>未雨绸缪</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#s14">s14</a>，对照辨析表与例句，此处不再重复。</div>
+              <BlockTitle>同组易混词（这几个也在别处讲过，这里再讲一遍，就地记）</BlockTitle>
+            <div className="wg">
+              <div className="wg-h"><b>未雨绸缪</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">事先准备</span></div>
+              <div className="wg-d">还没下雨就先修缮门窗，比喻事先做好准备</div>
+              <div className="wg-e">汛期前就加固堤防，是未雨绸缪。</div>
+              <div className="wg-cmp">同组还有：顺势而为 / 大势所趋 / 势在必行。整组对照见 <a href="#s14">第 14 讲</a>（此处再讲一遍，省得来回翻）。</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>深谋远虑</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#s29">s29</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>深谋远虑</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">想得远</span></div>
+              <div className="wg-d">计划周密、考虑长远</div>
+              <div className="wg-e">这项决策深谋远虑，避开了后来的坑。</div>
+              <div className="wg-cmp">同组还有：高屋建瓴 / 高瞻远瞩 / 审时度势。整组对照见 <a href="#s29">第 29 讲</a>（此处再讲一遍，省得来回翻）。</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>顺势而为</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#s14">s14</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>顺势而为</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">策略</span></div>
+              <div className="wg-d">顺着形势的发展去做</div>
+              <div className="wg-e">产业转移是大势，地方要顺势而为。</div>
+              <div className="wg-cmp">同组还有：大势所趋 / 势在必行 / 因陋就简。整组对照见 <a href="#s14">第 14 讲</a>（此处再讲一遍，省得来回翻）。</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>大势所趋</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#s14">s14</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>大势所趋</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">趋势</span></div>
+              <div className="wg-d">整个局势发展的趋向，不可逆转</div>
+              <div className="wg-e">绿色低碳是大势所趋。</div>
+              <div className="wg-cmp">同组还有：顺势而为 / 势在必行 / 因陋就简。整组对照见 <a href="#s14">第 14 讲</a>（此处再讲一遍，省得来回翻）。</div>
             </div>
             </Block>
       

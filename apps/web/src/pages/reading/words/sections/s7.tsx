@@ -14,7 +14,7 @@ export default function S8(): ReactElement {
             </Callout>
       
             <Block>
-              <BlockTitle>本讲词群 1（共 22 词）</BlockTitle>
+              <BlockTitle>词群 1（本讲共 34 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>囫囵吞枣</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">读书学习</span></div>
               <div className="wg-d">把枣整个吞下去，不加分析地笼统接受</div>
@@ -47,7 +47,7 @@ export default function S8(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 2（共 22 词）</BlockTitle>
+              <BlockTitle>词群 2（本讲共 34 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>互为表里</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">内外一体</span></div>
               <div className="wg-d">互相为外表和内里，关系密切、内外一体</div>
@@ -80,7 +80,7 @@ export default function S8(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 3（共 22 词）</BlockTitle>
+              <BlockTitle>词群 3（本讲共 34 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>双管齐下</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">措施手段</span></div>
               <div className="wg-d">两支笔同时下笔，比喻两种办法同时使用</div>
@@ -113,7 +113,7 @@ export default function S8(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 4（共 22 词）</BlockTitle>
+              <BlockTitle>词群 4（本讲共 34 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>徒劳无功</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">成效</span></div>
               <div className="wg-d">白费力气，没有成效</div>
@@ -136,54 +136,78 @@ export default function S8(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>已在辨析组详解（点词跳转，不重复说）</BlockTitle>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>浮光掠影</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b1">辨析一</a>，对照辨析表与例句，此处不再重复。</div>
+              <BlockTitle>同组易混词（这几个也在别处讲过，这里再讲一遍，就地记）</BlockTitle>
+            <div className="wg">
+              <div className="wg-h"><b>浮光掠影</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">印象观察</span></div>
+              <div className="wg-d">水面上的光和一闪而过的影子，<b>强调印象不深</b>，多作定语。</div>
+              <div className="wg-e">走马观花式的调研，只能留下浮光掠影的印象。</div>
+              <div className="wg-cmp">同组区别：重「印象浅」（结果）；「走马观花」重「看得快」（过程）（<a href="#b1">见辨析一</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>走马观花</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b1">辨析一</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>走马观花</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">参观调研</span></div>
+              <div className="wg-d">骑在马上看花，粗略地看，<b>强调看的动作快</b>，多作状语。</div>
+              <div className="wg-e">三天跑五个县，难免走马观花。</div>
+              <div className="wg-cmp">同组区别：重「看得快」；「蜻蜓点水」重「只碰一下」，「浅尝辄止」重「主动放弃深入」（<a href="#b1">见辨析一</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>蜻蜓点水</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b1">辨析一</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>蜻蜓点水</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">工作作风</span></div>
+              <div className="wg-d">像蜻蜓在水面轻轻一点，<b>强调接触一下就完事</b>。</div>
+              <div className="wg-e">帮扶不能蜻蜓点水，要一竿子插到底。</div>
+              <div className="wg-cmp">同组区别：重「不深入」；「浅尝辄止」强调「主动停」，多用于学习研究（<a href="#b1">见辨析一</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>浅尝辄止</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b1">辨析一</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>浅尝辄止</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">学习研究</span></div>
+              <div className="wg-d">稍微尝试一下就停止，<b>强调主动放弃深入</b>。</div>
+              <div className="wg-e">做学问最忌浅尝辄止。</div>
+              <div className="wg-cmp">同组区别：重「主动停」；「蜻蜓点水」重「接触浅」，「半途而废」重「中途停止」（<a href="#b1">见辨析一</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>举一反三</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b6">辨析六</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>举一反三</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">学习类推</span></div>
+              <div className="wg-d">从一件事类推而知道许多，<b>重在「推得多」</b>。</div>
+              <div className="wg-e">好老师教的不是答案，是举一反三的能力。</div>
+              <div className="wg-cmp">同组区别：重「由一推多」；「触类旁通」重「横向类推同类」，「融会贯通」重「各块打通」（<a href="#b6">见辨析六</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>融会贯通</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b6">辨析六</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>融会贯通</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">知识整合</span></div>
+              <div className="wg-d">把各方面的知识融合贯穿，得到透彻理解，<b>重在「融合」</b>。</div>
+              <div className="wg-e">把文史哲打通，才能真正融会贯通。</div>
+              <div className="wg-cmp">同组区别：重「由散到整」；「举一反三」重「由一推多」，「触类旁通」重「同类迁移」（<a href="#b6">见辨析六</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>触类旁通</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b6">辨析六</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>触类旁通</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">横向迁移</span></div>
+              <div className="wg-d">掌握一类事物的规律，就能推知同类，<b>重在横向类推</b>。</div>
+              <div className="wg-e">学会一门乐器，再学别的往往触类旁通。</div>
+              <div className="wg-cmp">同组区别：重「同类迁移」；「举一反三」重「数量上的推」，不限同类（<a href="#b6">见辨析六</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>本末倒置</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b5">辨析五</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>本末倒置</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">主次轻重</span></div>
+              <div className="wg-d">把根本的和枝节的弄颠倒了，<b>重「颠倒」</b>。</div>
+              <div className="wg-e">总结会上 PPT 做了八十页，实际工作只讲了五分钟，实在本末倒置。</div>
+              <div className="wg-cmp">同组区别：重「摆错位置」；「舍本逐末」重「主动放弃根本」，语气更重（<a href="#b5">见辨析五</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>舍本逐末</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b5">辨析五</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>舍本逐末</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">做法策略</span></div>
+              <div className="wg-d">舍弃根本、追求枝节，<b>强调「主动弃」</b>。</div>
+              <div className="wg-e">只抓流量不抓品质，是典型的舍本逐末。</div>
+              <div className="wg-cmp">同组区别：重「主动弃本」；「本末倒置」只是「摆颠倒」，未必主动（<a href="#b5">见辨析五</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>喧宾夺主</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b5">辨析五</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>喧宾夺主</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">主次抢位</span></div>
+              <div className="wg-d">次要的压倒了主要的，多指外来者、配角抢位。</div>
+              <div className="wg-e">配乐铺得太满，反而喧宾夺主。</div>
+              <div className="wg-cmp">同组区别：重「抢位」；「本末倒置」重「颠倒」，「反客为主」重「身份反转」（<a href="#b5">见辨析五</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>相辅相成</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b5">辨析五</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>相辅相成</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">两事物</span></div>
+              <div className="wg-d">互相补充、互相配合，<b>缺一不可</b>（1+1）。</div>
+              <div className="wg-e"></div>
+              <div className="wg-cmp">同组区别：重「缺一不可」；「相得益彰」重「1+1 大于 2」，「锦上添花」重「好上加好」（<a href="#b5">见辨析五</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>相得益彰</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b5">辨析五</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>相得益彰</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">两方面</span></div>
+              <div className="wg-d">互相配合，<b>各自的长处更加显现</b>（1+1 大于 2）。</div>
+              <div className="wg-e"></div>
+              <div className="wg-cmp">同组区别：重「效果更好」；「相辅相成」只讲「缺一不可」，不强调效果（<a href="#b5">见辨析五</a>）</div>
             </div>
             </Block>
       

@@ -14,7 +14,7 @@ export default function S4(): ReactElement {
             </Callout>
       
             <Block>
-              <BlockTitle>本讲词群 1（共 14 词）</BlockTitle>
+              <BlockTitle>词群 1（本讲共 14 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>循序渐进</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">学习教学</span></div>
               <div className="wg-d">按一定次序、步骤逐渐深入，由浅入深不跳跃</div>
@@ -47,7 +47,7 @@ export default function S4(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 2（共 14 词）</BlockTitle>
+              <BlockTitle>词群 2（本讲共 14 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>瞻前顾后</b><span className="wg-t t-bian">中偏贬</span><span className="wg-t t-obj">决策</span></div>
               <div className="wg-d">① 顾虑太多、犹豫不决 ② 考虑周密（较少考）</div>
@@ -80,7 +80,7 @@ export default function S4(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 3（共 14 词）</BlockTitle>
+              <BlockTitle>词群 3（本讲共 14 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>进退维谷</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">选择决策</span></div>
               <div className="wg-d">进退都处在困难境地，重在「两难」</div>

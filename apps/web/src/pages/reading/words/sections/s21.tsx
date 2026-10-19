@@ -14,7 +14,7 @@ export default function S22(): ReactElement {
             </Callout>
       
             <Block>
-              <BlockTitle>本讲词群 1（共 39 词）</BlockTitle>
+              <BlockTitle>词群 1（本讲共 41 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>各持己见</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">争论</span></div>
               <div className="wg-d">各人坚持自己的意见，<b>强调「坚持」</b></div>
@@ -47,7 +47,7 @@ export default function S22(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 2（共 39 词）</BlockTitle>
+              <BlockTitle>词群 2（本讲共 41 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>模棱两可</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">含糊</span></div>
               <div className="wg-d">态度、意见含糊，两边都说得通（贬）</div>
@@ -80,7 +80,7 @@ export default function S22(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 3（共 39 词）</BlockTitle>
+              <BlockTitle>词群 3（本讲共 41 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>以偏概全</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">片面</span></div>
               <div className="wg-d">用局部的情况概括整体</div>
@@ -113,7 +113,7 @@ export default function S22(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 4（共 39 词）</BlockTitle>
+              <BlockTitle>词群 4（本讲共 41 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>断章取义</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">曲解</span></div>
               <div className="wg-d">不顾全篇，只截取一句半句来曲解原意</div>
@@ -146,7 +146,7 @@ export default function S22(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 5（共 39 词）</BlockTitle>
+              <BlockTitle>词群 5（本讲共 41 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>鞭辟入里</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">分析透</span></div>
               <div className="wg-d">分析透彻、切中要害（辟＝透彻）</div>
@@ -179,7 +179,7 @@ export default function S22(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 6（共 39 词）</BlockTitle>
+              <BlockTitle>词群 6（本讲共 41 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>一览无余</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">尽收眼底</span></div>
               <div className="wg-d">一眼望去全都看到，① 视野开阔 ② 内容浅露无余</div>
@@ -212,7 +212,7 @@ export default function S22(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 7（共 39 词）</BlockTitle>
+              <BlockTitle>词群 7（本讲共 41 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>毋庸讳言</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">可以直说</span></div>
               <div className="wg-d">不用忌讳、可以直说</div>
@@ -230,14 +230,17 @@ export default function S22(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>已在辨析组详解（点词跳转，不重复说）</BlockTitle>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>盲人摸象</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#s8">s8</a>，对照辨析表与例句，此处不再重复。</div>
+              <BlockTitle>同组易混词（这几个也在别处讲过，这里再讲一遍，就地记）</BlockTitle>
+            <div className="wg">
+              <div className="wg-h"><b>盲人摸象</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">片面</span></div>
+              <div className="wg-d">盲人摸象各说各的，比喻以局部代替整体</div>
+              <div className="wg-e">只看一个指标就下结论，是盲人摸象。</div>
+              <div className="wg-cmp">同组还有：因小失大 / 因噎废食 / 背道而驰。整组对照见 <a href="#s8">第 8 讲</a>（此处再讲一遍，省得来回翻）。</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>一针见血</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b4">辨析四</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>一针见血</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">见辨析</span></div>
+              <div className="wg-d">说话直击要害</div>
+              <div className="wg-e">他的点评一针见血，直接点出了方案的逻辑漏洞。</div>
             </div>
             </Block>
       

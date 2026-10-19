@@ -14,7 +14,7 @@ export default function S15(): ReactElement {
             </Callout>
       
             <Block>
-              <BlockTitle>本讲词群 1（共 20 词）</BlockTitle>
+              <BlockTitle>词群 1（本讲共 26 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>顺势而为</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">策略</span></div>
               <div className="wg-d">顺着形势的发展去做</div>
@@ -47,7 +47,7 @@ export default function S15(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 2（共 20 词）</BlockTitle>
+              <BlockTitle>词群 2（本讲共 26 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>理所当然</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">合情理</span></div>
               <div className="wg-d">从道理上说应该这样</div>
@@ -80,7 +80,7 @@ export default function S15(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 3（共 20 词）</BlockTitle>
+              <BlockTitle>词群 3（本讲共 26 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>防微杜渐</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">抓苗头</span></div>
               <div className="wg-d">在错误、坏事刚冒头时就加以制止</div>
@@ -113,7 +113,7 @@ export default function S15(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 4（共 20 词）</BlockTitle>
+              <BlockTitle>词群 4（本讲共 26 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>江心补漏</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">补救晚</span></div>
               <div className="wg-d">船到江心才补漏洞，比喻补救已晚</div>
@@ -126,30 +126,42 @@ export default function S15(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>已在辨析组详解（点词跳转，不重复说）</BlockTitle>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>随波逐流</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b1">辨析一</a>，对照辨析表与例句，此处不再重复。</div>
+              <BlockTitle>同组易混词（这几个也在别处讲过，这里再讲一遍，就地记）</BlockTitle>
+            <div className="wg">
+              <div className="wg-h"><b>随波逐流</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">立场潮流</span></div>
+              <div className="wg-d">没立场，跟着潮流走，对象是「潮流、风气」。</div>
+              <div className="wg-e">他不愿随波逐流，索性把社交账号全关了。</div>
+              <div className="wg-cmp">同组区别：重「跟潮流走」；「人云亦云」重「跟着说」，「亦步亦趋」重「跟着做」（<a href="#b1">见辨析一</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>顺其自然</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b6">辨析六</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>顺其自然</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">心态节奏</span></div>
+              <div className="wg-d">顺应事物本身的规律，不刻意干预、不强求。</div>
+              <div className="wg-e">孩子的发展有其节奏，不妨顺其自然。</div>
+              <div className="wg-cmp">同组区别：重「不强求」；「听之任之」是放任错误（贬），「水到渠成」重「条件成熟」（<a href="#b6">见辨析六</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>水到渠成</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b6">辨析六</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>水到渠成</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">条件成熟</span></div>
+              <div className="wg-d">水流到了渠自然成，比喻<b>条件成熟，结果自然到来</b>。</div>
+              <div className="wg-e">把基础打牢，能力提升是水到渠成的事。</div>
+              <div className="wg-cmp">同组区别：重「功到自然成」；「顺理成章」重「合乎逻辑」，「顺其自然」重「不强求」（<a href="#b6">见辨析六</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>顺理成章</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b6">辨析六</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>顺理成章</b><span className="wg-t t-zhong">中</span><span className="wg-t t-obj">逻辑推导</span></div>
+              <div className="wg-d">写文章、说话合乎条理，自然能推出结论。</div>
+              <div className="wg-e">前期论证做扎实了，结论便顺理成章。</div>
+              <div className="wg-cmp">同组区别：重「合乎逻辑」；「水到渠成」重「条件成熟」，「理所当然」重「理应如此」（<a href="#b6">见辨析六</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>因势利导</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b4">辨析四</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>因势利导</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">趋势引导</span></div>
+              <div className="wg-d">顺着事情发展的趋势加以<b>引导</b>，对象是「势头、潮流」。</div>
+              <div className="wg-e">面对直播带货的热潮，与其一味禁止，不如因势利导，把它纳入规范。</div>
+              <div className="wg-cmp">同组区别：重「顺趋势」；「因地制宜」重「按地点」，「因时制宜」重「按时期」（<a href="#b4">见辨析四</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>防患未然</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#s14">s14</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>防患未然</b><span className="wg-t t-bao">褒</span><span className="wg-t t-obj">预防</span></div>
+              <div className="wg-d">在祸患还没发生时就加以防备</div>
+              <div className="wg-e">排查隐患要防患未然，别等出事再补救。</div>
+              <div className="wg-cmp">同组还有：顺势而为 / 大势所趋 / 势在必行。整组对照见 <a href="#s14">第 14 讲</a>（此处再讲一遍，省得来回翻）。</div>
             </div>
             </Block>
       

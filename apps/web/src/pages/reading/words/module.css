@@ -289,6 +289,12 @@
   }
 .legacy-words .wg-e b { color: #0284c7; }
 .legacy-words .wg-e::before { content: '例 '; color: #7dd3fc; font-weight: 700; }
+.legacy-words .wg-cmp {
+    margin-top: 5px; padding: 5px 8px; border-radius: 6px;
+    background: #fffbeb; border-left: 2px solid #f59e0b;
+    font-size: 12.5px; line-height: 1.72; color: #8a5a12;
+  }
+.legacy-words .wg-cmp a { color: var(--primary); text-decoration: none; border-bottom: 1px dashed currentColor; }
 .legacy-words .diff {
     background: linear-gradient(135deg, #fff7ed, #fef2f2);
     border: 1px solid #fed7aa; border-radius: 9px;

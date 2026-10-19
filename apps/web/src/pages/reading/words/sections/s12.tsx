@@ -14,7 +14,7 @@ export default function S13(): ReactElement {
             </Callout>
       
             <Block>
-              <BlockTitle>本讲词群 1（共 32 词）</BlockTitle>
+              <BlockTitle>词群 1（本讲共 36 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>沽名钓誉</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">骗名</span></div>
               <div className="wg-d">用不正当手段骗取名誉（沽＝买）</div>
@@ -47,7 +47,7 @@ export default function S13(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 2（共 32 词）</BlockTitle>
+              <BlockTitle>词群 2（本讲共 36 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>敷衍塞责</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">塞责</span></div>
               <div className="wg-d">办事马虎、搪塞责任</div>
@@ -80,7 +80,7 @@ export default function S13(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 3（共 32 词）</BlockTitle>
+              <BlockTitle>词群 3（本讲共 36 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>兴师动众</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">铺张</span></div>
               <div className="wg-d">大规模出兵，后指为一件小事动用很多人力</div>
@@ -113,7 +113,7 @@ export default function S13(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 4（共 32 词）</BlockTitle>
+              <BlockTitle>词群 4（本讲共 36 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>哗众取宠</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">博眼球</span></div>
               <div className="wg-d">用浮夸的言行博取众人欢心</div>
@@ -146,7 +146,7 @@ export default function S13(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 5（共 32 词）</BlockTitle>
+              <BlockTitle>词群 5（本讲共 36 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>固执己见</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">坚持己见</span></div>
               <div className="wg-d">坚持自己的意见，不肯改变</div>
@@ -179,7 +179,7 @@ export default function S13(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>本讲词群 6（共 32 词）</BlockTitle>
+              <BlockTitle>词群 6（本讲共 36 词）</BlockTitle>
             <div className="wg">
               <div className="wg-h"><b>坐享其成</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">搭便车</span></div>
               <div className="wg-d">自己不出力而享受别人的成果</div>
@@ -192,22 +192,30 @@ export default function S13(): ReactElement {
             </div>
             </Block>
             <Block>
-              <BlockTitle>已在辨析组详解（点词跳转，不重复说）</BlockTitle>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>好高骛远</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b4">辨析四</a>，对照辨析表与例句，此处不再重复。</div>
+              <BlockTitle>同组易混词（这几个也在别处讲过，这里再讲一遍，就地记）</BlockTitle>
+            <div className="wg">
+              <div className="wg-h"><b>好高骛远</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">个人目标</span></div>
+              <div className="wg-d">目标定得过高、不切实际，多指个人志向。</div>
+              <div className="wg-e">刚入行就想做总导演，未免好高骛远。</div>
+              <div className="wg-cmp">同组区别：重「目标高」；「好大喜功」重「爱立大功」，「贪大求全」重「大而全」（<a href="#b4">见辨析四</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>好大喜功</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b4">辨析四</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>好大喜功</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">政绩工程</span></div>
+              <div className="wg-d">喜欢做大事、立大功，多指当政者追求显性政绩。</div>
+              <div className="wg-e">有的地方热衷上大项目、铺大摊子，好大喜功的心态一目了然。</div>
+              <div className="wg-cmp">同组区别：重「爱立功」；「急功近利」重「图眼前」，「贪大求全」重「贪规模」（<a href="#b4">见辨析四</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>贪大求全</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b4">辨析四</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>贪大求全</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">项目规划</span></div>
+              <div className="wg-d">贪图规模大、门类全，多指项目、规划。</div>
+              <div className="wg-e">县城也规划千亿级产业园，这种贪大求全的毛病该改改了。</div>
+              <div className="wg-cmp">同组区别：重「大而全」；「好大喜功」重「爱立功」，「好高骛远」重「目标过高」（<a href="#b4">见辨析四</a>）</div>
             </div>
-            <div className="wg wg-ref">
-              <div className="wg-h"><b>急功近利</b><span className="wg-t t-zhong">已详解</span></div>
-              <div className="wg-d">该词已并入 <a href="#b4">辨析四</a>，对照辨析表与例句，此处不再重复。</div>
+            <div className="wg">
+              <div className="wg-h"><b>急功近利</b><span className="wg-t t-bian">贬</span><span className="wg-t t-obj">做法心态</span></div>
+              <div className="wg-d">急于求得眼前的成效和利益，重「快」。</div>
+              <div className="wg-e">基础研究最忌急功近利，出成果往往要十年。</div>
+              <div className="wg-cmp">同组区别：重「图眼前」；「好高骛远」重「目标高」，二者常同题作干扰（<a href="#b4">见辨析四</a>）</div>
             </div>
             </Block>
       
