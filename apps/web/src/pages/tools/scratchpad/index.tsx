@@ -1152,6 +1152,45 @@ export default function ScratchpadPage() {
   }, [writePrefs, save])
 
   /**
+   * 点周边关掉答题卡（用户要的行为），但不能误伤「边打草稿边记答案」。
+   *
+   * @returns 清理函数。
+   * @remarks 不能用 mask 实现：mask 会挡住画布，画不了草稿。
+   * 这里用「按下到抬起几乎没有位移」来区分「点一下」与「画一笔」：
+   * - 点在抽屉里 → 不关；
+   * - 点在画布上并拖动（>6px）→ 是在写字，不关；
+   * - 点在画布上、几乎没动（<6px 且 <500ms）→ 视为「点周边」，关闭。
+   * 开合按钮本身排除，否则会「关了又开」。
+   */
+  useEffect(() => {
+    if (!quizOpen) return
+    let start: { x: number; y: number; t: number; inside: boolean } | null = null
+
+    const onDown = (event: PointerEvent) => {
+      const target = event.target as HTMLElement | null
+      const inside = Boolean(target?.closest('.ant-drawer'))
+      const onToggle = Boolean(target?.closest('[aria-label="打开选择题答题卡"]'))
+      start = { x: event.clientX, y: event.clientY, t: Date.now(), inside: inside || onToggle }
+    }
+    const onUp = (event: PointerEvent) => {
+      const from = start
+      start = null
+      if (!from || from.inside) return
+      const moved = Math.hypot(event.clientX - from.x, event.clientY - from.y)
+      const elapsed = Date.now() - from.t
+      // 拖动 / 长按都当作在画草稿，不关闭面板。
+      if (moved > 6 || elapsed > 500) return
+      setQuizOpen(false)
+    }
+    document.addEventListener('pointerdown', onDown, true)
+    document.addEventListener('pointerup', onUp, true)
+    return () => {
+      document.removeEventListener('pointerdown', onDown, true)
+      document.removeEventListener('pointerup', onUp, true)
+    }
+  }, [quizOpen])
+
+  /**
    * 工具页是整屏应用，锁死文档滚动。
    *
    * @returns 清理函数（还原原有 inline overflow）。
@@ -1478,6 +1517,8 @@ export default function ScratchpadPage() {
       {/*
         答题卡抽屉。
         - `mask={false}`：不遮画布，真的可以一边打草稿一边点答案；
+        - 「点周边关闭」由下面那个 pointerdown/pointerup 判定处理，不能靠 mask：
+          mask 会挡住画布，就没法边打草稿边记答案了；
         - 手机端只占 80% 宽度（不用 100%），左侧留约 78px 能落笔的草稿区，
           否则铺满后「边打草稿边记答案」就失效了；
         - 关闭只卸载面板，草稿（笔迹 / 图片）完全不受影响；

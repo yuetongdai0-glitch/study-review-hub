@@ -632,3 +632,59 @@ test('答题纸与答题卡并入草稿工作台，首页不再单列', async ()
   assert.ok(/event\.key === 'F2'/.test(pad), '缺少 F2 开合答题卡')
   assert.ok(/event\.key === 'F3'/.test(pad), '缺少 F3 开合答题纸')
 })
+
+test('答题纸能点格定位、光标可见、纸张封边；答题卡点周边可关闭', async () => {
+  /*
+   * 用户三条反馈（原话）：
+   * 1. 「光标怎么都看不到呢」
+   * 2. 「最外层也应该封边啊 也没办法选择格子！！」
+   * 3. 「弹窗出来了 点击周边也应该关闭撒」
+   *
+   * 成因（都实测过）：
+   * - 透明 textarea 用 inset-0 铺满整块纸且可点，把所有 pointerdown 吃掉，
+   *   格子的 onPointerDown 永不触发 → 光标永远停在 0,0，且那个框还是 absolute 未定位的静态位置，
+   *   于是被画到网格下方、看着像跑出纸外；
+   * - 行数只扣 12px，没算外层 py 与纸张 padding/border，多算一行 → 纸比可视区高，
+   *   底边框被推到折叠线以下 → 看起来「没封边」。
+   *
+   * 修复要点如下，任何一条被改回去都会复发。
+   */
+  const exam = await readFile(new URL('../src/components/features/ExamSheet.tsx', import.meta.url), 'utf8')
+  const pad = await readFile(new URL('../src/pages/tools/scratchpad/index.tsx', import.meta.url), 'utf8')
+
+  // 1. 输入层必须让开指针，否则吞掉所有点击
+  assert.ok(
+    /pointerEvents: 'none'/.test(exam),
+    '透明 textarea 必须 pointerEvents:none，否则会吞掉所有点击、点格子永远没反应'
+  )
+  assert.ok(
+    !/className="absolute inset-0 h-full w-full resize-none border-0 bg-transparent p-0 text-transparent caret-transparent outline-none"[\s\S]{0,80}onPointerDown/.test(exam),
+    '输入层不应自己处理指针'
+  )
+
+  // 2. 光标框必须显式定位到左上角，否则 absolute 会落在静态位置（网格下方）
+  assert.ok(
+    /absolute left-0 top-0[^"]*border-2 border-brand/.test(exam),
+    '光标框必须 left-0 top-0，否则会被画到网格下方、看起来像跑出纸外'
+  )
+  assert.ok(/bg-brand\/15/.test(exam), '光标框应有半透明底色，浅色格纸上才看得见')
+
+  // 3. 行数必须把外层与纸张的内边距/边框都扣掉，四条边才在可视区内（封边）
+  assert.ok(
+    /parseFloat\(wrapStyle\.paddingTop/.test(exam) && /parseFloat\(paperStyle\.borderBottomWidth/.test(exam),
+    '行数计算必须扣除外层 padding 与纸张 padding/border，否则纸会超出可视区、底边看不见'
+  )
+
+  // 4. 点周边关闭：不能靠 mask（会挡住画布），要用「按下→抬起几乎无位移」判定
+  assert.ok(/from\.inside/.test(pad) && /moved > 6/.test(pad), '点周边关闭需要区分「点击」与「画一笔」')
+  assert.ok(
+    /if \(moved > 6 \|\| elapsed > 500\) return/.test(pad),
+    '画草稿（有位移/长按）时不能关闭抽屉，否则边打草稿边记答案就失效了'
+  )
+  assert.ok(/closest\('\.ant-drawer'\)/.test(pad), '点在抽屉内部不应关闭')
+  assert.ok(/aria-label="打开选择题答题卡"/.test(pad), '开合按钮本身要排除，避免关了又开')
+
+  // 5. 答题卡仍不能加 mask（加了就没法边画边记）
+  const quizDrawer = pad.slice(pad.indexOf('title="选择题答题卡"'), pad.indexOf('</Drawer>', pad.indexOf('title="选择题答题卡"')))
+  assert.ok(/mask=\{false\}/.test(quizDrawer), '答题卡抽屉不能加 mask（会挡住画布）')
+})

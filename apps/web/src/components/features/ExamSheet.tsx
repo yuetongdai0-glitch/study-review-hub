@@ -100,9 +100,24 @@ export default function ExamSheet() {
     setCols(next)
     setCell(cellSize)
 
-    // 行数铺满可视区（用容器高度，不用 window.innerHeight —— 浮层里两者不等），且容纳现有文字。
-    const byHeight = Math.floor((wrap.clientHeight - 12) / cellSize)
-    setRows(Math.max(12, byHeight, Math.ceil(text.length / next) + 2))
+    /*
+     * 行数要让整张纸的四条边都落在可视区内（用户说的「最外层也要封边」）。
+     * 只扣 12px 是不够的：外层滚动容器自己有 py 内边距、纸张自己还有 p 和 1px 边框，
+     * 漏算就会多出一行 → 纸比可视区高十几像素 → 底边框被推到折叠线以下，看起来「没封边」。
+     */
+    const wrapStyle = getComputedStyle(wrap)
+    const availHeight =
+      wrap.clientHeight -
+      parseFloat(wrapStyle.paddingTop || '0') -
+      parseFloat(wrapStyle.paddingBottom || '0') -
+      parseFloat(paperStyle.paddingTop || '0') -
+      parseFloat(paperStyle.paddingBottom || '0') -
+      parseFloat(paperStyle.borderTopWidth || '0') -
+      parseFloat(paperStyle.borderBottomWidth || '0') -
+      // 留 6px 余量：响应式下 0.5px 的偏差不该把最后一行挤出去
+      6
+    const byHeight = Math.floor(Math.max(0, availHeight) / cellSize)
+    setRows(Math.max(8, byHeight, Math.ceil(text.length / next) + 2))
   }, [text.length])
 
   useEffect(() => {
@@ -425,11 +440,11 @@ export default function ExamSheet() {
       </div>
 
       {/* 答题纸 */}
-      <div ref={wrapRef} className="min-h-0 flex-1 overflow-auto px-1 py-2 sm:px-3 sm:py-3">
+      <div ref={wrapRef} className="min-h-0 flex-1 overflow-auto px-2 py-3 sm:px-4">
         {/* 网格总宽 = 列数 × 格宽，用 max-w-full 限住，避免窄屏被撑出横向滚动 */}
         <div
           ref={paperRef}
-          className="relative mx-auto w-full max-w-full overflow-hidden rounded-[14px] border border-line bg-white p-1.5 shadow-card sm:max-w-[920px] sm:p-3"
+          className="relative mx-auto w-full max-w-full overflow-hidden rounded-[10px] border-[1.5px] border-line-strong bg-white p-1.5 shadow-[0_1px_2px_rgba(16,24,40,.06),0_8px_24px_rgba(16,24,40,.08)] sm:max-w-[920px] sm:p-3"
         >
           <div className="relative" data-focus={focused ? 'true' : 'false'}>
             {/* 网格：纯展示，不接收输入 */}
@@ -460,7 +475,14 @@ export default function ExamSheet() {
               })}
             </div>
 
-            {/* 输入层：1px 透明，承载全部输入（IME 只在单一 textarea 里才不丢字） */}
+            {/*
+              输入层：透明 textarea，承载全部输入（IME 只在单一 textarea 里才不丢字）。
+
+              `pointerEvents: 'none'` 是关键：它铺满整块纸，如果可点，
+              所有点击都会被它吃掉，格子的 onPointerDown 永远不触发，
+              表现为「点格子没反应、字只会加在开头」。键盘输入不受影响——
+              焦点由格子的 placeCaret 主动 focus() 给到它。
+            */}
             <textarea
               ref={editorRef}
               value={text}
@@ -468,7 +490,7 @@ export default function ExamSheet() {
               autoCorrect="off"
               autoCapitalize="off"
               className="absolute inset-0 h-full w-full resize-none border-0 bg-transparent p-0 text-transparent caret-transparent outline-none"
-              style={{ fontSize: cell * 0.5, lineHeight: 1 }}
+              style={{ fontSize: cell * 0.5, lineHeight: 1, pointerEvents: 'none' }}
               aria-label="答题纸输入区"
               onChange={(event) => {
                 pushUndo(text)
@@ -499,15 +521,22 @@ export default function ExamSheet() {
               }}
             />
 
-            {/* 光标框 */}
+            {/*
+              光标框。
+              - 必须写死 `left/top: 0`：absolute 元素不定位时用的是「静态位置」，
+                会落到网格下方，看上去就像光标跑出纸外。
+              - 除了边框再铺一层半透明底色，浅色格纸上也能一眼看到。
+              - `animate-pulse` 让它有呼吸感，一眼能认出这是「下一个字会写在这里」。
+            */}
             {caret && focused ? (
               <div
                 ref={caretRef}
-                className="pointer-events-none absolute border-2 border-brand"
+                className="pointer-events-none absolute left-0 top-0 z-10 animate-pulse border-2 border-brand bg-brand/15"
                 style={{
                   transform: `translate(${caret.col * cell}px, ${caret.row * cell}px)`,
                   width: cell,
                   height: cell,
+                  boxShadow: '0 0 0 1px rgba(255,255,255,.9) inset',
                 }}
               />
             ) : null}
