@@ -1,6 +1,8 @@
-import { App, Button, Modal, Select, Slider, Tooltip } from 'antd'
-import { Download, Eraser, ImageOff, ImagePlus, Pen, PenOff, RotateCcw, RotateCw, Trash2 } from 'lucide-react'
+import { App, Button, Drawer, Modal, Select, Slider, Tooltip } from 'antd'
+import { Download, Eraser, ImageOff, ImagePlus, ListChecks, NotebookPen, Pen, PenOff, RotateCcw, RotateCw, Trash2 } from 'lucide-react'
 import { useCallback, useEffect, useRef, useState } from 'react'
+import ChoiceSheet, { readQuizSummary } from '@/components/features/ChoiceSheet'
+import ExamSheet from '@/components/features/ExamSheet'
 import { useSectionStore } from '@/store/sectionStore'
 import type { NavSection } from '@/types/content'
 
@@ -152,11 +154,14 @@ function encodeImage(image: HTMLImageElement, limitW: number): string {
 }
 
 /**
- * 草稿纸页面。
+ * 草稿工作台。
  *
- * @returns 画布 + 工具栏。
- * @remarks 双层画布是硬约束：纸纹在 #paper，笔迹在 #ink，
- * 橡皮用 destination-out 只擦笔迹层，合层会把纸一起擦掉。
+ * @returns 画布 + 工具栏 + 右侧答题卡抽屉 + 全屏答题纸。
+ * @remarks 三层画布是硬约束：纸纹在 #paper、图片在 #photo、笔迹在 #ink，
+ * 橡皮用 destination-out 只擦笔迹层，合层会把纸与图一起擦掉。
+ *
+ * 这里是「答题」的总入口：右上角可开选择题答题卡（右侧抽屉，不遮画布）
+ * 与格纸答题纸（全屏，可关闭），两者与独立路由页共用同一份存档。
  */
 export default function ScratchpadPage() {
   const { message } = App.useApp()
@@ -190,12 +195,20 @@ export default function ScratchpadPage() {
   /** 图片列表变化（增删 / 解码完成）时自增，用来触发重绘与按钮态刷新。 */
   const [photoVersion, setPhotoVersion] = useState(0)
   const [confirmOpen, setConfirmOpen] = useState(false)
+  /** 答题卡抽屉：打开就能边打草稿边记答案，关掉不销毁草稿。 */
+  const [quizOpen, setQuizOpen] = useState(false)
+  /** 答题纸全屏浮层：写申论/简答用，关掉继续打草稿。 */
+  const [examOpen, setExamOpen] = useState(false)
+  /** 答题卡摘要（已答 / 总题数），给按钮上的角标用。 */
+  const [quizSummary, setQuizSummary] = useState<{ answered: number; total: number } | null>(null)
   const [ready, setReady] = useState(false)
 
   const navSections: NavSection[] = []
 
   useEffect(() => {
     register('/scratchpad', navSections)
+    // 首屏就把答题卡摘要读出来，按钮上能直接看到「已答 3/10」。
+    setQuizSummary(readQuizSummary())
     return () => clear('/scratchpad')
   }, [register, clear])
 
@@ -1176,6 +1189,17 @@ export default function ScratchpadPage() {
       if (meta || event.altKey) return
       if (event.key.toLowerCase() === 'b') setPrefs((p) => ({ ...p, tool: 'pen' }))
       if (event.key.toLowerCase() === 'e') setPrefs((p) => ({ ...p, tool: 'eraser' }))
+      // F2 快速开合答题卡、F3 全屏答题纸：抽屉/浮层会遮住画布，键盘一扫就能收。
+      if (event.key === 'F2') {
+        event.preventDefault()
+        setQuizSummary(readQuizSummary())
+        setQuizOpen((open) => !open)
+        return
+      }
+      if (event.key === 'F3') {
+        event.preventDefault()
+        setExamOpen((open) => !open)
+      }
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
@@ -1316,6 +1340,35 @@ export default function ScratchpadPage() {
 
         <div className="ml-auto flex items-center gap-1">
           {/*
+            答题卡按钮放动作组最左边：它是「边打草稿边记答案」的入口，
+            比撤销/导出更常用。抽屉不遮画布（mask 关掉），关掉也不销毁草稿。
+          */}
+          <Tooltip title="选择题答题卡（F2 开合，边打草稿边记答案）" placement="bottomRight">
+            <Button
+              size="small"
+              icon={<ListChecks size={14} />}
+              onClick={() => {
+                setQuizSummary(readQuizSummary())
+                setQuizOpen(true)
+              }}
+              aria-label="打开选择题答题卡"
+            >
+              {quizSummary ? (
+                <span className="hidden font-num text-[11px] tabular-nums sm:inline">
+                  {quizSummary.answered}/{quizSummary.total}
+                </span>
+              ) : null}
+            </Button>
+          </Tooltip>
+          <Tooltip title="格纸答题纸（F3 全屏，写申论/简答）" placement="bottomRight">
+            <Button
+              size="small"
+              icon={<NotebookPen size={14} />}
+              onClick={() => setExamOpen(true)}
+              aria-label="打开格纸答题纸"
+            />
+          </Tooltip>
+          {/*
             这一排贴着视口右边缘，浮层必须 bottomRight 右对齐。
             默认的 top 居中对齐会让浮层以按钮中心为轴向右溢出（实测越界 19px，
             进而拉出横向滚动条，与重排形成抖动循环）。
@@ -1421,6 +1474,49 @@ export default function ScratchpadPage() {
           清空后仍可用撤销（Cmd/Ctrl+Z）恢复，但关闭页面后不可找回。
         </p>
       </Modal>
+
+      {/*
+        答题卡抽屉。
+        - `mask={false}`：不遮画布，真的可以一边打草稿一边点答案；
+        - 手机端只占 80% 宽度（不用 100%），左侧留约 78px 能落笔的草稿区，
+          否则铺满后「边打草稿边记答案」就失效了；
+        - 关闭只卸载面板，草稿（笔迹 / 图片）完全不受影响；
+        - 面板走的是「选择题答题卡」页的同一个存档键，两边数据互通。
+      */}
+      <Drawer
+        title="选择题答题卡"
+        placement="right"
+        open={quizOpen}
+        onClose={() => setQuizOpen(false)}
+        afterOpenChange={(open: boolean) => {
+          if (!open) setQuizSummary(readQuizSummary())
+        }}
+        mask={false}
+        width="min(420px, 80vw)"
+        destroyOnHidden
+        styles={{ body: { padding: 12 } }}
+        extra={<span className="text-[11.5px] text-ink-3">关掉不影响草稿</span>}
+      >
+        <ChoiceSheet compact />
+      </Drawer>
+      {/*
+        格纸答题纸：全屏打开，写申论/简答用。
+        用 Drawer(bottom, 100dvh) 而不是 Modal：自带关闭按钮、天然占满视口，
+        关掉只卸载它自己，草稿（笔迹/图片）完全不受影响。
+        与独立路由页共用 `exam-grid:v2` 存档，两边内容互通。
+      */}
+      <Drawer
+        title="格纸答题纸"
+        placement="bottom"
+        height="100dvh"
+        open={examOpen}
+        onClose={() => setExamOpen(false)}
+        destroyOnHidden
+        styles={{ body: { padding: 0, overflow: 'hidden' } }}
+        extra={<span className="text-[11.5px] text-ink-3">关掉继续打草稿，内容已自动保存</span>}
+      >
+        <ExamSheet />
+      </Drawer>
     </div>
   )
 }

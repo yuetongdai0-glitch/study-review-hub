@@ -1,5 +1,6 @@
+import { useMemo } from 'react'
 import { Link } from 'react-router-dom'
-import { allModules, moduleMetas, toolMetas } from '@/router/routeRegistry'
+import { allModules, moduleMetas } from '@/router/routeRegistry'
 import type { ModuleMeta } from '@/router/types'
 import { accentTokens } from '@/theme/tokens'
 
@@ -64,6 +65,18 @@ function SubjectCard({ module }: { module: ModuleMeta }) {
  */
 export default function HomePage() {
   const accent = accentTokens.blue
+  /*
+   * 首页只列「自己是一张卡」的模块。
+   * 答题纸 / 答题卡已并入草稿工作台（右上角全屏打开），标了 homeHidden，
+   * 这里过滤掉并重编序号，避免出现 11 → 14 的断号。
+   */
+  const cards = useMemo(
+    () =>
+      allModules
+        .filter((module) => !module.homeHidden)
+        .map((module, index) => ({ ...module, order: index + 1 })),
+    [],
+  )
 
   return (
     <div className="home-main" style={{ ['--accent' as string]: accent.color }}>
@@ -79,7 +92,7 @@ export default function HomePage() {
           <span>备考复习总览</span>
         </Link>
         <div className="note-count">
-          {moduleMetas.length} 份笔记 + {toolMetas.length} 个练习工具
+          {moduleMetas.length} 份笔记 + {cards.filter((item) => item.tool).length} 个练习工具
         </div>
       </header>
 
@@ -97,8 +110,9 @@ export default function HomePage() {
           </div>
           <p className="intro-note">
             按模块进入原始复习手册。每份资料均完整保留，阅读中可随时返回总览或切换到其他科目；
-            判断推理已拆出「图形推理」「类比推理」两个独立页；模拟考试答题纸用于平时限时练笔，
-            选择题答题卡用于刷选择题并统计正确率与用时；规范词速查手册可在作答时随时查阅表达。
+            判断推理已拆出「图形推理」「类比推理」两个独立页；规范词速查手册可在作答时随时查阅表达；
+            写答案、记选项、算草稿都到「草稿工作台」——右上角可随时打开选择题答题卡与格纸答题纸，
+            关掉继续打草稿，不会清掉已写的内容。
           </p>
         </section>
 
@@ -106,12 +120,12 @@ export default function HomePage() {
           <div className="section-heading">
             <h2 id="subjects-title">复习科目</h2>
             <span>
-              01 - {String(allModules.length).padStart(2, '0')}
+              01 - {String(cards.length).padStart(2, '0')}
             </span>
           </div>
 
           <div className="subject-grid">
-            {allModules.map((module) => (
+            {cards.map((module) => (
               <SubjectCard key={module.name} module={module} />
             ))}
           </div>

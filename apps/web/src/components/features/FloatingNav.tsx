@@ -71,7 +71,14 @@ export default function FloatingNav() {
           </div>
         </div>
         <ul className="study-hub-links">
-          {allModules.map((item) => {
+          {/*
+            答题纸 / 答题卡已并入草稿工作台（右上角入口），标了 homeHidden。
+            这里跟着过滤，保证全站只有「草稿工作台」一个入口，不再出现两个孤立入口；
+            路由本身保留，老书签仍可用。
+          */}
+          {allModules
+            .filter((item) => !item.homeHidden)
+            .map((item, index) => {
             const active = currentPath === item.path
             return (
               <li key={item.name}>
@@ -80,7 +87,8 @@ export default function FloatingNav() {
                   className="study-hub-link"
                   aria-current={active ? 'page' : undefined}
                 >
-                  <span className="study-hub-link-index">{String(item.order).padStart(2, '0')}</span>
+                  {/* 过滤后序号要按显示顺序重编，否则会出现 11 → 14 的断号 */}
+                  <span className="study-hub-link-index">{String(index + 1).padStart(2, '0')}</span>
                   <span className="study-hub-link-name">{item.title}</span>
                   <span className="study-hub-link-arrow" aria-hidden="true">
                     →

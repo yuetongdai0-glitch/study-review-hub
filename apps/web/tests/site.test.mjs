@@ -19,7 +19,7 @@ const pages = [
   { route: 'vocab', title: '综应A 规范词速查' },
   { route: 'politics', title: '政治常识' },
   { route: 'words', title: '词语积累' },
-  { route: 'scratchpad', title: '草稿纸' }
+  { route: 'scratchpad', title: '草稿工作台' }
 ]
 
 /**
@@ -93,10 +93,26 @@ test('首页包含全部复习入口的有效路由', async () => {
     )
   }
 
-  // 首页必须按路由表渲染，而不是手写卡片列表（否则新增科目会漏）。
-  assert.match(home, /allModules\.map/, '首页未按模块表渲染科目卡片')
+  /*
+   * 首页仍必须按路由表渲染（否则新增科目会漏），但答题纸 / 答题卡已并入
+   * 草稿工作台，标了 homeHidden，所以首页是「过滤后渲染」而不是裸 allModules.map。
+   */
+  assert.match(home, /allModules[\s\S]{0,120}\.filter\(/, '首页未按模块表渲染科目卡片')
+  assert.match(home, /homeHidden/, '首页未过滤掉已并入草稿工作台的工具卡')
   assert.match(home, /moduleMetas\.length/, '首页未显示模块数量')
-  assert.match(home, /toolMetas\.length/, '首页未显示工具数量')
+  assert.match(home, /cards\.filter\(\(item\) => item\.tool\)\.length/, '首页未按可见工具数显示数量')
+  // 序号必须重编：过滤掉两张卡后不能出现 11 → 14 的断号
+  assert.match(home, /order: index \+ 1/, '首页过滤后未重编卡片序号，会出现断号')
+
+  // 两个被并入的工具：路由保留（老书签可用），但首页不再单独成卡
+  const registryText = await readText(new URL('../src/router/routeRegistry.ts', import.meta.url))
+  for (const name of ['exam-grid', 'choice-quiz']) {
+    const block = registryText.slice(registryText.indexOf(`name: '${name}'`))
+    assert.ok(
+      block.slice(0, 400).includes('homeHidden: true'),
+      `${name} 应标记 homeHidden（首页不再单独出卡）`
+    )
+  }
 })
 
 test('每个复习页接入共享导航且保留完整源文件内容', async () => {

@@ -28,6 +28,13 @@ export type ModuleMeta = {
   order: number
   /** 是否为练习工具（首页单独归类，不进侧栏阅读分组）。 */
   tool?: boolean
+  /**
+   * 首页不单独出卡片。
+   *
+   * @remarks 答题纸 / 答题卡已并入「草稿工作台」右上角入口，
+   * 首页不必再各占一张卡；路由本身保留，书签与深链照旧可用。
+   */
+  homeHidden?: boolean
   /** 侧栏锚点列表；运行时从内容里读，静态页可留空。 */
   sections?: Array<{ id: string; title: string }>
 }

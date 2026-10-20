@@ -124,6 +124,8 @@ export const moduleMetas: ModuleMeta[] = [
  * 练习工具模块的元信息。
  *
  * @remarks 工具页是全屏交互页，不套阅读页的侧栏目录。
+ * 答题纸与答题卡已并入「草稿工作台」的右上角入口（全屏打开），
+ * 所以标 `homeHidden`：首页不再各占一张卡，但路由保留，书签/深链照旧。
  */
 export const toolMetas: ModuleMeta[] = [
   {
@@ -136,6 +138,7 @@ export const toolMetas: ModuleMeta[] = [
     source: '练习',
     order: 12,
     tool: true,
+    homeHidden: true,
   },
   {
     name: 'choice-quiz',
@@ -147,12 +150,14 @@ export const toolMetas: ModuleMeta[] = [
     source: '练习',
     order: 13,
     tool: true,
+    homeHidden: true,
   },
   {
     name: 'scratchpad',
     path: R_TOOL.scratchpad,
-    title: '草稿纸',
-    description: '白板草稿纸：手写笔迹、局部擦除、撤销重做、纸张切换与导出图片',
+    title: '草稿工作台',
+    description:
+      '一站式答题草稿：白板手写与局部擦除 · 粘贴题目截图在图上画 · 右上角随时开选择题答题卡与格纸答题纸 · 自动保存与导出',
     group: 'tools',
     accent: 'ochre',
     source: '练习',

@@ -504,3 +504,131 @@ test('草稿纸可以只清笔记、保留题图（重做同一道题）', async
   // 6. 清除笔记保留图片位置尺寸（看图作答的前提）
   assert.ok(!/clearInk[\s\S]{0,600}shiftIntoView/.test(page), '清除笔记不应触发图片平移')
 })
+
+test('草稿纸能开答题卡抽屉，边打草稿边记答案，关掉不销毁草稿', async () => {
+  /*
+   * 用户诉求（原话）：「希望这个右上角再加一个按钮，点击就是弹窗，
+   * 其实就是做选择题，不要销毁哈关闭弹窗了，方便我边打草稿边记录答案，
+   * 其实也就是现在的已有功能中的那个选择题」。
+   *
+   * 三条硬要求：
+   * 1. 右上角一个按钮 → 打开答题卡（复用已有的选择题功能，不另造一套）；
+   * 2. 关掉不能销毁草稿（草稿在画布上，不在抽屉里，抽屉只卸载自身）；
+   * 3. 要能「边打草稿边记答案」→ 不能有遮罩挡住画布，手机端也不能铺满。
+   *
+   * 关键设计：答题卡主体抽到 components/features/ChoiceSheet，
+   * 与独立页共用 `choice-quiz:v1` 存档，两边数据互通。
+   */
+  const pad = await readFile(new URL('../src/pages/tools/scratchpad/index.tsx', import.meta.url), 'utf8')
+  const sheet = await readFile(new URL('../src/components/features/ChoiceSheet.tsx', import.meta.url), 'utf8')
+  const quizPage = await readFile(new URL('../src/pages/tools/choice-quiz/index.tsx', import.meta.url), 'utf8')
+
+  // 1. 复用同一份实现与同一份存档
+  assert.ok(pad.includes("from '@/components/features/ChoiceSheet'"), '草稿纸应复用 ChoiceSheet 组件，而不是另写一套答题卡')
+  assert.ok(quizPage.includes("from '@/components/features/ChoiceSheet'"), '独立答题卡页也应使用同一组件')
+  assert.ok(sheet.includes("const STORE_KEY = 'choice-quiz:v1'"), '答题卡存档键必须与独立页一致，否则两边数据不通')
+  assert.ok(!pad.includes('choice-quiz:v2'), '不要给草稿纸另开一份存档')
+  // 存档键只允许出现在 ChoiceSheet 一处定义
+  assert.equal(
+    (quizPage + pad).includes("'choice-quiz:v1'"),
+    false,
+    '存档键只应在 ChoiceSheet 里定义，其他页面不要重复声明'
+  )
+
+  // 2. 右上角按钮 + 抽屉
+  assert.ok(pad.includes('aria-label="打开选择题答题卡"'), '缺少答题卡按钮')
+  assert.ok(pad.includes('<Drawer'), '点击应打开抽屉面板')
+  assert.ok(/mask=\{false\}/.test(pad), '抽屉必须去掉遮罩，否则挡住画布就没法边打草稿边记答案')
+  assert.ok(/destroyOnHidden/.test(pad), '抽屉关闭应卸载面板，避免开关时状态残留')
+  assert.ok(/onClose=\{\(\) => setQuizOpen\(false\)\}/.test(pad), '抽屉必须能正常关闭')
+
+  // 3. 手机端不能铺满，要留出可落笔区
+  assert.ok(
+    /width="min\(420px, 80vw\)"/.test(pad),
+    '手机端抽屉宽度必须留白（80vw），铺满 100vw 会挡住整块画布'
+  )
+
+  // 4. 关掉不销毁草稿：抽屉只碰 quizOpen / quizSummary，不碰笔迹与图片
+  const drawerBlock = pad.slice(pad.indexOf('<Drawer'), pad.indexOf('</Drawer>'))
+  assert.ok(!/strokesRef\.current\s*=/.test(drawerBlock), '抽屉不得改动笔迹数据（关闭会销毁草稿）')
+  assert.ok(!/photosRef\.current\s*=/.test(drawerBlock), '抽屉不得改动图片数据')
+  assert.ok(!/localStorage\.removeItem/.test(drawerBlock), '抽屉不得清除草稿存档')
+
+  // 5. 摘要角标 + F2 快捷键
+  assert.ok(pad.includes('readQuizSummary'), '按钮应显示已答/总题数摘要')
+  assert.ok(/event\.key === 'F2'/.test(pad), '缺少 F2 快速开合答题卡')
+
+  // 6. 组件必须保留原有能力（做题 / 交卷 / 对答案 / 成绩）
+  for (const [marker, label] of [
+    ["phase: 'check'", '交卷进入对答案'],
+    ["phase: 'result'", '出成绩'],
+    ['正确率', '正确率统计'],
+    ['逐题明细', '逐题明细'],
+    ['新增一题', '题量不限'],
+  ]) {
+    assert.ok(sheet.includes(marker), `ChoiceSheet 缺少${label}`)
+  }
+  assert.ok(/autoResume/.test(sheet) === false, '暂停态不应由参数强制，两处统一沿用存档值')
+})
+
+test('答题纸与答题卡并入草稿工作台，首页不再单列', async () => {
+  /*
+   * 用户诉求（原话）：「所以直接把外面的那个单独的（答题卡）去掉，然后这个草稿纸可以改个好点的名字，
+   * 毕竟功能很多；（答题纸）这个也去掉，也是展示到右上角，点击就全屏可以关闭，
+   * 然后又打草稿，理解吗，相当于都提供打草稿的过程」。
+   *
+   * 设计：
+   * - 首页只留「草稿工作台」一张卡，答题纸 / 答题卡标 homeHidden（路由保留，老书签可用）；
+   * - 两者都从右上角进：答题卡走右侧抽屉（不遮画布），答题纸走全屏浮层（可关闭）；
+   * - 三个工具共用各自的既有存档键，数据互通，关掉都不销毁草稿。
+   */
+  const pad = await readFile(new URL('../src/pages/tools/scratchpad/index.tsx', import.meta.url), 'utf8')
+  const registry = await readFile(new URL('../src/router/routeRegistry.ts', import.meta.url), 'utf8')
+  const home = await readFile(new URL('../src/pages/home/index.tsx', import.meta.url), 'utf8')
+  const exam = await readFile(new URL('../src/components/features/ExamSheet.tsx', import.meta.url), 'utf8')
+
+  // 1. 改名
+  assert.ok(registry.includes("title: '草稿工作台'"), '草稿纸应改名为「草稿工作台」')
+  assert.ok(!registry.includes("title: '草稿纸'"), '旧名「草稿纸」不应再出现')
+
+  // 2. 首页不再单列两个工具，但路由保留
+  for (const name of ['exam-grid', 'choice-quiz']) {
+    const at = registry.indexOf(`name: '${name}'`)
+    assert.ok(at > 0, `路由表缺少 ${name}`)
+    assert.ok(registry.slice(at, at + 420).includes('homeHidden: true'), `${name} 应标 homeHidden`)
+  }
+  assert.match(home, /\.filter\(\(module\) => !module\.homeHidden\)/, '首页应过滤 homeHidden')
+  assert.match(home, /order: index \+ 1/, '首页过滤后必须重编序号（否则 11 → 14 断号）')
+
+  // 3. 草稿工作台右上角两个入口
+  assert.ok(pad.includes('aria-label="打开选择题答题卡"'), '缺少答题卡入口')
+  assert.ok(pad.includes('aria-label="打开格纸答题纸"'), '缺少答题纸入口')
+
+  // 4. 答题纸：全屏、可关闭、不碰草稿
+  assert.ok(/placement="bottom"/.test(pad), '答题纸应以底部全屏方式展开')
+  assert.ok(/height="100dvh"/.test(pad), '答题纸必须全屏（100dvh）')
+  assert.ok(pad.includes("styles={{ body: { padding: 0, overflow: 'hidden' } }}"), '答题纸浮层不应自带内边距')
+  const examBlock = pad.slice(pad.indexOf('title="格纸答题纸"'), pad.indexOf('</Drawer>', pad.indexOf('title="格纸答题纸"')))
+  assert.ok(/onClose=\{\(\) => setExamOpen\(false\)\}/.test(examBlock), '答题纸必须能关闭')
+  assert.ok(/destroyOnHidden/.test(examBlock), '答题纸关闭应卸载')
+  assert.ok(!/strokesRef\.current\s*=/.test(examBlock), '答题纸不得改动笔迹（关闭会销毁草稿）')
+  assert.ok(!/photosRef\.current\s*=/.test(examBlock), '答题纸不得改动图片')
+
+  // 5. 答题纸复用同一份实现与存档
+  assert.ok(pad.includes("from '@/components/features/ExamSheet'"), '草稿工作台应复用 ExamSheet')
+  const examPage = await readFile(new URL('../src/pages/tools/exam-grid/index.tsx', import.meta.url), 'utf8')
+  assert.ok(examPage.includes("from '@/components/features/ExamSheet'"), '独立答题纸页也应使用同一组件')
+  assert.ok(exam.includes("const DRAFT_KEY = 'exam-grid:v2'"), '答题纸存档键必须保持 exam-grid:v2（数据互通）')
+
+  // 6. 格纸列宽必须按纸张内容区算，否则窄屏会裁掉右侧
+  assert.ok(exam.includes('paperRef'), '答题纸需要纸张容器 ref')
+  assert.ok(
+    /paper\.clientWidth[\s\S]{0,160}paddingLeft/.test(exam),
+    '列宽必须扣除纸张自身的左右内边距，否则整行会超出纸张、右侧字被裁'
+  )
+  assert.ok(/wrap\.clientHeight/.test(exam), '行数应基于容器高度（浮层里 window.innerHeight 不等于可用高度）')
+
+  // 7. 快捷键 F2 / F3
+  assert.ok(/event\.key === 'F2'/.test(pad), '缺少 F2 开合答题卡')
+  assert.ok(/event\.key === 'F3'/.test(pad), '缺少 F3 开合答题纸')
+})
