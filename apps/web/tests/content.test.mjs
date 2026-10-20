@@ -310,3 +310,59 @@ test('内容原语集中定义，页面不再自定义视觉', async () => {
     assert.match(css, new RegExp(`\\.legacy-${route}`), `${route} 的样式缺少作用域前缀`)
   }
 })
+
+test('草稿纸可以粘贴图片，并在图上画图、擦除笔迹而不擦图', async () => {
+  /*
+   * 用户诉求（原话）：粘贴出来的图片保持原样大小，可以在图上画图，
+   * 也可以擦除，清空时把图片一起清空。
+   *
+   * 实现上有两条不能改的约束：
+   * 1. 图片必须是独立一层，夹在纸与笔迹之间 —— 橡皮走 destination-out，
+   *    只清笔迹层；如果图与笔迹同层，擦辅助线会把题图擦出洞。
+   * 2. 尺寸在粘贴那一刻算好并固定（1:1 原样大小），之后窗口缩放不再重排，
+   *    否则用户画在图上辅助线会与图错位。
+   */
+  const page = await readFile(new URL('../src/pages/tools/scratchpad/index.tsx', import.meta.url), 'utf8')
+
+  // 三层画布：纸 / 图片 / 笔迹
+  assert.ok(page.includes('photoRef'), '草稿纸缺少图片层画布引用')
+  assert.ok(/ref=\{photoRef\}/.test(page), '图片层 canvas 未挂到 photoRef')
+  const photoCanvas = page.indexOf('ref={photoRef}')
+  const inkCanvas = page.indexOf('ref={inkRef}')
+  assert.ok(photoCanvas > 0 && inkCanvas > photoCanvas, '图片层必须排在笔迹层之前（笔迹盖在图上）')
+
+  // 粘贴入口：paste 事件 + 文件选择 + 拖拽
+  assert.ok(/addEventListener\('paste'/.test(page), '草稿纸未监听 paste 事件')
+  assert.ok(page.includes('clipboardData'), '粘贴处理未读剪贴板')
+  assert.ok(page.includes("data.files"), '粘贴时应读 clipboardData.files')
+  assert.ok(page.includes("file.type.startsWith('image/')"), '粘贴时未按 image/* 过滤')
+  assert.ok(page.includes('type="file"'), '缺少文件选择入口（手机上没有 Ctrl+V）')
+  assert.ok(/addEventListener\('drop'/.test(page), '缺少拖拽图片入口')
+
+  // 原样大小：只有放不下才缩，且保持等比
+  assert.ok(/function fitPhoto/.test(page), '缺少图片尺寸计算')
+  assert.ok(/Math\.min\(1,/.test(page), '图片尺寸必须「最多 1 倍」，不允许放大')
+  assert.ok(page.includes('原样大小'), '粘贴后应提示原样大小')
+  assert.ok(page.includes('缩到'), '图片放不下时应提示已缩放')
+
+  // 图片上可画、橡皮不擦图：靠图层顺序 + destination-out 保证
+  assert.ok(page.includes('destination-out'), '橡皮必须用 destination-out 只清笔迹层')
+  assert.ok(!/globalCompositeOperation\s*=\s*'destination-out'[\s\S]{0,400}redrawPhotos/.test(page), '橡皮不应触发图片层重绘')
+
+  // 撤销 / 清空必须连图片一起处理
+  assert.ok(page.includes("type: 'photos'"), '撤销栈缺少图片操作类型')
+  assert.ok(/clearAll[\s\S]{0,400}photosRef\.current = \[\]/.test(page), '清空时未同时清掉图片')
+  assert.ok(/type: 'clear'[\s\S]{0,80}photos/.test(page), '清空命令必须记住图片以支持撤销')
+
+  // 存档：图片随草稿保存并恢复，且做合法性校验
+  assert.ok(/function isPhoto/.test(page), '恢复图片时未校验数据')
+  assert.ok(page.includes("item.src.startsWith('data:image/')"), '只允许内联 data: 图片，避免存档注入外链')
+  assert.ok(/photos: photoList/.test(page) || /photos: photosRef\.current/.test(page), '存档未包含图片')
+
+  // 导出：三层都要合成，否则导出的图会少一层
+  assert.ok(/drawImage\(paper[\s\S]{0,200}drawImage\(photo[\s\S]{0,200}drawImage\(ink/.test(page), '导出时必须按 纸→图→笔迹 合成')
+
+  // 窗口尺寸变化时图片与笔迹必须同吃一个位移，否则辅助线会与图错位
+  assert.ok(/const shiftIntoView = useCallback/.test(page), '缺少「图片跑出可视区」的纠正逻辑')
+  assert.ok(/stroke\.p\[i\] \+= dx/.test(page) && /stroke\.p\[i \+ 1\] \+= dy/.test(page), '平移图片时必须同步平移笔迹')
+})
