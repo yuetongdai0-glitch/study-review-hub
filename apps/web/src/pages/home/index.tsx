@@ -72,12 +72,12 @@ export default function HomePage() {
       </a>
 
       <header className="site-header">
-        <a className="brand" href="./" aria-label="返回备考复习总览首页">
+        <Link className="brand" to="/" aria-label="返回备考复习总览首页">
           <span className="brand-mark" aria-hidden="true">
             复
           </span>
           <span>备考复习总览</span>
-        </a>
+        </Link>
         <div className="note-count">
           {moduleMetas.length} 份笔记 + {toolMetas.length} 个练习工具
         </div>

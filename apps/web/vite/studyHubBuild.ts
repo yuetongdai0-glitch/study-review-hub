@@ -81,11 +81,28 @@ self.addEventListener('fetch', (event) => {
   /*
    * HTML 与清单永不落盘。GitHub Pages 会给 HTML 打 max-age=600，
    * 只靠 no-store 不够，这里再拼一个随构建变化的参数，让 CDN 在换构建后必然回源。
+   *
+   * 关键坑：目录路径（如 /tools/scratchpad）会被 Pages 301 跳到带斜杠的地址，
+   * fetch 跟随重定向后拿到的是 redirected 响应；而页面导航请求的 redirect 模式是
+   * manual，**用 redirected 响应回复导航会被浏览器判成 ERR_FAILED**（表现为
+   * 「第一次能进、点刷新就崩」）。所以这里必须把重定向响应重建成干净的 Response。
    */
   if (isDocument || isManifest) {
     const fresh = new URL(url.href)
     fresh.searchParams.set('_build', BUILD)
-    event.respondWith(fetch(fresh.href, { cache: 'no-store', credentials: 'same-origin' }))
+    event.respondWith(
+      (async () => {
+        const response = await fetch(fresh.href, { cache: 'no-store', credentials: 'same-origin' })
+        if (!response.redirected) return response
+        // redirected 响应不能再直接回给导航请求：克隆正文并丢弃重定向标记。
+        const body = await response.blob()
+        return new Response(body, {
+          status: response.status,
+          statusText: response.statusText,
+          headers: response.headers,
+        })
+      })()
+    )
     return
   }
 

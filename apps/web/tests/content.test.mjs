@@ -273,6 +273,53 @@ test('草稿纸笔宽滑块必须有可用宽度', async () => {
   assert.ok(block.includes('{prefs.size}'), '应显示当前笔粗数值')
 })
 
+test('路由必须是 hash 模式（否则刷新会 ERR_FAILED）', async () => {
+  /*
+   * 事故复盘：路径式路由下 `/tools/scratchpad` 会被 Pages 301 到带斜杠地址，
+   * 而 SW 用「跟随重定向后的响应」回复页面导航时，浏览器（导航的 redirect 模式是
+   * manual）会判 ERR_FAILED —— 表现为「第一次能进，点刷新就崩」。
+   * 改成 HashRouter 后服务端永远只看到 `/`，从根上不会出现。
+   */
+  const app = await readFile(new URL('../src/App.tsx', import.meta.url), 'utf8')
+  assert.ok(app.includes('<HashRouter>'), '必须使用 HashRouter')
+  assert.ok(!app.includes('BrowserRouter'), '不得再使用 BrowserRouter（刷新会 ERR_FAILED）')
+
+  // 旧路径式书签要被改写成 hash，否则会直接落到首页。
+  const legacy = await readFile(new URL('../src/router/legacyPath.ts', import.meta.url), 'utf8')
+  assert.match(legacy, /replaceState/, '缺少旧路径改写成 hash 的逻辑')
+  assert.match(legacy, /#\$\{candidate\}/, '改写目标应为 `#/<路由>`')
+
+  // 入口必须在渲染前完成改写。
+  const main = await readFile(new URL('../src/main.tsx', import.meta.url), 'utf8')
+  const callAt = main.indexOf('normalizeLegacyPath()')
+  const renderAt = main.indexOf('createRoot')
+  assert.ok(callAt > 0, '入口未调用 normalizeLegacyPath')
+  assert.ok(callAt < renderAt, '路径改写必须早于 React 渲染，否则会先闪首页')
+})
+
+test('hash 模式下页内锚点不能冲掉路由', async () => {
+  /*
+   * HashRouter 的路由就存在 `#/xxx` 里。正文里大量 `<a href="#b1">`、
+   * 侧栏 `href="#s3"`，若走浏览器默认行为会把 hash 改成 `#s3` → 直接 404。
+   * 统一用事件委托拦成平滑滚动，只放行 `#/` 开头的路由型 hash。
+   */
+  const anchors = await readFile(new URL('../src/utils/inPageAnchors.ts', import.meta.url), 'utf8')
+  assert.match(anchors, /closest\('a\[href\^="#"\]'\)/, '缺少锚点事件委托')
+  assert.match(anchors, /href\.startsWith\('#\/'\)/, '必须放行路由型 hash（#/xxx）')
+  assert.match(anchors, /scrollIntoView/, '锚点应改为滚动定位')
+
+  const main = await readFile(new URL('../src/main.tsx', import.meta.url), 'utf8')
+  assert.ok(main.includes('installInPageAnchors()'), '入口未安装锚点拦截')
+})
+
+test('原生刷新必须保留 hash', async () => {
+  // 剥掉 hash 会让 WebView 刷新后回到首页，用户以为「刷新把我踢出去了」。
+  const updater = await readFile(new URL('../src/utils/nativeUpdater.ts', import.meta.url), 'utf8')
+  const fn = updater.slice(updater.indexOf('export async function reloadWeb'))
+  assert.ok(!/split\('#'\)/.test(fn), 'reloadWeb 不能剥掉 hash')
+  assert.match(fn, /location\.href/, '应基于完整地址（含 hash）重载')
+})
+
 test('每个模块都通过统一骨架渲染', async () => {
   for (const route of ROUTES) {
     const source = await readFile(new URL(`../src/pages/reading/${route}/index.tsx`, import.meta.url), 'utf8')

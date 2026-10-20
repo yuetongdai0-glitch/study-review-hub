@@ -90,7 +90,10 @@ export function manifestUrl(): string {
 export async function reloadWeb(): Promise<boolean> {
   const plugin = updater()
   if (!plugin || typeof plugin.reloadWeb !== 'function') return false
-  await plugin.reloadWeb({ url: window.location.href.split('?')[0].split('#')[0] })
+  // 必须带 hash：hash 模式下载荷全在 `#/xxx` 里，剥掉 hash 会被带回首页。
+  const url = new URL(window.location.href)
+  url.searchParams.delete('_r')
+  await plugin.reloadWeb({ url: url.toString() })
   return true
 }
 

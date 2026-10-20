@@ -1,22 +1,11 @@
 import { App as AntdApp, ConfigProvider, theme as antdTheme } from 'antd'
 import zhCN from 'antd/locale/zh_CN'
 import { useEffect, useLayoutEffect, useMemo } from 'react'
-import { BrowserRouter, HashRouter } from 'react-router-dom'
+import { HashRouter } from 'react-router-dom'
 import AppRouter from '@/router/AppRouter'
 import { useResolvedTheme } from '@/hooks/useResolvedTheme'
 import { applyThemeToDocument } from '@/theme/runtime'
 import { themeColorTokens } from '@/theme/tokens'
-
-/**
- * 部署子路径。
- *
- * @remarks 网页挂在 GitHub Pages 的 `/study-review-hub/` 下；
- * App 内 base 为 `/`，且必须用 HashRouter（file:// 下没有服务端路由回退）。
- */
-const BASE_URL = import.meta.env.BASE_URL
-const BASENAME = BASE_URL.replace(/\/$/, '')
-/** 宿主在构建期确定（vite --mode mobile），不依赖运行时探测。 */
-const NATIVE = __STUDY_HUB_MOBILE__
 
 /**
  * 应用根组件：主题、Ant Design 令牌、路由容器。
@@ -69,14 +58,19 @@ export default function App() {
     [theme, tokens],
   )
 
-  const router = NATIVE ? (
+  /*
+   * 统一用 **HashRouter**（网页 + App 一致）。
+   *
+   * 原因：GitHub Pages 会把 `/tools/scratchpad` 301 跳到带斜杠的地址，
+   * 而 Service Worker 用「跟随重定向后的响应」回复页面导航时，
+   * 浏览器（导航请求的 redirect 模式是 manual）会直接判 ERR_FAILED —— 表现为
+   * 「第一次能进，点刷新就崩」。改成 hash 后服务端永远只看到 `/`，
+   * 从根上不存在这类路径解析问题，深链接也可以随便刷新。
+   */
+  const router = (
     <HashRouter>
       <AppRouter />
     </HashRouter>
-  ) : (
-    <BrowserRouter basename={BASENAME}>
-      <AppRouter />
-    </BrowserRouter>
   )
 
   return (

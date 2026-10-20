@@ -370,8 +370,16 @@ public class AppUpdatePlugin extends Plugin {
              * 草稿纸笔迹、答题纸草稿、答题卡记录都存在 WebStorage 里，
              * 清缓存是为了拿最新网页，不该把用户的资料一起删掉。
              */
-            // 加时间戳，绕开任何中间层与 Service Worker 对 HTML 的残留。
-            String fresh = url + (url.contains("?") ? "&" : "?") + "_r=" + System.currentTimeMillis();
+            /*
+             * 加时间戳绕开任何中间层对 HTML 的残留。
+             * 注意 hash 模式下载荷在 `#` 之后，参数必须插在 `#` **之前**，
+             * 否则会变成 `.../#/tools/scratchpad?_r=...`，把路由整个改坏。
+             */
+            int hashAt = url.indexOf('#');
+            String before = hashAt >= 0 ? url.substring(0, hashAt) : url;
+            String after = hashAt >= 0 ? url.substring(hashAt) : "";
+            String fresh = before + (before.contains("?") ? "&" : "?") + "_r="
+                + System.currentTimeMillis() + after;
             webView.loadUrl(fresh);
             call.resolve();
         });

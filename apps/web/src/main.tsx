@@ -9,9 +9,23 @@ import './styles/legacy-home.css'
 import './styles/legacy-shell.css'
 import './styles/legacy-hub-nav.css'
 import { installViewportHeightSync } from './utils/viewportHeight'
+import { installInPageAnchors } from './utils/inPageAnchors'
+import { normalizeLegacyPath } from './router/legacyPath'
 
 // 视口变量必须早于 React 首帧写入，避免移动端先按 100vh 渲染再跳到真实高度。
 installViewportHeightSync()
+
+/*
+ * hash 路由下，页内 `<a href="#s3">` 会把路由 hash 覆盖成 `#s3`（直接 404）。
+ * 用事件委托统一拦成平滑滚动，正文里成百上千个锚点就不用逐个改。
+ */
+installInPageAnchors()
+
+/*
+ * 必须早于 React 渲染：把 `/tools/scratchpad` 这类旧路径式链接
+ * 改写成 `#/tools/scratchpad`，否则会先渲染首页再跳，闪一下。
+ */
+normalizeLegacyPath()
 
 const rootElement = document.getElementById('root')
 
