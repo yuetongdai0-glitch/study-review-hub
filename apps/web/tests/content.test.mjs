@@ -215,6 +215,64 @@ test('设置入口必须始终可见，不能被长列表挤到末尾', async ()
   assert.match(actions[0], /bottom:0/, '侧栏动作区需贴底')
 })
 
+test('首页栅格：只有真·练习工具能整行通栏', async () => {
+  /*
+   * 两个真实事故：
+   * 1. 规范词速查被标成 subject-tool，而该类的样式是 grid-column: 1 / -1，
+   *    导致它在两列栅格里提前换行、把上一张卡右侧留空，整页看着很乱。
+   * 2. 右边框用 nth-child(odd) 判断，但第 1 张卡跨两列，奇偶从此错位，
+   *    竖线全跑到左列卡片上。
+   */
+  const home = await readFile(new URL('../src/pages/home/index.tsx', import.meta.url), 'utf8')
+  const start = home.indexOf('ACCENT_CLASS')
+  const end = home.indexOf('function SubjectCard')
+  assert.ok(start > 0 && end > start, '未找到 ACCENT_CLASS 配置块')
+  const map = home.slice(start, end)
+  /* 键名只有含连字符时才加引号（'choice-quiz'），标识符写法是裸的（scratchpad）：\n     两种都要能匹配，否则断言会静默取不到行。 */
+  const findEntry = (text, key) =>
+    text.split('\n').find((item) => item.includes(`'${key}':`) || new RegExp(`\\b${key}:`).test(item))
+  for (const tool of ['exam-grid', 'choice-quiz', 'scratchpad']) {
+    const line = findEntry(map, tool)
+    assert.ok(line, `缺少 ${tool} 的配色配置`)
+    assert.ok(line.includes('subject-tool'), `${tool} 应为通栏工具卡`)
+  }
+  // 笔记类一律不能带 subject-tool（否则通栏）。
+  for (const note of ['vocab', 'politics', 'words', 'comprehensive-a']) {
+    const line = findEntry(map, note)
+    assert.ok(line, `缺少 ${note} 的配色配置`)
+    assert.ok(!line.includes('subject-tool'), `${note} 是笔记类，不能标成通栏的 subject-tool`)
+  }
+
+  const css = await readFile(new URL('../src/styles/legacy-home.css', import.meta.url), 'utf8')
+  assert.ok(
+    !/\.subject:nth-child\(odd\)\s*\{/.test(css),
+    '右边框不能用 nth-child(odd)：首卡跨两列会让奇偶错位'
+  )
+  assert.match(css, /\.subject:nth-child\(even\)/, '右边框应使用 nth-child(even)')
+
+  // 每个被引用的配色类都必须真的有定义，否则会静默落回默认色。
+  for (const name of ['vocab', 'politics', 'words', 'paper', 'scratch']) {
+    assert.match(css, new RegExp(`\\.subject-${name}\\s*\\{`), `缺少 .subject-${name} 的颜色定义`)
+  }
+})
+
+test('草稿纸笔宽滑块必须有可用宽度', async () => {
+  /*
+   * 事故：Slider 放在固定 w-[104px] 的 flex 容器里、自身没设 flex，
+   * 实测根元素宽度被压成 0 —— 用户看到的是「拖不动、也没进度条」。
+   * 现在要求：外层给足宽度，Slider 自身 flex-1 + min-w-0，并显示当前数值。
+   */
+  const page = await readFile(new URL('../src/pages/tools/scratchpad/index.tsx', import.meta.url), 'utf8')
+  // 「笔粗」在文件里出现两次（注释 + JSX），必须定位到 JSX 那一处。
+  const anchor = page.indexOf('>笔粗</span>')
+  assert.ok(anchor > 0, '未找到笔粗控件的 JSX 标记')
+  const block = page.slice(anchor - 400, anchor + 700)
+  assert.ok(block.includes('flex-1'), 'Slider 必须 flex-1 撑满可用宽度')
+  assert.ok(block.includes('min-w-0'), 'Slider 需 min-w-0，避免被 flex 压成 0 宽')
+  assert.ok(/w-\[1[0-9]{2}px\]/.test(block), '滑块容器宽度不能小于 140px')
+  assert.ok(block.includes('{prefs.size}'), '应显示当前笔粗数值')
+})
+
 test('每个模块都通过统一骨架渲染', async () => {
   for (const route of ROUTES) {
     const source = await readFile(new URL(`../src/pages/reading/${route}/index.tsx`, import.meta.url), 'utf8')

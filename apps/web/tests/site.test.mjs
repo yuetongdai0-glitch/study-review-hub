@@ -61,6 +61,25 @@ function headingChunks(html, tag) {
   return html.match(re) || []
 }
 
+test('全站标签页标题统一为「测试」', async () => {
+  /*
+   * 用户明确要求：所有网页标识都叫「测试」（与旧站一致）。
+   * 路由副本都是 index.html 的全量拷贝，所以改源头一处即全站生效；
+   * 但要确保运行期没有别处改 document.title，否则会把「测试」覆盖掉。
+   */
+  const html = await readText(new URL('../index.html', import.meta.url))
+  assert.ok(html.includes('<title>测试</title>'), 'index.html 的标签页标题应为「测试」')
+  assert.ok(!html.includes('<title>备考复习'), '标题不应再带「备考复习」前缀')
+
+  const srcDir = new URL('../src/', import.meta.url)
+  for (const entry of await readdir(srcDir, { recursive: true })) {
+    const file = String(entry)
+    if (!/\.(ts|tsx)$/.test(file)) continue
+    const code = await readText(new URL(file, srcDir))
+    assert.ok(!code.includes('document.title'), `${file} 不应设置 document.title（标题统一为「测试」）`)
+  }
+})
+
 test('首页包含全部复习入口的有效路由', async () => {
   // 首页已由 React 渲染，卡片来自路由表；校验「路由表覆盖全部模块」这一事实。
   const registry = await readText(new URL('../src/router/routeRegistry.ts', import.meta.url))

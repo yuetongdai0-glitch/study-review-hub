@@ -841,15 +841,22 @@ export default function ScratchpadPage() {
 
         <span className="mx-0.5 hidden h-5 w-px bg-line sm:block" />
 
-        <div className="flex w-[104px] items-center gap-1.5">
+        {/*
+          笔宽滑块：外层必须给足宽度且让 Slider 自己撑满（flex-1 + min-w-0）。
+          之前写成固定 w-[104px] 且 Slider 未设 flex，实测滑块根元素宽度被压成 0，
+          表现为「拖不动、也没有轨道」。
+        */}
+        <div className="flex w-[168px] shrink-0 items-center gap-2">
           <span className="shrink-0 text-[11.5px] text-ink-3">笔粗</span>
           <Slider
+            className="m-0 min-w-0 flex-1"
             min={1}
             max={24}
             value={prefs.size}
             tooltip={{ open: false }}
             onChange={(value) => updatePrefs({ size: value })}
           />
+          <span className="w-4 shrink-0 text-right font-num text-[11.5px] text-ink-3">{prefs.size}</span>
         </div>
 
         <Select

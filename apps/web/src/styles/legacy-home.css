@@ -174,7 +174,13 @@ a {
   transition: background-color 180ms ease, color 180ms ease;
 }
 
-.subject:nth-child(odd) {
+/*
+ * 右边框用「偶数列」表达：第 1 张卡跨两列（1 / -1），
+ * 用 nth-child(odd) 判断奇偶会让第 2 张卡落到「奇数」上，之后每张都错位，
+ * 表现为左列卡片有竖线、右列没有，看着很乱。
+ * 跨列卡片本身已 border-right:0，auto-placement 下奇偶即左右列。
+ */
+.subject:nth-child(even) {
   border-right: 1px solid var(--line);
 }
 
@@ -271,6 +277,7 @@ a {
 .subject-grass { --subject-color: var(--grass); }
 .subject-a { --subject-color: #1f5fd6; }
 .subject-politics { --subject-color: #5b4bd6; }
+.subject-vocab { --subject-color: #b45309; }
 .subject-paper { --subject-color: #0f766e; }
 .subject-words { --subject-color: #b45309; }
 .subject-scratch { --subject-color: #0f766e; }

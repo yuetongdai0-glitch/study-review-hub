@@ -3,7 +3,14 @@ import { allModules, moduleMetas, toolMetas } from '@/router/routeRegistry'
 import type { ModuleMeta } from '@/router/types'
 import { accentTokens } from '@/theme/tokens'
 
-/** 旧首页每个科目卡片的配色类名，保证观感与旧站一致。 */
+/**
+ * 旧首页每个科目卡片的配色类名，保证观感与旧站一致。
+ *
+ * @remarks 注意 `subject-tool` 在样式里是 `grid-column: 1 / -1`（整行通栏），
+ * 只能给 exam-grid / choice-quiz / scratchpad 这三个真·练习工具用。
+ * 规范词速查（vocab）是**笔记类**，一旦标成 subject-tool 就会在栅格里提前换行，
+ * 把上一张卡的右侧留空，整页看着就乱了。
+ */
 const ACCENT_CLASS: Record<string, string> = {
   'graphic-reasoning': 'subject-blue',
   'comprehensive-d': 'subject-violet',
@@ -13,12 +20,12 @@ const ACCENT_CLASS: Record<string, string> = {
   analogy: 'subject-grass',
   'data-analysis': 'subject-teal',
   'comprehensive-a': 'subject-a',
+  vocab: 'subject-vocab',
+  politics: 'subject-politics',
+  words: 'subject-words',
   'exam-grid': 'subject-tool',
   'choice-quiz': 'subject-tool subject-quiz',
-  vocab: 'subject-tool subject-vocab',
-  politics: 'subject-politics',
   scratchpad: 'subject-tool subject-scratch',
-  words: 'subject-words',
 }
 
 /**
