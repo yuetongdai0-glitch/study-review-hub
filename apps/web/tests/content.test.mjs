@@ -411,3 +411,49 @@ test('草稿纸页不能出现滚动条，浮层不能把文档撑宽', async ()
   // 3. 越长的提示文案不再挂在贴边按钮上（156px 宽是当初溢出的直接原因）
   assert.ok(!page.includes('清空（连图片一起清）'), '贴边的清空按钮不要挂长文案，说明应放进弹窗')
 })
+
+test('草稿纸可以只清笔记、保留题图（重做同一道题）', async () => {
+  /*
+   * 用户诉求（原话）：「应该有只清除这些笔记的操作，有时候想重新做一下这道题」。
+   *
+   * 语义上要分清两件事，不能合并成一个按钮：
+   * - 粘贴的图片 = 题目本身，是作答的前提；
+   * - 笔迹 = 作答痕迹，才是要擦掉的东西。
+   * 所以「清除笔记」只清 strokes、photos 原样保留；
+   * 「清空」才是全清（这是用户上一轮明确要求的：清空要把图片一起清空）。
+   */
+  const page = await readFile(new URL('../src/pages/tools/scratchpad/index.tsx', import.meta.url), 'utf8')
+
+  // 1. 有独立的 clearInk，且只动 strokes
+  assert.ok(/function clearInk\s*\(/.test(page), '缺少「只清笔记」的实现')
+  // 切片必须止于下一个函数，否则会把 clearAll 的 photosRef 赋值也算进来（误判）。
+  const clearInkBody = page.slice(
+    page.indexOf('function clearInk'),
+    page.indexOf('function clearAll')
+  )
+  assert.ok(/strokesRef\.current = \[\]/.test(clearInkBody), '清除笔记必须把笔迹清空')
+  assert.ok(!/photosRef\.current\s*=/.test(clearInkBody), '清除笔记绝不能动图片')
+  assert.ok(clearInkBody.includes('redrawInk'), '清除笔记后要重绘笔迹层')
+
+  // 2. 撤销栈要有独立的 ink 命令（不能复用 clear，否则撤销会连图片一起回滚）
+  assert.ok(page.includes("type: 'ink'"), '撤销栈缺少只针对笔迹的命令类型')
+  assert.ok(/command\.type === 'ink'/.test(page), '撤销/重做未处理 ink 命令')
+  assert.ok(/type: 'ink', prev, next: \[\]/.test(page), '清除笔记未写入撤销记录（应当可撤销）')
+
+  // 3. 工具栏有独立按钮，且与「清空」是两个按钮
+  assert.ok(page.includes('aria-label="清除笔记（保留图片）"'), '缺少「清除笔记」按钮')
+  assert.ok(page.includes('PenOff'), '「清除笔记」应使用 PenOff 图标，与「清空」的垃圾桶区分')
+  const toolCount = (page.match(/<Tooltip title=/g) || []).length
+  assert.ok(toolCount >= 7, `工具栏按钮数量异常（${toolCount}），清除笔记与清空应各自独立`)
+
+  // 4. 没有笔记时按钮禁用（避免空点）
+  assert.ok(/disabled=\{!hasInk\}/.test(page), '无笔记时应禁用「清除笔记」')
+  assert.ok(/const hasInk = strokesRef\.current\.length > 0/.test(page), '缺少 hasInk 派生状态')
+
+  // 5. 清空弹窗要按「有没有图」换措辞，并把用户引向正确的按钮
+  assert.ok(/photoCount > 0 \? '全部清空（笔记 \+ 图片）？' : '清空笔记？'/.test(page), '清空弹窗标题未区分是否有图片')
+  assert.ok(page.includes('请用工具栏的「清除笔记」'), '清空弹窗应提示「只想重做这道题就用清除笔记」')
+
+  // 6. 清除笔记保留图片位置尺寸（看图作答的前提）
+  assert.ok(!/clearInk[\s\S]{0,600}shiftIntoView/.test(page), '清除笔记不应触发图片平移')
+})

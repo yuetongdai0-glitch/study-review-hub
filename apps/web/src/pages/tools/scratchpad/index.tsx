@@ -1,5 +1,5 @@
 import { App, Button, Modal, Select, Slider, Tooltip } from 'antd'
-import { Download, Eraser, ImageOff, ImagePlus, Pen, RotateCcw, RotateCw, Trash2 } from 'lucide-react'
+import { Download, Eraser, ImageOff, ImagePlus, Pen, PenOff, RotateCcw, RotateCw, Trash2 } from 'lucide-react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useSectionStore } from '@/store/sectionStore'
 import type { NavSection } from '@/types/content'
@@ -40,6 +40,8 @@ type Command =
   | { type: 'add'; s: Stroke }
   | { type: 'clear'; s: Stroke[]; photos: Photo[] }
   | { type: 'photos'; prev: Photo[]; next: Photo[] }
+  /** 只换笔迹、不碰图片（「重新做这道题」用），所以单独一条命令而不是复用 clear。 */
+  | { type: 'ink'; prev: Stroke[]; next: Stroke[] }
 /** 工具偏好。 */
 type Prefs = { tool: Tool; color: string; custom: boolean; size: number; paper: Paper }
 
@@ -587,6 +589,10 @@ export default function ScratchpadPage() {
       redrawInk()
       redrawPhotos()
       setPhotoVersion((value) => value + 1)
+    } else if (command.type === 'ink') {
+      strokesRef.current = command.prev
+      redoRef.current.push({ type: 'ink', prev: command.prev, next: command.next })
+      redrawInk()
     } else {
       photosRef.current = command.prev
       redoRef.current.push({ type: 'photos', prev: command.prev, next: command.next })
@@ -618,6 +624,10 @@ export default function ScratchpadPage() {
       redrawInk()
       redrawPhotos()
       setPhotoVersion((value) => value + 1)
+    } else if (command.type === 'ink') {
+      strokesRef.current = command.next
+      undoRef.current.push({ type: 'ink', prev: command.prev, next: command.next })
+      redrawInk()
     } else {
       photosRef.current = command.next
       undoRef.current.push({ type: 'photos', prev: command.prev, next: command.next })
@@ -626,6 +636,34 @@ export default function ScratchpadPage() {
     }
     setHistoryVersion((value) => value + 1)
     scheduleSave()
+  }
+
+  /**
+   * 只清掉全部笔迹，**保留图片**（「重新做这道题」的核心操作）。
+   *
+   * @returns 无返回。
+   * @remarks 粘贴的题目图片是题目本身，不是作答痕迹；只擦手写与辅助线，
+   * 图还在原位，用户可以就着同一道题再算一遍。
+   * 这个动作可撤销，所以不做二次确认——重做一道题要的就是快。
+   */
+  function clearInk() {
+    if (!strokesRef.current.length) {
+      message.info('当前没有手写笔记')
+      return
+    }
+    const prev = strokesRef.current
+    strokesRef.current = []
+    undoRef.current.push({ type: 'ink', prev, next: [] })
+    if (undoRef.current.length > MAX_UNDO) undoRef.current.shift()
+    redoRef.current = []
+    redrawInk()
+    setHistoryVersion((value) => value + 1)
+    scheduleSave()
+    message.success(
+      photosRef.current.length
+        ? `已清掉 ${prev.length} 笔笔记，题目图片保留（可用撤销找回）`
+        : `已清掉 ${prev.length} 笔笔记（可用撤销找回）`
+    )
   }
 
   /**
@@ -1194,7 +1232,8 @@ export default function ScratchpadPage() {
   const canUndo = undoRef.current.length > 0 || historyVersion < 0
   const canRedo = redoRef.current.length > 0
   const photoCount = photosRef.current.length
-  const isEmpty = historyVersion >= 0 && strokesRef.current.length === 0 && photoCount === 0
+  const hasInk = strokesRef.current.length > 0
+  const isEmpty = historyVersion >= 0 && !hasInk && photoCount === 0
   return (
     <div className="flex h-[100dvh] flex-col">
       {/* 工具栏 */}
@@ -1295,10 +1334,23 @@ export default function ScratchpadPage() {
           <Tooltip title="重做（Shift+Cmd/Ctrl+Z）" placement="bottomRight">
             <Button size="small" icon={<RotateCw size={14} />} disabled={!canRedo} onClick={redo} />
           </Tooltip>
+          {/*
+            「重新做这道题」的主力按钮：只擦手写，题目图片留着。
+            和右边的「清空」是两件事，不要合并——图片是题目本身，不是作答痕迹。
+          */}
+          <Tooltip title="清除笔记（保留题目图片，可撤销）" placement="bottomRight">
+            <Button
+              size="small"
+              icon={<PenOff size={14} />}
+              disabled={!hasInk}
+              onClick={clearInk}
+              aria-label="清除笔记（保留图片）"
+            />
+          </Tooltip>
           <Tooltip title="导出图片" placement="bottomRight">
             <Button size="small" icon={<Download size={14} />} onClick={exportPng} />
           </Tooltip>
-          <Tooltip title="清空" placement="bottomRight">
+          <Tooltip title={photoCount > 0 ? '全部清空（笔记 + 图片）' : '清空笔记'} placement="bottomRight">
             <Button size="small" danger icon={<Trash2 size={14} />} onClick={() => setConfirmOpen(true)} aria-label="清空" />
           </Tooltip>
         </div>
@@ -1351,9 +1403,9 @@ export default function ScratchpadPage() {
 
       <Modal
         open={confirmOpen}
-        title="清空草稿？"
+        title={photoCount > 0 ? '全部清空（笔记 + 图片）？' : '清空笔记？'}
         onCancel={() => setConfirmOpen(false)}
-        okText="清空"
+        okText={photoCount > 0 ? '全部清空' : '清空'}
         cancelText="取消"
         okButtonProps={{ danger: true }}
         onOk={() => {
@@ -1363,7 +1415,10 @@ export default function ScratchpadPage() {
         }}
       >
         <p className="m-0 text-[13.5px] text-ink-2">
-          笔迹与粘贴的图片会一起清空；清空后仍可用撤销（Cmd/Ctrl+Z）恢复，但关闭页面后不可找回。
+          {photoCount > 0
+            ? '手写笔记和粘贴的题目图片会一起清空。只想重做这道题、保留题目图片的话，请用工具栏的「清除笔记」。'
+            : '会清空全部手写笔记（没有粘贴图片）。'}
+          清空后仍可用撤销（Cmd/Ctrl+Z）恢复，但关闭页面后不可找回。
         </p>
       </Modal>
     </div>
