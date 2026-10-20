@@ -366,3 +366,48 @@ test('草稿纸可以粘贴图片，并在图上画图、擦除笔迹而不擦�
   assert.ok(/const shiftIntoView = useCallback/.test(page), '缺少「图片跑出可视区」的纠正逻辑')
   assert.ok(/stroke\.p\[i\] \+= dx/.test(page) && /stroke\.p\[i \+ 1\] \+= dy/.test(page), '平移图片时必须同步平移笔迹')
 })
+
+test('草稿纸页不能出现滚动条，浮层不能把文档撑宽', async () => {
+  /*
+   * 用户反馈（原话）：「哪里来的多余滚动条整页面都在抖动」「鼠标移动到右上就会」。
+   *
+   * 真实成因链条（两个 bug 叠加）：
+   * 1. 右上角「清空」的 Tooltip 默认 top 居中，宽 156px 以按钮中心为轴向右展开，
+   *    右边缘越出视口 19px → 文档 scrollWidth 变大 → 出现横向滚动条；
+   * 2. 滚动条把 clientWidth 挤小 15px → 布局重排 → antd 重算浮层位置 → 不再越界
+   *    → 滚动条消失 → 又越界……每秒反复若干次，整页看起来在抖。
+   *
+   * 修复两道：
+   * - 靠边按钮的 Tooltip 必须朝内侧对齐（不再以中心为轴向外溢出）；
+   * - 工具页本身锁死文档滚动（整屏应用，本就不该有页面滚动条）。
+   * 断言盯住这两点，避免以后有人把 placement 删掉或改回默认顶部居中。
+   */
+  const page = await readFile(new URL('../src/pages/tools/scratchpad/index.tsx', import.meta.url), 'utf8')
+
+  // 1. 工具页整屏，不允许文档滚动
+  assert.ok(
+    /documentElement[\s\S]{0,200}style\.overflow = 'hidden'/.test(page),
+    '草稿纸页必须锁死 documentElement 滚动，否则浮层越界会拉出滚动条并引发抖动'
+  )
+  assert.ok(
+    /body\.style\.overflow = 'hidden'/.test(page),
+    '草稿纸页必须同时锁住 body 滚动'
+  )
+  // 卸载时要还原，别把其他页也锁死
+  assert.ok(/return \(\) => \{[\s\S]{0,200}root\.style\.overflow = prev/.test(page), '离开页面必须还原 html 的 overflow')
+
+  // 2. 右侧工具按钮的浮层必须右对齐；左侧的必须左对齐
+  const tail = page.slice(page.indexOf('ml-auto flex items-center gap-1'))
+  const actionTools = [...tail.matchAll(/<Tooltip title=[^\n]*?placement="([^"]+)"/g)].map((m) => m[1])
+  assert.ok(actionTools.length >= 5, `右侧动作组应至少有 5 个带 placement 的 Tooltip，实际 ${actionTools.length} 个`)
+  assert.ok(
+    actionTools.every((p) => p === 'bottomRight'),
+    `右侧动作组浮层必须统一 bottomRight，实际：${actionTools.join(',')}`
+  )
+  const zoomStart = page.indexOf('flex items-center gap-1')
+  const zoomBlock = page.slice(zoomStart, zoomStart + 700)
+  assert.ok(zoomBlock.includes('placement="bottomLeft"'), '最左侧画笔/橡皮浮层必须 bottomLeft，避免向左越出视口')
+
+  // 3. 越长的提示文案不再挂在贴边按钮上（156px 宽是当初溢出的直接原因）
+  assert.ok(!page.includes('清空（连图片一起清）'), '贴边的清空按钮不要挂长文案，说明应放进弹窗')
+})

@@ -1100,6 +1100,29 @@ export default function ScratchpadPage() {
     }
   }, [writePrefs, save])
 
+  /**
+   * 工具页是整屏应用，锁死文档滚动。
+   *
+   * @returns 清理函数（还原原有 inline overflow）。
+   * @remarks 这里踩过一个很隐蔽的坑：Tooltip 是绝对定位的浮层，鼠标移到右上角
+   * 「清空」时它会从按钮中心向右偏移、越出视口 19px，于是出现横向滚动条；
+   * 滚动条又把 clientWidth 挤小 15px → 布局重排 → antd 重算浮层位置 → 不再越界 →
+   * 滚动条消失 → 又越界……一秒钟内反复横跳，整页看起来在抖。
+   * 浮层位置已按「靠右对齐」修正，这里再兜一层：页面根本不产生滚动条，
+   * 任何浮层越界都不会再引发重排循环。
+   */
+  useEffect(() => {
+    const root = document.documentElement
+    const prevHtml = root.style.overflow
+    const prevBody = document.body.style.overflow
+    root.style.overflow = 'hidden'
+    document.body.style.overflow = 'hidden'
+    return () => {
+      root.style.overflow = prevHtml
+      document.body.style.overflow = prevBody
+    }
+  }, [])
+
   /* 快捷键：Cmd/Ctrl+Z 撤销，Shift 加它重做，B/E 切工具。 */
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
@@ -1172,13 +1195,13 @@ export default function ScratchpadPage() {
   const canRedo = redoRef.current.length > 0
   const photoCount = photosRef.current.length
   const isEmpty = historyVersion >= 0 && strokesRef.current.length === 0 && photoCount === 0
-
   return (
     <div className="flex h-[100dvh] flex-col">
       {/* 工具栏 */}
       <div className="flex flex-wrap items-center gap-2 border-b border-line bg-surface px-3 py-2">
         <div className="flex items-center gap-1">
-          <Tooltip title="画笔（B）">
+          {/* 最左侧按钮的浮层朝左下展开，否则会从按钮中心向左越出视口。 */}
+          <Tooltip title="画笔（B）" placement="bottomLeft">
             <Button
               size="small"
               type={prefs.tool === 'pen' ? 'primary' : 'default'}
@@ -1186,7 +1209,7 @@ export default function ScratchpadPage() {
               onClick={() => updatePrefs({ tool: 'pen' })}
             />
           </Tooltip>
-          <Tooltip title="橡皮（E）">
+          <Tooltip title="橡皮（E）" placement="bottomLeft">
             <Button
               size="small"
               type={prefs.tool === 'eraser' ? 'primary' : 'default'}
@@ -1253,25 +1276,30 @@ export default function ScratchpadPage() {
         />
 
         <div className="ml-auto flex items-center gap-1">
-          <Tooltip title="插入图片（也可直接 Ctrl/⌘+V 粘贴，或把图拖进来）">
+          {/*
+            这一排贴着视口右边缘，浮层必须 bottomRight 右对齐。
+            默认的 top 居中对齐会让浮层以按钮中心为轴向右溢出（实测越界 19px，
+            进而拉出横向滚动条，与重排形成抖动循环）。
+          */}
+          <Tooltip title="插入图片（也可 Ctrl/⌘+V 粘贴）" placement="bottomRight">
             <Button size="small" icon={<ImagePlus size={14} />} onClick={() => fileRef.current?.click()} aria-label="插入图片" />
           </Tooltip>
           {photoCount > 0 && (
-            <Tooltip title={`移除图片（${photoCount} 张，橡皮不会擦图，避免擦辅助线时把题图擦花）`}>
+            <Tooltip title={`移除图片（${photoCount} 张）`} placement="bottomRight">
               <Button size="small" icon={<ImageOff size={14} />} onClick={removePhotos} aria-label="移除图片" />
             </Tooltip>
           )}
-          <Tooltip title="撤销（Cmd/Ctrl+Z）">
+          <Tooltip title="撤销（Cmd/Ctrl+Z）" placement="bottomRight">
             <Button size="small" icon={<RotateCcw size={14} />} disabled={!canUndo} onClick={undo} />
           </Tooltip>
-          <Tooltip title="重做（Shift+Cmd/Ctrl+Z）">
+          <Tooltip title="重做（Shift+Cmd/Ctrl+Z）" placement="bottomRight">
             <Button size="small" icon={<RotateCw size={14} />} disabled={!canRedo} onClick={redo} />
           </Tooltip>
-          <Tooltip title="导出图片">
+          <Tooltip title="导出图片" placement="bottomRight">
             <Button size="small" icon={<Download size={14} />} onClick={exportPng} />
           </Tooltip>
-          <Tooltip title="清空（连图片一起清）">
-            <Button size="small" danger icon={<Trash2 size={14} />} onClick={() => setConfirmOpen(true)} />
+          <Tooltip title="清空" placement="bottomRight">
+            <Button size="small" danger icon={<Trash2 size={14} />} onClick={() => setConfirmOpen(true)} aria-label="清空" />
           </Tooltip>
         </div>
 
@@ -1334,7 +1362,9 @@ export default function ScratchpadPage() {
           message.success('已清空，可用撤销恢复')
         }}
       >
-        <p className="m-0 text-[13.5px] text-ink-2">清空后仍可用撤销（Cmd/Ctrl+Z）恢复，但关闭页面后不可找回。</p>
+        <p className="m-0 text-[13.5px] text-ink-2">
+          笔迹与粘贴的图片会一起清空；清空后仍可用撤销（Cmd/Ctrl+Z）恢复，但关闭页面后不可找回。
+        </p>
       </Modal>
     </div>
   )
