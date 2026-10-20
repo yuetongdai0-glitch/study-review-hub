@@ -688,3 +688,76 @@ test('答题纸能点格定位、光标可见、纸张封边；答题卡点周�
   const quizDrawer = pad.slice(pad.indexOf('title="选择题答题卡"'), pad.indexOf('</Drawer>', pad.indexOf('title="选择题答题卡"')))
   assert.ok(/mask=\{false\}/.test(quizDrawer), '答题卡抽屉不能加 mask（会挡住画布）')
 })
+
+test('格纸：方向键按网格走、拼音组合期间不上屏、外框闭合', async () => {
+  /*
+   * 用户三条反馈（原话）：「键盘的上下左右也应该能控制光标」
+   * 「在打拼音阶段最好不写上去」「最外层的线呢」。
+   *
+   * 三个真 bug：
+   * 1. 方向键交给原生 textarea 处理 → 换行按像素宽度算，与 cols 列网格无关：
+   *    实测 → 原地不动、↓ 不换行、↑ 直接跳到 0；
+   * 2. 拼音组合期间 onChange 把 `nihao` 当成 5 个字写进格子（实测字数 0 → 5）；
+   * 3. 格子只画 border-b + border-r，第一行没有上边、第一列没有左边，
+   *    纸张边框又只有 1px 浅灰 → 看起来「最外层没有线」。
+   */
+  const exam = await readFile(new URL('../src/components/features/ExamSheet.tsx', import.meta.url), 'utf8')
+
+  // 1. 方向键 / Home / End 自己接管，按 cols 计算行列
+  assert.ok(/function moveCaret\s*\(key: string\)/.test(exam), '方向键必须自己实现 moveCaret（原生按像素换行，与网格不符）')
+  for (const key of ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End']) {
+    assert.ok(exam.includes(`event.key === '${key}'`), `缺少 ${key} 的接管`)
+  }
+  assert.ok(/next = pos - cols/.test(exam) && /next = pos \+ cols/.test(exam), '上下键必须按列数移动（±cols），不是 ±1')
+  assert.ok(/next = Math\.max\(0, Math\.min\(limit, next\)\)/.test(exam), '方向键必须夹在合法范围内，避免越界')
+  // 首行按 ↑ / 末行按 ↓ 必须原地不动；clamp 到 0 会「跳到第一格」，是用户报过的观感问题
+  assert.ok(
+    /if \(pos - cols < 0\) return true/.test(exam),
+    '第一行按 ↑ 必须原地不动（直接 clamp 会跳到第一格）'
+  )
+  assert.ok(
+    /if \(pos \+ cols > limit\) return true/.test(exam),
+    '末行按 ↓ 必须原地不动'
+  )
+  // 只允许一个光标：选区一律折叠，且隐藏输入层的 ::selection 涂透明
+  assert.ok(/function collapseSelection/.test(exam), '需要 collapseSelection，否则残留选区会显示成「第二个光标」')
+  assert.ok(/if \(editor\.selectionStart !== editor\.selectionEnd\)/.test(exam), 'collapseSelection 应只在有选区时折叠')
+  assert.ok(/data-exam-editor="true"/.test(exam), '隐藏输入层需要标记，供 ::selection 规则命中')
+
+  // 2. 拼音组合期间不上屏
+  assert.ok(/composingRef/.test(exam), '缺少输入法组合状态标记')
+  assert.ok(/onCompositionStart=/.test(exam) && /onCompositionEnd=/.test(exam), '必须监听 compositionstart/end')
+  const changeBlock = exam.slice(exam.indexOf('onChange={(event) => {'), exam.indexOf('onChange={(event) => {') + 400)
+  assert.ok(/composingRef\.current\)\s*return/.test(changeBlock), 'onChange 在组合期间必须直接返回，否则拼音会被当成正文')
+  const keyBlock = exam.slice(exam.indexOf('onKeyDown={(event) => {'), exam.indexOf('onKeyDown={(event) => {') + 300)
+  assert.ok(/if \(composingRef\.current\) return/.test(keyBlock), '输入法选词时方向键要归输入法，不能抢')
+
+  // 3. 外框闭合：第一行补上边、第一列补左边，纸张边框加粗
+  assert.ok(/firstRow \? 'border-t-\[1\.5px\]'/.test(exam), '第一行格子必须补上边框，否则格子区顶部没有线')
+  assert.ok(/firstCol \? 'border-l-\[1\.5px\]'/.test(exam), '第一列格子必须补左边框，否则格子区左侧没有线')
+  assert.ok(/const firstRow = index < cols/.test(exam) && /const firstCol = index % cols === 0/.test(exam), '首行/首列判定缺失')
+  assert.ok(/border-2 border-\[#aeb6c4\]/.test(exam), '纸张边框应加粗并加深，否则「最外层」看不出封边')
+})
+
+test('格纸隐藏输入层的选区必须透明（否则像多了个第二光标）', async () => {
+  /*
+   * 用户反馈：「我按下键怎么跑到左下角了」「我按上键盘跑到上面第一个了」。
+   * 其中一半原因就是那个红框——它不是一个独立的光标元素，
+   * 而是隐藏 textarea 里的**选区**被系统强调色涂出来的一块（macOS 强调色偏红时最明显），
+   * 尺寸恰好是一个格子，位置却跟着原生 textarea 的像素换行走（按 ↓ 到文本末尾、按 ↑ 到 0）。
+   *
+   * 修复：格纸只做单点插入，选区没有意义 —— 一是统一折叠选区，
+   * 二是把 `::selection` 涂透明，杜绝任何「第二个光标」的视觉。
+   */
+  const style = await readFile(new URL('../src/styles.css', import.meta.url), 'utf8')
+  assert.match(
+    style,
+    /\[data-exam-editor='true'\]::selection\s*\{[^}]*background:\s*transparent/,
+    '隐藏输入层的 ::selection 必须涂透明，否则选区会被系统强调色画成一个假光标'
+  )
+  assert.match(
+    style,
+    /\[data-exam-editor='true'\]::-moz-selection\s*\{[^}]*background:\s*transparent/,
+    'Firefox 需要 ::-moz-selection'
+  )
+})

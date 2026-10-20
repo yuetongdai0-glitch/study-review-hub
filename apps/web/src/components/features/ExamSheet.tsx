@@ -52,6 +52,13 @@ export default function ExamSheet() {
   const caretRef = useRef<HTMLDivElement>(null)
   const undoRef = useRef<Array<{ text: string; start: number }>>([])
   const saveTimerRef = useRef(0)
+  /**
+   * 输入法组合中标记。
+   *
+   * @remarks 打拼音时 DOM 里会先出现 `nihao` 这类字母，组合结束才换成「你好」。
+   * 如果不拦，这些字母会被当成 5 个字写进格子（用户看到的「拼音也上屏了」）。
+   */
+  const composingRef = useRef(false)
 
   const [text, setText] = useState('')
   const [cols, setCols] = useState(25)
@@ -232,6 +239,63 @@ export default function ExamSheet() {
       node.style.width = `${cell}px`
       node.style.height = `${cell}px`
     }
+  }
+
+  /**
+   * 折叠可能残留的选区。
+   *
+   * @returns 无返回。
+   * @remarks 格纸只做单点插入（`deleteSmart` 也只处理折叠态），
+   * 一旦留下选区，浏览器会用系统强调色把那个格子涂成一块——
+   * 用户会以为「出现了第二个光标」。这里统一折叠到末端。
+   */
+  function collapseSelection() {
+    const editor = editorRef.current
+    if (!editor) return
+    if (editor.selectionStart !== editor.selectionEnd) {
+      const pos = editor.selectionEnd ?? 0
+      editor.setSelectionRange(pos, pos)
+    }
+  }
+
+  /**
+   * 按「网格行列」移动光标（不是按 textarea 的像素换行）。
+   *
+   * @param key 方向键或 Home/End。
+   * @returns 是否已处理。
+   * @remarks 原生 textarea 的换行取决于容器像素宽度，
+   * 与格纸的 `cols` 列毫无关系：实测按 ↓ 不会下一行、按 ↑ 会直接跳到 0。
+   * 所以四个方向键 + Home/End 全部自己算，`placeCaret` 负责必要时补占位空格。
+   */
+  function moveCaret(key: string) {
+    const editor = editorRef.current
+    if (!editor) return false
+    const pos = editor.selectionStart ?? 0
+    const lineStart = Math.floor(pos / cols) * cols
+    // 向下/End 允许走到「已写内容之后一点」，但不让存档被大片空格撑爆。
+    const limit = Math.min(rows * cols - 1, Math.max(text.length + cols * 2, text.length))
+    let next = pos
+    if (key === 'ArrowLeft') {
+      // 行首按 ← 退回上一行末，符合线性文本的直觉。
+      next = pos - 1
+    } else if (key === 'ArrowRight') {
+      next = pos + 1
+    } else if (key === 'ArrowUp') {
+      // 已经在第一行就原地不动： clamp 到 0 会「跳到第一格」，是错的。
+      if (pos - cols < 0) return true
+      next = pos - cols
+    } else if (key === 'ArrowDown') {
+      if (pos + cols > limit) return true
+      next = pos + cols
+    } else if (key === 'Home') {
+      next = lineStart
+    } else if (key === 'End') {
+      next = Math.min(lineStart + cols - 1, Math.max(text.length, lineStart))
+    }
+    next = Math.max(0, Math.min(limit, next))
+    placeCaret(next)
+    collapseSelection()
+    return true
   }
 
   /**
@@ -444,7 +508,7 @@ export default function ExamSheet() {
         {/* 网格总宽 = 列数 × 格宽，用 max-w-full 限住，避免窄屏被撑出横向滚动 */}
         <div
           ref={paperRef}
-          className="relative mx-auto w-full max-w-full overflow-hidden rounded-[10px] border-[1.5px] border-line-strong bg-white p-1.5 shadow-[0_1px_2px_rgba(16,24,40,.06),0_8px_24px_rgba(16,24,40,.08)] sm:max-w-[920px] sm:p-3"
+          className="relative mx-auto w-full max-w-full overflow-hidden rounded-[8px] border-2 border-[#aeb6c4] bg-white p-1.5 shadow-[0_1px_2px_rgba(16,24,40,.08),0_10px_28px_rgba(16,24,40,.10)] sm:max-w-[920px] sm:p-3"
         >
           <div className="relative" data-focus={focused ? 'true' : 'false'}>
             {/* 网格：纯展示，不接收输入 */}
@@ -459,10 +523,23 @@ export default function ExamSheet() {
               {Array.from({ length: rows * cols }, (_, index) => {
                 const char = text[index]
                 const isNewline = char === '\n'
+                /*
+                 * 每个格子只画右下两条边，靠第一行/第一列补上另一侧，
+                 * 整块格纸才是闭合的矩形（用户说的「最外层的线」）。
+                 * 用 box-border 下的固定宽高，加边不会改变列宽。
+                 */
+                const firstRow = index < cols
+                const firstCol = index % cols === 0
                 return (
                   <div
                     key={index}
-                    className="grid place-items-center border-r border-b border-line-subtle text-ink"
+                    className={[
+                      'grid place-items-center border-b border-r border-line text-ink',
+                      firstRow ? 'border-t-[1.5px]' : '',
+                      firstCol ? 'border-l-[1.5px]' : '',
+                    ]
+                      .filter(Boolean)
+                      .join(' ')}
                     style={{ height: cell, width: cell }}
                     onPointerDown={(event) => {
                       event.preventDefault()
@@ -482,6 +559,13 @@ export default function ExamSheet() {
               所有点击都会被它吃掉，格子的 onPointerDown 永远不触发，
               表现为「点格子没反应、字只会加在开头」。键盘输入不受影响——
               焦点由格子的 placeCaret 主动 focus() 给到它。
+
+              另外两条也是硬约束：
+              · 输入法（拼音）组合期间**绝不能上屏**：DOM 里会依次出现 n/i/h/a/o，
+                组合结束才换成「你好」。组合中不 setText → React 不重渲染 →
+                拼音留在 DOM 里由输入法自己管，compositionEnd 再一次性提交；
+              · 方向键/Home/End 必须自己接管：textarea 的换行按像素宽度算，
+                与 cols 列网格毫无关系（实测按 ↑ 会直接跳到 0）。
             */}
             <textarea
               ref={editorRef}
@@ -492,7 +576,29 @@ export default function ExamSheet() {
               className="absolute inset-0 h-full w-full resize-none border-0 bg-transparent p-0 text-transparent caret-transparent outline-none"
               style={{ fontSize: cell * 0.5, lineHeight: 1, pointerEvents: 'none' }}
               aria-label="答题纸输入区"
+              data-exam-editor="true"
+              onCompositionStart={() => {
+                composingRef.current = true
+              }}
+              onCompositionEnd={(event) => {
+                composingRef.current = false
+                const next = event.currentTarget.value
+                if (next === text) {
+                  updateCaret()
+                  return
+                }
+                pushUndo(text)
+                setText(next)
+                setRows((value) => Math.max(value, Math.ceil(next.length / cols) + 2))
+                scheduleSave(next, brief)
+                requestAnimationFrame(() => {
+                  collapseSelection()
+                  updateCaret()
+                })
+              }}
               onChange={(event) => {
+                // 组合中的插入事件一律忽略，否则拼音会被当成正文写进格子。
+                if (composingRef.current) return
                 pushUndo(text)
                 const next = event.target.value
                 setText(next)
@@ -500,15 +606,38 @@ export default function ExamSheet() {
                 updateCaret()
                 scheduleSave(next, brief)
               }}
-              onSelect={updateCaret}
-              onClick={updateCaret}
+              onSelect={() => {
+                // 组合期间光标位置在拼音里跳，别拿它当格子位置。
+                if (composingRef.current) return
+                // 有选区就折起来：格纸只做单点插入，留着选区会显示成「第二个光标」。
+                collapseSelection()
+                updateCaret()
+              }}
+              onClick={() => {
+                if (!composingRef.current) updateCaret()
+              }}
               onFocus={() => setFocused(true)}
               onBlur={() => setFocused(false)}
               onKeyDown={(event) => {
+                // 输入法正在选词：方向键/空格/回车都归输入法，不能抢。
+                if (composingRef.current) return
                 const meta = event.metaKey || event.ctrlKey
                 if (meta && event.key.toLowerCase() === 'z') {
                   event.preventDefault()
                   undo()
+                  return
+                }
+                if (meta) return
+                if (
+                  event.key === 'ArrowLeft' ||
+                  event.key === 'ArrowRight' ||
+                  event.key === 'ArrowUp' ||
+                  event.key === 'ArrowDown' ||
+                  event.key === 'Home' ||
+                  event.key === 'End'
+                ) {
+                  event.preventDefault()
+                  moveCaret(event.key)
                   return
                 }
                 if (event.key === 'Backspace' && deleteSmart(-1)) {
