@@ -417,7 +417,7 @@
     <a class="nav-link" data-kw="方程法 设未知数 不定方程 整体替换 奇偶 尾数" href="#s2">二、方程法</a>
     <a class="nav-link" data-kw="周期问题 余数 最小公倍数 星期 生肖" href="#s3">三、周期问题</a>
     <a class="nav-link" data-kw="工程问题 赋值 效率 完工时间 周期循环 费用" href="#s4">四、工程问题</a>
-    <a class="nav-link" data-kw="几何 三角形 勾股定理 特殊角 相似 面积 体积 涂色 蝴蝶定理 正六边形 三角函数 正弦 余弦 正切 sin cos tan 仰角 俯角 坡度 垂径定理 弦长 雷达 航行 点到直线距离 四边形 对角线 四块面积 面积比 蝴蝶定理 对角之积" href="#s5">五、几何问题</a>
+    <a class="nav-link" data-kw="几何 三角形 勾股定理 特殊角 相似 面积 体积 涂色 蝴蝶定理 正六边形 三角函数 正弦 余弦 正切 sin cos tan 仰角 俯角 坡度 垂径定理 弦长 雷达 航行 点到直线距离 四边形 对角线 四块面积 面积比 蝴蝶定理 对角之积 翻折 相似比 定位 最短路径 距离和" href="#s5">五、几何问题</a>
     <a class="nav-link" data-kw="经济利润 成本 售价 利润 利润率 折扣 打折" href="#s6">六、经济利润问题</a>
   </div>
 
@@ -2058,6 +2058,7 @@
                 <li><b>AA 判定</b>：两个角对应相等 → 两三角形相似。考场最常见的是"平行线 + 公共角"造出来的相似。</li>
                 <li><b>面积比 = 相似比的平方</b>：边长放大 2 倍，面积放大 4 倍（这就是"同比例放缩"的来源）。</li>
                 <li><b>用途</b>：求不方便直接量的长度（树高、塔高、影长问题）、求面积比。</li>
+                <li><b>还能「定位」</b>：最短路径题翻折之后，落脚点 S 把线段按「两点到直线的距离之比」内分（△A′DS ∽ △BCS）—— 这是考场上用相似比直接算出「距离」的典型用法，见第 16 块的例题 30。</li>
               </ul>
             </div>
             <div class="example">
@@ -2556,6 +2557,15 @@
                 <b>两点同侧</b>：利用镜像对称，做其中一个点的镜像，连线下最短<br>
                 <b>两点异侧</b>：直接连线（两点之间线段最短）
               </div>
+              <div class="key-box" style="margin-top:8px;">
+                <b>★ 第二型：翻折之后，落脚点到底在哪？—— 用相似比「定位」，再算距离</b><br>
+                <b>翻折只管方向，相似比才管位置。</b>设两点在直线同侧，到直线的距离分别为 h₁、h₂（矮的那个记为 A，垂足 D），把 A 翻折到 A′ 后连 A′B 交直线于 S：<br>
+                　　△A′DS ∽ △BCS（<b>直角 + 对顶角</b>，AA 判定）→ <b>DS : SC = A′D : BC = h₁ : h₂</b>。<br>
+                　　也就是说：<b>S 把 DC 按 h₁ : h₂ 内分，而且离矮的那个点（h₁ 一侧）更近</b>；已知总长时直接 <b>SC = DC × h₂/(h₁+h₂)</b>。<br>
+                <b>① 先找定值：</b>若题目求的是「到多点距离之和」，先把<b>不随 S 变</b>的部分拎出来（比如 S 在 CD 上 → SD + SC = DC 是常数），剩下的才是要最小化的部分。<br>
+                <b>② 再翻折化折为直：</b>最大值 = A′B（勾股定理）；<b>③ 最后用相似比求 S 的位置。</b><br>
+                <b>坑：</b>① 比例是<b>垂距之比</b>，不是图上看着像的哪段；② 算出的 S 若落在<b>线段外</b>，说明最小值在端点取得，此时取端点算；③ 距离和题别忘了把「定值那部分」加回去。
+              </div>
             </div>
             <div class="example">
         <div class="example-header">📝 例题29 · 最短路径（镜像翻折）</div>
@@ -2569,7 +2579,66 @@
           </div>
         </div>
       </div>
-            <div class="block">
+                        <div class="example">
+              <div class="example-header">📝 例题30 · 翻折 + 相似比定位（幼儿园选址 · 2017 江苏）</div>
+              <div class="example-body">
+                <div class="example-q">某市规划建设的 4 个小区，分别位于<b>直角梯形 ABCD</b> 的 4 个顶点处（如图），<b>AD = 4 千米，CD = BC = 12 千米</b>。欲在 CD 上选一点 S 建幼儿园，使其与 4 个小区的直线距离之和为最小，则 <b>S 与 C 的距离</b>是：</div>
+                <div class="example-opts">A. 3 千米　B. 4 千米　C. 6 千米　D. 9 千米</div>
+                <div class="example-answer">
+                        <b>解析：</b>先看「距离和」里哪部分<b>不随 S 变</b>：S 在 CD 上 → <b>SD + SC = CD = 12</b> 是常数。<br>
+                        所以要最小化的只有 <b>SA + SB</b>。<br>
+                        ① <b>翻折化折为直</b>：把 A 沿 CD 翻折到 A′（A′D = AD = 4，与 A 分居 CD 两侧），则 SA = SA′，'
+                        SA + SB = SA′ + SB ≥ <b>A′B</b>，等号在 S 落在 A′B 上时成立。<br>
+                        ② <b>相似比定位置</b>：△A′DS 与 △BCS 中 ∠A′DS = ∠BCS = 90°、∠A′SD = ∠BSC（对顶角）→ 相似，'
+                        于是 <b>DS : SC = A′D : BC = 4 : 12 = 1 : 3</b>。<br>
+                        ③ <b>算距离</b>：又 DS + SC = 12 → <b>SC = 12 × 3/4 = 9</b> 千米（DS = 3）。<br>
+                        <b>验算：</b>S 取 DS = 3 时 SA = √(3² + 4²) = 5、SB = √(9² + 12²) = 15，距离和 = 5 + 15 + 12 = <b>32</b> 千米；'
+                        若把 S 放在 D 点，和是 0 + 12 + 4 + 12√2 ≈ 32.97 &gt; 32 ✓。<br>
+                        要点：<b>翻折定方向、相似比定位置</b>。比例 4 : 12 是两条<b>垂距</b>之比（AD、BC 都垂直于 CD），'
+                        别拿 4 : 12 直接当成 DS : DC —— DS : DC = 1 : 4，SC 才是 9。
+                        <figure class="fig">
+                          <svg viewBox="0 0 360 356" role="img" aria-label="直角梯形 ABCD 中 AD 为 4、CD 与 BC 为 12，把 A 沿 CD 翻折到 A 撇，连 A 撇 B 交 CD 于 S，相似比得 DS 比 SC 等于 1 比 3，SC 为 9 千米">
+                            <text x="8" y="20" font-size="12.5" fill="#4f7cff" font-weight="700">翻折 A → A′，连 A′B 交 CD 于 S</text>
+                            <polygon points="80,200 240,200 240,40 80,147" fill="#f7faff" stroke="#3f4a5f" stroke-width="1.7"/>
+                            <path d="M80 147 L80 253" fill="none" stroke="#9aa4b5" stroke-width="1.2" stroke-dasharray="4 3"/>
+                            <path d="M80 253 L240 40" fill="none" stroke="#c0392b" stroke-width="1.8"/>
+                            <path d="M80 147 L120 200" fill="none" stroke="#4f7cff" stroke-width="2.2"/>
+                            <path d="M120 200 L240 40" fill="none" stroke="#4f7cff" stroke-width="2.2"/>
+                            <path d="M228 200 L228 188 L240 188" fill="none" stroke="#ff6b6b" stroke-width="1.4"/>
+                            <path d="M92 147 L92 159" fill="none" stroke="#9aa4b5" stroke-width="1"/>
+                            <circle cx="80" cy="147" r="3.2" fill="#1a1a2e"/>
+                            <circle cx="240" cy="40" r="3.2" fill="#1a1a2e"/>
+                            <circle cx="80" cy="200" r="3.2" fill="#1a1a2e"/>
+                            <circle cx="240" cy="200" r="3.2" fill="#1a1a2e"/>
+                            <circle cx="80" cy="253" r="3.4" fill="#c0392b"/>
+                            <circle cx="120" cy="200" r="3.6" fill="#2ecc71"/>
+                            <text x="62" y="142" font-size="12.5" font-weight="700" fill="#1a1a2e">A</text>
+                            <text x="246" y="36" font-size="12.5" font-weight="700" fill="#1a1a2e">B</text>
+                            <text x="62" y="206" font-size="12.5" font-weight="700" fill="#1a1a2e">D</text>
+                            <text x="246" y="206" font-size="12.5" font-weight="700" fill="#1a1a2e">C</text>
+                            <text x="58" y="268" font-size="12.5" font-weight="700" fill="#c0392b">A′</text>
+                            <text x="112" y="218" font-size="12.5" font-weight="700" fill="#2ecc71">S</text>
+                            <text x="52" y="178" font-size="11.5" font-weight="700" fill="#b8730d">4</text>
+                            <text x="52" y="232" font-size="11.5" font-weight="700" fill="#c0392b">4</text>
+                            <text x="246" y="124" font-size="11.5" font-weight="700" fill="#b8730d">12</text>
+                            <path d="M122 230 L238 230" fill="none" stroke="#1a7a45" stroke-width="1.3"/>
+                            <path d="M128 226 L120 230 L128 234 M232 226 L240 230 L232 234" fill="none" stroke="#1a7a45" stroke-width="1.3"/>
+                            <text x="174" y="247" font-size="12" font-weight="700" fill="#1a7a45">9</text>
+                            <path d="M82 230 L118 230" fill="none" stroke="#1a7a45" stroke-width="1.3"/>
+                            <path d="M88 226 L80 230 L88 234 M112 226 L120 230 L112 234" fill="none" stroke="#1a7a45" stroke-width="1.3"/>
+                            <text x="97" y="247" font-size="12" font-weight="700" fill="#1a7a45">3</text>
+                            <text x="8" y="292" font-size="12.5" fill="#4a5568">△A′DS ∽ △BCS → DS : SC = 4 : 12 = 1 : 3</text>
+                            <text x="8" y="312" font-size="12.5" fill="#4a5568">DS + SC = 12 → SC = 12 × 3/4 = 9</text>
+                            <text x="8" y="334" font-size="12.5" font-weight="700" fill="#c0392b">验算：5 + 15 + 12 = 32 ＜ S 在 D 处约 32.97 ✓</text>
+                          </svg>
+                          <figcaption>S 在 CD 上 → <b>SD + SC 恒为 12</b>，只需 SA + SB 最小；翻折 A 到 A′ 后，
+                            S 就是 A′B 与 CD 的交点，位置由 <b>DS : SC = AD : BC</b> 这组相似比决定。</figcaption>
+                        </figure>
+                  <span class="correct">答案：D</span>
+                </div>
+              </div>
+            </div>
+<div class="block">
               <div class="block-title">17. 常用根号（背）</div>
               <table class="mini-table">
                 <tr><td>√2 ≈ 1.414</td><td>√3 ≈ 1.732</td></tr>
@@ -2579,7 +2648,7 @@
               </table>
             </div>
             <div class="example">
-        <div class="example-header">📝 例题30 · 常用根号（估算）</div>
+        <div class="example-header">📝 例题31 · 常用根号（估算）</div>
         <div class="example-body">
           <div class="example-q">一个直角三角形的两条直角边分别为 2 和 3，则斜边长约为多少？（√13 ≈ 3.61）</div>
           <div class="example-opts">A.3.4　B.3.6　C.3.9　D.4.2</div>
@@ -2604,7 +2673,7 @@
               <div class="tip-box">间隔类裁剪的死穴：只按一个方向排。先按「小边对大边」和「大边对大边」各算一遍，取大的。</div>
             </div>
                                     <div class="example">
-              <div class="example-header">📝 例题31 · 几何最优构造（覆盖型 · 2025 江苏）</div>
+              <div class="example-header">📝 例题32 · 几何最优构造（覆盖型 · 2025 江苏）</div>
               <div class="example-body">
                 <div class="example-q">某单位在边长为 200 米的正方形广场上组织一场招聘会，计划安排若干名工作人员提供咨询服务，每名工作人员入场后将分别随机站在一个位置上，其服务半径不超过 50√2 米。若要确保咨询服务全覆盖，则至少需要安排工作人员（　　）。</div>
                 <div class="example-opts">A.4 名　B.5 名　C.6 名　D.7 名</div>
@@ -2641,7 +2710,7 @@
               </div>
             </div>
             <div class="example">
-              <div class="example-header">📝 例题32 · 几何最优构造（裁剪型 · 2025 四川）</div>
+              <div class="example-header">📝 例题33 · 几何最优构造（裁剪型 · 2025 四川）</div>
               <div class="example-body">
                 <div class="example-q">某工匠计划在 700 × 115 厘米的钢板上裁剪若干大小为 70 × 40 厘米的钢片，且在裁剪时，每块钢片之间还应保留至少 5 厘米的间隔。问最多能裁剪出多少块？</div>
                 <div class="example-opts">A.23　B.24　C.25　D.26</div>
@@ -2700,7 +2769,7 @@
                 例（5,4,3）：√(3²+9²)=√90、√(5²+7²)=√74、√(4²+8²)=√80 → 最短 = √74。</div>
             </div>
               <div class="example">
-              <div class="example-header">📝 例题33 · 切长最短（2006 江西）</div>
+              <div class="example-header">📝 例题34 · 切长最短（2006 江西）</div>
               <div class="example-body">
                 <div class="example-q">右图为长、宽、高分别是 4cm、3cm、5cm 的长方体，如果一只小虫从顶点 A 爬到顶点 B（对角顶点），其爬行的最短距离为：</div>
                 <div class="example-opts">A. 4√5　B. √74　C. 3√10　D. √70</div>
