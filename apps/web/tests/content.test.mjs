@@ -918,3 +918,63 @@ test('材料：缩放不错位、一键清除笔记、材料内做题不跳走',
     '材料浮层不能加 mask：会变暗且吃掉点击，材料内再开答题卡就没法用了'
   )
 })
+
+test('材料：缩放坐标换算、缩放保住宿主位置、Ctrl+Z 撤销', async () => {
+  /*
+   * 用户反馈：「缩放后笔记位置偏移并且 ctrl+z 没用」「而且缩放后 位置变了」。
+   *
+   * 两个都是真 bug，且都能被这两条断言挡住：
+   * 1. `getBoundingClientRect()` 返回的是 **transform 缩放后**的尺寸，
+   *    直接 `clientX - rect.left` 得到屏幕像素，被当成 canvas 基准像素 →
+   *    放大 140% 时坐标整体放大 1.4 倍，笔迹偏向右下。
+   * 2. 缩放只改 zoom 不改 scrollTop：页高按比例变化，同一个 scrollTop
+   *    对应了不同内容，正在看的那页就跑出视口。
+   */
+  const view = await readFile(new URL('../src/features/materials/MaterialView.tsx', import.meta.url), 'utf8')
+
+  // 1. 坐标必须按 rect.width / clientWidth 还原
+  assert.ok(
+    /function toBasePoint/.test(view),
+    '必须有 toBasePoint：屏幕坐标要换算回纸张基准坐标'
+  )
+  assert.ok(
+    /rect\.width \/ canvas\.clientWidth/.test(view),
+    '换算比例必须取 rect.width / clientWidth（clientWidth 不受 transform 影响）'
+  )
+  assert.ok(
+    /\(event\.clientX - rect\.left\) \/ \(scale \|\| 1\)/.test(view),
+    '横坐标必须除以缩放比例，否则放大后笔迹偏移'
+  )
+  // 落笔与拖动都要用换算函数，不能留着裸 clientX - rect.left
+  assert.ok(!/p: \[event\.clientX - rect\.left/.test(view), '落笔点不能用裸屏幕坐标')
+  assert.ok(!/const x = item\.clientX - rect\.left/.test(view), '拖动采样点不能用裸屏幕坐标')
+
+  // 笔宽也要按缩放折算，否则放大后屏幕上笔画越来越粗
+  assert.ok(
+    /w: \(tool === 'eraser' \? Math\.max\(16, size \* 4\) : size\) \/ \(zoom \|\| 1\)/.test(view),
+    '笔宽必须除以 zoom：存的是屏幕粗细就会随缩放变化'
+  )
+
+  // 2. 缩放必须保住视口锚点
+  assert.ok(/function applyZoom/.test(view), '缩放要走 applyZoom，不能直接 setZoom')
+  assert.ok(
+    /node\.offsetHeight \* anchor\.ratio/.test(view),
+    '缩放后要按「新页高 × 原页内比例」还原滚动位置（纯乘 scrollTop 会有累积误差）'
+  )
+  assert.ok(!/onClick=\{\(\) => setZoom\(1\)\}/.test(view), '点百分比复位也要走 applyZoom，否则同样跳位')
+  assert.ok(
+    /data-page=\{index\}[\s\S]{0,80}className="page-slot/.test(view),
+    'data-page 必须挂外层占位槽：锚点按 offsetHeight 算，挂被缩放的 sheet 上会算错'
+  )
+
+  // 3. Ctrl+Z / Ctrl+Shift+Z
+  assert.ok(/document\.addEventListener\('keydown', onKey\)/.test(view), '撤销快捷键要挂在 document 上（canvas 拿不到焦点）')
+  assert.ok(/const isUndo = key === 'z' && !event\.shiftKey/.test(view), '缺少 Ctrl+Z 撤销')
+  assert.ok(/const isRedo = \(key === 'z' && event\.shiftKey\) \|\| key === 'y'/.test(view), '缺少 Ctrl+Shift+Z / Ctrl+Y 重做')
+  for (const tag of ['textarea', 'input']) {
+    assert.ok(
+      new RegExp(`tag === '${tag}'`).test(view),
+      `在 ${tag} 里按 Ctrl+Z 要放行给浏览器，不能抢用户输入框的撤销`
+    )
+  }
+})

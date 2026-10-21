@@ -127,6 +127,8 @@ export default function MaterialView({
   const notesRef = useRef<Map<number, NoteStroke[]>>(new Map())
   /** 每页撤销栈。 */
   const undoRef = useRef<Map<number, NoteStroke[][]>>(new Map())
+  /** 每页重做栈（撤销后可再前进）。 */
+  const redoRef = useRef<Map<number, NoteStroke[][]>>(new Map())
   /** 每页批注画布引用。 */
   const canvasRefs = useRef<Map<number, HTMLCanvasElement>>(new Map())
   /** 正在画的笔。 */
@@ -431,6 +433,41 @@ export default function MaterialView({
     return () => window.clearTimeout(timer)
   }, [current, syncRange])
 
+  /**
+   * 键盘撤销 / 重做。
+   *
+   * @remarks
+   * 用户反馈「ctrl+z 没用」—— 之前材料视图完全没绑快捷键。
+   * 这里挂在 document 上而不是 canvas 上：canvas 拿不到焦点，
+   * 用户按 Ctrl+Z 时焦点通常在 body 或工具栏按钮上。
+   * 同时要避开输入框：在答题纸 textarea、页码输入框里按 Ctrl+Z
+   * 应该走浏览器原生撤销，不能被我们抢走。
+   */
+  useEffect(() => {
+    if (!current) return
+    const onKey = (event: KeyboardEvent) => {
+      const meta = event.metaKey || event.ctrlKey
+      if (!meta) return
+      const key = event.key.toLowerCase()
+      const isUndo = key === 'z' && !event.shiftKey
+      const isRedo = (key === 'z' && event.shiftKey) || key === 'y'
+      if (!isUndo && !isRedo) return
+
+      // 正在输入框里打字时让浏览器自己处理，别抢用户的文本撤销。
+      const target = event.target as HTMLElement | null
+      const tag = target?.tagName?.toLowerCase()
+      if (tag === 'textarea' || tag === 'input' || target?.isContentEditable) return
+
+      event.preventDefault()
+      // 撤销作用于「当前正在看的那一页」。
+      const index = visiblePage - 1
+      if (isUndo) undoPage(index)
+      else redoPage(index)
+    }
+    document.addEventListener('keydown', onKey)
+    return () => document.removeEventListener('keydown', onKey)
+  })
+
   /* ---------------- 批注绘制 ---------------- */
 
   /**
@@ -445,9 +482,42 @@ export default function MaterialView({
     ctx.globalCompositeOperation = stroke.t === 'eraser' ? 'destination-out' : 'source-over'
     ctx.strokeStyle = stroke.c
     ctx.fillStyle = stroke.c
+    /*
+     * 这里用原值即可：canvas 的内部分辨率是「基准尺寸 × dpr」，与外层 zoom 无关，
+     * 缩放由 CSS transform 在显示层完成。所以存什么笔宽就画多宽，
+     * 放大时整幅（含笔画）一起变粗，视觉上才和纸上的字一致。
+     */
     ctx.lineWidth = stroke.w
     ctx.lineCap = 'round'
     ctx.lineJoin = 'round'
+  }
+
+  /**
+   * 把指针的屏幕坐标换算成「纸张基准坐标系」里的坐标。
+   *
+   * @param event 指针事件（或原生事件）。
+   * @param canvas 目标画布。
+   * @returns `{ x, y }`，已还原缩放。
+   * @remarks
+   * **缩放后笔记错位的根因就在这里**：页面被 `transform: scale(zoom)` 缩放过，
+   * `getBoundingClientRect()` 返回的是**屏幕上**的尺寸，而 canvas 内部坐标系
+   * 始终是基准像素（A4 就是 595×842）。直接 `clientX - rect.left` 得到的是屏幕像素，
+   * 放大 140% 时坐标就变成 1.4 倍，落笔位置整体偏向右下。
+   *
+   * 用 `rect.width / canvas.clientWidth` 反推比例（而不是引用 zoom 变量）：
+   * `clientWidth` 不受 transform 影响，这个比值天然包含缩放、dpr、以及将来任何变换，
+   * 除一下就能把屏幕坐标还原回基准坐标。
+   */
+  function toBasePoint(
+    event: { clientX: number; clientY: number },
+    canvas: HTMLCanvasElement,
+  ): { x: number; y: number } {
+    const rect = canvas.getBoundingClientRect()
+    const scale = canvas.clientWidth > 0 ? rect.width / canvas.clientWidth : 1
+    return {
+      x: (event.clientX - rect.left) / (scale || 1),
+      y: (event.clientY - rect.top) / (scale || 1),
+    }
   }
 
   /**
@@ -502,12 +572,14 @@ export default function MaterialView({
     if (event.pointerType === 'mouse' && event.button !== 0) return
     if (activeIdRef.current !== null) return
     activeIdRef.current = event.pointerId
-    const rect = event.currentTarget.getBoundingClientRect()
+    const canvas = event.currentTarget
+    const start = toBasePoint(event, canvas)
     const stroke: NoteStroke = {
       t: tool,
       c: color,
-      w: tool === 'eraser' ? Math.max(16, size * 4) : size,
-      p: [event.clientX - rect.left, event.clientY - rect.top],
+      // 笔宽也要按缩放折算：否则放大后屏幕上的笔画越来越粗、缩小后越来越细。
+      w: (tool === 'eraser' ? Math.max(16, size * 4) : size) / (zoom || 1),
+      p: [start.x, start.y],
     }
     currentRef.current = { page: index, stroke }
     const ctx = event.currentTarget.getContext('2d')
@@ -528,8 +600,8 @@ export default function MaterialView({
   function onMove(event: React.PointerEvent<HTMLCanvasElement>) {
     const active = currentRef.current
     if (!active || event.pointerId !== activeIdRef.current) return
-    const rect = event.currentTarget.getBoundingClientRect()
-    const ctx = event.currentTarget.getContext('2d')
+    const canvas = event.currentTarget
+    const ctx = canvas.getContext('2d')
     if (!ctx) return
     const native = event.nativeEvent
     const coalesced = typeof native.getCoalescedEvents === 'function' ? native.getCoalescedEvents() : []
@@ -537,8 +609,9 @@ export default function MaterialView({
     const stroke = active.stroke
     applyStyle(ctx, stroke)
     for (const item of list) {
-      const x = item.clientX - rect.left
-      const y = item.clientY - rect.top
+      const point = toBasePoint(item, canvas)
+      const x = point.x
+      const y = point.y
       const lx = stroke.p[stroke.p.length - 2]
       const ly = stroke.p[stroke.p.length - 1]
       if ((x - lx) ** 2 + (y - ly) ** 2 < MIN_DIST * MIN_DIST) continue
@@ -571,6 +644,8 @@ export default function MaterialView({
     undo.push(list.slice(0, -1))
     if (undo.length > UNDO_MAX) undo.shift()
     undoRef.current.set(index, undo)
+    // 画了新的一笔，之前的「重做」分支就作废了。
+    redoRef.current.delete(index)
     void persistNotes(index)
   }
 
@@ -604,7 +679,35 @@ export default function MaterialView({
       return
     }
     undoRef.current.set(index, undo)
+    // 当前状态压进重做栈，Ctrl+Shift+Z / Ctrl+Y 才能恢复回来。
+    const redo = redoRef.current.get(index) ?? []
+    redo.push(notesRef.current.get(index) ?? [])
+    if (redo.length > UNDO_MAX) redo.shift()
+    redoRef.current.set(index, redo)
     notesRef.current.set(index, previous)
+    redrawPage(index)
+    void persistNotes(index)
+  }
+
+  /**
+   * 重做某页（撤销的逆操作）。
+   *
+   * @param index 页序。
+   * @returns 无返回。
+   */
+  function redoPage(index: number) {
+    const redo = redoRef.current.get(index) ?? []
+    const next = redo.pop()
+    if (!next) {
+      message.info('这一页没有可重做的笔记')
+      return
+    }
+    redoRef.current.set(index, redo)
+    const undo = undoRef.current.get(index) ?? []
+    undo.push(notesRef.current.get(index) ?? [])
+    if (undo.length > UNDO_MAX) undo.shift()
+    undoRef.current.set(index, undo)
+    notesRef.current.set(index, next)
     redrawPage(index)
     void persistNotes(index)
   }
@@ -674,9 +777,64 @@ export default function MaterialView({
    * @returns 无返回。
    */
   function changeZoom(delta: number) {
-    setZoom((prev) => {
-      const next = Math.round((prev + delta) * 10) / 10
-      return Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, next))
+    applyZoom(zoom + delta)
+  }
+
+  /**
+   * 应用缩放，并**保住视口锚点**。
+   *
+   * @param value 目标倍率（会被夹到合法范围）。
+   * @returns 无返回。
+   * @remarks
+   * 用户反馈「缩放后位置变了」：只改 `zoom` 的话，页面高度按比例变大/变小，
+   * 但 `scrollTop` 还是旧像素值 —— 同一个数字对应了不同的内容，正在看的那一页
+   * 就跑到视口外去了（放大时往下跳，缩小时往上跳）。
+   *
+   * 做法：缩放前记下「视口顶部落在哪一页、页内偏移多少（按页高归一化）」，
+   * 缩放后等新布局生效，再按同样的页与比例把滚动位置还原。
+   * 用归一化比例而不是固定像素，缩放到任意倍率都能精确回到原处。
+   */
+  function applyZoom(value: number) {
+    const next = Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, Math.round(value * 10) / 10))
+    if (next === zoom) return
+    const scroller = scrollRef.current
+    if (!scroller) {
+      setZoom(next)
+      return
+    }
+
+    // 缩放前：找出「跨过视口顶部」的那一页，以及顶部落在该页内的比例。
+    const anchor = (() => {
+      const nodes = [...scroller.querySelectorAll<HTMLElement>('[data-page]')]
+      const top = scroller.scrollTop
+      let found: { index: number; ratio: number } | null = null
+      for (const node of nodes) {
+        const index = Number(node.dataset.page)
+        const nodeTop = node.offsetTop
+        const height = node.offsetHeight || 1
+        if (nodeTop <= top) found = { index, ratio: (top - nodeTop) / height }
+        else break
+      }
+      return found ?? { index: 0, ratio: 0 }
+    })()
+
+    setZoom(next)
+
+    // 等 React 提交 + 浏览器完成新一轮布局，再按比例还原滚动位置。
+    // 用两帧：第一帧样式可能还没回流完（尤其展开/收起图片时）。
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        const scroller2 = scrollRef.current
+        if (!scroller2) return
+        const node = scroller2.querySelector<HTMLElement>(`[data-page="${anchor.index}"]`)
+        if (!node) return
+        /*
+         * 直接用「新页高 × 同一比例」还原，而不是拿 scrollTop × ratio 相乘：
+         * 页间距、外边距这些不随缩放变化的量会让纯乘法累积误差，
+         * 按页内比例重算永远精确。
+         */
+        scroller2.scrollTop = node.offsetTop + node.offsetHeight * anchor.ratio
+      })
     })
   }
 
@@ -913,7 +1071,7 @@ export default function MaterialView({
           <button
             type="button"
             className="min-w-[42px] cursor-pointer border-0 bg-transparent font-num text-[11.5px] tabular-nums text-ink-2"
-            onClick={() => setZoom(1)}
+            onClick={() => applyZoom(1)}
             title="点击恢复 100%"
           >
             {Math.round(zoom * 100)}%
