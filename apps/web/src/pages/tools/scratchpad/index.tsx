@@ -15,6 +15,7 @@ import {
 } from 'lucide-react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import ChoiceSheet, { readQuizSummary } from '@/components/features/ChoiceSheet'
+import FullScreenLayer from '@/components/features/FullScreenLayer'
 import MaterialView from '@/features/materials/MaterialView'
 import { readSession, writeSession } from '@/features/materials/session'
 import ExamSheet from '@/components/features/ExamSheet'
@@ -1597,42 +1598,36 @@ export default function ScratchpadPage() {
         关掉只卸载它自己，草稿（笔迹/图片）完全不受影响。
         与独立路由页共用 `exam-grid:v2` 存档，两边内容互通。
       */}
-      <Drawer
-        title="格纸答题纸"
-        placement="bottom"
-        height="100dvh"
+      <FullScreenLayer
         open={examOpen}
+        title="格纸答题纸"
+        extra="关掉继续打草稿，内容已自动保存"
         onClose={() => setExamOpen(false)}
-        destroyOnHidden
-        styles={{ body: { padding: 0, overflow: 'hidden' } }}
-        extra={<span className="text-[11.5px] text-ink-3">关掉继续打草稿，内容已自动保存</span>}
       >
         <ExamSheet />
-      </Drawer>
+      </FullScreenLayer>
 
       {/*
         材料视图：全屏打开，独立滚动。
         `destroyOnHidden` 会卸载组件 —— 笔记在关闭前已经逐笔写进 IndexedDB，
         滚动位置也在滚动时记录，所以关掉不会丢东西。
       */}
-      <Drawer
-        title="材料 · 写笔记"
-        placement="bottom"
-        height="100dvh"
+      {/*
+        材料视图改成自绘全屏层（不再用 antd Drawer）。
+        原因：Drawer 展开时会给 `.ant-drawer-content-wrapper` 写
+        `transform: translateY(-180px)`（100dvh 的垂直居中换算），
+        整层内容被上移 —— 用户看到的「左边的滚动上去了」就是这个。
+        自绘层是 `position:fixed; inset:0`，不参与布局、没有位移动画。
+      */}
+      <FullScreenLayer
         open={materialOpen}
+        title="材料 · 写笔记"
+        extra="关掉不影响草稿，笔记与位置都会保存"
         onClose={closeMaterial}
-        destroyOnHidden
-        /*
-         * 不要遮罩：这一层本身已经铺满整个视口，遮罩只会盖住内容、并吃掉点击。
-         * 更要紧的是里面还要再开答题卡抽屉 —— 叠一层半透明黑幕会让材料区
-         * 变暗且点不动，「边看材料边做题」就断了。
-         */
-        mask={false}
-        styles={{ body: { padding: 0, overflow: 'hidden' } }}
-        extra={<span className="text-[11.5px] text-ink-3">关掉不影响草稿，笔记与位置都会保存</span>}
+        zIndex={1100}
       >
         <MaterialView open={materialOpen} onClose={closeMaterial} />
-      </Drawer>
+      </FullScreenLayer>
     </div>
   )
 }

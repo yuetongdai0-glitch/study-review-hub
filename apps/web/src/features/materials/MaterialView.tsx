@@ -19,6 +19,7 @@ import {
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import ChoiceSheet from '@/components/features/ChoiceSheet'
 import ExamSheet from '@/components/features/ExamSheet'
+import FullScreenLayer from '@/components/features/FullScreenLayer'
 import MaterialPane from '@/features/materials/MaterialPane'
 import {
   clearAllNotes,
@@ -620,7 +621,11 @@ export default function MaterialView({ open, onClose }: { open: boolean; onClose
   const activeMeta = activeSide === 'right' ? meta.right : meta.left
 
   return (
-    <div className="flex h-full min-h-0 flex-col bg-sunken">
+    /*
+     * `relative` 是必需的：答题卡面板用 `absolute right-0 inset-y-0` 贴在
+     * 材料层内部（而不是用 Drawer）。少了它，面板会跑到视口外。
+     */
+    <div className="relative flex h-full min-h-0 flex-col overflow-hidden bg-sunken">
       {/* 工具条 */}
       <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5 border-b border-line bg-surface px-2 py-2 sm:px-3">
         <Button
@@ -892,69 +897,90 @@ export default function MaterialView({ open, onClose }: { open: boolean; onClose
         ) : null}
       </div>
 
-      {/* 选一份已有材料放到右侧 */}
-      <Drawer
-        open={Boolean(pick)}
-        placement="right"
-        width="min(420px, 86vw)"
-        title="从已有材料中导入"
-        onClose={() => setPick(null)}
-        mask={false}
-        styles={{ body: { padding: 12 } }}
-      >
-        {materials.filter((m) => m.id !== leftId && m.id !== rightId).length === 0 ? (
-          <p className="text-[12.5px] text-ink-3">没有其它材料了，先导入一份新的。</p>
-        ) : (
-          <ul className="m-0 list-none p-0">
-            {materials
-              .filter((m) => m.id !== leftId && m.id !== rightId)
-              .map((m) => (
-                <li key={m.id} className="mb-1.5">
-                  <button
-                    type="button"
-                    className="w-full cursor-pointer rounded-[9px] border border-line bg-white px-2.5 py-2 text-left transition hover:border-line-strong"
-                    onClick={() => {
-                      openInto(pick ?? 'right', m.id)
-                      setPick(null)
-                    }}
-                  >
-                    <b className="block truncate text-[13px] font-semibold text-ink">{m.name}</b>
-                    <span className="mt-0.5 block truncate text-[11px] text-ink-3">
-                      {m.pageCount} 页 · {m.fileName}
-                    </span>
-                  </button>
-                </li>
-              ))}
-          </ul>
-        )}
-      </Drawer>
+      {/*
+        选材料面板：同样改自绘固定面板，理由与答题卡一致 ——
+        antd Drawer 的展开动画会写 transform，把材料层整体上顶。
+      */}
+      {pick ? (
+        <div className="absolute inset-y-0 right-0 z-40 flex w-[min(420px,86vw)] flex-col border-l border-line bg-surface shadow-[-8px_0_24px_rgba(16,24,40,.08)]">
+          <div className="flex shrink-0 items-center gap-2 border-b border-line px-3 py-2">
+            <b className="text-[13px] font-semibold">从已有材料中导入</b>
+            <span className="text-[11px] text-ink-3">放到右侧对照</span>
+            <button
+              type="button"
+              className="ml-auto grid h-7 w-7 cursor-pointer place-items-center rounded-md border-0 bg-transparent text-ink-2 hover:bg-sunken"
+              onClick={() => setPick(null)}
+              aria-label="关闭选择材料"
+            >
+              <X size={15} />
+            </button>
+          </div>
+          <div className="min-h-0 flex-1 overflow-auto p-3">
+            {materials.filter((m) => m.id !== leftId && m.id !== rightId).length === 0 ? (
+              <p className="m-0 text-[12.5px] text-ink-3">没有其它材料了，先导入一份新的。</p>
+            ) : (
+              <ul className="m-0 list-none p-0">
+                {materials
+                  .filter((m) => m.id !== leftId && m.id !== rightId)
+                  .map((m) => (
+                    <li key={m.id} className="mb-1.5">
+                      <button
+                        type="button"
+                        className="w-full cursor-pointer rounded-[9px] border border-line bg-white px-2.5 py-2 text-left transition hover:border-line-strong"
+                        onClick={() => {
+                          openInto(pick ?? 'right', m.id)
+                          setPick(null)
+                        }}
+                      >
+                        <b className="block truncate text-[13px] font-semibold text-ink">{m.name}</b>
+                        <span className="mt-0.5 block truncate text-[11px] text-ink-3">
+                          {m.pageCount} 页 · {m.fileName}
+                        </span>
+                      </button>
+                    </li>
+                  ))}
+              </ul>
+            )}
+          </div>
+        </div>
+      ) : null}
 
-      <Drawer
-        title="选择题答题卡"
-        placement="right"
-        open={quizOpen}
-        onClose={() => setQuizOpen(false)}
-        mask={false}
-        width="min(420px, 80vw)"
-        destroyOnHidden
-        styles={{ body: { padding: 12 } }}
-        extra={<span className="text-[11.5px] text-ink-3">关掉回到材料</span>}
-      >
-        <ChoiceSheet compact />
-      </Drawer>
+      {/*
+        答题卡：**自己画一个右侧固定面板**，不用 antd Drawer。
+        Drawer 展开时会写 `transform: translateY(-180px)` 把整层内容上移，
+        在材料层里这会把左边的正文一起顶上去（用户反复反馈的就是这个）。
+        这里用 `absolute right-0 top-0 bottom-0` 贴在材料层内部：
+        不改变文档流尺寸、没有位移动画，材料区一点都不会动。
+      */}
+      {quizOpen ? (
+        <div className="absolute inset-y-0 right-0 z-30 flex w-[min(420px,80vw)] flex-col border-l border-line bg-surface shadow-[-8px_0_24px_rgba(16,24,40,.08)]">
+          <div className="flex shrink-0 items-center gap-2 border-b border-line px-3 py-2">
+            <b className="text-[13px] font-semibold">选择题答题卡</b>
+            <span className="text-[11px] text-ink-3">关掉回到材料</span>
+            <button
+              type="button"
+              className="ml-auto grid h-7 w-7 cursor-pointer place-items-center rounded-md border-0 bg-transparent text-ink-2 hover:bg-sunken"
+              onClick={() => setQuizOpen(false)}
+              aria-label="关闭选择题答题卡"
+            >
+              <X size={15} />
+            </button>
+          </div>
+          <div className="min-h-0 flex-1 overflow-auto p-3">
+            <ChoiceSheet compact />
+          </div>
+        </div>
+      ) : null}
 
-      <Drawer
-        title="格纸答题纸"
-        placement="bottom"
-        height="100dvh"
+      <FullScreenLayer
         open={examOpen}
+        title="格纸答题纸"
+        extra="关掉回到材料"
         onClose={() => setExamOpen(false)}
-        destroyOnHidden
-        styles={{ body: { padding: 0, overflow: 'hidden' } }}
-        extra={<span className="text-[11.5px] text-ink-3">关掉回到材料</span>}
+        zIndex={1200}
       >
         <ExamSheet />
-      </Drawer>
+      </FullScreenLayer>
     </div>
   )
 }

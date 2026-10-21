@@ -642,13 +642,16 @@ test('答题纸与答题卡并入草稿工作台，首页不再单列', async ()
   assert.ok(pad.includes('aria-label="打开选择题答题卡"'), '缺少答题卡入口')
   assert.ok(pad.includes('aria-label="打开格纸答题纸"'), '缺少答题纸入口')
 
-  // 4. 答题纸：全屏、可关闭、不碰草稿
-  assert.ok(/placement="bottom"/.test(pad), '答题纸应以底部全屏方式展开')
-  assert.ok(/height="100dvh"/.test(pad), '答题纸必须全屏（100dvh）')
-  assert.ok(pad.includes("styles={{ body: { padding: 0, overflow: 'hidden' } }}"), '答题纸浮层不应自带内边距')
-  const examBlock = pad.slice(pad.indexOf('title="格纸答题纸"'), pad.indexOf('</Drawer>', pad.indexOf('title="格纸答题纸"')))
+  /*
+   * 4. 答题纸：全屏、可关闭、不碰草稿
+   * 已从 antd Drawer 改成自绘全屏层（FullScreenLayer）：Drawer 展开会写
+   * transform 把整层内容上移（用户反复反馈「抽屉影响布局」）。
+   */
+  // 从 `<FullScreenLayer` 起切到闭合标签：title 在开标签里，不能拿 title 当起点。
+  const examStart = pad.lastIndexOf('<FullScreenLayer', pad.indexOf('title="格纸答题纸"'))
+  const examBlock = pad.slice(examStart, pad.indexOf('</FullScreenLayer>', examStart))
+  assert.ok(examBlock.length > 0 && /title="格纸答题纸"/.test(examBlock), '答题纸要用自绘全屏层（Drawer 会写 transform 影响布局）')
   assert.ok(/onClose=\{\(\) => setExamOpen\(false\)\}/.test(examBlock), '答题纸必须能关闭')
-  assert.ok(/destroyOnHidden/.test(examBlock), '答题纸关闭应卸载')
   assert.ok(!/strokesRef\.current\s*=/.test(examBlock), '答题纸不得改动笔迹（关闭会销毁草稿）')
   assert.ok(!/photosRef\.current\s*=/.test(examBlock), '答题纸不得改动图片')
 
@@ -903,13 +906,22 @@ test('材料：缩放不错位、一键清除笔记、材料内做题不跳走',
     /aria-label="在材料里打开选择题答题卡"/.test(view) && /aria-label="在材料里打开格纸答题纸"/.test(view),
     '材料工具栏要提供答题卡/答题纸入口'
   )
-  const drawers = view.slice(view.indexOf('title="选择题答题卡"'))
-  assert.ok(/<ChoiceSheet compact \/>/.test(drawers), '材料内的答题卡要复用 ChoiceSheet（共享 choice-quiz:v1 存档）')
-  assert.ok(/<ExamSheet \/>/.test(drawers), '材料内的答题纸要复用 ExamSheet（共享 exam-grid:v2 存档）')
+  const sheets = view.slice(view.indexOf('选择题答题卡'))
+  assert.ok(/<ChoiceSheet compact \/>/.test(sheets), '材料内的答题卡要复用 ChoiceSheet（共享 choice-quiz:v1 存档）')
+  assert.ok(/<ExamSheet \/>/.test(sheets), '材料内的答题纸要复用 ExamSheet（共享 exam-grid:v2 存档）')
 
-  // 4. 材料那一层不能有遮罩，否则开关里的抽屉会被黑幕盖住、点不动
-  const materialDrawer = pad.slice(pad.indexOf('title="材料 · 写笔记"'), pad.indexOf('</Drawer>', pad.indexOf('title="材料 · 写笔记"')))
-  assert.ok(/mask=\{false\}/.test(materialDrawer), '材料浮层不能加 mask：会变暗且吃掉点击，材料内再开答题卡就没法用了')
+  /*
+   * 4. **材料层与内部面板全部不用 antd Drawer**。
+   * Drawer 展开时会写 `transform: translateY(-180px)`，整层内容被上移 ——
+   * 这就是「打开答题卡，左边正文滚上去了」的根因。
+   */
+  assert.ok(
+    /<FullScreenLayer[\s\S]{0,900}?title="材料 · 写笔记"/.test(pad),
+    '材料层要用自绘全屏层：antd Drawer 会写 transform 导致内容上移'
+  )
+  assert.ok(!/<Drawer[\s\S]{0,400}title="材料 · 写笔记"/.test(pad), '材料层不能再退回 antd Drawer')
+  assert.ok(/inset-y-0 right-0/.test(view), '材料内的答题卡/选材料面板要用 absolute 固定面板，不参与布局')
+  assert.ok(!/<Drawer[\s\S]{0,200}title="选择题答题卡"/.test(view), '材料内答题卡不能再用 Drawer（会推走上层内容）')
 })
 
 test('材料：缩放坐标换算、缩放保住宿主位置、Ctrl+Z 撤销', async () => {
@@ -1013,17 +1025,26 @@ test('材料：刷新后仍在原页（会话持久化缩放/笔设置/页码）
     /useState\(\(\) => readSession\(\)\.open\)/.test(pad),
     'materialOpen 初值必须同步读会话，否则刷新先渲染草稿纸再跳'
   )
+  /*
+   * 材料层用自绘全屏层：antd Drawer 的 transform 会把内容顶上去（用户反复反馈过）。
+   * 注意 `<FullScreenLayer` 与 `title=` 之间夹着 `open`/`extra`/`onClose` 等多行属性，
+   * 用较宽的窗口匹配，避免因为新增属性就让断言失效。
+   */
+  assert.ok(
+    /<FullScreenLayer[\s\S]{0,900}?title="材料 · 写笔记"/.test(pad),
+    '材料层必须用 FullScreenLayer（Drawer 会把整层内容上移）'
+  )
   // 3. 关闭走统一函数，保证按钮/遮罩/ESC 都会写 open:false
   assert.ok(/const closeMaterial = /.test(pad), '需要统一的 closeMaterial')
   assert.ok(
     /const closeMaterial = \(\) => \{[\s\S]{0,200}?writeSession\(\{ open: false \}\)/.test(pad),
     'closeMaterial 必须写 open:false'
   )
+  // MaterialView 的属性可能分多行写，用非贪婪窗口匹配即可。
   assert.ok(
-    /<MaterialView open=\{materialOpen\} onClose=\{closeMaterial\} \/>/.test(pad),
+    /<MaterialView[\s\S]{0,200}?onClose=\{closeMaterial\}/.test(pad),
     'MaterialView 的 onClose 必须指向 closeMaterial（点「关闭」按钮走的是这条）'
   )
-  assert.ok(/- 点击「关闭」按钮[\s\S]{0,80}?/.test(pad) || /onClose=\{closeMaterial\}\s*\n\s*destroyOnHidden/.test(pad), '')
 
   // 4. 缩放/笔设置/页码写回会话（zoom 与 page 分栏记录）
   for (const key of ['color', 'size', 'tool']) {
