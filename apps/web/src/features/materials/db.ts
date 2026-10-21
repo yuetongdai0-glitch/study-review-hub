@@ -1,0 +1,253 @@
+/**
+ * 导入材料的本地存储（IndexedDB）。
+ *
+ * @remarks
+ * **核心决策：只存原始文件，不存转好的图片。**
+ *
+ * 早先的实现是「导入时把每页渲染成位图存起来」，两个致命问题：
+ * 1. 体积与峰值内存：100 页 PDF 每页 100~200KB 位图，光存储 10~20MB，
+ *    导入过程要把整份文件全渲染一遍（几百 MB 瞬时峰值，实测直接把页面跑挂）；
+ * 2. 失真：位图不能选中、不能搜索、放大就糊。
+ *
+ * 现在改成：`file` 存原始 Blob（一份，≈源文件大小），
+ * 显示时按**可视区 + 安全区**现渲染，离开安全区就释放。
+ * DOCX / PPTX 直接以 DOM 呈现（矢量、可选中），只有 PDF 需要走 canvas，
+ * 且只渲染视口附近那几页。
+ *
+ * store 分工：
+ * - `materials` 材料清单 + 原始文件 Blob + DOCX 正文 + PPT 文字块
+ * - `notes`     每页笔迹（与草稿纸同一套 Stroke 结构）
+ * - `meta`      杂项，例如上次滚动到的页
+ */
+
+/** 数据库名。 */
+const DB_NAME = 'study-hub-materials'
+/** 结构版本；v2 起不再存逐页位图，改为存原始文件。 */
+const DB_VERSION = 2
+
+/** 材料来源格式。 */
+export type MaterialKind = 'pdf' | 'docx' | 'pptx'
+
+/** PPT 一页里的一个文字块（矢量，够画一份可读的预览）。 */
+export type PptShape = {
+  x: number
+  y: number
+  w: number
+  h: number
+  text: string
+  /** 字号（CSS 像素，已换算）。 */
+  size: number
+  bold: boolean
+}
+
+/** 材料清单项。 */
+export type Material = {
+  id: string
+  /** 用户起的名字（不填则用文件名）。 */
+  name: string
+  /** 原始文件名，列表里作副标题。 */
+  fileName: string
+  kind: MaterialKind
+  /** 页数。 */
+  pageCount: number
+  /** 单页基准尺寸（CSS 像素），用于撑占位、保持滚动条稳定。 */
+  pageW: number
+  pageH: number
+  /** 原始文件。只存这一份，显示时按需解析。 */
+  file?: Blob
+  /** DOCX 专用：整篇正文 HTML（矢量，可选中）。 */
+  docxHtml?: string
+  /** PPTX 专用：每页的文字块（矢量），解析一次后随清单存下。 */
+  pptSlides?: PptShape[][]
+  createdAt: number
+  updatedAt: number
+}
+
+/** 一页上的笔迹；结构与草稿纸一致，便于复用绘制/擦除实现。 */
+export type NoteStroke = { t: 'pen' | 'eraser'; c: string; w: number; p: number[] }
+
+/** 打开数据库（懒加载，模块级缓存）。 */
+let dbPromise: Promise<IDBDatabase> | null = null
+
+/**
+ * 取数据库连接。
+ *
+ * @returns 数据库实例。
+ * @remarks 首次调用负责建表；后续复用同一 Promise，避免并发 open 拿到两份连接。
+ */
+export function openDb(): Promise<IDBDatabase> {
+  if (dbPromise) return dbPromise
+  dbPromise = new Promise((resolve, reject) => {
+    const request = indexedDB.open(DB_NAME, DB_VERSION)
+    request.onupgradeneeded = () => {
+      const db = request.result
+      if (!db.objectStoreNames.contains('materials')) {
+        const store = db.createObjectStore('materials', { keyPath: 'id' })
+        store.createIndex('createdAt', 'createdAt')
+      }
+      if (!db.objectStoreNames.contains('notes')) {
+        db.createObjectStore('notes', { keyPath: ['materialId', 'index'] })
+      }
+      if (!db.objectStoreNames.contains('meta')) {
+        db.createObjectStore('meta', { keyPath: 'key' })
+      }
+      // v1 的「逐页位图」表已废弃：升级时删掉，既省空间也防误读旧数据。
+      if (db.objectStoreNames.contains('pages')) {
+        db.deleteObjectStore('pages')
+      }
+    }
+    request.onsuccess = () => resolve(request.result)
+    request.onerror = () => reject(request.error ?? new Error('无法打开本地材料库'))
+  })
+  return dbPromise
+}
+
+/**
+ * 把一次读写包成 Promise。
+ *
+ * @param store 仓库名。
+ * @param mode 读写模式。
+ * @param run 具体操作。
+ * @returns 操作结果。
+ */
+async function withStore<T>(
+  store: 'materials' | 'notes' | 'meta',
+  mode: IDBTransactionMode,
+  /*
+   * 写入类请求是 `IDBRequest<IDBValidKey>`，读取类才是 `IDBRequest<T>`。
+   * `IDBRequest` 的泛型在 `onerror` 上不协变，用 `unknown` 收窄反而报错，
+   * 所以这里只能用 any 兜住，由调用方各自断言关心的结果类型。
+   */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  run: (store: IDBObjectStore) => IDBRequest<any> | void,
+): Promise<T | undefined> {
+  const db = await openDb()
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(store, mode)
+    const target = tx.objectStore(store)
+    let result: T | undefined
+    const request = run(target)
+    if (request) request.onsuccess = () => (result = request.result as T)
+    tx.oncomplete = () => resolve(result)
+    tx.onerror = () => reject(tx.error ?? new Error('本地读写失败'))
+    tx.onabort = () => reject(tx.error ?? new Error('本地读写被中断'))
+  })
+}
+
+/** 列出全部材料，按导入时间倒序。 */
+export function listMaterials(): Promise<Material[]> {
+  return withStore<Material[]>('materials', 'readonly', (store) => store.getAll() as IDBRequest<Material[]>).then(
+    (items) => (items ?? []).sort((a, b) => b.createdAt - a.createdAt),
+  )
+}
+
+/**
+ * 取单份材料。
+ *
+ * @param id 材料 id。
+ * @returns 材料；不存在返回 null。
+ */
+export async function getMaterial(id: string): Promise<Material | null> {
+  const row = await withStore<Material>('materials', 'readonly', (store) => store.get(id) as IDBRequest<Material>)
+  return row ?? null
+}
+
+/**
+ * 新增或更新材料清单。
+ *
+ * @param material 材料。
+ * @returns 无返回。
+ */
+export function putMaterial(material: Material): Promise<void> {
+  return withStore<void>('materials', 'readwrite', (store) => store.put(material)).then(() => undefined)
+}
+
+/**
+ * 删除一份材料连同它的笔记。
+ *
+ * @param id 材料 id。
+ * @returns 无返回。
+ */
+export async function deleteMaterial(id: string): Promise<void> {
+  const db = await openDb()
+  await new Promise<void>((resolve, reject) => {
+    const tx = db.transaction(['materials', 'notes', 'meta'], 'readwrite')
+    tx.objectStore('materials').delete(id)
+    const notes = tx.objectStore('notes')
+    const cursor = notes.openKeyCursor()
+    cursor.onsuccess = () => {
+      const c = cursor.result
+      if (!c) return
+      if (Array.isArray(c.key) && c.key[0] === id) notes.delete(c.key)
+      c.continue()
+    }
+    tx.objectStore('meta').delete(`scroll:${id}`)
+    tx.oncomplete = () => resolve()
+    tx.onerror = () => reject(tx.error ?? new Error('删除失败'))
+  })
+}
+
+/**
+ * 写入某页的笔迹。
+ *
+ * @param materialId 材料 id。
+ * @param index 页序。
+ * @param strokes 笔迹数组；空数组表示该页没有笔记。
+ * @returns 无返回。
+ */
+export function putNotes(materialId: string, index: number, strokes: NoteStroke[]): Promise<void> {
+  return withStore<void>('notes', 'readwrite', (store) => store.put({ materialId, index, strokes })).then(
+    () => undefined,
+  )
+}
+
+/**
+ * 一次取出整份材料的所有笔迹（打开材料时批量载入，避免逐页异步闪烁）。
+ *
+ * @param materialId 材料 id。
+ * @returns 以页序为键的笔迹表。
+ */
+export async function getAllNotes(materialId: string): Promise<Map<number, NoteStroke[]>> {
+  const db = await openDb()
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction('notes', 'readonly')
+    const store = tx.objectStore('notes')
+    const cursor = store.openCursor()
+    const map = new Map<number, NoteStroke[]>()
+    cursor.onsuccess = () => {
+      const c = cursor.result
+      if (!c) return
+      const key = c.key
+      if (Array.isArray(key) && key[0] === materialId) map.set(Number(key[1]), c.value.strokes ?? [])
+      c.continue()
+    }
+    tx.oncomplete = () => resolve(map)
+    tx.onerror = () => reject(tx.error ?? new Error('读取笔记失败'))
+  })
+}
+
+/**
+ * 记录上次滚动到的页。
+ *
+ * @param materialId 材料 id。
+ * @param page 页序。
+ * @returns 无返回。
+ */
+export function setScrollPage(materialId: string, page: number): Promise<void> {
+  return withStore<void>('meta', 'readwrite', (store) =>
+    store.put({ key: `scroll:${materialId}`, value: page }),
+  ).then(() => undefined)
+}
+
+/**
+ * 读取上次滚动到的页。
+ *
+ * @param materialId 材料 id。
+ * @returns 页序；没记录返回 0。
+ */
+export async function getScrollPage(materialId: string): Promise<number> {
+  const row = await withStore<{ value: number }>('meta', 'readonly', (store) =>
+    store.get(`scroll:${materialId}`) as IDBRequest<{ value: number }>,
+  )
+  return typeof row?.value === 'number' ? row.value : 0
+}

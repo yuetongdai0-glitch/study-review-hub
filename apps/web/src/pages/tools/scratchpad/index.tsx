@@ -1,7 +1,21 @@
 import { App, Button, Drawer, Modal, Select, Slider, Tooltip } from 'antd'
-import { Download, Eraser, ImageOff, ImagePlus, ListChecks, NotebookPen, Pen, PenOff, RotateCcw, RotateCw, Trash2 } from 'lucide-react'
+import {
+  BookOpen,
+  Download,
+  Eraser,
+  ImageOff,
+  ImagePlus,
+  ListChecks,
+  NotebookPen,
+  Pen,
+  PenOff,
+  RotateCcw,
+  RotateCw,
+  Trash2,
+} from 'lucide-react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import ChoiceSheet, { readQuizSummary } from '@/components/features/ChoiceSheet'
+import MaterialView from '@/features/materials/MaterialView'
 import ExamSheet from '@/components/features/ExamSheet'
 import { useSectionStore } from '@/store/sectionStore'
 import type { NavSection } from '@/types/content'
@@ -199,6 +213,8 @@ export default function ScratchpadPage() {
   const [quizOpen, setQuizOpen] = useState(false)
   /** 答题纸全屏浮层：写申论/简答用，关掉继续打草稿。 */
   const [examOpen, setExamOpen] = useState(false)
+  /** 材料视图：导入 PDF/DOCX/PPT 并在上面写笔记。 */
+  const [materialOpen, setMaterialOpen] = useState(false)
   /** 答题卡摘要（已答 / 总题数），给按钮上的角标用。 */
   const [quizSummary, setQuizSummary] = useState<{ answered: number; total: number } | null>(null)
   const [ready, setReady] = useState(false)
@@ -1408,6 +1424,18 @@ export default function ScratchpadPage() {
             />
           </Tooltip>
           {/*
+            材料视图：导入 PDF/DOCX/PPT 并在上面写笔记。
+            与草稿纸是两套画布 —— 这里是多页长条滚动，草稿纸只有一张无限纸。
+          */}
+          <Tooltip title="导入材料（PDF / DOCX / PPT，可逐页写笔记）" placement="bottomRight">
+            <Button
+              size="small"
+              icon={<BookOpen size={14} />}
+              onClick={() => setMaterialOpen(true)}
+              aria-label="打开材料视图"
+            />
+          </Tooltip>
+          {/*
             这一排贴着视口右边缘，浮层必须 bottomRight 右对齐。
             默认的 top 居中对齐会让浮层以按钮中心为轴向右溢出（实测越界 19px，
             进而拉出横向滚动条，与重排形成抖动循环）。
@@ -1557,6 +1585,24 @@ export default function ScratchpadPage() {
         extra={<span className="text-[11.5px] text-ink-3">关掉继续打草稿，内容已自动保存</span>}
       >
         <ExamSheet />
+      </Drawer>
+
+      {/*
+        材料视图：全屏打开，独立滚动。
+        `destroyOnHidden` 会卸载组件 —— 笔记在关闭前已经逐笔写进 IndexedDB，
+        滚动位置也在滚动时记录，所以关掉不会丢东西。
+      */}
+      <Drawer
+        title="材料 · 写笔记"
+        placement="bottom"
+        height="100dvh"
+        open={materialOpen}
+        onClose={() => setMaterialOpen(false)}
+        destroyOnHidden
+        styles={{ body: { padding: 0, overflow: 'hidden' } }}
+        extra={<span className="text-[11.5px] text-ink-3">关掉不影响草稿，笔记与位置都会保存</span>}
+      >
+        <MaterialView open={materialOpen} onClose={() => setMaterialOpen(false)} />
       </Drawer>
     </div>
   )

@@ -761,3 +761,63 @@ test('格纸隐藏输入层的选区必须透明（否则像多了个第二光�
     'Firefox 需要 ::-moz-selection'
   )
 })
+
+test('材料：只存原始文件、按安全区懒渲染、DOCX/PPT 走矢量', async () => {
+  /*
+   * 用户诉求（原话）：「应该还是可视范围内加安全区这样加载哦，不然一次性加载几百兆
+   * 还是太离谱了，而且尽量不转成图片，而是预览啊，然后可做草稿标注」。
+   *
+   * 上一版把每页都渲染成位图存进 IndexedDB，两个后果都踩到了：
+   * 4 页 PDF 就把页面跑到 OOM（浏览器进程被系统杀掉）；而且位图不能选中、放大就糊。
+   *
+   * 现在三条硬约束，任何一条被改回去都会复发：
+   * 1. 导入只存原始 Blob，不存逐页位图（体积 ≈ 源文件）；
+   * 2. 渲染按「视口 + 上下各一屏安全区」决定，离开安全区立即释放；
+   * 3. DOCX / PPTX 用真实 DOM 文本（矢量、可选中），只有 PDF 需要位图。
+   */
+  const db = await readFile(new URL('../src/features/materials/db.ts', import.meta.url), 'utf8')
+  const parse = await readFile(new URL('../src/features/materials/parse.ts', import.meta.url), 'utf8')
+  const view = await readFile(new URL('../src/features/materials/MaterialView.tsx', import.meta.url), 'utf8')
+
+  // 1. 存储层：只存原件
+  assert.ok(/file\?: Blob/.test(db), '材料清单必须保存原始文件 Blob')
+  assert.ok(/DB_VERSION = 2/.test(db), '存储结构应升级到 v2（删除逐页位图表）')
+  assert.ok(
+    /deleteObjectStore\('pages'\)/.test(db),
+    '升级时必须删掉 v1 的逐页位图表，否则旧数据仍占空间'
+  )
+  assert.ok(!/putPage|getPage|MaterialPage/.test(db), '不应再有「逐页内容」的读写接口')
+  for (const fn of ['openPdfDocument', 'closePdfDocument']) {
+    assert.ok(parse.includes(fn), `缺少 ${fn}：PDF 必须按需打开并显式关闭，不然 worker 里那份文件一直驻留`)
+  }
+
+  // 2. 解析层：不产出位图
+  assert.ok(!/canvasToBlob|toBlob/.test(parse), '解析阶段不应把页面转成位图（这正是体积爆炸的来源）')
+  assert.ok(/parsePdfMeta/.test(parse), 'PDF 只解析元数据，页面交给渲染层按需画')
+  assert.ok(/docxHtml/.test(parse), 'DOCX 必须以 HTML（矢量）保存')
+  assert.ok(/pptSlides/.test(parse), 'PPTX 必须保存文字块（矢量）')
+  assert.ok(
+    /readPlaceholderGeometry/.test(parse) && /slideLayouts|slideMasters/.test(parse),
+    'PPT 占位符坐标要继承 layout/master，否则所有文本框坐标都是 0、叠在左上角'
+  )
+
+  // 3. 渲染层：安全区 + 释放
+  assert.ok(/const SAFE_PAGES = 1/.test(view), '必须有安全区常量（视口上下各一屏）')
+  assert.ok(/setRange/.test(view), '需要按滚动位置算出安全区范围')
+  assert.ok(/pruneOutside/.test(view), '离开安全区的页必须释放，否则等于全量加载')
+  assert.ok(
+    /URL\.revokeObjectURL/.test(view),
+    '位图 objectURL 必须回收，否则滚动几十页就吃满内存'
+  )
+  assert.ok(
+    /behavior: 'instant'/.test(view),
+    '恢复滚动位置必须 instant（用户要求「不要过渡效果，直接定位」）'
+  )
+  assert.ok(/getScrollPage/.test(view) && /setScrollPage/.test(view), '要记录并恢复上次滚动到的页')
+
+  // 4. DOCX / PPT 必须是 DOM，不是 img
+  assert.ok(/docx-viewport/.test(view), 'DOCX 要用 DOM 排版（可选中、放大不糊）')
+  assert.ok(/PptPage/.test(view), 'PPT 要用矢量文字块渲染')
+  const pptBlock = view.slice(view.indexOf('function PptPage'), view.indexOf('const DOCX_PAGE_CSS'))
+  assert.ok(!/<img/.test(pptBlock), 'PPT 预览不能用图片')
+})
