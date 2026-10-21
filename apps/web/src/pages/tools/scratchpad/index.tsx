@@ -1599,6 +1599,12 @@ export default function ScratchpadPage() {
         open={materialOpen}
         onClose={() => setMaterialOpen(false)}
         destroyOnHidden
+        /*
+         * 不要遮罩：这一层本身已经铺满整个视口，遮罩只会盖住内容、并吃掉点击。
+         * 更要紧的是里面还要再开答题卡抽屉 —— 叠一层半透明黑幕会让材料区
+         * 变暗且点不动，「边看材料边做题」就断了。
+         */
+        mask={false}
         styles={{ body: { padding: 0, overflow: 'hidden' } }}
         extra={<span className="text-[11.5px] text-ink-3">关掉不影响草稿，笔记与位置都会保存</span>}
       >

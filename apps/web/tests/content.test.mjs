@@ -821,3 +821,62 @@ test('材料：只存原始文件、按安全区懒渲染、DOCX/PPT 走矢量',
   const pptBlock = view.slice(view.indexOf('function PptPage'), view.indexOf('const DOCX_PAGE_CSS'))
   assert.ok(!/<img/.test(pptBlock), 'PPT 预览不能用图片')
 })
+
+test('材料：缩放不错位、一键清除笔记、材料内做题不跳走', async () => {
+  /*
+   * 用户三条反馈：
+   * 1.「也需要提供一键清除笔记的功能」
+   * 2.「最好还能提供放大缩小的功能」
+   * 3.「然后大刷不要回到草稿纸界面，包括选择题、网格题打开的时候相当于需要做一下缓存」
+   *
+   * 第 3 条最容易被做错：早了把答题卡/答题纸挂到草稿工作台那一层，
+   * 从材料里点开就会把材料卸载、回到草稿纸，用户正看的页也丢了。
+   */
+  const view = await readFile(new URL('../src/features/materials/MaterialView.tsx', import.meta.url), 'utf8')
+  const db = await readFile(new URL('../src/features/materials/db.ts', import.meta.url), 'utf8')
+  const pad = await readFile(new URL('../src/pages/tools/scratchpad/index.tsx', import.meta.url), 'utf8')
+
+  // 1. 一键清除：库层 + 界面层
+  assert.ok(/export async function clearAllNotes/.test(db), '缺少 clearAllNotes：整份材料的笔记要能一次删掉')
+  assert.ok(/function clearEveryNote/.test(view), '缺少一键清除入口')
+  assert.ok(
+    /材料文件不会删除，只清手写笔记/.test(view),
+    '确认框必须说清「只清笔记、不删材料」，否则用户不敢点'
+  )
+  assert.ok(/共 \$\{notesRef\.current\.size\} 页、\$\{total\} 笔/.test(view), '确认框应报出页数与笔数')
+
+  // 2. 缩放：笔迹坐标必须与缩放解耦
+  assert.ok(/const ZOOM_MIN = 0\.6/.test(view) && /const ZOOM_MAX = 3/.test(view), '缩放范围缺失')
+  assert.ok(/className="page-slot/.test(view) && /className="page-sheet/.test(view), '缩放需要「外层占位 + 内层 transform」两层结构')
+  assert.ok(
+    /transform: `scale\(\$\{zoom\}\)`/.test(view),
+    '内层用 transform 缩放（改宽高会让 canvas 内部坐标系变化，笔迹就错位了）'
+  )
+  assert.ok(
+    /data-page=\{index\}[\s\S]{0,80}className="page-slot/.test(view),
+    'data-page 必须挂在外层占位槽上，安全区/翻页计算才对'
+  )
+  const canvasBlock = view.slice(view.indexOf('aria-label={`第 ${index + 1} 页批注画布`}') - 900, view.indexOf('aria-label={`第 ${index + 1} 页批注画布`}'))
+  assert.ok(
+    /clientWidth \* dpr/.test(canvasBlock),
+    'canvas 尺寸应取「基准尺寸 × dpr」，不能把 zoom 乘进去'
+  )
+
+  // 3. 材料内做题：浮层必须挂在材料视图里，而不是草稿工作台
+  assert.ok(/const \[quizOpen, setQuizOpen\]/.test(view), '材料视图内要有自己的答题卡开关')
+  assert.ok(/const \[examOpen, setExamOpen\]/.test(view), '材料视图内要有自己的答题纸开关')
+  assert.ok(
+    /aria-label="在材料里打开选择题答题卡"/.test(view) && /aria-label="在材料里打开格纸答题纸"/.test(view),
+    '材料工具栏要提供答题卡/答题纸入口'
+  )
+  const drawers = view.slice(view.indexOf('title="选择题答题卡"'))
+  assert.ok(/<ChoiceSheet compact \/>/.test(drawers), '材料内的答题卡要复用 ChoiceSheet（共享 choice-quiz:v1 存档）')
+  assert.ok(/<ExamSheet \/>/.test(drawers), '材料内的答题纸要复用 ExamSheet（共享 exam-grid:v2 存档）')
+
+  // 4. 材料那一层不能有遮罩，否则开关里的抽屉会被黑幕盖住、点不动
+  const materialDrawer = pad.slice(pad.indexOf('title="材料 · 写笔记"'), pad.indexOf('</Drawer>', pad.indexOf('title="材料 · 写笔记"')))
+  assert.ok(
+    /mask=\{false\}/.test(materialDrawer),
+    '材料浮层不能加 mask：会变暗且吃掉点击，材料内再开答题卡就没法用了'
+  )
+})

@@ -227,6 +227,35 @@ export async function getAllNotes(materialId: string): Promise<Map<number, NoteS
 }
 
 /**
+ * 清空某份材料的全部笔迹（一键清除笔记）。
+ *
+ * @param materialId 材料 id。
+ * @returns 被清掉的页数。
+ * @remarks 逐条按复合键删；同时把 `updatedAt` 之外的东西都保留，
+ * 材料文件本身绝不动 —— 只清笔记。
+ */
+export async function clearAllNotes(materialId: string): Promise<number> {
+  const db = await openDb()
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction('notes', 'readwrite')
+    const store = tx.objectStore('notes')
+    const cursor = store.openKeyCursor()
+    let removed = 0
+    cursor.onsuccess = () => {
+      const c = cursor.result
+      if (!c) return
+      if (Array.isArray(c.key) && c.key[0] === materialId) {
+        store.delete(c.key)
+        removed += 1
+      }
+      c.continue()
+    }
+    tx.oncomplete = () => resolve(removed)
+    tx.onerror = () => reject(tx.error ?? new Error('清除笔记失败'))
+  })
+}
+
+/**
  * 记录上次滚动到的页。
  *
  * @param materialId 材料 id。

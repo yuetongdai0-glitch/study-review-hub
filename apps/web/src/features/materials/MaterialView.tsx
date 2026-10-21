@@ -1,7 +1,22 @@
 import { App, Button, Drawer, Input, Tooltip } from 'antd'
-import { ArrowLeft, Eraser, FileText, Pen, RotateCcw, Trash2, X } from 'lucide-react'
-import { useCallback, useEffect, useRef, useState } from 'react'
 import {
+  ArrowLeft,
+  Eraser,
+  FileText,
+  ListChecks,
+  NotebookPen,
+  Pen,
+  RotateCcw,
+  Trash2,
+  X,
+  ZoomIn,
+  ZoomOut,
+} from 'lucide-react'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import ChoiceSheet from '@/components/features/ChoiceSheet'
+import ExamSheet from '@/components/features/ExamSheet'
+import {
+  clearAllNotes,
   deleteMaterial,
   getAllNotes,
   getMaterial,
@@ -37,6 +52,15 @@ const SAFE_PAGES = 1
 const PDF_RASTER_W = 1400
 /** DOCX 页面上下留白合计，切页时扣掉。 */
 const DOCX_PAD_Y = 96
+/**
+ * 缩放范围与步进。
+ *
+ * @remarks 用户要「放大缩小」。上限只到 3 倍：
+ * 再大 PDF 位图就会明显变糊（我们只按 1400px 宽渲染），不如不加。
+ */
+const ZOOM_MIN = 0.6
+const ZOOM_MAX = 3
+const ZOOM_STEP = 0.2
 
 /** 工具。 */
 type Tool = 'pen' | 'eraser'
@@ -84,6 +108,18 @@ export default function MaterialView({
   const [visiblePage, setVisiblePage] = useState(1)
   /** 安全区范围（含端点）。 */
   const [range, setRange] = useState<[number, number]>([0, 0])
+  /** 缩放倍率（只影响显示，笔迹坐标永远在纸张基准坐标系里）。 */
+  const [zoom, setZoom] = useState(1)
+  /**
+   * 材料内打开的答题卡 / 答题纸。
+   *
+   * @remarks 用户要求「大刷不要回到草稿纸界面，包括选择题、网格题打开的时候」——
+   * 所以这两个浮层必须开在材料视图**内部**，关掉仍停在当前材料，
+   * 绝不能让用户跳回草稿工作台。它们与草稿工作台共用同一份存档
+   * （`choice-quiz:v1` / `exam-grid:v2`），只是显示位置不同。
+   */
+  const [quizOpen, setQuizOpen] = useState(false)
+  const [examOpen, setExamOpen] = useState(false)
 
   const scrollRef = useRef<HTMLDivElement>(null)
   const fileRef = useRef<HTMLInputElement>(null)
@@ -595,6 +631,56 @@ export default function MaterialView({
   }
 
   /**
+   * 一键清除**整份材料**的笔记（所有页）。
+   *
+   * @returns 无返回。
+   * @remarks 与「清空本页」区分开：整份材料几百页时逐页清很折磨，
+   * 用户明确要求一键清。材料文件本身绝不动，只清笔迹。
+   */
+  function clearEveryNote() {
+    const material = current
+    if (!material) return
+    let total = 0
+    for (const list of notesRef.current.values()) total += list.length
+    if (!total) {
+      message.info('这份材料还没有任何笔记')
+      return
+    }
+    modal.confirm({
+      title: '清除这份材料的全部笔记？',
+      content: `共 ${notesRef.current.size} 页、${total} 笔。材料文件不会删除，只清手写笔记，且无法恢复。`,
+      okText: '全部清除',
+      cancelText: '取消',
+      okButtonProps: { danger: true },
+      onOk: async () => {
+        try {
+          await clearAllNotes(material.id)
+          notesRef.current = new Map()
+          undoRef.current = new Map()
+          // 已挂载的画布要立刻擦干净，否则界面上还留着旧墨。
+          for (const index of canvasRefs.current.keys()) redrawPage(index)
+          message.success('已清除全部笔记')
+        } catch {
+          message.error('清除失败，请重试')
+        }
+      },
+    })
+  }
+
+  /**
+   * 调整缩放。
+   *
+   * @param delta 增量（正数放大）。
+   * @returns 无返回。
+   */
+  function changeZoom(delta: number) {
+    setZoom((prev) => {
+      const next = Math.round((prev + delta) * 10) / 10
+      return Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, next))
+    })
+  }
+
+  /**
    * 跳到指定页。
    *
    * @param page 从 1 开始的页号。
@@ -813,12 +899,76 @@ export default function MaterialView({
           <span className="w-3 shrink-0 text-right font-num text-[11px] text-ink-3">{size}</span>
         </div>
 
+        {/* 缩放：只影响显示，笔迹坐标始终在纸张基准坐标系里，缩放后不会错位 */}
+        <div className="flex items-center gap-0.5">
+          <Tooltip title="缩小">
+            <Button
+              size="small"
+              icon={<ZoomOut size={13} />}
+              disabled={zoom <= ZOOM_MIN}
+              onClick={() => changeZoom(-ZOOM_STEP)}
+              aria-label="缩小"
+            />
+          </Tooltip>
+          <button
+            type="button"
+            className="min-w-[42px] cursor-pointer border-0 bg-transparent font-num text-[11.5px] tabular-nums text-ink-2"
+            onClick={() => setZoom(1)}
+            title="点击恢复 100%"
+          >
+            {Math.round(zoom * 100)}%
+          </button>
+          <Tooltip title="放大">
+            <Button
+              size="small"
+              icon={<ZoomIn size={13} />}
+              disabled={zoom >= ZOOM_MAX}
+              onClick={() => changeZoom(ZOOM_STEP)}
+              aria-label="放大"
+            />
+          </Tooltip>
+        </div>
+
+        <span className="mx-0.5 hidden h-4 w-px bg-line sm:block" />
+
+        {/*
+          答题卡 / 答题纸：直接开在材料视图内部，关掉仍停在这份材料。
+          用户明确要求「大刷不要回到草稿纸界面」；两者与草稿工作台共用同一份存档。
+        */}
+        <div className="flex items-center gap-1">
+          <Tooltip title="选择题答题卡（边看材料边记答案）">
+            <Button
+              size="small"
+              icon={<ListChecks size={13} />}
+              onClick={() => setQuizOpen(true)}
+              aria-label="在材料里打开选择题答题卡"
+            />
+          </Tooltip>
+          <Tooltip title="格纸答题纸（写申论/简答）">
+            <Button
+              size="small"
+              icon={<NotebookPen size={13} />}
+              onClick={() => setExamOpen(true)}
+              aria-label="在材料里打开格纸答题纸"
+            />
+          </Tooltip>
+        </div>
+
         <div className="ml-auto flex items-center gap-1">
           <Tooltip title="撤销本页最后一笔">
             <Button size="small" icon={<RotateCcw size={13} />} onClick={() => undoPage(visiblePage - 1)} />
           </Tooltip>
           <Tooltip title="清空本页笔记">
             <Button size="small" icon={<X size={13} />} onClick={() => clearPage(visiblePage - 1)} />
+          </Tooltip>
+          <Tooltip title="一键清除这份材料的全部笔记">
+            <Button
+              size="small"
+              danger
+              icon={<Eraser size={13} />}
+              onClick={clearEveryNote}
+              aria-label="一键清除全部笔记"
+            />
           </Tooltip>
           <Button size="small" onClick={onClose}>
             关闭
@@ -833,11 +983,29 @@ export default function MaterialView({
             const inRange = index >= rangeFrom && index <= rangeTo
             const content = pages[index]
             return (
+              /*
+               * 缩放的两层结构（关键）：
+               * - 外层 `.page-slot` 只负责占位：宽高 = 基准尺寸 × zoom，
+               *   这样滚动条长度、安全区计算都跟着缩放走；
+               * - 内层 `.page-sheet` 保持**基准尺寸**不动，用 transform 缩放。
+               * 批注 canvas 的宽高始终等于基准尺寸，笔迹坐标因此在缩放前后完全一致，
+               * 放大写字、缩小回看都不会错位。
+               */
               <div
                 key={index}
                 data-page={index}
-                className="relative mx-auto w-full overflow-hidden rounded-[6px] border border-line-strong bg-white shadow-[0_1px_2px_rgba(16,24,40,.08),0_8px_22px_rgba(16,24,40,.09)]"
-                style={{ aspectRatio: `${current.pageW} / ${current.pageH}`, maxWidth: current.pageW }}
+                className="page-slot relative mx-auto"
+                style={{ width: `min(100%, ${current.pageW * zoom}px)`, aspectRatio: `${current.pageW} / ${current.pageH}` }}
+              >
+              <div
+                className="page-sheet relative h-full w-full origin-top-left overflow-hidden rounded-[6px] border border-line-strong bg-white shadow-[0_1px_2px_rgba(16,24,40,.08),0_8px_22px_rgba(16,24,40,.09)]"
+                style={{
+                  // 内层按基准像素排版再整体缩放：canvas 内部坐标不变，笔迹才不会错位。
+                  width: current.pageW,
+                  height: current.pageH,
+                  transform: `scale(${zoom})`,
+                  transformOrigin: 'top left',
+                }}
               >
                 {/*
                   页码放纸张外侧（负 margin 的小标签），不压在材料内容上 ——
@@ -902,6 +1070,7 @@ export default function MaterialView({
                   onPointerCancel={onUp}
                 />
               </div>
+              </div>
             )
           })}
           <div className="py-6 text-center text-[12px] text-ink-3">已是最后一页（共 {totalPages} 页）</div>
@@ -923,6 +1092,40 @@ export default function MaterialView({
         />
         <span className="text-[11.5px] text-ink-3">/ {totalPages} 页</span>
       </div>
+
+      {/*
+        材料内的答题卡与答题纸。
+        **必须挂在材料视图内部**：用户明确要求「大刷不要回到草稿纸界面」——
+        从材料点开做题，关掉后应该还在这份材料、这一页，而不是被弹回草稿工作台。
+        两者与草稿工作台共用同一份存档（choice-quiz:v1 / exam-grid:v2），
+        所以在哪边记的答案、写的作文，切过去都能看到。
+      */}
+      <Drawer
+        title="选择题答题卡"
+        placement="right"
+        open={quizOpen}
+        onClose={() => setQuizOpen(false)}
+        mask={false}
+        width="min(420px, 80vw)"
+        destroyOnHidden
+        styles={{ body: { padding: 12 } }}
+        extra={<span className="text-[11.5px] text-ink-3">关掉回到材料</span>}
+      >
+        <ChoiceSheet compact />
+      </Drawer>
+
+      <Drawer
+        title="格纸答题纸"
+        placement="bottom"
+        height="100dvh"
+        open={examOpen}
+        onClose={() => setExamOpen(false)}
+        destroyOnHidden
+        styles={{ body: { padding: 0, overflow: 'hidden' } }}
+        extra={<span className="text-[11.5px] text-ink-3">关掉回到材料</span>}
+      >
+        <ExamSheet />
+      </Drawer>
     </div>
   )
 }
