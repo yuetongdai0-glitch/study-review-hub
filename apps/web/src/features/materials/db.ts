@@ -22,8 +22,15 @@
 
 /** 数据库名。 */
 const DB_NAME = 'study-hub-materials'
-/** 结构版本；v2 起不再存逐页位图，改为存原始文件。 */
-const DB_VERSION = 2
+/** 结构版本；v2 起不再存逐页位图；v3 增加文件夹。 */
+const DB_VERSION = 3
+
+/** 文件夹（只支持一层，够用且不会让树变复杂）。 */
+export type Folder = {
+  id: string
+  name: string
+  createdAt: number
+}
 
 /** 材料来源格式。 */
 export type MaterialKind = 'pdf' | 'docx' | 'pptx'
@@ -59,6 +66,14 @@ export type Material = {
   docxHtml?: string
   /** PPTX 专用：每页的文字块（矢量），解析一次后随清单存下。 */
   pptSlides?: PptShape[][]
+  /**
+   * 所属文件夹 id。
+   *
+   * @remarks 空串/未设置表示「未分类」，直接显示在根上。
+   * 只做一层，不做嵌套：材料数量级是几十份，一层足够，
+   * 嵌套会让拖拽与折叠逻辑成倍复杂而收益很小。
+   */
+  folderId?: string
   createdAt: number
   updatedAt: number
 }
@@ -83,6 +98,10 @@ export function openDb(): Promise<IDBDatabase> {
       const db = request.result
       if (!db.objectStoreNames.contains('materials')) {
         const store = db.createObjectStore('materials', { keyPath: 'id' })
+        store.createIndex('createdAt', 'createdAt')
+      }
+      if (!db.objectStoreNames.contains('folders')) {
+        const store = db.createObjectStore('folders', { keyPath: 'id' })
         store.createIndex('createdAt', 'createdAt')
       }
       if (!db.objectStoreNames.contains('notes')) {
@@ -111,7 +130,7 @@ export function openDb(): Promise<IDBDatabase> {
  * @returns 操作结果。
  */
 async function withStore<T>(
-  store: 'materials' | 'notes' | 'meta',
+  store: 'materials' | 'notes' | 'meta' | 'folders',
   mode: IDBTransactionMode,
   /*
    * 写入类请求是 `IDBRequest<IDBValidKey>`，读取类才是 `IDBRequest<T>`。
@@ -185,6 +204,105 @@ export async function deleteMaterial(id: string): Promise<void> {
     tx.oncomplete = () => resolve()
     tx.onerror = () => reject(tx.error ?? new Error('删除失败'))
   })
+}
+
+/* ---------------- 文件夹 ---------------- */
+
+/**
+ * 列出全部文件夹。
+ *
+ * @returns 文件夹数组（按创建时间正序）。
+ */
+export async function listFolders(): Promise<Folder[]> {
+  const items = await withStore<Folder[]>('folders', 'readonly', (store) =>
+    store.getAll() as IDBRequest<Folder[]>,
+  )
+  return (items ?? []).sort((a, b) => a.createdAt - b.createdAt)
+}
+
+/**
+ * 新建文件夹。
+ *
+ * @param name 文件夹名。
+ * @returns 新建的文件夹。
+ */
+export async function createFolder(name: string): Promise<Folder> {
+  const folder: Folder = {
+    id: `f-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+    name: name.trim() || '新建文件夹',
+    createdAt: Date.now(),
+  }
+  await withStore<void>('folders', 'readwrite', (store) => store.put(folder))
+  return folder
+}
+
+/**
+ * 重命名文件夹。
+ *
+ * @param id 文件夹 id。
+ * @param name 新名字。
+ * @returns 无返回。
+ */
+export function renameFolder(id: string, name: string): Promise<void> {
+  // 回调里再 put：同一个事务内先 get 后 put 是安全的，不会被别的写入插队。
+  return withStore<void>('folders', 'readwrite', (store) => {
+    const get = store.get(id) as IDBRequest<Folder>
+    get.onsuccess = () => {
+      const row = get.result
+      if (row) store.put({ ...row, name: name.trim() || row.name })
+    }
+    return undefined
+  }).then(() => undefined)
+}
+
+/**
+ * 删除文件夹（夹内材料不删，退回未分类）。
+ *
+ * @param id 文件夹 id。
+ * @returns 无返回。
+ */
+export async function deleteFolder(id: string): Promise<void> {
+  const all = await listMaterials()
+  const db = await openDb()
+  await new Promise<void>((resolve, reject) => {
+    const tx = db.transaction(['folders', 'materials'], 'readwrite')
+    tx.objectStore('folders').delete(id)
+    const store = tx.objectStore('materials')
+    // 把夹内材料挪到未分类，避免「删了文件夹材料也跟着消失」这种数据丢失。
+    for (const item of all.filter((m) => m.folderId === id)) {
+      store.put({ ...item, folderId: '' })
+    }
+    tx.oncomplete = () => resolve()
+    tx.onerror = () => reject(tx.error ?? new Error('删除文件夹失败'))
+  })
+}
+
+/**
+ * 把材料移到某个文件夹（空串 = 未分类）。
+ *
+ * @param materialId 材料 id。
+ * @param folderId 目标文件夹 id。
+ * @returns 无返回。
+ */
+export async function moveMaterial(materialId: string, folderId: string): Promise<void> {
+  const material = await getMaterial(materialId)
+  if (!material) return
+  await putMaterial({ ...material, folderId, updatedAt: Date.now() })
+}
+
+/**
+ * 重命名材料。
+ *
+ * @param materialId 材料 id。
+ * @param name 新名字。
+ * @returns 无返回。
+ */
+export async function renameMaterial(materialId: string, name: string): Promise<void> {
+  const material = await getMaterial(materialId)
+  if (!material) return
+  const next = name.trim()
+  if (!next) return
+  await putMaterial({ ...material, name: next, updatedAt: Date.now() })
 }
 
 /**

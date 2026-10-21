@@ -815,11 +815,16 @@ test('材料：只存原始文件、按安全区懒渲染、DOCX/PPT 走矢量',
    */
   const db = await readFile(new URL('../src/features/materials/db.ts', import.meta.url), 'utf8')
   const parse = await readFile(new URL('../src/features/materials/parse.ts', import.meta.url), 'utf8')
-  const view = await readFile(new URL('../src/features/materials/MaterialView.tsx', import.meta.url), 'utf8')
+  /*
+   * 渲染逻辑已抽到 MaterialPane（以便双栏并排时左右两栏各一个实例）。
+   * 断言要跟着走，否则测的是已经不存在的实现。
+   */
+  const pane = await readFile(new URL('../src/features/materials/MaterialPane.tsx', import.meta.url), 'utf8')
+  const render = await readFile(new URL('../src/features/materials/PageRender.tsx', import.meta.url), 'utf8')
 
   // 1. 存储层：只存原件
   assert.ok(/file\?: Blob/.test(db), '材料清单必须保存原始文件 Blob')
-  assert.ok(/DB_VERSION = 2/.test(db), '存储结构应升级到 v2（删除逐页位图表）')
+  assert.ok(/DB_VERSION = 3/.test(db), '存储结构应升级到 v3（删除逐页位图表 + 增加 folders）')
   assert.ok(
     /deleteObjectStore\('pages'\)/.test(db),
     '升级时必须删掉 v1 的逐页位图表，否则旧数据仍占空间'
@@ -840,23 +845,17 @@ test('材料：只存原始文件、按安全区懒渲染、DOCX/PPT 走矢量',
   )
 
   // 3. 渲染层：安全区 + 释放
-  assert.ok(/const SAFE_PAGES = 1/.test(view), '必须有安全区常量（视口上下各一屏）')
-  assert.ok(/setRange/.test(view), '需要按滚动位置算出安全区范围')
-  assert.ok(/pruneOutside/.test(view), '离开安全区的页必须释放，否则等于全量加载')
-  assert.ok(
-    /URL\.revokeObjectURL/.test(view),
-    '位图 objectURL 必须回收，否则滚动几十页就吃满内存'
-  )
-  assert.ok(
-    /behavior: 'instant'/.test(view),
-    '恢复滚动位置必须 instant（用户要求「不要过渡效果，直接定位」）'
-  )
-  assert.ok(/getScrollPage/.test(view) && /setScrollPage/.test(view), '要记录并恢复上次滚动到的页')
+  assert.ok(/const SAFE_PAGES = 1/.test(pane), '必须有安全区常量（视口上下各一屏）')
+  assert.ok(/setRange/.test(pane), '需要按滚动位置算出安全区范围')
+  assert.ok(/pruneOutside/.test(pane), '离开安全区的页必须释放，否则等于全量加载')
+  assert.ok(/URL\.revokeObjectURL/.test(pane), '位图 objectURL 必须回收，否则滚动几十页就吃满内存')
+  assert.ok(/behavior: 'instant'/.test(pane), '恢复滚动位置必须 instant（用户要求「不要过渡效果，直接定位」）')
+  assert.ok(/getScrollPage/.test(pane) && /setScrollPage/.test(pane), '要记录并恢复上次滚动到的页')
 
   // 4. DOCX / PPT 必须是 DOM，不是 img
-  assert.ok(/docx-viewport/.test(view), 'DOCX 要用 DOM 排版（可选中、放大不糊）')
-  assert.ok(/PptPage/.test(view), 'PPT 要用矢量文字块渲染')
-  const pptBlock = view.slice(view.indexOf('function PptPage'), view.indexOf('const DOCX_PAGE_CSS'))
+  assert.ok(/docx-viewport/.test(pane), 'DOCX 要用 DOM 排版（可选中、放大不糊）')
+  assert.ok(/PptPage/.test(render), 'PPT 要用矢量文字块渲染')
+  const pptBlock = render.slice(render.indexOf('export function PptPage'), render.indexOf('export const DOCX_PAGE_CSS'))
   assert.ok(!/<img/.test(pptBlock), 'PPT 预览不能用图片')
 })
 
@@ -871,34 +870,31 @@ test('材料：缩放不错位、一键清除笔记、材料内做题不跳走',
    * 从材料里点开就会把材料卸载、回到草稿纸，用户正看的页也丢了。
    */
   const view = await readFile(new URL('../src/features/materials/MaterialView.tsx', import.meta.url), 'utf8')
+  const pane = await readFile(new URL('../src/features/materials/MaterialPane.tsx', import.meta.url), 'utf8')
   const db = await readFile(new URL('../src/features/materials/db.ts', import.meta.url), 'utf8')
   const pad = await readFile(new URL('../src/pages/tools/scratchpad/index.tsx', import.meta.url), 'utf8')
 
   // 1. 一键清除：库层 + 界面层
   assert.ok(/export async function clearAllNotes/.test(db), '缺少 clearAllNotes：整份材料的笔记要能一次删掉')
-  assert.ok(/function clearEveryNote/.test(view), '缺少一键清除入口')
+  assert.ok(/一键清除这份材料的全部笔记/.test(view), '缺少一键清除入口')
   assert.ok(
     /材料文件不会删除，只清手写笔记/.test(view),
     '确认框必须说清「只清笔记、不删材料」，否则用户不敢点'
   )
-  assert.ok(/共 \$\{notesRef\.current\.size\} 页、\$\{total\} 笔/.test(view), '确认框应报出页数与笔数')
 
-  // 2. 缩放：笔迹坐标必须与缩放解耦
+  // 2. 缩放：笔迹坐标必须与缩放解耦（结构在 MaterialPane）
   assert.ok(/const ZOOM_MIN = 0\.6/.test(view) && /const ZOOM_MAX = 3/.test(view), '缩放范围缺失')
-  assert.ok(/className="page-slot/.test(view) && /className="page-sheet/.test(view), '缩放需要「外层占位 + 内层 transform」两层结构')
+  assert.ok(/className="page-slot/.test(pane) && /className="page-sheet/.test(pane), '缩放需要「外层占位 + 内层 transform」两层结构')
   assert.ok(
-    /transform: `scale\(\$\{zoom\}\)`/.test(view),
+    /transform: `scale\(\$\{zoom\}\)`/.test(pane),
     '内层用 transform 缩放（改宽高会让 canvas 内部坐标系变化，笔迹就错位了）'
   )
   assert.ok(
-    /data-page=\{index\}[\s\S]{0,80}className="page-slot/.test(view),
+    /data-page=\{index\}[\s\S]{0,80}className="page-slot/.test(pane),
     'data-page 必须挂在外层占位槽上，安全区/翻页计算才对'
   )
-  const canvasBlock = view.slice(view.indexOf('aria-label={`第 ${index + 1} 页批注画布`}') - 900, view.indexOf('aria-label={`第 ${index + 1} 页批注画布`}'))
-  assert.ok(
-    /clientWidth \* dpr/.test(canvasBlock),
-    'canvas 尺寸应取「基准尺寸 × dpr」，不能把 zoom 乘进去'
-  )
+  const canvasBlock = pane.slice(pane.indexOf('aria-label={`第 ${index + 1} 页批注画布`}') - 900, pane.indexOf('aria-label={`第 ${index + 1} 页批注画布`}'))
+  assert.ok(/clientWidth \* dpr/.test(canvasBlock), 'canvas 尺寸应取「基准尺寸 × dpr」，不能把 zoom 乘进去')
 
   // 3. 材料内做题：浮层必须挂在材料视图里，而不是草稿工作台
   assert.ok(/const \[quizOpen, setQuizOpen\]/.test(view), '材料视图内要有自己的答题卡开关')
@@ -913,10 +909,7 @@ test('材料：缩放不错位、一键清除笔记、材料内做题不跳走',
 
   // 4. 材料那一层不能有遮罩，否则开关里的抽屉会被黑幕盖住、点不动
   const materialDrawer = pad.slice(pad.indexOf('title="材料 · 写笔记"'), pad.indexOf('</Drawer>', pad.indexOf('title="材料 · 写笔记"')))
-  assert.ok(
-    /mask=\{false\}/.test(materialDrawer),
-    '材料浮层不能加 mask：会变暗且吃掉点击，材料内再开答题卡就没法用了'
-  )
+  assert.ok(/mask=\{false\}/.test(materialDrawer), '材料浮层不能加 mask：会变暗且吃掉点击，材料内再开答题卡就没法用了')
 })
 
 test('材料：缩放坐标换算、缩放保住宿主位置、Ctrl+Z 撤销', async () => {
@@ -931,46 +924,52 @@ test('材料：缩放坐标换算、缩放保住宿主位置、Ctrl+Z 撤销', a
    *    对应了不同内容，正在看的那页就跑出视口。
    */
   const view = await readFile(new URL('../src/features/materials/MaterialView.tsx', import.meta.url), 'utf8')
+  const pane = await readFile(new URL('../src/features/materials/MaterialPane.tsx', import.meta.url), 'utf8')
+  const render = await readFile(new URL('../src/features/materials/PageRender.tsx', import.meta.url), 'utf8')
 
-  // 1. 坐标必须按 rect.width / clientWidth 还原
+  // 1. 坐标必须按 rect.width / clientWidth 还原（工具已抽到 PageRender）
+  assert.ok(/export function toBasePoint/.test(render), '必须有 toBasePoint：屏幕坐标要换算回纸张基准坐标')
   assert.ok(
-    /function toBasePoint/.test(view),
-    '必须有 toBasePoint：屏幕坐标要换算回纸张基准坐标'
-  )
-  assert.ok(
-    /rect\.width \/ canvas\.clientWidth/.test(view),
+    /rect\.width \/ canvas\.clientWidth/.test(render),
     '换算比例必须取 rect.width / clientWidth（clientWidth 不受 transform 影响）'
   )
   assert.ok(
-    /\(event\.clientX - rect\.left\) \/ \(scale \|\| 1\)/.test(view),
+    /\(event\.clientX - rect\.left\) \/ \(scale \|\| 1\)/.test(render),
     '横坐标必须除以缩放比例，否则放大后笔迹偏移'
   )
   // 落笔与拖动都要用换算函数，不能留着裸 clientX - rect.left
-  assert.ok(!/p: \[event\.clientX - rect\.left/.test(view), '落笔点不能用裸屏幕坐标')
-  assert.ok(!/const x = item\.clientX - rect\.left/.test(view), '拖动采样点不能用裸屏幕坐标')
+  assert.ok(!/p: \[event\.clientX - rect\.left/.test(pane), '落笔点不能用裸屏幕坐标')
+  assert.ok(!/const x = item\.clientX - rect\.left/.test(pane), '拖动采样点不能用裸屏幕坐标')
+  assert.ok(/toBasePoint\(event, canvas\)/.test(pane), '落笔必须走 toBasePoint')
 
   // 笔宽也要按缩放折算，否则放大后屏幕上笔画越来越粗
   assert.ok(
-    /w: \(tool === 'eraser' \? Math\.max\(16, size \* 4\) : size\) \/ \(zoom \|\| 1\)/.test(view),
+    /w: \(tool === 'eraser' \? Math\.max\(16, size \* 4\) : size\) \/ \(zoom \|\| 1\)/.test(pane),
     '笔宽必须除以 zoom：存的是屏幕粗细就会随缩放变化'
   )
 
-  // 2. 缩放必须保住视口锚点
-  assert.ok(/function applyZoom/.test(view), '缩放要走 applyZoom，不能直接 setZoom')
+  /*
+   * 2. 缩放锚点
+   * 重构后缩放是「改变 pane 的 zoom prop」→ 由 CSS transform 完成，
+   * 不再在 View 里手算 scrollTop；位置保持改由 `writePane` 记 ratio +
+   * Pane 的 tryRestore 还原。这里改测「有没有把 ratio 记进会话」。
+   */
+  assert.ok(/setZoomOf/.test(view), '缩放要集中到 setZoomOf，避免两栏各写一份')
+  assert.ok(/writePane\(side, \{ zoom/.test(view), '缩放必须写进该栏会话，否则刷新后被重置')
   assert.ok(
-    /node\.offsetHeight \* anchor\.ratio/.test(view),
-    '缩放后要按「新页高 × 原页内比例」还原滚动位置（纯乘 scrollTop 会有累积误差）'
+    /node\.offsetHeight \* anchor\.ratio|el\.offsetHeight \* own\.ratio/.test(pane),
+    '恢复时要按「新页高 × 页内比例」定位（纯乘 scrollTop 会有累积误差）'
   )
-  assert.ok(!/onClick=\{\(\) => setZoom\(1\)\}/.test(view), '点百分比复位也要走 applyZoom，否则同样跳位')
   assert.ok(
-    /data-page=\{index\}[\s\S]{0,80}className="page-slot/.test(view),
+    /data-page=\{index\}[\s\S]{0,80}className="page-slot/.test(pane),
     'data-page 必须挂外层占位槽：锚点按 offsetHeight 算，挂被缩放的 sheet 上会算错'
   )
 
-  // 3. Ctrl+Z / Ctrl+Shift+Z
+  // 3. Ctrl+Z / Ctrl+Shift+Z（双栏时按激活栏分派）
   assert.ok(/document\.addEventListener\('keydown', onKey\)/.test(view), '撤销快捷键要挂在 document 上（canvas 拿不到焦点）')
   assert.ok(/const isUndo = key === 'z' && !event\.shiftKey/.test(view), '缺少 Ctrl+Z 撤销')
   assert.ok(/const isRedo = \(key === 'z' && event\.shiftKey\) \|\| key === 'y'/.test(view), '缺少 Ctrl+Shift+Z / Ctrl+Y 重做')
+  assert.ok(/actionsRef\.current\[activeSide\]/.test(view), '快捷键必须作用在「激活栏」，双栏时不能两栏一起撤')
   for (const tag of ['textarea', 'input']) {
     assert.ok(
       new RegExp(`tag === '${tag}'`).test(view),
@@ -991,15 +990,22 @@ test('材料：刷新后仍在原页（会话持久化缩放/笔设置/页码）
    */
   const pad = await readFile(new URL('../src/pages/tools/scratchpad/index.tsx', import.meta.url), 'utf8')
   const view = await readFile(new URL('../src/features/materials/MaterialView.tsx', import.meta.url), 'utf8')
+  const pane = await readFile(new URL('../src/features/materials/MaterialPane.tsx', import.meta.url), 'utf8')
   const session = await readFile(new URL('../src/features/materials/session.ts', import.meta.url), 'utf8')
 
-  // 1. 会话模块
+  // 1. 会话模块（双栏后升级为 left/right 两栏）
   assert.ok(/export function readSession/.test(session), '需要 readSession')
   assert.ok(/export function writeSession/.test(session), '需要 writeSession')
+  assert.ok(/export function writePane/.test(session), '需要 writePane：只改某一栏，不能整体覆盖另一栏')
   assert.ok(
-    /const next = \{ \.\.\.readSession\(\), \.\.\.patch \}/.test(session),
+    /const next: MaterialSession = \{[\s\S]{0,200}?\.\.\.patch/.test(session),
     'writeSession 必须做合并：整体覆盖会把别处刚写的字段冲掉'
   )
+  assert.ok(
+    /left: patch\.left \? \{ \.\.\.current\.left, \.\.\.patch\.left \} : current\.left/.test(session),
+    '栏状态要浅合并到栏：只改 zoom 不能把 id 冲掉'
+  )
+  assert.ok(/legacyId/.test(session), '要兼容旧版单栏存档，否则升级后用户「上次看到哪」全丢')
   assert.ok(codesSafeJson(session), '读会话必须 try/catch，坏存档不能让整个界面打不开')
 
   // 2. open 状态初值同步读会话（不能等 useEffect，否则先闪一帧草稿纸）
@@ -1019,23 +1025,47 @@ test('材料：刷新后仍在原页（会话持久化缩放/笔设置/页码）
   )
   assert.ok(/- 点击「关闭」按钮[\s\S]{0,80}?/.test(pad) || /onClose=\{closeMaterial\}\s*\n\s*destroyOnHidden/.test(pad), '')
 
-  // 4. 缩放/笔设置/页码写回会话
-  for (const key of ['zoom', 'color', 'size', 'page']) {
+  // 4. 缩放/笔设置/页码写回会话（zoom 与 page 分栏记录）
+  for (const key of ['color', 'size', 'tool']) {
     assert.ok(
       new RegExp(`writeSession\\(\\{[^}]*${key}`).test(view),
       `${key} 必须写回会话，否则刷新后被重置`
     )
   }
-  // 5. 刷新后自动重新打开上次那份材料
-  assert.ok(/const restoredRef = useRef\(false\)/.test(view), '需要「只恢复一次」的保护，避免把用户手动切走的材料又拉回来')
+  assert.ok(/writePane\(side, \{ zoom/.test(view), '缩放必须按栏写回会话')
+  assert.ok(/writePane\(side, \{ page: visible, ratio \}/.test(pane), '页码与页内比例必须按栏写回会话')
+  /*
+   * 只在「页码变化」时写 ratio 是错的：在同一页里滚动时 ratio 永远不更新，
+   * 刷新后会被定位到该页最顶上（用户看到「位置没记住」）。
+   */
   assert.ok(
-    /await openMaterial\(target\)/.test(view),
-    '会话里有 id 时要自动打开那份材料（否则刷新后停在列表，不算回到原页）'
+    /lastSessionRef/.test(pane),
+    '要有 lastSessionRef 去重，才能做到「每次都写但不每帧都写」'
   )
-  // 6. 导入后也要记 id（导入走的是 setCurrent，不经过 openMaterial）
+  // 5. 刷新后自动恢复（两栏各查一次材料是否还存在）
+  assert.ok(/const restoredRef = useRef\(false\)/.test(view), '需要「只恢复一次」的保护，避免把用户手动切走的材料又拉回来')
+  assert.ok(/getMaterial\(session\.left\.id\)/.test(view) && /getMaterial\(session\.right\.id\)/.test(view), '两栏都要校验材料是否还在')
+  // 6. 导入后也要记 id（导入走的是 setLeftId，不经过 openInto）
   assert.ok(
-    /writeSession\(\{ open: true, id: material\.id, page: 0 \}\)/.test(view),
-    '导入完成后必须写入 id：导入走 setCurrent，不写就会刷新掉回列表'
+    /writePane\('left', \{ id: material\.id, zoom: 1, page: 0, ratio: 0 \}\)/.test(view),
+    '导入完成后必须写入 id：导入走 setLeftId，不写就会刷新掉回列表'
+  )
+  /*
+   * 7. page=0 陷阱：第 1 页的页码就是 0，不能拿 0 当「没有记录」。
+   * 早写成 `if (sessionPage > 0) jump(...)`，停在第一页中部时永远不恢复。
+   */
+  assert.ok(
+    /const sessionPage = own\.id === target\.id \? own\.page : -1/.test(pane),
+    '要用 -1 表示「无记录」，0 是合法的第一页'
+  )
+  assert.ok(/if \(sessionPage >= 0\)/.test(pane), '恢复判断必须允许 page=0')
+  /*
+   * 8. 恢复 effect 不能依赖父组件传进来的回调：
+   * 它们每次渲染都是新函数，会让 effect 反复重建、cleanup 把重试定时器清掉。
+   */
+  assert.ok(
+    /const syncRangeRef = useRef\(syncRange\)/.test(pane),
+    'syncRange 要收进 ref：它依赖父组件回调，列进依赖会让恢复 effect 反复重建'
   )
 })
 

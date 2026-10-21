@@ -1,160 +1,117 @@
-import { App, Button, Drawer, Input, Tooltip } from 'antd'
+import { App, Button, Drawer, Dropdown, Input, Tooltip } from 'antd'
 import {
   ArrowLeft,
   Eraser,
   FileText,
+  FolderOpen,
+  FolderPlus,
   ListChecks,
   NotebookPen,
   Pen,
+  Pencil,
   RotateCcw,
+  Columns2,
   Trash2,
   X,
   ZoomIn,
   ZoomOut,
 } from 'lucide-react'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import ChoiceSheet from '@/components/features/ChoiceSheet'
 import ExamSheet from '@/components/features/ExamSheet'
+import MaterialPane from '@/features/materials/MaterialPane'
 import {
   clearAllNotes,
+  createFolder,
+  deleteFolder,
   deleteMaterial,
-  getAllNotes,
   getMaterial,
-  getScrollPage,
+  listFolders,
   listMaterials,
+  moveMaterial,
   putMaterial,
-  putNotes,
-  setScrollPage,
+  renameFolder,
+  renameMaterial,
+  type Folder,
   type Material,
-  type NoteStroke,
-  type PptShape,
 } from '@/features/materials/db'
-import { closePdfDocument, detectKind, openPdfDocument, parseMaterial } from '@/features/materials/parse'
-import { readSession, writeSession } from '@/features/materials/session'
+import { detectKind, parseMaterial } from '@/features/materials/parse'
+import { readSession, writePane, writeSession, type PaneSide } from '@/features/materials/session'
 
 /** 预设色板（与草稿纸一致）。 */
 const SWATCHES = ['#1f2329', '#c0392b', '#1f5fd6', '#0f766e', '#b45309', '#5b4bd6']
-/** 笔宽范围。 */
 const SIZE_MIN = 1
 const SIZE_MAX = 16
-/** 撤销上限（按页各存一份）。 */
-const UNDO_MAX = 100
-/** 相邻采样点最小间距。 */
-const MIN_DIST = 0.7
-/**
- * 安全区：视口上下各多留一屏的页数。
- *
- * @remarks 用户原话是「可视范围内加安全区这样加载」。
- * 只渲染视口内那几页的话，快速滚动会看到空白；多留一屏既能提前画好，
- * 又不至于把几百页一次全画出来。
- */
-const SAFE_PAGES = 1
-/** PDF 渲染的目标像素宽。 */
-const PDF_RASTER_W = 1400
-/** DOCX 页面上下留白合计，切页时扣掉。 */
-const DOCX_PAD_Y = 96
-/**
- * 缩放范围与步进。
- *
- * @remarks 用户要「放大缩小」。上限只到 3 倍：
- * 再大 PDF 位图就会明显变糊（我们只按 1400px 宽渲染），不如不加。
- */
 const ZOOM_MIN = 0.6
 const ZOOM_MAX = 3
 const ZOOM_STEP = 0.2
 
-/** 工具。 */
-type Tool = 'pen' | 'eraser'
-
-/** 页面渲染状态：只有进入安全区的页才会被填内容。 */
-type PageContent = { kind: 'loading' } | { kind: 'pdf'; url: string }
+/** 正在内联编辑的目标（材料名 / 文件夹名）。 */
+type Editing = { kind: 'material' | 'folder'; id: string; value: string } | null
 
 /**
- * 材料阅读 + 批注视图。
+ * 材料主视图：列表（文件夹树）+ 单/双栏阅读。
  *
  * @param props 组件属性。
- * @returns 材料列表，或某份材料的长条滚动阅读区。
+ * @returns 材料管理界面。
  * @remarks
- * **与草稿纸的区别**：草稿纸只有一张无限画布；材料是多页且要跟随滚动。
+ * 对应用户五条反馈：材料可重命名；双材料并排对照（题目+答案）；
+ * 文件夹树；列表页滚动错位；提示不挡操作（样式层）。
  *
- * **渲染策略**：
- * 1. 导入时**不转位图**，只存原始文件 + 矢量内容（DOCX 的 HTML / PPTX 的文字块）；
- * 2. 打开时按「视口 + 上下各一屏安全区」决定渲染哪几页，离开安全区立即释放；
- * 3. 只有 PDF 需要位图，且只把安全区内的页画出来；
- * 4. DOCX / PPTX 是真实 DOM 文本，可选中、放大不糊，体积与页数几乎无关。
- *
- * 这样几百页的 PDF 也只常驻 3~5 页位图，内存可控。
+ * **双栏的关键约束**：左右两栏是**两个独立组件实例**（`MaterialPane`），
+ * 各自的滚动容器、canvas 表、笔迹表、缩放、页码互不共享。
+ * 用户明确要求「特别是滚动条需要注意」「记住打开两个文件的位置」
+ * 「笔记也是对应笔记上的」—— 共享任何一个 ref 都会串味。
  */
-export default function MaterialView({
-  open,
-  onClose,
-}: {
-  /** 是否显示（外层用全屏 Drawer 承载）。 */
-  open: boolean
-  /** 关闭回调。 */
-  onClose: () => void
-}) {
+export default function MaterialView({ open, onClose }: { open: boolean; onClose: () => void }) {
   const { message, modal } = App.useApp()
 
   const [materials, setMaterials] = useState<Material[]>([])
-  const [current, setCurrent] = useState<Material | null>(null)
+  const [folders, setFolders] = useState<Folder[]>([])
   const [pendingFile, setPendingFile] = useState<{ file: File; name: string } | null>(null)
   const [importing, setImporting] = useState(false)
+  const [editing, setEditing] = useState<Editing>(null)
+  /** 折叠的文件夹 id（与会话共享）。 */
+  const [collapsed, setCollapsed] = useState<string[]>(() => readSession().collapsedFolders)
+  const fileRef = useRef<HTMLInputElement>(null)
 
-  /*
-   * 阅读态。初始值都从上次会话读：
-   * 用户要求「包括笔记和这些缩放配置也需要缓存」—— 刷新后笔色、笔粗、缩放
-   * 应该还是他调好的样子，而不是被重置成默认值。
-   */
-  // 只在首次渲染读一次：之后的状态由用户操作驱动，不需要每帧回读 localStorage。
-  const initialSessionRef = useRef(readSession())
-  const initialSession = initialSessionRef.current
-  const [tool, setTool] = useState<Tool>(initialSession.tool)
-  const [color, setColor] = useState(initialSession.color)
-  const [size, setSize] = useState(initialSession.size)
-  const [pages, setPages] = useState<Record<number, PageContent>>({})
-  const [visiblePage, setVisiblePage] = useState(1)
-  /** 安全区范围（含端点）。 */
-  const [range, setRange] = useState<[number, number]>([0, 0])
-  /** 缩放倍率（只影响显示，笔迹坐标永远在纸张基准坐标系里）。 */
-  const [zoom, setZoom] = useState(initialSession.zoom)
-  /**
-   * 材料内打开的答题卡 / 答题纸。
-   *
-   * @remarks 用户要求「大刷不要回到草稿纸界面，包括选择题、网格题打开的时候」——
-   * 所以这两个浮层必须开在材料视图**内部**，关掉仍停在当前材料，
-   * 绝不能让用户跳回草稿工作台。它们与草稿工作台共用同一份存档
-   * （`choice-quiz:v1` / `exam-grid:v2`），只是显示位置不同。
-   */
+  /* 阅读态（全部落会话，刷新后还原） */
+  const initial = useRef(readSession()).current
+  const [leftId, setLeftId] = useState(initial.left.id)
+  const [rightId, setRightId] = useState(initial.right.id)
+  const [leftZoom, setLeftZoom] = useState(initial.left.zoom || 1)
+  const [rightZoom, setRightZoom] = useState(initial.right.zoom || 1)
+  const [activeSide, setActiveSide] = useState<PaneSide>(initial.active)
+  const [tool, setTool] = useState<'pen' | 'eraser'>(initial.tool)
+  const [color, setColor] = useState(initial.color)
+  const [size, setSize] = useState(initial.size)
+  /** 两份材料的标题与页码（由 Pane 回报，供工具条显示）。 */
+  const [meta, setMeta] = useState<{
+    left: { name: string; page: number; total: number }
+    right: { name: string; page: number; total: number }
+  }>({
+    left: { name: '', page: 1, total: 0 },
+    right: { name: '', page: 1, total: 0 },
+  })
+  /** 两栏的撤销动作（快捷键按激活栏分派）。 */
+  const actionsRef = useRef<
+    Record<PaneSide, { undo: () => void; redo: () => void; clearPage: () => void; clearAll: () => void } | null>
+  >({ left: null, right: null })
+
   const [quizOpen, setQuizOpen] = useState(false)
   const [examOpen, setExamOpen] = useState(false)
+  /** 「从已有材料中导入」的选择弹窗，以及要放进哪一栏。 */
+  const [pick, setPick] = useState<PaneSide | null>(null)
 
-  const scrollRef = useRef<HTMLDivElement>(null)
-  const fileRef = useRef<HTMLInputElement>(null)
-  /** 每页笔迹（页序 → 笔迹数组）。 */
-  const notesRef = useRef<Map<number, NoteStroke[]>>(new Map())
-  /** 每页撤销栈。 */
-  const undoRef = useRef<Map<number, NoteStroke[][]>>(new Map())
-  /** 每页重做栈（撤销后可再前进）。 */
-  const redoRef = useRef<Map<number, NoteStroke[][]>>(new Map())
-  /** 每页批注画布引用。 */
-  const canvasRefs = useRef<Map<number, HTMLCanvasElement>>(new Map())
-  /** 正在画的笔。 */
-  const currentRef = useRef<{ page: number; stroke: NoteStroke } | null>(null)
-  const activeIdRef = useRef<number | null>(null)
-  const scrollTimerRef = useRef(0)
-  const lastSavedPageRef = useRef(0)
-  /** 当前材料 id，用于异步回调里判断「还是不是同一份」。 */
-  const currentIdRef = useRef('')
-  /** 已创建但未释放的位图 URL（离开安全区时回收）。 */
-  const urlsRef = useRef<Map<number, string>>(new Map())
-  /** 已渲染中的页，防重复渲染。 */
-  const renderingRef = useRef<Set<number>>(new Set())
+  const twoPanes = Boolean(rightId)
+  const activeId = activeSide === 'right' ? rightId : leftId
 
   /* ---------------- 列表 ---------------- */
 
   const refresh = useCallback(async () => {
-    setMaterials(await listMaterials())
+    const [list, fold] = await Promise.all([listMaterials(), listFolders()])
+    setMaterials(list)
+    setFolders(fold)
   }, [])
 
   useEffect(() => {
@@ -164,29 +121,17 @@ export default function MaterialView({
 
   /* ---------------- 导入 ---------------- */
 
-  /**
-   * 选完文件先问名字。
-   *
-   * @param file 文件。
-   * @returns 无返回。
-   */
   const askName = useCallback(
     (file: File) => {
       if (!detectKind(file.name)) {
         message.error('只支持 PDF / DOCX / PPTX 三种格式')
         return
       }
-      // 默认名 = 文件名去掉扩展名；用户可直接改，不改就用它。
       setPendingFile({ file, name: file.name.replace(/\.(pdf|docx|pptx)$/i, '') })
     },
     [message],
   )
 
-  /**
-   * 确认导入：只解析元数据 + 存原始文件（不转位图）。
-   *
-   * @returns 无返回。
-   */
   const confirmImport = useCallback(async () => {
     const pending = pendingFile
     if (!pending) return
@@ -203,7 +148,6 @@ export default function MaterialView({
         pageCount: parsed.pageCount,
         pageW: parsed.pageW,
         pageH: parsed.pageH,
-        // 只存原始文件：体积 ≈ 源文件，不再随页数膨胀。
         file: pending.file,
         docxHtml: parsed.docxHtml,
         pptSlides: parsed.pptSlides,
@@ -213,15 +157,11 @@ export default function MaterialView({
       await putMaterial(material)
       await refresh()
       message.success(`已导入《${name}》，共 ${parsed.pageCount} 页`)
-      /*
-       * 导入后这里是直接 setCurrent，没走 openMaterial ——
-       * 所以也必须把「正在看哪份」写进会话，否则刷新后会掉回材料列表
-       * （用户看到的「刷新后不是原来那个页面」正是这个原因）。
-       */
-      currentIdRef.current = material.id
-      writeSession({ open: true, id: material.id, page: 0 })
-      lastSavedPageRef.current = 0
-      setCurrent(material)
+      // 导入后直接打开到左栏；这里不走 openInto，所以也要记会话。
+      setLeftId(material.id)
+      setLeftZoom(1)
+      writePane('left', { id: material.id, zoom: 1, page: 0, ratio: 0 })
+      writeSession({ open: true })
     } catch (error) {
       message.error(`导入失败：${error instanceof Error ? error.message : '未知错误'}`)
     } finally {
@@ -229,289 +169,98 @@ export default function MaterialView({
     }
   }, [pendingFile, refresh, message])
 
-  /* ---------------- 打开 / 关闭材料 ---------------- */
+  /* ---------------- 打开 / 切换 ---------------- */
 
   /**
-   * 打开一份材料。
+   * 打开某份材料到指定栏。
    *
-   * @param item 材料清单项。
+   * @param side 哪一栏。
+   * @param id 材料 id。
    * @returns 无返回。
    */
-  const openMaterial = useCallback(
-    async (item: Material) => {
-      // 列表里的项可能不含 file（早期数据），补一次完整读取。
-      const full = item.file ? item : await getMaterial(item.id)
-      if (!full) {
-        message.error('这份材料的数据已丢失')
-        return
-      }
-      const notes = await getAllNotes(full.id)
-      notesRef.current = notes
-      undoRef.current = new Map()
-      canvasRefs.current.clear()
-      currentRef.current = null
-      renderingRef.current.clear()
-      for (const url of urlsRef.current.values()) URL.revokeObjectURL(url)
-      urlsRef.current.clear()
-      currentIdRef.current = full.id
-      setPages({})
-      setRange([0, 0])
-      // 记下「正在看哪份材料」：刷新后据此自动重新打开它。
-      writeSession({ open: true, id: full.id })
-      setVisiblePage(1)
-      setCurrent(full)
-    },
-    [message],
-  )
+  const openInto = useCallback((side: PaneSide, id: string) => {
+    if (side === 'left') {
+      setLeftId(id)
+      setLeftZoom(1)
+      writePane('left', { id, zoom: 1, page: 0, ratio: 0 })
+    } else {
+      setRightId(id)
+      setRightZoom(1)
+      writePane('right', { id, zoom: 1, page: 0, ratio: 0 })
+    }
+    writeSession({ open: true, active: side })
+    setActiveSide(side)
+  }, [])
 
   /**
-   * 刷新后自动回到上次看的那份材料。
+   * 关闭某一栏。
    *
-   * @remarks 用户要求「刷新过后应该还是这个页面，不应该关闭回到了草稿纸」。
-   * 外层已按会话把材料视图重新拉起；这里负责把**具体那份材料**也恢复出来，
-   * 否则会停在材料列表，同样不是「原来那个页面」。
-   *
-   * **必须放在 `openMaterial` 之后**：effect 在渲染后同步执行，
-   * 若声明在它前面，闭包里拿到的是 TDZ 之前的 undefined，会自动恢复失败。
-   * 只在首次执行：用户自己点了「材料列表」后不该被强行拉回去。
+   * @param side 哪一栏。
+   * @returns 无返回。
+   * @remarks 关左栏时把右栏顶上来，避免出现「左边空、右边满」的怪布局。
    */
+  const closePane = useCallback(
+    (side: PaneSide) => {
+      if (side === 'left') {
+        if (rightId) {
+          setLeftId(rightId)
+          setLeftZoom(rightZoom)
+          writePane('left', { id: rightId, zoom: rightZoom, page: 0, ratio: 0 })
+        } else {
+          setLeftId('')
+          writePane('left', { id: '' })
+        }
+        setRightId('')
+        writePane('right', { id: '' })
+        setActiveSide('left')
+      } else {
+        setRightId('')
+        writePane('right', { id: '' })
+        setActiveSide('left')
+      }
+    },
+    [rightId, rightZoom],
+  )
+
+  /* 刷新后自动恢复上次那两份材料：只跑一次，且先判断再置位。 */
   const restoredRef = useRef(false)
   useEffect(() => {
     if (!open || restoredRef.current) return
     const session = readSession()
-    // 先判断再置位：会话里还没有 id（刚清库/首次使用）时不该把标志锁死，
-    // 否则之后导入了材料也不会再尝试恢复。
-    if (!session.id) return
+    if (!session.left.id && !session.right.id) return
     restoredRef.current = true
     void (async () => {
-      const target = await getMaterial(session.id)
-      // 材料可能已被删除：静默回列表，不弹错误打扰用户。
-      if (!target) {
-        writeSession({ id: '' })
-        return
+      const [left, right] = await Promise.all([
+        session.left.id ? getMaterial(session.left.id) : Promise.resolve(null),
+        session.right.id ? getMaterial(session.right.id) : Promise.resolve(null),
+      ])
+      // 材料可能已被删除：清掉无效引用，不弹错打扰用户。
+      if (session.left.id && !left) {
+        setLeftId('')
+        writePane('left', { id: '' })
       }
-      await openMaterial(target)
+      if (session.right.id && !right) {
+        setRightId('')
+        writePane('right', { id: '' })
+      }
     })()
-    // 只认 `open`：`openMaterial` 依赖 message，引用会变，
-    // 列进依赖会让「自动恢复」被反复触发，把用户手动切走的材料又拉回来。
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open])
 
-  /* 离开材料时释放 PDF 文档与全部位图 URL。 */
-  useEffect(
-    () => () => {
-      const id = currentIdRef.current
-      if (id) void closePdfDocument(id)
-      for (const url of urlsRef.current.values()) URL.revokeObjectURL(url)
-      urlsRef.current.clear()
-    },
-    [],
-  )
+  /* ---------------- 缩放 / 笔设置 ---------------- */
 
-  /* ---------------- 按安全区渲染 ---------------- */
-
-  /**
-   * 渲染一页 PDF（只在安全区内调用）。
-   *
-   * @param index 页序。
-   * @returns 无返回。
-   */
-  const renderPdfPage = useCallback(
-    async (index: number) => {
-      const material = current
-      if (!material || material.kind !== 'pdf' || !material.file) return
-      if (renderingRef.current.has(index) || urlsRef.current.has(index)) return
-      renderingRef.current.add(index)
-      const id = material.id
-      setPages((prev) => ({ ...prev, [index]: { kind: 'loading' } }))
-      try {
-        const doc = await openPdfDocument(id, material.file)
-        if (currentIdRef.current !== id) return
-        const page = await doc.getPage(index + 1)
-        const base = page.getViewport({ scale: 1 })
-        // 按「目标像素宽」缩放，不按 PDF 原始点数 ×dpr：
-        // A4 宽 595pt，×2.35 ≈1400px，看小字够清楚，也不至于每页几 MB。
-        const scale = Math.min(2.6, PDF_RASTER_W / base.width)
-        const viewport = page.getViewport({ scale })
-        const canvas = document.createElement('canvas')
-        canvas.width = Math.round(viewport.width)
-        canvas.height = Math.round(viewport.height)
-        const ctx = canvas.getContext('2d')
-        if (!ctx) throw new Error('无法创建画布')
-        ctx.fillStyle = '#ffffff'
-        ctx.fillRect(0, 0, canvas.width, canvas.height)
-        await page.render({ canvasContext: ctx, viewport }).promise
-        const blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, 'image/webp', 0.85))
-        // 立刻释放位图与页面缓存，别让 canvas 占着几十 MB。
-        page.cleanup()
-        canvas.width = 0
-        canvas.height = 0
-        if (!blob) throw new Error('页面渲染失败')
-        if (currentIdRef.current !== id) return
-        const url = URL.createObjectURL(blob)
-        urlsRef.current.set(index, url)
-        setPages((prev) => ({ ...prev, [index]: { kind: 'pdf', url } }))
-      } catch {
-        // 渲染失败就留空，滚动重试时会再次尝试。
-        setPages((prev) => {
-          const next = { ...prev }
-          delete next[index]
-          return next
-        })
-      } finally {
-        renderingRef.current.delete(index)
-      }
-    },
-    [current],
-  )
-
-  /**
-   * 释放安全区之外的页（回收位图 URL 与状态）。
-   *
-   * @param from 安全区起始页（含）。
-   * @param to 安全区结束页（含）。
-   * @returns 无返回。
-   */
-  const pruneOutside = useCallback((from: number, to: number) => {
-    for (const [index, url] of [...urlsRef.current.entries()]) {
-      if (index >= from && index <= to) continue
-      URL.revokeObjectURL(url)
-      urlsRef.current.delete(index)
-    }
-    setPages((prev) => {
-      const next: Record<number, PageContent> = {}
-      let changed = false
-      for (const [key, value] of Object.entries(prev)) {
-        const index = Number(key)
-        if (index >= from && index <= to) next[index] = value
-        else changed = true
-      }
-      return changed ? next : prev
-    })
+  const currentZoom = activeSide === 'right' ? rightZoom : leftZoom
+  const setZoomOf = useCallback((side: PaneSide, value: number) => {
+    const next = Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, Math.round(value * 10) / 10))
+    if (side === 'left') setLeftZoom(next)
+    else setRightZoom(next)
+    writePane(side, { zoom: next })
   }, [])
+  const changeZoom = (delta: number) => setZoomOf(activeSide, currentZoom + delta)
 
-  /**
-   * 按滚动位置更新「可视页 / 安全区」。
-   *
-   * @returns 无返回。
-   */
-  const syncRange = useCallback(() => {
-    const material = current
-    const scroller = scrollRef.current
-    if (!material || !scroller) return
-    const nodes = [...scroller.querySelectorAll<HTMLElement>('[data-page]')]
-    if (!nodes.length) return
-    const top = scroller.scrollTop
-    const bottom = top + scroller.clientHeight
+  /* ---------------- 快捷键（作用在激活栏） ---------------- */
 
-    // 可视页：取视口上方 1/3 处所在的页，比「完全可见的第一页」更符合阅读直觉。
-    const line = top + scroller.clientHeight / 3
-    let visible = 0
-    for (const node of nodes) {
-      if (node.offsetTop <= line) visible = Number(node.dataset.page) || 0
-      else break
-    }
-    setVisiblePage(visible + 1)
-
-    // 安全区：与视口相交的页再上下各扩 SAFE_PAGES 页。
-    let first = visible
-    let last = visible
-    for (const node of nodes) {
-      const index = Number(node.dataset.page)
-      const nodeTop = node.offsetTop
-      const nodeBottom = nodeTop + node.offsetHeight
-      if (nodeBottom >= top && nodeTop <= bottom) {
-        first = Math.min(first, index)
-        last = Math.max(last, index)
-      }
-    }
-    const from = Math.max(0, first - SAFE_PAGES)
-    const to = Math.min(material.pageCount - 1, last + SAFE_PAGES)
-    setRange((prev) => (prev[0] === from && prev[1] === to ? prev : [from, to]))
-
-    if (visible !== lastSavedPageRef.current) {
-      lastSavedPageRef.current = visible
-      void setScrollPage(material.id, visible)
-      // 会话里也记一份：刷新后首帧就能定位，不必等 IndexedDB 异步读回来。
-      writeSession({ page: visible })
-    }
-  }, [current])
-
-  /**
-   * 滚动处理（节流 120ms）。
-   *
-   * @returns 无返回。
-   */
-  const onScroll = useCallback(() => {
-    window.clearTimeout(scrollTimerRef.current)
-    scrollTimerRef.current = window.setTimeout(syncRange, 120)
-  }, [syncRange])
-
-  /* 安全区变化：渲染进来的页，释放出去的页。 */
   useEffect(() => {
-    const material = current
-    if (!material) return
-    const [from, to] = range
-    if (material.kind === 'pdf') {
-      for (let i = from; i <= to; i += 1) void renderPdfPage(i)
-    }
-    pruneOutside(from, to)
-  }, [range, current, renderPdfPage, pruneOutside])
-
-  /* 打开材料后：先同步安全区，再恢复上次滚动位置。 */
-  useEffect(() => {
-    const material = current
-    if (!material) return
-    const id = material.id
-    // 等占位撑好高度（aspect-ratio 已定），再算安全区与恢复滚动。
-    const timer = window.setTimeout(async () => {
-      const scroller = scrollRef.current
-      if (!scroller) return
-      /*
-       * 页码有两个来源，取更快的那个：
-       * - `materials:session` 里的 page（localStorage，同步、首帧就有）；
-       * - IndexedDB 的 `scroll:<id>`（更权威，但异步）。
-       * 先用会话值立刻定位，避免刷新后先闪一下第一页再跳过去；
-       * 再用库里值校正一次（两者一般都相同）。
-       */
-      const fallback = readSession().page
-      if (currentIdRef.current !== id) return
-      const jumpToPage = (page: number) => {
-        const target = scroller.querySelector<HTMLElement>(`[data-page="${page}"]`)
-        if (!target) return false
-        /*
-         * 必须 `behavior: 'instant'`：用户明确要求「不要过渡效果，直接定位」。
-         * 用 smooth 会从顶部滑一大段，看起来像页面在乱跳。
-         */
-        scroller.scrollTo({ top: target.offsetTop, behavior: 'instant' as ScrollBehavior })
-        setVisiblePage(page + 1)
-        return true
-      }
-      // 首帧兜底：会话里记的页（同步可读）。
-      if (fallback > 0) lastSavedPageRef.current = fallback
-      if (fallback > 0) jumpToPage(fallback)
-
-      const saved = await getScrollPage(id)
-      lastSavedPageRef.current = saved
-      if (currentIdRef.current !== id) return
-      if (saved > 0 && saved !== fallback) jumpToPage(saved)
-      syncRange()
-    }, 80)
-    return () => window.clearTimeout(timer)
-  }, [current, syncRange])
-
-  /**
-   * 键盘撤销 / 重做。
-   *
-   * @remarks
-   * 用户反馈「ctrl+z 没用」—— 之前材料视图完全没绑快捷键。
-   * 这里挂在 document 上而不是 canvas 上：canvas 拿不到焦点，
-   * 用户按 Ctrl+Z 时焦点通常在 body 或工具栏按钮上。
-   * 同时要避开输入框：在答题纸 textarea、页码输入框里按 Ctrl+Z
-   * 应该走浏览器原生撤销，不能被我们抢走。
-   */
-  useEffect(() => {
-    if (!current) return
+    if (!open || !activeId) return
     const onKey = (event: KeyboardEvent) => {
       const meta = event.metaKey || event.ctrlKey
       if (!meta) return
@@ -519,418 +268,278 @@ export default function MaterialView({
       const isUndo = key === 'z' && !event.shiftKey
       const isRedo = (key === 'z' && event.shiftKey) || key === 'y'
       if (!isUndo && !isRedo) return
-
-      // 正在输入框里打字时让浏览器自己处理，别抢用户的文本撤销。
+      // 输入框里放行给浏览器，别抢用户自己的文本撤销。
       const target = event.target as HTMLElement | null
       const tag = target?.tagName?.toLowerCase()
       if (tag === 'textarea' || tag === 'input' || target?.isContentEditable) return
-
       event.preventDefault()
-      // 撤销作用于「当前正在看的那一页」。
-      const index = visiblePage - 1
-      if (isUndo) undoPage(index)
-      else redoPage(index)
+      const actions = actionsRef.current[activeSide]
+      if (!actions) return
+      if (isUndo) actions.undo()
+      else actions.redo()
     }
     document.addEventListener('keydown', onKey)
     return () => document.removeEventListener('keydown', onKey)
-  })
+  }, [open, activeId, activeSide])
 
-  /* ---------------- 批注绘制 ---------------- */
+  /* ---------------- 重命名 ---------------- */
 
-  /**
-   * 给上下文套上笔迹样式。
-   *
-   * @param ctx 上下文。
-   * @param stroke 笔迹。
-   * @returns 无返回。
-   */
-  function applyStyle(ctx: CanvasRenderingContext2D, stroke: NoteStroke) {
-    ctx.save()
-    ctx.globalCompositeOperation = stroke.t === 'eraser' ? 'destination-out' : 'source-over'
-    ctx.strokeStyle = stroke.c
-    ctx.fillStyle = stroke.c
-    /*
-     * 这里用原值即可：canvas 的内部分辨率是「基准尺寸 × dpr」，与外层 zoom 无关，
-     * 缩放由 CSS transform 在显示层完成。所以存什么笔宽就画多宽，
-     * 放大时整幅（含笔画）一起变粗，视觉上才和纸上的字一致。
-     */
-    ctx.lineWidth = stroke.w
-    ctx.lineCap = 'round'
-    ctx.lineJoin = 'round'
-  }
+  const commitEditing = useCallback(async () => {
+    const target = editing
+    if (!target) return
+    const value = target.value.trim()
+    setEditing(null)
+    if (!value) return
+    if (target.kind === 'material') await renameMaterial(target.id, value)
+    else await renameFolder(target.id, value)
+    await refresh()
+  }, [editing, refresh])
 
-  /**
-   * 把指针的屏幕坐标换算成「纸张基准坐标系」里的坐标。
-   *
-   * @param event 指针事件（或原生事件）。
-   * @param canvas 目标画布。
-   * @returns `{ x, y }`，已还原缩放。
-   * @remarks
-   * **缩放后笔记错位的根因就在这里**：页面被 `transform: scale(zoom)` 缩放过，
-   * `getBoundingClientRect()` 返回的是**屏幕上**的尺寸，而 canvas 内部坐标系
-   * 始终是基准像素（A4 就是 595×842）。直接 `clientX - rect.left` 得到的是屏幕像素，
-   * 放大 140% 时坐标就变成 1.4 倍，落笔位置整体偏向右下。
-   *
-   * 用 `rect.width / canvas.clientWidth` 反推比例（而不是引用 zoom 变量）：
-   * `clientWidth` 不受 transform 影响，这个比值天然包含缩放、dpr、以及将来任何变换，
-   * 除一下就能把屏幕坐标还原回基准坐标。
-   */
-  function toBasePoint(
-    event: { clientX: number; clientY: number },
-    canvas: HTMLCanvasElement,
-  ): { x: number; y: number } {
-    const rect = canvas.getBoundingClientRect()
-    const scale = canvas.clientWidth > 0 ? rect.width / canvas.clientWidth : 1
-    return {
-      x: (event.clientX - rect.left) / (scale || 1),
-      y: (event.clientY - rect.top) / (scale || 1),
+  /* ---------------- 文件夹 ---------------- */
+
+  const addFolder = useCallback(async () => {
+    const folder = await createFolder('新建文件夹')
+    await refresh()
+    // 建完直接进入改名状态，少点一次。
+    setEditing({ kind: 'folder', id: folder.id, value: folder.name })
+  }, [refresh])
+
+  /** 按文件夹分组；`''` 键表示未分类。 */
+  const grouped = useMemo(() => {
+    const map = new Map<string, Material[]>()
+    for (const item of materials) {
+      const key = item.folderId || ''
+      const list = map.get(key) ?? []
+      list.push(item)
+      map.set(key, list)
     }
-  }
+    return map
+  }, [materials])
 
-  /**
-   * 完整绘制一条笔迹。
-   *
-   * @param ctx 上下文。
-   * @param stroke 笔迹。
-   * @returns 无返回。
-   */
-  function drawStroke(ctx: CanvasRenderingContext2D, stroke: NoteStroke) {
-    const p = stroke.p
-    if (p.length < 2) return
-    applyStyle(ctx, stroke)
-    if (p.length === 2) {
-      ctx.beginPath()
-      ctx.arc(p[0], p[1], stroke.w / 2, 0, Math.PI * 2)
-      ctx.fill()
-    } else {
-      ctx.beginPath()
-      ctx.moveTo(p[0], p[1])
-      for (let i = 2; i < p.length; i += 2) ctx.lineTo(p[i], p[i + 1])
-      ctx.stroke()
-    }
-    ctx.restore()
-  }
-
-  /**
-   * 重绘某页全部批注。
-   *
-   * @param index 页序。
-   * @returns 无返回。
-   */
-  const redrawPage = useCallback((index: number) => {
-    const canvas = canvasRefs.current.get(index)
-    const ctx = canvas?.getContext('2d')
-    if (!canvas || !ctx) return
-    ctx.setTransform(1, 0, 0, 1, 0, 0)
-    ctx.clearRect(0, 0, canvas.width, canvas.height)
-    const dpr = canvas.width / (canvas.clientWidth || 1)
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
-    for (const stroke of notesRef.current.get(index) ?? []) drawStroke(ctx, stroke)
+  const toggleFolder = useCallback((id: string) => {
+    setCollapsed((prev) => {
+      const next = prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
+      writeSession({ collapsedFolders: next })
+      return next
+    })
   }, [])
 
-  /**
-   * 落笔。
-   *
-   * @param event 指针事件。
-   * @param index 页序。
-   * @returns 无返回。
-   */
-  function onDown(event: React.PointerEvent<HTMLCanvasElement>, index: number) {
-    if (event.pointerType === 'mouse' && event.button !== 0) return
-    if (activeIdRef.current !== null) return
-    activeIdRef.current = event.pointerId
-    const canvas = event.currentTarget
-    const start = toBasePoint(event, canvas)
-    const stroke: NoteStroke = {
-      t: tool,
-      c: color,
-      // 笔宽也要按缩放折算：否则放大后屏幕上的笔画越来越粗、缩小后越来越细。
-      w: (tool === 'eraser' ? Math.max(16, size * 4) : size) / (zoom || 1),
-      p: [start.x, start.y],
-    }
-    currentRef.current = { page: index, stroke }
-    const ctx = event.currentTarget.getContext('2d')
-    if (ctx) drawStroke(ctx, stroke)
-    try {
-      event.currentTarget.setPointerCapture(event.pointerId)
-    } catch {
-      // 指针已失效。
-    }
-  }
+  /* ---------------- 渲染：材料行 ---------------- */
 
   /**
-   * 移动。
+   * 单条材料。
    *
-   * @param event 指针事件。
-   * @returns 无返回。
+   * @param item 材料。
+   * @returns 列表行。
    */
-  function onMove(event: React.PointerEvent<HTMLCanvasElement>) {
-    const active = currentRef.current
-    if (!active || event.pointerId !== activeIdRef.current) return
-    const canvas = event.currentTarget
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return
-    const native = event.nativeEvent
-    const coalesced = typeof native.getCoalescedEvents === 'function' ? native.getCoalescedEvents() : []
-    const list = coalesced.length ? coalesced : [native]
-    const stroke = active.stroke
-    applyStyle(ctx, stroke)
-    for (const item of list) {
-      const point = toBasePoint(item, canvas)
-      const x = point.x
-      const y = point.y
-      const lx = stroke.p[stroke.p.length - 2]
-      const ly = stroke.p[stroke.p.length - 1]
-      if ((x - lx) ** 2 + (y - ly) ** 2 < MIN_DIST * MIN_DIST) continue
-      ctx.beginPath()
-      ctx.moveTo(lx, ly)
-      ctx.lineTo(x, y)
-      ctx.stroke()
-      stroke.p.push(x, y)
-    }
-    ctx.restore()
-  }
-
-  /**
-   * 收笔并写库。
-   *
-   * @param event 指针事件。
-   * @returns 无返回。
-   */
-  function onUp(event: React.PointerEvent<HTMLCanvasElement>) {
-    const finished = currentRef.current
-    if (!finished || event.pointerId !== activeIdRef.current) return
-    activeIdRef.current = null
-    currentRef.current = null
-    if (finished.stroke.p.length < 2) return
-    const index = finished.page
-    const list = notesRef.current.get(index) ?? []
-    list.push(finished.stroke)
-    notesRef.current.set(index, list)
-    const undo = undoRef.current.get(index) ?? []
-    undo.push(list.slice(0, -1))
-    if (undo.length > UNDO_MAX) undo.shift()
-    undoRef.current.set(index, undo)
-    // 画了新的一笔，之前的「重做」分支就作废了。
-    redoRef.current.delete(index)
-    void persistNotes(index)
-  }
-
-  /**
-   * 把某页笔迹写入 IndexedDB。
-   *
-   * @param index 页序。
-   * @returns 无返回。
-   */
-  async function persistNotes(index: number) {
-    const material = current
-    if (!material) return
-    try {
-      await putNotes(material.id, index, notesRef.current.get(index) ?? [])
-    } catch {
-      message.error('笔记保存失败（本地空间可能已满）')
-    }
-  }
-
-  /**
-   * 撤销某页最后一笔。
-   *
-   * @param index 页序。
-   * @returns 无返回。
-   */
-  function undoPage(index: number) {
-    const undo = undoRef.current.get(index) ?? []
-    const previous = undo.pop()
-    if (!previous) {
-      message.info('这一页没有可撤销的笔记')
-      return
-    }
-    undoRef.current.set(index, undo)
-    // 当前状态压进重做栈，Ctrl+Shift+Z / Ctrl+Y 才能恢复回来。
-    const redo = redoRef.current.get(index) ?? []
-    redo.push(notesRef.current.get(index) ?? [])
-    if (redo.length > UNDO_MAX) redo.shift()
-    redoRef.current.set(index, redo)
-    notesRef.current.set(index, previous)
-    redrawPage(index)
-    void persistNotes(index)
-  }
-
-  /**
-   * 重做某页（撤销的逆操作）。
-   *
-   * @param index 页序。
-   * @returns 无返回。
-   */
-  function redoPage(index: number) {
-    const redo = redoRef.current.get(index) ?? []
-    const next = redo.pop()
-    if (!next) {
-      message.info('这一页没有可重做的笔记')
-      return
-    }
-    redoRef.current.set(index, redo)
-    const undo = undoRef.current.get(index) ?? []
-    undo.push(notesRef.current.get(index) ?? [])
-    if (undo.length > UNDO_MAX) undo.shift()
-    undoRef.current.set(index, undo)
-    notesRef.current.set(index, next)
-    redrawPage(index)
-    void persistNotes(index)
-  }
-
-  /**
-   * 清空某页笔记（可撤销）。
-   *
-   * @param index 页序。
-   * @returns 无返回。
-   */
-  function clearPage(index: number) {
-    const before = notesRef.current.get(index) ?? []
-    if (!before.length) {
-      message.info('这一页还没有笔记')
-      return
-    }
-    const undo = undoRef.current.get(index) ?? []
-    undo.push(before)
-    undoRef.current.set(index, undo)
-    notesRef.current.set(index, [])
-    redrawPage(index)
-    void persistNotes(index)
-    message.success('已清空本页笔记，可用撤销找回')
-  }
-
-  /**
-   * 一键清除**整份材料**的笔记（所有页）。
-   *
-   * @returns 无返回。
-   * @remarks 与「清空本页」区分开：整份材料几百页时逐页清很折磨，
-   * 用户明确要求一键清。材料文件本身绝不动，只清笔迹。
-   */
-  function clearEveryNote() {
-    const material = current
-    if (!material) return
-    let total = 0
-    for (const list of notesRef.current.values()) total += list.length
-    if (!total) {
-      message.info('这份材料还没有任何笔记')
-      return
-    }
-    modal.confirm({
-      title: '清除这份材料的全部笔记？',
-      content: `共 ${notesRef.current.size} 页、${total} 笔。材料文件不会删除，只清手写笔记，且无法恢复。`,
-      okText: '全部清除',
-      cancelText: '取消',
-      okButtonProps: { danger: true },
-      onOk: async () => {
-        try {
-          await clearAllNotes(material.id)
-          notesRef.current = new Map()
-          undoRef.current = new Map()
-          // 已挂载的画布要立刻擦干净，否则界面上还留着旧墨。
-          for (const index of canvasRefs.current.keys()) redrawPage(index)
-          message.success('已清除全部笔记')
-        } catch {
-          message.error('清除失败，请重试')
-        }
-      },
-    })
-  }
-
-  /**
-   * 调整缩放。
-   *
-   * @param delta 增量（正数放大）。
-   * @returns 无返回。
-   */
-  function changeZoom(delta: number) {
-    applyZoom(zoom + delta)
-  }
-
-  /**
-   * 应用缩放，并**保住视口锚点**。
-   *
-   * @param value 目标倍率（会被夹到合法范围）。
-   * @returns 无返回。
-   * @remarks
-   * 用户反馈「缩放后位置变了」：只改 `zoom` 的话，页面高度按比例变大/变小，
-   * 但 `scrollTop` 还是旧像素值 —— 同一个数字对应了不同的内容，正在看的那一页
-   * 就跑到视口外去了（放大时往下跳，缩小时往上跳）。
-   *
-   * 做法：缩放前记下「视口顶部落在哪一页、页内偏移多少（按页高归一化）」，
-   * 缩放后等新布局生效，再按同样的页与比例把滚动位置还原。
-   * 用归一化比例而不是固定像素，缩放到任意倍率都能精确回到原处。
-   */
-  function applyZoom(value: number) {
-    const next = Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, Math.round(value * 10) / 10))
-    if (next === zoom) return
-    const scroller = scrollRef.current
-    if (!scroller) {
-      setZoom(next)
-      return
-    }
-
-    // 缩放前：找出「跨过视口顶部」的那一页，以及顶部落在该页内的比例。
-    const anchor = (() => {
-      const nodes = [...scroller.querySelectorAll<HTMLElement>('[data-page]')]
-      const top = scroller.scrollTop
-      let found: { index: number; ratio: number } | null = null
-      for (const node of nodes) {
-        const index = Number(node.dataset.page)
-        const nodeTop = node.offsetTop
-        const height = node.offsetHeight || 1
-        if (nodeTop <= top) found = { index, ratio: (top - nodeTop) / height }
-        else break
-      }
-      return found ?? { index: 0, ratio: 0 }
-    })()
-
-    setZoom(next)
-    writeSession({ zoom: next })
-
-    // 等 React 提交 + 浏览器完成新一轮布局，再按比例还原滚动位置。
-    // 用两帧：第一帧样式可能还没回流完（尤其展开/收起图片时）。
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        const scroller2 = scrollRef.current
-        if (!scroller2) return
-        const node = scroller2.querySelector<HTMLElement>(`[data-page="${anchor.index}"]`)
-        if (!node) return
-        /*
-         * 直接用「新页高 × 同一比例」还原，而不是拿 scrollTop × ratio 相乘：
-         * 页间距、外边距这些不随缩放变化的量会让纯乘法累积误差，
-         * 按页内比例重算永远精确。
-         */
-        scroller2.scrollTop = node.offsetTop + node.offsetHeight * anchor.ratio
-      })
-    })
-  }
-
-  /**
-   * 跳到指定页。
-   *
-   * @param page 从 1 开始的页号。
-   * @returns 无返回。
-   */
-  const jumpTo = useCallback((page: number) => {
-    const scroller = scrollRef.current
-    const target = scroller?.querySelector<HTMLElement>(`[data-page="${page - 1}"]`)
-    if (!scroller || !target) return
-    scroller.scrollTo({ top: target.offsetTop - 8, behavior: 'smooth' })
-  }, [])
-
-  const totalPages = current?.pageCount ?? 0
-
-  /* ---------------- 列表视图 ---------------- */
-
-  if (!current) {
+  function renderRow(item: Material) {
+    const isEditing = editing?.kind === 'material' && editing.id === item.id
     return (
-      <div className="flex h-full flex-col bg-surface">
+      <li
+        key={item.id}
+        className="mb-1.5 flex items-center gap-2.5 rounded-[9px] border border-line bg-white px-2.5 py-2 transition hover:border-line-strong"
+      >
+        <span className="grid h-8 w-8 shrink-0 place-items-center rounded-md bg-sunken text-[10.5px] font-semibold uppercase text-ink-2">
+          {item.kind}
+        </span>
+        {isEditing ? (
+          <Input
+            autoFocus
+            size="small"
+            value={editing.value}
+            maxLength={60}
+            onChange={(event) => setEditing({ ...editing, value: event.target.value })}
+            onPressEnter={() => void commitEditing()}
+            onBlur={() => void commitEditing()}
+            aria-label="材料名称"
+          />
+        ) : (
+          <button
+            type="button"
+            className="min-w-0 flex-1 cursor-pointer border-0 bg-transparent p-0 text-left"
+            onClick={() => openInto('left', item.id)}
+            onDoubleClick={(event) => {
+              event.preventDefault()
+              setEditing({ kind: 'material', id: item.id, value: item.name })
+            }}
+          >
+            <b className="block truncate text-[13px] font-semibold text-ink">{item.name}</b>
+            <span className="mt-0.5 block truncate text-[11px] text-ink-3">
+              {item.pageCount} 页 · {item.fileName}
+              {item.file ? ` · ${(item.file.size / 1024 / 1024).toFixed(1)} MB` : ''}
+            </span>
+          </button>
+        )}
+
+        <div className="flex shrink-0 items-center gap-0.5">
+          <Tooltip title="重命名">
+            <Button
+              size="small"
+              type="text"
+              icon={<Pencil size={12} />}
+              aria-label={`重命名 ${item.name}`}
+              onClick={() => setEditing({ kind: 'material', id: item.id, value: item.name })}
+            />
+          </Tooltip>
+          <Tooltip title="在右侧打开（对照）">
+            <Button
+              size="small"
+              type="text"
+              icon={<Columns2 size={12} />}
+              aria-label={`在右侧打开 ${item.name}`}
+              onClick={() => openInto('right', item.id)}
+            />
+          </Tooltip>
+          <Dropdown
+            trigger={['click']}
+            menu={{
+              items: [
+                { key: '', label: '未分类（移出文件夹）' },
+                ...folders.map((f) => ({ key: f.id, label: `移到「${f.name}」` })),
+              ],
+              onClick: async ({ key }) => {
+                await moveMaterial(item.id, key)
+                await refresh()
+              },
+            }}
+          >
+            <Button size="small" type="text" icon={<FolderOpen size={12} />} aria-label={`移动 ${item.name}`} />
+          </Dropdown>
+          <Button
+            size="small"
+            danger
+            type="text"
+            icon={<Trash2 size={12} />}
+            aria-label={`删除 ${item.name}`}
+            onClick={() =>
+              modal.confirm({
+                title: `删除《${item.name}》？`,
+                content: '材料文件与上面的笔记都会删除，无法恢复。',
+                okText: '删除',
+                cancelText: '取消',
+                okButtonProps: { danger: true },
+                onOk: async () => {
+                  await deleteMaterial(item.id)
+                  if (leftId === item.id) closePane('left')
+                  if (rightId === item.id) closePane('right')
+                  await refresh()
+                },
+              })
+            }
+          />
+        </div>
+      </li>
+    )
+  }
+
+  /**
+   * 文件夹树（含未分类）。
+   *
+   * @returns 分组块。
+   */
+  function renderTree() {
+    const blocks: React.ReactNode[] = []
+    for (const folder of folders) {
+      const list = grouped.get(folder.id) ?? []
+      const isCollapsed = collapsed.includes(folder.id)
+      const isEditing = editing?.kind === 'folder' && editing.id === folder.id
+      blocks.push(
+        <section key={folder.id} className="mb-3">
+          <div className="mb-1.5 flex items-center gap-1">
+            <button
+              type="button"
+              className="flex min-w-0 flex-1 cursor-pointer items-center gap-1.5 border-0 bg-transparent p-0 text-left"
+              onClick={() => toggleFolder(folder.id)}
+              aria-expanded={!isCollapsed}
+            >
+              <FolderOpen size={14} className="shrink-0 text-ink-2" />
+              {isEditing ? (
+                <Input
+                  autoFocus
+                  size="small"
+                  value={editing.value}
+                  maxLength={40}
+                  className="max-w-[220px]"
+                  onChange={(event) => setEditing({ ...editing, value: event.target.value })}
+                  onPressEnter={() => void commitEditing()}
+                  onBlur={() => void commitEditing()}
+                  onClick={(event) => event.stopPropagation()}
+                  aria-label="文件夹名称"
+                />
+              ) : (
+                <b className="truncate text-[12.5px] font-semibold text-ink-2">{folder.name}</b>
+              )}
+              <span className="shrink-0 font-num text-[11px] text-ink-3">{list.length}</span>
+            </button>
+            <Button
+              size="small"
+              type="text"
+              icon={<Pencil size={11} />}
+              aria-label={`重命名文件夹 ${folder.name}`}
+              onClick={() => setEditing({ kind: 'folder', id: folder.id, value: folder.name })}
+            />
+            <Button
+              size="small"
+              danger
+              type="text"
+              icon={<Trash2 size={11} />}
+              aria-label={`删除文件夹 ${folder.name}`}
+              onClick={() =>
+                modal.confirm({
+                  title: `删除文件夹「${folder.name}」？`,
+                  content: '夹内材料不会删除，会退回「未分类」。',
+                  okText: '删除',
+                  cancelText: '取消',
+                  okButtonProps: { danger: true },
+                  onOk: async () => {
+                    await deleteFolder(folder.id)
+                    await refresh()
+                  },
+                })
+              }
+            />
+          </div>
+          {isCollapsed ? null : (
+            <ul className="m-0 list-none p-0 pl-4">
+              {list.length ? list.map(renderRow) : <li className="px-1 py-1 text-[11.5px] text-ink-3">（空文件夹）</li>}
+            </ul>
+          )}
+        </section>,
+      )
+    }
+    const loose = grouped.get('') ?? []
+    if (loose.length || !folders.length) {
+      blocks.push(
+        <section key="__loose" className="mb-3">
+          {folders.length ? (
+            <div className="mb-1.5 flex items-center gap-1.5 text-[12px] font-semibold text-ink-3">
+              <FileText size={13} />
+              未分类
+              <span className="font-num text-[11px]">{loose.length}</span>
+            </div>
+          ) : null}
+          <ul className="m-0 list-none p-0">{loose.map(renderRow)}</ul>
+        </section>,
+      )
+    }
+    return blocks
+  }
+
+  /* ---------------- 渲染：列表页 ---------------- */
+
+  if (!activeId) {
+    return (
+      <div className="flex h-full min-h-0 flex-col bg-surface">
         <div className="flex flex-wrap items-center gap-2 border-b border-line px-3 py-2">
           <Button size="small" icon={<ArrowLeft size={14} />} onClick={onClose}>
             返回草稿
           </Button>
-          <div className="ml-auto">
+          <div className="ml-auto flex items-center gap-1.5">
+            <Tooltip title="新建文件夹，把同类材料收起来">
+              <Button size="small" icon={<FolderPlus size={14} />} onClick={() => void addFolder()}>
+                新建文件夹
+              </Button>
+            </Tooltip>
             <Button
               size="small"
               type="primary"
@@ -954,63 +563,24 @@ export default function MaterialView({
           />
         </div>
 
-        <div className="min-h-0 flex-1 overflow-auto p-4">
+        {/*
+          列表页只留**这一个**滚动容器。
+          之前外面还套了一层 flex 容器，导致内容被整体推到下方、顶部一片空白，
+          用户截图里「左侧怎么滚动上去了」就是这个原因。
+        */}
+        <div className="min-h-0 flex-1 overflow-auto px-4 py-3">
           <div className="mx-auto max-w-[880px]">
-            <h2 className="m-0 text-[19px] font-bold">导入材料</h2>
-            <p className="mb-4 mt-1 text-[12.5px] leading-6 text-ink-3">
-              支持 PDF / DOCX / PPTX。只保存原始文件、不预先转成图片：
-              打开后按可视范围加载，滚到哪渲染到哪，几百页也不吃内存。
-              可以直接在上面写笔记，下次打开回到上次那一页。
+            <h2 className="m-0 text-[18px] font-bold">材料</h2>
+            <p className="mb-3 mt-1 text-[12px] leading-5 text-ink-3">
+              支持 PDF / DOCX / PPTX。只保存原始文件，打开后按可视范围加载。
+              双击名称可改名；点「并排」可把另一份材料放到右侧对照。
             </p>
-
             {materials.length === 0 ? (
               <div className="rounded-[12px] border border-dashed border-line-strong bg-white px-4 py-10 text-center text-[13px] text-ink-3">
                 还没有导入材料。点右上角「导入材料」选一份 PDF / DOCX / PPTX。
               </div>
             ) : (
-              <ul className="m-0 list-none p-0">
-                {materials.map((item) => (
-                  <li
-                    key={item.id}
-                    className="mb-2 flex items-center gap-3 rounded-[10px] border border-line bg-white px-3 py-2.5 transition hover:border-line-strong"
-                  >
-                    <span className="grid h-9 w-9 shrink-0 place-items-center rounded-md bg-sunken text-[11px] font-semibold uppercase text-ink-2">
-                      {item.kind}
-                    </span>
-                    <button
-                      type="button"
-                      className="min-w-0 flex-1 cursor-pointer border-0 bg-transparent p-0 text-left"
-                      onClick={() => void openMaterial(item)}
-                    >
-                      <b className="block truncate text-[13.5px] font-semibold text-ink">{item.name}</b>
-                      <span className="mt-0.5 block truncate text-[11.5px] text-ink-3">
-                        {item.pageCount} 页 · {item.fileName}
-                        {item.file ? ` · ${(item.file.size / 1024 / 1024).toFixed(1)} MB` : ''}
-                      </span>
-                    </button>
-                    <Button
-                      size="small"
-                      danger
-                      type="text"
-                      icon={<Trash2 size={13} />}
-                      aria-label={`删除 ${item.name}`}
-                      onClick={() =>
-                        modal.confirm({
-                          title: `删除《${item.name}》？`,
-                          content: '材料文件与上面的笔记都会删除，无法恢复。',
-                          okText: '删除',
-                          cancelText: '取消',
-                          okButtonProps: { danger: true },
-                          onOk: async () => {
-                            await deleteMaterial(item.id)
-                            await refresh()
-                          },
-                        })
-                      }
-                    />
-                  </li>
-                ))}
-              </ul>
+              renderTree()
             )}
           </div>
         </div>
@@ -1031,55 +601,48 @@ export default function MaterialView({
             </div>
           }
         >
-          <p className="mb-2 mt-0 text-[12.5px] text-ink-3">
-            不填就用文件名。名字只影响列表显示，原始文件名会作为副标题保留。
-          </p>
+          <p className="mb-2 mt-0 text-[12.5px] text-ink-3">不填就用文件名。导入后也能随时改名。</p>
           <Input
             autoFocus
             value={pendingFile?.name ?? ''}
             maxLength={60}
             placeholder={pendingFile?.file.name ?? ''}
-            onChange={(event) =>
-              setPendingFile((prev) => (prev ? { ...prev, name: event.target.value } : prev))
-            }
+            onChange={(event) => setPendingFile((prev) => (prev ? { ...prev, name: event.target.value } : prev))}
             onPressEnter={() => void confirmImport()}
           />
-          {pendingFile ? (
-            <p className="mb-0 mt-2 text-[11.5px] text-ink-3">
-              已选：{pendingFile.file.name}（{(pendingFile.file.size / 1024 / 1024).toFixed(1)} MB）
-            </p>
-          ) : null}
         </Drawer>
       </div>
     )
   }
 
-  /* ---------------- 阅读 + 批注 ---------------- */
+  /* ---------------- 渲染：阅读页 ---------------- */
 
-  const [rangeFrom, rangeTo] = range
+  const activeMeta = activeSide === 'right' ? meta.right : meta.left
 
   return (
-    <div className="flex h-full flex-col bg-sunken">
-      <style>{DOCX_PAGE_CSS}</style>
+    <div className="flex h-full min-h-0 flex-col bg-sunken">
       {/* 工具条 */}
       <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5 border-b border-line bg-surface px-2 py-2 sm:px-3">
         <Button
           size="small"
           icon={<ArrowLeft size={14} />}
           onClick={() => {
-            // 回列表：清掉「正在看哪份」，但材料视图本身仍是开着的。
-            writeSession({ id: '' })
-            setCurrent(null)
+            setLeftId('')
+            setRightId('')
+            writePane('left', { id: '' })
+            writePane('right', { id: '' })
           }}
         >
           材料列表
         </Button>
-        <b className="max-w-[22ch] truncate text-[13px] font-semibold">{current.name}</b>
+        <b className="max-w-[20ch] truncate text-[13px] font-semibold">
+          {activeMeta.name || '材料'}
+          {twoPanes ? (
+            <span className="ml-1 text-[11px] font-normal text-ink-3">（{activeSide === 'left' ? '左' : '右'}栏）</span>
+          ) : null}
+        </b>
         <span className="font-num text-[11.5px] tabular-nums text-ink-3">
-          {visiblePage} / {totalPages}
-        </span>
-        <span className="hidden text-[11px] text-ink-3 sm:inline">
-          安全区 {rangeFrom + 1}–{rangeTo + 1} 页
+          {activeMeta.page} / {activeMeta.total || 0}
         </span>
 
         <span className="mx-0.5 hidden h-4 w-px bg-line sm:block" />
@@ -1126,7 +689,7 @@ export default function MaterialView({
           ))}
         </div>
 
-        <div className="flex w-[132px] shrink-0 items-center gap-1.5">
+        <div className="flex w-[120px] shrink-0 items-center gap-1.5">
           <span className="shrink-0 text-[11px] text-ink-3">笔粗</span>
           <input
             type="range"
@@ -1144,13 +707,13 @@ export default function MaterialView({
           <span className="w-3 shrink-0 text-right font-num text-[11px] text-ink-3">{size}</span>
         </div>
 
-        {/* 缩放：只影响显示，笔迹坐标始终在纸张基准坐标系里，缩放后不会错位 */}
+        {/* 缩放：作用在当前激活栏 */}
         <div className="flex items-center gap-0.5">
           <Tooltip title="缩小">
             <Button
               size="small"
               icon={<ZoomOut size={13} />}
-              disabled={zoom <= ZOOM_MIN}
+              disabled={currentZoom <= ZOOM_MIN}
               onClick={() => changeZoom(-ZOOM_STEP)}
               aria-label="缩小"
             />
@@ -1158,16 +721,16 @@ export default function MaterialView({
           <button
             type="button"
             className="min-w-[42px] cursor-pointer border-0 bg-transparent font-num text-[11.5px] tabular-nums text-ink-2"
-            onClick={() => applyZoom(1)}
+            onClick={() => setZoomOf(activeSide, 1)}
             title="点击恢复 100%"
           >
-            {Math.round(zoom * 100)}%
+            {Math.round(currentZoom * 100)}%
           </button>
           <Tooltip title="放大">
             <Button
               size="small"
               icon={<ZoomIn size={13} />}
-              disabled={zoom >= ZOOM_MAX}
+              disabled={currentZoom >= ZOOM_MAX}
               onClick={() => changeZoom(ZOOM_STEP)}
               aria-label="放大"
             />
@@ -1177,10 +740,23 @@ export default function MaterialView({
         <span className="mx-0.5 hidden h-4 w-px bg-line sm:block" />
 
         {/*
-          答题卡 / 答题纸：直接开在材料视图内部，关掉仍停在这份材料。
-          用户明确要求「大刷不要回到草稿纸界面」；两者与草稿工作台共用同一份存档。
+          双材料对照：单栏时点「并排」从已有材料里挑一份放右边；
+          已在双栏时变成「单栏」（关闭右栏）。
         */}
         <div className="flex items-center gap-1">
+          <Tooltip title={twoPanes ? '关闭右栏（回到单栏）' : '从已有材料中导入到右侧，左右对照'}>
+            <Button
+              size="small"
+              icon={<Columns2 size={13} />}
+              onClick={() => {
+                if (twoPanes) closePane('right')
+                else setPick('right')
+              }}
+              aria-label={twoPanes ? '关闭右栏' : '并排打开另一份材料'}
+            >
+              {twoPanes ? '单栏' : '并排'}
+            </Button>
+          </Tooltip>
           <Tooltip title="选择题答题卡（边看材料边记答案）">
             <Button
               size="small"
@@ -1200,18 +776,47 @@ export default function MaterialView({
         </div>
 
         <div className="ml-auto flex items-center gap-1">
-          <Tooltip title="撤销本页最后一笔">
-            <Button size="small" icon={<RotateCcw size={13} />} onClick={() => undoPage(visiblePage - 1)} />
+          <Tooltip title="撤销本页最后一笔（Ctrl+Z）">
+            <Button
+              size="small"
+              icon={<RotateCcw size={13} />}
+              onClick={() => actionsRef.current[activeSide]?.undo()}
+              aria-label="撤销"
+            />
           </Tooltip>
           <Tooltip title="清空本页笔记">
-            <Button size="small" icon={<X size={13} />} onClick={() => clearPage(visiblePage - 1)} />
+            <Button
+              size="small"
+              icon={<X size={13} />}
+              onClick={() => actionsRef.current[activeSide]?.clearPage()}
+              aria-label="清空本页笔记"
+            />
           </Tooltip>
           <Tooltip title="一键清除这份材料的全部笔记">
             <Button
               size="small"
               danger
               icon={<Eraser size={13} />}
-              onClick={clearEveryNote}
+              onClick={() => {
+                const target = activeSide === 'right' ? rightId : leftId
+                if (!target) return
+                modal.confirm({
+                  title: '清除这份材料的全部笔记？',
+                  content: '材料文件不会删除，只清手写笔记，且无法恢复。',
+                  okText: '全部清除',
+                  cancelText: '取消',
+                  okButtonProps: { danger: true },
+                  onOk: async () => {
+                    try {
+                      await clearAllNotes(target)
+                      actionsRef.current[activeSide]?.clearAll()
+                      message.success('已清除全部笔记')
+                    } catch {
+                      message.error('清除失败，请重试')
+                    }
+                  },
+                })
+              }}
               aria-label="一键清除全部笔记"
             />
           </Tooltip>
@@ -1221,130 +826,109 @@ export default function MaterialView({
         </div>
       </div>
 
-      {/* 长条滚动阅读区 */}
-      <div ref={scrollRef} className="min-h-0 flex-1 overflow-auto px-2 py-3 sm:px-4" onScroll={onScroll}>
-        <div className="mx-auto flex max-w-[980px] flex-col gap-4">
-          {Array.from({ length: totalPages }, (_, index) => {
-            const inRange = index >= rangeFrom && index <= rangeTo
-            const content = pages[index]
-            return (
-              /*
-               * 缩放的两层结构（关键）：
-               * - 外层 `.page-slot` 只负责占位：宽高 = 基准尺寸 × zoom，
-               *   这样滚动条长度、安全区计算都跟着缩放走；
-               * - 内层 `.page-sheet` 保持**基准尺寸**不动，用 transform 缩放。
-               * 批注 canvas 的宽高始终等于基准尺寸，笔迹坐标因此在缩放前后完全一致，
-               * 放大写字、缩小回看都不会错位。
-               */
-              <div
-                key={index}
-                data-page={index}
-                className="page-slot relative mx-auto"
-                style={{ width: `min(100%, ${current.pageW * zoom}px)`, aspectRatio: `${current.pageW} / ${current.pageH}` }}
-              >
-              <div
-                className="page-sheet relative h-full w-full origin-top-left overflow-hidden rounded-[6px] border border-line-strong bg-white shadow-[0_1px_2px_rgba(16,24,40,.08),0_8px_22px_rgba(16,24,40,.09)]"
-                style={{
-                  // 内层按基准像素排版再整体缩放：canvas 内部坐标不变，笔迹才不会错位。
-                  width: current.pageW,
-                  height: current.pageH,
-                  transform: `scale(${zoom})`,
-                  transformOrigin: 'top left',
-                }}
-              >
-                {/*
-                  页码放纸张外侧（负 margin 的小标签），不压在材料内容上 ——
-                  之前它在左上角盖住了 PPT 标题的第一个字。
-                */}
-                <div className="pointer-events-none absolute -left-9 top-0 z-10 hidden select-none font-num text-[11px] tabular-nums text-ink-3 sm:block">
-                  {index + 1}
-                </div>
-
-                {/*
-                  内容按格式分派：
-                  - PDF 只有安全区内的页才有位图，其余显示占位，滚到再画；
-                  - DOCX / PPTX 是真实 DOM 文本（矢量、可选中），才真正是「预览」。
-                */}
-                {current.kind === 'pdf' ? (
-                  content?.kind === 'pdf' ? (
-                    <img
-                      src={content.url}
-                      alt={`第 ${index + 1} 页`}
-                      className="pointer-events-none absolute inset-0 h-full w-full select-none object-contain"
-                      draggable={false}
-                      onLoad={() => redrawPage(index)}
-                    />
-                  ) : (
-                    <div className="grid h-full place-items-center text-[12px] text-ink-3">
-                      {inRange ? '正在渲染…' : '滚动到这一页时再渲染'}
-                    </div>
-                  )
-                ) : current.kind === 'docx' ? (
-                  <div className="docx-page absolute inset-0 overflow-hidden bg-white">
-                    <div
-                      className="docx-viewport"
-                      style={{ ['--docx-offset' as string]: `${index * (current.pageH - DOCX_PAD_Y)}px` }}
-                      /* 内容来自用户自己的文档，且已由 mammoth 转成语义标签 */
-                      dangerouslySetInnerHTML={{ __html: current.docxHtml ?? '' }}
-                    />
-                  </div>
-                ) : (
-                  <PptPage slides={current.pptSlides?.[index] ?? []} pageW={current.pageW} pageH={current.pageH} />
-                )}
-
-                {/* 批注层：笔迹只画这一层，橡皮只清这一层，材料永远不被擦掉 */}
-                <canvas
-                  ref={(node) => {
-                    if (!node) return
-                    const old = canvasRefs.current.get(index)
-                    canvasRefs.current.set(index, node)
-                    if (old === node) return
-                    const dpr = Math.min(window.devicePixelRatio || 1, 2)
-                    node.width = Math.max(1, Math.round(node.clientWidth * dpr))
-                    node.height = Math.max(1, Math.round(node.clientHeight * dpr))
-                    const ctx = node.getContext('2d')
-                    if (ctx) ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
-                    redrawPage(index)
-                  }}
-                  className="absolute inset-0 h-full w-full touch-none"
-                  style={{ cursor: tool === 'eraser' ? 'cell' : 'crosshair' }}
-                  aria-label={`第 ${index + 1} 页批注画布`}
-                  onPointerDown={(event) => onDown(event, index)}
-                  onPointerMove={onMove}
-                  onPointerUp={onUp}
-                  onPointerCancel={onUp}
-                />
-              </div>
-              </div>
-            )
-          })}
-          <div className="py-6 text-center text-[12px] text-ink-3">已是最后一页（共 {totalPages} 页）</div>
+      {/* 阅读区：单栏 or 双栏并排（两栏各自独立滚动） */}
+      <div className={twoPanes ? 'flex min-h-0 flex-1 gap-0.5' : 'flex min-h-0 flex-1'}>
+        <div className={twoPanes ? 'min-w-0 flex-1 border-r border-line' : 'min-w-0 flex-1'}>
+          <MaterialPane
+            id={leftId}
+            side="left"
+            zoom={leftZoom}
+            tool={tool}
+            color={color}
+            size={size}
+            active={twoPanes && activeSide === 'left'}
+            onActivate={() => {
+              if (activeSide === 'left') return
+              setActiveSide('left')
+              writeSession({ active: 'left' })
+            }}
+            onPageChange={(page, total) =>
+              setMeta((prev) =>
+                prev.left.page === page && prev.left.total === total
+                  ? prev
+                  : { ...prev, left: { ...prev.left, page, total } },
+              )
+            }
+            onLoaded={(m) =>
+              setMeta((prev) => ({ ...prev, left: { ...prev.left, name: m.name, total: m.pageCount } }))
+            }
+            onScrollChange={() => undefined}
+            onRegisterActions={(actions) => {
+              actionsRef.current.left = actions
+            }}
+          />
         </div>
+        {twoPanes ? (
+          <div className="min-w-0 flex-1">
+            <MaterialPane
+              id={rightId}
+              side="right"
+              zoom={rightZoom}
+              tool={tool}
+              color={color}
+              size={size}
+              active={activeSide === 'right'}
+              onActivate={() => {
+                if (activeSide === 'right') return
+                setActiveSide('right')
+                writeSession({ active: 'right' })
+              }}
+              onPageChange={(page, total) =>
+                setMeta((prev) =>
+                  prev.right.page === page && prev.right.total === total
+                    ? prev
+                    : { ...prev, right: { ...prev.right, page, total } },
+                )
+              }
+              onLoaded={(m) =>
+                setMeta((prev) => ({ ...prev, right: { ...prev.right, name: m.name, total: m.pageCount } }))
+              }
+              onScrollChange={() => undefined}
+              onRegisterActions={(actions) => {
+                actionsRef.current.right = actions
+              }}
+            />
+          </div>
+        ) : null}
       </div>
 
-      {/* 快速跳页 */}
-      <div className="flex items-center justify-center gap-2 border-t border-line bg-surface px-3 py-1.5">
-        <span className="text-[11.5px] text-ink-3">跳到</span>
-        <Input
-          size="small"
-          className="w-14 text-center"
-          value={String(visiblePage)}
-          onChange={(event) => {
-            const next = Number(event.target.value.replace(/\D/g, ''))
-            if (next >= 1 && next <= totalPages) jumpTo(next)
-          }}
-          aria-label="跳转到指定页"
-        />
-        <span className="text-[11.5px] text-ink-3">/ {totalPages} 页</span>
-      </div>
+      {/* 选一份已有材料放到右侧 */}
+      <Drawer
+        open={Boolean(pick)}
+        placement="right"
+        width="min(420px, 86vw)"
+        title="从已有材料中导入"
+        onClose={() => setPick(null)}
+        mask={false}
+        styles={{ body: { padding: 12 } }}
+      >
+        {materials.filter((m) => m.id !== leftId && m.id !== rightId).length === 0 ? (
+          <p className="text-[12.5px] text-ink-3">没有其它材料了，先导入一份新的。</p>
+        ) : (
+          <ul className="m-0 list-none p-0">
+            {materials
+              .filter((m) => m.id !== leftId && m.id !== rightId)
+              .map((m) => (
+                <li key={m.id} className="mb-1.5">
+                  <button
+                    type="button"
+                    className="w-full cursor-pointer rounded-[9px] border border-line bg-white px-2.5 py-2 text-left transition hover:border-line-strong"
+                    onClick={() => {
+                      openInto(pick ?? 'right', m.id)
+                      setPick(null)
+                    }}
+                  >
+                    <b className="block truncate text-[13px] font-semibold text-ink">{m.name}</b>
+                    <span className="mt-0.5 block truncate text-[11px] text-ink-3">
+                      {m.pageCount} 页 · {m.fileName}
+                    </span>
+                  </button>
+                </li>
+              ))}
+          </ul>
+        )}
+      </Drawer>
 
-      {/*
-        材料内的答题卡与答题纸。
-        **必须挂在材料视图内部**：用户明确要求「大刷不要回到草稿纸界面」——
-        从材料点开做题，关掉后应该还在这份材料、这一页，而不是被弹回草稿工作台。
-        两者与草稿工作台共用同一份存档（choice-quiz:v1 / exam-grid:v2），
-        所以在哪边记的答案、写的作文，切过去都能看到。
-      */}
       <Drawer
         title="选择题答题卡"
         placement="right"
@@ -1374,67 +958,3 @@ export default function MaterialView({
     </div>
   )
 }
-
-/**
- * PPT 单页预览。
- *
- * @param props 组件属性。
- * @returns 矢量排版的单页。
- * @remarks PPT 本质就是「坐标 + 文字」，直接按坐标摆回原位：
- * 比转位图清晰、可选中，体积也只有几 KB。
- */
-function PptPage({ slides, pageW, pageH }: { slides: PptShape[]; pageW: number; pageH: number }) {
-  return (
-    <div className="absolute inset-0 overflow-hidden bg-white">
-      <div
-        className="absolute left-0 top-0 h-full w-full"
-        style={{ containerType: 'size' } as React.CSSProperties}
-      >
-        {slides.map((shape, i) => (
-          <div
-            key={i}
-            className="absolute text-[#1f2329]"
-            style={{
-              left: `${(shape.x / pageW) * 100}%`,
-              top: `${(shape.y / pageH) * 100}%`,
-              width: `${Math.max(10, (shape.w / pageW) * 100)}%`,
-              fontSize: `${(Math.max(9, shape.size) / pageW) * 100}cqw`,
-              lineHeight: 1.45,
-              fontWeight: shape.bold ? 600 : 400,
-            }}
-          >
-            {/* 每个段落单独一行：PowerPoint 的换行是 a:p 分组，直接拼会糊成一片。 */}
-            {shape.text.split('\n').map((line, li) => (
-              <div key={li}>{line}</div>
-            ))}
-          </div>
-        ))}
-      </div>
-    </div>
-  )
-}
-
-/**
- * DOCX 分页样式。
- *
- * @remarks 每页把同一份正文按页号做垂直偏移，只显示自己那一屏。
- * `left/right: 48px` 必须与 parse.ts 量高度时的可用宽度（页宽 - 96）一致，
- * 否则换行位置不同，跨页处会出现断字或重复。
- */
-const DOCX_PAGE_CSS = `
-.docx-page .docx-viewport {
-  position: absolute;
-  top: 24px;
-  left: 48px;
-  right: 48px;
-  transform: translateY(calc(-1 * var(--docx-offset, 0px)));
-  font-size: 16px;
-  line-height: 1.85;
-}
-.docx-page .docx-viewport h1 { font-size: 22px; font-weight: 700; margin: 0 0 12px; }
-.docx-page .docx-viewport h2 { font-size: 18px; font-weight: 700; margin: 18px 0 10px; }
-.docx-page .docx-viewport p { margin: 0 0 10px; }
-.docx-page .docx-viewport table { border-collapse: collapse; width: 100%; }
-.docx-page .docx-viewport td, .docx-page .docx-viewport th { border: 1px solid #d8dde5; padding: 6px 8px; }
-.docx-page .docx-viewport img { max-width: 100%; height: auto; }
-`.trim()

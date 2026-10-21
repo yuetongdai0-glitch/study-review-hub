@@ -3,11 +3,11 @@
  *
  * @remarks
  * 用户要求：「刷新过后 应该还是这个页面 不应该关闭回到了草稿纸」
- * 「包括笔记和这些缩放配置也需要缓存」。
+ * 「包括笔记和这些缩放配置也需要缓存」，以及双材料并排时「需要记住打开两个文件的位置」。
  *
  * 这里记「上次在干什么」，与材料内容本身分开：
  * - 笔记本来就在 IndexedDB 的 `notes` 表里，材料文件在 `materials` 里；
- * - 这个模块只记**会话状态**：开没开、看的是哪份、缩放多少、用的什么笔、第几页。
+ * - 这个模块只记**会话状态**：开没开、左右各看的是哪份、各自缩放/页码/滚动、笔设置。
  *
  * 用 localStorage 而不是 IndexedDB：需要在**首帧同步**读出，
  * 决定了「刷新后是否直接把材料视图拉起来」。异步读会让界面先闪一下草稿纸。
@@ -16,57 +16,100 @@
 /** 存档键。 */
 const KEY = 'materials:session:v1'
 
+/** 左右两栏（也兼容单栏：只有 left 有值）。 */
+export type PaneSide = 'left' | 'right'
+
+/** 单栏的阅读状态。 */
+export type PaneState = {
+  /** 材料 id；空串表示这一栏是空的。 */
+  id: string
+  /** 缩放倍率。 */
+  zoom: number
+  /** 上次看的页（0 基），用于首帧立即定位。 */
+  page: number
+  /** 页内偏移比例（0~1），配合 page 精确定位到行。 */
+  ratio: number
+}
+
 /** 会话状态。 */
 export type MaterialSession = {
   /** 材料视图是否处于打开状态。 */
   open: boolean
-  /** 上次打开的材料 id；空串表示停在材料列表。 */
-  id: string
-  /** 缩放倍率。 */
-  zoom: number
+  /** 左栏（主栏）。 */
+  left: PaneState
+  /** 右栏（对照栏）；id 为空表示只开一栏。 */
+  right: PaneState
   /** 工具：画笔 / 橡皮。 */
   tool: 'pen' | 'eraser'
   /** 笔色。 */
   color: string
   /** 笔粗。 */
   size: number
-  /** 上次看的页（0 基），与 db 里的滚动记录并存，供首帧兜底。 */
-  page: number
+  /** 当前激活的栏（决定快捷键与页码归谁）。 */
+  active: PaneSide
+  /** 文件夹折叠状态（存 id 数组，避免存 Map）。 */
+  collapsedFolders: string[]
 }
+
+/** 空栏。 */
+const EMPTY_PANE: PaneState = { id: '', zoom: 1, page: 0, ratio: 0 }
 
 /** 默认会话。 */
 const DEFAULT: MaterialSession = {
   open: false,
-  id: '',
-  zoom: 1,
+  left: { ...EMPTY_PANE },
+  right: { ...EMPTY_PANE },
   tool: 'pen',
   color: '#1f2329',
   size: 3,
-  page: 0,
+  active: 'left',
+  collapsedFolders: [],
+}
+
+/**
+ * 规整一栏的数据（逐字段兜底）。
+ *
+ * @param raw 原始数据。
+ * @returns 安全的栏状态。
+ */
+function normalizePane(raw: unknown): PaneState {
+  const data = (raw ?? {}) as Partial<PaneState>
+  return {
+    id: typeof data.id === 'string' ? data.id : '',
+    zoom: typeof data.zoom === 'number' && data.zoom > 0 ? data.zoom : 1,
+    page: typeof data.page === 'number' && data.page >= 0 ? data.page : 0,
+    ratio: typeof data.ratio === 'number' && data.ratio >= 0 ? data.ratio : 0,
+  }
 }
 
 /**
  * 读取会话。
  *
  * @returns 会话；损坏或没有时返回默认值。
+ * @remarks 兼容旧版（v1 只有单个 `id`/`page`）：旧字段迁移到左栏，
+ * 避免升级后用户「上次看到哪」全丢。
  */
 export function readSession(): MaterialSession {
   try {
     const raw = window.localStorage.getItem(KEY)
-    if (!raw) return { ...DEFAULT }
-    const data = JSON.parse(raw) as Partial<MaterialSession>
-    // 逐字段兜底：旧版本存档可能缺字段，不能让一条坏数据把整个界面锁死。
+    if (!raw) return { ...DEFAULT, left: { ...EMPTY_PANE }, right: { ...EMPTY_PANE } }
+    const data = JSON.parse(raw) as Partial<MaterialSession> & { id?: string; page?: number }
+    const legacyId = typeof data.id === 'string' ? data.id : ''
+    const legacyPage = typeof data.page === 'number' ? data.page : 0
     return {
       open: typeof data.open === 'boolean' ? data.open : DEFAULT.open,
-      id: typeof data.id === 'string' ? data.id : DEFAULT.id,
-      zoom: typeof data.zoom === 'number' && data.zoom > 0 ? data.zoom : DEFAULT.zoom,
+      left: data.left ? normalizePane(data.left) : { ...EMPTY_PANE, id: legacyId, page: legacyPage },
+      right: normalizePane(data.right),
       tool: data.tool === 'eraser' ? 'eraser' : 'pen',
       color: typeof data.color === 'string' ? data.color : DEFAULT.color,
       size: typeof data.size === 'number' ? data.size : DEFAULT.size,
-      page: typeof data.page === 'number' ? data.page : DEFAULT.page,
+      active: data.active === 'right' ? 'right' : 'left',
+      collapsedFolders: Array.isArray(data.collapsedFolders)
+        ? data.collapsedFolders.filter((x): x is string => typeof x === 'string')
+        : [],
     }
   } catch {
-    return { ...DEFAULT }
+    return { ...DEFAULT, left: { ...EMPTY_PANE }, right: { ...EMPTY_PANE } }
   }
 }
 
@@ -77,9 +120,16 @@ export function readSession(): MaterialSession {
  * @returns 写入后的完整会话。
  * @remarks 用合并而不是整体覆盖：调用点各自只关心自己的字段，
  * 传完整对象容易把别处刚写进去的值覆盖回旧值。
+ * 栏状态是嵌套对象，这里也做**浅合并到栏**，避免「只改 zoom 把 id 冲掉」。
  */
 export function writeSession(patch: Partial<MaterialSession>): MaterialSession {
-  const next = { ...readSession(), ...patch }
+  const current = readSession()
+  const next: MaterialSession = {
+    ...current,
+    ...patch,
+    left: patch.left ? { ...current.left, ...patch.left } : current.left,
+    right: patch.right ? { ...current.right, ...patch.right } : current.right,
+  }
   try {
     window.localStorage.setItem(KEY, JSON.stringify(next))
   } catch {
@@ -89,10 +139,23 @@ export function writeSession(patch: Partial<MaterialSession>): MaterialSession {
 }
 
 /**
+ * 只更新某一栏。
+ *
+ * @param side 哪一栏。
+ * @param patch 该栏要改的字段。
+ * @returns 写入后的完整会话。
+ */
+export function writePane(side: PaneSide, patch: Partial<PaneState>): MaterialSession {
+  return writeSession({ [side]: patch } as Partial<MaterialSession>)
+}
+
+/**
  * 清空会话（把材料视图彻底关掉时用）。
  *
  * @returns 无返回。
+ * @remarks 只把 `open` 置 false，保留左右栏与笔设置：
+ * 下次再打开仍回到上次看的那两份材料。
  */
 export function resetSession(): void {
-  writeSession({ open: false, id: '' })
+  writeSession({ open: false })
 }
