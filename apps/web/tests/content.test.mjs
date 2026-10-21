@@ -297,6 +297,44 @@ test('路由必须是 hash 模式（否则刷新会 ERR_FAILED）', async () => 
   assert.ok(callAt < renderAt, '路径改写必须早于 React 渲染，否则会先闪首页')
 })
 
+test('启动密码：整站门禁、无提示、配置持久但解锁态只存内存', async () => {
+  /*
+   * 用户要求的三个硬约束：
+   * 1. 设了密码后访问站点必须先输口令，否则看不到任何内容；
+   * 2. 锁定页「就一个空白页面加输入框居中，不要给任何提示」；
+   * 3. 密码配置要有缓存（刷新不丢），但每次刷新都要重新输入。
+   */
+  const lock = await readFile(new URL('../src/utils/appLock.ts', import.meta.url), 'utf8')
+  assert.ok(lock.includes("'study-hub:lock'"), '密码配置需存在 localStorage 固定键里')
+  assert.match(lock, /subtle\.deriveBits|deriveBits\(/, '口令必须走 PBKDF2 派生')
+  assert.ok(!/localStorage\.setItem\([^)]*password/i.test(lock), '不得把明文口令写进本地存储')
+
+  // 解锁态只存内存：store 里不能出现任何持久化中间件。
+  const store = await readFile(new URL('../src/store/lockStore.ts', import.meta.url), 'utf8')
+  assert.ok(!store.includes('persist('), '解锁态不能被持久化（否则刷新就不用再输了）')
+  assert.ok(!/sessionStorage\s*\./.test(store), '解锁态不能写 sessionStorage（那也算记住密码）')
+
+  // 门禁必须在 App 根上拦住整个路由，而不是某个页面内部。
+  const app = await readFile(new URL('../src/App.tsx', import.meta.url), 'utf8')
+  assert.ok(app.includes('LockScreen'), 'App 根节点必须接上启动密码门禁')
+  assert.match(app, /locked\s*\?\s*<LockScreen\s*\/>\s*:\s*router/, '锁定时不得渲染路由（连首页都不能出现）')
+
+  // 锁定页不许有任何文字提示：不能有 placeholder / 标题 / 错误文案。
+  // 先剥注释，否则注释里写的「输错只抖一下」会被当成界面文案。
+  const screen = (await readFile(new URL('../src/components/features/LockScreen.tsx', import.meta.url), 'utf8'))
+    .replace(/\/\*[\s\S]*?\*\//g, '')
+    .replace(/\/\/[^\n]*/g, '')
+  assert.ok(!/placeholder=/.test(screen), '锁定页输入框不得有 placeholder')
+  assert.ok(!/输错|口令错误|请重新|密码错误/.test(screen), '锁定页不得有错误提示文案')
+  assert.ok(screen.includes('type="password"'), '锁定页输入框必须遮蔽字符')
+
+  // 设置面板里要能开启 / 关闭。
+  const settings = await readFile(new URL('../src/components/features/SettingsDialog.tsx', import.meta.url), 'utf8')
+  for (const text of ['启动密码', '开启启动密码', '关闭启动密码']) {
+    assert.ok(settings.includes(text), `设置面板缺少：${text}`)
+  }
+})
+
 test('hash 模式下页内锚点不能冲掉路由', async () => {
   /*
    * HashRouter 的路由就存在 `#/xxx` 里。正文里大量 `<a href="#b1">`、

@@ -1,11 +1,16 @@
-import { Check, Monitor, Moon, RefreshCw, RotateCcw, Sun, X } from 'lucide-react'
+import { Check, KeyRound, Lock, Monitor, Moon, RefreshCw, RotateCcw, Sun, Trash2, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Modal } from 'antd'
 import { useUpdate } from '@/hooks/useUpdate'
 import { useAppStore } from '@/store/appStore'
+import { useLockStore } from '@/store/lockStore'
+import { clearLock, setLock } from '@/utils/appLock'
 import { useResolvedTheme } from '@/hooks/useResolvedTheme'
 import { allModules } from '@/router/routeRegistry'
 import type { ThemePreference } from '@/theme/tokens'
+
+/** 口令最短长度。 */
+const MIN_PASSWORD = 4
 
 /** 外观选项。 */
 const THEMES: { value: ThemePreference; label: string; icon: typeof Sun }[] = [
@@ -31,11 +36,66 @@ export default function SettingsDialog() {
   const resolved = useResolvedTheme()
   const { currentBuild, reloadPage, rebuildApp, nativeAvailable, nativeVersion, upgrade, busy, progress } = useUpdate()
   const [status, setStatus] = useState('')
+  const locked = useLockStore((state) => state.required)
+  const refreshLock = useLockStore((state) => state.refresh)
+  const [password, setPassword] = useState('')
+  const [confirm, setConfirm] = useState('')
+  const [lockStatus, setLockStatus] = useState('')
+  const [saving, setSaving] = useState(false)
 
   /* 关闭时清掉临时提示，避免下次打开看到旧文案。 */
   useEffect(() => {
-    if (!open) setStatus('')
+    if (!open) {
+      setStatus('')
+      setLockStatus('')
+      setPassword('')
+      setConfirm('')
+    }
   }, [open])
+
+  /**
+   * 保存启动密码。
+   *
+   * @returns 完成后无返回。
+   * @remarks 只校验「非空 + 两次一致」，不限制字符种类：
+   * 这是给自己用的门禁，越简单越不容易忘。
+   */
+  const savePassword = async () => {
+    if (saving) return
+    if (password.length < MIN_PASSWORD) {
+      setLockStatus(`至少 ${MIN_PASSWORD} 位`)
+      return
+    }
+    if (password !== confirm) {
+      setLockStatus('两次输入不一致')
+      return
+    }
+    setSaving(true)
+    try {
+      await setLock(password)
+      refreshLock()
+      setPassword('')
+      setConfirm('')
+      setLockStatus('已开启，下次打开需要输入')
+    } catch {
+      setLockStatus('保存失败，请重试')
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  /**
+   * 关闭启动密码。
+   *
+   * @returns 完成后无返回。
+   */
+  const removePassword = () => {
+    clearLock()
+    refreshLock()
+    setPassword('')
+    setConfirm('')
+    setLockStatus('已关闭')
+  }
 
   /**
    * 执行一个带提示的刷新动作。
@@ -94,6 +154,84 @@ export default function SettingsDialog() {
             当前渲染为{resolved === 'dark' ? '深色' : '浅色'}
             {themeMode === 'system' ? '（随系统自动切换）' : ''}
           </p>
+        </section>
+
+        {/* ---------- 启动密码 ---------- */}
+        <section className="hub-settings-section">
+          <h4>启动密码</h4>
+          <p className="hub-settings-hint">
+            开启后，打开本站先要输入口令；<strong>刷新也要重新输入</strong>。
+            口令只保存在本机，忘了只能清除站点数据重设。
+          </p>
+
+          {locked ? (
+            <>
+              <p className="hub-settings-state">
+                <Lock size={13} aria-hidden="true" /> 已开启
+              </p>
+              <button type="button" className="hub-settings-action" onClick={removePassword}>
+                <Trash2 size={16} aria-hidden="true" />
+                <span>
+                  <strong>关闭启动密码</strong>
+                  <em>以后打开不再要求输入</em>
+                </span>
+              </button>
+
+              <details className="hub-settings-details">
+                <summary>修改口令</summary>
+                <div className="hub-settings-fields">
+                  <input
+                    className="hub-settings-field"
+                    type="password"
+                    value={password}
+                    placeholder="新口令"
+                    autoComplete="new-password"
+                    onChange={(event) => setPassword(event.target.value)}
+                  />
+                  <input
+                    className="hub-settings-field"
+                    type="password"
+                    value={confirm}
+                    placeholder="再输一次"
+                    autoComplete="new-password"
+                    onChange={(event) => setConfirm(event.target.value)}
+                  />
+                  <button type="button" className="hub-settings-primary" disabled={saving} onClick={() => void savePassword()}>
+                    <KeyRound size={14} aria-hidden="true" /> 保存新口令
+                  </button>
+                </div>
+              </details>
+            </>
+          ) : (
+            <div className="hub-settings-fields">
+              <input
+                className="hub-settings-field"
+                type="password"
+                value={password}
+                placeholder={`口令（至少 ${MIN_PASSWORD} 位）`}
+                autoComplete="new-password"
+                onChange={(event) => setPassword(event.target.value)}
+              />
+              <input
+                className="hub-settings-field"
+                type="password"
+                value={confirm}
+                placeholder="再输一次"
+                autoComplete="new-password"
+                onChange={(event) => setConfirm(event.target.value)}
+              />
+              <button
+                type="button"
+                className="hub-settings-primary"
+                disabled={saving || !password || !confirm}
+                onClick={() => void savePassword()}
+              >
+                <KeyRound size={14} aria-hidden="true" /> 开启启动密码
+              </button>
+            </div>
+          )}
+
+          {lockStatus ? <p className="hub-settings-status">{lockStatus}</p> : null}
         </section>
 
         {/* ---------- 刷新 ---------- */}

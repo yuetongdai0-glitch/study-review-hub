@@ -3,7 +3,9 @@ import zhCN from 'antd/locale/zh_CN'
 import { useEffect, useLayoutEffect, useMemo } from 'react'
 import { HashRouter } from 'react-router-dom'
 import AppRouter from '@/router/AppRouter'
+import LockScreen from '@/components/features/LockScreen'
 import { useResolvedTheme } from '@/hooks/useResolvedTheme'
+import { useLockStore } from '@/store/lockStore'
 import { applyThemeToDocument } from '@/theme/runtime'
 import { themeColorTokens } from '@/theme/tokens'
 
@@ -73,9 +75,15 @@ export default function App() {
     </HashRouter>
   )
 
+  /*
+   * 启动密码：设了密码就整站先过门禁，除了这一个空白页什么都不渲染。
+   * 解锁态只在内存里，刷新即失效（见 store/lockStore.ts）。
+   */
+  const locked = useLockStore((state) => state.required && !state.unlocked)
+
   return (
     <ConfigProvider locale={zhCN} theme={themeConfig}>
-      <AntdApp>{router}</AntdApp>
+      <AntdApp>{locked ? <LockScreen /> : router}</AntdApp>
     </ConfigProvider>
   )
 }
