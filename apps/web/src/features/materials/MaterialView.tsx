@@ -30,6 +30,7 @@ import {
   type PptShape,
 } from '@/features/materials/db'
 import { closePdfDocument, detectKind, openPdfDocument, parseMaterial } from '@/features/materials/parse'
+import { readSession, writeSession } from '@/features/materials/session'
 
 /** 预设色板（与草稿纸一致）。 */
 const SWATCHES = ['#1f2329', '#c0392b', '#1f5fd6', '#0f766e', '#b45309', '#5b4bd6']
@@ -100,16 +101,23 @@ export default function MaterialView({
   const [pendingFile, setPendingFile] = useState<{ file: File; name: string } | null>(null)
   const [importing, setImporting] = useState(false)
 
-  /* 阅读态 */
-  const [tool, setTool] = useState<Tool>('pen')
-  const [color, setColor] = useState(SWATCHES[0])
-  const [size, setSize] = useState(3)
+  /*
+   * 阅读态。初始值都从上次会话读：
+   * 用户要求「包括笔记和这些缩放配置也需要缓存」—— 刷新后笔色、笔粗、缩放
+   * 应该还是他调好的样子，而不是被重置成默认值。
+   */
+  // 只在首次渲染读一次：之后的状态由用户操作驱动，不需要每帧回读 localStorage。
+  const initialSessionRef = useRef(readSession())
+  const initialSession = initialSessionRef.current
+  const [tool, setTool] = useState<Tool>(initialSession.tool)
+  const [color, setColor] = useState(initialSession.color)
+  const [size, setSize] = useState(initialSession.size)
   const [pages, setPages] = useState<Record<number, PageContent>>({})
   const [visiblePage, setVisiblePage] = useState(1)
   /** 安全区范围（含端点）。 */
   const [range, setRange] = useState<[number, number]>([0, 0])
   /** 缩放倍率（只影响显示，笔迹坐标永远在纸张基准坐标系里）。 */
-  const [zoom, setZoom] = useState(1)
+  const [zoom, setZoom] = useState(initialSession.zoom)
   /**
    * 材料内打开的答题卡 / 答题纸。
    *
@@ -205,6 +213,14 @@ export default function MaterialView({
       await putMaterial(material)
       await refresh()
       message.success(`已导入《${name}》，共 ${parsed.pageCount} 页`)
+      /*
+       * 导入后这里是直接 setCurrent，没走 openMaterial ——
+       * 所以也必须把「正在看哪份」写进会话，否则刷新后会掉回材料列表
+       * （用户看到的「刷新后不是原来那个页面」正是这个原因）。
+       */
+      currentIdRef.current = material.id
+      writeSession({ open: true, id: material.id, page: 0 })
+      lastSavedPageRef.current = 0
       setCurrent(material)
     } catch (error) {
       message.error(`导入失败：${error instanceof Error ? error.message : '未知错误'}`)
@@ -240,11 +256,46 @@ export default function MaterialView({
       currentIdRef.current = full.id
       setPages({})
       setRange([0, 0])
+      // 记下「正在看哪份材料」：刷新后据此自动重新打开它。
+      writeSession({ open: true, id: full.id })
       setVisiblePage(1)
       setCurrent(full)
     },
     [message],
   )
+
+  /**
+   * 刷新后自动回到上次看的那份材料。
+   *
+   * @remarks 用户要求「刷新过后应该还是这个页面，不应该关闭回到了草稿纸」。
+   * 外层已按会话把材料视图重新拉起；这里负责把**具体那份材料**也恢复出来，
+   * 否则会停在材料列表，同样不是「原来那个页面」。
+   *
+   * **必须放在 `openMaterial` 之后**：effect 在渲染后同步执行，
+   * 若声明在它前面，闭包里拿到的是 TDZ 之前的 undefined，会自动恢复失败。
+   * 只在首次执行：用户自己点了「材料列表」后不该被强行拉回去。
+   */
+  const restoredRef = useRef(false)
+  useEffect(() => {
+    if (!open || restoredRef.current) return
+    const session = readSession()
+    // 先判断再置位：会话里还没有 id（刚清库/首次使用）时不该把标志锁死，
+    // 否则之后导入了材料也不会再尝试恢复。
+    if (!session.id) return
+    restoredRef.current = true
+    void (async () => {
+      const target = await getMaterial(session.id)
+      // 材料可能已被删除：静默回列表，不弹错误打扰用户。
+      if (!target) {
+        writeSession({ id: '' })
+        return
+      }
+      await openMaterial(target)
+    })()
+    // 只认 `open`：`openMaterial` 依赖 message，引用会变，
+    // 列进依赖会让「自动恢复」被反复触发，把用户手动切走的材料又拉回来。
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open])
 
   /* 离开材料时释放 PDF 文档与全部位图 URL。 */
   useEffect(
@@ -381,6 +432,8 @@ export default function MaterialView({
     if (visible !== lastSavedPageRef.current) {
       lastSavedPageRef.current = visible
       void setScrollPage(material.id, visible)
+      // 会话里也记一份：刷新后首帧就能定位，不必等 IndexedDB 异步读回来。
+      writeSession({ page: visible })
     }
   }, [current])
 
@@ -414,20 +467,34 @@ export default function MaterialView({
     const timer = window.setTimeout(async () => {
       const scroller = scrollRef.current
       if (!scroller) return
+      /*
+       * 页码有两个来源，取更快的那个：
+       * - `materials:session` 里的 page（localStorage，同步、首帧就有）；
+       * - IndexedDB 的 `scroll:<id>`（更权威，但异步）。
+       * 先用会话值立刻定位，避免刷新后先闪一下第一页再跳过去；
+       * 再用库里值校正一次（两者一般都相同）。
+       */
+      const fallback = readSession().page
+      if (currentIdRef.current !== id) return
+      const jumpToPage = (page: number) => {
+        const target = scroller.querySelector<HTMLElement>(`[data-page="${page}"]`)
+        if (!target) return false
+        /*
+         * 必须 `behavior: 'instant'`：用户明确要求「不要过渡效果，直接定位」。
+         * 用 smooth 会从顶部滑一大段，看起来像页面在乱跳。
+         */
+        scroller.scrollTo({ top: target.offsetTop, behavior: 'instant' as ScrollBehavior })
+        setVisiblePage(page + 1)
+        return true
+      }
+      // 首帧兜底：会话里记的页（同步可读）。
+      if (fallback > 0) lastSavedPageRef.current = fallback
+      if (fallback > 0) jumpToPage(fallback)
+
       const saved = await getScrollPage(id)
       lastSavedPageRef.current = saved
       if (currentIdRef.current !== id) return
-      if (saved > 0) {
-        const target = scroller.querySelector<HTMLElement>(`[data-page="${saved}"]`)
-        if (target) {
-          /*
-           * 必须 `behavior: 'instant'`：用户明确要求「不要过渡效果，直接定位」。
-           * 用 smooth 会从顶部滑一大段，看起来像页面在乱跳。
-           */
-          scroller.scrollTo({ top: target.offsetTop, behavior: 'instant' as ScrollBehavior })
-          setVisiblePage(saved + 1)
-        }
-      }
+      if (saved > 0 && saved !== fallback) jumpToPage(saved)
       syncRange()
     }, 80)
     return () => window.clearTimeout(timer)
@@ -819,6 +886,7 @@ export default function MaterialView({
     })()
 
     setZoom(next)
+    writeSession({ zoom: next })
 
     // 等 React 提交 + 浏览器完成新一轮布局，再按比例还原滚动位置。
     // 用两帧：第一帧样式可能还没回流完（尤其展开/收起图片时）。
@@ -995,7 +1063,15 @@ export default function MaterialView({
       <style>{DOCX_PAGE_CSS}</style>
       {/* 工具条 */}
       <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5 border-b border-line bg-surface px-2 py-2 sm:px-3">
-        <Button size="small" icon={<ArrowLeft size={14} />} onClick={() => setCurrent(null)}>
+        <Button
+          size="small"
+          icon={<ArrowLeft size={14} />}
+          onClick={() => {
+            // 回列表：清掉「正在看哪份」，但材料视图本身仍是开着的。
+            writeSession({ id: '' })
+            setCurrent(null)
+          }}
+        >
           材料列表
         </Button>
         <b className="max-w-[22ch] truncate text-[13px] font-semibold">{current.name}</b>
@@ -1014,7 +1090,10 @@ export default function MaterialView({
               size="small"
               type={tool === 'pen' ? 'primary' : 'default'}
               icon={<Pen size={13} />}
-              onClick={() => setTool('pen')}
+              onClick={() => {
+                setTool('pen')
+                writeSession({ tool: 'pen' })
+              }}
             />
           </Tooltip>
           <Tooltip title="橡皮（只擦笔记，不擦材料）">
@@ -1022,7 +1101,10 @@ export default function MaterialView({
               size="small"
               type={tool === 'eraser' ? 'primary' : 'default'}
               icon={<Eraser size={13} />}
-              onClick={() => setTool('eraser')}
+              onClick={() => {
+                setTool('eraser')
+                writeSession({ tool: 'eraser' })
+              }}
             />
           </Tooltip>
         </div>
@@ -1038,6 +1120,7 @@ export default function MaterialView({
               onClick={() => {
                 setColor(item)
                 setTool('pen')
+                writeSession({ color: item, tool: 'pen' })
               }}
             />
           ))}
@@ -1052,7 +1135,11 @@ export default function MaterialView({
             value={size}
             aria-label="笔粗"
             className="min-w-0 flex-1"
-            onChange={(event) => setSize(Number(event.target.value))}
+            onChange={(event) => {
+              const next = Number(event.target.value)
+              setSize(next)
+              writeSession({ size: next })
+            }}
           />
           <span className="w-3 shrink-0 text-right font-num text-[11px] text-ink-3">{size}</span>
         </div>

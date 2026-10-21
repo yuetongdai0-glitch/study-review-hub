@@ -16,6 +16,7 @@ import {
 import { useCallback, useEffect, useRef, useState } from 'react'
 import ChoiceSheet, { readQuizSummary } from '@/components/features/ChoiceSheet'
 import MaterialView from '@/features/materials/MaterialView'
+import { readSession, writeSession } from '@/features/materials/session'
 import ExamSheet from '@/components/features/ExamSheet'
 import { useSectionStore } from '@/store/sectionStore'
 import type { NavSection } from '@/types/content'
@@ -213,8 +214,26 @@ export default function ScratchpadPage() {
   const [quizOpen, setQuizOpen] = useState(false)
   /** 答题纸全屏浮层：写申论/简答用，关掉继续打草稿。 */
   const [examOpen, setExamOpen] = useState(false)
-  /** 材料视图：导入 PDF/DOCX/PPT 并在上面写笔记。 */
-  const [materialOpen, setMaterialOpen] = useState(false)
+  /**
+   * 材料视图：导入 PDF/DOCX/PPT 并在上面写笔记。
+   *
+   * @remarks 初始值**同步**读上次会话：用户要求「刷新过后应该还是这个页面，
+   * 不应该关闭回到了草稿纸」。若用 useEffect 异步补开，会先渲染一帧草稿纸再跳，
+   * 看起来就是「刷新后闪一下」。localStorage 是同步 API，首帧就能拿到。
+   */
+  const [materialOpen, setMaterialOpen] = useState(() => readSession().open)
+  /**
+   * 关闭材料视图。
+   *
+   * @returns 无返回。
+   * @remarks **必须把「记会话」放在这里**：MaterialView 里的「关闭」按钮
+   * 直接调 `onClose`，不会触发 Drawer 的 `onClose`，只有一处写会话就会漏。
+   * 漏了的表现正是用户报的：关掉后再刷新，页面又被材料视图顶起来。
+   */
+  const closeMaterial = () => {
+    writeSession({ open: false })
+    setMaterialOpen(false)
+  }
   /** 答题卡摘要（已答 / 总题数），给按钮上的角标用。 */
   const [quizSummary, setQuizSummary] = useState<{ answered: number; total: number } | null>(null)
   const [ready, setReady] = useState(false)
@@ -1431,7 +1450,11 @@ export default function ScratchpadPage() {
             <Button
               size="small"
               icon={<BookOpen size={14} />}
-              onClick={() => setMaterialOpen(true)}
+              onClick={() => {
+                // 记下「材料视图是开着的」，刷新后才能自动回到这里。
+                writeSession({ open: true })
+                setMaterialOpen(true)
+              }}
               aria-label="打开材料视图"
             />
           </Tooltip>
@@ -1597,7 +1620,7 @@ export default function ScratchpadPage() {
         placement="bottom"
         height="100dvh"
         open={materialOpen}
-        onClose={() => setMaterialOpen(false)}
+        onClose={closeMaterial}
         destroyOnHidden
         /*
          * 不要遮罩：这一层本身已经铺满整个视口，遮罩只会盖住内容、并吃掉点击。
@@ -1608,7 +1631,7 @@ export default function ScratchpadPage() {
         styles={{ body: { padding: 0, overflow: 'hidden' } }}
         extra={<span className="text-[11.5px] text-ink-3">关掉不影响草稿，笔记与位置都会保存</span>}
       >
-        <MaterialView open={materialOpen} onClose={() => setMaterialOpen(false)} />
+        <MaterialView open={materialOpen} onClose={closeMaterial} />
       </Drawer>
     </div>
   )

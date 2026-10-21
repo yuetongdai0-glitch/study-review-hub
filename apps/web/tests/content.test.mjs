@@ -978,3 +978,73 @@ test('材料：缩放坐标换算、缩放保住宿主位置、Ctrl+Z 撤销', a
     )
   }
 })
+
+test('材料：刷新后仍在原页（会话持久化缩放/笔设置/页码）', async () => {
+  /*
+   * 用户反馈：「刷新过后 应该还是这个页面 不应该关闭回到了草稿纸」
+   * 「包括笔记和这些缩放配置也需要缓存」。
+   *
+   * 两个容易漏的点，都会导致「刷新后不是原来那个页面」：
+   * 1. 材料视图的 open 状态只存在内存里 → 刷新后默认 false，退回草稿纸；
+   * 2. 「关闭」按钮直接调 onClose，不经过 Drawer 的 onClose →
+   *    写完 open:false 的那处逻辑被绕开，关掉之后刷新又被材料顶起来。
+   */
+  const pad = await readFile(new URL('../src/pages/tools/scratchpad/index.tsx', import.meta.url), 'utf8')
+  const view = await readFile(new URL('../src/features/materials/MaterialView.tsx', import.meta.url), 'utf8')
+  const session = await readFile(new URL('../src/features/materials/session.ts', import.meta.url), 'utf8')
+
+  // 1. 会话模块
+  assert.ok(/export function readSession/.test(session), '需要 readSession')
+  assert.ok(/export function writeSession/.test(session), '需要 writeSession')
+  assert.ok(
+    /const next = \{ \.\.\.readSession\(\), \.\.\.patch \}/.test(session),
+    'writeSession 必须做合并：整体覆盖会把别处刚写的字段冲掉'
+  )
+  assert.ok(codesSafeJson(session), '读会话必须 try/catch，坏存档不能让整个界面打不开')
+
+  // 2. open 状态初值同步读会话（不能等 useEffect，否则先闪一帧草稿纸）
+  assert.ok(
+    /useState\(\(\) => readSession\(\)\.open\)/.test(pad),
+    'materialOpen 初值必须同步读会话，否则刷新先渲染草稿纸再跳'
+  )
+  // 3. 关闭走统一函数，保证按钮/遮罩/ESC 都会写 open:false
+  assert.ok(/const closeMaterial = /.test(pad), '需要统一的 closeMaterial')
+  assert.ok(
+    /const closeMaterial = \(\) => \{[\s\S]{0,200}?writeSession\(\{ open: false \}\)/.test(pad),
+    'closeMaterial 必须写 open:false'
+  )
+  assert.ok(
+    /<MaterialView open=\{materialOpen\} onClose=\{closeMaterial\} \/>/.test(pad),
+    'MaterialView 的 onClose 必须指向 closeMaterial（点「关闭」按钮走的是这条）'
+  )
+  assert.ok(/- 点击「关闭」按钮[\s\S]{0,80}?/.test(pad) || /onClose=\{closeMaterial\}\s*\n\s*destroyOnHidden/.test(pad), '')
+
+  // 4. 缩放/笔设置/页码写回会话
+  for (const key of ['zoom', 'color', 'size', 'page']) {
+    assert.ok(
+      new RegExp(`writeSession\\(\\{[^}]*${key}`).test(view),
+      `${key} 必须写回会话，否则刷新后被重置`
+    )
+  }
+  // 5. 刷新后自动重新打开上次那份材料
+  assert.ok(/const restoredRef = useRef\(false\)/.test(view), '需要「只恢复一次」的保护，避免把用户手动切走的材料又拉回来')
+  assert.ok(
+    /await openMaterial\(target\)/.test(view),
+    '会话里有 id 时要自动打开那份材料（否则刷新后停在列表，不算回到原页）'
+  )
+  // 6. 导入后也要记 id（导入走的是 setCurrent，不经过 openMaterial）
+  assert.ok(
+    /writeSession\(\{ open: true, id: material\.id, page: 0 \}\)/.test(view),
+    '导入完成后必须写入 id：导入走 setCurrent，不写就会刷新掉回列表'
+  )
+})
+
+/**
+ * 判断文本里是否出现 try/catch（粗略但够用）。
+ *
+ * @param text 源码。
+ * @returns 是否含 try/catch。
+ */
+function codesSafeJson(text) {
+  return /catch\s*\{/.test(text)
+}
