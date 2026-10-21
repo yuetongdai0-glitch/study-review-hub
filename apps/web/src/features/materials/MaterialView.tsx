@@ -1,6 +1,7 @@
 import { App, Button, Drawer, Dropdown, Input, Tooltip } from 'antd'
 import {
   ArrowLeft,
+  ArrowLeftRight,
   Eraser,
   FileText,
   FolderOpen,
@@ -192,6 +193,36 @@ export default function MaterialView({ open, onClose }: { open: boolean; onClose
     writeSession({ open: true, active: side })
     setActiveSide(side)
   }, [])
+
+  /**
+   * 左右两栏互换。
+   *
+   * @returns 无返回。
+   * @remarks 用户要求「中间能有一个按钮点击就能互换位置」。
+   * 互换的是**整栏内容**（材料 id + 缩放 + 页码 + 页内比例），不是只换标题：
+   * 用户想的是「把答案挪到左边来对着看」，所以连他在这份材料上看到的位置、调过的缩放
+   * 都要一起搬过去，否则换完还得重新找地方。
+   *
+   * 会话里两栏是各自独立的键（left/right），所以这里要**整组对调**，
+   * 不能只 setLeftId/setRightId —— 否则刷新后缩放与页码会串到另一边。
+   */
+  const swapPanes = useCallback(() => {
+    if (!rightId) return
+    const session = readSession()
+    const nextLeft = { ...session.right }
+    const nextRight = { ...session.left }
+    setLeftId(nextLeft.id)
+    setLeftZoom(nextLeft.zoom || 1)
+    setRightId(nextRight.id)
+    setRightZoom(nextRight.zoom || 1)
+    // 元信息（标题/页码）也跟着换，避免工具条显示错位。
+    setMeta((prev) => ({ left: prev.right, right: prev.left }))
+    // 会话整组对调：这是「位置记忆」正确的关键。
+    writeSession({ left: nextLeft, right: nextRight })
+    // 激活栏留在原来那侧会切到另一份材料上，统一回到左栏更符合直觉。
+    setActiveSide('left')
+    writeSession({ active: 'left' })
+  }, [rightId])
 
   /**
    * 关闭某一栏。
@@ -831,8 +862,12 @@ export default function MaterialView({ open, onClose }: { open: boolean; onClose
         </div>
       </div>
 
-      {/* 阅读区：单栏 or 双栏并排（两栏各自独立滚动） */}
-      <div className={twoPanes ? 'flex min-h-0 flex-1 gap-0.5' : 'flex min-h-0 flex-1'}>
+      {/*
+        阅读区：单栏 or 双栏并排（两栏各自独立滚动）。
+        `relative` 给中间那个互换按钮定位用：它要浮在两栏缝隙正中间，
+        且 `pointer-events-none` 的容器 + `auto` 的按钮，避免挡住两栏的点击。
+      */}
+      <div className={twoPanes ? 'relative flex min-h-0 flex-1 gap-0.5' : 'relative flex min-h-0 flex-1'}>
         <div className={twoPanes ? 'min-w-0 flex-1 border-r border-line' : 'min-w-0 flex-1'}>
           <MaterialPane
             id={leftId}
@@ -863,6 +898,22 @@ export default function MaterialView({ open, onClose }: { open: boolean; onClose
             }}
           />
         </div>
+        {/*
+          中间互换按钮：点击把左右两栏整份对调（材料 + 缩放 + 页码一起换）。
+          用 absolute 钉在容器水平中央、垂直居中，不参与 flex 布局 ——
+          这样它不会挤压两栏宽度，也不会引起任何重排。
+        */}
+        {twoPanes ? (
+          <button
+            type="button"
+            className="absolute left-1/2 top-1/2 z-20 grid h-9 w-9 -translate-x-1/2 -translate-y-1/2 cursor-pointer place-items-center rounded-full border border-line-strong bg-surface text-ink-2 shadow-[0_2px_8px_rgba(16,24,40,.16)] transition hover:border-brand hover:text-brand"
+            onClick={swapPanes}
+            aria-label="互换左右两栏"
+            title="互换左右两栏"
+          >
+            <ArrowLeftRight size={15} />
+          </button>
+        ) : null}
         {twoPanes ? (
           <div className="min-w-0 flex-1">
             <MaterialPane

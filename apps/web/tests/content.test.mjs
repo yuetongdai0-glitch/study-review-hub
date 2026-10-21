@@ -1099,3 +1099,48 @@ test('材料：刷新后仍在原页（会话持久化缩放/笔设置/页码）
 function codesSafeJson(text) {
   return /catch\s*\{/.test(text)
 }
+
+test('材料双栏：中间的互换按钮把整栏对调（含缩放与位置）', async () => {
+  /*
+   * 用户诉求：「希望中间能有一个按钮点击就能互换位置」（对照题目与答案时，
+   * 有时想把答案挪到左边）。
+   *
+   * 关键不是「换两个 id」，而是**整组对调**：材料 + 缩放 + 页码/页内比例。
+   * 只换 id 会出现「换完缩放到对面去了」——刷新后更明显，
+   * 因为会话里 left/right 是两个独立键。
+   */
+  const view = await readFile(new URL('../src/features/materials/MaterialView.tsx', import.meta.url), 'utf8')
+
+  // 1. 互换只交换、不重算：会话两栏整组对调
+  assert.ok(/const swapPanes = useCallback/.test(view), '需要 swapPanes')
+  const fn = view.slice(view.indexOf('const swapPanes = useCallback'), view.indexOf('/**', view.indexOf('const swapPanes = useCallback')))
+  assert.ok(/const nextLeft = \{ \.\.\.session\.right \}/.test(fn), '左栏要整组取原右栏（含 zoom/page/ratio），不是只取 id')
+  assert.ok(/const nextRight = \{ \.\.\.session\.left \}/.test(fn), '右栏要整组取原左栏')
+  assert.ok(
+    /writeSession\(\{ left: nextLeft, right: nextRight \}\)/.test(fn),
+    '必须把两栏整组写回会话，否则刷新后缩放与页码会串到对面'
+  )
+  assert.ok(/setLeftZoom\(nextLeft\.zoom/.test(fn), '缩放要跟着材料一起换')
+  assert.ok(/setMeta\(\(prev\) => \(\{ left: prev\.right, right: prev\.left \}\)\)/.test(fn), '标题/页码元信息也要换')
+  assert.ok(/if \(!rightId\) return/.test(fn), '单栏时互换应当无操作')
+
+  // 2. 按钮在两栏缝隙正中，且不参与 flex 布局（不会挤压宽度）
+  assert.ok(/aria-label="互换左右两栏"/.test(view), '缺少互换按钮')
+  const btn = view.slice(view.indexOf('aria-label="互换左右两栏"') - 500, view.indexOf('aria-label="互换左右两栏"'))
+  assert.ok(/absolute left-1\/2 top-1\/2/.test(btn), '按钮要绝对定位在正中（absolute left-1/2 top-1/2）')
+  assert.ok(/-translate-x-1\/2 -translate-y-1\/2/.test(btn), '要用 translate 精确居中')
+  assert.ok(/onClick=\{swapPanes\}/.test(btn), '按钮必须绑定 swapPanes')
+  // 只在双栏时出现
+  assert.ok(
+    /\{twoPanes \? \(\s*<button[\s\S]{0,400}?aria-label="互换左右两栏"/.test(view),
+    '互换按钮只在双栏时渲染'
+  )
+  // 容器要 relative，否则 absolute 的按钮会跑到视口外
+  assert.ok(
+    /className=\{twoPanes \? 'relative flex min-h-0 flex-1 gap-0\.5'/.test(view),
+    '双栏容器必须 relative，互换按钮才能钉在缝隙正中'
+  )
+
+  // 3. 不能靠「换 CSS order」之类的视觉把戏：那会让两栏的滚动/笔记错位
+  assert.ok(!/flex-row-reverse/.test(view), '不要用 flex-row-reverse 假装互换：滚动态与 canvas 会与面板对不上')
+})
