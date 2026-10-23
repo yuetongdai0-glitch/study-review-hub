@@ -1225,3 +1225,43 @@ test('材料撤销：单点/一键清除都能撤，且清除前先建快照', a
     '清除成功后应提示「可按 Ctrl+Z 撤销」，否则用户以为彻底没了'
   )
 })
+
+test('立即锁屏：只在设了密码时出现，点击回到锁定态', async () => {
+  /*
+   * 用户诉求：「在设置了密码的情况下这里加一个立即锁屏按钮」
+   * （指的是右下角「切换复习科目」面板头部、「设置」旁边）。
+   *
+   * 三个必须守住的点：
+   * 1. **没设密码时不显示** —— 锁不了，放出来是死按钮；
+   * 2. 点击只把 `unlocked` 置 false，React 立刻渲染 LockScreen，
+   *    **页面不卸载**，解锁后仍停在原来那一页（比刷新体验好）；
+   * 3. `required` 只在模块加载时读一次，所以设置里刚加完密码要能同步，
+   *    否则按钮要刷新才出现。
+   */
+  const nav = await readFile(new URL('../src/components/features/FloatingNav.tsx', import.meta.url), 'utf8')
+  const store = await readFile(new URL('../src/store/lockStore.ts', import.meta.url), 'utf8')
+  const app = await readFile(new URL('../src/App.tsx', import.meta.url), 'utf8')
+
+  // 1. store 要有 lock 动作
+  assert.ok(/lock: \(\) => void/.test(store), 'lockStore 需要 lock 动作')
+  assert.ok(/lock: \(\) => set\(\{ unlocked: false \}\)/.test(store), 'lock 只把 unlocked 置 false，不能动 required')
+
+  // 2. 按钮只在 required 时渲染
+  assert.ok(/aria-label="立即锁屏"/.test(nav), '缺少「立即锁屏」按钮')
+  assert.ok(/lockRequired \? \(/.test(nav), '按钮必须按「是否设了密码」条件渲染')
+  assert.ok(
+    /useLockStore\(\(state\) => state\.required\)/.test(nav),
+    '按钮显隐要看 lockStore.required（不是 unlocked）'
+  )
+  assert.ok(/onClick=\{\(\) => \{\s*setOpen\(false\)\s*lockNow\(\)/.test(nav), '点击应同时收起面板并锁屏')
+  assert.ok(/title="立即锁屏"/.test(nav), '要有 title 提示（头部空间紧，只放图标）')
+
+  // 3. required 可同步（设置里刚加完密码，按钮立刻出现）
+  assert.ok(/syncRequired: \(\) => void/.test(store), '需要 syncRequired，否则新设密码后按钮要刷新才出现')
+
+  // 4. App 的锁屏判定用的是 required && !unlocked
+  assert.ok(
+    /state\.required && !state\.unlocked/.test(app),
+    '锁屏判定必须是 required && !unlocked：没设密码不能锁，设了就要锁'
+  )
+})

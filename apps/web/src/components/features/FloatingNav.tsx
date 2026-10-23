@@ -1,8 +1,9 @@
-import { LayoutGrid, Settings } from 'lucide-react'
+import { LayoutGrid, Lock, Settings } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { allModules } from '@/router/routeRegistry'
 import { useAppStore } from '@/store/appStore'
+import { useLockStore } from '@/store/lockStore'
 
 /**
  * 右下角模块切换器。
@@ -17,6 +18,9 @@ export default function FloatingNav() {
   const [open, setOpen] = useState(false)
   const shellRef = useRef<HTMLElement>(null)
   const setSettingsOpen = useAppStore((state) => state.setSettingsOpen)
+  /* 只有设了启动密码才显示「立即锁屏」；否则按钮点了也没意义。 */
+  const lockRequired = useLockStore((state) => state.required)
+  const lockNow = useLockStore((state) => state.lock)
 
   /* 点外部 / Esc 关闭。 */
   useEffect(() => {
@@ -65,6 +69,25 @@ export default function FloatingNav() {
               <Settings size={13} aria-hidden="true" />
               设置
             </button>
+            {/*
+              立即锁屏：**只在设置了启动密码时才出现** —— 没密码锁不了，放出来是死按钮。
+              点击只把 store 的 `unlocked` 置 false，React 立刻渲染 LockScreen；
+              页面组件不卸载，解锁后还停在原来那一页（比刷新更省事）。
+            */}
+            {lockRequired ? (
+              <button
+                type="button"
+                className="study-hub-settings study-hub-lock-now"
+                onClick={() => {
+                  setOpen(false)
+                  lockNow()
+                }}
+                title="立即锁屏"
+                aria-label="立即锁屏"
+              >
+                <Lock size={13} aria-hidden="true" />
+              </button>
+            ) : null}
             <Link className="study-hub-home" to="/">
               返回总览
             </Link>

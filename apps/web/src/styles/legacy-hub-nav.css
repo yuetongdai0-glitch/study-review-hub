@@ -201,3 +201,15 @@
   text-decoration: underline;
   outline: none;
 }
+
+/* 立即锁屏：只显示图标，所以不要文字下划线；配色偏警示，避免和「设置」混淆。 */
+.study-hub-lock-now {
+  padding: 0;
+  color: var(--hub-muted);
+}
+
+.study-hub-lock-now:hover,
+.study-hub-lock-now:focus-visible {
+  color: #c0392b;
+  text-decoration: none;
+}

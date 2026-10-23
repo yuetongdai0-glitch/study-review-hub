@@ -18,6 +18,24 @@ export type LockStoreState = {
   unlock: (password: string) => Promise<boolean>
   /** 重新读取锁配置（设置面板增删密码后调用）。 */
   refresh: () => void
+  /**
+   * 仅同步 `required`（不改解锁状态）。
+   *
+   * @returns 无返回。
+   * @remarks 「立即锁屏」按钮的显隐依赖 `required`，而它只在模块加载时读一次，
+   * 用户在设置里刚加完密码时按钮不会立刻出现（要刷新）。
+   * 这个动作供设置面板在增删密码后调用，让按钮立即出现/消失。
+   */
+  syncRequired: () => void
+  /**
+   * 立即锁屏（把当前会话打回未解锁）。
+   *
+   * @returns 无返回。
+   * @remarks 与「刷新页面」效果相同但**不丢失当前页面状态**（React 不卸载），
+   * 用户明确要求「在设置了密码的情况下加一个立即锁屏按钮」。
+   * 只在 `required` 为真时有意义；没设密码时不该出现这个入口。
+   */
+  lock: () => void
 }
 
 /** 启动密码 store。 */
@@ -35,6 +53,10 @@ export const useLockStore = create<LockStoreState>((set) => ({
     if (ok) set({ unlocked: true })
     return ok
   },
+
+  syncRequired: () => set({ required: hasLock() }),
+
+  lock: () => set({ unlocked: false }),
 
   refresh: () => {
     const required = hasLock()
