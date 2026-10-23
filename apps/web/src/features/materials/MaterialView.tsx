@@ -1,4 +1,4 @@
-import { App, Button, Drawer, Dropdown, Input, Tooltip } from 'antd'
+import { App, Button, Dropdown, Input, Modal, Tooltip } from 'antd'
 import {
   ArrowLeft,
   ArrowLeftRight,
@@ -140,6 +140,18 @@ export default function MaterialView({ open, onClose }: { open: boolean; onClose
     const name = pending.name.trim() || pending.file.name.replace(/\.(pdf|docx|pptx)$/i, '')
     setPendingFile(null)
     setImporting(true)
+    /*
+     * 大文件在手机上解析要好几秒，必须给出可见反馈 ——
+     * 否则用户只看到「点了导入什么都没发生」，以为功能坏了（移动端就是这样被投诉的）。
+     * 提示不自动关闭，解析结束后手动收掉。
+     */
+    const big = pending.file.size > 80 * 1024 * 1024
+    const tip = message.loading(
+      big
+        ? `正在解析《${name}》（${(pending.file.size / 1024 / 1024).toFixed(0)} MB，稍等…）`
+        : `正在解析《${name}》…`,
+      0,
+    )
     try {
       const parsed = await parseMaterial(pending.file)
       const material: Material = {
@@ -158,6 +170,7 @@ export default function MaterialView({ open, onClose }: { open: boolean; onClose
       }
       await putMaterial(material)
       await refresh()
+      tip()
       message.success(`已导入《${name}》，共 ${parsed.pageCount} 页`)
       // 导入后直接打开到左栏；这里不走 openInto，所以也要记会话。
       setLeftId(material.id)
@@ -165,7 +178,19 @@ export default function MaterialView({ open, onClose }: { open: boolean; onClose
       writePane('left', { id: material.id, zoom: 1, page: 0, ratio: 0 })
       writeSession({ open: true })
     } catch (error) {
-      message.error(`导入失败：${error instanceof Error ? error.message : '未知错误'}`)
+      tip()
+      /*
+       * 失败一定要说清「为什么」：
+       * 手机端最常见的是内存不足（文件太大）或存储配额不足 ——
+       * 只写「未知错误」用户完全无从下手。
+       */
+      const raw = error instanceof Error ? error.message : String(error)
+      const hint = /memory|allocation|out of|Array buffer/i.test(raw)
+        ? '（文件太大，设备内存不足；试试拆分或压缩后再导入）'
+        : /quota|storage|space/i.test(raw)
+          ? '（本地存储空间不足，先删掉一些旧材料再试）'
+          : ''
+      message.error(`导入失败：${raw || '未知错误'}${hint}`, 8)
     } finally {
       setImporting(false)
     }
@@ -617,21 +642,24 @@ export default function MaterialView({ open, onClose }: { open: boolean; onClose
           </div>
         </div>
 
-        {/* 命名弹窗 */}
-        <Drawer
+        {/*
+          命名弹窗。
+          **`zIndex` 必须显式抬高**：材料视图是 `FullScreenLayer`（z-index 1100），
+          antd Modal/Drawer 默认 1000 —— 会被压在材料层底下，用户选了文件却什么都看不到，
+          表现就是「导入直接没反应」（移动端就是这么被踩到的）。
+          这里用 Modal 而不是 Drawer：移动端居中的输入框更醒目，也不会受
+          Drawer 那条 translateY 动画的影响。
+        */}
+        <Modal
           open={Boolean(pendingFile)}
-          placement="bottom"
-          height={260}
           title="给这份材料起个名字"
-          onClose={() => setPendingFile(null)}
-          footer={
-            <div className="flex justify-end gap-2">
-              <Button onClick={() => setPendingFile(null)}>取消</Button>
-              <Button type="primary" onClick={() => void confirmImport()} loading={importing}>
-                导入
-              </Button>
-            </div>
-          }
+          zIndex={1400}
+          okText="导入"
+          cancelText="取消"
+          confirmLoading={importing}
+          onOk={() => void confirmImport()}
+          onCancel={() => setPendingFile(null)}
+          destroyOnHidden
         >
           <p className="mb-2 mt-0 text-[12.5px] text-ink-3">不填就用文件名。导入后也能随时改名。</p>
           <Input
@@ -642,7 +670,13 @@ export default function MaterialView({ open, onClose }: { open: boolean; onClose
             onChange={(event) => setPendingFile((prev) => (prev ? { ...prev, name: event.target.value } : prev))}
             onPressEnter={() => void confirmImport()}
           />
-        </Drawer>
+          {pendingFile ? (
+            <p className="mb-0 mt-2 text-[11.5px] text-ink-3">
+              {pendingFile.file.name} · {(pendingFile.file.size / 1024 / 1024).toFixed(1)} MB
+              {pendingFile.file.size > 80 * 1024 * 1024 ? '（文件较大，解析需要一点时间，请稍候）' : ''}
+            </p>
+          ) : null}
+        </Modal>
       </div>
     )
   }

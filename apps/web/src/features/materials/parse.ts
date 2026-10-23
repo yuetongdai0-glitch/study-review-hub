@@ -87,8 +87,21 @@ export function openPdfDocument(id: string, file: Blob) {
   if (cached) return cached
   const task = (async () => {
     const pdfjs = await loadPdfjs()
-    const data = new Uint8Array(await file.arrayBuffer())
-    return pdfjs.getDocument({ data, isEvalSupported: false }).promise
+    /*
+     * **不要 `new Uint8Array(await file.arrayBuffer())`**：那会把整份文件复制进 JS 堆。
+     * 191MB 的 PDF 在手机上直接 OOM —— 表现就是「点了导入没反应」，其实是页面被系统杀掉。
+     *
+     * pdfjs 4 的 `data` 只接受 ArrayBuffer/TypedArray（不接受 Blob），
+     * 所以这里走 **url 通道**：给 Blob 建一个 objectURL，pdfjs 内部按需 range 读取，
+     * 不会把整份文件一次性拉进内存。
+     */
+    const url = URL.createObjectURL(file)
+    try {
+      return await pdfjs.getDocument({ url, isEvalSupported: false }).promise
+    } finally {
+      // 文档对象已经握住数据了，URL 可以立刻释放（不占常驻内存）。
+      URL.revokeObjectURL(url)
+    }
   })()
   pdfDocCache.set(id, task)
   return task
@@ -118,8 +131,12 @@ export async function closePdfDocument(id: string) {
  */
 export async function parsePdfMeta(file: File): Promise<ParsedMaterial> {
   const pdfjs = await loadPdfjs()
-  const data = new Uint8Array(await file.arrayBuffer())
-  const doc = await pdfjs.getDocument({ data, isEvalSupported: false }).promise
+  /*
+   * 同 openPdfDocument：走 url 通道做 range 读取。
+   * 导入时只需要「页数 + 首页尺寸」，没必要把 191MB 全读进内存。
+   */
+  const url = URL.createObjectURL(file)
+  const doc = await pdfjs.getDocument({ url, isEvalSupported: false }).promise
   try {
     const first = await doc.getPage(1)
     // 取 1 倍视口：PDF 单位就是点，页面显示时按容器宽度再缩放。
@@ -134,6 +151,8 @@ export async function parsePdfMeta(file: File): Promise<ParsedMaterial> {
   } finally {
     // 元数据已经拿到，这里销毁；真正显示时由渲染层重新 open。
     await doc.destroy().catch(() => undefined)
+    // 顺手释放 objectURL，避免每次导入都漏一个。
+    URL.revokeObjectURL(url)
   }
 }
 

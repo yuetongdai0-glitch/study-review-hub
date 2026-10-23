@@ -84,6 +84,16 @@ export default function MaterialPane(props: MaterialPaneProps) {
   const [pages, setPages] = useState<Record<number, PageContent>>({})
   const [visiblePage, setVisiblePage] = useState(1)
   const [range, setRange] = useState<[number, number]>([0, 0])
+  /**
+   * 实际生效的缩放 = min(zoom, 容器宽 / 基准宽)。
+   *
+   * @remarks 手机屏幕（390）比 A4 基准（595）窄，若只用 zoom 会把纸张画到屏幕外，
+   * 表现为右侧被裁、还能横向拖动。这里让纸**至少完整放进容器**：
+   * - 桌面宽屏：容器宽 ≥ 基准宽 × zoom → 用 zoom；
+   * - 手机窄屏：容器宽不够 → 用「容器宽 / 基准宽」把它缩到刚好放下。
+   * canvas 内部坐标系仍是基准像素，所以笔迹不会因此错位。
+   */
+  const [fitScale, setFitScale] = useState(1)
   /** 加载失败原因（材料被删、文件损坏）。 */
   const [error, setError] = useState('')
 
@@ -281,6 +291,24 @@ export default function MaterialPane(props: MaterialPaneProps) {
     }
   }, [material, onPageChange, onScrollChange, side])
 
+  /* 容器宽度变化时重算 fitScale（旋转屏、双栏切换都会触发）。 */
+  useEffect(() => {
+    const scroller = scrollRef.current
+    const target = material
+    if (!scroller || !target) return
+    const compute = () => {
+      const pad = parseFloat(getComputedStyle(scroller).paddingLeft) + parseFloat(getComputedStyle(scroller).paddingRight)
+      const avail = Math.max(80, scroller.clientWidth - pad)
+      // 容器比「基准宽 × zoom」窄时，缩到刚好放下；否则用 zoom。
+      const next = Math.min(zoom, avail / target.pageW)
+      setFitScale(Math.round(next * 1000) / 1000)
+    }
+    compute()
+    const ro = new ResizeObserver(compute)
+    ro.observe(scroller)
+    return () => ro.disconnect()
+  }, [material, zoom])
+
   const onScroll = useCallback(() => {
     window.clearTimeout(scrollTimerRef.current)
     scrollTimerRef.current = window.setTimeout(syncRange, 120)
@@ -406,7 +434,28 @@ export default function MaterialPane(props: MaterialPaneProps) {
     const prev = zoomRef.current
     zoomRef.current = zoom
     if (prev === zoom) return
-    const anchor = { ...lastSessionRef.current }
+    /*
+     * 锚点必须在**缩放生效前**冻结，而且不能直接读 `lastSessionRef`：
+     * 缩放会改变页高 → 触发 onScroll → syncRange 立刻把 lastSessionRef 更新成
+     * 「新布局下的当前位置」，等于锚点被覆盖，还原时反而跳走。
+     * 这里在 zoom 变化的同一帧里，从 DOM 现算一次真实位置作为冻结锚点。
+     */
+    const anchor = (() => {
+      const scroller = scrollRef.current
+      if (!scroller) return { ...lastSessionRef.current }
+      const top = scroller.scrollTop
+      const nodes = [...scroller.querySelectorAll<HTMLElement>('[data-page]')]
+      let page = 0
+      let ratio = 0
+      for (const node of nodes) {
+        const index = Number(node.dataset.page)
+        if (node.offsetTop <= top + 1) {
+          page = index
+          ratio = Math.max(0, Math.min(1, (top - node.offsetTop) / (node.offsetHeight || 1)))
+        } else break
+      }
+      return { page, ratio }
+    })()
     if (anchor.page < 0) return
     let cancelled = false
     const restore = (attempt: number) => {
@@ -664,7 +713,12 @@ export default function MaterialPane(props: MaterialPaneProps) {
     >
       <style>{DOCX_PAGE_CSS}</style>
       {material ? (
-        <div ref={scrollRef} className="material-scroll min-h-0 flex-1 overflow-auto px-2 py-3" onScroll={onScroll}>
+        <div
+          ref={scrollRef}
+          className="material-scroll min-h-0 flex-1 overflow-auto px-2 py-3"
+          style={{ ['--page-scale' as string]: fitScale } as React.CSSProperties}
+          onScroll={onScroll}
+        >
           <div className="mx-auto flex max-w-[980px] flex-col gap-4">
             {Array.from({ length: totalPages }, (_, index) => {
               const inRange = index >= rangeFrom && index <= rangeTo
@@ -675,17 +729,25 @@ export default function MaterialPane(props: MaterialPaneProps) {
                   data-page={index}
                   className="page-slot relative mx-auto"
                   style={{
-                    width: `min(100%, ${material.pageW * zoom}px)`,
+                    // 占位宽度必须与实际渲染宽度一致，否则滚动条长度和点按热区都会错。
+                    width: `${material.pageW * fitScale}px`,
+                    maxWidth: '100%',
                     aspectRatio: `${material.pageW} / ${material.pageH}`,
                   }}
                 >
+                  {/*
+                    内层按**基准像素**排版，再整体 scale 到目标宽度。
+                    `--fit` 是「容器可用宽度 / 基准宽度」，移动端屏幕比 A4 窄时它 < 1，
+                    这样纸张会缩到刚好放下（不会溢出到屏幕外）；
+                    桌面端 `--fit` = 1，缩放完全由 zoom 控制。
+                    两者相乘就是最终 scale，canvas 内部坐标系始终是基准像素，笔迹不错位。
+                  */}
                   <div
                     className="page-sheet relative h-full w-full origin-top-left overflow-hidden rounded-[6px] border border-line-strong bg-white shadow-[0_1px_2px_rgba(16,24,40,.08),0_8px_22px_rgba(16,24,40,.09)]"
                     style={{
-                      // 内层按基准像素排版再整体缩放：canvas 内部坐标不变，笔迹才不会错位。
                       width: material.pageW,
                       height: material.pageH,
-                      transform: `scale(${zoom})`,
+                      transform: `scale(var(--page-scale, ${zoom}))`,
                       transformOrigin: 'top left',
                     }}
                   >

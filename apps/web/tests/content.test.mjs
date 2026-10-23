@@ -888,9 +888,28 @@ test('材料：缩放不错位、一键清除笔记、材料内做题不跳走',
   // 2. 缩放：笔迹坐标必须与缩放解耦（结构在 MaterialPane）
   assert.ok(/const ZOOM_MIN = 0\.6/.test(view) && /const ZOOM_MAX = 3/.test(view), '缩放范围缺失')
   assert.ok(/className="page-slot/.test(pane) && /className="page-sheet/.test(pane), '缩放需要「外层占位 + 内层 transform」两层结构')
+  /*
+   * 内层用 transform 缩放，且缩放系数来自 `--page-scale`：
+   * 它 = min(zoom, 容器宽/基准宽)，手机窄屏时会把纸缩到刚好放下，
+   * 否则纸张会画到屏幕外（右侧被裁、还能横向拖动）。
+   * 关键在于 canvas 内部坐标系始终是基准像素，所以笔迹不会因为缩放而错位。
+   */
   assert.ok(
-    /transform: `scale\(\$\{zoom\}\)`/.test(pane),
-    '内层用 transform 缩放（改宽高会让 canvas 内部坐标系变化，笔迹就错位了）'
+    /transform: `scale\(var\(--page-scale/.test(pane),
+    '内层要用 transform 缩放（改宽高会让 canvas 内部坐标系变化，笔迹就错位了）'
+  )
+  assert.ok(/const \[fitScale, setFitScale\]/.test(pane), '需要有容器自适应的 fitScale')
+  assert.ok(
+    /const next = Math\.min\(zoom, avail \/ target\.pageW\)/.test(pane),
+    '纸张宽度必须取 min(zoom, 容器宽/基准宽)：手机屏幕比 A4 窄，只按 zoom 会溢出屏幕'
+  )
+  assert.ok(
+    /['"]--page-scale['"\s]*as string\]/.test(pane) || /--page-scale/.test(pane),
+    '要把缩放系数写进 CSS 变量，供内层 transform 使用'
+  )
+  assert.ok(
+    /width: `\$\{material\.pageW \* fitScale\}px`/.test(pane),
+    '占位宽度必须与实际渲染宽度一致（否则滚动条长度与点击热区都会错）'
   )
   assert.ok(
     /data-page=\{index\}[\s\S]{0,80}className="page-slot/.test(pane),
