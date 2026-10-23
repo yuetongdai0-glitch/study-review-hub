@@ -872,15 +872,22 @@ export default function MaterialView({ open, onClose }: { open: boolean; onClose
                 if (!target) return
                 modal.confirm({
                   title: '清除这份材料的全部笔记？',
-                  content: '材料文件不会删除，只清手写笔记，且无法恢复。',
+                  content: '材料文件不会删除，只清手写笔记。清除后可以按 Ctrl+Z 撤销。',
                   okText: '全部清除',
                   cancelText: '取消',
                   okButtonProps: { danger: true },
                   onOk: async () => {
                     try {
-                      await clearAllNotes(target)
+                      /*
+                       * **顺序很重要**：必须先让 Pane 把「清除前的内容」压进撤销栈，
+                       * 再删库。
+                       * 早先是先 `clearAllNotes` 再 `clearAll()` —— 内存里的快照
+                       * 是在删库之后才建的，撤销栈里什么都没有，
+                       * 于是按 Ctrl+Z 只会得到「这一页没有可撤销的笔记」。
+                       */
                       actionsRef.current[activeSide]?.clearAll()
-                      message.success('已清除全部笔记')
+                      await clearAllNotes(target)
+                      message.success('已清除全部笔记，可按 Ctrl+Z 撤销', 4)
                     } catch {
                       message.error('清除失败，请重试')
                     }

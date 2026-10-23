@@ -112,6 +112,13 @@ export default function MaterialPane(props: MaterialPaneProps) {
   const restoredForRef = useRef('')
   /** 上次写进会话的页码与比例（避免每帧都写 localStorage）。 */
   const lastSessionRef = useRef({ page: -1, ratio: -1 })
+  /**
+   * 上一次「一键清除全部」影响了哪些页。
+   *
+   * @remarks 撤销时需要把这些页一起补回来，否则只恢复当前页、
+   * 其它页仍是空的（用户翻页就发现笔迹丢了）。
+   */
+  const lastClearAllRef = useRef<number[]>([])
 
   /* ---------------- 载入材料 ---------------- */
 
@@ -579,7 +586,12 @@ export default function MaterialPane(props: MaterialPaneProps) {
     if (!finished || event.pointerId !== activeIdRef.current) return
     activeIdRef.current = null
     currentRef.current = null
-    if (finished.stroke.p.length < 2) return
+    /*
+     * 只点一下（没有移动）时 `p` 只有一个点。早先这里 `if (p.length < 2) return`
+     * 直接丢弃，但画布上那个圆点已经画出来了 ——
+     * 于是出现「明明有笔迹，撤销却说没有可撤销的笔记」。
+     * 单点也是用户看得见的一笔，必须进栈；`drawStroke` 已支持单点绘制。
+     */
     const index = finished.page
     const list = notesRef.current.get(index) ?? []
     list.push(finished.stroke)
@@ -619,6 +631,25 @@ export default function MaterialPane(props: MaterialPaneProps) {
       notesRef.current.set(index, previous)
       redrawPage(index)
       void persistNotes(index)
+      /*
+       * 如果这次撤销正好对应「一键清除全部」，把所有被清空的页一起补回来。
+       * `lastClearAllRef` 里记录了那次清除涉及的页；只要当前页在其中，
+       * 就说明用户撤的是那次「全部清除」，其余页也要恢复。
+       */
+      const cleared = lastClearAllRef.current
+      if (cleared.includes(index)) {
+        lastClearAllRef.current = []
+        for (const page of cleared) {
+          if (page === index) continue
+          const stack = undoRef.current.get(page) ?? []
+          const snap = stack.pop()
+          if (!snap) continue
+          undoRef.current.set(page, stack)
+          notesRef.current.set(page, snap)
+          redrawPage(page)
+          void persistNotes(page)
+        }
+      }
     },
     // persistNotes 依赖 material，这里跟着重建即可。
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -665,12 +696,38 @@ export default function MaterialPane(props: MaterialPaneProps) {
     [material, message, redrawPage],
   )
 
+  /**
+   * 清空本材料全部页的笔记（可撤销）。
+   *
+   * @returns 无返回。
+   * @remarks
+   * 用户投诉「一键清除之后 Ctrl+Z 撤不回来，还提示没有可撤销的笔记」。
+   * 原因：这里只把数组清空、重绘，**根本没往撤销栈里压任何东西**。
+   * 现在按页把「清除前的内容」压进各自的撤销栈，Ctrl+Z 就能一页页退回去。
+   * 单个 Page 的撤销栈上限是 UNDO_MAX，这里只压一份快照，不会爆。
+   */
   const clearAll = useCallback(() => {
-    for (const list of notesRef.current.values()) {
+    const touchedPages: number[] = []
+    for (const [index, list] of notesRef.current.entries()) {
       if (!list.length) continue
+      const undo = undoRef.current.get(index) ?? []
+      // 压入「清除前」的完整快照。
+      undo.push([...list])
+      if (undo.length > UNDO_MAX) undo.shift()
+      undoRef.current.set(index, undo)
+      // 有内容被清掉的页，之前的重做分支作废。
+      redoRef.current.delete(index)
       list.length = 0
+      touchedPages.push(index)
     }
     for (const index of canvasRefs.current.keys()) redrawPage(index)
+    /*
+     * 记住这次「一键清除」影响了哪些页。
+     * 撤销时要把**所有被清空的页**一起补回去 —— 否则只恢复当前页，
+     * 别的页仍是已删状态，数据就不一致了（用户一翻页发现笔迹没了）。
+     */
+    lastClearAllRef.current = touchedPages
+    return touchedPages
   }, [redrawPage])
 
   /* 把动作交给外层（快捷键在 View 层统一处理，双栏时才不会各抢一次）。 */
@@ -786,13 +843,25 @@ export default function MaterialPane(props: MaterialPaneProps) {
                         if (!node) return
                         const old = canvasRefs.current.get(index)
                         canvasRefs.current.set(index, node)
-                        if (old === node) return
+                        /*
+                         * 注意：给 canvas.width 赋值**会清空整块画布**。
+                         * 所以只在「尺寸真的需要变」时才设，并且绝不能把 0 宽算进去 ——
+                         * 切页/缩放瞬间 clientWidth 可能还是 0，
+                         * 那时设成 1×1 会把笔迹全丢掉，但界面上的旧像素还留着，
+                         * 于是出现「看得见笔迹、却怎么都撤不掉」的假象。
+                         */
                         const dpr = Math.min(window.devicePixelRatio || 1, 2)
-                        node.width = Math.max(1, Math.round(node.clientWidth * dpr))
-                        node.height = Math.max(1, Math.round(node.clientHeight * dpr))
-                        const ctx = node.getContext('2d')
-                        if (ctx) ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
-                        redrawPage(index)
+                        const w = Math.max(1, Math.round(node.clientWidth * dpr))
+                        const h = Math.max(1, Math.round(node.clientHeight * dpr))
+                        const invalid = node.clientWidth === 0 || node.clientHeight === 0
+                        if (!invalid && (node.width !== w || node.height !== h)) {
+                          node.width = w
+                          node.height = h
+                          const ctx = node.getContext('2d')
+                          if (ctx) ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+                        }
+                        // 无论尺寸有没有变，都重绘一次：新挂载的 canvas 是空白的。
+                        if (old !== node) redrawPage(index)
                       }}
                       className="absolute inset-0 h-full w-full touch-none"
                       style={{ cursor: tool === 'eraser' ? 'cell' : 'crosshair' }}

@@ -1163,3 +1163,65 @@ test('材料双栏：中间的互换按钮把整栏对调（含缩放与位置�
   // 3. 不能靠「换 CSS order」之类的视觉把戏：那会让两栏的滚动/笔记错位
   assert.ok(!/flex-row-reverse/.test(view), '不要用 flex-row-reverse 假装互换：滚动态与 canvas 会与面板对不上')
 })
+
+test('材料撤销：单点/一键清除都能撤，且清除前先建快照', async () => {
+  /*
+   * 用户反馈：「咋撤销不了了？」截图里两条提示同时出现：
+   * 「已清除全部笔记」+「这一页没有可撤销的笔记」——
+   * 说明画笔在画布上留下了痕迹，但撤销栈是空的。三个独立原因：
+   *
+   * 1. **一键清除没往撤销栈压任何东西**：只清数组、重绘。
+   * 2. **顺序反了**：先 `await clearAllNotes()` 删库、再 `clearAll()` 建快照，
+   *    等用户按 Ctrl+Z 时栈里什么都没有。
+   * 3. **单点笔迹被丢弃**：`if (p.length < 2) return`，
+   *    但画布上那个圆点已经画出来了 → 「看得见却撤不掉」。
+   * 4. 另外 canvas 尺寸为 0 时被重置成 1×1，会把笔迹全丢（旧像素还留着）。
+   */
+  const pane = await readFile(new URL('../src/features/materials/MaterialPane.tsx', import.meta.url), 'utf8')
+  const view = await readFile(new URL('../src/features/materials/MaterialView.tsx', import.meta.url), 'utf8')
+
+  // 1. 一键清除必须可撤销：按页压快照
+  assert.ok(/const clearAll = useCallback/.test(pane), '需要 clearAll')
+  const clearAllFn = pane.slice(pane.indexOf('const clearAll = useCallback'), pane.indexOf('/* 把动作交给外层'))
+  assert.ok(/undo\.push\(\[\.\.\.list\]\)/.test(clearAllFn), '一键清除前必须把整页内容压进撤销栈')
+  assert.ok(/undoRef\.current\.set\(index, undo\)/.test(clearAllFn), '压栈后要写回该页的撤销栈')
+  assert.ok(/lastClearAllRef/.test(clearAllFn), '要记住这次清除了哪些页，撤销时才能一起恢复')
+
+  // 2. 撤销要能把所有被清空的页一起补回（不是只恢复当前页）
+  assert.ok(
+    /const cleared = lastClearAllRef\.current/.test(pane) && /for \(const page of cleared\)/.test(pane),
+    '撤销「全部清除」时必须逐页恢复，否则翻页会发现别的页仍然是空的'
+  )
+
+  // 3. 顺序：先建快照再删库
+  const clearEntry = view.slice(view.indexOf('一键清除这份材料的全部笔记'), view.indexOf('一键清除这份材料的全部笔记') + 1400)
+  const iSnapshot = clearEntry.indexOf('clearAll()')
+  const iDelete = clearEntry.indexOf('clearAllNotes(target)')
+  assert.ok(iSnapshot > 0 && iDelete > 0, '清除入口要同时调用 clearAll() 与 clearAllNotes()')
+  assert.ok(
+    iSnapshot < iDelete,
+    '必须先 clearAll()（建撤销快照）再 clearAllNotes()（删库）：顺序反了会导致撤销栈为空'
+  )
+
+  // 4. 单点笔迹不能丢
+  assert.ok(
+    !/if \(finished\.stroke\.p\.length < 2\) return/.test(pane),
+    '单点笔迹也是一笔：不能因为点数 < 2 就丢弃，否则画布上有痕迹却撤不掉'
+  )
+
+  // 5. canvas 尺寸为 0 时不能重置（会清空画布、丢掉笔迹）
+  assert.ok(
+    /node\.clientWidth === 0 \|\| node\.clientHeight === 0/.test(pane),
+    'canvas ref 里必须先判断尺寸有效再赋值：赋 width 会清空画布，0 宽会把笔迹全丢'
+  )
+  assert.ok(
+    /if \(!invalid && \(node\.width !== w \|\| node\.height !== h\)\)/.test(pane),
+    '只有尺寸真的需要变时才重新赋值'
+  )
+
+  // 6. 清除后的提示要告诉用户能撤销
+  assert.ok(
+    /可按 Ctrl\+Z 撤销/.test(view),
+    '清除成功后应提示「可按 Ctrl+Z 撤销」，否则用户以为彻底没了'
+  )
+})
