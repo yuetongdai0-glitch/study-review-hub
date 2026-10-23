@@ -1,0 +1,1 @@
+import{u as s,j as o}from"./index-UHQVVG3U.js";import{r as a}from"./antd-kOzvl-Aa.js";import{E as i}from"./ExamSheet-V9-Uu1AM.js";import"./react-8Bv7rmdK.js";function u(){const e=s(r=>r.register),t=s(r=>r.clear);return a.useEffect(()=>(e("/tools/exam-grid",[]),()=>t("/tools/exam-grid")),[e,t]),o.jsx("div",{className:"h-[100dvh]",children:o.jsx(i,{})})}export{u as default};
