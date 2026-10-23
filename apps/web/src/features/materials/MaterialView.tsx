@@ -9,6 +9,7 @@ import {
   ListChecks,
   NotebookPen,
   Pen,
+  PenOff,
   Pencil,
   RotateCcw,
   Columns2,
@@ -85,6 +86,15 @@ export default function MaterialView({ open, onClose }: { open: boolean; onClose
   const [rightZoom, setRightZoom] = useState(initial.right.zoom || 1)
   const [activeSide, setActiveSide] = useState<PaneSide>(initial.active)
   const [tool, setTool] = useState<'pen' | 'eraser'>(initial.tool)
+  /**
+   * 是否允许手写批注。
+   *
+   * @remarks 用户要求：「手机和平板默认关闭，可以手动打开；电脑也可以关闭」。
+   * 关闭 = **只读**：滚动、缩放、翻页、看笔记都正常，只是画布不接笔，
+   * 避免手指划过屏幕就留下笔迹（触屏上尤其容易误触）。
+   * 初值来自会话（未手动改过时按设备类型给默认）。
+   */
+  const [annotate, setAnnotate] = useState(initial.annotate)
   const [color, setColor] = useState(initial.color)
   const [size, setSize] = useState(initial.size)
   /** 两份材料的标题与页码（由 Pane 回报，供工具条显示）。 */
@@ -317,7 +327,11 @@ export default function MaterialView({ open, onClose }: { open: boolean; onClose
   /* ---------------- 快捷键（作用在激活栏） ---------------- */
 
   useEffect(() => {
-    if (!open || !activeId) return
+    /*
+     * 只读模式下连快捷键也停用：否则「界面不让改，Ctrl+Z 却能改」，
+     * 状态就自相矛盾了（用户也可能误触撤掉别人的笔记）。
+     */
+    if (!open || !activeId || !annotate) return
     const onKey = (event: KeyboardEvent) => {
       const meta = event.metaKey || event.ctrlKey
       if (!meta) return
@@ -337,7 +351,7 @@ export default function MaterialView({ open, onClose }: { open: boolean; onClose
     }
     document.addEventListener('keydown', onKey)
     return () => document.removeEventListener('keydown', onKey)
-  }, [open, activeId, activeSide])
+  }, [open, activeId, activeSide, annotate])
 
   /* ---------------- 重命名 ---------------- */
 
@@ -717,6 +731,38 @@ export default function MaterialView({ open, onClose }: { open: boolean; onClose
 
         <span className="mx-0.5 hidden h-4 w-px bg-line sm:block" />
 
+        {/*
+          批注开关（用户截图里框住的位置）。
+          关闭 = 只读：能滚动、缩放、翻页、看已写的笔记，但画布不接笔。
+          手机/平板默认关闭（手指一划就误触），电脑默认开启，两端都能手动切换。
+          关掉时整个「画笔/橡皮/颜色/笔粗」组一起隐藏 —— 留着但不能用只会让人困惑。
+        */}
+        <Tooltip
+          title={
+            annotate
+              ? '批注已开启：可以手写。点一下切到只读，避免误触'
+              : '只读模式：只能滑动查看，不能写。点一下开启批注'
+          }
+        >
+          <Button
+            size="small"
+            type={annotate ? 'primary' : 'default'}
+            icon={annotate ? <Pen size={13} /> : <PenOff size={13} />}
+            onClick={() => {
+              const next = !annotate
+              setAnnotate(next)
+              // 手动改过就记住，之后不再按设备类型覆盖。
+              writeSession({ annotate: next, annotateTouched: true })
+            }}
+            aria-label={annotate ? '关闭批注（切到只读）' : '开启批注'}
+            aria-pressed={annotate}
+          >
+            {annotate ? '批注' : '只读'}
+          </Button>
+        </Tooltip>
+
+        {annotate ? (
+        <>
         <div className="flex items-center gap-1">
           <Tooltip title="画笔">
             <Button
@@ -776,6 +822,8 @@ export default function MaterialView({ open, onClose }: { open: boolean; onClose
           />
           <span className="w-3 shrink-0 text-right font-num text-[11px] text-ink-3">{size}</span>
         </div>
+        </>
+        ) : null}
 
         {/* 缩放：作用在当前激活栏 */}
         <div className="flex items-center gap-0.5">
@@ -846,6 +894,12 @@ export default function MaterialView({ open, onClose }: { open: boolean; onClose
         </div>
 
         <div className="ml-auto flex items-center gap-1">
+          {/*
+            撤销 / 清空 / 一键清除都会改动笔记，只读模式下一起隐藏 ——
+            否则用户「在只读模式里还能清掉笔记」，语义就乱了。
+          */}
+          {annotate ? (
+          <>
           <Tooltip title="撤销本页最后一笔（Ctrl+Z）">
             <Button
               size="small"
@@ -897,6 +951,8 @@ export default function MaterialView({ open, onClose }: { open: boolean; onClose
               aria-label="一键清除全部笔记"
             />
           </Tooltip>
+          </>
+          ) : null}
           <Button size="small" onClick={onClose}>
             关闭
           </Button>
@@ -918,6 +974,7 @@ export default function MaterialView({ open, onClose }: { open: boolean; onClose
             color={color}
             size={size}
             active={twoPanes && activeSide === 'left'}
+            annotate={annotate}
             onActivate={() => {
               if (activeSide === 'left') return
               setActiveSide('left')
@@ -965,6 +1022,7 @@ export default function MaterialView({ open, onClose }: { open: boolean; onClose
               color={color}
               size={size}
               active={activeSide === 'right'}
+              annotate={annotate}
               onActivate={() => {
                 if (activeSide === 'right') return
                 setActiveSide('right')

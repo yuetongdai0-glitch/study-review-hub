@@ -915,7 +915,14 @@ test('材料：缩放不错位、一键清除笔记、材料内做题不跳走',
     /data-page=\{index\}[\s\S]{0,80}className="page-slot/.test(pane),
     'data-page 必须挂在外层占位槽上，安全区/翻页计算才对'
   )
-  const canvasBlock = pane.slice(pane.indexOf('aria-label={`第 ${index + 1} 页批注画布`}') - 900, pane.indexOf('aria-label={`第 ${index + 1} 页批注画布`}'))
+  /*
+   * canvas 尺寸要取「基准尺寸 × dpr」，不能乘 zoom。
+   * 注意别用固定窗口切片：ref 回调里有注释和只读判断，行数会变，
+   * 用「从 ref 开始到 className」的区间更稳。
+   */
+  const refStart = pane.indexOf('ref={(node) => {', pane.indexOf('aria-label={`第 ${index + 1} 页批注画布`}') - 3000)
+  const refEnd = pane.indexOf('className="absolute inset-0', refStart)
+  const canvasBlock = pane.slice(refStart, refEnd)
   assert.ok(/clientWidth \* dpr/.test(canvasBlock), 'canvas 尺寸应取「基准尺寸 × dpr」，不能把 zoom 乘进去')
 
   // 3. 材料内做题：浮层必须挂在材料视图里，而不是草稿工作台
@@ -1263,5 +1270,76 @@ test('立即锁屏：只在设了密码时出现，点击回到锁定态', async
   assert.ok(
     /state\.required && !state\.unlocked/.test(app),
     '锁屏判定必须是 required && !unlocked：没设密码不能锁，设了就要锁'
+  )
+})
+
+test('批注开关：触屏默认只读，两端都能手动切', async () => {
+  /*
+   * 用户诉求：「手机和平板默认（只读）…可以手动打开；电脑也可以关闭。
+   * 关闭其实就是只读，可以滑动不能做笔记，否则容易误触」。
+   *
+   * 四个硬约束：
+   * 1. 默认值按设备类型给：触屏（手机/平板）关闭，桌面开启；
+   * 2. 关闭 = 只读：能滚动/缩放/翻页/看笔记，但**画布不接笔**；
+   * 3. 关闭时所有「会改笔记」的入口都要隐藏（画笔/颜色/笔粗/撤销/清空/一键清除）；
+   * 4. 用户手动改过之后要记住，不能再被设备类型覆盖。
+   */
+  const session = await readFile(new URL('../src/features/materials/session.ts', import.meta.url), 'utf8')
+  const view = await readFile(new URL('../src/features/materials/MaterialView.tsx', import.meta.url), 'utf8')
+  const pane = await readFile(new URL('../src/features/materials/MaterialPane.tsx', import.meta.url), 'utf8')
+
+  // 1. 设备判定与默认值
+  assert.ok(/export function isTouchDevice/.test(session), '需要 isTouchDevice 判定触屏设备')
+  assert.ok(
+    /matchMedia\('\(any-pointer: coarse\)'\)/.test(session),
+    '触屏判定要用 any-pointer: coarse（覆盖二合一设备），不要靠 UA'
+  )
+  assert.ok(
+    /annotate: touched \? data\.annotate === true : !isTouchDevice\(\)/.test(session),
+    '默认值：触屏关闭、桌面开启；手动改过（touched）则尊重用户选择'
+  )
+  assert.ok(/annotateTouched/.test(session), '要记录「用户是否手动改过」，否则每次打开都被设备类型覆盖')
+
+  // 2. 开关会写回会话
+  assert.ok(
+    /writeSession\(\{ annotate: next, annotateTouched: true \}\)/.test(view),
+    '切换要写回会话并标记 touched'
+  )
+
+  // 3. 只读时画布不接笔（两道保险：pointer-events + onDown 早退）
+  assert.ok(
+    /if \(!annotate\) return/.test(pane),
+    'onDown 里必须显式拦住：只读时不能画（不能只靠 CSS）'
+  )
+  assert.ok(
+    /pointerEvents: annotate \? 'auto' : 'none'/.test(pane),
+    '只读时画布要 pointer-events:none，让手指滑动落到滚动容器上'
+  )
+  assert.ok(
+    /touchAction: annotate \? 'none' : 'auto'/.test(pane),
+    '只读时 touch-action 要放开，滚动手感才正常'
+  )
+
+  // 4. 只读时隐藏所有会改笔记的入口
+  assert.ok(
+    /\{annotate \? \(\s*<>[\s\S]{0,1800}?笔粗/.test(view),
+    '画笔/颜色/笔粗要包在 annotate 条件里'
+  )
+  const undoGroup = view.slice(view.indexOf('撤销 / 清空 / 一键清除都会改动笔记'))
+  assert.ok(
+    /\{annotate \? \(\s*<>[\s\S]{0,700}?aria-label="撤销"/.test(undoGroup),
+    '撤销/清空/一键清除也要包在 annotate 条件里：只读时不让改笔记'
+  )
+  // 快捷键同样要停用，否则「界面不让改、Ctrl+Z 却能改」
+  assert.ok(
+    /if \(!open \|\| !activeId \|\| !annotate\) return/.test(view),
+    '只读时 Ctrl+Z 也要停用'
+  )
+
+  // 5. 开关本身要有明确的可访问名
+  // 按钮的可访问名是三元表达式渲染出来的，断言它的两个分支文本。
+  assert.ok(
+    /aria-label=\{annotate \? '关闭批注（切到只读）' : '开启批注'\}/.test(view),
+    '开关按钮要有可访问名，两个状态都要能识别'
   )
 })

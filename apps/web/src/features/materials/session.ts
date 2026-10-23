@@ -47,8 +47,32 @@ export type MaterialSession = {
   size: number
   /** 当前激活的栏（决定快捷键与页码归谁）。 */
   active: PaneSide
+  /**
+   * 是否允许手写批注。
+   *
+   * @remarks 用户要求：「手机和平板默认关闭（只读、可滑动、不能做笔记，否则容易误触）；
+   * 电脑也可以关闭」—— 关掉后是**只读**：仍能滚动、缩放、翻页，只是画布不接笔。
+   * 默认值按设备类型给（触屏设备关闭），一旦用户手动改过就记住他的选择。
+   */
+  annotate: boolean
+  /** 用户是否手动改过 annotate（改过之后就不再按设备类型覆盖）。 */
+  annotateTouched: boolean
   /** 文件夹折叠状态（存 id 数组，避免存 Map）。 */
   collapsedFolders: string[]
+}
+
+/**
+ * 是否为触屏设备（手机 / 平板）。
+ *
+ * @param 无。
+ * @returns 是触屏设备返回 true。
+ * @remarks 用「有没有粗指针」判断而不是看 UA：
+ * 带触摸屏的笔记本也常报 `pointer: coarse` 之外的值，UA 更不可靠。
+ * 这里同时接受 `any-pointer: coarse`，覆盖「触屏 + 鼠标」的二合一设备。
+ */
+export function isTouchDevice(): boolean {
+  if (typeof window === 'undefined' || !window.matchMedia) return false
+  return window.matchMedia('(any-pointer: coarse)').matches
 }
 
 /** 空栏。 */
@@ -64,6 +88,8 @@ const DEFAULT: MaterialSession = {
   size: 3,
   active: 'left',
   collapsedFolders: [],
+  annotate: true,
+  annotateTouched: false,
 }
 
 /**
@@ -95,6 +121,7 @@ export function readSession(): MaterialSession {
     if (!raw) return { ...DEFAULT, left: { ...EMPTY_PANE }, right: { ...EMPTY_PANE } }
     const data = JSON.parse(raw) as Partial<MaterialSession> & { id?: string; page?: number }
     const legacyId = typeof data.id === 'string' ? data.id : ''
+    const touched = data.annotateTouched === true
     const legacyPage = typeof data.page === 'number' ? data.page : 0
     return {
       open: typeof data.open === 'boolean' ? data.open : DEFAULT.open,
@@ -107,6 +134,13 @@ export function readSession(): MaterialSession {
       collapsedFolders: Array.isArray(data.collapsedFolders)
         ? data.collapsedFolders.filter((x): x is string => typeof x === 'string')
         : [],
+      /*
+       * 没手动改过时按设备类型给默认值：
+       * 触屏设备（手机/平板）默认**不允许批注** —— 手一滑就画到材料上，很容易误触。
+       * 这里放在读取时计算而不是模块加载时，是为了能响应屏幕尺寸变化（旋屏、外接键盘）。
+       */
+      annotate: touched ? data.annotate === true : !isTouchDevice(),
+      annotateTouched: touched,
     }
   } catch {
     return { ...DEFAULT, left: { ...EMPTY_PANE }, right: { ...EMPTY_PANE } }

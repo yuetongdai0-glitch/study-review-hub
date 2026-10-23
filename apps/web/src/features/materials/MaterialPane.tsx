@@ -49,6 +49,13 @@ export type MaterialPaneProps = {
   size: number
   /** 是否处于激活状态（双栏时高亮，快捷键作用于这里）。 */
   active: boolean
+  /**
+   * 是否允许手写批注。
+   *
+   * @remarks 关闭时是**只读**：滚动/缩放/翻页/看笔记都正常，画布不接笔。
+   * 触屏设备默认关闭，避免手指划过就留下笔迹。
+   */
+  annotate: boolean
   /** 点进这一栏时通知外层切换激活。 */
   onActivate: () => void
   /** 页码变化（外层显示「3 / 197」）。 */
@@ -76,7 +83,7 @@ export type MaterialPaneProps = {
  * 3. **安全区按本栏滚动容器算**，不能拿 window 高度。
  */
 export default function MaterialPane(props: MaterialPaneProps) {
-  const { id, side, zoom, tool, color, size, active, onActivate, onPageChange, onLoaded, onScrollChange, onRegisterActions } =
+  const { id, side, zoom, tool, color, size, active, annotate, onActivate, onPageChange, onLoaded, onScrollChange, onRegisterActions } =
     props
   const { message } = App.useApp()
 
@@ -532,6 +539,13 @@ export default function MaterialPane(props: MaterialPaneProps) {
 
   function onDown(event: React.PointerEvent<HTMLCanvasElement>, index: number) {
     onActivate()
+    /*
+     * 只读模式：**必须在最前面拦住**。
+     * 不能只靠 CSS 的 pointer-events:none —— 那样画布不接收事件，
+     * 手指滑动会被上层滚动容器接管，但这里仍要显式 return，
+     * 保证「即使有残余指针事件也不会画出笔迹」。
+     */
+    if (!annotate) return
     if (event.pointerType === 'mouse' && event.button !== 0) return
     if (activeIdRef.current !== null) return
     activeIdRef.current = event.pointerId
@@ -863,8 +877,13 @@ export default function MaterialPane(props: MaterialPaneProps) {
                         // 无论尺寸有没有变，都重绘一次：新挂载的 canvas 是空白的。
                         if (old !== node) redrawPage(index)
                       }}
-                      className="absolute inset-0 h-full w-full touch-none"
-                      style={{ cursor: tool === 'eraser' ? 'cell' : 'crosshair' }}
+                      className="absolute inset-0 h-full w-full"
+                      style={{
+                        // 只读时不吃指针：让手指滑动直接落到滚动容器上（滚动手感更顺）。
+                        pointerEvents: annotate ? 'auto' : 'none',
+                        touchAction: annotate ? 'none' : 'auto',
+                        cursor: annotate ? (tool === 'eraser' ? 'cell' : 'crosshair') : 'default',
+                      }}
                       aria-label={`第 ${index + 1} 页批注画布`}
                       onPointerDown={(event) => onDown(event, index)}
                       onPointerMove={onMove}
