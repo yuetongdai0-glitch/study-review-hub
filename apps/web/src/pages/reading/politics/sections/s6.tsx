@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react'
 import { Block, BlockTitle, Callout, DataTable, Example, ExampleAnswer, ExampleBody, ExampleHeader, ExampleOptions, ExampleQuestion, PointList } from '@/components/content'
+import { FrameChain, Memo, Mnemonic } from '../mem'
 
 /**
  * 六、历史常识 · 古代
@@ -10,6 +11,32 @@ export default function S7(): ReactElement {
   return (
     <>
       <Callout variant="key">古代史只考两种能力：<b>把事件排对顺序</b>、<b>把人物/朝代与事件对上号</b>。所以下面全部按「朝代 → 关键词」组织，看到朝代先想关键词。</Callout>
+      <Memo title="朝代轴 + 三张对应表" sub="古代史的记忆单位不是「事件」，是「朝代 + 关键词」。先把朝代轴钉死，再记每个朝代的三件套（制度、选官、农水）。">
+        <FrameChain
+          nodes={['夏商周', '秦汉', '魏晋南北朝', '隋唐', '宋元', '明清']}
+          caption="朝代顺序不能错，这是排序题的地基。记法：三代—秦汉—南北—隋唐—宋元—明清。"
+        />
+        <Mnemonic
+          title="制度演变一句话"
+          verse={<>秦<em>三公九卿郡县</em>，汉<em>郡国并行推恩</em>，隋唐<em>三省六部</em>，宋<em>二府三司</em>，元<em>行省</em>，明<em>废相设内阁</em>，清<em>军机处</em>。</>}
+          note={<>每条只记一个特征词：秦=郡县，汉=推恩，唐=三省六部，宋=分割相权，元=行省开端，明=废丞相，清=专制顶峰。<b>「行省制是中国省制开端」和「军机处标志君主专制到顶峰」两句必背</b>。</>}
+        />
+        <Mnemonic
+          title="选官制度五段"
+          verse={<>世卿世禄 → 军功爵 → 察举征辟 → 九品中正 → 科举。</>}
+          note={<>对应朝代：先秦 → 战国 → 两汉 → 魏晋（上品无寒门）→ 隋唐至清末（1905 废）。<b>科举正式形成是隋炀帝设进士科</b>，不是隋文帝。</>}
+        />
+        <Mnemonic
+          title="赋税四改"
+          verse={<>初税亩、租庸调、两税法、一条鞭法、摊丁入亩。</>}
+          note={<>记「谁开头、谁收尾」：<b>初税亩＝中国征收土地税的开端</b>；<b>摊丁入亩＝延续数千年的人头税结束</b>。张居正改革的核心是<b>一条鞭法</b>。</>}
+        />
+        <Mnemonic
+          title="九大遗址一句话"
+          verse={<>河姆渡<em>水稻</em>，半坡<em>彩陶</em>，红山<em>玉猪龙</em>，良渚<em>玉器</em>，龙山<em>黑陶</em>，二里头<em>最早中国</em>，殷墟<em>甲骨</em>，三星堆<em>青铜</em>。</>}
+          note={<>良渚是<b>实证中华五千年文明史</b>的关键遗址；二里头＝<b>最早的中国</b>；殷墟出土<b>中国最早的系统文字</b>。</>}
+        />
+      </Memo>
       
             <Block>
               <BlockTitle>1. 考古文化遗址（九个必背）</BlockTitle>

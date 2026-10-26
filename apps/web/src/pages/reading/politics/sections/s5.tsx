@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react'
 import { Block, BlockTitle, Callout, Example, ExampleAnswer, ExampleBody, ExampleHeader, ExampleOptions, ExampleQuestion, PointList } from '@/components/content'
+import { FrameChain, Memo, Mnemonic } from '../mem'
 
 /**
  * 五、马克思主义政治经济学
@@ -10,6 +11,33 @@ export default function S6(): ReactElement {
   return (
     <>
       <Callout variant="key">政经的题几乎都围绕一句：<b>具体劳动创造使用价值，抽象劳动形成价值；价值量由社会必要劳动时间决定</b>。把这条主链记住，其余都是分支。</Callout>
+      <Memo title="政经一条主链" sub="政经所有题都从这条链长出来：商品 → 二因素 → 劳动二重性 → 价值量 → 货币 → 资本 → 剩余价值。背链比背条目有用得多。">
+        <FrameChain
+          nodes={['商品', '使用价值 / 价值', '具体 / 抽象劳动', '社会必要劳动时间', '货币', '资本', '剩余价值']}
+          caption="链条方向不能反：劳动二重性决定商品二因素；社会必要劳动时间决定价值量；货币是价值形式发展的结果；资本靠占有剩余价值增殖。"
+        />
+        <Mnemonic
+          title="二因素 ↔ 二重性"
+          hot
+          verse={<>具体劳动造<em>使用价值</em>，抽象劳动成<em>价值</em>；同一劳动的两个方面，不是两种劳动。</>}
+          note={<>劳动二重性学说是理解马克思主义政治经济学的<b>枢纽</b>。逻辑方向：<b>二重性决定二因素</b>，不是反过来。</>}
+        />
+        <Mnemonic
+          title="价值量两句"
+          verse={<>由<em>社会必要劳动时间</em>决定；与<em>社会劳动生产率</em>成反比。</>}
+          note={<>与<b>个别</b>劳动生产率无关——个别企业提高效率，得到的是<b>超额剩余价值</b>。这是最爱设的坑。</>}
+        />
+        <Mnemonic
+          title="货币五职能"
+          verse={<>价值尺度、流通手段、贮藏手段、支付手段、世界货币。</>}
+          note={<>两个最基本＝价值尺度 + 流通手段。记忆钩子：<b>尺度只要观念，流通必须现实，贮藏必须足值金属，支付是赊账</b>。</>}
+        />
+        <Mnemonic
+          title="剩余价值两种方法"
+          verse={<>绝对＝延长<em>劳动日</em>；相对＝缩短<em>必要劳动时间</em>。</>}
+          note={<>相对剩余价值靠<b>全社会</b>劳动生产率提高实现。剩余价值率 m′＝m ÷ v（÷可变资本，不是÷全部资本）；利润率 p′＝m ÷ (c+v)。</>}
+        />
+      </Memo>
       
             <Block>
               <BlockTitle>1. 商品二因素与劳动二重性</BlockTitle>

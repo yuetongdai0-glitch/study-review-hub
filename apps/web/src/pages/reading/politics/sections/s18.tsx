@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react'
 import { Block, BlockTitle, Callout, Example, ExampleAnswer, ExampleBody, ExampleHeader, ExampleOptions, ExampleQuestion, PointList } from '@/components/content'
+import { FrameChain, Memo, Mnemonic } from '../mem'
 
 /**
  * 十八、行政法
@@ -10,6 +11,34 @@ export default function S19(): ReactElement {
   return (
     <>
       <Callout variant="key">行政法只考两件事：<b>这件事归谁管</b>、<b>多少天之内</b>。把「60 日申请复议 / 5 日受理 / 60 日决定 / 6 个月起诉」这条链背顺，行政法就稳了。</Callout>
+      <Memo title="行政法：两条时间轴 + 一张主体表" sub="行政法只考两件事：这件事归谁管、多少天之内。时间轴背顺，行政法就稳了。">
+        <FrameChain
+          nodes={['知道行为', '60 日 申请复议', '5 日 决定受理', '60 日 作出决定', '6 个月 起诉']}
+          caption="复议时间链：60 日申请 → 5 日受理 → 60 日决定；不服复议再起诉是 15 日；直接起诉是 6 个月。"
+        />
+        <Mnemonic
+          title="处罚程序三个数"
+          hot
+          verse={<>简易<em>公民 200 / 法人 3000</em>；听证<em>5 日内提出、7 日前通知</em>；追责时效<em>2 年</em>（生命健康金融安全 <em>5 年</em>）。</>}
+          note={<>简易程序＝<b>一人执法、当场决定、当场送达</b>。当场收缴罚款限 <b>100 元以下</b>。一事不再罚＝<b>同一违法行为不得给予两次以上罚款</b>。</>}
+        />
+        <Mnemonic
+          title="许可四个数"
+          verse={<>决定<em>20 日</em>（可延 <em>10 日</em>）；听证<em>5 日内申请、20 日内组织</em>；省级规章设定<em>满 1 年</em>须转法规。</>}
+          note={<>经常性许可由<b>法律、行政法规、地方性法规</b>设定；非经常性由<b>国务院决定、省级政府规章</b>设定。申请人欺骗贿赂取得的，<b>3 年内不得再申请</b>（直接关系公共安全、人身健康的）。</>}
+        />
+        <Mnemonic
+          title="强制两类"
+          verse={<>强制措施＝<em>限制人身自由、查封、扣押、冻结</em>（暂时性）；强制执行＝<em>加处罚款、划拨、拍卖、代履行</em>。</>}
+          note={<>不得查封扣押<b>生活必需品</b>；不得<b>重复冻结</b>；<b>不得在夜间或法定节假日</b>实施强制执行（情况紧急除外）；不得对居民<b>停水停电停热停气</b>迫使履行。</>}
+        />
+        <Mnemonic
+          title="复议被告三句"
+          hot
+          verse={<>复议<em>改变</em>→复议机关；复议<em>维持</em>→<em>共同被告</em>；复议<em>不作为</em>→按起诉对象定。</>}
+          note={<>委托组织行为→<b>委托的行政机关</b>为被告；授权组织→<b>该组织</b>；经上级批准→<b>署名机关</b>。举证责任<b>倒置</b>：被告对作出的行政行为负举证责任。</>}
+        />
+      </Memo>
       
             <Block>
               <BlockTitle>1. 概述与六大原则</BlockTitle>

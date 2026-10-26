@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react'
 import { Block, BlockTitle, Callout, Example, ExampleAnswer, ExampleBody, ExampleHeader, ExampleOptions, ExampleQuestion, PointList } from '@/components/content'
+import { Frame, Memo, Mnemonic } from '../mem'
 
 /**
  * 十二、生物与医学常识
@@ -10,6 +11,41 @@ export default function S13(): ReactElement {
   return (
     <>
       <Callout variant="key">生物医学是「投入产出比」最高的一块：知识点固定、重复率高。重点抓<b>激素—疾病对应</b>、<b>维生素—缺乏症对应</b>、<b>急救顺序</b>。</Callout>
+      <Memo title="生物医学：三组对应 + 一套顺序" sub="这一块的性价比最高，因为考法固定：激素—疾病、维生素—缺乏症、急救—顺序。">
+        <Frame
+          cells={[
+            { k: '遗传', v: 'DNA · 基因突变 · 变异' },
+            { k: '代谢', v: '光合 · 呼吸 · 消化' },
+            { k: '人体系统', v: '消化 · 神经 · 内分泌 · 免疫', hot: true },
+            { k: '营养', v: '六大营养素 · 维生素' },
+            { k: '检查', v: '血常规 · 生化 · 影像' },
+            { k: '急救', v: '顺序题（烫伤/触电/中毒）', hot: true },
+          ]}
+          caption="六块里「人体系统」和「急救」出题最多，且都是「对应/顺序」题，最好拿分。"
+        />
+        <Mnemonic
+          title="消化三个起点"
+          hot
+          verse={<>淀粉<em>口腔</em>起，蛋白质<em>胃</em>起，脂肪<em>小肠</em>起（唯一只在小肠消化）。</>}
+          note={<>小肠＝<b>消化吸收主要场所</b>（最长器官 4–6 米）；肝脏＝<b>最大消化腺、最大解毒器官、最大内脏器官</b>；牙齿＝最坚硬器官；胆汁<b>不含消化酶</b>（只有胆汁例外）。</>}
+        />
+        <Mnemonic
+          title="激素四个病"
+          verse={<>胰岛素<em>糖尿病</em>，甲状腺素<em>呆小症</em>，生长激素<em>侏儒/巨人</em>，肾上腺素<em>急救兵</em>。</>}
+          note={<>胰岛素是<b>唯一降血糖</b>的激素，由胰岛 β 细胞分泌；甲状腺素需<b>碘</b>；记住「不足」与「过多」都各对应一个病名，这是最爱考的双向题。</>}
+        />
+        <Mnemonic
+          title="维生素四项"
+          verse={<>A<em>夜盲</em>，B₁<em>脚气</em>，B₂<em>口角炎</em>，C<em>坏血病</em>，D<em>佝偻</em>。</>}
+          note={<>A、D 是<b>脂溶性</b>（A、D、E、K），B 族与 C 是<b>水溶性</b>。微量元素：碘＝智慧元素（大脖子病）、铁＝缺铁性贫血、硒＝长寿元素、锌＝生长发育。</>}
+        />
+        <Mnemonic
+          title="急救顺序四条"
+          hot
+          verse={<>烫伤<em>冷水冲、不挑泡</em>；触电<em>先断电</em>；煤气<em>先通风、禁开灯</em>；扭伤<em>48 小时内冷敷</em>。</>}
+          note={<>骨折＝<b>先固定再送医</b>；溺水＝<b>清异物 → 人工呼吸 → 胸外按压</b>；气道异物 1 岁以上＝<b>5 次拍背 + 5 次腹部冲击交替</b>，<b>1 岁以下婴儿禁用腹部冲击</b>。</>}
+        />
+      </Memo>
       
             <Block>
               <BlockTitle>1. 遗传物质</BlockTitle>

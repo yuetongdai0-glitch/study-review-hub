@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react'
 import { Block, BlockTitle, Callout, DataTable, Example, ExampleAnswer, ExampleBody, ExampleHeader, ExampleOptions, ExampleQuestion, PointList } from '@/components/content'
+import { Frame, Memo, Mnemonic } from '../mem'
 
 /**
  * 九、文化常识：诸子 · 科技 · 医学 · 称谓 · 建筑书画 · 戏曲节日
@@ -10,6 +11,44 @@ export default function S10(): ReactElement {
   return (
     <>
       <Callout variant="key">文化常识是「广而不深」，最有效的办法是<b>列表 + 表格对比</b>。本节的六张表，建议直接截图存手机，碎片时间刷。</Callout>
+      <Memo title="文化常识六张表" sub="这一节量大但浅，按「表」记比按「段」记快。六个表：诸子、科技、医学、称谓、建筑书画、戏曲节日。">
+        <Frame
+          cells={[
+            { k: '诸子', v: '儒墨道法 + 兵名' },
+            { k: '科技', v: '四大发明 + 农书历法' },
+            { k: '医学', v: '四经典 + 五神医' },
+            { k: '称谓', v: '年龄别称 + 排行' },
+            { k: '建筑书画', v: '园林桥梁 + 书法绘画', hot: true },
+            { k: '戏曲节日', v: '五大剧种 + 七大节日' },
+          ]}
+          caption="六张表里「建筑书画」出题最多，「戏曲节日」最好背（有诗词标志词）。"
+        />
+        <Mnemonic
+          title="诸子一句话"
+          verse={<>孔<em>仁礼</em>，孟<em>仁政</em>，荀<em>性恶</em>，老<em>无为</em>，庄<em>逍遥</em>，墨<em>兼爱非攻</em>，韩非<em>法术势</em>。</>}
+          note={<>孔子＝至圣，孟子＝亚圣，荀子＝性恶论（与孟子性善相对）；老子＝道法自然，庄子＝逍遥；墨子＝兼爱、非攻、尚贤；韩非＝法家集大成。</>}
+        />
+        <Mnemonic
+          title="四大发明 + 时间"
+          verse={<>造纸<em>东汉蔡伦</em>，印刷<em>北宋毕昇</em>，指南针<em>北宋航海</em>，火药<em>唐朝发明</em>。</>}
+          note={<>四个时间点最爱考：造纸<b>不是西汉</b>是东汉蔡伦改进；活字印刷是<b>北宋</b>，比欧洲早约 400 年；指南针<b>北宋</b>用于航海、南宋传入欧洲。</>}
+        />
+        <Mnemonic
+          title="医家五个人"
+          verse={<>扁鹊<em>四诊</em>，华佗<em>麻沸散</em>，张仲景<em>伤寒</em>，孙思邈<em>千金</em>，李时珍<em>本草纲目</em>。</>}
+          note={<>扁鹊＝脉学之宗、医祖；张仲景＝医圣（辨证论治）；孙思邈＝药王；宋慈＝<b>世界法医学鼻祖</b>（《洗冤集录》）。医学四大经典＝黄帝内经、难经、神农本草经、伤寒杂病论。</>}
+        />
+        <Mnemonic
+          title="书画三句话"
+          verse={<>王羲之<em>书圣·第一行书</em>，颜真卿<em>第二行书</em>，苏轼<em>第三行书</em>；吴道子<em>画圣</em>。</>}
+          note={<>《兰亭序》第一、《祭侄文稿》第二、《寒食帖》第三；楷书四家＝欧颜柳赵；顾恺之<b>以形写神</b>；展子虔「唐画之祖」；《游春图》＝现存最古老山水画；《五牛图》＝现存最古老纸本中国画。</>}
+        />
+        <Mnemonic
+          title="节日诗词标志词"
+          verse={<>元日桃符<em>春节</em>，元夕灯火<em>元宵</em>，汨罗艾草<em>端午</em>，玉盘桂花<em>中秋</em>，登高茱萸<em>重阳</em>，折柳<em>送别</em>。</>}
+          note={<>这一条最好用：题干出现「桃符、屠苏」就是春节，「灯火、元夕」是元宵，「汨罗、楚江、艾草」是端午，「玉盘、桂花」是中秋，「登高、茱萸」是重阳。</>}
+        />
+      </Memo>
       
             <Block>
               <BlockTitle>1. 诸子百家</BlockTitle>

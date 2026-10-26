@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react'
 import { Block, BlockTitle, Callout, Example, ExampleAnswer, ExampleBody, ExampleHeader, ExampleOptions, ExampleQuestion, PointList } from '@/components/content'
+import { Frame, Memo, Mnemonic } from '../mem'
 
 /**
  * 十五、地理常识
@@ -10,6 +11,41 @@ export default function S16(): ReactElement {
   return (
     <>
       <Callout variant="key">地理题 80% 考两类：<b>中国的「最」</b>（最大盆地/最长河流/最低湖泊）和<b>分界线</b>（秦岭—淮河、季风区、胡焕庸线）。把下面两张表背到条件反射即可。</Callout>
+      <Memo title="地理：三张表定生死" sub="地理 80% 的题只考两类：中国的「最」和「分界线」。三张表背到条件反射，分数就稳了。">
+        <Frame
+          cells={[
+            { k: '天文', v: '太阳系 · 地球运动 · 月相' },
+            { k: '气候', v: '降水四类型 · 气象灾害' },
+            { k: '节气', v: '二十四节气四类' },
+            { k: '地形', v: '三级阶梯 · 四大高原盆地', hot: true },
+            { k: '河流', v: '长江黄河 · 五大淡水湖' },
+            { k: '资源民族', v: '矿产 · 民族 · 旅游' },
+          ]}
+          caption="六块里「地形 + 河流」出题最多（都是「最」），「节气」最好背（有节气歌）。"
+        />
+        <Mnemonic
+          title="三级阶梯两条线"
+          hot
+          verse={<>一二阶梯<em>昆仑—祁连—横断</em>；二三阶梯<em>大兴安岭—太行—巫山—雪峰山</em>。</>}
+          note={<>这两条线每年都考，且经常互相调换。口诀：<b>「昆祁横」上，「大太巫雪」下</b>。第三阶梯大部分海拔 500 米以下。</>}
+        />
+        <Mnemonic
+          title="四大高原四句话"
+          verse={<>青藏<em>世界屋脊</em>，内蒙古<em>最平坦·风蚀</em>，黄土<em>黄土最广·流水侵蚀</em>，云贵<em>喀斯特</em>。</>}
+          note={<>四大盆地：塔里木（<b>最大、最大内流盆地</b>）、准噶尔（最北、纬度最高）、柴达木（<b>地势最高、聚宝盆</b>）、四川（紫色盆地）。三大平原：东北（<b>最大、黑土</b>）、华北（黄淮海）、长江中下游（鱼米之乡）。</>}
+        />
+        <Mnemonic
+          title="秦岭—淮河一条线"
+          hot
+          verse={<>1 月 <em>0℃</em>、<em>800 mm</em>、暖温带/亚热带、温带/亚热带季风、旱地/水田。</>}
+          note={<>一条线同时是五个界线：气温、降水、温度带、干湿区、气候类型、耕地类型。<b>考「这条线是什么的分界」时，五项都要能报出来。</b></>}
+        />
+        <Mnemonic
+          title="二十四节气四类"
+          verse={<>季节<em>四立二分二至</em>，太阳直射<em>二分二至</em>，温度<em>暑寒</em>，物候<em>惊清满芒</em>。</>}
+          note={<>节气歌：春雨惊春清谷天，夏满芒夏暑相连。反映物候的四个＝<b>惊蛰、清明、小满、芒种</b>（这个分类最爱考）。</>}
+        />
+      </Memo>
       
             <Block>
               <BlockTitle>1. 太阳系与八大行星</BlockTitle>

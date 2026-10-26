@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react'
 import { Block, BlockTitle, Callout, DataTable, Example, ExampleAnswer, ExampleBody, ExampleHeader, ExampleOptions, ExampleQuestion, PointList } from '@/components/content'
+import { Frame, Memo, Mnemonic } from '../mem'
 
 /**
  * 一、习近平新时代中国特色社会主义思想 · 总论
@@ -10,6 +11,28 @@ export default function S2(): ReactElement {
   return (
     <>
       <Callout variant="key">总论只有四件事：<b>核心要义是什么、为什么叫「两个结合」、科学体系由哪四块组成、中国式现代化怎么考</b>。这四件事几乎每年都出题，且全部考「关键词对不对」。</Callout>
+
+      <Memo title="总论一张图：四件事怎么串" sub="先把这四块的位置记住，再往下看细节就不会乱：核心要义是「根」，两个结合是「法」，科学体系是「架」，中国式现代化是「路」。">
+        <Frame
+          cells={[
+            { k: '核心要义', v: '坚持和发展中国特色社会主义', hot: true },
+            { k: '两个结合', v: '最大法宝（同实际 + 同传统文化）' },
+            { k: '科学体系', v: '十个明确·十四个坚持·十三方面·六个必须坚持' },
+            { k: '中国式现代化', v: '5 特色 + 9 本质要求 + 5 原则', hot: true },
+          ]}
+          caption="顺序不能换：先有「坚持什么」，才有「怎么结合」，再成「体系」，最后落到「道路」。"
+        />
+        <Mnemonic
+          title="两个结合的「结合」三句话"
+          verse={<>前提是<em>彼此契合</em>，结果是<em>互相成就</em>，效果是<em>筑牢根基、巩固文化主体性</em>。</>}
+          note={<>「第二个结合」是<b>又一次思想解放</b>；马克思主义是<b>魂脉</b>，中华优秀传统文化是<b>根脉</b>。</>}
+        />
+        <Mnemonic
+          title="新时代五句内涵"
+          verse={<>夺新胜利、建强国、<em>共同富裕</em>、民族复兴、为人类作贡献。</>}
+          note={<>五个「是…的时代」，考法是把其中一句换成别的（如把「共同富裕」换成「全面小康」）。</>}
+        />
+      </Memo>
       
             <Block>
               <BlockTitle>1. 核心要义与「新时代」</BlockTitle>

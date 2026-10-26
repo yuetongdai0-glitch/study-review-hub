@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react'
 import { Block, BlockTitle, Callout, DataTable, Example, ExampleAnswer, ExampleBody, ExampleHeader, ExampleOptions, ExampleQuestion, PointList } from '@/components/content'
+import { Frame, Memo, Mnemonic } from '../mem'
 
 /**
  * 十、物理常识
@@ -10,6 +11,39 @@ export default function S11(): ReactElement {
   return (
     <>
       <Callout variant="key">物理题的题干永远是「生活现象」，选项永远是「物理原理」。所以只要能把现象<b>归类</b>（力学 / 热学 / 光学 / 声学），大半题就能做。</Callout>
+      <Memo title="物理五块：一个现象对一条原理" sub="物理题永远是「生活现象 → 物理原理」。所以不要背公式，背「现象归到哪一块」。">
+        <Frame
+          cells={[
+            { k: '力学', v: '牛顿三定律 · 浮力 · 压强', hot: true },
+            { k: '简单机械', v: '杠杆 · 滑轮' },
+            { k: '热学', v: '物态变化 · 传热三方式' },
+            { k: '光', v: '直线 · 反射 · 折射 · 散射' },
+            { k: '声', v: '三要素 · 超声次声' },
+          ]}
+          caption="五块里力学出题最多，热学的「物态变化六种」最好背（吸热放热一一对应）。"
+        />
+        <Mnemonic
+          title="牛顿三定律"
+          verse={<>一<em>惯性</em>，二<em>F=ma</em>，三<em>作用反作用</em>。</>}
+          note={<>惯性只与<b>质量</b>有关、与速度无关（最爱设的坑：说「速度越大惯性越大」即错）；作用力与反作用力<b>作用在两个物体上</b>，不能抵消。</>}
+        />
+        <Mnemonic
+          title="物态变化六种"
+          hot
+          verse={<>熔化升华<em>吸热</em>，凝固凝华液化<em>放热</em>；汽化有两种：蒸发与沸腾。</>}
+          note={<>记法：<b>往「更活跃」方向变＝吸热</b>（固→液→气），往「更不活跃」＝放热。汽化两形式区别：蒸发<b>任何温度、只在表面、平缓</b>；沸腾<b>达沸点、内外同时、剧烈</b>。</>}
+        />
+        <Mnemonic
+          title="光的三类四现象"
+          verse={<>直线（影、日食）、反射（镜、倒影）、折射（筷子弯、海市蜃楼）、散射（天蓝、朝霞）。</>}
+          note={<>「杯弓蛇影」是<b>反射</b>不是折射；「池水变浅」是<b>折射</b>。红外线＝热效应（遥控、热成像）；紫外线＝杀菌验钞促维 D。<b>红黄光波长大、穿透强，所以用于警示（尾灯雾灯）</b>。</>}
+        />
+        <Mnemonic
+          title="声音三要素"
+          verse={<>音调<em>频率</em>，响度<em>振幅</em>，音色<em>材料结构</em>。</>}
+          note={<>「闻其声知其人」＝音色；「震耳欲聋」＝响度；「男高音」＝音调。人耳可听 20 Hz–20 kHz；超声＞20 kHz（测距清洗碎石 B 超），次声＜20 Hz（灾害预警核爆监测）。</>}
+        />
+      </Memo>
       
             <Block>
               <BlockTitle>1. 力学基础</BlockTitle>

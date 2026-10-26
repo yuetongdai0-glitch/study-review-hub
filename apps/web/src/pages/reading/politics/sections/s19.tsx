@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react'
 import { Block, BlockTitle, Callout, DataTable, Example, ExampleAnswer, ExampleBody, ExampleHeader, ExampleOptions, ExampleQuestion, PointList } from '@/components/content'
+import { Frame, Memo, Mnemonic } from '../mem'
 
 /**
  * 十九、宪法与法理学
@@ -10,6 +11,40 @@ export default function S20(): ReactElement {
   return (
     <>
       <Callout variant="key">宪法考「谁有权做什么」，法理考「这句话体现哪个作用」。前者背职权表，后者背五个「作用对象」。</Callout>
+      <Memo title="宪法：职权表 + 五个比例" sub="宪法考「谁有权做什么」，法理考「这句话体现哪个作用」。前者背职权表，后者背「作用对象」。">
+        <Frame
+          cells={[
+            { k: '全国人大', v: '最高权力机关 · 修宪 · 基本法律', hot: true },
+            { k: '人大常委会', v: '解释法律 · 部分补充修改' },
+            { k: '国家主席', v: '国家元首 · 公布法律' },
+            { k: '国务院', v: '最高行政机关 · 行政法规' },
+            { k: '监委', v: '最高监察机关' },
+            { k: '两院', v: '审判 / 法律监督' },
+          ]}
+          caption="六类国家机关的「最高」修饰语不能换：权力机关=全国人大，行政机关=国务院，监察机关=监委，审判=法院，监督=检察院。"
+        />
+        <Mnemonic
+          title="宪法修改三句话"
+          hot
+          verse={<>提议＝<em>常委会 或 1/5 以上代表</em>；通过＝<em>全体代表 2/3 以上</em>；普通法律＝<em>过半数</em>。</>}
+          note={<>注意「全体代表」不是「出席代表」——这是最爱改的词。宪法三大特点：内容最根本、效力最高、制定修改程序最严格。现行宪法是 <b>1982 年</b>宪法，五次修正：1988、1993、1999、2004、2018。</>}
+        />
+        <Mnemonic
+          title="法的作用五个"
+          verse={<>指引<em>自己</em>，评价<em>他人</em>，预测<em>相互</em>，教育<em>一般人</em>，强制<em>违法者</em>。</>}
+          note={<>指引是<b>最首要</b>的作用。口诀：「指自己、评他人、测相互、教众人、制违者」。<b>法律解释权属于全国人大常委会</b>，两高作出的是「司法解释」。</>}
+        />
+        <Mnemonic
+          title="效力层次与冲突"
+          verse={<>宪法 ＞ 法律 ＞ 行政法规 ＞ 地方性法规/规章；同一位阶：<em>特别法优于一般法、新法优于旧法</em>。</>}
+          note={<>地方性法规与部门规章<b>同等效力</b>，冲突时由<b>国务院</b>提出意见；部门规章与地方政府规章同等效力，各自权限内施行。</>}
+        />
+        <Mnemonic
+          title="选举权三个条件"
+          verse={<>年满 <em>18</em>、中国公民、未被剥夺政治权利。</>}
+          note={<>直接选举＝<b>县级及以下</b>（不设区的市、市辖区、县、自治县、乡、民族乡、镇）；间接选举＝<b>全国、省、设区的市</b>。直接选举：<b>过半数选民参加投票有效，候选人获参加投票选民过半数当选</b>；间接选举：获<b>全体代表</b>过半数。</>}
+        />
+      </Memo>
       
             <Block>
               <BlockTitle>1. 宪法的特点与修改</BlockTitle>

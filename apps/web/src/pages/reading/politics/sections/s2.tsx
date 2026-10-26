@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react'
 import { Block, BlockTitle, Callout, Example, ExampleAnswer, ExampleBody, ExampleHeader, ExampleOptions, ExampleQuestion, PointList } from '@/components/content'
+import { FrameChain, Memo, Mnemonic } from '../mem'
 
 /**
  * 二、分论（上）：党的领导 · 人民 · 高质量发展 · 民主 · 文化民生
@@ -10,6 +11,44 @@ export default function S3(): ReactElement {
   return (
     <>
       <Callout variant="key">分论十五节，考法只有一种：<b>把某个「定位词」安到另一件事上</b>。所以下面每条都写成「A 是 B」的句式，背句式即可。</Callout>
+
+      <Memo title="分论（上）六块怎么排" sub="这一节六块是「谁领导 → 为了谁 → 干什么 → 怎么干 → 谁做主 → 文化建设」。六块之间是递进，不是并列。">
+        <FrameChain
+          nodes={['党的领导', '以人民为中心', '高质量发展', '人民民主', '文化民生']}
+          caption="前四块是「政治—经济—民主」的主干，最后一块文化民生是落地。小块顺序就是考的排序题。"
+        />
+        <Mnemonic
+          title="党的领导三句话"
+          verse={<>最本质的特征是<em>党的领导</em>，最大优势是<em>党的领导</em>，最高政治领导力量是<em>党</em>。</>}
+          note={<>「党领导一切」≠包揽一切；党中央集中统一领导是党的领导的<b>最高原则</b>；党的领导制度是我国的<b>根本领导制度</b>，居于统领地位。</>}
+        />
+        <Mnemonic
+          title="共同富裕"
+          verse={<>本质要求、重要特征、最大优越性——<em>三个帽子都归它</em>。</>}
+          note={<>≠同等富裕、≠同步富裕、≠平均主义；时间表：2035 取得<b>更为明显的实质性进展</b>，本世纪中叶<b>基本实现</b>。</>}
+        />
+        <Mnemonic
+          title="高质量发展五句"
+          hot
+          verse={<>首要任务、主题、<em>新发展理念</em>、<em>新发展格局</em>、新质生产力。</>}
+          note={<>创新是第一动力（动力）、协调是内在要求（不平衡）、绿色是必要条件（人与自然）、开放是必由之路（内外联动）、共享是本质要求（公平正义）。</>}
+        />
+        <Mnemonic
+          title="新发展格局三句"
+          verse={<>主体是<em>国内大循环</em>，特征是<em>高水平自立自强</em>，基础是<em>全国统一大市场</em>。</>}
+          note={<>「先手棋，不是被迫之举和权宜之计」；「不是各地都搞自我小循环」。这两句是原话，直接背。</>}
+        />
+        <Mnemonic
+          title="全过程人民民主"
+          verse={<>本质属性是<em>全过程人民民主</em>，载体是<em>人民代表大会制度</em>，形式是<em>协商民主</em>，体现是<em>基层民主</em>。</>}
+          note={<>「五个民主」＝民主选举、民主协商、民主决策、民主管理、民主监督。政协不是国家机关，是<b>爱国统一战线组织</b>。</>}
+        />
+        <Mnemonic
+          title="民生三句"
+          verse={<>就业是<em>民生之本</em>，分配是<em>民生之源</em>，社保是<em>安全网和稳定器</em>。</>}
+          note={<>社会保障四层：社会保险（核心）、社会福利（最高层次）、社会救济（最低层次）、社会优抚与安置。</>}
+        />
+      </Memo>
       
             <Block>
               <BlockTitle>1. 党的全面领导</BlockTitle>

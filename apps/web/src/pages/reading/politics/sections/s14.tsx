@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react'
 import { Block, BlockTitle, Callout, DataTable, Example, ExampleAnswer, ExampleBody, ExampleHeader, ExampleOptions, ExampleQuestion, PointList } from '@/components/content'
+import { FrameChain, Memo, Mnemonic } from '../mem'
 
 /**
  * 十四、经济常识
@@ -10,6 +11,34 @@ export default function S15(): ReactElement {
   return (
     <>
       <Callout variant="key">经济常识只有两类题：<b>概念归属</b>（这个现象叫哪个效应）和<b>政策方向</b>（通胀该加息还是降息）。把「通胀—紧缩、通缩—扩张」这一条主线抓住，一半题直接出答案。</Callout>
+      <Memo title="经济：一条主线 + 六个名词" sub="经济常识只有两类题：这个现象叫什么（概念归属）、通胀该加息还是降息（政策方向）。抓住「通胀—紧缩、通缩—扩张」一条主线。">
+        <FrameChain
+          nodes={['通胀', '紧缩政策', '加息·减支·多税', '降温', '通缩', '扩张政策', '降息·增支·减税']}
+          caption="方向题就靠这条链：通胀用「紧」的手（加息、减少支出、增加税收），通缩用「松」的手，方向反了就是错项。"
+        />
+        <Mnemonic
+          title="货币政策四大工具"
+          hot
+          verse={<>存款准备金率、再贴现率、公开市场业务、基准利率。</>}
+          note={<>财政政策四大工具＝税收、国债、政府购买、转移支付。<b>「调整存款准备金率」是货币政策，不是财政政策</b>——这是最高频的错项设计。</>}
+        />
+        <Mnemonic
+          title="GDP 三个「不算」"
+          verse={<>二手房买卖<em>不算</em>，政府转移支付<em>不算</em>，中间产品<em>不算</em>。</>}
+          note={<>GDP 只算<b>当期、最终产品</b>的市场价值，且是<b>流量不是存量</b>；GDP 是<b>地域</b>概念，GNP 是<b>国民</b>概念。三驾马车＝投资 + 消费（内需）+ 出口（外需）。</>}
+        />
+        <Mnemonic
+          title="系数三个方向"
+          verse={<>恩格尔越大<em>越穷</em>，基尼越大<em>差距越大</em>，赤字率＝赤字 ÷ GDP。</>}
+          note={<>CPI 连续超 <b>3%</b> 意味通胀，低于 1% 且持续意味通缩；PPI 是<b>工业生产者出厂价格</b>。菲利普斯曲线＝通胀与失业<b>反向</b>变动，且只在<b>短期</b>有效。</>}
+        />
+        <Mnemonic
+          title="效应五连"
+          hot
+          verse={<>挤出<em>政府挤私人</em>，口红<em>萧条买廉价</em>，棘轮<em>由奢入俭难</em>，马太<em>强者愈强</em>，凡勃伦<em>越贵越买</em>。</>}
+          note={<>再加：羊群＝从众；外部效应＝影响无关第三方（正/负）；公共物品两特征＝<b>非竞争性 + 非排他性</b>；拉弗曲线＝税率过高反而税收减少。</>}
+        />
+      </Memo>
       
             <Block>
               <BlockTitle>1. 市场结构类型（四类，看厂商数量与产品差别）</BlockTitle>

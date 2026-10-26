@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react'
 import { Block, BlockTitle, Callout, DataTable, Example, ExampleAnswer, ExampleBody, ExampleHeader, ExampleOptions, ExampleQuestion, PointList } from '@/components/content'
+import { Frame, Memo, Mnemonic } from '../mem'
 
 /**
  * 十三、生活常识与高新技术
@@ -10,6 +11,39 @@ export default function S14(): ReactElement {
   return (
     <>
       <Callout variant="key">这一节分两半：<b>生活常识靠「常识 + 一个原理」</b>，<b>高新技术靠「编号 + 第一次」</b>。航天部分建议按「嫦娥 / 天问 / 神舟 / 发射场」四条线背。</Callout>
+      <Memo title="生活与高新技术：四条航天线" sub="这一节分两半：前面生活常识靠「一个原理」，后面高新技术靠「编号 + 第一次」。航天按四条线背。">
+        <Frame
+          cells={[
+            { k: '嫦娥', v: '探月：绕落回' },
+            { k: '天问', v: '行星探测：火星→小行星', hot: true },
+            { k: '神舟/天舟', v: '载人 / 货运' },
+            { k: '发射场', v: '酒泉·太原·西昌·文昌' },
+          ]}
+          caption="四条线各有自己的「第几次」：嫦娥五号采样返回、嫦娥六号月背采样、天问一号一次完成绕落巡。"
+        />
+        <Mnemonic
+          title="生活三件套"
+          verse={<>冰箱<em>侧热因冷凝器放热</em>，空调<em>关机等 3 分钟</em>，微波炉<em>水分子摩擦、禁金属</em>。</>}
+          note={<>冰箱冷藏最佳约 4℃；食物<b>不烫手即可放入</b>（不必等凉透）；空调制冷出风口向上、制热向下；微波炉<b>禁金属容器、禁密封带壳</b>。</>}
+        />
+        <Mnemonic
+          title="交通安全九字诀"
+          hot
+          verse={<>车靠边、人撤离、<em>即报警</em>；三角牌放车后 <em>150 米</em>外。</>}
+          note={<>高速报警电话 <b>12122</b>；雷电天气在车内安全（<b>法拉第笼效应</b>）；飞机窗户做成<b>圆形</b>是为避免应力集中；着火时<b>疏散顺序＝着火层 → 上层 → 下层</b>。</>}
+        />
+        <Mnemonic
+          title="地震三带三型"
+          verse={<>三型：<em>构造</em>、火山、塌陷（构造最多）；三带：<em>环太平洋</em>（东部）、欧亚（西南）、海岭（不影响我国）。</>}
+          note={<>震级只有<b>一个</b>、烈度可有<b>多个</b>；我国用里氏分级共 <b>9 级</b>，震级差一级能量差约 <b>30 倍</b>。泥石流要往<b>与泥石流垂直方向</b>的两侧山坡跑。</>}
+        />
+        <Mnemonic
+          title="航天四个第一"
+          hot
+          verse={<>杨利伟<em>首位进太空</em>，刘洋<em>首位女航天员</em>，翟志刚<em>首次太空行走</em>，王亚平<em>首位太空行走女航天员</em>。</>}
+          note={<>载人飞船「神舟」＝<b>酒泉</b> + 长征二号 F；货运飞船「天舟」＝<b>文昌</b> + 长征七号；空间站「天宫」＝天和核心舱 + 问天 + 梦天，<b>2022 年底全面建成</b>。</>}
+        />
+      </Memo>
       
             <Block>
               <BlockTitle>1. 家用电器</BlockTitle>

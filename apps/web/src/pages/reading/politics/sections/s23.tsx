@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react'
 import { Block, BlockTitle, Callout, DataTable, Example, ExampleAnswer, ExampleBody, ExampleHeader, ExampleOptions, ExampleQuestion, PointList } from '@/components/content'
+import { Frame, Memo, Mnemonic } from '../mem'
 
 /**
  * 二十三、专项提升补漏（提升课独有的高频考点）
@@ -10,6 +11,35 @@ export default function S24(): ReactElement {
   return (
     <>
       <Callout variant="key">这一节收的是<b>《理论讲练》没细讲、但专项提升课反复强调</b>的考点：做题方法、党史冷门会议、宪法细节、许可四分、财产犯罪四分。国省考里这些点「不讲不会、一讲就懂」，属于纯捡分。</Callout>
+      <Memo title="专项补漏：五块各一句" sub="这一节是「不讲不会、一讲就懂」的捡分点。五块各记一句，比通读有用。">
+        <Frame
+          cells={[
+            { k: '政治做题法', v: '定位词不能搬家', hot: true },
+            { k: '党史冷门', v: '五大·八七·古田' },
+            { k: '宪法细节', v: '国旗国徽·国籍·自治权' },
+            { k: '许可四分', v: '普通·特许·认可·核准' },
+            { k: '财产犯罪', v: '盗窃·诈骗·抢夺·抢劫' },
+          ]}
+          caption="五块里「许可四分」和「财产犯罪四分」最需要辨析，其余三块是记忆题。"
+        />
+        <Mnemonic
+          title="行政许可四分"
+          hot
+          verse={<>普通许可<em>一般禁止的解禁</em>，特许<em>有限资源</em>，认可<em>资格资质</em>，核准<em>特定设备物品</em>，登记<em>确认主体资格</em>。</>}
+          note={<>辨析关键：<b>特许＝有限自然资源开发利用、公共资源配置、直接关系公共利益的特定行业市场准入</b>（如出租车牌照）；<b>认可＝直接关系公共安全、人身健康、生命财产安全的特定活动</b>（如医师资格）。</>}
+        />
+        <Mnemonic
+          title="财产犯罪四分"
+          hot
+          verse={<>盗窃<em>秘密窃取</em>，诈骗<em>对方自愿处分</em>，抢夺<em>公然夺取（对物）</em>，抢劫<em>暴力胁迫（对人）</em>。</>}
+          note={<>分水岭：<b>有没有「处分行为」——有＝诈骗，没有＝盗窃</b>；<b>暴力针对人＝抢劫，针对物＝抢夺</b>。携带凶器抢夺<b>以抢劫论</b>。</>}
+        />
+        <Mnemonic
+          title="党史冷门三个"
+          verse={<>五大<em>首设监察委员会</em>，八七<em>枪杆子里出政权</em>，古田<em>思想建党政治建军</em>。</>}
+          note={<>再加：三湾改编＝<b>支部建在连上</b>；瓦窑堡＝<b>抗日民族统一战线</b>；洛川＝<b>《抗日救国十大纲领》</b>；七届二中全会＝<b>两个务必 + 工作重心转城市</b>。</>}
+        />
+      </Memo>
       
             <Block>
               <BlockTitle>1. 政治理论做题法（比多背 10 条更有用）</BlockTitle>

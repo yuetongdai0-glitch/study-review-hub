@@ -197,3 +197,204 @@
 .legacy-politics .mini-table.k2 tr > *:nth-child(2) { min-width: 4.2em; }
 .legacy-politics .mini-table.k1 tr > *:first-child { white-space: nowrap; }
 }
+
+/* ============ 记忆层（口诀 / 框架图 / 骨架总览） ============
+   用户反馈「学完不知道五位一体是什么、没有口诀、很乱」。
+   这一层只做「怎么记」，不重复正文知识点：
+   - .mnemonic  口诀盒（一句押韵 + 拆解）
+   - .frame     框架图（横向卡片 + 箭头，表示「并列」或「递进」）
+   - .frame-chain 链条图（用 → 串起顺序关系）
+   全部用 CSS 画，不引入图片，手机端自动换行不横滚。 */
+
+.legacy-politics .mnemonic {
+  margin: 10px 0;
+  border: 1px solid #dbe4ff;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #fff;
+}
+.legacy-politics .mnemonic-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 11px;
+  background: linear-gradient(90deg, #eef3ff, #f7f9ff);
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--primary-dark);
+  letter-spacing: 0.3px;
+}
+.legacy-politics .mnemonic-head::before {
+  content: '口诀';
+  flex-shrink: 0;
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: var(--primary);
+  color: #fff;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+.legacy-politics .mnemonic-body { padding: 9px 12px 11px; }
+.legacy-politics .mnemonic-verse {
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.85;
+  color: var(--text);
+  letter-spacing: 1px;
+  margin-bottom: 7px;
+}
+.legacy-politics .mnemonic-verse em {
+  font-style: normal;
+  color: var(--accent);
+  font-weight: 800;
+}
+.legacy-politics .mnemonic-note {
+  font-size: 12.5px;
+  line-height: 1.8;
+  color: var(--text-light);
+  border-top: 1px dashed var(--border);
+  padding-top: 7px;
+}
+.legacy-politics .mnemonic-note b { color: var(--primary-dark); }
+
+/* 框架图：一行放 N 张小卡，手机自动 2 列 */
+.legacy-politics .frame {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(104px, 1fr));
+  gap: 7px;
+  margin: 9px 0;
+  /* 5 格时按 5 列排，避免第 5 格孤零零掉到下一行 */
+  align-content: start;
+}
+.legacy-politics .frame[data-cells="5"] { grid-template-columns: repeat(5, 1fr); }
+.legacy-politics .frame[data-cells="4"] { grid-template-columns: repeat(4, 1fr); }
+.legacy-politics .frame[data-cells="6"] { grid-template-columns: repeat(3, 1fr); }
+.legacy-politics .frame-cell {
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 7px 9px;
+  background: #fafbff;
+  text-align: center;
+  line-height: 1.5;
+}
+.legacy-politics .frame-cell .fc-k {
+  display: block;
+  font-size: 13.5px;
+  font-weight: 800;
+  color: var(--primary-dark);
+  margin-bottom: 2px;
+}
+.legacy-politics .frame-cell .fc-v {
+  display: block;
+  font-size: 11.5px;
+  color: var(--text-light);
+  line-height: 1.6;
+}
+.legacy-politics .frame-cell.is-hot { background: #fff6f6; border-color: #ffd6d6; }
+.legacy-politics .frame-cell.is-hot .fc-k { color: #c0392b; }
+
+/* 链条图：顺序关系用 → 串起来 */
+.legacy-politics .frame-chain {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px 3px;
+  margin: 9px 0;
+  font-size: 13px;
+  line-height: 1.7;
+}
+.legacy-politics .frame-chain span.node {
+  padding: 3px 9px;
+  border-radius: 7px;
+  background: var(--primary-light);
+  color: var(--primary-dark);
+  font-weight: 700;
+  white-space: nowrap;
+}
+.legacy-politics .frame-chain span.arrow {
+  color: var(--text-muted);
+  font-weight: 700;
+}
+.legacy-politics .frame-cap {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin: 2px 0 8px;
+  line-height: 1.7;
+}
+
+/* 骨架总览：三列压缩表，手机上变成两列 */
+.legacy-politics .skeleton {
+  margin: 8px 0;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.legacy-politics .skeleton-row {
+  display: grid;
+  grid-template-columns: 92px 1fr;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+  line-height: 1.75;
+}
+.legacy-politics .skeleton-row:last-child { border-bottom: 0; }
+.legacy-politics .skeleton-key {
+  padding: 7px 9px;
+  background: #f6f8ff;
+  font-weight: 700;
+  color: var(--primary-dark);
+  border-right: 1px solid var(--border);
+}
+.legacy-politics .skeleton-val { padding: 7px 10px; color: var(--text); }
+.legacy-politics .skeleton-val b { color: var(--primary-dark); }
+
+@media (max-width: 560px) {
+  .legacy-politics .skeleton-row { grid-template-columns: 74px 1fr; font-size: 12.5px; }
+  .legacy-politics .mnemonic-verse { font-size: 14px; letter-spacing: 0.5px; }
+  /* 手机上 5 格排成 3+2 居中对齐，比 2+2+1 好看 */
+  .legacy-politics .frame,
+  .legacy-politics .frame[data-cells="4"],
+  .legacy-politics .frame[data-cells="6"] { grid-template-columns: repeat(2, 1fr); }
+  .legacy-politics .frame[data-cells="5"] { grid-template-columns: repeat(3, 1fr); }
+  .legacy-politics .frame[data-cells="5"] .frame-cell:last-child { grid-column: 2 / 3; }
+  .legacy-politics .frame-cell { padding: 6px 6px; }
+  .legacy-politics .frame-cell .fc-k { font-size: 12.5px; }
+  .legacy-politics .frame-cell .fc-v { font-size: 11px; }
+}
+
+/* 记忆卡容器（Mem）：每节开头一块，不参与知识点计数 */
+.legacy-politics .memo {
+  margin: 4px 0 14px;
+  border: 1px solid #dbe4ff;
+  border-radius: 12px;
+  background: #fbfcff;
+  overflow: hidden;
+}
+.legacy-politics .memo-head {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 12px;
+  background: linear-gradient(90deg, #eef3ff, #fbfcff);
+  border-bottom: 1px solid #e6ecff;
+}
+.legacy-politics .memo-tag {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--primary-dark);
+  letter-spacing: 0.2px;
+  flex-shrink: 0;
+}
+.legacy-politics .memo-title {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--text);
+}
+.legacy-politics .memo-sub {
+  padding: 8px 12px 0;
+  font-size: 12.5px;
+  line-height: 1.8;
+  color: var(--text-light);
+}
+.legacy-politics .memo-body { padding: 2px 12px 11px; }
+.legacy-politics .memo-body > .mnemonic:first-child { margin-top: 8px; }

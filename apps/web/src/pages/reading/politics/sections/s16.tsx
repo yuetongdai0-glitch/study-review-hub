@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react'
 import { Block, BlockTitle, Callout, Example, ExampleAnswer, ExampleBody, ExampleHeader, ExampleOptions, ExampleQuestion, PointList } from '@/components/content'
+import { FrameChain, Memo, Mnemonic } from '../mem'
 
 /**
  * 十六、民法（民法典）
@@ -10,6 +11,39 @@ export default function S17(): ReactElement {
   return (
     <>
       <Callout variant="key">民法是「数字 + 主体」的考试：<b>8 岁、18 岁、16 岁、3 年、20 年、30 日、20%</b>。每个数字后面都要能说出一件事，否则等于没背。</Callout>
+      <Memo title="民法：一张年龄轴 + 一条时间轴" sub="民法是「数字 + 主体」的考试。数字记不住，条文背得再熟也做不出来。所以先钉两条轴。">
+        <FrameChain
+          nodes={['不满 8 周岁 无行为能力', '8 周岁 限制', '16 周岁 视为完全（以自己劳动收入为主）', '18 周岁 完全']}
+          caption="年龄轴只记这四个点。8 和 18 是「一般线」，16 是「例外线」（视为完全）。"
+        />
+        <Mnemonic
+          title="四个年龄一句话"
+          hot
+          verse={<>8<em>限制</em>，18<em>完全</em>，16<em>视为完全</em>，胎儿<em>有权利能力（活产）</em>。</>}
+          note={<>胎儿仅限<b>遗产继承、接受赠与</b>；娩出时为死体的，权利能力<b>自始不存在</b>。不能辨认自己行为的成年人＝无行为能力；不能完全辨认＝限制。</>}
+        />
+        <Mnemonic
+          title="诉讼时效三条"
+          verse={<>普通<em>3 年</em>，最长<em>20 年</em>，中止<em>满 6 个月</em>，中断<em>重新算 3 年</em>。</>}
+          note={<>20 年自<b>权利受损害之日</b>起算；3 年自<b>知道或应当知道</b>权利受损及义务人之日起算。不适用时效的四类：停止侵害/排除妨碍/消除危险、不动产物权与登记动产返还财产、支付抚养费赡养费、其他。</>}
+        />
+        <Mnemonic
+          title="效力四分类"
+          hot
+          verse={<><em>有效</em>三要件，<em>无效</em>五情形，<em>效力待定</em>两种，<em>可撤销</em>四种。</>}
+          note={<>有效：有行为能力 + 意思真实 + 不违反强制性规定与公序良俗。<br />无效：无行为能力人实施、虚假表示、违反强制性规定、违背公序良俗、恶意串通损害他人。<br />可撤销：重大误解（90 日）、欺诈（1 年）、显失公平（1 年）、胁迫（自胁迫终止起 1 年）。</>}
+        />
+        <Mnemonic
+          title="担保四类别混"
+          verse={<>抵押<em>不转移占有</em>，质押<em>转移占有</em>，留置<em>法定</em>，定金<em>不超 20%</em>。</>}
+          note={<>不动产抵押<b>登记设立</b>，动产抵押<b>合同生效设立</b>（未登记不得对抗善意第三人）；定金与违约金<b>不能并用</b>，收定金方违约<b>双倍返还</b>；留置权是<b>法定担保物权</b>。</>}
+        />
+        <Mnemonic
+          title="继承三个名词"
+          verse={<>代位＝<em>子女先死，晚辈血亲顶上</em>；转继＝<em>继承人在分割前死</em>；丧偶儿媳女婿<em>尽主要赡养义务＝第一顺序</em>。</>}
+          note={<>法定继承第一顺序＝配偶、子女、父母；第二顺序＝兄弟姐妹、祖父母、外祖父母。<b>第一顺序在，第二顺序不继承。</b></>}
+        />
+      </Memo>
       
             <Block>
               <BlockTitle>1. 民事权利能力与行为能力（数字核心）</BlockTitle>

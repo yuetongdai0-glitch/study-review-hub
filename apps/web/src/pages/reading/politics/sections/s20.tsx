@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react'
 import { Block, BlockTitle, Callout, DataTable, PointList } from '@/components/content'
+import { Memo, Mnemonic } from '../mem'
 
 /**
  * 二十、数字与「第一 / 最」速记（考前 30 分钟）
@@ -10,6 +11,30 @@ export default function S21(): ReactElement {
   return (
     <>
       <Callout variant="key">这一节不讲解，只罗列。考前只看这三块：<b>法律数字</b>、<b>时间节点</b>、<b>「第一 / 最」</b>。</Callout>
+      <Memo title="考前 30 分钟：三串数字" sub="这一节不讲解，只背。三串数字：法律期限、周年节点、「第一 / 最」。建议直接背下面这四条口诀，进考场前 5 分钟再看一遍。">
+        <Mnemonic
+          title="法律期限一串"
+          hot
+          verse={<>复议<em>60 日</em>，起诉<em>6 月</em>，时效<em>3 年</em>（最长 <em>20 年</em>），离婚冷静<em>30 日</em>，定金<em>20%</em>，治安<em>6 月</em>，处罚追责<em>2 年</em>。</>}
+          note={<>易混对：<b>复议 60 日 vs 起诉 6 个月</b>（一个按天一个按月）；<b>治安追究 6 个月 vs 行政处罚追责 2 年</b>；<b>诉讼时效 3 年 vs 最长 20 年</b>。</>}
+        />
+        <Mnemonic
+          title="年龄一串"
+          verse={<>民法 <em>8 / 16 / 18</em>；刑法 <em>12 / 14 / 16 / 18 / 75</em>；结婚 <em>男 22 女 20</em>；选举 <em>18</em>；治安不执行拘留 <em>14–16 / 16–18 初次 / 70 以上 / 怀孕哺乳</em>。</>}
+          note={<>最容易错：<b>民法 8 岁是限制、刑法 12 岁是起算</b>；<b>结婚年龄男 22 女 20</b>（不是男 20 女 18）。</>}
+        />
+        <Mnemonic
+          title="比例一串"
+          verse={<>修宪<em>全体 2/3</em>，提议<em>1/5</em>；普通法律<em>过半数</em>；定金<em>20%</em>；增值税<em>13%</em>；赤字率红线<em>3%</em>。</>}
+          note={<>「全体代表」这三个字是题眼——写成「出席代表」就错。</>}
+        />
+        <Mnemonic
+          title="「第一 / 最」一串"
+          hot
+          verse={<>第一部诗歌总集<em>诗经</em>，第一部纪传体通史<em>史记</em>，第一部编年体<em>春秋</em>，最早农书<em>氾胜之书</em>，最大淡水湖<em>鄱阳湖</em>，最大盆地<em>塔里木</em>，最长河流<em>长江</em>。</>}
+          note={<>历史「第一」按载体记：<b>诗→诗经，史→史记（纪传体通史），春秋（编年体）</b>；地理「最」按类别记：<b>湖→鄱阳，盆地→塔里木，河→长江，沙漠→塔克拉玛干</b>。</>}
+        />
+      </Memo>
       
             <Block>
               <BlockTitle>1. 法律数字（一张表全收）</BlockTitle>

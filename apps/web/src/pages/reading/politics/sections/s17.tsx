@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react'
 import { Block, BlockTitle, Callout, DataTable, Example, ExampleAnswer, ExampleBody, ExampleHeader, ExampleOptions, ExampleQuestion, PointList } from '@/components/content'
+import { FrameChain, Memo, Mnemonic } from '../mem'
 
 /**
  * 十七、刑法
@@ -10,6 +11,38 @@ export default function S18(): ReactElement {
   return (
     <>
       <Callout variant="key">刑法高频只有四块：<b>责任年龄（12/14/16）、正当防卫与紧急避险、犯罪形态（预备/中止/未遂/既遂）、刑罚数字</b>。把这四块拿下，70% 的题可做。</Callout>
+      <Memo title="刑法：年龄轴 + 形态轴 + 数字" sub="刑法高频只有四块：责任年龄、防卫避险、犯罪形态、刑罚数字。三轴钉死，70% 的题就能做。">
+        <FrameChain
+          nodes={['不满 12 不负', '12–14 八种之三', '14–16 八种', '16 完全', '18 从宽', '75 从宽']}
+          caption="责任年龄轴：12、14、16 是三档的分界；18 与 75 是「从宽」而不是「有无」。"
+        />
+        <Mnemonic
+          title="三个年龄档"
+          hot
+          verse={<>12–14 只对<em>故意杀人、故意伤害致死/特别残忍致重伤严重残疾</em>；14–16 对<em>八种</em>负责；16 全部负责。</>}
+          note={<>八种＝故意杀人、故意伤害致人重伤或死亡、抢劫、强奸、贩卖毒品、放火、爆炸、投放危险物质。<b>注意是「贩卖毒品」不是「走私运输制造毒品」。</b></>}
+        />
+        <Mnemonic
+          title="犯罪形态四步"
+          verse={<>预备<em>未着手</em>，未遂<em>已着手未得逞</em>，中止<em>自动放弃或有效防止</em>，既遂<em>齐备要件</em>。</>}
+          note={<>只有<b>直接故意</b>才有这四种形态，过失与间接故意没有。处罚：预备与未遂「可以」从轻减轻免除；中止「没有造成损害<b>应当</b>免除，造成损害<b>应当</b>减轻」。</>}
+        />
+        <Mnemonic
+          title="刑罚数字"
+          verse={<>管制<em>3 月–2 年</em>，拘役<em>1–6 月</em>，有期<em>6 月–15 年</em>；数罪并罚不超 <em>20 年</em>（总和 35 年以上可到 25 年）。</>}
+          note={<>死刑不适用：<b>犯罪时不满 18 周岁</b>、<b>审判时怀孕的妇女</b>（含流产）、审判时已满 75 周岁（以特别残忍手段致人死亡除外）。<b>「审判时」不满 18 周岁是错的，必须是犯罪时。</b></>}
+        />
+        <Mnemonic
+          title="防卫与避险"
+          verse={<>防卫对象是<em>不法侵害者本人</em>；避险对象是<em>无辜第三人</em>，且须<em>迫不得已</em>。</>}
+          note={<>特殊防卫（无过当）：行凶、杀人、抢劫、强奸、绑架等严重危及<b>人身安全</b>的暴力犯罪。<b>侵害人已昏迷后再加害＝事后防卫，可能构成故意犯罪。</b></>}
+        />
+        <Mnemonic
+          title="累犯与自首"
+          verse={<>一般累犯<em>5 年内</em>；特别累犯<em>不限时间</em>；自首＝<em>自动投案 + 如实供述</em>。</>}
+          note={<>累犯<b>应当从重</b>，且<b>不适用缓刑和假释</b>。自首可从轻减轻，<b>犯罪较轻的可以免除</b>。被采取强制措施后供述司法机关未掌握的其他罪行，以自首论。</>}
+        />
+      </Memo>
       
             <Block>
               <BlockTitle>1. 基本原则与效力范围</BlockTitle>

@@ -1,4 +1,5 @@
 import { type ReactNode } from 'react'
+import S0 from './sections/s0'
 import S1 from './sections/nav'
 import S2 from './sections/s1'
 import S3 from './sections/s2'
@@ -35,6 +36,13 @@ const meta = findModuleByPath('/politics')
 
 /** 章节内容表：顺序即页面顺序，侧栏锚点由 ReadingPage 自动生成。 */
 const sections: SectionContent[] = [
+  {
+    id: 's0',
+    title: "零、先记这三张图（全站骨架）",
+    icon: "🧭",
+    tag: "先看这节",
+    content: <S0 />,
+  },
   {
     id: 'nav',
     title: "资料地图 + 考情 + 三遍法",

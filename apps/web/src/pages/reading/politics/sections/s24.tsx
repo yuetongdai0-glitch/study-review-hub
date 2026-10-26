@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react'
 import { Block, BlockTitle, Callout, DataTable, Example, ExampleAnswer, ExampleBody, ExampleHeader, ExampleOptions, ExampleQuestion, PointList } from '@/components/content'
+import { Memo, Mnemonic } from '../mem'
 
 /**
  * 二十四、「十五五」规划与 2026 年重要政策
@@ -10,6 +11,29 @@ export default function S25(): ReactElement {
   return (
     <>
       <Callout variant="key">这一节是 2026 年新增的<b>政策专题</b>：十五五规划建议 + 2026 政府工作报告 + 中央一号文件 + 农业农村现代化「十五五」规划。考法集中在<b>数字</b>（1.45 万亿斤、67%、4.5%–5%）和<b>定位词</b>（主题 / 根本目的 / 总抓手 / 首要功能）。</Callout>
+      <Memo title="十五五 + 2026 政策：记数字与定位词" sub="这一节是新政策专题，考法全在「数字 + 定位词」。不要背段落，只背下面四组。">
+        <Mnemonic
+          title="十五五「五个以」"
+          hot
+          verse={<>以<em>经济建设为中心</em>，以<em>高质量发展</em>为主题，以<em>改革创新</em>为根本动力，以<em>满足人民美好生活需要</em>为根本目的，以<em>全面从严治党</em>为根本保障。</>}
+          note={<>「一个中心、五个以」是这一块的总纲。别把「以经济建设为中心」写成「以高质量发展为中心」——<b>高质量发展是「主题」，不是「中心」</b>。</>}
+        />
+        <Mnemonic
+          title="2030 与 2035 两组指标"
+          verse={<>2030 <em>碳达峰</em>；2035 <em>基本实现现代化</em>；粮食 <em>1.45 万亿斤</em>；城镇化率 <em>67%</em>。</>}
+          note={<>农业相关：<b>耕地红线 18 亿亩</b>、<b>高标准农田</b>、<b>种业振兴</b>。这四个数字是 2026 政策题的高频点。</>}
+        />
+        <Mnemonic
+          title="2026 目标三句"
+          verse={<>GDP 增长 <em>4.5%–5%</em>；CPI <em>2% 左右</em>；城镇新增就业 <em>1200 万以上</em>。</>}
+          note={<>政策取向记「<b>更加积极的财政政策 + 适度宽松的货币政策</b>」——注意是「适度宽松」，这个措辞变化本身就是考点。</>}
+        />
+        <Mnemonic
+          title="乡村振兴四句"
+          verse={<>总目标<em>农业农村现代化</em>，总方针<em>优先发展</em>，总抓手<em>乡村振兴战略</em>，总纲<em>农业强国</em>。</>}
+          note={<>「四总」是高频混淆点：<b>总目标、总方针、总抓手、总纲</b>四个词每年都在选项里互相调换。另外「增加农民收入是中心任务」。</>}
+        />
+      </Memo>
       
             <Block>
               <BlockTitle>1. 十五五规划建议：一个中心、五个「以」</BlockTitle>

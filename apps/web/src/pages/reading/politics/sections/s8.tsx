@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react'
 import { Block, BlockTitle, Callout, DataTable, Example, ExampleAnswer, ExampleBody, ExampleHeader, ExampleOptions, ExampleQuestion, PointList } from '@/components/content'
+import { Frame, Memo, Mnemonic } from '../mem'
 
 /**
  * 八、文学常识
@@ -10,6 +11,38 @@ export default function S9(): ReactElement {
   return (
     <>
       <Callout variant="key">文学题的考法：<b>作者—朝代—作品—名句</b>四要素随机对应。背的时候一定「四人一组」背，不要单背作品名。</Callout>
+      <Memo title="文学四条线" sub="文学题永远考「四要素对不上」：作者—朝代—作品—名句。用四条线记，比按朝代顺序记有用。">
+        <Frame
+          cells={[
+            { k: '诗', v: '诗经楚辞 → 唐诗（初盛中晚）', hot: true },
+            { k: '词', v: '宋词两派四家' },
+            { k: '曲', v: '元曲四大家 + 明清戏曲' },
+            { k: '小说', v: '四大奇书 + 四大名著' },
+          ]}
+          caption="四条线各有一个「第一」：第一部诗歌总集《诗经》、第一部浪漫主义诗歌总集《楚辞》、第一部长篇历史小说《三国演义》、第一部文人独立创作章回小说《金瓶梅》。"
+        />
+        <Mnemonic
+          title="诗经六义"
+          verse={<>风雅颂（内容），赋比兴（手法）。</>}
+          note={<>风＝各地民歌，雅＝正声雅乐，颂＝宗庙祭祀；赋＝铺陈直叙，比＝打比方，兴＝<b>先言他物以引起所咏之词</b>（多在全诗开头）。</>}
+        />
+        <Mnemonic
+          title="唐诗四人一组"
+          hot
+          verse={<>李白<em>诗仙</em>，杜甫<em>诗圣</em>，王维<em>诗佛</em>，白居易<em>诗魔</em>。</>}
+          note={<>杜甫诗称<b>诗史</b>，「三吏」＝石壕、新安、潼关，「三别」＝新婚、无家、垂老。白居易与元稹倡<b>新乐府运动</b>，主张「文章合为时而著」。</>}
+        />
+        <Mnemonic
+          title="宋词两派"
+          verse={<>豪放<em>苏辛</em>（苏轼、辛弃疾），婉约<em>柳李</em>（柳永、李清照）。</>}
+          note={<>苏轼＝豪放<b>开创者</b>；辛弃疾＝「词中之龙」，与李清照并称<b>济南二安</b>；柳永＝第一位对宋词全面革新、创用词调最多；李清照＝易安体、三瘦词人。<b>陆游归豪放</b>。</>}
+        />
+        <Mnemonic
+          title="小说四个「第一」"
+          verse={<>水浒<em>第一部古白话</em>，三国<em>第一部长篇历史</em>，金瓶梅<em>第一部文人独立创作</em>，红楼梦<em>封建社会百科全书</em>。</>}
+          note={<>《搜神记》＝志怪小说开创（干宝）；《世说新语》＝最早志人小说集（刘义庆）；《聊斋志异》＝文言短篇巅峰；《儒林外史》＝长篇讽刺小说。</>}
+        />
+      </Memo>
       
             <Block>
               <BlockTitle>1. 先秦：《诗经》与《楚辞》</BlockTitle>

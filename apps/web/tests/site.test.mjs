@@ -1334,9 +1334,9 @@ test('政治常识页（TSX 源）：点块与例题一一对应，且「建成 
   const files = (await readdir(dir)).filter((f) => f.endsWith('.tsx')).sort()
   const sources = await Promise.all(files.map((f) => readFile(new URL(f, dir), 'utf8')))
 
-  // 26 个节文件：nav + s1..s25
-  assert.equal(files.length, 26, `政治常识应有 26 个节文件，实际 ${files.length}`)
-  for (const id of ['nav', ...Array.from({ length: 25 }, (_, i) => `s${i + 1}`)]) {
+  // 27 个节文件：s0（骨架）+ nav + s1..s25
+  assert.equal(files.length, 27, `政治常识应有 27 个节文件，实际 ${files.length}`)
+  for (const id of ['s0', 'nav', ...Array.from({ length: 25 }, (_, i) => `s${i + 1}`)]) {
     assert.ok(files.includes(`${id}.tsx`), `缺少节文件 ${id}.tsx`)
   }
 
@@ -1353,7 +1353,7 @@ test('政治常识页（TSX 源）：点块与例题一一对应，且「建成 
     totalEx += ne
     // 速记 / 排坑 / 计划三节没有例题
     // 总览 / 速记 / 排坑 / 计划四节是策略性内容，不带例题
-    if (['nav.tsx', 's20.tsx', 's21.tsx', 's22.tsx'].includes(files[i])) continue
+    if (['s0.tsx', 'nav.tsx', 's20.tsx', 's21.tsx', 's22.tsx'].includes(files[i])) continue
     // 例题可以多于知识点（有的块配两道），但每个知识点后必须紧跟例题
     assert.ok(ne >= nb, `${files[i]} 例题(${ne})少于知识点(${nb})`)
     seq.forEach((k, idx) => {

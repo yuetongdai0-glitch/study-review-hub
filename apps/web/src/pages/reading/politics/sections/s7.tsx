@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react'
 import { Block, BlockTitle, Callout, DataTable, Example, ExampleAnswer, ExampleBody, ExampleHeader, ExampleOptions, ExampleQuestion, PointList } from '@/components/content'
+import { FrameChain, Memo, Mnemonic } from '../mem'
 
 /**
  * 七、历史常识 · 近现代与党史
@@ -10,6 +11,32 @@ export default function S8(): ReactElement {
   return (
     <>
       <Callout variant="key">这一段是「时间轴 + 会议定位」。复习方法：把 <b>1921 / 1922 / 1923 / 1924 / 1927 / 1935 / 1937 / 1945 / 1949</b> 这九个年份写在纸上，每个年份后面默写一件大事。</Callout>
+      <Memo title="九个年份 + 三段主线" sub="近现代史就用「九个年份」做骨架，每个年份一句话。考排序就从这九个里出。">
+        <FrameChain
+          nodes={['1840 鸦片战争', '1911 辛亥', '1919 五四', '1921 建党', '1927 建军', '1935 遵义', '1937 全面抗战', '1945 抗战胜利', '1949 建国']}
+          caption="九个年份从左到右就是时间轴。中间 1921–1949 这六个是党史高频区。"
+        />
+        <Mnemonic
+          title="四个不平等条约"
+          verse={<>南京<em>开始沦为</em>，天津北京<em>进一步加深</em>，马关<em>大大加深</em>，辛丑<em>完全陷入</em>。</>}
+          note={<>四个程度词是逐级加重的，考排序必用：开始沦为 → 进一步加深 → 大大加深 → 完全陷入半殖民地半封建社会。<b>《马关条约》标志列强侵略由商品输出转为资本输出。</b></>}
+        />
+        <Mnemonic
+          title="会议定位七个"
+          verse={<>一大<em>建党</em>，二大<em>纲领</em>，三大<em>合作</em>，四大<em>领导权</em>，五大<em>监察</em>，八七<em>枪杆子</em>，遵义<em>转折</em>。</>}
+          note={<>二大第一次提出<b>彻底的反帝反封建民主革命纲领</b>；三大决定共产党员<b>以个人身份</b>加入国民党；八七会议毛泽东提出<b>政权是由枪杆子中取得的</b>；遵义会议是<b>生死攸关的转折点</b>。</>}
+        />
+        <Mnemonic
+          title="抗战三个阶段"
+          verse={<>九一八<em>局部抗战起点</em>，七七<em>全面抗战开端</em>，武汉会战<em>转入相持</em>。</>}
+          note={<>主战场会换：<b>战略防御阶段正面战场是主战场，战略相持阶段敌后战场是主战场</b>。平型关是<b>全民族抗战以来第一个大胜</b>，台儿庄是<b>正面战场最大胜利</b>。</>}
+        />
+        <Mnemonic
+          title="解放战争四步"
+          verse={<>重庆谈判 → 挺进大别山 → 三大战役 → 渡江。</>}
+          note={<>1947.6 刘邓挺进大别山＝<b>由防御转进攻的转折点</b>；三大战役＝辽沈、淮海、平津（<b>济南战役不在其中</b>）；1949.4.23 占南京，<b>统治 22 年的国民政府覆灭</b>。</>}
+        />
+      </Memo>
       
             <Block>
               <BlockTitle>1. 近代不平等条约（四条主线）</BlockTitle>

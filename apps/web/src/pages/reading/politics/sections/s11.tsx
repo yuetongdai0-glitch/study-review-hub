@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react'
 import { Block, BlockTitle, Callout, DataTable, Example, ExampleAnswer, ExampleBody, ExampleHeader, ExampleOptions, ExampleQuestion, PointList } from '@/components/content'
+import { Frame, Memo, Mnemonic } from '../mem'
 
 /**
  * 十一、化学常识
@@ -10,6 +11,35 @@ export default function S12(): ReactElement {
   return (
     <>
       <Callout variant="key">化学只考两件事：<b>元素之「最」</b>与<b>物质俗称 / 用途</b>。把下面两张表背下来，化学常识基本满分。</Callout>
+      <Memo title="化学两件事：之最 + 俗称" sub="化学常识只有两问：这是哪个元素的「最」？这个物质的俗称是什么、干什么用？">
+        <Frame
+          cells={[
+            { k: '氢', v: '宇宙最多 · 密度最小' },
+            { k: '碳', v: '化合物种类最多 · 构成细胞最基本', hot: true },
+            { k: '氮', v: '空气最多（78%）' },
+            { k: '氧', v: '人体/海洋/地壳最多', hot: true },
+            { k: '硫', v: '酸雨主因（pH<5.6）' },
+            { k: '硅', v: '半导体 · 芯片 · 光导纤维' },
+          ]}
+          caption="六个元素就是六个「最」，几乎每年考一个。含量排序：人体 O>C>H>N>Ca；地壳 O>Si>Al>Fe；海洋 O>H>Cl>Na。"
+        />
+        <Mnemonic
+          title="三大气体分工"
+          verse={<>氧气<em>助燃供给呼吸</em>，氮气<em>不活泼保鲜</em>，二氧化碳<em>灭火干冰降雨</em>。</>}
+          note={<>CO 与血红蛋白结合致<b>煤气中毒</b>（不是 CO₂）；干冰是<b>固态 CO₂</b>，用于低温保存、舞台烟雾、人工降雨；臭氧 O₃ 强氧化性、吸收紫外线。</>}
+        />
+        <Mnemonic
+          title="俗称七连"
+          hot
+          verse={<>火碱烧碱苛性钠＝<em>NaOH</em>，纯碱苏打＝<em>Na₂CO₃</em>，小苏打＝<em>NaHCO₃</em>，熟石灰＝<em>Ca(OH)₂</em>，生石灰＝<em>CaO</em>，水银＝<em>Hg</em>，干冰＝<em>CO₂</em>。</>}
+          note={<>「烧碱不是碱、纯碱不是碱」——<b>NaOH 是碱，Na₂CO₃ 是盐</b>。这是化学最经典的坑。澄清石灰水是 Ca(OH)₂ 溶液，专门用来<b>检验 CO₂</b>。</>}
+        />
+        <Mnemonic
+          title="有机物四个"
+          verse={<>甲烷<em>最简单</em>，乙烯<em>催熟</em>，乙醇<em>75% 消毒</em>，甲醛<em>福尔马林</em>。</>}
+          note={<>甲烷＝天然气、沼气、瓦斯主要成分；乙烯是<b>植物激素</b>；医用酒精体积浓度约 <b>75%</b>（不是越高越好，95% 用于器械消毒）；福尔马林＝<b>35%–40% 甲醛水溶液</b>。</>}
+        />
+      </Memo>
       
             <Block>
               <BlockTitle>1. 非金属元素：五组「最」</BlockTitle>

@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react'
 import { Block, BlockTitle, Callout, Example, ExampleAnswer, ExampleBody, ExampleHeader, ExampleOptions, ExampleQuestion, PointList } from '@/components/content'
+import { Frame, Memo, Mnemonic } from '../mem'
 
 /**
  * 二十五、2026 时政热点盘点（1–8 月）
@@ -10,6 +11,31 @@ export default function S26(): ReactElement {
   return (
     <>
       <Callout variant="key">时政不按月背，<b>按主题背</b>：会议讲话、科技工程、航天、外交、民生、经济、文体。每类只记「事件 + 一个关键词」，考场上靠关键词定位。</Callout>
+      <Memo title="2026 时政：按主题背，不按月背" sub="时政不要按月背，按七个主题背。每类只记「事件 + 一个关键词」，考场上靠关键词定位。">
+        <Frame
+          cells={[
+            { k: '会议讲话', v: '关键词 + 定位', hot: true },
+            { k: '科技工程', v: '编号 + 第一次' },
+            { k: '航天', v: '嫦娥·天问·神舟·天舟' },
+            { k: '外交', v: '中美·中朝·中老·中白·中塞' },
+            { k: '民生', v: '就业·社保·医疗' },
+            { k: '经济法治', v: '数字 + 新法' },
+            { k: '文体人物', v: '奖项 + 冠军' },
+          ]}
+          caption="七个主题里「科技工程」和「航天」最好拿分，因为都是「编号 + 第一次」的死记题。"
+        />
+        <Mnemonic
+          title="时政三步定位法"
+          hot
+          verse={<>先认<em>领域</em>（航天/科技/外交），再认<em>编号</em>（几号/第几次），最后认<em>关键词</em>（首次/最多/唯一）。</>}
+          note={<>时政题的错项设计只有三种：<b>换编号</b>（嫦娥五号写成六号）、<b>换次序</b>（首次写成第二次）、<b>换主体</b>（中国写成美国/俄罗斯）。按这三条排除，不用全记住。</>}
+        />
+        <Mnemonic
+          title="航天最新节点"
+          verse={<>神舟二十号<em>涡虫再生</em>，神舟二十一号<em>在轨</em>，神舟二十二号<em>首次应急发射</em>。</>}
+          note={<>天问二号任务＝<b>小行星 2016HO3 取样返回</b>，之后再探主带彗星；载人登月计划 <b>2030 年前</b>实现中国人首次登月。</>}
+        />
+      </Memo>
       
             <Block>
               <BlockTitle>1. 重要会议与讲话</BlockTitle>
