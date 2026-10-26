@@ -769,6 +769,8 @@ export default function MaterialView({ open, onClose }: { open: boolean; onClose
               size="small"
               type={tool === 'pen' ? 'primary' : 'default'}
               icon={<Pen size={13} />}
+              aria-label="画笔"
+              aria-pressed={tool === 'pen'}
               onClick={() => {
                 setTool('pen')
                 writeSession({ tool: 'pen' })
@@ -780,6 +782,8 @@ export default function MaterialView({ open, onClose }: { open: boolean; onClose
               size="small"
               type={tool === 'eraser' ? 'primary' : 'default'}
               icon={<Eraser size={13} />}
+              aria-label="橡皮"
+              aria-pressed={tool === 'eraser'}
               onClick={() => {
                 setTool('eraser')
                 writeSession({ tool: 'eraser' })

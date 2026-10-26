@@ -111,6 +111,21 @@ export default function MaterialPane(props: MaterialPaneProps) {
   const canvasRefs = useRef<Map<number, HTMLCanvasElement>>(new Map())
   const currentRef = useRef<{ page: number; stroke: NoteStroke } | null>(null)
   const activeIdRef = useRef<number | null>(null)
+  /**
+   * 最后一次**改动笔记**的页（0 基）。
+   *
+   * @remarks
+   * 用户反馈「Ctrl+Z 有时候是好的，有时候莫名其妙就不好使了」。
+   *
+   * 根因：撤销用的是 `visiblePage - 1`（当前可见页）。
+   * 只要画完往下滚一点（哪怕只是翻到下一页看了眼），
+   * 撤销就会作用到那个**没有笔迹的页**上，于是提示「这一页没有可撤销的笔记」，
+   * 而真正画的那页纹丝不动 —— 用户感受就是"莫名其妙失效"。
+   *
+   * 正确语义：撤销跟随**你最后动过的那一页**，与滚动位置无关
+   * （Word / Figma 等编辑器都是这样）。只有从没编辑过时才退回可见页。
+   */
+  const lastEditedPageRef = useRef(-1)
   const scrollTimerRef = useRef(0)
   const lastSavedPageRef = useRef(-1)
   const urlsRef = useRef<Map<number, string>>(new Map())
@@ -149,6 +164,8 @@ export default function MaterialPane(props: MaterialPaneProps) {
       notesRef.current = notes
       undoRef.current = new Map()
       redoRef.current = new Map()
+      // 换材料：上一份的「最后编辑页」对新材料没有意义，必须清掉。
+      lastEditedPageRef.current = -1
       canvasRefs.current.clear()
       renderingRef.current.clear()
       for (const url of urlsRef.current.values()) URL.revokeObjectURL(url)
@@ -616,6 +633,8 @@ export default function MaterialPane(props: MaterialPaneProps) {
     undoRef.current.set(index, undo)
     // 画了新的一笔，之前的「重做」分支就作废了。
     redoRef.current.delete(index)
+    // 记下「最后动的是这一页」，撤销跟着它走，而不是跟着滚动位置。
+    lastEditedPageRef.current = index
     void persistNotes(index)
   }
 
@@ -638,6 +657,12 @@ export default function MaterialPane(props: MaterialPaneProps) {
         return
       }
       undoRef.current.set(index, undo)
+      /*
+       * 撤销后「最后编辑页」落到这一页：
+       * 否则连续按 Ctrl+Z 时，pickPage 每次都先问那页还有没有，
+       * 一旦撤空又会跳去看别处，感觉像"撤销在页间乱跳"。
+       */
+      lastEditedPageRef.current = index
       const redo = redoRef.current.get(index) ?? []
       redo.push(notesRef.current.get(index) ?? [])
       if (redo.length > UNDO_MAX) redo.shift()
@@ -679,6 +704,8 @@ export default function MaterialPane(props: MaterialPaneProps) {
         return
       }
       redoRef.current.set(index, redo)
+      // 重做同理：之后继续按 Ctrl+Z 应该还作用在这一页。
+      lastEditedPageRef.current = index
       const undo = undoRef.current.get(index) ?? []
       undo.push(notesRef.current.get(index) ?? [])
       if (undo.length > UNDO_MAX) undo.shift()
@@ -701,6 +728,8 @@ export default function MaterialPane(props: MaterialPaneProps) {
       const undo = undoRef.current.get(index) ?? []
       undo.push(before)
       undoRef.current.set(index, undo)
+      // 清空也是一次「改动」，撤销要回到这一页。
+      lastEditedPageRef.current = index
       notesRef.current.set(index, [])
       redrawPage(index)
       void persistNotes(index)
@@ -741,14 +770,41 @@ export default function MaterialPane(props: MaterialPaneProps) {
      * 别的页仍是已删状态，数据就不一致了（用户一翻页发现笔迹没了）。
      */
     lastClearAllRef.current = touchedPages
+    /*
+     * 「最后编辑页」指向被清的第一页：
+     * 这样紧接着按 Ctrl+Z 时 pickPage 会选中它，从而走进
+     * 「把其余被清页一起补回来」的分支。不设的话撤销可能落到别的页上，
+     * 一键清除就只恢复一页，看起来像"撤不干净"。
+     */
+    if (touchedPages.length) lastEditedPageRef.current = touchedPages[0]
     return touchedPages
   }, [redrawPage])
 
   /* 把动作交给外层（快捷键在 View 层统一处理，双栏时才不会各抢一次）。 */
   useEffect(() => {
+    /*
+     * 撤销作用在哪一页？
+     *
+     * ① 优先「最后编辑过的那页」（`lastEditedPageRef`）—— 编辑器的通用语义，
+     *    与当前滚到哪里无关；
+     * ② 没编辑过才退回可见页；
+     * ③ 万一那页的栈空了（刚撤到底），再**跨页**找有栈可撤的页兜底 ——
+     *    否则用户撤到某页尽头后，明明别的页还有笔迹，却提示「没有可撤销的笔记」。
+     */
+    const pickPage = (stack: Map<number, NoteStroke[][]>): number => {
+      const edited = lastEditedPageRef.current
+      if (edited >= 0 && (stack.get(edited)?.length ?? 0) > 0) return edited
+      const visible = visiblePage - 1
+      if ((stack.get(visible)?.length ?? 0) > 0) return visible
+      // 兜底：从后往前找第一个还有记录的页（新画的通常在靠后的地方）。
+      const keys = [...stack.keys()].filter((key) => (stack.get(key)?.length ?? 0) > 0)
+      if (!keys.length) return edited >= 0 ? edited : visible
+      return Math.max(...keys)
+    }
+
     onRegisterActions({
-      undo: () => undoPage(visiblePage - 1),
-      redo: () => redoPage(visiblePage - 1),
+      undo: () => undoPage(pickPage(undoRef.current)),
+      redo: () => redoPage(pickPage(redoRef.current)),
       clearPage: () => clearPage(visiblePage - 1),
       clearAll,
     })

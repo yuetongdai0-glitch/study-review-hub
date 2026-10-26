@@ -1233,6 +1233,54 @@ test('材料撤销：单点/一键清除都能撤，且清除前先建快照', a
   )
 })
 
+test('Ctrl+Z 撤销跟随「最后编辑页」，而不是当前可见页', async () => {
+  /*
+   * 用户原话：「Ctrl+Z 回退 有时候是好的有时候莫名其妙就不好使了 ！！」
+   *
+   * 根因：撤销注册的是 `undo: () => undoPage(visiblePage - 1)` —— 用的是**当前可见页**。
+   * 用户画完一笔本能地往下翻看，只要滚到下一页，`visiblePage` 一变，
+   * 撤销就落到那个**空白页**上：弹「这一页没有可撤销的笔记」，
+   * 真正画的那页纹丝不动。所谓"有时候好"，只是因为他画完没滚走。
+   *
+   * 正确语义（Word / Figma 一致）：撤销跟随**你最后动过的那一页**，与滚动无关。
+   */
+  const pane = await readFile(new URL('../src/features/materials/MaterialPane.tsx', import.meta.url), 'utf8')
+
+  // 必须有「最后编辑页」状态
+  assert.ok(/lastEditedPageRef = useRef\(-1\)/.test(pane), '需要记录最后一次改动笔记的页')
+
+  // 撤销/重做不能再绑 visiblePage
+  assert.ok(
+    !/undo: \(\) => undoPage\(visiblePage - 1\)/.test(pane),
+    '撤销不能用 visiblePage：画完往下滚一点就会失效'
+  )
+  assert.ok(
+    !/redo: \(\) => redoPage\(visiblePage - 1\)/.test(pane),
+    '重做同样不能绑定 visiblePage'
+  )
+
+  // 选页逻辑：最后编辑页 → 可见页 → 跨页兜底
+  assert.ok(/const pickPage = \(stack: Map<number, NoteStroke\[\]\[\]>\)/.test(pane), '需要一个「选哪页来撤」的判定')
+  assert.ok(/const edited = lastEditedPageRef\.current/.test(pane), 'pickPage 要优先看最后编辑页')
+  assert.ok(
+    /const keys = \[\.\.\.stack\.keys\(\)\]\.filter/.test(pane),
+    '撤到底后要跨页兜底，别让别的页的笔迹撤不到'
+  )
+
+  // 写入点：落笔 / 撤销后 / 重做后 / 清页 / 一键清除 都要更新
+  const updates = pane.match(/lastEditedPageRef\.current = index/g) || []
+  assert.ok(updates.length >= 4, `落笔/撤销/重做/清页至少四处要更新最后编辑页，实际 ${updates.length} 处`)
+  assert.ok(
+    /if \(touchedPages\.length\) lastEditedPageRef\.current = touchedPages\[0\]/.test(pane),
+    '一键清除后要指向被清的第一页，保证一次撤销全部找回'
+  )
+  // 换材料重置
+  assert.ok(
+    /lastEditedPageRef\.current = -1/.test(pane),
+    '换材料要重置「最后编辑页」，否则会撤到上一份材料的页'
+  )
+})
+
 test('立即锁屏：只在设了密码时出现，点击回到锁定态', async () => {
   /*
    * 用户诉求：「在设置了密码的情况下这里加一个立即锁屏按钮」
