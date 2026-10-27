@@ -827,10 +827,34 @@ test('材料：只存原始文件、按安全区懒渲染、DOCX/PPT 走矢量',
 
   // 1. 存储层：只存原件
   assert.ok(/file\?: Blob/.test(db), '材料清单必须保存原始文件 Blob')
-  assert.ok(/DB_VERSION = 3/.test(db), '存储结构应升级到 v3（删除逐页位图表 + 增加 folders）')
+  /*
+   * 版本号只需 >= 3，不能写死等于 3。
+   *
+   * IndexedDB 不许降级打开：库里是 v4、代码却 open(name, 3)，会抛
+   * `VersionError: The requested version (3) is less than the existing version (4)`。
+   * 曾把带 v4 的构建部署过一次，用户库就永久停在 v4；之后把常量退回 3，
+   * 等于让所有老用户打不开自己的资料 —— 数据还在，但列表空白、导入全失败。
+   * 所以断言"至少 v3"，新版本要能自由往前加。
+   */
+  const versionMatch = db.match(/DB_VERSION = (\d+)/)
+  assert.ok(versionMatch, '必须有 DB_VERSION 常量')
+  assert.ok(
+    Number(versionMatch[1]) >= 3,
+    `存储结构版本不能低于 v3（当前 ${versionMatch[1]}）；注意只能加不能减，降级会把用户的库锁死`
+  )
   assert.ok(
     /deleteObjectStore\('pages'\)/.test(db),
     '升级时必须删掉 v1 的逐页位图表，否则旧数据仍占空间'
+  )
+  /*
+   * 打开失败不能留在模块级缓存里：
+   * 缓存了一个 rejected Promise，之后每次 openDb() 都立刻失败，
+   * 用户看到「列表一直空、导入永远报错」，只能刷新页面。
+   */
+  assert.ok(
+    /dbPromise\.catch\(\(\) => \{\s*\n?\s*dbPromise = null/.test(db) ||
+      /dbPromise = null[\s\S]{0,80}openDb/.test(db),
+    '打开失败后要清掉缓存的 Promise，否则后续每次操作都会立刻失败'
   )
   assert.ok(!/putPage|getPage|MaterialPage/.test(db), '不应再有「逐页内容」的读写接口')
   for (const fn of ['openPdfDocument', 'closePdfDocument']) {

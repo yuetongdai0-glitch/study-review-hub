@@ -22,8 +22,19 @@
 
 /** 数据库名。 */
 const DB_NAME = 'study-hub-materials'
-/** 结构版本；v2 起不再存逐页位图；v3 增加文件夹。 */
-const DB_VERSION = 3
+/**
+ * 结构版本。
+ *
+ * @remarks
+ * v2 起不再存逐页位图；v3 增加文件夹；v4 给文件夹加 `parentId` 索引。
+ *
+ * **只能加不能减**：IndexedDB 不允许用低版本打开已有的库
+ * （`VersionError: The requested version (x) is less than the existing version (y)`）。
+ * 曾把带 v4 的构建部署过一次，用户的库就永久停在 v4；
+ * 之后若把常量改回 3，等于让所有老用户都打不开自己的资料（数据还在，但连不上）。
+ * 改这里之前先想清楚：已经在用户机器上的最高版本是多少。
+ */
+const DB_VERSION = 4
 
 /** 文件夹（只支持一层，够用且不会让树变复杂）。 */
 export type Folder = {
@@ -103,6 +114,23 @@ export function openDb(): Promise<IDBDatabase> {
       if (!db.objectStoreNames.contains('folders')) {
         const store = db.createObjectStore('folders', { keyPath: 'id' })
         store.createIndex('createdAt', 'createdAt')
+        store.createIndex('parentId', 'parentId')
+      }
+      /*
+       * v3 → v4：文件夹加 `parentId` 索引（树形）。
+       *
+       * ⚠️ 版本号**不能低于**浏览器里已有的库。
+       * IndexedDB 不允许降级打开：库里是 v4、代码却 `open(name, 3)`，
+       * 会直接抛 `VersionError: The requested version (3) is less than the existing version (4)`，
+       * 表现是「材料列表空白 + 导入失败」，但**数据一条都没丢**，只是连不上。
+       * 之前把带 v4 的版本部署过一次，用户的库就停在 v4 了；
+       * 代码必须跟上，否则退回旧版代码等于把库锁死。
+       *
+       * 旧记录没有 parentId，读取时按空串（= 根目录）处理，所以不必回填。
+       */
+      if (request.transaction && request.transaction.objectStoreNames.contains('folders')) {
+        const store = request.transaction.objectStore('folders')
+        if (!store.indexNames.contains('parentId')) store.createIndex('parentId', 'parentId')
       }
       if (!db.objectStoreNames.contains('notes')) {
         db.createObjectStore('notes', { keyPath: ['materialId', 'index'] })
@@ -117,6 +145,17 @@ export function openDb(): Promise<IDBDatabase> {
     }
     request.onsuccess = () => resolve(request.result)
     request.onerror = () => reject(request.error ?? new Error('无法打开本地材料库'))
+  })
+  /*
+   * 失败不要留在缓存里。
+   *
+   * `dbPromise` 是模块级缓存：一旦缓存了一个 rejected Promise，
+   * 之后所有 `openDb()` 都会立刻失败 —— 用户看到的是「列表一直空、
+   * 导入永远报错」，除了刷新页面没有任何出路。
+   * 清掉缓存，下一次操作会重新尝试打开（比如另一个标签页降级关掉了连接后）。
+   */
+  dbPromise.catch(() => {
+    dbPromise = null
   })
   return dbPromise
 }
