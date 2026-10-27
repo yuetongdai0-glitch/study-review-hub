@@ -1019,7 +1019,7 @@ test('材料：缩放坐标换算、缩放保住宿主位置、Ctrl+Z 撤销', a
   assert.ok(/setZoomOf/.test(view), '缩放要集中到 setZoomOf，避免两栏各写一份')
   assert.ok(/writePane\(side, \{ zoom/.test(view), '缩放必须写进该栏会话，否则刷新后被重置')
   assert.ok(
-    /node\.offsetHeight \* anchor\.ratio|el\.offsetHeight \* own\.ratio/.test(pane),
+    /node\.offsetHeight \* anchor\.ratio|el\.offsetHeight \* sessionRatio|el\.offsetHeight \* own\.ratio/.test(pane),
     '恢复时要按「新页高 × 页内比例」定位（纯乘 scrollTop 会有累积误差）'
   )
   assert.ok(
@@ -1126,7 +1126,7 @@ test('材料：刷新后仍在原页（会话持久化缩放/笔设置/页码）
    * 早写成 `if (sessionPage > 0) jump(...)`，停在第一页中部时永远不恢复。
    */
   assert.ok(
-    /const sessionPage = own\.id === target\.id \? own\.page : -1/.test(pane),
+    /const sessionPage = own\.id === target\.id \? own\.page : spot \? spot\.page : -1/.test(pane),
     '要用 -1 表示「无记录」，0 是合法的第一页'
   )
   assert.ok(/if \(sessionPage >= 0\)/.test(pane), '恢复判断必须允许 page=0')
@@ -1413,5 +1413,61 @@ test('批注开关：触屏默认只读，两端都能手动切', async () => {
   assert.ok(
     /aria-label=\{annotate \? '关闭批注（切到只读）' : '开启批注'\}/.test(view),
     '开关按钮要有可访问名，两个状态都要能识别'
+  )
+})
+
+test('切换材料时保留每份材料各自的阅读位置', async () => {
+  /*
+   * 用户原话：「这个位置保留能不能做好？做了一万遍还是保留不了？？？」
+   * 录屏里的动作：题本看到第 7 页 → 切到解析 → 切回题本 → 回到第 1 页。
+   *
+   * 根因两层，必须都修：
+   * ① `openInto` 无条件写 `{ zoom:1, page:0, ratio:0 }` ——
+   *    既把新材料按回第 1 页，也把上份材料的位置抹掉；
+   * ② 会话的 left/right 只记「这一栏现在放的是谁」，
+   *    换成别的材料后，原来那份「看到哪」没有任何地方存。
+   * 所以必须有第三份存储：`spots[材料 id]`。
+   */
+  const session = await readFile(new URL('../src/features/materials/session.ts', import.meta.url), 'utf8')
+  const view = await readFile(new URL('../src/features/materials/MaterialView.tsx', import.meta.url), 'utf8')
+  const pane = await readFile(new URL('../src/features/materials/MaterialPane.tsx', import.meta.url), 'utf8')
+
+  assert.ok(/spots: Record<string, PaneSpot>/.test(session), '会话里要按材料 id 存位置表')
+  assert.ok(/export function rememberSpot/.test(session), '要有写入位置记忆的方法')
+  assert.ok(/export function readSpot/.test(session), '要有读取位置记忆的方法')
+  // spots 必须浅合并：只记一份时不能把别的位置冲掉
+  assert.ok(
+    /spots: patch\.spots \? \{ \.\.\.current\.spots, \.\.\.patch\.spots \} : current\.spots/.test(session),
+    'spots 要浅合并，别整块替换'
+  )
+
+  // openInto 不能再把位置写死成 1/0/0
+  assert.ok(/rememberSpot\(leaving\.id/.test(view), '切走前要记住上一份材料的位置')
+  assert.ok(/const spot = readSpot\(id\)/.test(view), '切入时要读这份材料自己的位置')
+  assert.ok(
+    !/writePane\('left', \{ id, zoom: 1, page: 0, ratio: 0 \}\)/.test(view),
+    'openInto 不能把位置写死成首页/100%，否则切回来必然回到开头'
+  )
+
+  // 滚动与缩放要实时记到材料名下（只在离开时记会读到很久以前的值）
+  assert.ok(
+    /onScrollChange=\{\(page, ratio\) => \{[\s\S]{0,400}?rememberSpot\(leftId/.test(view),
+    '左栏滚动要实时记住位置'
+  )
+  assert.ok(
+    /onScrollChange=\{\(page, ratio\) => \{[\s\S]{0,400}?rememberSpot\(rightId/.test(view),
+    '右栏滚动要实时记住位置'
+  )
+  assert.ok(/rememberSpot\(targetId, \{ zoom: next \}\)/.test(view), '缩放也要记住')
+
+  // 恢复守卫要带进入序号：组件常驻，同一份材料切回时 id 没变不会重跑
+  assert.ok(
+    /const restoreKey = `\$\{target\.id\}#\$\{enterKey\}`/.test(pane),
+    '恢复守卫要带进入序号，否则切回同一份材料时不会重新恢复'
+  )
+  // Pane 恢复前必须先把目标页纳入渲染范围（懒渲染下否则永远找不到节点）
+  assert.ok(
+    /const from = Math\.max\(0, sessionPage - SAFE_PAGES\)/.test(pane),
+    '恢复前要把目标页纳入渲染范围，否则 querySelector 拿不到节点'
   )
 })

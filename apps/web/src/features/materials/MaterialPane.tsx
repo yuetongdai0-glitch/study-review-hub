@@ -11,7 +11,7 @@ import {
 } from '@/features/materials/db'
 import { closePdfDocument, openPdfDocument } from '@/features/materials/parse'
 import { DOCX_PAGE_CSS, PptPage, toBasePoint } from '@/features/materials/PageRender'
-import { readSession, writePane, type PaneSide } from '@/features/materials/session'
+import { readSession, readSpot, writePane, type PaneSide } from '@/features/materials/session'
 
 /** 撤销上限（按页各存一份）。 */
 const UNDO_MAX = 100
@@ -66,6 +66,15 @@ export type MaterialPaneProps = {
   onScrollChange: (page: number, ratio: number) => void
   /** 撤销 / 重做的注册（外层快捷键调用）。 */
   onRegisterActions: (actions: { undo: () => void; redo: () => void; clearPage: () => void; clearAll: () => void }) => void
+  /**
+   * 进入序号：每次把材料放进这一栏就 +1。
+   *
+   * @remarks
+   * 用来让「恢复阅读位置」的 effect 重新执行。
+   * 组件是常驻的（材料视图靠 open 开关，不卸载），
+   * 所以同一份材料切走再切回时，光看 `id` 无法察觉「又进了一次」。
+   */
+  enterKey?: number
 }
 
 /**
@@ -83,8 +92,22 @@ export type MaterialPaneProps = {
  * 3. **安全区按本栏滚动容器算**，不能拿 window 高度。
  */
 export default function MaterialPane(props: MaterialPaneProps) {
-  const { id, side, zoom, tool, color, size, active, annotate, onActivate, onPageChange, onLoaded, onScrollChange, onRegisterActions } =
-    props
+  const {
+    id,
+    side,
+    zoom,
+    tool,
+    color,
+    size,
+    active,
+    annotate,
+    onActivate,
+    onPageChange,
+    onLoaded,
+    onScrollChange,
+    onRegisterActions,
+    enterKey = 0,
+  } = props
   const { message } = App.useApp()
 
   const [material, setMaterial] = useState<Material | null>(null)
@@ -368,8 +391,17 @@ export default function MaterialPane(props: MaterialPaneProps) {
   useEffect(() => {
     const target = material
     if (!target) return
-    if (restoredForRef.current === target.id) return
-    restoredForRef.current = target.id
+    /*
+     * 恢复守卫的键要带「进入序号」。
+     *
+     * 只用 `target.id` 不够：本组件是常驻的（靠 open 开关，不卸载），
+     * 用户切走再切回**同一份材料**时组件没卸载、id 也没变，
+     * 守卫直接 return，恢复就被永久跳过 —— 表现正是「切回来位置没保留」。
+     * 所以外层每次 openInto 都要递增 enterKey，让这里重新跑一次。
+     */
+    const restoreKey = `${target.id}#${enterKey}`
+    if (restoredForRef.current === restoreKey) return
+    restoredForRef.current = restoreKey
     /*
      * 恢复位置必须**等到布局真的稳定**再跳。
      * 双栏时右栏是后挂载的，且页面占位高度依赖 aspect-ratio 与外层宽度，
@@ -388,12 +420,32 @@ export default function MaterialPane(props: MaterialPaneProps) {
         return
       }
       /*
-       * `-1` 表示「会话里没有这份材料的记录」。
+       * 位置来源优先级：
+       * ① `spots[本材料 id]` —— 按材料记的位置（切换材料再回来时靠它）；
+       * ② 会话里本栏的记录 —— 仅当这一栏现在放的就是这份材料；
+       * ③ `-1` 表示「没有记录」。
+       *
        * 注意第 1 页的 page 就是 0，**不能拿 0 当「没记录」**：
        * 早先写成 `if (sessionPage > 0) jump(...)`，
        * 于是停在第一页中部（page=0, ratio=0.93）时永远不恢复，刷新必然回到顶部。
        */
-      const sessionPage = own.id === target.id ? own.page : -1
+      const spot = readSpot(target.id)
+      const sessionPage = own.id === target.id ? own.page : spot ? spot.page : -1
+      const sessionRatio = own.id === target.id ? own.ratio : spot ? spot.ratio : 0
+
+      /*
+       * ⚠️ 必须**先把目标页纳入渲染范围**，否则永远找不到它。
+       *
+       * 页面是懒渲染的：`range` 初值是 [0,0]，只渲染第 1 页。
+       * 这里直接 querySelector('[data-page="6"]') 拿不到节点 ——
+       * node 恒为 null，于是每 100ms 重试一次、40 次后放弃，静默回到顶部。
+       */
+      if (sessionPage >= 0) {
+        const from = Math.max(0, sessionPage - SAFE_PAGES)
+        const to = Math.min((target.pageCount || 1) - 1, sessionPage + SAFE_PAGES)
+        setRange((prev) => (prev[0] === from && prev[1] === to ? prev : [from, to]))
+      }
+
       const wantPage = sessionPage >= 0 ? sessionPage : 0
       const node = scroller.querySelector<HTMLElement>(`[data-page="${wantPage}"]`)
       const height = node?.offsetHeight ?? 0
@@ -412,7 +464,7 @@ export default function MaterialPane(props: MaterialPaneProps) {
       }
       if (sessionPage >= 0) {
         lastSavedPageRef.current = sessionPage
-        jump(sessionPage, own.ratio)
+        jump(sessionPage, sessionRatio)
         /*
          * 再补两次：跳转后 PDF 位图陆续到位、滚动条出现/消失都会改变
          * 容器的可用宽度 → 页高变化 → 浏览器可能把 scrollTop 夹回去。
@@ -424,7 +476,7 @@ export default function MaterialPane(props: MaterialPaneProps) {
             const scroller2 = scrollRef.current
             const el = scroller2?.querySelector<HTMLElement>(`[data-page="${sessionPage}"]`)
             if (!scroller2 || !el) return
-            const want = el.offsetTop + el.offsetHeight * own.ratio
+            const want = el.offsetTop + el.offsetHeight * sessionRatio
             // 只有在「明显偏离」时才重设，避免用户已经开始滚动后被拽回去。
             if (Math.abs(scroller2.scrollTop - want) > 24) {
               scroller2.scrollTo({ top: want, behavior: 'instant' as ScrollBehavior })
@@ -446,7 +498,7 @@ export default function MaterialPane(props: MaterialPaneProps) {
       cancelled = true
       window.clearTimeout(timer)
     }
-  }, [material, side])
+  }, [material, side, enterKey])
 
   /**
    * 缩放变化后重新锚定滚动位置。

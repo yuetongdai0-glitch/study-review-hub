@@ -59,6 +59,29 @@ export type MaterialSession = {
   annotateTouched: boolean
   /** 文件夹折叠状态（存 id 数组，避免存 Map）。 */
   collapsedFolders: string[]
+  /**
+   * 每份材料各自记住的阅读位置（材料 id → 页码/页内偏移/缩放）。
+   *
+   * @remarks
+   * 用户原话：「这个位置保留能不能做好？做了一万遍还是保留不了？？？」
+   *
+   * 光有 left/right 不够：栏里换成另一份材料时，left 就被新材料的页码覆盖，
+   * 原来那份「看到哪」就没了。所以位置必须**按材料 id** 单独存一份，
+   * left/right 只表示「现在这一栏放的是哪份、当前在哪」。
+   *
+   * 只存 page/ratio/zoom 三个数，不存笔记（笔记本来就在 IndexedDB）。
+   */
+  spots: Record<string, PaneSpot>
+}
+
+/** 一份材料的阅读位置。 */
+export type PaneSpot = {
+  /** 页码（0 基）。 */
+  page: number
+  /** 页内偏移比例（0~1）。 */
+  ratio: number
+  /** 缩放倍率。 */
+  zoom: number
 }
 
 /**
@@ -90,6 +113,32 @@ const DEFAULT: MaterialSession = {
   collapsedFolders: [],
   annotate: true,
   annotateTouched: false,
+  spots: {},
+}
+
+/** 位置记忆最多保留多少份材料（防止 localStorage 无限增长）。 */
+const MAX_SPOTS = 200
+
+/**
+ * 规整「位置记忆」表。
+ *
+ * @param raw 原始数据。
+ * @returns 只保留字段合法的条目。
+ * @remarks 坏数据不能让它把整份会话读崩 —— 位置记忆只是体验优化。
+ */
+function normalizeSpots(raw: unknown): Record<string, PaneSpot> {
+  if (!raw || typeof raw !== 'object') return {}
+  const out: Record<string, PaneSpot> = {}
+  for (const [id, value] of Object.entries(raw as Record<string, unknown>)) {
+    if (!id) continue
+    const spot = (value ?? {}) as Partial<PaneSpot>
+    out[id] = {
+      page: typeof spot.page === 'number' && spot.page >= 0 ? spot.page : 0,
+      ratio: typeof spot.ratio === 'number' && spot.ratio >= 0 ? spot.ratio : 0,
+      zoom: typeof spot.zoom === 'number' && spot.zoom > 0 ? spot.zoom : 1,
+    }
+  }
+  return out
 }
 
 /**
@@ -118,7 +167,7 @@ function normalizePane(raw: unknown): PaneState {
 export function readSession(): MaterialSession {
   try {
     const raw = window.localStorage.getItem(KEY)
-    if (!raw) return { ...DEFAULT, left: { ...EMPTY_PANE }, right: { ...EMPTY_PANE } }
+    if (!raw) return { ...DEFAULT, left: { ...EMPTY_PANE }, right: { ...EMPTY_PANE }, spots: {} }
     const data = JSON.parse(raw) as Partial<MaterialSession> & { id?: string; page?: number }
     const legacyId = typeof data.id === 'string' ? data.id : ''
     const touched = data.annotateTouched === true
@@ -141,9 +190,10 @@ export function readSession(): MaterialSession {
        */
       annotate: touched ? data.annotate === true : !isTouchDevice(),
       annotateTouched: touched,
+      spots: normalizeSpots(data.spots),
     }
   } catch {
-    return { ...DEFAULT, left: { ...EMPTY_PANE }, right: { ...EMPTY_PANE } }
+    return { ...DEFAULT, left: { ...EMPTY_PANE }, right: { ...EMPTY_PANE }, spots: {} }
   }
 }
 
@@ -163,6 +213,11 @@ export function writeSession(patch: Partial<MaterialSession>): MaterialSession {
     ...patch,
     left: patch.left ? { ...current.left, ...patch.left } : current.left,
     right: patch.right ? { ...current.right, ...patch.right } : current.right,
+    /*
+     * `spots` 也是**合并**而不是整块替换：
+     * 只记一份材料的位置时，不能把其它材料的位置一起冲掉。
+     */
+    spots: patch.spots ? { ...current.spots, ...patch.spots } : current.spots,
   }
   try {
     window.localStorage.setItem(KEY, JSON.stringify(next))
@@ -181,6 +236,53 @@ export function writeSession(patch: Partial<MaterialSession>): MaterialSession {
  */
 export function writePane(side: PaneSide, patch: Partial<PaneState>): MaterialSession {
   return writeSession({ [side]: patch } as Partial<MaterialSession>)
+}
+
+/**
+ * 记住某份材料的阅读位置。
+ *
+ * @param materialId 材料 id。
+ * @param spot 位置（可只给部分字段，其余沿用上次）。
+ * @returns 无返回。
+ * @remarks
+ * 用户要求「切换材料时上个材料的位置要保留」，这份记录就是那件事的载体。
+ *
+ * 空 id 直接忽略：没有材料的空栏不该产生垃圾条目。
+ * 超过 `MAX_SPOTS` 时按插入顺序丢掉最早的（对象键序即插入序），
+ * 避免 localStorage 被几百份材料的历史位置撑爆。
+ */
+export function rememberSpot(materialId: string, spot: Partial<PaneSpot>): void {
+  if (!materialId) return
+  const current = readSession()
+  const prev = current.spots[materialId] ?? { page: 0, ratio: 0, zoom: 1 }
+  const merged: PaneSpot = {
+    page: typeof spot.page === 'number' && spot.page >= 0 ? spot.page : prev.page,
+    ratio: typeof spot.ratio === 'number' && spot.ratio >= 0 ? spot.ratio : prev.ratio,
+    zoom: typeof spot.zoom === 'number' && spot.zoom > 0 ? spot.zoom : prev.zoom,
+  }
+
+  const keys = Object.keys(current.spots)
+  let spots = { ...current.spots, [materialId]: merged }
+  if (keys.length >= MAX_SPOTS && !(materialId in current.spots)) {
+    const oldest = keys[0]
+    if (oldest) {
+      const { [oldest]: _dropped, ...rest } = spots
+      spots = rest
+    }
+  }
+  // 已经存在时只更新值，位置保持不变（不因为"刚看过"就跳到队尾）。
+  writeSession({ spots })
+}
+
+/**
+ * 取某份材料上次看到的位置。
+ *
+ * @param materialId 材料 id。
+ * @returns 位置；没有记录时返回 null（调用方据此决定用默认值）。
+ */
+export function readSpot(materialId: string): PaneSpot | null {
+  if (!materialId) return null
+  return readSession().spots[materialId] ?? null
 }
 
 /**

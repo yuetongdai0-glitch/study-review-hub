@@ -39,7 +39,7 @@ import {
   type Material,
 } from '@/features/materials/db'
 import { detectKind, parseMaterial } from '@/features/materials/parse'
-import { readSession, writePane, writeSession, type PaneSide } from '@/features/materials/session'
+import { readSession, readSpot, rememberSpot, writePane, writeSession, type PaneSide } from '@/features/materials/session'
 
 /** 预设色板（与草稿纸一致）。 */
 const SWATCHES = ['#1f2329', '#c0392b', '#1f5fd6', '#0f766e', '#b45309', '#5b4bd6']
@@ -80,11 +80,30 @@ export default function MaterialView({ open, onClose }: { open: boolean; onClose
 
   /* 阅读态（全部落会话，刷新后还原） */
   const initial = useRef(readSession()).current
+  /*
+   * 初值优先用「这份材料的记忆位置」，其次才是会话里的栏位置。
+   *
+   * 两层存储各管一件事：left/right 记「这一栏当前放的是谁」，
+   * `spots` 按材料 id 记「这份材料上次看到哪」。刷新后要用后者才对得上用户印象。
+   */
+  const initialLeftSpot = readSpot(initial.left.id)
+  const initialRightSpot = readSpot(initial.right.id)
   const [leftId, setLeftId] = useState(initial.left.id)
   const [rightId, setRightId] = useState(initial.right.id)
-  const [leftZoom, setLeftZoom] = useState(initial.left.zoom || 1)
-  const [rightZoom, setRightZoom] = useState(initial.right.zoom || 1)
+  const [leftZoom, setLeftZoom] = useState(initialLeftSpot?.zoom || initial.left.zoom || 1)
+  const [rightZoom, setRightZoom] = useState(initialRightSpot?.zoom || initial.right.zoom || 1)
   const [activeSide, setActiveSide] = useState<PaneSide>(initial.active)
+  /**
+   * 每栏的「进入序号」。
+   *
+   * @remarks
+   * 这个组件是常驻的（靠 `open` 开关，不卸载），
+   * 所以同一份材料切走再切回时，Pane 内部的 `material.id` 没变、
+   * 恢复阅读位置的 effect 不会重跑 —— 位置就丢了。
+   * 每次 `openInto` 递增对应栏的序号，逼 Pane 重新恢复一次。
+   */
+  const [leftEnter, setLeftEnter] = useState(0)
+  const [rightEnter, setRightEnter] = useState(0)
   const [tool, setTool] = useState<'pen' | 'eraser'>(initial.tool)
   /**
    * 是否允许手写批注。
@@ -185,6 +204,8 @@ export default function MaterialView({ open, onClose }: { open: boolean; onClose
       // 导入后直接打开到左栏；这里不走 openInto，所以也要记会话。
       setLeftId(material.id)
       setLeftZoom(1)
+      // 新导入的材料从第 1 页开始看，同时递增进入序号让 Pane 重新复位。
+      setLeftEnter((value) => value + 1)
       writePane('left', { id: material.id, zoom: 1, page: 0, ratio: 0 })
       writeSession({ open: true })
     } catch (error) {
@@ -214,17 +235,45 @@ export default function MaterialView({ open, onClose }: { open: boolean; onClose
    * @param side 哪一栏。
    * @param id 材料 id。
    * @returns 无返回。
+   * @remarks
+   * 用户原话：「这个位置保留能不能做好？做了一万遍还是保留不了？？？」
+   *
+   * 以前这里无条件写 `{ id, zoom: 1, page: 0, ratio: 0 }`：
+   * ① 新材料总是回到第 1 页（它自己的旧位置被覆盖）；
+   * ② 原来那份材料的位置也被这一行抹掉了。
+   *
+   * 现在两件事分开做：
+   * - **离开前**：把当前栏这份材料的位置写进 `spots[id]`（按材料记）；
+   * - **进入时**：先查 `spots[id]`，有记录就从那儿接着看，没有才回到首页。
    */
   const openInto = useCallback((side: PaneSide, id: string) => {
+    // 1. 把离开的那份材料的位置存下来（用会话里的最新值，不是 React state）。
+    const before = readSession()
+    const leaving = before[side]
+    if (leaving.id && leaving.id !== id) {
+      rememberSpot(leaving.id, { page: leaving.page, ratio: leaving.ratio, zoom: leaving.zoom })
+    }
+
+    // 2. 新材料若有记忆位置，就从那儿接着看。
+    const spot = readSpot(id)
+    const next = {
+      id,
+      zoom: spot?.zoom ?? 1,
+      page: spot?.page ?? 0,
+      ratio: spot?.ratio ?? 0,
+    }
+
     if (side === 'left') {
       setLeftId(id)
-      setLeftZoom(1)
-      writePane('left', { id, zoom: 1, page: 0, ratio: 0 })
+      setLeftZoom(next.zoom)
+      // 递增进入序号：让 Pane 重新执行「恢复阅读位置」。
+      setLeftEnter((value) => value + 1)
     } else {
       setRightId(id)
-      setRightZoom(1)
-      writePane('right', { id, zoom: 1, page: 0, ratio: 0 })
+      setRightZoom(next.zoom)
+      setRightEnter((value) => value + 1)
     }
+    writePane(side, next)
     writeSession({ open: true, active: side })
     setActiveSide(side)
   }, [])
@@ -254,6 +303,9 @@ export default function MaterialView({ open, onClose }: { open: boolean; onClose
     setMeta((prev) => ({ left: prev.right, right: prev.left }))
     // 会话整组对调：这是「位置记忆」正确的关键。
     writeSession({ left: nextLeft, right: nextRight })
+    // 两栏内容对调了，各自都要重新落位（用它们自己的记忆位置）。
+    setLeftEnter((value) => value + 1)
+    setRightEnter((value) => value + 1)
     // 激活栏留在原来那侧会切到另一份材料上，统一回到左栏更符合直觉。
     setActiveSide('left')
     writeSession({ active: 'left' })
@@ -270,9 +322,17 @@ export default function MaterialView({ open, onClose }: { open: boolean; onClose
     (side: PaneSide) => {
       if (side === 'left') {
         if (rightId) {
+          // 右栏顶到左栏：**沿用右栏当时的位置**，不要写死回第 1 页。
+          const rightPane = readSession().right
           setLeftId(rightId)
           setLeftZoom(rightZoom)
-          writePane('left', { id: rightId, zoom: rightZoom, page: 0, ratio: 0 })
+          setLeftEnter((value) => value + 1)
+          writePane('left', {
+            id: rightId,
+            zoom: rightZoom,
+            page: rightPane.page,
+            ratio: rightPane.ratio,
+          })
         } else {
           setLeftId('')
           writePane('left', { id: '' })
@@ -316,12 +376,21 @@ export default function MaterialView({ open, onClose }: { open: boolean; onClose
   /* ---------------- 缩放 / 笔设置 ---------------- */
 
   const currentZoom = activeSide === 'right' ? rightZoom : leftZoom
-  const setZoomOf = useCallback((side: PaneSide, value: number) => {
-    const next = Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, Math.round(value * 10) / 10))
-    if (side === 'left') setLeftZoom(next)
-    else setRightZoom(next)
-    writePane(side, { zoom: next })
-  }, [])
+  const setZoomOf = useCallback(
+    (side: PaneSide, value: number) => {
+      const next = Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, Math.round(value * 10) / 10))
+      const targetId = side === 'left' ? leftId : rightId
+      if (side === 'left') setLeftZoom(next)
+      else setRightZoom(next)
+      writePane(side, { zoom: next })
+      /*
+       * 缩放也按材料记：切走再切回原来那份时，
+       * 用户调过的缩放要跟着回来，而不是被重置成 100%。
+       */
+      if (targetId) rememberSpot(targetId, { zoom: next })
+    },
+    [leftId, rightId],
+  )
   const changeZoom = (delta: number) => setZoomOf(activeSide, currentZoom + delta)
 
   /* ---------------- 快捷键（作用在激活栏） ---------------- */
@@ -994,7 +1063,15 @@ export default function MaterialView({ open, onClose }: { open: boolean; onClose
             onLoaded={(m) =>
               setMeta((prev) => ({ ...prev, left: { ...prev.left, name: m.name, total: m.pageCount } }))
             }
-            onScrollChange={() => undefined}
+            onScrollChange={(page, ratio) => {
+              /*
+               * 实时把位置记到「这份材料」名下。
+               * 只在离开时才记是不够的：用户切走时读到的会是这份材料
+               * 很久以前的位置（会话里的 left/right 会被别的材料覆盖）。
+               */
+              if (leftId) rememberSpot(leftId, { page, ratio, zoom: leftZoom })
+            }}
+            enterKey={leftEnter}
             onRegisterActions={(actions) => {
               actionsRef.current.left = actions
             }}
@@ -1042,7 +1119,11 @@ export default function MaterialView({ open, onClose }: { open: boolean; onClose
               onLoaded={(m) =>
                 setMeta((prev) => ({ ...prev, right: { ...prev.right, name: m.name, total: m.pageCount } }))
               }
-              onScrollChange={() => undefined}
+              onScrollChange={(page, ratio) => {
+                // 同左栏：实时记到这份材料名下，切换回来才能接上。
+                if (rightId) rememberSpot(rightId, { page, ratio, zoom: rightZoom })
+              }}
+              enterKey={rightEnter}
               onRegisterActions={(actions) => {
                 actionsRef.current.right = actions
               }}
