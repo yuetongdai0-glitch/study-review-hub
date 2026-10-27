@@ -268,6 +268,17 @@ export default function MaterialPane(props: MaterialPaneProps) {
       URL.revokeObjectURL(url)
       urlsRef.current.delete(index)
     }
+    /*
+     * 同样丢掉范围外的画布引用。
+     *
+     * 画布只在 inRange 时挂载，移出范围后 React 会卸载它，
+     * 但 `canvasRefs` 里那份引用不删就会一直拽住整块像素缓冲（约 8MB/页）。
+     * 这是「滚一遍长文档内存只涨不落」的典型原因。
+     */
+    for (const index of [...canvasRefs.current.keys()]) {
+      if (index >= from && index <= to) continue
+      canvasRefs.current.delete(index)
+    }
     setPages((prev) => {
       const next: Record<number, PageContent> = {}
       let changed = false
@@ -601,7 +612,15 @@ export default function MaterialPane(props: MaterialPaneProps) {
     if (!canvas || !ctx) return
     ctx.setTransform(1, 0, 0, 1, 0, 0)
     ctx.clearRect(0, 0, canvas.width, canvas.height)
-    const dpr = canvas.width / (canvas.clientWidth || 1)
+    /*
+     * 反算「canvas 像素 / CSS 像素」的比值时用 **getBoundingClientRect**。
+     *
+     * 不能用 `canvas.clientWidth`：纸张内层按基准像素排版、再靠 transform 缩放，
+     * clientWidth 报的是**变换前**的布局宽（2590），而画布是按变换后的视觉宽（1409）分配的，
+     * 两者相除会得到一个偏大的假 dpr → 笔迹被放大画到纸外。
+     */
+    const cssW = canvas.getBoundingClientRect().width
+    const dpr = cssW > 0 ? canvas.width / cssW : 1
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
     for (const stroke of notesRef.current.get(index) ?? []) drawStroke(ctx, stroke)
   }, [])
@@ -960,44 +979,86 @@ export default function MaterialPane(props: MaterialPaneProps) {
                       <PptPage slides={material.pptSlides?.[index] ?? []} pageW={material.pageW} />
                     )}
 
-                    <canvas
-                      ref={(node) => {
-                        if (!node) return
-                        const old = canvasRefs.current.get(index)
-                        canvasRefs.current.set(index, node)
-                        /*
-                         * 注意：给 canvas.width 赋值**会清空整块画布**。
-                         * 所以只在「尺寸真的需要变」时才设，并且绝不能把 0 宽算进去 ——
-                         * 切页/缩放瞬间 clientWidth 可能还是 0，
-                         * 那时设成 1×1 会把笔迹全丢掉，但界面上的旧像素还留着，
-                         * 于是出现「看得见笔迹、却怎么都撤不掉」的假象。
-                         */
-                        const dpr = Math.min(window.devicePixelRatio || 1, 2)
-                        const w = Math.max(1, Math.round(node.clientWidth * dpr))
-                        const h = Math.max(1, Math.round(node.clientHeight * dpr))
-                        const invalid = node.clientWidth === 0 || node.clientHeight === 0
-                        if (!invalid && (node.width !== w || node.height !== h)) {
-                          node.width = w
-                          node.height = h
-                          const ctx = node.getContext('2d')
-                          if (ctx) ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
-                        }
-                        // 无论尺寸有没有变，都重绘一次：新挂载的 canvas 是空白的。
-                        if (old !== node) redrawPage(index)
-                      }}
-                      className="absolute inset-0 h-full w-full"
-                      style={{
-                        // 只读时不吃指针：让手指滑动直接落到滚动容器上（滚动手感更顺）。
-                        pointerEvents: annotate ? 'auto' : 'none',
-                        touchAction: annotate ? 'none' : 'auto',
-                        cursor: annotate ? (tool === 'eraser' ? 'cell' : 'crosshair') : 'default',
-                      }}
-                      aria-label={`第 ${index + 1} 页批注画布`}
-                      onPointerDown={(event) => onDown(event, index)}
-                      onPointerMove={onMove}
-                      onPointerUp={onUp}
-                      onPointerCancel={onUp}
-                    />
+                    {/*
+                      ⚠️ 批注画布**只在安全区内的页才挂**。
+                      —
+                      每块 canvas 的实际像素是「显示宽 × dpr」平方级占用：
+                      A4 页按 dpr=2 大约 1190×1684×4 ≈ 8 MB/块。
+                      以前无条件给**每一页**都挂一块 —— 91 页的 PDF 就是 700 MB+，
+                      手机打开直接 OOM，整个应用被系统杀掉（用户报的「卡死、闪退」）。
+                      范围外的页只需要一个占位 div（保留高度、维持滚动条长度），
+                      滚进来时 syncRange 会把它纳入 range，届时再挂画布并重绘。
+                    */}
+                    {inRange ? (
+                      <canvas
+                        ref={(node) => {
+                          if (!node) return
+                          const old = canvasRefs.current.get(index)
+                          canvasRefs.current.set(index, node)
+                          /*
+                           * ⚠️ 尺寸必须用**实际显示尺寸**（getBoundingClientRect），
+                           * 不能用 `clientWidth/clientHeight`。
+                           *
+                           * 纸张内层是按基准像素排版的（如 2590×3741），
+                           * 再靠 `transform: scale(0.544)` 缩到屏幕上 1409×2035。
+                           * `clientWidth` 报的是**变换前的布局宽** 2590，
+                           * 于是画布被分配成 2590×2 × 3741×2 = 5180×7482 ≈ **148MB/块**。
+                           * 91 页时哪怕只挂几块，也是几百 MB —— 手机上直接崩。
+                           * `getBoundingClientRect()` 给的是变换后的真实视觉尺寸，
+                           * 按它分配画布能省下 (1/0.544)² ≈ 3.4 倍内存，笔迹位置不受影响
+                           * （绘制坐标仍是基准像素，靠 setTransform 的 dpr 换算）。
+                           *
+                           * 另外：给 canvas.width 赋值**会清空整块画布**，所以只在
+                           * 「尺寸真的需要变」时才设，且绝不能把 0 宽算进去 ——
+                           * 切页/缩放瞬间尺寸可能还是 0，那时设成 1×1 会把笔迹全丢掉。
+                           */
+                          const rect = node.getBoundingClientRect()
+                          const cssW = rect.width
+                          const cssH = rect.height
+                          if (cssW < 1 || cssH < 1) return
+                          const dpr = Math.min(window.devicePixelRatio || 1, 2)
+                          /*
+                           * 单块画布的像素上限。
+                           *
+                           * 为什么要设：内存 = 宽 × 高 × dpr² × 4 字节。
+                           * 桌面 1440 宽的窗口里一张 A4 纸显示成 1409×2035，
+                           * dpr=2 时就是 2818×4070 ≈ **44MB/块**；同时挂 5~6 块 → 250MB+。
+                           * 手机上虽然纸更窄，但 dpr 常见是 3（这里已封顶到 2），
+                           * 加上 91 页这种长文档，一旦滚动过程中多留几块就会 OOM 崩溃。
+                           *
+                           * 笔迹是手写线条，1.4 倍分辨率肉眼几乎看不出差别，
+                           * 但比 2 倍省一半内存。所以超限时按比例降 dpr，
+                           * 而不是让画布无限膨胀。
+                           */
+                          const MAX_PIXELS = 9_000_000
+                          const rawPx = cssW * cssH * dpr * dpr
+                          const shrink = rawPx > MAX_PIXELS ? Math.sqrt(MAX_PIXELS / rawPx) : 1
+                          const effDpr = dpr * shrink
+                          const w = Math.max(1, Math.round(cssW * effDpr))
+                          const h = Math.max(1, Math.round(cssH * effDpr))
+                          if (node.width !== w || node.height !== h) {
+                            node.width = w
+                            node.height = h
+                            const ctx = node.getContext('2d')
+                            if (ctx) ctx.setTransform(effDpr, 0, 0, effDpr, 0, 0)
+                          }
+                          // 无论尺寸有没有变，都重绘一次：新挂载的 canvas 是空白的。
+                          if (old !== node) redrawPage(index)
+                        }}
+                        className="absolute inset-0 h-full w-full"
+                        style={{
+                          // 只读时不吃指针：让手指滑动直接落到滚动容器上（滚动手感更顺）。
+                          pointerEvents: annotate ? 'auto' : 'none',
+                          touchAction: annotate ? 'none' : 'auto',
+                          cursor: annotate ? (tool === 'eraser' ? 'cell' : 'crosshair') : 'default',
+                        }}
+                        aria-label={`第 ${index + 1} 页批注画布`}
+                        onPointerDown={(event) => onDown(event, index)}
+                        onPointerMove={onMove}
+                        onPointerUp={onUp}
+                        onPointerCancel={onUp}
+                      />
+                    ) : null}
                   </div>
                 </div>
               )

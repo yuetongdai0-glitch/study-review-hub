@@ -944,10 +944,32 @@ test('材料：缩放不错位、一键清除笔记、材料内做题不跳走',
    * 注意别用固定窗口切片：ref 回调里有注释和只读判断，行数会变，
    * 用「从 ref 开始到 className」的区间更稳。
    */
-  const refStart = pane.indexOf('ref={(node) => {', pane.indexOf('aria-label={`第 ${index + 1} 页批注画布`}') - 3000)
+  /*
+   * 用「aria-label 往回找最近的 ref=」定位，别写死窗口大小 ——
+   * ref 回调里注释会变长变短，固定偏移会切到别的画布代码上。
+   */
+  const ariaIdx = pane.indexOf('aria-label={`第 ${index + 1} 页批注画布`}')
+  const refStart = pane.lastIndexOf('ref={(node) => {', ariaIdx)
   const refEnd = pane.indexOf('className="absolute inset-0', refStart)
+  assert.ok(refStart > 0 && refEnd > refStart, '要能定位到批注画布的 ref 回调')
   const canvasBlock = pane.slice(refStart, refEnd)
-  assert.ok(/clientWidth \* dpr/.test(canvasBlock), 'canvas 尺寸应取「基准尺寸 × dpr」，不能把 zoom 乘进去')
+  /*
+   * canvas 尺寸必须用 **getBoundingClientRect**（变换后的真实视觉尺寸），
+   * 不能用 `clientWidth` —— 纸张内层按基准像素排版、再靠 transform 缩放，
+   * clientWidth 报的是**变换前**的布局宽。实测桌面 1440 窗口：
+   * clientWidth=2590 而视觉宽只有 1409，按前者分配画布会变成 5180×7482 ≈ 148MB/块，
+   * 91 页的 PDF 直接 OOM 崩溃（用户报的「手机打开就卡死闪退」）。
+   */
+  assert.ok(
+    /getBoundingClientRect\(\)/.test(canvasBlock),
+    'canvas 尺寸要用 getBoundingClientRect：clientWidth 是变换前的布局宽，会把画布放大数倍'
+  )
+  assert.ok(
+    !/node\.clientWidth \* dpr/.test(canvasBlock),
+    '不能再用 clientWidth 分配画布：那是变换前尺寸，内存会爆'
+  )
+  // 单块画布必须有像素上限保护（长文档 / 高 dpr 时按比例降分辨率）
+  assert.ok(/MAX_PIXELS/.test(canvasBlock), '要有单块画布像素上限，否则长页 + 高 dpr 会 OOM')
 
   // 3. 材料内做题：浮层必须挂在材料视图里，而不是草稿工作台
   assert.ok(/const \[quizOpen, setQuizOpen\]/.test(view), '材料视图内要有自己的答题卡开关')
@@ -1240,13 +1262,13 @@ test('材料撤销：单点/一键清除都能撤，且清除前先建快照', a
     '单点笔迹也是一笔：不能因为点数 < 2 就丢弃，否则画布上有痕迹却撤不掉'
   )
 
-  // 5. canvas 尺寸为 0 时不能重置（会清空画布、丢掉笔迹）
+  // 5. 尺寸为 0 时不能重置（赋 width 会清空画布，0 宽会把笔迹全丢）
   assert.ok(
-    /node\.clientWidth === 0 \|\| node\.clientHeight === 0/.test(pane),
+    /if \(cssW < 1 \|\| cssH < 1\) return/.test(pane),
     'canvas ref 里必须先判断尺寸有效再赋值：赋 width 会清空画布，0 宽会把笔迹全丢'
   )
   assert.ok(
-    /if \(!invalid && \(node\.width !== w \|\| node\.height !== h\)\)/.test(pane),
+    /if \(node\.width !== w \|\| node\.height !== h\) \{/.test(pane),
     '只有尺寸真的需要变时才重新赋值'
   )
 
@@ -1469,5 +1491,43 @@ test('切换材料时保留每份材料各自的阅读位置', async () => {
   assert.ok(
     /const from = Math\.max\(0, sessionPage - SAFE_PAGES\)/.test(pane),
     '恢复前要把目标页纳入渲染范围，否则 querySelector 拿不到节点'
+  )
+})
+
+test('长文档不能因画布爆内存：只给可见区挂 canvas，且尺寸用视觉尺寸', async () => {
+  /*
+   * 用户报：「手机导入 91 页 / 98MB 的 PDF，打开草稿工作台就卡死，应用直接退出」。
+   *
+   * 两个叠加的内存炸弹：
+   * ① 以前给**每一页**都挂一块 canvas（92 块），
+   *    手机端实测约 0.93GB —— 远超 WebView 上限，必然被系统杀掉；
+   * ② 画布尺寸用 `clientWidth`，而纸张是「基准像素排版 + transform 缩放」，
+   *    clientWidth 报的是**变换前**的布局宽（桌面实测 2590，视觉只有 1409），
+   *    分配出来就是 5180×7482 ≈ 148MB/块。
+   *
+   * 修法：只在安全区内挂 canvas（范围外只留占位 div），
+   * 尺寸改取 getBoundingClientRect()，并加单块像素上限。
+   */
+  const pane = await readFile(new URL('../src/features/materials/MaterialPane.tsx', import.meta.url), 'utf8')
+
+  // ① canvas 必须受 inRange 控制
+  assert.ok(
+    /\{inRange \? \([\s\S]{0,80}<canvas/.test(pane),
+    '批注画布只能挂安全区内的页：每页一块会让长文档 OOM（手机直接闪退）'
+  )
+  // 范围外的 canvas 引用要被回收，否则内存只涨不落
+  assert.ok(
+    /for \(const index of \[\.\.\.canvasRefs\.current\.keys\(\)\]\)/.test(pane),
+    '移出安全区的画布引用要删掉，否则内存不回收'
+  )
+
+  // ② 尺寸取视觉尺寸，且有上限
+  const ariaIdx = pane.indexOf('aria-label={`第 ${index + 1} 页批注画布`}')
+  const canvasBlock = pane.slice(pane.lastIndexOf('ref={(node) => {', ariaIdx), ariaIdx)
+  assert.ok(/getBoundingClientRect\(\)/.test(canvasBlock), '画布尺寸要用视觉尺寸（变换后）')
+  assert.ok(/MAX_PIXELS/.test(canvasBlock), '要有单块画布像素上限')
+  assert.ok(
+    /const shrink = rawPx > MAX_PIXELS \? Math\.sqrt\(MAX_PIXELS \/ rawPx\) : 1/.test(canvasBlock),
+    '超限时按比例降分辨率（sqrt），不是简单截断'
   )
 })
