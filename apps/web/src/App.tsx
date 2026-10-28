@@ -92,7 +92,28 @@ export default function App() {
 
   return (
     <ConfigProvider locale={zhCN} theme={themeConfig}>
-      <AntdApp>{locked ? <LockScreen /> : router}</AntdApp>
+      <AntdApp>
+        {/*
+         * ⚠️ 锁定**不要卸载路由**，只用遮罩盖住。
+         *
+         * 用户原话：「不要每次刷新或者锁屏后就回到顶部了 希望保留位置」。
+         *
+         * 以前是 `locked ? <LockScreen/> : router`：一锁定，整棵页面被卸载 →
+         * 文档高度从两万像素塌到一屏 → `window.scrollY` 被浏览器强制归 0 →
+         * 解锁后重新挂载，从顶部开始。用户看到的就是「锁屏后回到顶部」。
+         *
+         * 现在页面一直挂在那儿（滚动位置、材料阅读进度、草稿都不动），
+         * 锁定只是盖一层不透明遮罩 + 遮罩自己接管焦点。
+         *
+         * 安全性没有下降：LockScreen 是不透明的 `position: fixed` 全屏层
+         * （z-index 2400），口令没输对就进不去；`aria-hidden` 让读屏软件
+         * 也不会念到被遮住的内容。
+         */}
+        <div aria-hidden={locked ? true : undefined} style={locked ? { pointerEvents: 'none' } : undefined}>
+          {router}
+        </div>
+        {locked ? <LockScreen /> : null}
+      </AntdApp>
     </ConfigProvider>
   )
 }

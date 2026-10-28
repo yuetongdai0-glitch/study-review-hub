@@ -39,8 +39,16 @@
     -webkit-tap-highlight-color: transparent;
   }
 
+  /*
+   * 别给全局加 `scroll-behavior: smooth`。
+   *
+   * 用户原话：「不要滚动动画 也不要有一帧的卡顿 要流畅」「也不要干预正常滚动行为」。
+   * 全局 smooth 会让每一处 scrollTo（翻页恢复位置、锚点跳转、回到总栏）
+   * 都变成一段平滑动画：长文里恢复 5000px 的位置要滑好几帧，
+   * 观感就是"卡一下再冲上去"。而且它本身就是对原生滚动手感的干预。
+   */
   html {
-    scroll-behavior: smooth;
+    scroll-behavior: auto;
     -webkit-text-size-adjust: 100%;
   }
 

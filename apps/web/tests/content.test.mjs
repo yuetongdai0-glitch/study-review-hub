@@ -175,10 +175,59 @@ test('首页不再放安装包下载入口', async () => {
 })
 
 test('刷新与滚动行为的关键实现存在', async () => {
-  // 返回时不恢复上次位置：靠 scrollRestoration = 'manual' + 路由切换回顶。
+  /*
+   * ⚠️ 这条需求**已经反过来了**，别再改回去。
+   *
+   * 旧行为：`scrollRestoration = 'manual'` + 每次换页 `scrollTo(0,0)`，
+   * 理由是「从科目页退回总览时不要停在半截」。
+   * 但用户后来说：「不要每次刷新或者锁屏后就回到顶部了 希望保留位置
+   * 包括从这返回到总栏也是」「不要滚动动画 也不要有一帧的卡顿 要流畅」
+   * 「也不要干预正常滚动行为」。
+   *
+   * 现在的正确行为：
+   * - 浏览器原生恢复（auto）拿回来，但**按 pathname 自己记**，各科目互不覆盖；
+   * - 同页刷新/锁屏解锁 → 回原位；换到别页 → 用那页自己的旧位置；
+   * - `behavior: 'instant'`，不做平滑动画；不逐帧 scrollTo（那才是一帧卡顿的来源）。
+   */
   const scroll = await readFile(new URL('../src/components/features/ScrollToTop.tsx', import.meta.url), 'utf8')
-  assert.match(scroll, /scrollRestoration\s*=\s*'manual'/, '缺少 scrollRestoration=manual，返回会停在半截')
-  assert.match(scroll, /scrollTo\(\{\s*top:\s*0/, '路由切换未回到顶部')
+
+  // 必须交回浏览器原生恢复（manual 会让"刷新"这条路径没人管，必然回顶部）
+  assert.match(
+    scroll,
+    /scrollRestoration\s*=\s*'auto'/,
+    '要恢复浏览器原生滚动恢复；manual 会让刷新必然回到顶部'
+  )
+  assert.ok(!/scrollRestoration\s*=\s*'manual'/.test(scroll), '不能再设成 manual')
+
+  // 按路径分别记忆
+  assert.match(scroll, /KEY_PREFIX\s*=\s*'study-hub:scroll:'/, '要按 pathname 分键记位置')
+  assert.match(scroll, /writePos\(prev, lastYRef\.current\)/, '离开上一页时要落盘它的位置')
+  assert.match(scroll, /const saved = readPos\(pathname\)/, '进入页面时要读回它自己的位置')
+
+  // 不要动画、不要逐帧追赶
+  assert.match(scroll, /behavior:\s*'instant'/, '恢复位置必须 instant，不能有平滑动画')
+  assert.ok(!/'smooth'/.test(scroll), 'ScrollToTop 里不能用 smooth')
+  assert.ok(
+    !/addEventListener\('wheel'|addEventListener\('touchmove'|preventDefault\(\)\s*\/\/\s*scroll/.test(scroll),
+    '不能拦 wheel/touchmove：那等于干预原生滚动'
+  )
+
+  // 锁屏不能卸载路由，否则页面塌陷、滚动位置被浏览器归零
+  const app = await readFile(new URL('../src/App.tsx', import.meta.url), 'utf8')
+  // 注释里会提到旧写法，断言前先剥掉注释，避免自己命中自己。
+  const appCode = app.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/[^\n]*/g, '')
+  assert.ok(
+    !/locked\s*\?\s*<LockScreen\s*\/>\s*:\s*router/.test(appCode),
+    '锁屏不能卸载路由：页面塌陷会把 scrollY 归零，解锁后就回到顶部了'
+  )
+  assert.ok(/\{locked \? <LockScreen \/> : null\}/.test(appCode), '锁屏要用遮罩叠在页面之上')
+
+  // 全局不能开平滑滚动（legacy-home.css 自带的 smooth 会覆盖 styles.css）
+  const legacyHome = await readFile(new URL('../src/styles/legacy-home.css', import.meta.url), 'utf8')
+  assert.ok(
+    !/^html\s*\{\s*scroll-behavior:\s*smooth/m.test(legacyHome),
+    'legacy-home.css 不能给 html 开 smooth：长文里恢复几千像素会变成卡顿动画'
+  )
 
   // 主动刷新必须是「重新加载页面 + 重建整个应用」两级，而不是只重载。
   const update = await readFile(new URL('../src/hooks/useUpdate.ts', import.meta.url), 'utf8')
@@ -1584,4 +1633,46 @@ test('空闲自动锁屏：设了密码才生效，且有真实活动就不锁',
 
   // 挂在 App 顶层，所有页面都受管
   assert.ok(/useAutoLock\(\)/.test(app), '自动锁屏要挂在 App 顶层，任何页面都生效')
+})
+
+test('滚动位置按页面记忆：刷新、锁屏、返回都不回顶部', async () => {
+  /*
+   * 用户原话：「不要每次刷新或者锁屏后就回到顶部了 希望保留位置
+   * 包括从这返回到总栏也是」「只是说不要滚动动画也不要有一帧的卡顿 要流畅」
+   * 「也不要干预正常滚动行为」。
+   *
+   * 三处必须同时成立，少一处就还是会回顶部：
+   * ① ScrollToTop 不能每次 pathname 变化都归零、也不能关掉浏览器原生恢复；
+   * ② 锁屏不能卸载路由 —— 页面一卸载，文档高度从两万像素塌到一屏，
+   *    浏览器会把 scrollY 强制归 0，解锁后就从顶部开始；
+   * ③ 全局不能开 smooth，恢复长文位置会变成"滑好几帧"的卡顿动画。
+   */
+  const scroll = await readFile(new URL('../src/components/features/ScrollToTop.tsx', import.meta.url), 'utf8')
+  const app = await readFile(new URL('../src/App.tsx', import.meta.url), 'utf8')
+  const styles = await readFile(new URL('../src/styles.css', import.meta.url), 'utf8')
+  const legacyHome = await readFile(new URL('../src/styles/legacy-home.css', import.meta.url), 'utf8')
+
+  // ① 按路径记忆，交回浏览器原生恢复
+  assert.ok(/scrollRestoration\s*=\s*'auto'/.test(scroll), '要交回浏览器原生恢复')
+  assert.ok(/study-hub:scroll:/.test(scroll), '要按 pathname 分键存位置')
+  assert.ok(/behavior:\s*'instant'/.test(scroll), '恢复位置必须 instant（用户明确不要动画）')
+  assert.ok(
+    /if \(y === 0 && document\.documentElement\.scrollHeight > window\.innerHeight \+ 4\) return/.test(scroll),
+    '要过滤「假 0」：浮层锁 body 滚动时 scrollY 会瞬间变 0，记下来就会回顶部'
+  )
+
+  // ② 锁屏用遮罩，不卸载路由
+  const appCode = app.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/[^\n]*/g, '')
+  assert.ok(!/locked\s*\?\s*<LockScreen\s*\/>\s*:\s*router/.test(appCode), '锁屏不能卸载路由')
+  assert.ok(/aria-hidden=\{locked \? true : undefined\}/.test(appCode), '遮罩层要给下层加 aria-hidden')
+
+  // ③ 不要全局平滑滚动
+  assert.ok(
+    !/html\s*\{\s*scroll-behavior:\s*smooth/.test(styles),
+    'styles.css 不能开 smooth'
+  )
+  assert.ok(
+    !/html\s*\{\s*scroll-behavior:\s*smooth/.test(legacyHome),
+    'legacy-home.css 不能开 smooth（它加载在后，会覆盖 styles.css）'
+  )
 })
