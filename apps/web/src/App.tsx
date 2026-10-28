@@ -5,6 +5,7 @@ import { HashRouter } from 'react-router-dom'
 import AppRouter from '@/router/AppRouter'
 import LockScreen from '@/components/features/LockScreen'
 import { useResolvedTheme } from '@/hooks/useResolvedTheme'
+import { useAutoLock } from '@/hooks/useAutoLock'
 import { useLockStore } from '@/store/lockStore'
 import { applyThemeToDocument } from '@/theme/runtime'
 import { themeColorTokens } from '@/theme/tokens'
@@ -80,6 +81,14 @@ export default function App() {
    * 解锁态只在内存里，刷新即失效（见 store/lockStore.ts）。
    */
   const locked = useLockStore((state) => state.required && !state.unlocked)
+
+  /*
+   * 空闲自动锁屏：设了密码后，长时间不动就回到锁定页。
+   *
+   * 挂在 App 顶层而不是各个页面里：任何页面（材料阅读、草稿台、长文）
+   * 都应该有这道门禁，而且它只按「用户有没有在操作」判断，与路由无关。
+   */
+  useAutoLock()
 
   return (
     <ConfigProvider locale={zhCN} theme={themeConfig}>

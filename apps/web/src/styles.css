@@ -506,6 +506,82 @@
   .hub-settings-details .hub-settings-fields {
     margin-top: 4px;
   }
+
+  /* ---------- 空闲自动锁屏 ---------- */
+
+  .hub-settings-autolock {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px dashed rgb(var(--c-line));
+  }
+
+  /*
+   * 用 label 包住 checkbox 与文字：点文字也能勾选，
+   * 手机上这个命中区域比那个小方块大得多。
+   */
+  .hub-settings-check {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    cursor: pointer;
+  }
+
+  .hub-settings-check input[type='checkbox'] {
+    flex: none;
+    width: 16px;
+    height: 16px;
+    margin: 1px 0 0;
+    accent-color: rgb(var(--c-brand));
+    cursor: pointer;
+  }
+
+  .hub-settings-check span {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .hub-settings-check strong {
+    font-size: 13px;
+    font-weight: 600;
+    color: rgb(var(--c-ink));
+  }
+
+  .hub-settings-check em {
+    font-size: 12px;
+    font-style: normal;
+    line-height: 1.5;
+    color: rgb(var(--c-ink-3));
+  }
+
+  /* 「空闲 [N 分钟] 后锁屏」一行 */
+  .hub-settings-autolock-time {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-top: 10px;
+    padding-left: 25px;
+    font-size: 12.5px;
+    color: rgb(var(--c-ink-2));
+  }
+
+  .hub-settings-select {
+    padding: 5px 9px;
+    border: 1px solid rgb(var(--c-line-strong));
+    border-radius: 7px;
+    background: rgb(var(--c-surface));
+    color: rgb(var(--c-ink));
+    font: inherit;
+    font-size: 12.5px;
+    cursor: pointer;
+  }
+
+  .hub-settings-select:focus {
+    outline: none;
+    border-color: rgb(var(--c-brand));
+    box-shadow: 0 0 0 3px rgb(var(--c-brand-soft));
+  }
 }
 
 /* ============================================================

@@ -1531,3 +1531,57 @@ test('长文档不能因画布爆内存：只给可见区挂 canvas，且尺寸�
     '超限时按比例降分辨率（sqrt），不是简单截断'
   )
 })
+
+test('空闲自动锁屏：设了密码才生效，且有真实活动就不锁', async () => {
+  /*
+   * 用户要求：「把长时间不动、然后设置了密码自动锁屏的功能加上去」。
+   *
+   * 三个必须成立的点（少一个都会让用户觉得「功能没做」或「把我关在门外」）：
+   * ① 只在设了密码时生效 —— 没密码时锁屏等于把人锁在外面，没有口令可输；
+   * ② 持续操作时不能误锁 —— 光有「多久锁」没有「活动就重置」等于定时踢人；
+   * ③ 切后台的时间也要算 —— 手机锁屏/切 App 时定时器会被系统冻结，
+   *    只用 setTimeout 会在回来之后才重新开始计时，等于没锁。
+   */
+  const hook = await readFile(new URL('../src/hooks/useAutoLock.ts', import.meta.url), 'utf8')
+  const lock = await readFile(new URL('../src/utils/appLock.ts', import.meta.url), 'utf8')
+  const app = await readFile(new URL('../src/App.tsx', import.meta.url), 'utf8')
+  const settings = await readFile(new URL('../src/components/features/SettingsDialog.tsx', import.meta.url), 'utf8')
+
+  // ① 没设密码直接不挂监听
+  assert.ok(/if \(!required\) return/.test(hook), '没设密码时不该启动自动锁屏（否则没人能解开）')
+  assert.ok(
+    /if \(!store\.required \|\| !store\.unlocked\) return/.test(hook),
+    '已锁定时也不能重复触发'
+  )
+
+  // ② 活动事件要覆盖鼠标/键盘/触摸/滚动
+  for (const ev of ['pointerdown', 'pointermove', 'wheel', 'keydown', 'touchstart', 'scroll']) {
+    assert.ok(new RegExp(`\\['${ev}'`).test(hook), `要监听 ${ev}：只靠部分事件会导致"一直没动"被误判`)
+  }
+  // 活动必须重置计时
+  assert.ok(/lastActiveRef\.current = Date\.now\(\)/.test(hook), '有活动就要重置计时')
+  // 滚动要捕获阶段，否则材料面板内部容器收不到
+  assert.ok(/'scroll', \{ passive: true, capture: true \}/.test(hook), 'scroll 必须用捕获阶段监听')
+
+  // ③ 切后台按真实流逝时间算
+  assert.ok(/hiddenAtRef/.test(hook), '要记录切后台的时刻')
+  assert.ok(/visibilitychange/.test(hook), '要监听 visibilitychange')
+  assert.ok(
+    /const base = hiddenAtRef\.current \?\? lastActiveRef\.current/.test(hook),
+    '后台停留时间也要计入空闲（否则放兜里两小时回来还开着）'
+  )
+
+  // 设置里可选时长，默认开启 5 分钟
+  assert.ok(/AUTO_LOCK_OPTIONS = \[1, 5, 10, 30, 60\]/.test(lock), '要提供几档固定时长')
+  assert.ok(/AUTO_LOCK_DEFAULT: AutoLockConfig = \{ enabled: true, minutes: 5 \}/.test(lock), '默认开启 5 分钟')
+  assert.ok(/export function readAutoLock/.test(lock), '要能读设置')
+  assert.ok(/export function writeAutoLock/.test(lock), '要能存设置')
+  // 关密码时一并清掉（没密码时这条记录没意义）
+  assert.ok(/clearAutoLock\(\)/.test(settings), '关闭启动密码时要清掉自动锁屏设置')
+  // 设置界面要有开关与时长选择
+  assert.ok(/hub-settings-autolock/.test(settings), '设置里要有自动锁屏这一块')
+  assert.ok(/aria-label="自动锁屏等待时长"/.test(settings), '时长选择要有可访问名')
+
+  // 挂在 App 顶层，所有页面都受管
+  assert.ok(/useAutoLock\(\)/.test(app), '自动锁屏要挂在 App 顶层，任何页面都生效')
+})

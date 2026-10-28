@@ -237,3 +237,88 @@ export async function verifyLock(password: string): Promise<boolean> {
   for (let i = 0; i < actual.length; i += 1) diff |= actual.charCodeAt(i) ^ record.hash.charCodeAt(i)
   return diff === 0
 }
+
+/* ---------------- 空闲自动锁屏 ---------------- */
+
+/** 自动锁屏设置的存储键。 */
+const AUTO_LOCK_KEY = 'study-hub:auto-lock'
+
+/**
+ * 可选的空闲时长（分钟）。
+ *
+ * @remarks
+ * 用户要求「长时间不动然后设置了密码自动锁屏」。
+ * 给几档固定值而不是让用户填数字：手输容易填出 0.5 小时这种，
+ * 也不好看清到底多久。默认 5 分钟 ——
+ * 够看完一段笔记不被打断，又不会把手机放着去吃饭还敞着。
+ */
+export const AUTO_LOCK_OPTIONS = [1, 5, 10, 30, 60] as const
+
+/** 可选的空闲时长（分钟）。 */
+export type AutoLockMinutes = (typeof AUTO_LOCK_OPTIONS)[number]
+
+/** 自动锁屏设置。 */
+export type AutoLockConfig = {
+  /** 是否启用。 */
+  enabled: boolean
+  /** 空闲多少分钟后锁屏。 */
+  minutes: AutoLockMinutes
+}
+
+/** 默认值：开启、5 分钟。 */
+export const AUTO_LOCK_DEFAULT: AutoLockConfig = { enabled: true, minutes: 5 }
+
+/**
+ * 读取自动锁屏设置。
+ *
+ * @returns 设置；没存过或数据坏掉时返回默认值。
+ * @remarks 默认是**开启**：用户既然设了密码，就说明他要门禁；
+ * 放着不管等于门禁形同虚设。没设密码时这个设置不起作用（见 useAutoLock）。
+ */
+export function readAutoLock(): AutoLockConfig {
+  try {
+    const raw = window.localStorage.getItem(AUTO_LOCK_KEY)
+    if (!raw) return { ...AUTO_LOCK_DEFAULT }
+    const parsed: unknown = JSON.parse(raw)
+    if (!parsed || typeof parsed !== 'object') return { ...AUTO_LOCK_DEFAULT }
+    const data = parsed as Partial<AutoLockConfig>
+    const minutes = AUTO_LOCK_OPTIONS.includes(data.minutes as AutoLockMinutes)
+      ? (data.minutes as AutoLockMinutes)
+      : AUTO_LOCK_DEFAULT.minutes
+    return {
+      enabled: typeof data.enabled === 'boolean' ? data.enabled : AUTO_LOCK_DEFAULT.enabled,
+      minutes,
+    }
+  } catch {
+    return { ...AUTO_LOCK_DEFAULT }
+  }
+}
+
+/**
+ * 保存自动锁屏设置。
+ *
+ * @param config 新设置。
+ * @returns 无返回。
+ */
+export function writeAutoLock(config: AutoLockConfig): void {
+  try {
+    window.localStorage.setItem(AUTO_LOCK_KEY, JSON.stringify(config))
+  } catch {
+    // 存不下就维持原状，不值得打断用户。
+  }
+}
+
+/**
+ * 关闭启动密码时一并清掉自动锁屏设置。
+ *
+ * @returns 无返回。
+ * @remarks 没密码时自动锁屏没有意义；留着这条记录会让「重开密码」后
+ * 用户以为设置是新默认的，其实是上次残留。
+ */
+export function clearAutoLock(): void {
+  try {
+    window.localStorage.removeItem(AUTO_LOCK_KEY)
+  } catch {
+    // 同上，清理失败不阻断。
+  }
+}

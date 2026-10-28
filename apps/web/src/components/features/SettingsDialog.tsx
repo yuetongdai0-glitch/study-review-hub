@@ -4,7 +4,7 @@ import { Modal } from 'antd'
 import { useUpdate } from '@/hooks/useUpdate'
 import { useAppStore } from '@/store/appStore'
 import { useLockStore } from '@/store/lockStore'
-import { clearLock, setLock } from '@/utils/appLock'
+import { AUTO_LOCK_OPTIONS, clearAutoLock, clearLock, readAutoLock, setLock, writeAutoLock, type AutoLockMinutes } from '@/utils/appLock'
 import { useResolvedTheme } from '@/hooks/useResolvedTheme'
 import { allModules } from '@/router/routeRegistry'
 import type { ThemePreference } from '@/theme/tokens'
@@ -42,6 +42,27 @@ export default function SettingsDialog() {
   const [confirm, setConfirm] = useState('')
   const [lockStatus, setLockStatus] = useState('')
   const [saving, setSaving] = useState(false)
+  /**
+   * 自动锁屏设置。
+   *
+   * @remarks 初值读一次本地存储；改动即时落盘（不需要「保存」按钮）——
+   * 这个设置只有两个字段，多一步确认反而烦。
+   */
+  const [autoLock, setAutoLock] = useState(() => readAutoLock())
+
+  /**
+   * 更新自动锁屏设置并立即保存。
+   *
+   * @param patch 要改的字段。
+   * @returns 无返回。
+   */
+  const updateAutoLock = (patch: Partial<typeof autoLock>) => {
+    setAutoLock((prev) => {
+      const next = { ...prev, ...patch }
+      writeAutoLock(next)
+      return next
+    })
+  }
 
   /* 关闭时清掉临时提示，避免下次打开看到旧文案。 */
   useEffect(() => {
@@ -91,6 +112,15 @@ export default function SettingsDialog() {
    */
   const removePassword = () => {
     clearLock()
+    /*
+     * 一并清掉自动锁屏设置。
+     *
+     * 没密码时锁屏等于把用户自己关在门外（没有口令可输），
+     * 所以那条记录留着没有意义，反而会让下次重开密码后
+     * 用户以为「时长是新设的」，其实是他上次的残值。
+     */
+    clearAutoLock()
+    setAutoLock(readAutoLock())
     refreshLock()
     setPassword('')
     setConfirm('')
@@ -232,6 +262,44 @@ export default function SettingsDialog() {
           )}
 
           {lockStatus ? <p className="hub-settings-status">{lockStatus}</p> : null}
+
+          {/* ---------- 空闲自动锁屏（只有设了密码才有意义） ---------- */}
+          {locked ? (
+            <div className="hub-settings-autolock">
+              <label className="hub-settings-check">
+                <input
+                  type="checkbox"
+                  checked={autoLock.enabled}
+                  onChange={(event) => updateAutoLock({ enabled: event.target.checked })}
+                />
+                <span>
+                  <strong>长时间不动自动锁屏</strong>
+                  <em>放下手机、电脑走开一会儿，回来要重新输口令</em>
+                </span>
+              </label>
+
+              {autoLock.enabled ? (
+                <div className="hub-settings-autolock-time">
+                  <span>空闲</span>
+                  <select
+                    className="hub-settings-select"
+                    value={autoLock.minutes}
+                    aria-label="自动锁屏等待时长"
+                    onChange={(event) =>
+                      updateAutoLock({ minutes: Number(event.target.value) as AutoLockMinutes })
+                    }
+                  >
+                    {AUTO_LOCK_OPTIONS.map((minutes) => (
+                      <option key={minutes} value={minutes}>
+                        {minutes} 分钟
+                      </option>
+                    ))}
+                  </select>
+                  <span>后锁屏</span>
+                </div>
+              ) : null}
+            </div>
+          ) : null}
         </section>
 
         {/* ---------- 刷新 ---------- */}
