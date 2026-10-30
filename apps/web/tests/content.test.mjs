@@ -962,9 +962,7 @@ test('材料：缩放不错位、一键清除笔记、材料内做题不跳走',
   assert.ok(/const ZOOM_MIN = 0\.6/.test(view) && /const ZOOM_MAX = 3/.test(view), '缩放范围缺失')
   assert.ok(/className="page-slot/.test(pane) && /className="page-sheet/.test(pane), '缩放需要「外层占位 + 内层 transform」两层结构')
   /*
-   * 内层用 transform 缩放，且缩放系数来自 `--page-scale`：
-   * 它 = min(zoom, 容器宽/基准宽)，手机窄屏时会把纸缩到刚好放下，
-   * 否则纸张会画到屏幕外（右侧被裁、还能横向拖动）。
+   * 内层用 transform 缩放，且缩放系数来自 `--page-scale`。
    * 关键在于 canvas 内部坐标系始终是基准像素，所以笔迹不会因为缩放而错位。
    */
   assert.ok(
@@ -972,9 +970,23 @@ test('材料：缩放不错位、一键清除笔记、材料内做题不跳走',
     '内层要用 transform 缩放（改宽高会让 canvas 内部坐标系变化，笔迹就错位了）'
   )
   assert.ok(/const \[fitScale, setFitScale\]/.test(pane), '需要有容器自适应的 fitScale')
+  /*
+   * 「100%」= 铺满容器（最多原大），缩放倍数在它之上**相乘**。
+   * 曾经写成 `min(zoom, avail / pageW)`，等于把「适合屏幕」当成缩放上限：
+   * 手机 avail/pageW = 0.629，放大到 300% 实际还是 0.629，缩放按钮完全没反应；
+   * 桌面双栏(719/2=359)同理卡在 1.18。
+   */
   assert.ok(
-    /const next = Math\.min\(zoom, avail \/ target\.pageW\)/.test(pane),
-    '纸张宽度必须取 min(zoom, 容器宽/基准宽)：手机屏幕比 A4 窄，只按 zoom 会溢出屏幕'
+    /const baseFit = Math\.min\(1, avail \/ target\.pageW\)/.test(pane),
+    '要有独立的 baseFit（100% 基准）：容器比纸窄时缩到刚好放下'
+  )
+  assert.ok(
+    /const next = baseFit \* zoom/.test(pane),
+    '缩放倍数要在 baseFit 之上相乘：取 min 会让「适合屏幕」变成缩放上限，手机上放大按钮彻底失效'
+  )
+  assert.ok(
+    !/Math\.min\(zoom, avail \/ target\.pageW\)/.test(pane),
+    '不能再把 fitScale 写成 min(zoom, 容器宽/基准宽)：那会让窄屏/双栏下无法放大'
   )
   assert.ok(
     /['"]--page-scale['"\s]*as string\]/.test(pane) || /--page-scale/.test(pane),
@@ -1017,8 +1029,29 @@ test('材料：缩放不错位、一键清除笔记、材料内做题不跳走',
     !/node\.clientWidth \* dpr/.test(canvasBlock),
     '不能再用 clientWidth 分配画布：那是变换前尺寸，内存会爆'
   )
-  // 单块画布必须有像素上限保护（长文档 / 高 dpr 时按比例降分辨率）
+  // 单块画布必须有像素上限保护（长文档 / 高 dpr 时按比例缩分辨率）
   assert.ok(/MAX_PIXELS/.test(canvasBlock), '要有单块画布像素上限，否则长页 + 高 dpr 会 OOM')
+
+  /*
+   * ⚠️ 画布按「视觉宽度」分配，但笔迹坐标是「布局宽度」坐标系。
+   * 两者只在 100% 时相等，所以绘制时的换算比例**必须**用 clientWidth：
+   *   canvas.width / clientWidth  （含 dpr 与 zoom）
+   * 写成 canvas.width / rect.width 只有 dpr，少了 zoom 那一份 ——
+   * 放大 120% 时笔迹被挤进画布左侧 83%，用户看到的就是「一缩放笔记位置就变」。
+   */
+  assert.ok(
+    /function syncCanvasTransform\(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement\)/.test(pane),
+    '绘制换算要集中到 syncCanvasTransform，避免四处各写一份比例'
+  )
+  assert.ok(
+    /const scale = layoutW > 0 \? canvas\.width \/ layoutW : 1/.test(pane),
+    '换算比例必须是 canvas.width / clientWidth（含 dpr 与 zoom）：除 rect.width 会漏掉 zoom，缩放后笔记错位'
+  )
+  assert.ok(
+    !/canvas\.width \/ cssW/.test(pane),
+    '不能再用画布宽 / 视觉宽反算：那只是 dpr，缩放后笔迹会被挤到左侧'
+  )
+  assert.ok(/syncCanvasTransform\(ctx, canvas\)/.test(pane), 'redrawPage 必须走 syncCanvasTransform 才能缩放后不错位')
 
   // 3. 材料内做题：浮层必须挂在材料视图里，而不是草稿工作台
   assert.ok(/const \[quizOpen, setQuizOpen\]/.test(view), '材料视图内要有自己的答题卡开关')
@@ -1082,16 +1115,33 @@ test('材料：缩放坐标换算、缩放保住宿主位置、Ctrl+Z 撤销', a
   )
 
   /*
-   * 2. 缩放锚点
-   * 重构后缩放是「改变 pane 的 zoom prop」→ 由 CSS transform 完成，
-   * 不再在 View 里手算 scrollTop；位置保持改由 `writePane` 记 ratio +
-   * Pane 的 tryRestore 还原。这里改测「有没有把 ratio 记进会话」。
+   * 2. 缩放锚点（「缩放后位置变了」的回归）
+   *
+   * 缩放的落点是 `--page-scale`，而它是异步 state：`zoom` 一变，本次 render 里
+   * 比例还是旧值，新值要等下一次 render 才生效。所以「冻结锚点」与「按新几何还原」
+   * 必须分成两步、分两个 effect：
+   * - 旧几何还可靠时（比例真的要变的那一刻）先冻结「页 + 页内比例」；
+   * - 新比例落地后（`fitScale` 变化）再用新页高换算 scrollTop。
+   * 合成一步写在 `[zoom]` 的 effect 里，算出的目标位置恰好等于旧 scrollTop，
+   * 等于什么都没做 —— 用户看到的就是「缩放后位置变了」。
    */
   assert.ok(/setZoomOf/.test(view), '缩放要集中到 setZoomOf，避免两栏各写一份')
   assert.ok(/writePane\(side, \{ zoom/.test(view), '缩放必须写进该栏会话，否则刷新后被重置')
   assert.ok(
-    /node\.offsetHeight \* anchor\.ratio|el\.offsetHeight \* sessionRatio|el\.offsetHeight \* own\.ratio/.test(pane),
-    '恢复时要按「新页高 × 页内比例」定位（纯乘 scrollTop 会有累积误差）'
+    /function readScrollAnchor\(/.test(pane),
+    '必须把「视口顶部落在哪一页、页内多少」抽成一个函数：缩放前要用它冻结锚点'
+  )
+  assert.ok(
+    /pendingAnchorRef\.current = readScrollAnchor\(scroller\)/.test(pane),
+    '比例变化前必须先冻结锚点（此刻几何还是旧的，才可靠）'
+  )
+  assert.ok(
+    /useLayoutEffect\(\(\) => \{[\s\S]{0,600}?pendingAnchorRef\.current[\s\S]{0,900}?\}, \[fitScale\]\)/.test(pane),
+    '要有一个以 fitScale 为触发的 layout effect：新缩放生效后才能按新页高还原位置'
+  )
+  assert.ok(
+    /node\.offsetTop \+ height \* pending\.ratio/.test(pane),
+    '还原时要按「新页高 × 冻结的页内比例」定位（纯乘 scrollTop 会有累积误差）'
   )
   assert.ok(
     /data-page=\{index\}[\s\S]{0,80}className="page-slot/.test(pane),
@@ -1317,8 +1367,17 @@ test('材料撤销：单点/一键清除都能撤，且清除前先建快照', a
     'canvas ref 里必须先判断尺寸有效再赋值：赋 width 会清空画布，0 宽会把笔迹全丢'
   )
   assert.ok(
-    /if \(node\.width !== w \|\| node\.height !== h\) \{/.test(pane),
-    '只有尺寸真的需要变时才重新赋值'
+    /const resized = node\.width !== w \|\| node\.height !== h/.test(pane),
+    '只有尺寸真的需要变时才重新赋值（赋 width 会清空画布）'
+  )
+  /*
+   * 缩放会让 getBoundingClientRect 的尺寸变化 → 上面那个分支重新赋 width →
+   * 画布像素被清空。此时节点还是同一个（old === node），
+   * 所以「只在换节点时重绘」会让缩放后笔记凭空消失。
+   */
+  assert.ok(
+    /if \(old !== node \|\| resized\) redrawPage\(index\)/.test(pane),
+    '尺寸变化（缩放）也必须重绘：赋 width 会清空画布，只重绘新节点会导致缩放后笔记消失'
   )
 
   // 6. 清除后的提示要告诉用户能撤销

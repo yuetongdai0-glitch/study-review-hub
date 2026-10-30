@@ -1,5 +1,5 @@
 import { App } from 'antd'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import {
   getAllNotes,
   getMaterial,
@@ -75,6 +75,28 @@ export type MaterialPaneProps = {
    * 所以同一份材料切走再切回时，光看 `id` 无法察觉「又进了一次」。
    */
   enterKey?: number
+}
+
+/**
+ * 读出「当前视口顶部落在哪一页、页内比例多少」。
+ *
+ * @param scroller 滚动容器。
+ * @returns 页码与页内比例。
+ * @remarks 缩放前必须用它冻结锚点：`scrollTop` 是绝对像素，
+ * 页高变了以后同一个数字对应的是另一处内容，必须换算成「页 + 比例」才不漂。
+ */
+function readScrollAnchor(scroller: HTMLDivElement): { page: number; ratio: number } {
+  const top = scroller.scrollTop
+  let page = 0
+  let ratio = 0
+  for (const node of scroller.querySelectorAll<HTMLElement>('[data-page]')) {
+    const index = Number(node.dataset.page)
+    if (node.offsetTop <= top + 1) {
+      page = index
+      ratio = Math.max(0, Math.min(1, (top - node.offsetTop) / (node.offsetHeight || 1)))
+    } else break
+  }
+  return { page, ratio }
 }
 
 /**
@@ -164,6 +186,15 @@ export default function MaterialPane(props: MaterialPaneProps) {
    * 其它页仍是空的（用户翻页就发现笔迹丢了）。
    */
   const lastClearAllRef = useRef<number[]>([])
+  /**
+   * 缩放前冻结的「阅读锚点」（哪一页 + 页内比例），等新缩放生效后按它还原位置。
+   *
+   * @remarks 与 `lastSessionRef` 分开存：后者会被缩放引发的 onScroll 立刻覆盖成
+   * 「新布局下的当前位置」，拿它当锚点等于用一个已经漂了的值去纠偏。
+   */
+  const pendingAnchorRef = useRef<{ page: number; ratio: number } | null>(null)
+  /** 当前已生效的缩放比例（`fitScale` 的镜像，用来判断比例是否真的变了；0 表示还没算过）。 */
+  const scaleRef = useRef(0)
 
   /* ---------------- 载入材料 ---------------- */
 
@@ -364,15 +395,93 @@ export default function MaterialPane(props: MaterialPaneProps) {
     const compute = () => {
       const pad = parseFloat(getComputedStyle(scroller).paddingLeft) + parseFloat(getComputedStyle(scroller).paddingRight)
       const avail = Math.max(80, scroller.clientWidth - pad)
-      // 容器比「基准宽 × zoom」窄时，缩到刚好放下；否则用 zoom。
-      const next = Math.min(zoom, avail / target.pageW)
-      setFitScale(Math.round(next * 1000) / 1000)
+      /*
+       * 「100%」的含义 = **铺满容器宽度**（最多不超过原大）。
+       *
+       * 这里必须把两件事拆开，不能像以前那样写成 `min(zoom, avail / pageW)`：
+       *
+       * - `baseFit`：容器比纸张窄时（手机 390 < A4 595、桌面双栏 719/2 < 595）
+       *   缩到刚好放下 —— 这是 **100% 的基准**；
+       * - `zoom`：用户在基准之**上**的放大倍数。
+       *
+       * 以前把两者取 min，等于「缩放上限 = 适合屏幕」：
+       * 手机上 avail/pageW = 0.629，于是点放大到 300% 实际还是 0.629，
+       * **缩放按钮彻底没有反应**；双栏桌面同理卡在 1.18。
+       * 用户报的「缩放坏了」里就包含这一条。
+       * 现在改成相乘：手机 100% = 0.629（照旧铺满），放大 200% = 1.258，
+       * 纸变宽后由滚动容器横向滚动，和 PDF 阅读器的手感一致。
+       */
+      const baseFit = Math.min(1, avail / target.pageW)
+      const next = baseFit * zoom
+      const rounded = Math.round(next * 1000) / 1000
+      /*
+       * 缩放比例**真的要变**时，先按「旧几何」冻结阅读锚点，再改比例。
+       *
+       * 这样做的原因是 `fitScale` 是异步 state：
+       * 上面的 `zoom` 一变，本次 render 里 `--page-scale` 还是旧值，
+       * 新比例要等 setFitScale 触发下一次 render 才生效。
+       * 早先「缩放后还原位置」写在 `[zoom]` 的 effect 里，跑在**旧几何**上，
+       * 算出来的目标位置恰好等于旧 scrollTop（等于什么都没做）；
+       * 等新比例一落地，scrollTop 没跟着换算，视口就漂了。
+       * 现在把这个动作拆成两步：此刻冻结（旧几何可靠），
+       * 等新比例生效后再还原（见下面的 layout effect）。
+       */
+      if (rounded !== scaleRef.current) {
+        const first = scaleRef.current === 0
+        /*
+         * 首次计算（0 → 实际比例）**不能**冻结锚点。
+         *
+         * 此时页面还没被缩放过，`scrollTop` 是 0 或旧值，与「用户想看的页」无关；
+         * 更糟的是它会和「恢复上次阅读位置」的 tryRestore 抢滚动位置：
+         * 一个想跳到第 7 页，另一个把它按 `page 0 / ratio 0` 拽回顶部，
+         * 表现就是「刷新后回到第一页」。所以只在实际缩放跳变时才冻结。
+         */
+        if (!first) pendingAnchorRef.current = readScrollAnchor(scroller)
+        scaleRef.current = rounded
+        setFitScale(rounded)
+      }
     }
     compute()
     const ro = new ResizeObserver(compute)
     ro.observe(scroller)
     return () => ro.disconnect()
   }, [material, zoom])
+
+  /*
+   * 新缩放落地后，按冻结的锚点把滚动位置换算回去。
+   *
+   * @remarks 用 `useLayoutEffect` 而不是 `useEffect`：要在浏览器绘制**之前**把位置摆正，
+   * 否则用户会看到「先漂一下再跳回来」的闪动。
+   * 用 `fitScale` 而不是 `zoom` 作为触发条件：手机上 fitScale 会被容器宽度夹住，
+   * 这时页面几何根本没变，不该去动滚动位置。
+   */
+  useLayoutEffect(() => {
+    const pending = pendingAnchorRef.current
+    if (!pending) return
+    let cancelled = false
+    const apply = (attempt: number) => {
+      if (cancelled || !pendingAnchorRef.current) return
+      const scroller = scrollRef.current
+      const node = scroller?.querySelector<HTMLElement>(`[data-page="${pending.page}"]`)
+      const height = node?.offsetHeight ?? 0
+      // 切页/缩放瞬间页高可能还是 0，等一帧再试。
+      if (!scroller || !node || height === 0) {
+        if (attempt < 20) requestAnimationFrame(() => apply(attempt + 1))
+        return
+      }
+      const want = node.offsetTop + height * pending.ratio
+      if (Math.abs(scroller.scrollTop - want) > 4) {
+        scroller.scrollTo({ top: want, behavior: 'instant' as ScrollBehavior })
+      }
+      pendingAnchorRef.current = null
+      // 位置已摆正，让会话里记的页码/比例跟着更新，避免下次进入跳回漂移前的位置。
+      syncRangeRef.current()
+    }
+    apply(0)
+    return () => {
+      cancelled = true
+    }
+  }, [fitScale])
 
   const onScroll = useCallback(() => {
     window.clearTimeout(scrollTimerRef.current)
@@ -511,69 +620,33 @@ export default function MaterialPane(props: MaterialPaneProps) {
     }
   }, [material, side, enterKey])
 
-  /**
-   * 缩放变化后重新锚定滚动位置。
-   *
-   * @remarks
-   * 用户反馈「缩放后位置变了」。
-   * 缩放只改 CSS transform，页高随之变化（基准高 × zoom），
-   * 但 `scrollTop` 还是旧像素值 —— 同一个数字对应了不同内容，视口就漂了。
-   * 这里在 zoom 变化后：先记下「当前页 + 页内比例」，等布局生效再按新页高还原。
-   *
-   * 用 `lastSessionRef` 的 page/ratio 作为锚点，因为它就是「用户当前看的位置」，
-   * 不必再去读一遍 DOM（也避免缩放瞬间 DOM 正在重排、读到中间态）。
-   */
-  const zoomRef = useRef(zoom)
-  useEffect(() => {
-    const prev = zoomRef.current
-    zoomRef.current = zoom
-    if (prev === zoom) return
-    /*
-     * 锚点必须在**缩放生效前**冻结，而且不能直接读 `lastSessionRef`：
-     * 缩放会改变页高 → 触发 onScroll → syncRange 立刻把 lastSessionRef 更新成
-     * 「新布局下的当前位置」，等于锚点被覆盖，还原时反而跳走。
-     * 这里在 zoom 变化的同一帧里，从 DOM 现算一次真实位置作为冻结锚点。
-     */
-    const anchor = (() => {
-      const scroller = scrollRef.current
-      if (!scroller) return { ...lastSessionRef.current }
-      const top = scroller.scrollTop
-      const nodes = [...scroller.querySelectorAll<HTMLElement>('[data-page]')]
-      let page = 0
-      let ratio = 0
-      for (const node of nodes) {
-        const index = Number(node.dataset.page)
-        if (node.offsetTop <= top + 1) {
-          page = index
-          ratio = Math.max(0, Math.min(1, (top - node.offsetTop) / (node.offsetHeight || 1)))
-        } else break
-      }
-      return { page, ratio }
-    })()
-    if (anchor.page < 0) return
-    let cancelled = false
-    const restore = (attempt: number) => {
-      if (cancelled) return
-      const scroller = scrollRef.current
-      const node = scroller?.querySelector<HTMLElement>(`[data-page="${anchor.page}"]`)
-      const height = node?.offsetHeight ?? 0
-      // 等新布局（页高 = 基准 × 新 zoom）真正生效，再算目标位置。
-      if (!scroller || !node || height === 0) {
-        if (attempt < 20) window.setTimeout(() => restore(attempt + 1), 60)
-        return
-      }
-      const want = node.offsetTop + height * anchor.ratio
-      if (Math.abs(scroller.scrollTop - want) > 6) {
-        scroller.scrollTo({ top: want, behavior: 'instant' as ScrollBehavior })
-      }
-    }
-    restore(0)
-    return () => {
-      cancelled = true
-    }
-  }, [zoom])
-
   /* ---------------- 批注 ---------------- */
+
+  /**
+   * 求「canvas 设备像素 / 纸张布局像素」的比例，并用它给上下文套上变换。
+   *
+   * @param canvas 批注画布。
+   * @returns 该比例（大于 0）。
+   * @remarks
+   * **这是「缩放后笔记位置变了」的根因所在，两个宽度不能混用：**
+   *
+   * - 笔迹坐标（`toBasePoint` 的输出）是**布局像素**：`rect.width / clientWidth`
+   *   把屏幕像素还原成变换前的坐标，所以存下来的 `p` 落在 `0 ~ clientWidth`；
+   * - 而 `canvas.width` 是按**视觉宽度**（`getBoundingClientRect().width`，已含
+   *   `scale(zoom)`）分配的 —— 那是为了省内存（见下面的 MAX_PIXELS）。
+   *
+   * 于是「一个布局像素对应多少设备像素」必须用 `canvas.width / clientWidth`：
+   * 它同时包含 dpr 与 zoom。曾经这里写成 `canvas.width / rect.width`，
+   * 只得到 dpr，少了 zoom 那一份 —— 放大 120% 时笔迹被画进画布左侧 83% 的区域，
+   * 相对纸张的位置从 0.246 缩到 0.205，看起来就是「一缩放笔记就跑到别处」。
+   * 100% 时 zoom = 1，两个算法恰好相等，所以这个 bug 只在缩放后暴露。
+   */
+  function syncCanvasTransform(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement): number {
+    const layoutW = canvas.clientWidth
+    const scale = layoutW > 0 ? canvas.width / layoutW : 1
+    ctx.setTransform(scale, 0, 0, scale, 0, 0)
+    return scale
+  }
 
   function applyStyle(ctx: CanvasRenderingContext2D, stroke: NoteStroke) {
     ctx.save()
@@ -612,16 +685,8 @@ export default function MaterialPane(props: MaterialPaneProps) {
     if (!canvas || !ctx) return
     ctx.setTransform(1, 0, 0, 1, 0, 0)
     ctx.clearRect(0, 0, canvas.width, canvas.height)
-    /*
-     * 反算「canvas 像素 / CSS 像素」的比值时用 **getBoundingClientRect**。
-     *
-     * 不能用 `canvas.clientWidth`：纸张内层按基准像素排版、再靠 transform 缩放，
-     * clientWidth 报的是**变换前**的布局宽（2590），而画布是按变换后的视觉宽（1409）分配的，
-     * 两者相除会得到一个偏大的假 dpr → 笔迹被放大画到纸外。
-     */
-    const cssW = canvas.getBoundingClientRect().width
-    const dpr = cssW > 0 ? canvas.width / cssW : 1
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+    // 比例必须用 clientWidth 反算（含 dpr 与 zoom），原因见 syncCanvasTransform。
+    syncCanvasTransform(ctx, canvas)
     for (const stroke of notesRef.current.get(index) ?? []) drawStroke(ctx, stroke)
   }, [])
 
@@ -917,7 +982,14 @@ export default function MaterialPane(props: MaterialPaneProps) {
           style={{ ['--page-scale' as string]: fitScale } as React.CSSProperties}
           onScroll={onScroll}
         >
-          <div className="mx-auto flex max-w-[980px] flex-col gap-4">
+          {/*
+            纸张放大到超过容器宽度时要能**横向滚动**看右半边（PDF 阅读器的手感）。
+            所以这层用 `w-max min-w-full`：内容比容器窄时撑满（纸居中），
+            比容器宽时按内容宽度撑开，由外层 overflow-auto 出横向滚动条。
+            早先这里有 `max-w-[980px]` + 槽位 `maxWidth:100%`，
+            会把放大后的纸重新夹回容器宽 —— 表现为「点了放大，纸纹丝不动」。
+          */}
+          <div className="mx-auto flex w-max min-w-full flex-col gap-4">
             {Array.from({ length: totalPages }, (_, index) => {
               const inRange = index >= rangeFrom && index <= rangeTo
               const content = pages[index]
@@ -929,7 +1001,7 @@ export default function MaterialPane(props: MaterialPaneProps) {
                   style={{
                     // 占位宽度必须与实际渲染宽度一致，否则滚动条长度和点按热区都会错。
                     width: `${material.pageW * fitScale}px`,
-                    maxWidth: '100%',
+                    flexShrink: 0,
                     aspectRatio: `${material.pageW} / ${material.pageH}`,
                   }}
                 >
@@ -1036,14 +1108,23 @@ export default function MaterialPane(props: MaterialPaneProps) {
                           const effDpr = dpr * shrink
                           const w = Math.max(1, Math.round(cssW * effDpr))
                           const h = Math.max(1, Math.round(cssH * effDpr))
-                          if (node.width !== w || node.height !== h) {
+                          const resized = node.width !== w || node.height !== h
+                          if (resized) {
                             node.width = w
                             node.height = h
                             const ctx = node.getContext('2d')
                             if (ctx) ctx.setTransform(effDpr, 0, 0, effDpr, 0, 0)
                           }
-                          // 无论尺寸有没有变，都重绘一次：新挂载的 canvas 是空白的。
-                          if (old !== node) redrawPage(index)
+                          /*
+                           * ⚠️ `resized` 时**必须**重绘，不能只看 `old !== node`。
+                           *
+                           * 给 `canvas.width/height` 赋值会清空整块画布，而缩放会让
+                           * `getBoundingClientRect()` 的尺寸变化 → 走进上面的分支 →
+                           * 像素被清掉。早先这里写成「只有节点换了才重绘」，
+                           * 缩放时节点还是同一个，于是笔记被清空却不重画，
+                           * 表现为「一缩放笔记就没了」（切回 100% 也不会自己回来）。
+                           */
+                          if (old !== node || resized) redrawPage(index)
                         }}
                         className="absolute inset-0 h-full w-full"
                         style={{
