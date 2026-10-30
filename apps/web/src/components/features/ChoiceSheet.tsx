@@ -1,5 +1,5 @@
-import { App, Button, Progress, Select } from 'antd'
-import { ChevronLeft, ChevronRight, Pause, Play, RotateCcw } from 'lucide-react'
+import { App, Button, Input, Modal, Progress, Select } from 'antd'
+import { ChevronLeft, ChevronRight, ClipboardCopy, Pause, Play, RotateCcw } from 'lucide-react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 /** 存档键。与「选择题答题卡」页共用同一份，两边作答互通。 */
@@ -124,6 +124,101 @@ export function readQuizSummary() {
 }
 
 /**
+ * 把整卷作答生成「可直接粘给 AI」的纯文本。
+ *
+ * @param state 整卷状态。
+ * @returns 含概况与逐题明细的文本。
+ * @remarks
+ * 用户要求：「坐一会可导出成功的功能就自动复制到剪切板，这样能直接复制给 AI 对答案找问题」。
+ *
+ * 所以这份文本是给**模型**读的，不是给人看的报表，几个取舍：
+ * - 只列**错题与未作答**的逐题明细，不再复述答对的题（30 题全列会让模型注意力稀释）；
+ * - 每题带上「你的答案 / 正确答案 / 耗时」，耗时异常慢的题往往是想歪了，值得一起看；
+ * - 末尾明确给出「请帮我分析」的指令，粘贴即用，用户不用再补一句话；
+ * - 不写日期之外的隐私信息（例如材料名由外层决定，这里不猜）。
+ */
+export function buildQuizReport(state: QuizState): string {
+  const total = state.questions.length
+  const answered = state.questions.filter((item) => item.answer !== null).length
+  const correct = state.questions.filter(
+    (item) => item.answer !== null && item.answer === item.correct,
+  ).length
+  const accuracy = total > 0 ? Math.round((correct / total) * 100) : 0
+
+  /** 只是包装下标到字母，未作答给「—」。 */
+  const letter = (value: number | null) => (value === null ? '—' : LETTERS[value])
+
+  const rows = state.questions
+    .map((item, i) => ({ ...item, no: i + 1 }))
+    .filter((item) => item.answer === null || item.answer !== item.correct)
+
+  const lines: string[] = [
+    '我做了一套选择题，请帮我分析错因和知识漏洞。',
+    '',
+    `【概况】共 ${total} 题，作答 ${answered} 题，答对 ${correct} 题，正确率 ${accuracy}%，用时 ${formatClock(state.totalMs)}。`,
+  ]
+
+  if (rows.length === 0) {
+    lines.push('', '本次全部答对，没有错题。')
+  } else {
+    lines.push('', `【错题与未作答】共 ${rows.length} 题`)
+    for (const item of rows) {
+      const tag = item.answer === null ? '未作答' : `我选 ${letter(item.answer)}`
+      const right = item.correct === null ? '未录入' : letter(item.correct)
+      lines.push(`${item.no}. ${tag}，正确答案 ${right}，用时 ${formatClock(item.timeMs)}`)
+    }
+    lines.push(
+      '',
+      '【请帮我】',
+      '1. 逐题指出我为什么错（是概念没掌握、审题偏差，还是选项辨析不清）；',
+      '2. 归纳这些错题共同暴露的知识漏洞；',
+      '3. 给出针对性复习建议和易混点的区分口诀。',
+      '',
+      '【题目原文】',
+      '（本答题卡只记答案，不存题干。请把我接着粘贴的题目截图或文字，',
+      '按上面的题号对应分析。）',
+    )
+  }
+  return lines.join('\n')
+}
+
+/**
+ * 复制文本到剪贴板。
+ *
+ * @param value 文本。
+ * @returns 是否成功。
+ * @remarks
+ * `navigator.clipboard` 在非 https 或未聚焦的 iframe 里会直接抛错，
+ * 而本站既可能是 GitHub Pages（https）、也可能被手机 WebView 打开，
+ * 所以失败时退回 `execCommand('copy')` 的旧通道，别让「自动复制」静默失败。
+ */
+export async function copyText(value: string): Promise<boolean> {
+  try {
+    await navigator.clipboard.writeText(value)
+    return true
+  } catch {
+    try {
+      const area = document.createElement('textarea')
+      area.value = value
+      area.setAttribute('readonly', '')
+      // 必须留在视口内，否则 iOS 选不中、复制会得到空串。
+      area.style.position = 'fixed'
+      area.style.top = '0'
+      area.style.left = '0'
+      area.style.opacity = '0'
+      document.body.appendChild(area)
+      area.select()
+      area.setSelectionRange(0, value.length)
+      const ok = document.execCommand('copy')
+      document.body.removeChild(area)
+      return ok
+    } catch {
+      return false
+    }
+  }
+}
+
+/**
  * 选择题答题卡面板。
  *
  * @param props 组件属性。
@@ -190,6 +285,38 @@ export default function ChoiceSheet({
   const isResult = state.phase === 'result'
   const index = isCheck ? state.checkCur : state.cur
   const question = state.questions[Math.min(index, state.questions.length - 1)]
+
+  /*
+   * 出成绩就自动复制到剪贴板。
+   *
+   * 用户要的是「坐一会等导出成功的功能就自动复制」：交完卷、核完答案、
+   * 点「查看成绩」那一刻成绩单就该躺在剪贴板里，切到 AI 直接 Cmd+V。
+   *
+   * 用 ref 记住「已经自动复制过哪一版成绩」，否则计时/翻题引起的每次
+   * 重渲染都会再复制一遍，把用户后来手动复制的东西冲掉。
+   * 重开后 phase 会回到 answer，ref 随之清空，下次出成绩能再复制一次。
+   */
+  const autoCopiedRef = useRef('')
+  const [reportOpen, setReportOpen] = useState(false)
+  const [report, setReport] = useState('')
+
+  useEffect(() => {
+    if (!isResult) {
+      autoCopiedRef.current = ''
+      return
+    }
+    const text = buildQuizReport(state)
+    // 同一份成绩只自动复制一次（题目数/得分不变就视为同一份）。
+    if (autoCopiedRef.current === text) return
+    autoCopiedRef.current = text
+    setReport(text)
+    void copyText(text).then((ok) => {
+      if (ok) message.success('成绩与错题已复制，可直接粘给 AI 分析')
+      else message.warning('自动复制没成功，点「复制成绩」手动再试一次')
+    })
+    // 只在「是否出成绩」翻转时跑：state 每次计时都会变，放进依赖会反复触发。
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isResult])
 
   const answered = state.questions.filter((item) => item.answer !== null).length
   const correct = state.questions.filter(
@@ -526,12 +653,35 @@ export default function ChoiceSheet({
           ) : null}
 
           {isResult ? (
-            <Button
-              size={compact ? 'small' : 'middle'}
-              onClick={() => setState((current) => ({ ...current, phase: 'check', paused: true }))}
-            >
-              返回对答案
-            </Button>
+            <>
+              <Button
+                size={compact ? 'small' : 'middle'}
+                onClick={() => setState((current) => ({ ...current, phase: 'check', paused: true }))}
+              >
+                返回对答案
+              </Button>
+              <Button
+                size={compact ? 'small' : 'middle'}
+                type="primary"
+                icon={<ClipboardCopy size={13} />}
+                onClick={() => {
+                  const text = buildQuizReport(state)
+                  setReport(text)
+                  void copyText(text).then((ok) => {
+                    if (ok) message.success('已复制，可直接粘给 AI')
+                    else {
+                      message.warning('复制失败，已打开文本供手动选择')
+                      setReportOpen(true)
+                    }
+                  })
+                }}
+              >
+                复制成绩
+              </Button>
+              <Button size={compact ? 'small' : 'middle'} type="text" onClick={() => setReportOpen(true)}>
+                看文本
+              </Button>
+            </>
           ) : null}
         </div>
       </section>
@@ -568,7 +718,41 @@ export default function ChoiceSheet({
 
       <p className="m-0 text-[11.5px] text-ink-3">
         作答与计时自动保存在本机，和「选择题答题卡」页共用同一份记录。
+        {isResult ? '　出成绩时成绩单已自动复制到剪贴板，粘给 AI 即可。' : null}
       </p>
+
+      {/*
+        成绩单文本预览：自动复制被浏览器拦掉时（非 https / WebView 限制），
+        用户还能全选复制，不至于「功能看着有、实际用不了」。
+      */}
+      <Modal
+        open={reportOpen}
+        title="成绩单（可粘给 AI）"
+        width={680}
+        onCancel={() => setReportOpen(false)}
+        footer={[
+          <Button key="close" onClick={() => setReportOpen(false)}>
+            关闭
+          </Button>,
+          <Button
+            key="copy"
+            type="primary"
+            icon={<ClipboardCopy size={13} />}
+            onClick={() => {
+              void copyText(report).then((ok) => {
+                if (ok) {
+                  message.success('已复制')
+                  setReportOpen(false)
+                } else message.error('复制失败，请手动全选复制')
+              })
+            }}
+          >
+            复制全文
+          </Button>,
+        ]}
+      >
+        <Input.TextArea value={report} autoSize={{ minRows: 10, maxRows: 20 }} readOnly />
+      </Modal>
     </div>
   )
 }

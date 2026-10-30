@@ -1735,3 +1735,59 @@ test('滚动位置按页面记忆：刷新、锁屏、返回都不回顶部', as
     'legacy-home.css 不能开 smooth（它加载在后，会覆盖 styles.css）'
   )
 })
+
+test('答题卡出成绩自动复制成绩单到剪贴板（可直接粘给 AI）', async () => {
+  /*
+   * 用户要求：「坐一会可导出成功的功能就自动复制到剪切板，
+   * 这样能直接复制给 ai 对答案找问题」。
+   *
+   * 这里做源码级守卫，覆盖三件容易退化的事：
+   * 1. 必须「出成绩」时自动复制，而不是只在按钮里等用户点；
+   * 2. 同一份成绩只能自动复制一次 —— 否则计时/翻题每次重渲染都再复制一遍，
+   *    会把用户后来手动复制的内容冲掉；
+   * 3. 复制失败要有退路（非 https / WebView 里 navigator.clipboard 会抛错）。
+   */
+  const sheet = await readFile(new URL('../src/components/features/ChoiceSheet.tsx', import.meta.url), 'utf8')
+
+  // 1. 有独立的成绩单生成函数，且内容是「给模型读」的结构
+  assert.ok(/export function buildQuizReport\(/.test(sheet), '必须有 buildQuizReport：成绩单生成要能复用（自动复制 + 手动复制 + 预览）')
+  assert.ok(/【概况】/.test(sheet) && /【错题与未作答】/.test(sheet), '成绩单要有概况与错题两个段落')
+  assert.ok(/【请帮我】/.test(sheet), '成绩单要带「请帮我分析」的指令，粘贴即用，用户不用再补话')
+  assert.ok(
+    /请帮我分析错因和知识漏洞/.test(sheet),
+    '开头一句要让模型知道该做什么，否则粘过去只会被当成普通文本'
+  )
+  /*
+   * 只列错题与未作答：30 题全列会让模型注意力稀释，
+   * 也不该在末尾写「下面是题目原文」却其实没附 —— 那是空头承诺。
+   */
+  assert.ok(
+    /item\.answer === null \|\| item\.answer !== item\.correct/.test(sheet),
+    '逐题明细只保留错题与未作答，不要把答对的题也塞进去'
+  )
+  assert.ok(
+    !/下面是错题的题目原文/.test(sheet),
+    '不能写「下面是题目原文」却不附原文：本答题卡不存题干，这是空头承诺'
+  )
+  assert.ok(/本答题卡只记答案，不存题干/.test(sheet), '要如实说明不存题干，并请用户接着贴题目')
+
+  // 2. 出成绩自动复制，且只复制一次
+  assert.ok(/autoCopiedRef/.test(sheet), '要有「已自动复制」的标记，否则每次重渲染都会重写剪贴板')
+  assert.ok(
+    /if \(autoCopiedRef\.current === text\) return/.test(sheet),
+    '同一份成绩只能自动复制一次：否则计时刷新会把用户手动复制的内容冲掉'
+  )
+  assert.ok(
+    /if \(!isResult\) \{[\s\S]{0,80}autoCopiedRef\.current = ''/.test(sheet),
+    '离开成绩页（重开）要清空标记，下次出成绩才能再自动复制一次'
+  )
+  assert.ok(/void copyText\(text\)/.test(sheet), '出成绩时要真的调用复制')
+
+  // 3. 复制要有兜底通道
+  assert.ok(/export async function copyText/.test(sheet), '复制要抽成 copyText，自动与手动共用一套兜底')
+  assert.ok(/document\.execCommand\('copy'\)/.test(sheet), 'navigator.clipboard 不可用时要退回 execCommand，别让自动复制静默失败')
+
+  // 4. 手动入口仍在，作为自动复制失败时的退路
+  assert.ok(/复制成绩/.test(sheet), '要有手动「复制成绩」按钮')
+  assert.ok(/看文本/.test(sheet), '要有文本预览，复制被浏览器拦住时还能手动全选')
+})
