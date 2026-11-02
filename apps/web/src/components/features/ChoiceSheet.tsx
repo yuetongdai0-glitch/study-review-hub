@@ -4,6 +4,19 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 /** 存档键。与「选择题答题卡」页共用同一份，两边作答互通。 */
 const STORE_KEY = 'choice-quiz:v1'
+/**
+ * 答题卡侧栏的宽度（材料视图、草稿台抽屉共用）。
+ *
+ * @remarks
+ * 两处面板都贴在右侧、都遮挡材料，所以宽度必须一致 ——
+ * 早先两处各自写死同一个数字，改一处就两处不一致。
+ *
+ * 320px 是「四个统计框一行 + 选项两列各 130px」的舒适下限（再窄统计框就该折行了）。
+ * 手机上的比例**沿用原来的 80vw、不要放大**：
+ * 390 屏里 80vw = 312px，面板本来就几乎占满，剩下的才是材料可视区；
+ * 早期试过 86vw，结果材料只剩 70px，连题目都看不见 —— 那是比原版更差。
+ */
+export const QUIZ_PANEL_WIDTH = 'min(320px, 80vw)'
 /** 选项数范围。 */
 const OPT_MIN = 2
 const OPT_MAX = 6

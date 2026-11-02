@@ -14,7 +14,7 @@ import {
   Trash2,
 } from 'lucide-react'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import ChoiceSheet, { readQuizSummary } from '@/components/features/ChoiceSheet'
+import ChoiceSheet, { QUIZ_PANEL_WIDTH, readQuizSummary } from '@/components/features/ChoiceSheet'
 import FullScreenLayer from '@/components/features/FullScreenLayer'
 import MaterialView from '@/features/materials/MaterialView'
 import { readSession, writeSession } from '@/features/materials/session'
@@ -1585,7 +1585,7 @@ export default function ScratchpadPage() {
           if (!open) setQuizSummary(readQuizSummary())
         }}
         mask={false}
-        width="min(420px, 80vw)"
+        width={QUIZ_PANEL_WIDTH}
         destroyOnHidden
         styles={{ body: { padding: 12 } }}
         extra={<span className="text-[11.5px] text-ink-3">关掉不影响草稿</span>}

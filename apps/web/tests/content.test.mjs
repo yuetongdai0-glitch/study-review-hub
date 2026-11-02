@@ -629,10 +629,35 @@ test('草稿纸能开答题卡抽屉，边打草稿边记答案，关掉不销�
   assert.ok(/destroyOnHidden/.test(pad), '抽屉关闭应卸载面板，避免开关时状态残留')
   assert.ok(/onClose=\{\(\) => setQuizOpen\(false\)\}/.test(pad), '抽屉必须能正常关闭')
 
-  // 3. 手机端不能铺满，要留出可落笔区
+  /*
+   * 3. 宽度统一由 `QUIZ_PANEL_WIDTH` 提供，且手机上必须留白。
+   *
+   * 早先两处面板各自写死 `min(420px, 80vw)`：
+   * ① 改宽度要改两个文件，漏一个就两处不一致；
+   * ② 用户反馈弹窗太宽、挡住材料正文，想调窄时无从下手。
+   * 现在抽成常量，并收窄到 320px（数字键一行 5 个、四个统计框不折行）。
+   */
   assert.ok(
-    /width="min\(420px, 80vw\)"/.test(pad),
-    '手机端抽屉宽度必须留白（80vw），铺满 100vw 会挡住整块画布'
+    /width=\{QUIZ_PANEL_WIDTH\}/.test(pad),
+    '草稿台抽屉必须用共享常量 QUIZ_PANEL_WIDTH，不要写死数字'
+  )
+  assert.ok(
+    /import ChoiceSheet, \{ QUIZ_PANEL_WIDTH, readQuizSummary \}/.test(pad),
+    '要真正把常量导进来（只写变量名不等于用上了）'
+  )
+  const shared = await readFile(new URL('../src/components/features/ChoiceSheet.tsx', import.meta.url), 'utf8')
+  assert.ok(
+    /export const QUIZ_PANEL_WIDTH = 'min\(320px, 80vw\)'/.test(shared),
+    '面板宽度应为 min(320px, 80vw)：320 是「统计框一行 + 选项两列」的下限，80vw 沿用原值、手机上不能再放大'
+  )
+  /*
+   * 面板里不该再有写死的 420px 宽度。
+   * 只查 `min(420px` 这种宽度声明：MaterialView 里「选择材料」面板
+   * 另有自己的宽度，不归这条断言管，别把它一起误伤。
+   */
+  assert.ok(
+    !/w-\[min\(420px/.test(shared) && !/min\(420px,\s*80vw\)/.test(pad),
+    '答题卡面板不该再写死 420px：那会把材料正文挡掉一大半'
   )
 
   // 4. 关掉不销毁草稿：抽屉只碰 quizOpen / quizSummary，不碰笔迹与图片

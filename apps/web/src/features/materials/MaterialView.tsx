@@ -19,7 +19,7 @@ import {
   ZoomOut,
 } from 'lucide-react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import ChoiceSheet from '@/components/features/ChoiceSheet'
+import ChoiceSheet, { QUIZ_PANEL_WIDTH } from '@/components/features/ChoiceSheet'
 import ExamSheet from '@/components/features/ExamSheet'
 import FullScreenLayer from '@/components/features/FullScreenLayer'
 import MaterialPane from '@/features/materials/MaterialPane'
@@ -1188,7 +1188,10 @@ export default function MaterialView({ open, onClose }: { open: boolean; onClose
         不改变文档流尺寸、没有位移动画，材料区一点都不会动。
       */}
       {quizOpen ? (
-        <div className="absolute inset-y-0 right-0 z-30 flex w-[min(420px,80vw)] flex-col border-l border-line bg-surface shadow-[-8px_0_24px_rgba(16,24,40,.08)]">
+        <div
+          className="absolute inset-y-0 right-0 z-30 flex flex-col border-l border-line bg-surface shadow-[-8px_0_24px_rgba(16,24,40,.08)]"
+          style={{ width: QUIZ_PANEL_WIDTH }}
+        >
           <div className="flex shrink-0 items-center gap-2 border-b border-line px-3 py-2">
             <b className="text-[13px] font-semibold">选择题答题卡</b>
             <span className="text-[11px] text-ink-3">关掉回到材料</span>
