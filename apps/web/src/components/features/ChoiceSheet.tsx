@@ -1,5 +1,5 @@
-import { App, Button, Input, Modal, Progress, Select } from 'antd'
-import { ChevronLeft, ChevronRight, ClipboardCopy, Pause, Play, RotateCcw } from 'lucide-react'
+import { App, Button, Input, Modal, Progress, Select, Tooltip } from 'antd'
+import { ChevronLeft, ChevronRight, ClipboardCopy, Pause, Play, RotateCcw, Trash2 } from 'lucide-react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 /** 存档键。与「选择题答题卡」页共用同一份，两边作答互通。 */
@@ -299,6 +299,23 @@ export default function ChoiceSheet({
   const index = isCheck ? state.checkCur : state.cur
   const question = state.questions[Math.min(index, state.questions.length - 1)]
 
+  /**
+   * 当前能否删除这一题：只能删**最后一题**，且至少留一题，且还在作答阶段。
+   *
+   * @remarks
+   * 判据集中在这里，按钮的禁用态与提示文案都从它派生，
+   * 避免「按钮灰了但提示说可以删」这类自相矛盾。
+   */
+  const canRemove = state.phase === 'answer' && state.questions.length > 1 && index === state.questions.length - 1
+  /** 删除按钮的提示：说清「为什么不能删」，而不是只灰着让人猜。 */
+  const removeHint = canRemove
+    ? '删掉最后一题'
+    : state.phase !== 'answer'
+      ? '交卷后不能再删：题号要和卷面对应'
+      : state.questions.length <= 1
+        ? '至少保留一题'
+        : '只有最后一题能删：删中间的会让后面题号前移'
+
   /*
    * 出成绩就自动复制到剪贴板。
    *
@@ -407,6 +424,32 @@ export default function ChoiceSheet({
         }
       }
       return { ...current, cur: Math.max(0, target) }
+    })
+  }
+
+  /**
+   * 删掉当前这一题。
+   *
+   * @returns 无返回。
+   * @remarks
+   * 用户原话：「如果当前是最后一题且不是第一题可以删除，否则有时候手误点了，
+   * 不能删，对答案也麻烦」。
+   *
+   * 这里的题号就是**卷面题号**，删中间任何一题都会让后面的题整体前移，
+   * 答题卡上的「第 3 题」就和你纸上标的第 3 题对不上了，对答案时全乱。
+   * 所以只放行唯一安全的场景：**收掉末尾手滑多点出来的那一题**。
+   *
+   * 对答案 / 出成绩阶段一并禁止：那时题号已经和卷面绑定，
+   * 成绩单里的题号也会跟着错位。
+   */
+  function removeLast() {
+    setState((current) => {
+      const at = current.phase === 'check' ? current.checkCur : current.cur
+      // UI 已禁用，这里再守一道：disabled 只挡鼠标，键盘/脚本仍可能触发。
+      if (current.phase !== 'answer') return current
+      if (current.questions.length <= 1) return current
+      if (at !== current.questions.length - 1) return current
+      return { ...current, questions: current.questions.slice(0, -1), cur: at - 1 }
     })
   }
 
@@ -546,7 +589,7 @@ export default function ChoiceSheet({
                 ? '这题没作答，仍可录入正确答案，结果里会记为未作答。'
                 : `你选的是 ${LETTERS[question.answer]}，请选择正确答案。`
               : index >= state.questions.length - 1
-                ? '已是最后一题，点「下一题」会新增一题，题量不限。'
+                ? '已是最后一题，点「新增一题」会多出一题；多点了就用左边的垃圾桶收回。'
                 : '点选项即记录，可用下方答题卡跳回任意题修改。'}
           </p>
         )}
@@ -560,14 +603,53 @@ export default function ChoiceSheet({
           >
             上一题
           </Button>
-          <Button
-            size={compact ? 'small' : 'middle'}
-            type="primary"
-            icon={<ChevronRight size={14} />}
-            onClick={() => go(index + 1)}
-          >
-            {index >= state.questions.length - 1 ? '新增一题' : '下一题'}
-          </Button>
+          <div className="flex items-center gap-1.5">
+            {/*
+              删除按钮：常态灰着。只有「最后一题 + 还在作答」才亮 ——
+              这是唯一不会让题号错位的删除场景（多点了「新增一题」想收回）。
+              灰着时 Tooltip 要说明原因，否则用户只会觉得「又坏了」。
+
+              外面套一层 span 是必须的：disabled 的 button 不派发鼠标事件，
+              Tooltip 直接包按钮时，恰恰在最需要解释（灰着）的时候不弹。
+            */}
+            <Tooltip title={removeHint}>
+              <span className="inline-flex">
+                <Button
+                  size={compact ? 'small' : 'middle'}
+                  type="text"
+                  danger
+                  icon={<Trash2 size={14} />}
+                  disabled={!canRemove}
+                  aria-label="删除本题"
+                  // 图标按钮默认只有 24px 宽，手机上点不准；给到 32px。
+                  style={{ minWidth: 32 }}
+                  onClick={() => {
+                    // 已作答的题删了会连带丢答案，先确认；末尾空题直接收掉，不打扰。
+                    if (question.answer !== null) {
+                      modal.confirm({
+                        title: `删掉第 ${index + 1} 题？`,
+                        content: '这题已经作答，删除后答案一起消失。',
+                        okText: '删除',
+                        cancelText: '取消',
+                        okButtonProps: { danger: true },
+                        onOk: removeLast,
+                      })
+                      return
+                    }
+                    removeLast()
+                  }}
+                />
+              </span>
+            </Tooltip>
+            <Button
+              size={compact ? 'small' : 'middle'}
+              type="primary"
+              icon={<ChevronRight size={14} />}
+              onClick={() => go(index + 1)}
+            >
+              {index >= state.questions.length - 1 ? '新增一题' : '下一题'}
+            </Button>
+          </div>
         </div>
       </section>
 

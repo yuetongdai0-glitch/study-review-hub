@@ -1816,3 +1816,54 @@ test('答题卡出成绩自动复制成绩单到剪贴板（可直接粘给 AI�
   assert.ok(/复制成绩/.test(sheet), '要有手动「复制成绩」按钮')
   assert.ok(/看文本/.test(sheet), '要有文本预览，复制被浏览器拦住时还能手动全选')
 })
+
+test('答题卡删题：只允许删「最后一题且不是唯一一题」', async () => {
+  /*
+   * 用户要求：「如果当前是最后一题且不是第一题可以删除，否则有时候手误点了，
+   * 不能删，对答案也麻烦」。
+   *
+   * 背景：答题卡上的题号就是卷面题号。删中间任何一题，后面的题整体前移，
+   * 用户纸上标的「第 3 题」就对不上了 —— 对答案时全乱。
+   * 唯一安全的删除场景是「手滑多点了一次『新增一题』，把末尾那题收回」。
+   */
+  const sheet = await readFile(new URL('../src/components/features/ChoiceSheet.tsx', import.meta.url), 'utf8')
+
+  // 1. 判据只此一处，按钮禁用态与提示文案都从它派生
+  assert.ok(
+    /const canRemove = state\.phase === 'answer' && state\.questions\.length > 1 && index === state\.questions\.length - 1/.test(
+      sheet
+    ),
+    '删除须同时满足：还在作答 + 至少两题 + 当前是最后一题（三条缺一不可）'
+  )
+  assert.ok(/disabled=\{!canRemove\}/.test(sheet), '按钮禁用态必须由 canRemove 派生，否则会出现「灰了但提示说能删」')
+
+  // 2. 真正执行删除的地方也要守一遍：disabled 只挡鼠标，键盘/脚本仍能触发
+  assert.ok(/function removeLast\(/.test(sheet), '删除逻辑要抽成 removeLast，UI 只调用它')
+  const body = sheet.slice(sheet.indexOf('function removeLast('))
+  const fn = body.slice(0, body.indexOf('\n  }'))
+  assert.ok(/if \(current\.phase !== 'answer'\) return current/.test(fn), '对答案/出成绩阶段禁止删除：那时题号已与卷面绑定')
+  assert.ok(/current\.questions\.length <= 1\) return current/.test(fn), '至少保留一题，删空会让题目区无题可显示')
+  assert.ok(
+    /if \(at !== current\.questions\.length - 1\) return current/.test(fn),
+    '只许删最后一题：删中间的会让后面题号整体前移，对答案错位'
+  )
+  assert.ok(/questions: current\.questions\.slice\(0, -1\)/.test(fn), '删除只能是从末尾切掉')
+  assert.ok(/cur: at - 1/.test(fn), '删掉末题后光标要退到新的最后一题，不能停在已不存在的下标上')
+
+  // 3. 灰着的时候要解释原因，别让用户以为坏了
+  assert.ok(/const removeHint = canRemove/.test(sheet), '禁用态必须有解释文案')
+  assert.ok(/只有最后一题能删/.test(sheet), '要说明「为什么中间题不能删」')
+  assert.ok(/交卷后不能再删/.test(sheet), '要说明交卷后为什么不能再删')
+  /*
+   * antd 的 Tooltip 直接包 disabled 的 button 不会弹 ——
+   * 恰恰在最需要解释的时候失效，所以必须套一层可接收鼠标事件的容器。
+   */
+  assert.ok(
+    /<Tooltip title=\{removeHint\}>\s*<span className="inline-flex">/.test(sheet),
+    'Tooltip 必须套 span 再包按钮：disabled 的 button 不派发鼠标事件，否则灰态提示永远弹不出来'
+  )
+
+  // 4. 已作答的末题删除会丢答案，要先确认；空题直接收掉不打扰
+  assert.ok(/这题已经作答，删除后答案一起消失/.test(sheet), '有答案的题删除前要确认，别让一记误触丢掉作答')
+  assert.ok(/if \(question\.answer !== null\) \{/.test(sheet), '只有已作答才弹确认，空题不该多一步')
+})
