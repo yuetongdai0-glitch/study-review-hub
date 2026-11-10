@@ -4,6 +4,14 @@
 # 本地工程数据（记忆 / 会话信息，不上传公开仓库）
 .workbuddy/
 
+# 编辑器 / IDE 的本地状态（每个人的都不一样，不该入库）
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# WorkBuddy 本地生成的应用卡
+*.genie
+
 # 依赖与日志
 node_modules/
 .pnpm-store/
@@ -11,8 +19,11 @@ npm-debug.log*
 pnpm-debug.log*
 
 # 构建产物
-apps/web/dist/
-apps/web/dist-mobile/
+#
+# 用通配 `dist*/` 而不是逐个列 dist / dist-mobile：
+# 之前漏了 dist-standalone（67 个文件、7.7MB），整包产物全冒进源代码管理面板，
+# 一眼看过去像有几十个改动。以后再加 dist-xxx 也不用回来补。
+apps/web/dist*/
 apps/web/.smoke/
 apps/mobile/dist/
 apps/mobile/build/
