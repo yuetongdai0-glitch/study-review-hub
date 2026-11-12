@@ -1867,3 +1867,60 @@ test('答题卡删题：只允许删「最后一题且不是唯一一题」', as
   assert.ok(/这题已经作答，删除后答案一起消失/.test(sheet), '有答案的题删除前要确认，别让一记误触丢掉作答')
   assert.ok(/if \(question\.answer !== null\) \{/.test(sheet), '只有已作答才弹确认，空题不该多一步')
 })
+
+test('假设法补充：四种情况、三道例题与讲义口径一致', async () => {
+  /*
+   * 用户要求：「补充一下综合推理中的假设法的讲解和例题，多种情况」。
+   *
+   * 原正文只写了「假设后找冲突 / 假设后恒成立」两句，学生上手还是不知道该看什么。
+   * 这次把「撞墙」的四类现象拆开（撞题干 / 自相矛盾 / 两头都通 / 数量不够），
+   * 每类配一道真题。断言守三件事：
+   *   ① 四种情况一个都不能少（少一种就有学生认不出来）；
+   *   ② 每道例题都要有题有解析（只有题没解析等于没补）；
+   *   ③ 顺序口径必须与 3+2 讲义一致：确定信息 → 数量限定 → 假设 / 二难。
+   */
+  const src = await readFile(new URL('../src/pages/reading/judgment/sections/mod1.tsx', import.meta.url), 'utf8')
+
+  // 1. 四种情况齐全，且各自的「收口」写得出来
+  for (const scene of ['① 撞题干', '② 自相矛盾', '③ 两头都通', '④ 数量不够']) {
+    assert.ok(src.includes(scene), `假设法的四种情况缺了「${scene}」：少了这种，考场上撞上了也认不出来`)
+  }
+  assert.ok(/③ 两头都通[\s\S]{0,120}?B 恒真/.test(src), '「两头都通」必须点明结论是「B 恒真」（这就是二难），不能只说「都成立」')
+  assert.ok(/④ 数量不够[\s\S]{0,140}?数量限定/.test(src), '「数量不够」要靠数量限定反推，得把这条收口路径写出来')
+
+  // 2. 三道例题各就位，且都带解析
+  const examples = ['情况② 假设后自相矛盾', '情况④ 假设 + 人数收口', '情况② 变体']
+  for (const tag of examples) {
+    assert.ok(src.includes(tag), `缺少例题标记「${tag}」：四种情况不能只讲不练`)
+  }
+  // 每道例题后面都得跟一段解析（<div className="a">），否则等于给了题不给答案
+  for (const tag of examples) {
+    const at = src.indexOf(tag)
+    const tail = src.slice(at, at + 2600)
+    assert.ok(/<div className="a">/.test(tail), `例题「${tag}」后面的解析（className="a"）不见了`)
+  }
+
+  // 3. 新内容要插在「河南 2024 假设找冲突」之后、「考场应急策略」之前 —— 顺序乱了「见上面那题」就指空了
+  const iHenan = src.indexOf('例 · 假设找冲突｜2024 河南事业单位')
+  const iTable = src.indexOf('假设法的四种情况（考场遇到的就是这四类）')
+  const iEmergency = src.indexOf('考场应急策略')
+  assert.ok(iHenan > 0 && iTable > 0 && iEmergency > 0, '锚点缺失：河南 2024 / 四种情况表 / 考场应急策略 三处必须都在')
+  assert.ok(iHenan < iTable, '四种情况表要排在河南 2024 那题之后，否则「① 见上面河南 2024」指向空')
+  assert.ok(iTable < iEmergency, '四种情况表要排在「考场应急策略」之前，它是假设法的主线，不能被挤到兜底内容后面')
+
+  // 4. 讲义口径：三档递进顺序不能写反
+  assert.ok(
+    /确定信息[\s\S]{0,40}?数量限定[\s\S]{0,40}?假设[\s\S]{0,20}?二难/.test(src),
+    '顺序口径必须是「确定信息 → 数量限定 → 假设 / 二难」，与 3+2 讲义一致'
+  )
+
+  // 5. 起点选择表（乱假设是这类题最大的时间黑洞）
+  assert.ok(/假设法的「起点」怎么选/.test(src), '要有「起点怎么选」，否则学生遇到多条件题干还是乱抓一个开始假设')
+  assert.ok(/出现次数最多的元素/.test(src), '起点规则里要保留「出现次数最多的元素」这条（2 次概念是天然的破题口）')
+
+  // 6. 宽表要包 tbl-scroll，手机端才不会把整个卡片撑出横向滚动
+  assert.ok(
+    /<div className="tbl-scroll">\s*<table className="tight">\s*<tr><th style=\{\{ width: 104 \}\}>情况<\/th>/.test(src),
+    '四种情况表要外包 .tbl-scroll：三列表格直接放在卡片里，窄屏会把卡片撑破'
+  )
+})

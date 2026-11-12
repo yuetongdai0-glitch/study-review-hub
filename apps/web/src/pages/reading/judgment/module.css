@@ -383,3 +383,34 @@
 .legacy-judgment .crumb,
 .legacy-judgment .progress-wrap { color:#5a6478 !important; }
 .legacy-judgment .formula { background:#e8efff !important; color:#3a5fd9 !important; border-color:#4f7cff !important; }
+
+/*
+ * 三列以上的对比表在手机上会被挤到「一个词断两行」（例如「① 撞题 / 干」），
+ * 横向滑动又要用户自己发现，第三列直接被裁掉。
+ * 带 .tbl-scroll 的表在手机上改成「一条一块」：情况 / 看到什么 / 怎么收口竖排，
+ * 一眼一条；桌面端仍是正常表格。
+ */
+@media (max-width: 640px) {
+  .legacy-judgment .card .tbl-scroll table { display: block; margin: 0; }
+  .legacy-judgment .card .tbl-scroll table tr:first-child { display: none; }
+  .legacy-judgment .card .tbl-scroll table tr {
+    display: block;
+    border: 1px solid rgba(0,0,0,.09);
+    border-radius: 10px;
+    padding: 9px 12px;
+    margin: 0 0 8px;
+  }
+  .legacy-judgment .card .tbl-scroll table td {
+    display: block;
+    border: 0;
+    padding: 1px 0;
+    width: auto !important;
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: normal;
+  }
+  .legacy-judgment .card .tbl-scroll table td:first-child { font-size: 14px; margin-bottom: 3px; }
+  .legacy-judgment .card .tbl-scroll table td:nth-child(2)::before { content: "看到："; color: #8b95a7; }
+  .legacy-judgment .card .tbl-scroll table td:nth-child(3)::before { content: "收口："; color: #8b95a7; }
+}
+
