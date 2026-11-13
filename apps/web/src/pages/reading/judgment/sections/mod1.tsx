@@ -664,12 +664,13 @@ export default function S3(): ReactElement {
             </table>
       
             <h4>四、前提型的两种考法</h4>
-            <p><b>考法一：题干只给 1 个前提 + 1 个结论</b> → 直接用上面四条排除原则。</p>
-            <p><b>考法二：题干给了 2 个前提</b>，分两种情况：</p>
+            <p><b>考法一：题干只给 1 个前提 + 1 个结论</b> → 直接用上面四条排除原则，补一句「所有」把链子接上。</p>
+            <p><b>考法二：题干给了 2 个前提</b>，先看这两句<b>能不能接</b>——能不能接，就看有没有「<b>____ 是 X ＋ 所有 X ____</b>」这个结构（同一个 X 在前一句当谓项、在后一句当「所有」的主项）：</p>
             <ul>
-              <li>2 个前提中<b>有</b>「____ 是 X ＋ 所有 X ____」结构 → 把这两句<b>合成一句</b>当作大前提，题目就变回考法一。</li>
-              <li>2 个前提中<b>没有</b>这种结构 → 说明两个前提里<b>有一个是无用的</b>，用结论分别与每个前提对比，就能定位该补的那一项。</li>
+              <li><b>能接 → 先合并</b>：把这两句合成一句大前提，题目退回考法一，再补最后那一环。</li>
+              <li><b>接不上 → 必有一个是废的</b>：两句各说各的，拿结论分别去跟两个前提比，能接上的那个留下，另一个直接扔掉。</li>
             </ul>
+            <p><span className="pill pill-key">一句话</span>2 个前提不是「多用一条线索」，而是<b>先判断有没有一条能串起来的链</b>：串得上就合并成一条，串不上就有一条是干扰项。</p>
       
             <h4>五、拆分结论法（前提型的第二条路）</h4>
             <p>1. 从<b>结论</b>入手，在「是 / 非」<b>前面拆开</b>，补成「是 X ＋ 所有 X ____」。<br />2. 拿拆分后的句子去和已有前提比，哪个更相近就锁定 X，需要补充的前提也就出来了。</p>
@@ -760,19 +761,98 @@ export default function S3(): ReactElement {
             <ExerciseCard>
               <ExerciseTitle>例 3 · 问「不能推出」</ExerciseTitle>
               <div className="q">所有电竞专业的毕业生都支持举办电竞赛事，所有支持举办电竞赛事的人都喜欢打游戏。有的电竞专业的毕业生在电视台体育频道工作，电视台体育频道有 50 岁以上的工作人员。所有 50 岁以上的人都不喜欢打游戏。<br />由此<b>不能</b>推出的结论是：<br />A. 没有一个 50 岁以上的人支持举办电竞赛事　B. 电视台体育频道中有工作人员喜欢打游戏　C. 有的电竞专业的毕业生年龄在 50 岁以上　D. 所有电竞专业的毕业生都喜欢打游戏</div>
-              <div className="a"><b>思路：</b>先串链：<b>电竞 ⇒ 支持赛事 ⇒ 打游戏</b>；又有<b>50 岁以上 ⇒ 非打游戏</b>（逆否：打游戏 ⇒ 非 50 岁以上）。<br />所以电竞专业毕业生 ⇒ 打游戏 ⇒ <b>非 50 岁以上</b> → C 与题干<b>直接冲突</b>，推不出来 → 选 <b>C</b>。<br />A：50 岁以上 ⇒ 非打游戏 ⇒ 非支持赛事 ✔；B：有的电竞毕业生在电视台 ⇒ 这些人打游戏 ✔；D：就是链条本身 ✔。</div>
+              <figure className="fig">
+                <svg viewBox="0 0 660 340" role="img" aria-label="例 3 画图法：电竞圈套在支持赛事圈里，支持赛事圈套在打游戏圈里；50 岁以上圈与打游戏圈分离；电视台圈与电竞圈相交打点">
+                  <text x={330} y={22} textAnchor="middle" fontSize={13} fontWeight={700} fill="#1e293b">画图：三圈套成一条链，「50 岁以上」被隔在外面</text>
+                  <text x={330} y={48} textAnchor="middle" fontSize={11.5} fill="#475569">「电竞 ⊆ 支持赛事 ⊆ 打游戏」＋「50 岁以上 ⊥ 打游戏」＋「有的电竞毕业生在电视台」</text>
+
+                  <circle cx={180} cy={180} r={88} fill="#dbeafe" fillOpacity={0.9} stroke="#2563eb" strokeWidth={1.8} />
+                  <circle cx={180} cy={180} r={64} fill="#c7ddfd" stroke="#1d4ed8" strokeWidth={1.6} />
+                  <circle cx={180} cy={180} r={42} fill="#93c5fd" stroke="#1e40af" strokeWidth={1.6} />
+
+                  <circle cx={288} cy={180} r={88} fill="#f1f5f9" fillOpacity={0.55} stroke="#64748b" strokeWidth={1.7} strokeDasharray="6 4" />
+                  <circle cx={322} cy={208} r={40} fill="#e2e8f0" fillOpacity={0.9} stroke="#334155" strokeWidth={1.6} />
+
+                  <circle cx={212} cy={180} r={9} fill="none" stroke="#dc2626" strokeWidth={1.4} />
+                  <circle cx={212} cy={180} r={4.5} fill="#0f172a" />
+
+                  <text x={176} y={186} textAnchor="middle" fontSize={10.5} fontWeight={700} fill="#0c2d6b">电竞</text>
+                  <text x={180} y={230} textAnchor="middle" fontSize={11.5} fontWeight={700} fill="#1d4ed8">支持赛事</text>
+                  <text x={180} y={258} textAnchor="middle" fontSize={11.5} fontWeight={700} fill="#1e40af">打游戏</text>
+                  <text x={288} y={116} textAnchor="middle" fontSize={11.5} fontWeight={700} fill="#334155">电视台</text>
+                  <text x={322} y={213} textAnchor="middle" fontSize={11.5} fontWeight={700} fill="#334155">50 岁以上</text>
+
+                  <rect x={40} y={288} width={580} height={44} rx={10} fill="#f8fafc" stroke="#cbd5e1" strokeWidth={1} />
+                  <text x={330} y={307} textAnchor="middle" fontSize={11.5} fill="#334155">黑点在电视台圈、又整个落在「打游戏」里；「50 岁以上」跟打游戏圈一点不挨着</text>
+                  <text x={330} y={325} textAnchor="middle" fontSize={11.5} fontWeight={700} fill="#b91c1c">⇒ 电竞的人不可能 50 岁以上 → C 推不出来</text>
+                </svg>
+                <figcaption>图：例 3 的画法 —— 电竞、支持赛事、打游戏三圈套成一条链；「50 岁以上」独立成圈且与打游戏圈分离，所以「电竞 ∩ 50 岁以上」在图上根本不存在；黑点是「有的电竞毕业生在电视台」，它落在打游戏圈里，B 成立</figcaption>
+              </figure>
+              <div className="a"><b>看图：</b>「所有」都是<b>圈套圈</b>——电竞 ⊂ 支持赛事 ⊂ 打游戏；「所有 50 岁以上都不打游戏」= <b>50 岁圈与打游戏圈分离</b>。图上「电竞圈」与「50 岁圈」八竿子打不着，所以 C「有的电竞毕业生 50 岁以上」直接读不出来 → 选 <b>C</b>。<br />A：50 岁圈在打游戏圈外，而支持赛事圈整个在打游戏圈里 → 50 岁的人不可能支持赛事 ✔；B：黑点（有的电竞毕业生在电视台）同时落在打游戏圈里 → 电视台确实有人在打游戏 ✔；D：就是最里面那两层圈 ✔。</div>
             </ExerciseCard>
       
             <ExerciseCard>
               <ExerciseTitle>例 4 · 问「一定为假」</ExerciseTitle>
               <div className="q">所有法学专业的学生，都获得了法律职业资格证书；所有获得法律职业资格证书的学生，都获得了教师资格证书；有些法学专业的学生成为了公务员；有些逻辑学专业的学生也成为了公务员；所有逻辑学专业的学生都未获得教师资格证。<br />如果以上判定为真，以下哪种说法一定为假？<br />A. 一个人获得了教师资格证书，但并非是逻辑学专业的学生　B. 一个公务员，既没有获得法律职业资格证书，又不是逻辑学专业的学生　C. 一个人获得了法律职业资格证书，但并非是法学专业的学生　D. 一个人是逻辑学专业的学生，并且获得了法律职业资格证书</div>
-              <div className="a"><b>思路：</b>链条是 <b>法学 ⇒ 法律资格 ⇒ 教师资格</b>，而 <b>逻辑学 ⇒ 非教师资格</b>。<br />两边一撞：法律资格 ⇒ 教师资格 ⇒ <b>非逻辑学</b>。所以「是逻辑学 且 获得法律资格」不可能同时成立 → <b>D 一定为假</b>。<br />A、C 都是「后件推前件」的常见错法，题干只给单向，所以它们可能为真；B 里「公务员」只由「有些」推出，不排除存在不符合法学的人。</div>
+              <figure className="fig">
+                <svg viewBox="0 0 660 330" role="img" aria-label="例 4 画图法：法学圈套在法律资格圈里，法律资格圈套在教师资格圈里；逻辑学圈在教师资格圈外；公务员集合横跨两侧各打一个点">
+                  <text x={330} y={22} textAnchor="middle" fontSize={13} fontWeight={700} fill="#1e293b">画图：一串套圈 + 一个撞不上来的圈</text>
+                  <text x={330} y={48} textAnchor="middle" fontSize={11.5} fill="#475569">「法学 ⊆ 法律资格 ⊆ 教师资格」　｜　「逻辑学 ⊥ 教师资格」</text>
+
+                  <circle cx={200} cy={158} r={94} fill="#dbeafe" fillOpacity={0.9} stroke="#2563eb" strokeWidth={1.8} />
+                  <circle cx={200} cy={158} r={66} fill="#c7ddfd" stroke="#1d4ed8" strokeWidth={1.6} />
+                  <circle cx={200} cy={178} r={44} fill="#93c5fd" stroke="#1e40af" strokeWidth={1.6} />
+
+                  <circle cx={470} cy={165} r={58} fill="#e7f8ef" stroke="#10b981" strokeWidth={1.8} />
+
+                  <rect x={115} y={200} width={450} height={62} rx={12} fill="none" stroke="#94a3b8" strokeWidth={1.5} strokeDasharray="6 4" />
+
+                  <circle cx={222} cy={208} r={7} fill="none" stroke="#dc2626" strokeWidth={1.3} />
+                  <circle cx={222} cy={208} r={4} fill="#0f172a" />
+                  <circle cx={456} cy={208} r={7} fill="none" stroke="#dc2626" strokeWidth={1.3} />
+                  <circle cx={456} cy={208} r={4} fill="#0f172a" />
+
+                  <text x={200} y={183} textAnchor="middle" fontSize={10.5} fontWeight={700} fill="#0c2d6b">法学</text>
+                  <text x={200} y={120} textAnchor="middle" fontSize={11.5} fontWeight={700} fill="#1d4ed8">法律资格</text>
+                  <text x={200} y={86} textAnchor="middle" fontSize={11.5} fontWeight={700} fill="#1e40af">教师资格</text>
+                  <text x={470} y={170} textAnchor="middle" fontSize={11.5} fontWeight={700} fill="#047857">逻辑学</text>
+                  <text x={340} y={238} textAnchor="middle" fontSize={11.5} fontWeight={700} fill="#334155">公务员</text>
+
+                  <rect x={40} y={272} width={580} height={44} rx={10} fill="#f8fafc" stroke="#cbd5e1" strokeWidth={1} />
+                  <text x={330} y={291} textAnchor="middle" fontSize={11.5} fill="#334155">法律资格圈整个在教师资格圈里，逻辑学圈整个在教师资格圈外——两个圈根本不挨着</text>
+                  <text x={330} y={309} textAnchor="middle" fontSize={11.5} fontWeight={700} fill="#b91c1c">⇒ 「是逻辑学、又拿到法律资格」画不出来 → D 一定为假</text>
+                </svg>
+                <figcaption>图：例 4 的画法 —— 左边三层套圈（教师资格 ⊃ 法律资格 ⊃ 法学），右边逻辑学单独成圈、与教师资格圈分离；中间虚线框是「公务员」，两个黑点分别表示「有些法学生是公务员」「有些逻辑学学生是公务员」</figcaption>
+              </figure>
+              <div className="a"><b>看图：</b>左边三圈套成一条链 <b>法学 ⊂ 法律资格 ⊂ 教师资格</b>；右边「逻辑学」单独一圈，和教师资格圈<b>完全分离</b>。<br />所以只要拿到法律资格，就一定在教师资格圈里 → 一定不在逻辑学圈里。「是逻辑学、又拿到法律资格」这个位置在图上<b>根本不存在</b> → 选 <b>D</b>。<br />A、C 都是「后件推前件」：教师资格圈里还有法律资格圈之外的一大片，法律资格圈里也有法学之外的一大片，所以它们可能为真；B 说的那个人只要落在虚线框里、两个黑点之外就行，图上留着这样的位置，不违反任何条件。</div>
             </ExerciseCard>
       
             <ExerciseCard>
               <ExerciseTitle>例 5 · 只能推出「可能」</ExerciseTitle>
               <div className="q">某兴趣小组成员都是艺术特长生，有的艺术特长生体育很好，小明体育很好。<br />由此可以推出：<br />A. 小明是艺术特长生　B. 小明不是艺术特长生　C. 该兴趣小组成员体育都很好　D. 该兴趣小组成员可能体育都不好</div>
-              <div className="a"><b>思路：</b>「有的艺术特长生体育很好」只说明<b>有一部分</b>特长生体育好，剩下的可以不好。兴趣小组成员都是特长生，但成员完全可能都落在「体育不好」的那部分里 → 选 <b>D</b>（「可能」表述最稳）。<br />A、B 都是拿「体育好」去肯定后件，推不出；C 是典型的「有些 ⇒ 所有」放大错误。</div>
+              <figure className="fig">
+                <svg viewBox="0 0 660 300" role="img" aria-label="例 5 画图法：兴趣小组圈套在艺术特长生圈里，体育好圈只与艺术特长生圈部分相交，小明这个点只落在体育好圈里">
+                  <text x={330} y={22} textAnchor="middle" fontSize={13} fontWeight={700} fill="#1e293b">画图：「有的」只画一小块交叠，剩下的全是空白</text>
+
+                  <circle cx={250} cy={136} r={92} fill="#dbeafe" fillOpacity={0.9} stroke="#2563eb" strokeWidth={1.8} />
+                  <circle cx={210} cy={126} r={40} fill="#93c5fd" stroke="#1e40af" strokeWidth={1.6} />
+                  <circle cx={393} cy={136} r={80} fill="#d1fae5" fillOpacity={0.7} stroke="#10b981" strokeWidth={1.8} />
+
+                  <circle cx={433} cy={106} r={10} fill="none" stroke="#dc2626" strokeWidth={1.3} />
+                  <circle cx={433} cy={106} r={5} fill="#0f172a" />
+
+                  <text x={210} y={131} textAnchor="middle" fontSize={10.5} fontWeight={700} fill="#0c2d6b">兴趣小组</text>
+                  <text x={250} y={212} textAnchor="middle" fontSize={11.5} fontWeight={700} fill="#1e40af">艺术特长生</text>
+                  <text x={393} y={199} textAnchor="middle" fontSize={11.5} fontWeight={700} fill="#047857">体育好</text>
+                  <text x={433} y={94} textAnchor="middle" fontSize={10.5} fontWeight={700} fill="#b91c1c" stroke="#ffffff" strokeWidth={3} paintOrder="stroke">小明</text>
+
+                  <rect x={40} y={236} width={580} height={50} rx={10} fill="#f8fafc" stroke="#cbd5e1" strokeWidth={1} />
+                  <text x={330} y={256} textAnchor="middle" fontSize={11.5} fill="#334155">「体育好」只跟艺术特长生圈咬了一小块；兴趣小组圈完全可以落在没咬到的那一大半里</text>
+                  <text x={330} y={275} textAnchor="middle" fontSize={11.5} fontWeight={700} fill="#b91c1c">⇒ 成员可以一个都不体育好 ⇒ 只能推出「可能都不好」→ D</text>
+                </svg>
+                <figcaption>图：例 5 的画法 —— 「有的艺术特长生体育好」只画两块交叠，不代表整圈；兴趣小组整个在艺术特长生圈里，但它和「体育好」可以零交叠，所以只能得「可能」；小明这个黑点落在体育好圈里、却在艺术圈外，A、B 都定不下来</figcaption>
+              </figure>
+              <div className="a"><b>看图：</b>「有的艺术特长生体育好」在图上只是<b>两圈咬一小块</b>，剩下那一大半照样是艺术特长生、但体育不好。兴趣小组整个塞在艺术特长生圈里，它<b>可以落在没咬到的那半边</b>——图上完全容得下这种画法，所以「成员可能体育都不好」成立 → 选 <b>D</b>。<br />小明这个黑点在体育好圈里，但它在艺术圈外——A 说他是艺术特长生、B 说他不是，两种画法都不违反题干，所以都定不下来；C 是把「有的」直接放大成「所有」，图上一眼就能看出不成立。</div>
             </ExerciseCard>
       
             <h4>八、例题 · 前提型</h4>
@@ -789,9 +869,15 @@ export default function S3(): ReactElement {
             </ExerciseCard>
       
             <ExerciseCard>
-              <ExerciseTitle>例 8 · 考法二（题干给 2 个前提）</ExerciseTitle>
-              <div className="q">有些导演留大胡子，因此，有些留大胡子的人是大嗓门。<br />要使上述推理成立，必须补充以下哪项作为前提？<br />A. 有些大嗓门的人留大胡子　B. 所有导演都是大嗓门　C. 所有大嗓门的人都是导演　D. 有些导演不留大胡子</div>
-              <div className="a"><b>思路（找中项）：</b>中项 = 前提出现、结论不出现的概念 = <b>导演</b>。结论「有些留大胡子的人是大嗓门」= 有些 B 是 C；已知「有些导演留大胡子」= 有些 A 是 B。<br />要接上，必须补「<b>所有 A 是 C</b>」= 所有导演都是大嗓门 → 选 <b>B</b>。<br />口诀验证：中项「导演」要在前提中周延一次，只能靠「所有」提供。A 是把结论换了个说法、C 方向反了。</div>
+              <ExerciseTitle>例 8 · 考法二（2 个前提能接 → 先合并）</ExerciseTitle>
+              <div className="q">有些医生是教授，所有教授都获得过博士学位。因此，有些医生是党员。<br />要使上述推理成立，必须补充以下哪一项作为前提？<br />A. 所有党员都获得过博士学位　B. 所有获得过博士学位的人都是党员　C. 有些获得过博士学位的人是党员　D. 有些教授是党员</div>
+              <div className="a"><b>第一步 · 看这两句能不能接：</b>「有些医生是教授」＋「所有教授都获得过博士学位」，正好是「<b>____ 是 X ＋ 所有 X ____</b>」的结构（X ＝ 教授）→ <b>先合并</b>成一句：<br /><b>有些医生获得过博士学位</b>（有些 A 是 Y）。<br /><b>第二步 · 退回考法一：</b>结论「有些医生是党员」= 有些 A 是 D，已合并出「有些 A 是 Y」→ 缺的是「<b>所有 Y 是 D</b>」＝ 所有获得过博士学位的人都是党员 → 选 <b>B</b>。<br />不合并硬挑就会乱：C 是「有些 ＋ 有些」，两个「有些」接不上；A 方向反了（变成「党员 ⇒ 博士」）；D 只说有些教授是党员，跟「医生」这一头没关系。</div>
+            </ExerciseCard>
+      
+            <ExerciseCard>
+              <ExerciseTitle>例 9 · 考法二（2 个前提接不上 → 必有一个是废的）</ExerciseTitle>
+              <div className="q">有些教师是志愿者，所有教师都有本科学历。因此，有些志愿者是党员。<br />要使上述推理成立，必须补充以下哪一项作为前提？<br />A. 所有党员都是志愿者　B. 所有志愿者都是党员　C. 有些党员是教师　D. 所有教师都是党员</div>
+              <div className="a"><b>第一步 · 看这两句能不能接：</b>「有些教师是志愿者」后面跟的是「所有教师都有本科学历」——主语是<b>教师</b>、不是志愿者，凑不成「____ 是 X ＋ 所有 X ____」，两句<b>接不上</b> → 说明两个前提里<b>有一个是废的</b>。<br /><b>第二步 · 拿结论去比：</b>「所有教师都有本科学历」跟结论里的「党员」一点关系没有 → <b>直接扔掉</b>。剩下「有些教师是志愿者」= 有些 A 是 C，结论「有些志愿者是党员」= 有些 C 是 D → 补「<b>所有 C 是 D</b>」＝ 所有志愿者都是党员 → 选 <b>B</b>。<br />D 是这题最大的坑：它只能推出「有些<b>教师</b>是党员」，跟「有些<b>志愿者</b>是党员」不是一句话；A 方向反了；C 还是「有些 ＋ 有些」，接不上。</div>
             </ExerciseCard>
       
             <div className="jingle">
