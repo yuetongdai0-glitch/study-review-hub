@@ -44,7 +44,7 @@ export default function Sz3(): ReactElement {
         <Callout variant="warn"><b>「两会」不等于「党代会」：</b>两会＝<b>全国人大</b>＋<b>全国政协</b>；政府工作报告由<b>国务院总理</b>作，不是总书记作。选项常写「总书记作政府工作报告」，一读就能排除。</Callout>
       </Block>
       <Example>
-        <ExampleHeader>📝 例题 1 · 谁作政府工作报告</ExampleHeader>
+        <ExampleHeader>📝 例题22 · 谁作政府工作报告</ExampleHeader>
         <ExampleBody>
           <ExampleQuestion>关于 2026 年全国两会，下列说法正确的是（　）。</ExampleQuestion>
           <ExampleOptions>A. 政府工作报告由国务院总理向全国人大作　B. 政府工作报告由全国政协主席作　C. 两会即党的全国代表大会　D. 两会每年 10 月召开</ExampleOptions>
@@ -64,7 +64,7 @@ export default function Sz3(): ReactElement {
         <Callout variant="tip"><b>「建议 / 纲要 / 规划」三级别：</b>党的全会 → <b>建议</b>；国务院 → <b>纲要</b>；部委/地方 → <b>规划</b>。题目问「由谁通过」，按这个顺序对号。</Callout>
       </Block>
       <Example>
-        <ExampleHeader>📝 例题 2 · 建议与纲要</ExampleHeader>
+        <ExampleHeader>📝 例题23 · 建议与纲要</ExampleHeader>
         <ExampleBody>
           <ExampleQuestion>关于「十五五」规划，下列说法正确的是（　）。</ExampleQuestion>
           <ExampleOptions>A. 《建议》由全国人民代表大会审议通过　B. 《建议》由党的中央全会通过，《纲要》由全国人大批准　C. 《建议》就是《纲要》　D. 五年规划由国务院单独决定，无需人大批准</ExampleOptions>
@@ -83,7 +83,7 @@ export default function Sz3(): ReactElement {
         <Callout variant="warn"><b>两个「起点」别混：</b>九一八事变＝<b>中国局部抗战</b>的开始，也是 14 年抗战的<b>起点</b>；七七事变＝<b>全民族抗战</b>的起点。选项常把「全民族抗战开始」安到九一八上。</Callout>
       </Block>
       <Example>
-        <ExampleHeader>📝 例题 3 · 长征与抗战</ExampleHeader>
+        <ExampleHeader>📝 例题24 · 长征与抗战</ExampleHeader>
         <ExampleBody>
           <ExampleQuestion>下列关于党史事件的表述，正确的是（　）。</ExampleQuestion>
           <ExampleOptions>A. 长征胜利 90 周年对应的标志性事件是三大主力会师　B. 九一八事变标志着全民族抗战的开始　C. 遵义会议是长征的起点　D. 建党 105 周年对应 2025 年</ExampleOptions>
@@ -92,16 +92,21 @@ export default function Sz3(): ReactElement {
       </Example>
 
       <Block>
-        <BlockTitle>4. 新年贺词：只记「年度关键词」</BlockTitle>
+        <BlockTitle>4. 2026 新年贺词：一张成绩单 + 一个定位</BlockTitle>
         <PointList>
-          <li>贺词每年必考<b>一句金句 + 一个年度定位</b>，形式是「填空/对应」，不是大段默写。</li>
-          <li>复习方法：把<b>题目里出现过的金句</b>抄成一行，标注「年份 + 场合」，考前只看这张表。</li>
-          <li>新年贺词 ≠ 政府工作报告：贺词讲<b>成绩与信心</b>，报告讲<b>指标与任务</b>。选项常把两者的话互换。</li>
+          <li>发表时间：<b>2025 年 12 月 31 日</b>。定调：<b>2025 年是「十四五」收官之年</b>，<b>2026 年是「十五五」开局之年</b>。</li>
+          <li><b>经济总量</b>：连续跨越新关口，<b>预计达到 140 万亿元</b>。</li>
+          <li><b>纪念</b>：隆重纪念<b>中国人民抗日战争暨世界反法西斯战争胜利 80 周年</b>；<b>设立台湾光复纪念日</b>。</li>
+          <li><b>科技与工程</b>：人工智能大模型、<b>芯片自主研发新突破</b>、<b>天问二号</b>开启「追星」之旅、<b>雅下水电工程</b>开工、首艘<b>电磁弹射型航母</b>正式入列、人形机器人、无人机。</li>
+          <li><b>民生</b>：新就业群体权益保障、<b>适老化改造</b>、<b>育儿家庭每月多 300 元补贴</b>。</li>
+          <li><b>外交与开放</b>：<b>上合组织天津峰会</b>、<b>全球妇女峰会</b>、<b>海南自贸港全岛封关运作</b>、宣布新一轮<b>国家自主贡献</b>、继「三大倡议」后提出<b>全球治理倡议</b>。</li>
+          <li><b>港澳台</b>：出席<b>全运会</b>开幕式（粤港澳三地）；「一国两制」；祖国统一的历史大势不可阻挡。</li>
+          <li><b>党建</b>：贯彻<b>中央八项规定精神</b>学习教育；继续回答好延安<b>「窑洞之问」</b>。</li>
         </PointList>
-        <Callout variant="tip"><b>专题题的通用解法：</b>先认<b>场合</b>（哪个会/哪份文件），再认<b>对象</b>（三农/经济/党建/外交），最后才看细节。前两步就能排掉两个错项。</Callout>
+        <Callout variant="warn"><b>新年贺词 ≠ 政府工作报告：</b>贺词讲<b>成绩与信心</b>，报告讲<b>指标与任务</b>。GDP 增速目标只在报告里，贺词里出现的数字是「140 万亿元」这类<b>总量成绩</b>。两者的话经常被互换着考。<br /><b>专题题的通用解法：</b>先认<b>场合</b>（哪个会/哪份文件），再认<b>对象</b>（三农/经济/党建/外交），最后才看细节。前两步就能排掉两个错项。</Callout>
       </Block>
       <Example>
-        <ExampleHeader>📝 例题 4 · 场合与对象要对应</ExampleHeader>
+        <ExampleHeader>📝 例题25 · 场合与对象要对应</ExampleHeader>
         <ExampleBody>
           <ExampleQuestion>下列「场合—内容」对应<b>不正确</b>的是（　）。</ExampleQuestion>
           <ExampleOptions>A. 中央一号文件——三农工作　B. 中央经济工作会议——次年经济工作基调　C. 新年贺词——公布 GDP 增速目标　D. 全国卫生与健康大会——健康中国建设</ExampleOptions>

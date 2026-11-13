@@ -140,7 +140,11 @@ export default function Edu1(): ReactElement {
           <tr><td><b>壬子癸丑学制</b></td><td>1912–1913</td><td>南京临时政府</td><td>日本</td><td>第一个<b>资本主义性质</b>；首次规定<b>男女同校</b></td></tr>
           <tr><td><b>壬戌学制</b></td><td>1922</td><td>北洋政府</td><td><b>美国</b></td><td><b>六三三</b>；沿用时间最长、影响最大</td></tr>
         </DataTable>
-        <Callout variant="warn"><b>最容易错的一处：</b>壬寅学制对应《<b>钦定</b>学堂章程》，癸卯学制对应《<b>奏定</b>学堂章程》——两本章程的名字经常被故意颠倒。记：「<b>寅</b>＝钦（先钦定、后才奏定）」。</Callout>
+        <PointList>
+          <li><b>义务教育三特征</b>：<b>强制性</b>（国家强制力保证）、<b>免费性</b>（不收学费、杂费）、<b>普及性</b>（适龄儿童少年全覆盖）。问「不包含哪项」，常拿「选拔性」「营利性」来凑。</li>
+          <li><b>学制三类型</b>：<b>双轨制</b>（西欧，如英国，贵族与平民两轨并行）、<b>单轨制</b>（美国，一套学制向上延伸）、<b>分支型学制</b>（苏联与中国，先共同基础再分职业教育与普通教育）。</li>
+        </PointList>
+        <Callout variant="warn"><b>最容易错的一处：</b>壬寅学制对应《<b>钦定</b>学堂章程》，癸卯学制对应《<b>奏定</b>学堂章程》——两本章程是<b>交叉</b>的，记「<b>寅＝钦</b>」（先钦定、后奏定）。讲义的表格这里印反了，以史实为准。</Callout>
       </Block>
       <Example>
         <ExampleHeader>📝 例题124 · 六三三学制</ExampleHeader>
@@ -224,6 +228,7 @@ export default function Edu1(): ReactElement {
           <li><b>原则</b>：导向性、疏导性、尊重信任与严格要求相结合、知行统一、正面教育与纪律约束相结合、<b>依靠积极因素克服消极因素（长善救失）</b>、教育影响一致性与连贯性、因材施教。</li>
           <li><b>方法</b>：说服教育法、<b>榜样示范法</b>、实际锻炼法、<b>陶冶教育法</b>、品德评价法、道德修养法。「论学取友」「择其善者而从之」→ 榜样示范。</li>
           <li><b>途径</b>：<b>思想品德课与其他学科教学是最基本、最经常</b>的途径。</li>
+          <li><b>德育过程的多端性</b>：知、情、意、行<b>任一端都可以作为德育的开端</b>——「晓之以理」从知开始，「动之以情」从情开始，「导之以行」从行开始。不要死记「先知情意行」的固定顺序。</li>
         </PointList>
       </Block>
       <Example>
@@ -245,7 +250,8 @@ export default function Edu1(): ReactElement {
           <tr><td><b>目标管理</b></td><td>师生共同定目标、层层分解</td><td><b>德鲁克</b></td></tr>
         </DataTable>
         <PointList>
-          <li>班主任<b>中心工作</b>：组织和培养<b>班集体</b>；<b>前提和基础</b>：了解和研究学生。</li>
+          <li>班主任<b>首要任务（也是中心工作）</b>：<b>组织建立良好的班集体</b>；<b>前提和基础</b>：了解和研究学生。</li>
+          <li><b>班级管理原则</b>：考得最多的是<b>主体原则</b>——「班干部能做的老师不做，学生能做的班干部不做」，即放手让学生自我管理；另有三条：激励原则、科学原则、公平原则。</li>
           <li>了解学生<b>最基本的方法</b>：<b>观察法</b>；通过周记、作文了解 → <b>研究书面材料法</b>。</li>
           <li>新组建班级第一件事：<b>建立班集体的正常秩序</b>（先有秩序，再谈习惯、活动、班风）。</li>
           <li>班级管理的根本目的：<b>促进学生的发展</b>。</li>
@@ -277,6 +283,71 @@ export default function Edu1(): ReactElement {
           <ExampleQuestion>小苏因一时冲动犯错，学校以「安全不能保证」为由对其停课两日，并停发布置作业的短信。学校侵犯了小苏的（　）。</ExampleQuestion>
           <ExampleOptions>A. 人身自由权　B. 人格尊严权　C. 隐私权　D. 参加教育教学活动的权利</ExampleOptions>
           <ExampleAnswer><b>解析：</b>停课＝剥夺上课机会，停发作业＝阻断学习资料获取，属于<b>受教育权</b>中的「参加教育教学活动、使用教育教学设施」的权利。<br /><span className="correct">答案：D</span></ExampleAnswer>
+        </ExampleBody>
+      </Example>
+
+      <Block>
+        <BlockTitle>12. 教学过程与上好一节课：四条规律 + 六条标准</BlockTitle>
+        <DataTable>
+          <tr><th>教学过程四条规律</th><th>一句话</th></tr>
+          <tr><td>间接经验与直接经验<b>相结合</b></td><td>以学书本知识为主，但要建立在直接经验基础上</td></tr>
+          <tr><td>掌握知识与发展能力<b>相统一</b></td><td>知识是能力的基础，但「高分低能」说明二者不必然同步</td></tr>
+          <tr><td>教师主导与学生主体<b>相统一</b></td><td>教师主导≠教师包办，学生主体≠放任自学</td></tr>
+          <tr><td>传授知识与思想教育<b>相统一</b></td><td>即「教学的教育性」——教书永远在育人</td></tr>
+        </DataTable>
+        <PointList>
+          <li><b>备课「三备三写」</b>：备<b>教材</b>、备<b>学生</b>、备<b>教法</b>；写学期计划、单元计划、课时计划。<b>备好课是上好课的先决条件</b>。</li>
+          <li><b>上好课六条标准</b>：目标明确、内容正确、方法得当、<b>组织严密</b>、表达清晰、气氛热烈。</li>
+          <li><b>布置作业五原则</b>：符合课标与教材要求、分量适当、难易适度、有明确要求与指导、<b>及时批改反馈</b>；<b>不得以增加作业量作为惩罚</b>。</li>
+          <li><b>教学组织形式</b>：<b>班级授课制</b>（基本形式，夸美纽斯系统论述）｜个别教学｜分组教学｜<b>复式教学</b>（一个教师同时教两个以上年级）｜现场教学｜<b>特朗普制</b>（大班上课 + 小班研究 + 个人独立学习，又称「灵活的课程表」）。</li>
+        </PointList>
+        <Callout variant="warn"><b>「教学的教育性」＝传授知识与思想教育相统一</b>，不是「间接与直接经验相结合」。这两条经常被对调，看到「教育性」就选<b>思想品德</b>那一侧。</Callout>
+      </Block>
+      <Example>
+        <ExampleHeader>📝 例题151 · 上好课的先决条件</ExampleHeader>
+        <ExampleBody>
+          <ExampleQuestion>上好一堂课的先决条件是（　）。</ExampleQuestion>
+          <ExampleOptions>A. 备好课　B. 组织得当　C. 气氛热烈　D. 方法得当</ExampleOptions>
+          <ExampleAnswer><b>解析：</b>备课是上课的<b>先决条件</b>；B、C、D 都是「上好课的标准」之一，属于课上表现，不是前提。<br /><span className="correct">答案：A</span></ExampleAnswer>
+        </ExampleBody>
+      </Example>
+
+      <Block>
+        <BlockTitle>13. 教师劳动、专业素养与师德「三爱两人一终身」</BlockTitle>
+        <PointList>
+          <li><b>教师劳动五个特点</b>：<b>复杂性</b>（对象、任务、过程都复杂）、<b>创造性</b>（教法要因材施教、要有教育机智）、<b>示范性</b>（为人师表）、<b>长期性</b>（十年树木百年树人）、<b>广延性与连续性</b>（时空上不限于课堂）。</li>
+          <li><b>教育机智</b>＝面对突发情境的<b>创造性</b>应对，对应教师劳动的创造性。</li>
+          <li><b>教师专业素养四块</b>：道德素养（师德）、知识素养（学科 + 教育理论 + 通识）、能力素养（教学、组织、科研、沟通）、心理素养。</li>
+          <li><b>教师职业道德规范</b>：<b>三爱两人一终身</b>——爱国守法、爱岗敬业、<b>关爱学生</b>、教书育人、为人师表、终身学习。</li>
+          <li><b>师爱</b>是师德的核心；「经师易求，人师难得」＝教师职业的<b>示范性</b>（育人）。</li>
+        </PointList>
+        <Callout variant="warn"><b>「示范性」与「创造性」别混：</b>为人师表、以身作则、学生模仿 → <b>示范性</b>；因材施教、教育机智、教法灵活 → <b>创造性</b>。</Callout>
+      </Block>
+      <Example>
+        <ExampleHeader>📝 例题152 · 教育机智体现哪种特点</ExampleHeader>
+        <ExampleBody>
+          <ExampleQuestion>「不论教育者怎样研究教学理论，如果他缺乏教育机智，就不可能成为优秀的教育实践者。」这说明教师劳动具有（　）。</ExampleQuestion>
+          <ExampleOptions>A. 复杂性　B. 创造性　C. 长期性　D. 示范性</ExampleOptions>
+          <ExampleAnswer><b>解析：</b>教育机智是对突发情境的灵活、创造性应对 → 教师劳动的<b>创造性</b>。<br /><span className="correct">答案：B</span></ExampleAnswer>
+        </ExampleBody>
+      </Example>
+
+      <Block>
+        <BlockTitle>14. 终身教育、课改趋势与测验四指标</BlockTitle>
+        <PointList>
+          <li><b>终身教育</b>提出者：法国<b>朗格朗</b>；《学会生存——教育世界的今天和明天》（联合国教科文组织）提出<b>学习化社会</b>与<b>四大支柱</b>：学会求知、学会做事、学会共处、学会生存。</li>
+          <li><b>新课改趋势</b>：课程目标由「双基」到<b>三维目标</b>（知识与技能、过程与方法、情感态度与价值观）；课程结构由学科本位转向<b>综合化</b>；学习方式倡导<b>自主、合作、探究</b>；评价由甄别选拔转向<b>促进发展</b>。</li>
+          <li><b>测验四指标</b>：<b>信度</b>（稳不稳定、可不可靠）、<b>效度</b>（测没测到该测的东西）、<b>难度</b>（P 值 0.5 左右最合适）、<b>区分度</b>（能不能把水平不同的人分开）。</li>
+          <li><b>基础教育战略举措</b>：「<b>双减</b>」（减轻作业负担和校外培训负担）、学前教育<b>普惠</b>发展、义务教育<b>优质均衡</b>、县域普通高中<b>振兴</b>、<b>五育并举</b>（德智体美劳）。</li>
+        </PointList>
+        <Callout variant="warn"><b>信度与效度不是一回事：</b>信度高不一定效度高（每次都错得很稳定），效度高一定信度高。<b>「测了不该测的」是效度问题，「每次分数忽高忽低」是信度问题。</b></Callout>
+      </Block>
+      <Example>
+        <ExampleHeader>📝 例题153 · 信度还是效度</ExampleHeader>
+        <ExampleBody>
+          <ExampleQuestion>某次数学测验题目全是偏难怪题，学生得分普遍很低且不稳定。该测验最可能存在的问题是（　）。</ExampleQuestion>
+          <ExampleOptions>A. 信度低、效度也低　B. 信度高、效度低　C. 信度低、效度高　D. 信度效度都没问题</ExampleOptions>
+          <ExampleAnswer><b>解析：</b>偏难怪题测不出学生的真实水平 → <b>效度低</b>；得分忽高忽低、不稳定 → <b>信度低</b>。<br /><span className="correct">答案：A</span></ExampleAnswer>
         </ExampleBody>
       </Example>
 

@@ -47,7 +47,7 @@ export default function S25(): ReactElement {
               <Callout variant="warn"><b>最经典的坑：</b>把「主题」写成「满足人民美好生活需要」（那是<b>根本目的</b>），把「根本目的」写成「推动高质量发展」。<b>主题＝高质量发展，根本目的＝满足美好生活需要。</b></Callout>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题120 · 十五五主线（速练21题）</ExampleHeader>
+              <ExampleHeader>📝 例题1 · 十五五主线（速练21题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>关于「十五五」规划建议，下列说法正确的有：<br />①以经济建设为中心<br />②以推动高质量发展为主题<br />③以满足人民日益增长的美好生活需要为根本目的<br />④以改革创新为根本保障</ExampleQuestion>
                 <ExampleOptions>A.①②③　B.①②④　C.②③④　D.①③④</ExampleOptions>
@@ -72,7 +72,7 @@ export default function S25(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题121 · 十五五分领域（速练21题）</ExampleHeader>
+              <ExampleHeader>📝 例题2 · 十五五分领域（速练21题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>关于「十五五」规划建议的分领域部署，下列说法正确的是：</ExampleQuestion>
                 <ExampleOptions>A.构建以现代农业为骨干的现代化产业体系<br />B.把发展经济的着力点放在数字经济上<br />C.以服务业为重点扩大市场准入和开放领域<br />D.坚持城市外延式发展，建设现代化人民城市</ExampleOptions>
@@ -94,7 +94,7 @@ export default function S25(): ReactElement {
               <Callout variant="warn"><b>三个易错：</b>① 总量是 <b>140.19 万亿</b>（不是「首次超 130 万亿」）；② 制造业增加值连续 <b>16 年</b>全球第一；③ 货物贸易是<b>第一</b>大国（不是第二）。</Callout>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题122 · 2025 成绩（政府工作报告）</ExampleHeader>
+              <ExampleHeader>📝 例题3 · 2025 成绩（政府工作报告）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>关于 2025 年我国发展成果，下列说法正确的有：<br />①国内生产总值增长 5%，总量达到 140.19 万亿元<br />②城镇新增就业 1267 万人，调查失业率平均 5.2%<br />③粮食产量达到 1.43 万亿斤<br />④制造业增加值规模连续 16 年保持全球第一</ExampleQuestion>
                 <ExampleOptions>A.①②③　B.①②④　C.②③④　D.①②③④</ExampleOptions>
@@ -124,7 +124,7 @@ export default function S25(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题123 · 2026 目标（政府工作报告）</ExampleHeader>
+              <ExampleHeader>📝 例题4 · 2026 目标（政府工作报告）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>关于 2026 年发展主要预期目标，下列说法正确的有：<br />①经济增长 4.5%–5%<br />②城镇调查失业率 5.5% 左右，城镇新增就业 1200 万人以上<br />③居民消费价格涨幅 2% 左右<br />④赤字率按 4% 左右安排</ExampleQuestion>
                 <ExampleOptions>A.①②③　B.②③④　C.①②④　D.①②③④</ExampleOptions>
@@ -133,7 +133,60 @@ export default function S25(): ReactElement {
             </Example>
       
             <Block>
-              <BlockTitle>5. 2026 年中央一号文件</BlockTitle>
+              <BlockTitle>5. 2025 中央经济工作会议：五个「必须」+ 八项任务</BlockTitle>
+              <PointList>
+                <li>时间：<b>2025 年 12 月 10—11 日</b>，北京。它是 <b>2026 年经济政策的总源头</b>——政府工作报告里的财政、货币取向都来自这里。</li>
+                <li><b>五个「必须」</b>（新认识）：必须充分挖掘<b>经济潜能</b>；必须坚持<b>政策支持和改革创新并举</b>；必须做到既<b>「放得活」又「管得好」</b>；必须坚持<b>投资于物和投资于人紧密结合</b>；必须以<b>苦练内功</b>来应对外部挑战。</li>
+                <li><b>总体要求</b>：稳中求进；统筹<b>国内经济工作</b>和<b>国际经贸斗争</b>、统筹<b>发展和安全</b>；更加积极有为的宏观政策；持续扩大内需、优化供给，<b>做优增量、盘活存量</b>；因地制宜发展新质生产力；<b>稳就业、稳企业、稳市场、稳预期</b>；推动经济实现<b>质的有效提升和量的合理增长</b>；实现「十五五」良好开局。</li>
+                <li><b>政策取向</b>：继续实施<b>更加积极的财政政策</b>（保持必要赤字、债务总规模和支出总量，兜牢基层「三保」底线）+ 继续实施<b>适度宽松的货币政策</b>（降准降息、保持流动性充裕、促进物价合理回升）；保持人民币汇率在合理均衡水平上基本稳定。</li>
+              </PointList>
+              <DataTable>
+                <tr><th>八项重点任务</th><th>关键词</th></tr>
+                <tr><td>一 内需主导</td><td>建设强大国内市场；提振消费专项行动、城乡居民增收计划</td></tr>
+                <tr><td>二 创新驱动</td><td>培育壮大新动能；建设<b>北京（京津冀）、上海（长三角）、粤港澳大湾区</b>国际科技创新中心</td></tr>
+                <tr><td>三 改革攻坚</td><td>全国统一大市场建设条例；整治<b>「内卷式」竞争</b>；深化国资国企改革</td></tr>
+                <tr><td>四 对外开放</td><td>自贸试验区、海南自贸港；「一带一路」</td></tr>
+                <tr><td>五 协调发展</td><td>城乡融合、区域联动</td></tr>
+                <tr><td>六 「双碳」引领</td><td>能源强国建设规划纲要；新型能源体系；扩大<b>绿电</b>应用；「三北」工程攻坚战</td></tr>
+                <tr><td>七 民生为大</td><td>为人民群众多办实事</td></tr>
+                <tr><td>八 守牢底线</td><td>稳妥化解重点领域风险</td></tr>
+              </DataTable>
+              <Callout variant="warn"><b>三个最爱的错项：</b>① 把「投资于物和投资于人<b>紧密结合</b>」改成「由投资于物<b>转向</b>投资于人」；② 把「适度宽松的货币政策」改成「稳健的」或「从紧的」；③ 把「质的有效提升和量的合理增长」<b>颠倒</b>成「量的有效提升和质的合理增长」。</Callout>
+            </Block>
+            <Example>
+              <ExampleHeader>📝 例题5 · 经济工作会议的政策取向</ExampleHeader>
+              <ExampleBody>
+                <ExampleQuestion>关于 2025 年中央经济工作会议，下列说法正确的是（　）。</ExampleQuestion>
+                <ExampleOptions>A. 继续实施稳健的货币政策　B. 必须坚持投资于物和投资于人紧密结合　C. 推动经济实现量的有效提升和质的合理增长　D. 把「放得活」放在首位，不必管得住</ExampleOptions>
+                <ExampleAnswer><b>解析：</b>B 是五个「必须」之一。A 错，应是<b>适度宽松</b>的货币政策；C 错，顺序应为<b>质的有效提升</b>和<b>量的合理增长</b>；D 错，是既「放得活」又「管得好」。<br /><span className="correct">答案：B</span></ExampleAnswer>
+              </ExampleBody>
+            </Example>
+
+            <Block>
+              <BlockTitle>6. 2025 中央农村工作会议：两条底线 + 三项重点</BlockTitle>
+              <PointList>
+                <li>时间：<b>2025 年 12 月 29—30 日</b>，北京。讨论了《关于锚定农业农村现代化、扎实推进乡村全面振兴的意见（讨论稿）》。</li>
+                <li><b>总要求</b>：锚定<b>农业农村现代化</b>，扎实推进<b>乡村全面振兴</b>，推动<b>城乡融合发展</b>。定位：农业农村现代化关系中国式现代化<b>全局和成色</b>，必须加快建设<b>农业强国</b>。</li>
+                <li><b>粮食生产</b>：毫不放松，促进<b>良田良种良机良法</b>集成增效，提升农业综合生产能力和质量效益。</li>
+                <li><b>政策效能</b>：促进粮食等农产品价格<b>保持在合理水平</b>（<b>不是「稳步上升」</b>），促进农民增收。</li>
+                <li><b>两条底线</b>：① 确保<b>国家粮食安全</b>（新一轮<b>千亿斤</b>粮食产能提升行动、严守耕地红线、高标准农田、农业新质生产力）；② 确保<b>不发生规模性返贫致贫</b>。</li>
+                <li><b>三项重点</b>：<b>乡村产业</b>（县域富民产业、联农带农机制）· <b>乡村建设</b>（人居环境、改厕、垃圾围村）· <b>乡村治理</b>（基层组织换届、文明乡风、新时代<b>「枫桥经验」</b>）。</li>
+                <li><b>改革</b>：全面开展<b>第二轮土地承包到期后再延长三十年</b>整省试点。</li>
+                <li><b>四个「千万」别混</b>：<b>「千万工程」</b>经验＝乡村建设；<b>「枫桥经验」</b>＝矛盾化解；<b>五级书记</b>抓乡村振兴；农业建成<b>现代化大产业</b>。</li>
+              </PointList>
+              <Callout variant="warn"><b>最爱设的几个错：</b>① 把「千万工程」写成「枫桥经验」（或反过来）；② 把农产品价格「保持在合理水平」写成「稳步上升」；③ 把「不发生规模性返贫致贫」漏掉，换成「实现共同富裕」；④ 把「再延长三十年」写成「再延长二十年」。</Callout>
+            </Block>
+            <Example>
+              <ExampleHeader>📝 例题6 · 农村工作会议的两条底线</ExampleHeader>
+              <ExampleBody>
+                <ExampleQuestion>关于 2025 年中央农村工作会议，下列说法<b>不正确</b>的是（　）。</ExampleQuestion>
+                <ExampleOptions>A. 要确保国家粮食安全，确保不发生规模性返贫致贫　B. 促进粮食等农产品价格稳步上升　C. 学习运用「千万工程」经验推进宜居宜业和美乡村建设　D. 全面开展第二轮土地承包到期后再延长三十年整省试点</ExampleOptions>
+                <ExampleAnswer><b>解析：</b>B 错，会议表述是「促进粮食等农产品价格<b>保持在合理水平</b>」，不是「稳步上升」。A 是两条底线，C、D 均为原文表述。<br /><span className="correct">答案：B</span></ExampleAnswer>
+              </ExampleBody>
+            </Example>
+
+            <Block>
+              <BlockTitle>7. 2026 年中央一号文件</BlockTitle>
               <PointList>
                 <li>文件：《关于<b>锚定农业农村现代化</b>扎实推进乡村全面振兴的意见》。</li>
                 <li>这是<b>党的十八大以来第 14 个</b>指导「三农」工作的一号文件；<b>2004 年</b>是<b>新世纪首个</b>三农主题一号文件。</li>
@@ -148,7 +201,7 @@ export default function S25(): ReactElement {
               </PointList>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题124 · 一号文件（专题）</ExampleHeader>
+              <ExampleHeader>📝 例题7 · 一号文件（专题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>关于 2026 年中央一号文件，下列说法正确的是：</ExampleQuestion>
                 <ExampleOptions>A.这是党的十八大以来第 12 个指导「三农」工作的一号文件<br />B.以推进乡村全面振兴为总抓手，以学习运用「千万工程」经验为引领，以改革创新为根本动力<br />C.我国已连续 9 年粮食产量稳定在 1.4 万亿斤<br />D.农村集体经营性建设用地入市可优先用于建设商品住房</ExampleOptions>
@@ -157,7 +210,7 @@ export default function S25(): ReactElement {
             </Example>
       
             <Block>
-              <BlockTitle>6. 加快农业农村现代化「十五五」规划</BlockTitle>
+              <BlockTitle>8. 加快农业农村现代化「十五五」规划</BlockTitle>
               <PointList>
                 <li>2026 年 6 月 2 日国务院印发；思路是「<b>以推进乡村全面振兴为总抓手</b>、以<b>千万工程</b>经验为引领、以<b>改革创新</b>为根本动力」。</li>
                 <li><b>到 2030 年四个硬指标</b>：粮食综合生产能力 <b>1.45 万亿斤左右</b>；农业科技进步贡献率 <b>67%</b>；农作物耕种收综合机械化率<b>超过 80%</b>；农产品质量安全例行监测总体合格率 <b>98% 以上</b>。</li>
@@ -170,7 +223,7 @@ export default function S25(): ReactElement {
               <Callout variant="tip"><b>三组数字对比记：</b>2025 实绩 1.43 万亿斤 → 2030 目标 1.45 万亿斤；一号文件「千亿斤」产能提升 → 规划 720 个重点县；2030「重大进展」→ 2035「决定性进展」。</Callout>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题125 · 农业现代化规划（专题）</ExampleHeader>
+              <ExampleHeader>📝 例题8 · 农业现代化规划（专题）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>关于《加快农业农村现代化「十五五」规划》，下列说法错误的是：</ExampleQuestion>
                 <ExampleOptions>A.到 2030 年粮食综合生产能力达到 1.45 万亿斤左右<br />B.到 2030 年农业科技进步贡献率达到 67%<br />C.到 2035 年乡村全面振兴取得决定性进展、农业现代化基本实现<br />D.高标准农田优先在云贵地区、丘陵地带的梯田建设</ExampleOptions>
@@ -179,7 +232,7 @@ export default function S25(): ReactElement {
             </Example>
       
             <Block>
-              <BlockTitle>7. 四个「2035」与三组数字，别混</BlockTitle>
+              <BlockTitle>9. 四个「2035」与三组数字，别混</BlockTitle>
               <DataTable>
                 <tr><th>容易混的表述</th><th>正确归属</th></tr>
                 <tr><td>人均 GDP 达到中等发达国家水平</td><td><b>2035 年</b>远景目标（不是十五五）</td></tr>
@@ -193,7 +246,7 @@ export default function S25(): ReactElement {
               <Callout variant="warn"><b>一句话防坑：</b>凡是「中等发达国家水平」「创新型国家前列」「建成××强国」，答案都是 <b>2035</b>；凡是「决定性进展」「迈出坚实步伐」，答案都在<b>十五五末</b>。</Callout>
             </Block>
             <Example>
-              <ExampleHeader>📝 例题126 · 时间点辨析（综合）</ExampleHeader>
+              <ExampleHeader>📝 例题9 · 时间点辨析（综合）</ExampleHeader>
               <ExampleBody>
                 <ExampleQuestion>下列目标与时间节点对应正确的是：</ExampleQuestion>
                 <ExampleOptions>A.人均国内生产总值达到中等发达国家水平——「十五五」末<br />B.基本实现社会主义现代化取得决定性进展——2035 年<br />C.进入创新型国家前列——2035 年<br />D.共同富裕基本实现——2035 年</ExampleOptions>

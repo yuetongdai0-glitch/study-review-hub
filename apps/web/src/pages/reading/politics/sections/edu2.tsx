@@ -260,6 +260,53 @@ export default function Edu2(): ReactElement {
         </ExampleBody>
       </Example>
 
+      <Block>
+        <BlockTitle>10. 心理学流派、两种信号系统与似动知觉</BlockTitle>
+        <DataTable>
+          <tr><th>流派</th><th>代表人物</th><th>一句定位</th></tr>
+          <tr><td>构造主义</td><td>冯特、铁钦纳</td><td>心理学独立（1879 莱比锡）；研究<b>意识经验</b>的构成元素</td></tr>
+          <tr><td>机能主义</td><td>詹姆斯、杜威</td><td>研究意识的<b>功能与作用</b>（适应环境）</td></tr>
+          <tr><td>行为主义</td><td><b>华生</b>、斯金纳</td><td>只研究<b>可观察的行为</b>，反对研究意识</td></tr>
+          <tr><td><b>格式塔</b>（完形）</td><td>韦特海默、苛勒、考夫卡</td><td>强调<b>整体大于部分之和</b>，研究直接经验与行为的整体性</td></tr>
+          <tr><td>精神分析</td><td>弗洛伊德</td><td><b>潜意识</b>、人格结构（本我/自我/超我）</td></tr>
+          <tr><td>人本主义</td><td>马斯洛、罗杰斯</td><td>强调<b>自我实现</b>与人的价值</td></tr>
+          <tr><td>认知</td><td>奈瑟、皮亚杰</td><td>把人看作<b>信息加工</b>系统</td></tr>
+        </DataTable>
+        <PointList>
+          <li><b>第一信号系统</b>：以<b>具体刺激</b>为条件（望梅止渴、见风流泪）；<b>第二信号系统</b>：以<b>语言、文字</b>为条件（谈梅生津、听到表扬就高兴）——人类特有。</li>
+          <li><b>似动知觉</b>四型：<b>动景运动</b>（电影、动画片＝静止画面连续呈现）、<b>诱发运动</b>（月亮在云中穿行）、<b>自主运动</b>（暗室里的光点似在游动）、<b>运动后效</b>（看完瀑布再看石头觉得石头上飘）。</li>
+        </PointList>
+        <Callout variant="warn"><b>格式塔＝「整体、组织」，不是「行为」：</b>题干出现「心理是一个整体、一个组织的意义」→ 格式塔；出现「只研究行为、不研究意识」→ 行为主义。</Callout>
+      </Block>
+      <Example>
+        <ExampleHeader>📝 例题154 · 动画片与月亮</ExampleHeader>
+        <ExampleBody>
+          <ExampleQuestion>动画片由一张张静止画面连续呈现而成，看上去人物在动。这可以用（　）解释。</ExampleQuestion>
+          <ExampleOptions>A. 诱发运动　B. 动景运动　C. 自主运动　D. 运动后效</ExampleOptions>
+          <ExampleAnswer><b>解析：</b>静止画面按一定时间间隔连续呈现、产生运动知觉 → <b>动景运动</b>（电影、动画的原理）。「月亮在云中穿行」才是诱发运动。<br /><span className="correct">答案：B</span></ExampleAnswer>
+        </ExampleBody>
+      </Example>
+
+      <Block>
+        <BlockTitle>11. 学习金字塔、内隐学习与自我意识</BlockTitle>
+        <PointList>
+          <li><b>学习金字塔</b>（戴尔「经验之塔」的通俗版）：<b>被动学习</b>——听讲 5%、阅读 10%、视听 20%、演示 30%；<b>主动学习</b>——讨论 50%、实践 75%、<b>教别人 90%</b>。结论：<b>留存率随参与度上升</b>。</li>
+          <li><b>内隐学习</b>：不知不觉获得经验、改变行为（无意识、潜移默化）；<b>外显学习</b>：有意识、有明确指导。</li>
+          <li><b>自我意识三阶段</b>：<b>生理自我</b>（0—3 岁，认自己的身体）→ <b>社会自我</b>（3 岁—青春期，认自己的角色）→ <b>心理自我</b>（青春期以后，认自己的性格与价值观）。</li>
+          <li><b>群体规范</b>：群体成员共同认可的行为准则（如「上课不能迟到」「值日生必须扫地」）；<b>舆论</b>是规范的外在压力。</li>
+          <li><b>自我防御机制</b>：<b>升华</b>（把冲动转化为社会赞许的行为）、<b>补偿</b>（此路不通换条路）、<b>认同</b>（取他人之长归己）、<b>幽默</b>、合理化（找理由）、投射（把自己的想法安到别人身上）、退行（退回幼稚行为）。</li>
+        </PointList>
+        <Callout variant="tip"><b>「教别人 90%」这条能直接做题：</b>题目问「哪种方式学习效果最好」，选<b>教授他人 / 实践</b>；问「最差」，选<b>听讲</b>。</Callout>
+      </Block>
+      <Example>
+        <ExampleHeader>📝 例题155 · 哪种学习方式留存最高</ExampleHeader>
+        <ExampleBody>
+          <ExampleQuestion>根据学习金字塔理论，下列学习方式中知识留存率<b>最高</b>的是（　）。</ExampleQuestion>
+          <ExampleOptions>A. 听老师讲授　B. 阅读教材　C. 观看演示实验　D. 把知识讲给同学听</ExampleOptions>
+          <ExampleAnswer><b>解析：</b>「教别人」属于主动学习，留存率约 <b>90%</b>，高于听讲（5%）、阅读（10%）、演示（30%）。<br /><span className="correct">答案：D</span></ExampleAnswer>
+        </ExampleBody>
+      </Example>
+
       <div className="jingle">
         <div className="jt">教育心理学 · 一句话总结</div>
         <b>看到「给/撤刺激」想强化惩罚，看到「先后干扰」想前后摄，看到「几岁到几岁」想皮亚杰，看到「差距」想最近发展区，看到「榜样受奖」想替代强化。</b>

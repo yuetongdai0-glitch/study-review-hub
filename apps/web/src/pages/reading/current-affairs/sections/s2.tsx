@@ -44,7 +44,7 @@ export default function Sz2(): ReactElement {
         <Callout variant="warn"><b>易错：</b>「管党治党」的责任主体是<b>党委（党组）</b>，不是纪委；纪委是<b>监督责任</b>。选项常把「主体责任」和「监督责任」对调。</Callout>
       </Block>
       <Example>
-        <ExampleHeader>📝 例题 1 · 管党治党的责任</ExampleHeader>
+        <ExampleHeader>📝 例题17 · 管党治党的责任</ExampleHeader>
         <ExampleBody>
           <ExampleQuestion>关于落实管党治党政治责任，下列说法正确的是（　）。</ExampleQuestion>
           <ExampleOptions>A. 党委（党组）负监督责任，纪委负主体责任　B. 党委（党组）负主体责任，纪委负监督责任　C. 责任全部由党委书记个人承担　D. 只要经济工作搞上去，党建可以放一放</ExampleOptions>
@@ -65,7 +65,7 @@ export default function Sz2(): ReactElement {
         <Callout variant="warn"><b>「平安中国」的四个词别记串：</b>统筹<b>发展和安全</b>；<b>惩防并举、标本兼治</b>；<b>法治支撑、科技赋能</b>；提高公共安全治理水平、完善社会治理体系。</Callout>
       </Block>
       <Example>
-        <ExampleHeader>📝 例题 2 · 基础研究的定位</ExampleHeader>
+        <ExampleHeader>📝 例题18 · 基础研究的定位</ExampleHeader>
         <ExampleBody>
           <ExampleQuestion>关于基础研究，下列表述与重要文章精神一致的是（　）。</ExampleQuestion>
           <ExampleOptions>A. 基础研究是整个科学体系的源头　B. 基础研究应以短期经济效益为唯一标准　C. 基础研究可以完全由市场自发投入　D. 基础研究与应用研究相互替代</ExampleOptions>
@@ -85,7 +85,7 @@ export default function Sz2(): ReactElement {
         <Callout variant="tip">「民生」这块最爱考「七个有所」：幼有所育、学有所教、劳有所得、病有所医、老有所养、住有所居、弱有所扶。<b>注意是「弱有所扶」，不是「残有所助」</b>。</Callout>
       </Block>
       <Example>
-        <ExampleHeader>📝 例题 3 · 广交会与大桥</ExampleHeader>
+        <ExampleHeader>📝 例题19 · 广交会与大桥</ExampleHeader>
         <ExampleBody>
           <ExampleQuestion>关于 2026 年 10 月的时政，下列说法<b>不正确</b>的是（　）。</ExampleQuestion>
           <ExampleOptions>A. 第 140 届广交会是中国扩大高水平对外开放、推动建设开放型世界经济的有效平台　B. 广交会创办至今 70 年　C. 新鸭绿江大桥连接丹东与新义州，为铁路桥　D. 全国卫生与健康大会提出实施医疗卫生强基工程，促进分级诊疗</ExampleOptions>
@@ -104,11 +104,39 @@ export default function Sz2(): ReactElement {
         <Callout variant="warn"><b>三对「融合」别混：</b>「科技创新和产业创新深度融合」＝这份意见；「数字经济和实体经济深度融合」＝数字经济提法；「城乡融合发展」＝乡村振兴/新型城镇化。选项常把三个「融合」的对象互换。</Callout>
       </Block>
       <Example>
-        <ExampleHeader>📝 例题 4 · 哪个「融合」</ExampleHeader>
+        <ExampleHeader>📝 例题20 · 哪个「融合」</ExampleHeader>
         <ExampleBody>
           <ExampleQuestion>2026 年 10 月印发《关于推动科技创新和产业创新深度融合的意见》，其核心是推动（　）深度融合。</ExampleQuestion>
           <ExampleOptions>A. 数字经济与实体经济　B. 科技创新与产业创新　C. 城乡要素与公共资源　D. 文化与旅游</ExampleOptions>
           <ExampleAnswer><b>解析：</b>文件名已经点明：<b>科技创新和产业创新</b>深度融合，解决科技成果转化「两张皮」问题。<br /><span className="correct">答案：B</span></ExampleAnswer>
+        </ExampleBody>
+      </Example>
+
+      <Block>
+        <BlockTitle>5. 10 月 22 日 · 长征胜利 90 周年（2026 年最大的一次纪念活动）</BlockTitle>
+        <PointList>
+          <li><b>2026 年 10 月 22 日</b>，纪念中国工农红军长征胜利 90 周年大会隆重举行，习近平发表重要讲话。</li>
+          <li><b>长征概况</b>：<b>1934 年 10 月—1936 年 10 月</b>；参加的是<b>红一、红二、红四方面军和第二十五军</b>；纵横十余省、长驱<b>二万五千里</b>、跨越近百条江河、翻越雪山、穿过草地、进行<b>600 余次</b>战役战斗。</li>
+          <li><b>直接原因</b>：<b>「左」倾教条主义</b>在党内的错误领导，导致中央革命根据地<b>第五次反「围剿」失败</b>。（不是右倾！这是最高频的错项）</li>
+          <li><b>胜利之路四个「依靠」</b>：依靠<b>党的正确领导</b>、依靠<b>坚定的革命意志</b>、依靠<b>独立自主、实事求是</b>、依靠<b>广大人民群众支持</b>。</li>
+          <li><b>遵义会议</b>（1935 年 1 月）：集中解决<b>军事和组织问题</b>，纠正博古、李德「左」倾教条主义军事错误；<b>事实上确立</b>毛泽东在党中央和红军的领导地位；<b>开启</b>党独立自主解决中国革命实际问题新阶段；<b>最危急关头挽救</b>了党、挽救了红军、挽救了中国革命。</li>
+        </PointList>
+        <DataTable>
+          <tr><th>伟大长征精神（五条）</th><th>怎么记</th></tr>
+          <tr><td>把全国人民和中华民族的根本利益看得高于一切，坚定<b>理想信念</b></td><td>信念</td></tr>
+          <tr><td>为了救国救民，不怕任何艰难险阻，不惜付出一切牺牲</td><td>牺牲</td></tr>
+          <tr><td>坚持<b>独立自主、实事求是</b>，一切从实际出发</td><td>求实</td></tr>
+          <tr><td><b>顾全大局、严守纪律、紧密团结</b></td><td>团结</td></tr>
+          <tr><td>紧紧<b>依靠人民群众</b>，同人民群众生死相依、患难与共</td><td>群众</td></tr>
+        </DataTable>
+        <Callout variant="warn"><b>「走好新的长征路」五个必须：</b>必须坚守党的<b>理想信念宗旨</b>；必须坚定不移推动<b>高质量发展</b>、不断满足人民日益增长的美好生活需要；必须勇于进行具有许多新的历史特点的<b>伟大斗争</b>；必须<b>坚持党的领导、加强党的建设</b>。<br /><b>别把「长征 90」写成「抗战 80」</b>：抗战 80 是 2025 年 9 月 3 日，长征 90 是 2026 年 10 月 22 日。</Callout>
+      </Block>
+      <Example>
+        <ExampleHeader>📝 例题21 · 长征的起点与遵义会议</ExampleHeader>
+        <ExampleBody>
+          <ExampleQuestion>关于长征，下列说法正确的是（　）。</ExampleQuestion>
+          <ExampleOptions>A. 长征的直接原因是右倾机会主义错误　B. 遵义会议事实上确立了毛泽东在党中央和红军的领导地位　C. 长征从 1934 年 10 月开始，到 1935 年 10 月结束　D. 长征只由红一方面军完成</ExampleOptions>
+          <ExampleAnswer><b>解析：</b>B 正确。A 错，是<b>「左」倾教条主义</b>导致第五次反「围剿」失败；C 错，到 <b>1936 年 10 月</b>三大主力会师结束；D 错，是红一、红二、红四方面军和第二十五军。<br /><span className="correct">答案：B</span></ExampleAnswer>
         </ExampleBody>
       </Example>
 
