@@ -690,13 +690,71 @@ export default function S3(): ReactElement {
             <ExerciseCard>
               <ExerciseTitle>例 1 · 画图法（链条串联）</ExerciseTitle>
               <div className="q">某机关举行职工秋季田径运动会。已知：所有报名参加短跑比赛的职工都报名参加铅球比赛，所有报名参加跳远比赛的职工都没有报名参加铅球比赛，报名参加跳高比赛的职工也都报名参加了跳远比赛，而没有报名参加跳高比赛的职工也没有报名参加长跑比赛。<br />根据以上陈述，可以得出以下哪项？<br />A. 有的报名参加铅球比赛的职工没有报名参加短跑比赛　B. 有的报名参加跳高比赛的职工没有参加长跑比赛　C. 所有报名参加跳远比赛的职工都报名参加长跑比赛　D. 所有报名参加短跑比赛的职工都没有报名参加长跑比赛</div>
-              <div className="a"><b>思路（先串链条）：</b>「没有报名跳高的也没有报名长跑」= <b>长跑 ⇒ 跳高</b>（逆否）。于是把已知条件串成一条链：<br /><b>短跑 ⇒ 铅球 ⇒ 非跳远 ⇒ 非跳高 ⇒ 非长跑</b>。<br />所以「所有短跑者都没参加长跑」必然成立 → 选 <b>D</b>。<br />A 说铅球者里有没短跑的：铅球只说明「非跳远」，推不出与短跑的关系；B 说跳高者里有人没长跑：跳高 ⇒ 跳远 ⇒ 非铅球，但长跑 ⊆ 跳高，不能反推有人在长跑外；C 方向与题干相反。</div>
+              <figure className="fig">
+                <svg viewBox="0 0 660 352" role="img" aria-label="例 1 画图法：短跑圈套在铅球圈里；跳远、跳高、长跑三层同心圈，与铅球圈完全分离">
+                  <text x={330} y={22} textAnchor="middle" fontSize={13} fontWeight={700} fill="#1e293b">画图：两坨圈互不挨着，答案自己就跳出来了</text>
+                  <text x={150} y={54} textAnchor="middle" fontSize={12} fontWeight={700} fill="#1d4ed8">① 短跑 ⊂ 铅球（圈套圈）</text>
+                  <text x={480} y={54} textAnchor="middle" fontSize={12} fontWeight={700} fill="#047857">② 长跑 ⊂ 跳高 ⊂ 跳远（三层圈）</text>
+
+                  <circle cx={150} cy={176} r={96} fill="#dbeafe" stroke="#2563eb" strokeWidth={1.8} />
+                  <circle cx={150} cy={156} r={36} fill="#93c5fd" stroke="#1d4ed8" strokeWidth={1.6} />
+                  <text x={150} y={161} textAnchor="middle" fontSize={12.5} fontWeight={700} fill="#0c2d6b">短跑</text>
+                  <text x={150} y={248} textAnchor="middle" fontSize={12.5} fontWeight={700} fill="#1d4ed8">铅球</text>
+
+                  <circle cx={480} cy={176} r={96} fill="#e7f8ef" stroke="#10b981" strokeWidth={1.8} />
+                  <circle cx={480} cy={176} r={64} fill="#bdf0d5" stroke="#059669" strokeWidth={1.6} />
+                  <circle cx={480} cy={176} r={34} fill="#7fe0b4" stroke="#047857" strokeWidth={1.6} />
+                  <text x={480} y={181} textAnchor="middle" fontSize={12.5} fontWeight={700} fill="#064e3b">长跑</text>
+                  <text x={480} y={227} textAnchor="middle" fontSize={12.5} fontWeight={700} fill="#065f46">跳高</text>
+                  <text x={480} y={263} textAnchor="middle" fontSize={12.5} fontWeight={700} fill="#047857">跳远</text>
+
+                  <line x1={315} y1={92} x2={315} y2={262} stroke="#cbd5e1" strokeWidth={1.4} strokeDasharray="4 4" />
+                  <rect x={285} y={165} width={60} height={22} rx={6} fill="#ffffff" stroke="#fca5a5" strokeWidth={1} />
+                  <text x={315} y={180} textAnchor="middle" fontSize={10.5} fontWeight={700} fill="#b91c1c">不相交</text>
+
+                  <rect x={36} y={292} width={588} height={50} rx={10} fill="#f8fafc" stroke="#cbd5e1" strokeWidth={1} />
+                  <text x={330} y={312} textAnchor="middle" fontSize={11.8} fill="#334155">短跑的人全在铅球圈里，长跑的人全在跳远圈里，而这两个圈是分开的</text>
+                  <text x={330} y={331} textAnchor="middle" fontSize={11.8} fontWeight={700} fill="#b91c1c">⇒ 短跑的人一定不在长跑圈里 ⇒ 选 D</text>
+                </svg>
+                <figcaption>图：例 1 的画法 —— 左圈「铅球 ⊃ 短跑」，右圈「跳远 ⊃ 跳高 ⊃ 长跑」，两坨圈不相交；短跑与长跑被彻底隔开，D 直接读出来</figcaption>
+              </figure>
+              <div className="a"><b>看图 + 串链：</b>「没有报名跳高的也没有报名长跑」= <b>长跑 ⇒ 跳高</b>（逆否）——这一句就是把长跑圈塞进跳高圈。四句话画完，就是上图的两坨圈：<br /><b>短跑 ⊂ 铅球　｜　长跑 ⊂ 跳高 ⊂ 跳远　｜　跳远 ⊥ 铅球</b><br />左边的圈和右边的圈根本不挨着，所以「所有短跑者都没参加长跑」必然成立 → 选 <b>D</b>。<br />A 说铅球者里有没短跑的：铅球圈里除了短跑还有一大块，但那一块是不是短跑，图上读不出来；B 说跳高者里有人没长跑：长跑整个在跳高圈里，跳高圈里剩下那圈人有没有长跑，同样读不出来；C 方向与题干相反（跳远与长跑是「外圈」，不是「跑到长跑去」）。</div>
             </ExerciseCard>
       
             <ExerciseCard>
               <ExerciseTitle>例 2 · 逆否串联（三个概念两两咬合）</ExerciseTitle>
               <div className="q">某中学的教师都很有爱心。有些经常志愿献血的教师免费为学习困难学生补课，凡是资助了贫困生的教师都和困难家庭结成了帮困对子，但所有免费为学习困难学生补课的教师都没有和困难家庭结成帮困对子。<br />根据以上前提，下列哪项一定为真？<br />A. 有些经常志愿献血的教师没有资助贫困生　B. 有些资助了贫困生的教师没有志愿献血　C. 有些资助了贫困生的教师经常志愿献血　D. 有些经常志愿献血的教师跟困难家庭结成了帮困对子</div>
-              <div className="a"><b>思路（先做句式转换）：</b>「免费补课 ⇒ 非结对子」；「资助 ⇒ 结对子」的逆否是「<b>非结对子 ⇒ 非资助</b>」。两句一接：<br /><b>志愿献血（有些）⇒ 免费补课 ⇒ 非结对子 ⇒ 非资助贫困生</b>。<br />所以「有些经常志愿献血的教师没有资助贫困生」成立 → 选 <b>A</b>。<br />B、C 把方向反了（「有些」不能倒着推全程）；D 与「非结对子」直接冲突。</div>
+              <figure className="fig">
+                <svg viewBox="0 0 660 360" role="img" aria-label="例 2 画图法：志愿献血圈与免费补课圈相交并打点；补课圈与结对子圈分离；资助圈套在结对子圈里">
+                  <text x={330} y={22} textAnchor="middle" fontSize={13} fontWeight={700} fill="#1e293b">画图：先画所有（圈），再画有些（点）</text>
+                  <text x={330} y={48} textAnchor="middle" fontSize={11.5} fill="#475569">「资助 ⊆ 结对子」＋「补课与结对子不相交」＋「有些志愿献血者在补课」</text>
+
+                  <circle cx={130} cy={182} r={78} fill="#dbeafe" fillOpacity={0.85} stroke="#2563eb" strokeWidth={1.8} />
+                  <circle cx={232} cy={182} r={78} fill="#d1fae5" fillOpacity={0.8} stroke="#10b981" strokeWidth={1.8} />
+
+                  <circle cx={500} cy={182} r={92} fill="#f1f5f9" stroke="#64748b" strokeWidth={1.8} />
+                  <circle cx={500} cy={160} r={42} fill="#e2e8f0" stroke="#334155" strokeWidth={1.6} />
+
+                  <circle cx={181} cy={182} r={13} fill="none" stroke="#dc2626" strokeWidth={1.4} />
+                  <circle cx={181} cy={182} r={6} fill="#0f172a" />
+                  <text x={181} y={216} textAnchor="middle" fontSize={11} fontWeight={700} fill="#b91c1c" stroke="#ffffff" strokeWidth={3} paintOrder="stroke">有些</text>
+
+                  <text x={104} y={187} textAnchor="middle" fontSize={12} fontWeight={700} fill="#1d4ed8">志愿献血</text>
+                  <text x={266} y={187} textAnchor="middle" fontSize={12} fontWeight={700} fill="#047857">免费补课</text>
+                  <text x={500} y={165} textAnchor="middle" fontSize={12.5} fontWeight={700} fill="#1e293b">资助</text>
+                  <text x={500} y={256} textAnchor="middle" fontSize={12.5} fontWeight={700} fill="#334155">结对子</text>
+
+                  <line x1={336} y1={150} x2={390} y2={150} stroke="#cbd5e1" strokeWidth={1.4} strokeDasharray="4 4" />
+                  <line x1={336} y1={214} x2={390} y2={214} stroke="#cbd5e1" strokeWidth={1.4} strokeDasharray="4 4" />
+                  <text x={363} y={187} textAnchor="middle" fontSize={10.5} fontWeight={700} fill="#b91c1c">不相交</text>
+
+                  <rect x={36} y={290} width={588} height={54} rx={10} fill="#f8fafc" stroke="#cbd5e1" strokeWidth={1} />
+                  <text x={330} y={311} textAnchor="middle" fontSize={11.8} fill="#334155">黑点既在志愿献血圈、又在免费补课圈；补课圈与结对子圈不相交，资助圈又整个在结对子圈里</text>
+                  <text x={330} y={331} textAnchor="middle" fontSize={11.8} fontWeight={700} fill="#b91c1c">⇒ 这名「有些」一定没资助贫困生 ⇒ 选 A</text>
+                </svg>
+                <figcaption>图：例 2 的画法 —— 三个圈两两咬合，只有「有些志愿献血者」被打成黑点；这个点不在结对子圈，也就不可能在资助圈里，A 直接读出来</figcaption>
+              </figure>
+              <div className="a"><b>看图 + 转换句式：</b>先把两句「所有」画成圈：「免费补课 ⇒ 非结对子」= <b>两圈分离</b>；「资助 ⇒ 结对子」= <b>资助圈塞进结对子圈</b>。再把「有些志愿献血者在补课」<b>打成黑点</b>，落在两圈的交叠处。<br />看黑点：它在补课圈里，而补课圈与结对子圈不相交 → <b>它不在结对子圈</b>；资助圈整个在结对子圈里 → <b>它更不可能在资助圈</b>。所以「有些经常志愿献血的教师没有资助贫困生」成立 → 选 <b>A</b>。<br />B、C 把方向反了（「有些」只能顺着黑点往外读，不能倒着推全程）；D 与「黑点在结对子圈外」直接冲突。</div>
             </ExerciseCard>
       
             <ExerciseCard>
