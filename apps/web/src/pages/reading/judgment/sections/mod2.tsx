@@ -169,6 +169,12 @@ export default function S4(): ReactElement {
               <li><b>削弱：</b>找<b>根本不同</b>属性</li>
             </ul>
       
+            <ExerciseCard>
+              <ExerciseTitle>例 · 类比论证（找根本不同）</ExerciseTitle>
+              <div className="q">某品牌 A 型降噪耳机在实验室测试中能把环境噪音降低 30 分贝，于是有测评机构认为，同品牌、同价位、外观相近的 B 型耳机也能降低约 30 分贝。<br />以下哪项如果为真，最能削弱该结论？<br />A. B 型耳机与 A 型使用同一套主动降噪芯片　B. B 型耳机换用了不同的被动隔音材料，且取消了主动降噪模块　C. A 型耳机的销量明显高于 B 型　D. 部分用户觉得 B 型耳机佩戴更舒适</div>
+              <div className="a"><b>思路：</b>类比论证（A 有某特点 → 推测 B 也有）。削弱＝找<b>根本不同</b>。B 指出两者在「降噪的核心结构」上完全不同，类比的基础被拆掉，<b>选 B</b>；A 是「根本相同」，属于<b>加强</b>。<br /></div>
+            </ExerciseCard>
+      
             <h4>模型 5 · 枚举归纳</h4>
             <p><b>识别：</b>由<b>部分</b>样本推出<b>全部</b>的结论。</p>
             <ul>
@@ -187,6 +193,12 @@ export default function S4(): ReactElement {
               <li><b>加强：</b>建立 B 和 C 之间的联系（<b>搭桥</b>）</li>
               <li><b>削弱：</b>切断 B 和 C 之间的联系（<b>拆桥</b>）</li>
             </ul>
+      
+            <ExerciseCard>
+              <ExerciseTitle>例 · 缺桥论证（搭桥）</ExerciseTitle>
+              <div className="q">某公司统计发现，参加过内部技能培训的员工，年度绩效评分平均高出 15%。公司据此决定：让全体员工都参加该培训，就能提升整体绩效。<br />要使上述论证成立，必须补充的前提是：<br />A. 参加培训的员工原本绩效水平就比较高　B. 绩效评分的提高确实是由该培训带来的，而非其他因素　C. 培训的成本低于绩效提升带来的收益　D. 该公司的员工流失率低于行业平均</div>
+              <div className="a"><b>思路：</b>论据是「参加培训」与「绩效高」<b>同时出现</b>，结论直接跳到「培训<b>导致</b>绩效提升」——中间缺一座桥。B 正是搭桥（培训 ⇒ 绩效），<b>选 B</b>；A 反而说明可能是「本来就好」，属于<b>削弱</b>（因果倒置／他因）。<br /></div>
+            </ExerciseCard>
       
             <h4>模型 7 · 数据论证</h4>
             <p><b>识别：</b>论据中出现数据或比例，<b>且选项也有数据或比例</b>。</p>
@@ -211,6 +223,12 @@ export default function S4(): ReactElement {
               <li><span className="pill pill-key">细节</span>论据只给了一方的情况、结论却下了比较 → 选项往往要<b>补另一方</b>。如果从比较角度找不到选项，说明这题不考比较。</li>
             </ul>
       
+            <ExerciseCard>
+              <ExerciseTitle>例 · 结论有比较（补另一方）</ExerciseTitle>
+              <div className="q">某市在 A 医院试点「AI 辅助阅片」后，A 医院的影像误诊率降到 2%。有专家据此认为：A 医院的诊断水平已经超过了未试点的 B 医院。<br />以下哪项如果为真，最能削弱该观点？<br />A. 同期 B 医院未使用 AI，误诊率已降至 1.5%　B. A 医院的医生人数多于 B 医院　C. 患者对 A 医院的满意度更高　D. 两家医院使用的 AI 系统来自同一家公司</div>
+              <div className="a"><b>思路：</b>结论在做<b>比较</b>（A 超过 B），而论据只给了<b>A 一方</b>的数据——典型「只给一方却下比较」，削弱就要<b>补另一方</b>。A 给出 B 的数据（1.5% ＜ 2%），比较结论直接反转，<b>选 A</b>。B、C、D 都没有把两者放在同一把尺子上比。<br /></div>
+            </ExerciseCard>
+      
             <h4>模型 9 · 结论中出现条件关系（低频，但每年都有人错）</h4>
             <table className="tight">
               <tr><th>结论形式</th><th>削弱怎么找</th></tr>
@@ -218,6 +236,12 @@ export default function S4(): ReactElement {
               <tr><td><b>只有 A，才 B</b>（B ⇒ A）</td><td>找矛盾：<b>B 且非 A</b>，也就是「<b>没有 A 也有 B</b>」</td></tr>
             </table>
             <p><span className="pill pill-key">细节</span>如果从「条件关系的矛盾」这个角度在选项里找不到对应项，就<b>改从因果关系角度</b>去削弱（说明 A 并不是 B 的原因）。</p>
+      
+            <ExerciseCard>
+              <ExerciseTitle>例 · 结论是条件关系（找矛盾）</ExerciseTitle>
+              <div className="q">某培训机构在招生广告中宣称：「只要报名我们的冲刺班，就能通过考试。」<br />以下哪项如果为真，最能削弱该广告的说法？<br />A. 有学员报名参加了冲刺班，但仍然没有通过考试　B. 冲刺班的收费高于同类机构　C. 通过考试的考生中有一部分没有报班　D. 冲刺班的课时安排比较紧凑</div>
+              <div className="a"><b>思路：</b>结论是「只要 A 就 B」（A ⇒ B），它的矛盾是「<b>A 且非 B</b>」。A 正是「报了班（A）却没通过（非 B）」，<b>选 A</b>。C 说的是「没报班也通过了」，只否定「B ⇒ A」，<b>不影响 A ⇒ B</b>，是最常见的干扰项。<br /></div>
+            </ExerciseCard>
       
             <h4>模型 10 · 结论出现特殊限定词（绝对词 / 程度词 / 趋势词）</h4>
             <p>削弱要<b>对着限定词打</b>：</p>
@@ -227,6 +251,12 @@ export default function S4(): ReactElement {
               <li><b>趋势词</b>（越来越、逐年、持续）→ 指出趋势不存在，或只是阶段性现象。</li>
             </ul>
       
+            <ExerciseCard>
+              <ExerciseTitle>例 · 绝对词（举反例）</ExerciseTitle>
+              <div className="q">某学习类 App 的宣传页写道：「使用本 App 的学生，成绩必然会提高。」<br />以下哪项如果为真，最能削弱该宣传？<br />A. 有学生坚持使用该 App 一个学期，成绩并未提高　B. 该 App 的界面设计比较简洁　C. 多数家长支持孩子使用该 App　D. App 内包含大量配套练习题</div>
+              <div className="a"><b>思路：</b>结论里有<b>绝对词「必然」</b>，削弱就<b>举一个反例</b>即可。A 给出「用了但没提高」的实例，直接推翻「必然」，<b>选 A</b>；B、C、D 都在说 App 的好处，属于<b>加强</b>。<br /></div>
+            </ExerciseCard>
+      
             <h4>模型 11 · 低频模型（「不直接」型）</h4>
             <table className="tight">
               <tr><th>题干结论</th><th>削弱怎么找</th></tr>
@@ -234,6 +264,12 @@ export default function S4(): ReactElement {
               <tr><td>A、B <b>不直接</b>相关</td><td><b>A、B 间接相关</b></td></tr>
             </table>
             <div className="jingle"><div className="jt">✏️ 一句话认这类题</div>题干结论里出现「<b>不直接 / 没有直接</b>」这几个字，答案八成就是「<b>间接</b>」。</div>
+      
+            <ExerciseCard>
+              <ExerciseTitle>例 · 「不直接」型（答「间接」）</ExerciseTitle>
+              <div className="q">某研究追踪发现，经常喝咖啡的人患某种代谢类疾病的比例更低。但研究者强调：喝咖啡并不直接降低该疾病的患病风险。<br />以下哪项如果为真，最能削弱研究者的观点？<br />A. 咖啡中的某些成分能改善糖脂代谢，而代谢改善可降低该病风险　B. 常喝咖啡的人往往收入较高　C. 该疾病在人群中的总体发病率较低　D. 一部分人不喜欢咖啡的苦味</div>
+              <div className="a"><b>思路：</b>结论是「<b>不直接</b>降低」，削弱就要说明「<b>间接</b>也能降低」。A 给出「咖啡 → 改善代谢 → 降低风险」的链条，正是间接导致，<b>选 A</b>。看到「不直接／没有直接」的结论，答案八成是「间接」。<br /></div>
+            </ExerciseCard>
       
           </Card>
       
@@ -253,6 +289,12 @@ export default function S4(): ReactElement {
               <b>加强项：</b>如果没有 X，情况会<b>更好</b>。
             </div>
             <p><span className="pill pill-key">论据能不能被削弱</span><b>如果论据是「事实」，一般不去削弱论据</b>；<b>如果论据是观点 / 因果关系 / 调查 / 实验</b>，它本身就可能出错，这时可以削弱论据（这类题较少）。<br />使用顺序：<b>有因果论证或各类模型 → 优先考虑符合因果或模型要求的选项；一般类题目 → 先考虑「结论不成立」，再考虑「削弱论据」。</b></p>
+            <ExerciseCard>
+              <ExerciseTitle>例 · 一般型（他因削弱结论）</ExerciseTitle>
+              <div className="q">某市推行「错峰上下班」三个月后，早高峰拥堵指数下降 12%。市政府认为：正是这项政策缓解了交通压力。<br />以下哪项如果为真，最能削弱市政府的结论？<br />A. 同期该市新开通 3 条地铁线路，分流了大量通勤客流　B. 部分市民反映错峰上下班影响了工作效率　C. 该政策的实施成本较低　D. 其他城市也在推行类似政策</div>
+              <div className="a"><b>思路：</b>题干没有明显模型，用一般型：<b>预设结论不成立</b>，找「还有别的原因」——A 给出同期发生的<b>他因</b>（地铁开通），足以解释拥堵指数下降，<b>选 A</b>。B 只讲副作用、不否定「缓解了交通」，C 是成本、D 是别处做法，都不能削弱结论。<br /></div>
+            </ExerciseCard>
+      
             <div className="jingle">
               <div className="jt">宏观看一眼</div>
               <b>不管哪一型，本质都是「补充信息，让题干结论成立的可能性升高（加强）或降低（削弱）」。</b>判别模型只是为了让答案更快浮现，不是为了炫技。
