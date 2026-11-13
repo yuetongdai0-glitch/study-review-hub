@@ -351,6 +351,62 @@ export default function Edu1(): ReactElement {
         </ExampleBody>
       </Example>
 
+      <Block>
+        <BlockTitle>15. 课程理论、教学模式与德育模式</BlockTitle>
+        <DataTable>
+          <tr><th>课程理论三流派</th><th>代表人物</th><th>主张</th></tr>
+          <tr><td><b>学科中心</b></td><td>布鲁纳（结构主义）、巴格莱（要素主义）、赫钦斯（永恒主义）</td><td>以<b>学科知识结构</b>为中心，主张<b>发现学习</b></td></tr>
+          <tr><td><b>学生中心</b></td><td>杜威</td><td>以<b>儿童经验</b>为中心，「从做中学」</td></tr>
+          <tr><td><b>社会中心</b></td><td>布拉梅尔德（改造主义）</td><td>以<b>社会问题</b>为中心，教育要改造社会</td></tr>
+        </DataTable>
+        <DataTable>
+          <tr><th>教学模式</th><th>代表人物</th><th>一句话</th></tr>
+          <tr><td>传递—接受</td><td>赫尔巴特（四段/五段教学法）</td><td>明了一联想一系统一方法</td></tr>
+          <tr><td>问题—探究</td><td>杜威（五步思维法）</td><td>情境—问题—假设—推理—验证</td></tr>
+          <tr><td><b>掌握学习</b></td><td><b>布鲁姆</b></td><td>给足时间 + 及时反馈，<b>绝大多数学生都能掌握</b></td></tr>
+          <tr><td><b>程序教学</b></td><td><b>斯金纳</b></td><td>小步子、积极反应、<b>及时强化</b>、自定步调</td></tr>
+          <tr><td><b>非指导性教学</b></td><td><b>罗杰斯</b></td><td>以学生为中心，教师是<b>促进者</b></td></tr>
+          <tr><td>范例教学</td><td>瓦根舍因</td><td>用<b>典型范例</b>带动整体理解</td></tr>
+        </DataTable>
+        <DataTable>
+          <tr><th>德育模式</th><th>代表人物</th><th>核心</th></tr>
+          <tr><td><b>认知模式</b></td><td>皮亚杰、<b>科尔伯格</b></td><td>道德发展靠<b>道德认知</b>与道德判断能力的提升</td></tr>
+          <tr><td><b>体谅模式</b></td><td>麦克菲尔</td><td>重在培养<b>道德情感</b>与共情，「学会关心」</td></tr>
+          <tr><td><b>社会模仿模式</b></td><td><b>班杜拉</b></td><td>通过<b>观察榜样</b>习得道德行为</td></tr>
+          <tr><td><b>价值澄清模式</b></td><td>拉斯、哈明</td><td>教学生自己<b>澄清并选择</b>价值观，不灌输</td></tr>
+        </DataTable>
+        <Callout variant="warn"><b>三个人三句话，别记串：</b>布鲁姆＝<b>掌握学习</b>＋教学目标分类；斯金纳＝<b>程序教学</b>＋强化；罗杰斯＝<b>非指导性教学</b>＋来访者中心。</Callout>
+      </Block>
+      <Example>
+        <ExampleHeader>📝 例题161 · 掌握学习是谁提的</ExampleHeader>
+        <ExampleBody>
+          <ExampleQuestion>认为「只要给予足够的时间和适当的教学，绝大多数学生都能掌握所学内容」的教学模式是（　）。</ExampleQuestion>
+          <ExampleOptions>A. 程序教学（斯金纳）　B. 掌握学习（布鲁姆）　C. 非指导性教学（罗杰斯）　D. 范例教学（瓦根舍因）</ExampleOptions>
+          <ExampleAnswer><b>解析：</b>「给足时间 + 反馈矫正 → 大多数人都能掌握」是布鲁姆的<b>掌握学习</b>。程序教学强调小步子与及时强化，非指导性教学强调学生中心。<br /><span className="correct">答案：B</span></ExampleAnswer>
+        </ExampleBody>
+      </Example>
+
+      <Block>
+        <BlockTitle>16. 素质教育与新课改「三观」（案例分析也靠这块打底）</BlockTitle>
+        <PointList>
+          <li><b>素质教育的内涵</b>（四句话）：面向<b>全体学生</b>；促进学生<b>全面发展</b>；促进学生<b>个性发展</b>；以培养<b>创新精神和实践能力</b>为<b>重点</b>。</li>
+          <li><b>素质教育的三要义</b>：教育要面向全体、教育要促进全面发展、教育要促进个性发展。<b>「面向全体」是区别于应试教育的第一条</b>。</li>
+          <li><b>学生观「两独一发」</b>：学生是<b>发展的人</b>（有巨大潜能、处于发展过程中、允许犯错）；学生是<b>独特的人</b>（有自身独特性、与成人不同）；学生是<b>具有独立意义的人</b>（不以教师意志为转移、是学习的主体、有自身权利）。</li>
+          <li><b>教师观</b>：从知识<b>传授者</b>转向学生学习的<b>促进者</b>；从<b>教书匠</b>转向<b>研究者</b>；从课程<b>执行者</b>转向课程<b>建设者与开发者</b>。</li>
+          <li><b>教学观</b>：从以<b>教育者为中心</b>转向以<b>学习者为中心</b>；从<b>教会知识</b>转向<b>教会学习</b>；从<b>重结论</b>转向<b>重过程</b>；从<b>关注学科</b>转向<b>关注人</b>。</li>
+          <li><b>教师专业发展三条途径</b>：<b>师范教育</b>（职前）→ <b>入职培训</b>（新任教师）→ <b>在职培训</b>（含教研、进修、反思）。<b>反思</b>是最重要的自我发展途径（波斯纳公式）。</li>
+        </PointList>
+        <Callout variant="warn"><b>案例分析题的「万能三句」：</b>① 该教师践行了<b>素质教育</b>理念，面向全体、促进全面发展；② 符合「<b>两独一发</b>」的学生观，把学生看作发展的人、独特的人、独立意义的人；③ 体现了教师作为<b>促进者</b>与<b>研究者</b>的角色转变。<b>三句话套完，再抄材料细节。</b></Callout>
+      </Block>
+      <Example>
+        <ExampleHeader>📝 例题163 · 学生观怎么用</ExampleHeader>
+        <ExampleBody>
+          <ExampleQuestion>学生上课答错问题，老师没有批评，而是说「你的思路很特别，我们一起看看卡在哪一步」。这一做法主要体现了（　）。</ExampleQuestion>
+          <ExampleOptions>A. 学生是发展的人，允许犯错　B. 学生是被动接受知识的容器　C. 教师应严格控制课堂　D. 教学应以结论为中心</ExampleOptions>
+          <ExampleAnswer><b>解析：</b>允许犯错、把错误当成发展过程中的资源 → <b>学生是发展的人</b>（两独一发之一）。B、C、D 都是与新课程理念相反的传统观念。<br /><span className="correct">答案：A</span></ExampleAnswer>
+        </ExampleBody>
+      </Example>
+
       <div className="jingle">
         <div className="jt">教育学 · 一句话总结</div>
         <b>人物看「首」字，学制看「寅卯丑戌」，课程看「谁开发」，评价看「时间点」，德育看「知情意行」，管理看「谁提出」。</b>
