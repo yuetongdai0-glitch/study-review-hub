@@ -1049,14 +1049,13 @@ export default function S3(): ReactElement {
                 <g fontSize={19} fontWeight="700" textAnchor="middle" fill="#0c2d6b">
                   <text x={153} y={70}>之</text>
                   <text x={45} y={124}>秀</text>
-                  <text x={45} y={178}>后</text>
                   <text x={207} y={178}>秀</text>
                   <text x={99} y={178}>后</text>
                 </g>
                 <g fontSize={17} fontWeight="700" textAnchor="middle" fill="#dc2626">
                   <text x={207} y={70}>①</text>
                   <text x={153} y={124}>②</text>
-                  <text x={45} y={232}>③</text>
+                  <text x={45} y={178}>③</text>
                   <text x={153} y={232}>④</text>
                 </g>
               </svg>
