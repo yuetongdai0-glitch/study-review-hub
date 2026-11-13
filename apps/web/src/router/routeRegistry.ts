@@ -118,6 +118,16 @@ export const moduleMetas: ModuleMeta[] = [
     source: '小黑体系',
     order: 11,
   },
+  {
+    name: 'current-affairs',
+    path: R.currentAffairs,
+    title: '时政',
+    description: '2026 时政热点按月盘点 + 十五五、两会、一号文件等重大专题，只记「事件 + 关键词」',
+    group: 'common',
+    accent: 'ochre',
+    source: '时政专题',
+    order: 12,
+  },
 ]
 
 /**
@@ -214,6 +224,10 @@ export const appRoutes: AppRoute[] = [
   {
     ...moduleMetas[10],
     component: lazy(() => import('@/pages/reading/politics')),
+  },
+  {
+    ...moduleMetas[11],
+    component: lazy(() => import('@/pages/reading/current-affairs')),
   },
   {
     ...toolMetas[0],

@@ -20,6 +20,7 @@ export const R = {
   comprehensiveA: '/comprehensive-a',
   vocab: '/vocab',
   politics: '/politics',
+  currentAffairs: '/current-affairs',
   words: '/words',
 } as const
 

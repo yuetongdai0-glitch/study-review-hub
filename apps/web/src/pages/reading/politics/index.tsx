@@ -24,8 +24,10 @@ import S21 from './sections/s20'
 import S22 from './sections/s21'
 import S23 from './sections/s22'
 import S24 from './sections/s23'
-import S25 from './sections/s24'
-import S26 from './sections/s25'
+import S25 from './sections/edu1'
+import S26 from './sections/edu2'
+import S27 from './sections/edu3'
+import S28 from './sections/edu4'
 import ReadingPage from '@/components/features/ReadingPage'
 import { findModuleByPath } from '@/router/routeRegistry'
 import type { SectionContent } from '@/types/content'
@@ -213,17 +215,31 @@ const sections: SectionContent[] = [
   },
   {
     id: 's24',
-    title: "二十四、「十五五」规划与 2026 年重要政策",
-    icon: "🗂️",
-    tag: "今年必考",
+    title: "二十四、教育常识（一）教育学",
+    icon: "🎓",
+    tag: "D 类必考",
     content: <S25 />,
   },
   {
     id: 's25',
-    title: "二十五、2026 时政热点盘点（1–8 月）",
-    icon: "📰",
-    tag: "时政",
+    title: "二十五、教育常识（二）教育心理学",
+    icon: "🧠",
+    tag: "场景判断题",
     content: <S26 />,
+  },
+  {
+    id: 's26',
+    title: "二十六、教育常识（三）教育法律法规",
+    icon: "📕",
+    tag: "主体 + 数字",
+    content: <S27 />,
+  },
+  {
+    id: 's27',
+    title: "二十七、教育常识（四）策略选择",
+    icon: "🧩",
+    tag: "D 类特色题",
+    content: <S28 />,
   },
 ]
 
