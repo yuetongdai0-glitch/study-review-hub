@@ -110,6 +110,12 @@ export default function ExamSheet() {
   const [question, setQuestion] = useState('')
   /** 作答格式标记。 */
   const [kind, setKind] = useState('辨析题')
+  /** 正在编辑的草稿 id（null = 全新作答）。 */
+  const [editingId, setEditingId] = useState<string | null>(null)
+  /** 正在编辑的草稿标题，显示在顶部提示条。 */
+  const [editingTitle, setEditingTitle] = useState('')
+  /** 载入时的原始正文，用来判断「有没有新改动」。 */
+  const [originalText, setOriginalText] = useState('')
   /** 是否已经从存档恢复过：恢复前不允许回写，否则会用空值覆盖草稿。 */
   const hydratedRef = useRef(false)
   const [importOpen, setImportOpen] = useState(false)
@@ -533,6 +539,24 @@ export default function ExamSheet() {
      * 名字优先用顶部题目栏的内容，没有就按「题型 + 时间」生成。
      */
     const name = question.trim() || `${kind} · ${new Date().toLocaleString('zh-CN')}`
+    // 编辑态：覆盖草稿箱里的那一份，不新增条目
+    if (editingId) {
+      const next = box.map((entry) =>
+        entry.id === editingId
+          ? { ...entry, title: name, text, brief, question, kind, savedAt: Date.now() }
+          : entry,
+      )
+      setBox(next)
+      try {
+        window.localStorage.setItem(BOX_KEY, JSON.stringify(next))
+      } catch {
+        message.error('草稿箱已满')
+      }
+      setEditingTitle(name)
+      setOriginalText(text)
+      message.success(`已更新「${name}」`)
+      return
+    }
     const item: DraftItem = { id: String(Date.now()), title: name, text, brief, question, kind, savedAt: Date.now() }
     const next = [item, ...box].slice(0, 60)
     setBox(next)
@@ -551,20 +575,94 @@ export default function ExamSheet() {
    * @returns 无返回。
    */
   function restoreDraft(item: DraftItem) {
-    setText(toBlanks(item.text))
+    const body = toBlanks(item.text)
+    setEditingId(item.id)
+    setEditingTitle(item.title)
+    setOriginalText(body)
+    setText(body)
     setBrief(item.brief)
     setQuestion(item.question ?? '')
     setKind(item.kind ?? '辨析题')
-    if (editorRef.current) editorRef.current.value = item.text
+    if (editorRef.current) editorRef.current.value = body
     setBoxOpen(false)
-    scheduleSave(item.text, item.brief)
-    message.success(`已载入「${item.title}」`)
+    scheduleSave(body, item.brief)
+    message.success(`正在编辑「${item.title}」`)
+  }
+
+  /**
+   * 退出编辑：清空当前编辑区，但不动草稿箱里的原稿。
+   *
+   * @returns 无返回。
+   * @remarks 有未保存改动时先确认，避免手滑丢掉刚写的一段。
+   */
+  function exitEdit() {
+    const dirty = text !== originalText
+    const reset = () => {
+      setEditingId(null)
+      setEditingTitle('')
+      setOriginalText('')
+      setText('')
+      setBrief('')
+      setQuestion('')
+      setKind('辨析题')
+      if (editorRef.current) editorRef.current.value = ''
+      scheduleSave('', '')
+      message.success('已退出编辑，草稿箱里的原稿仍然保留')
+    }
+    if (!dirty) {
+      reset()
+      return
+    }
+    modal.confirm({
+      title: '退出编辑？',
+      content: '当前有新的修改还没保存，退出后会丢失。草稿箱里的原稿不会受影响。',
+      okText: '强制退出',
+      cancelText: '继续编辑',
+      okButtonProps: { danger: true },
+      onOk: reset,
+    })
   }
 
   const cellCount = text.replace(/\s/g, '').length
 
   return (
     <div className="flex h-full min-h-0 flex-col overflow-hidden bg-sunken">
+      {/* 编辑态提示：正在改哪一份、能直接存回去、能退出 */}
+      {editingId ? (
+        <div className="flex flex-wrap items-center gap-2 border-b border-line bg-sunken px-2 py-1 text-[12px] text-ink-3 sm:px-3">
+          <span>
+            正在编辑：<b className="font-normal text-ink-2">{editingTitle}</b>
+          </span>
+          <span className="hidden sm:inline">保存会覆盖草稿箱里的这一份</span>
+          <div className="ml-auto flex items-center gap-1.5">
+            <Button size="small" type="primary" icon={<Save size={12} />} onClick={saveToBox}>
+              保存
+            </Button>
+            <Button size="small" onClick={exitEdit}>
+              退出编辑
+            </Button>
+          </div>
+        </div>
+      ) : null}
+
+      {/* 编辑态提示：正在改哪一份、能直接存回去、能退出 */}
+      {editingId ? (
+        <div className="flex flex-wrap items-center gap-2 border-b border-line bg-sunken px-2 py-1 text-[12px] text-ink-3 sm:px-3">
+          <span>
+            正在编辑：<b className="font-normal text-ink-2">{editingTitle}</b>
+          </span>
+          <span className="hidden sm:inline">保存会覆盖草稿箱里的这一份</span>
+          <div className="ml-auto flex items-center gap-1.5">
+            <Button size="small" type="primary" icon={<Save size={12} />} onClick={saveToBox}>
+              保存
+            </Button>
+            <Button size="small" onClick={exitEdit}>
+              退出编辑
+            </Button>
+          </div>
+        </div>
+      ) : null}
+
       {/* 题目栏：先写清「这道题是什么」，回头翻草稿不会认不出 */}
       <div className="flex flex-wrap items-center gap-2 border-b border-line bg-surface px-2 py-1.5 sm:px-3">
         <span className="shrink-0 text-[12.5px] font-semibold text-ink-2">题目</span>
