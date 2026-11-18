@@ -3,13 +3,13 @@ import { Block, BlockTitle, Callout, DataTable, Example, ExampleAnswer, ExampleB
 import { Memo, Mnemonic } from '../mem'
 
 /**
- * 二十四、教育常识（一）教育学
+ * 教育常识 · 教育学
  *
  * @remarks 内容整理自「教育常识 1」讲义：教育目的、发展规律、学制、课程、
  * 教学、德育、班级管理、教师与学生八块。D 类常识判断最后几道题基本从这里出。
  * @returns 该节正文。
  */
-export default function Edu1(): ReactElement {
+export default function Cd8(): ReactElement {
   return (
     <>
       <Callout variant="key">D 类（教师岗）的常识判断，<b>5 道左右</b>固定给教育常识：教育学 + 教育心理学 + 教育法规，<b>识记类占三分之二</b>。所以这四节的目标不是「懂」，而是<b>把定位词和数字背准</b>——考场上四个选项往往只差一个词。 本节的每一块都能对上「<b>十二个通用框架</b>」里的某一类——先翻到 <b>二十八节开头那张表</b>，套好维度再回来填内容，比逐条硬背省一半时间。 本节的每一块都能对上「<b>十二个通用框架</b>」里的某一类——先翻到 <b>二十八节开头那张表</b>，套好维度再回来填内容，比逐条硬背省一半时间。</Callout>

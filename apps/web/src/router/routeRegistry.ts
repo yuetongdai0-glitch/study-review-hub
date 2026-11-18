@@ -92,10 +92,10 @@ export const moduleMetas: ModuleMeta[] = [
     name: 'comprehensive-d',
     path: R.comprehensiveD,
     title: '综应 D 类',
-    description: '教育类综合应用的答题框架、案例分析与规范表达',
+    description: '明哥综应理论背诵册（七部分）+ 教育常识（教育学·教心·法规·策略选择），辨析与案例话术齐全',
     group: 'essay',
     accent: 'violet',
-    source: '综应 D',
+    source: '明哥背诵册',
     order: 9,
   },
   {

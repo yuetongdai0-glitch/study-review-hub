@@ -3,13 +3,13 @@ import { Block, BlockTitle, Callout, DataTable, Example, ExampleAnswer, ExampleB
 import { Memo, Mnemonic } from '../mem'
 
 /**
- * 二十七、教育常识（四）策略选择（D 类特色题）
+ * 教育常识 · 策略选择
  *
  * @remarks 内容整理自「策略选择 1 / 2」讲义：这类题没有标准对错，只有「相对更优」。
  * 本节把评分逻辑拆成五条判断标准和一张禁区清单，考场直接套。
  * @returns 该节正文。
  */
-export default function Edu4(): ReactElement {
+export default function Cd11(): ReactElement {
   return (
     <>
       <Callout variant="key">策略选择是 D 类的<b>特色题型</b>（约 10 题）：给一段课堂 / 家校 / 突发的真实情境，问「最合适的做法」「最不合适的做法」。它<b>不考知识，考的是「你像不像一个老师」</b>——正确答案永远是「最符合教育规律、最解决当下问题、副作用最小」的那一个。 这一节套<b>「定性—依据—措施」</b>三步：先判断情境性质，再找教育依据，最后给可执行做法（框架表见第二十八节开头）。 这一节套<b>「定性—依据—措施」</b>三步：先判断情境性质，再找教育依据，最后给可执行做法（框架表见第二十八节开头）。</Callout>

@@ -3,13 +3,13 @@ import { Block, BlockTitle, Callout, DataTable, Example, ExampleAnswer, ExampleB
 import { Memo, Mnemonic } from '../mem'
 
 /**
- * 二十六、教育常识（三）教育法律法规
+ * 教育常识 · 教育法律法规
  *
  * @remarks 内容整理自「教育常识 2」讲义里的法规部分：教育法、义务教育法、
  * 教师法、未成年人保护法、预防未成年人犯罪法、家庭教育促进法、学生伤害事故处理办法。
  * @returns 该节正文。
  */
-export default function Edu3(): ReactElement {
+export default function Cd10(): ReactElement {
   return (
     <>
       <Callout variant="key">法规题的考法只有两种：<b>问「谁的责任 / 哪个部门」</b>和<b>问「数字与年龄」</b>。所以这一节全部按「<b>主体 + 数字 + 一个关键词</b>」来记，不背条文原文。 法规一律套<b>「主体—数字—禁区」</b>三格记：谁执行、几个小时／几天、不许做什么（框架表见第二十八节开头）。 法规一律套<b>「主体—数字—禁区」</b>三格记：谁执行、几个小时／几天、不许做什么（框架表见第二十八节开头）。</Callout>

@@ -1326,10 +1326,10 @@ test('政治常识页（TSX 源）：点块与例题一一对应，且「建成 
   const files = (await readdir(dir)).filter((f) => f.endsWith('.tsx')).sort()
   const sources = await Promise.all(files.map((f) => readFile(new URL(f, dir), 'utf8')))
 
-  // 31 个节文件：s0（骨架）+ nav + s1..s23（政治理论/常识判断）
-  // + edu1..edu4（教育常识）+ edu5/edu6（明哥综应背诵手册）
-  assert.equal(files.length, 31, `政治常识应有 31 个节文件，实际 ${files.length}`)
-  for (const id of ['s0', 'nav', ...Array.from({ length: 23 }, (_, i) => `s${i + 1}`), 'edu1', 'edu2', 'edu3', 'edu4', 'edu5', 'edu6']) {
+  // 25 个节文件：s0（骨架）+ nav + s1..s23（政治理论/常识判断）。
+  // 教育常识 / 明哥综应背诵册已整体迁到 comprehensive-d 模块，这里不再保留。
+  assert.equal(files.length, 25, `政治常识应有 25 个节文件，实际 ${files.length}`)
+  for (const id of ['s0', 'nav', ...Array.from({ length: 23 }, (_, i) => `s${i + 1}`)]) {
     assert.ok(files.includes(`${id}.tsx`), `缺少节文件 ${id}.tsx`)
   }
 
@@ -1354,8 +1354,8 @@ test('政治常识页（TSX 源）：点块与例题一一对应，且「建成 
     })
   }
   // 时政两节已拆到 current-affairs（带走约 30 个块），下限随之下调
-  assert.ok(totalBlock >= 170, `知识点块偏少：${totalBlock}`)
-  assert.ok(totalEx >= 149, `例题偏少：${totalEx}`)
+  assert.ok(totalBlock >= 140, `知识点块偏少：${totalBlock}`)
+  assert.ok(totalEx >= 119, `例题偏少：${totalEx}`)
 
   const all = sources.join('\n')
 

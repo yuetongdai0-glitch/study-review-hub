@@ -1,18 +1,15 @@
 import { type ReactNode } from 'react'
-import S1 from './sections/sec1'
-import S2 from './sections/sec2'
-import S3 from './sections/sec3'
-import S4 from './sections/sec4'
-import S5 from './sections/sec5'
-import S6 from './sections/sec6'
-import S7 from './sections/sec7'
-import S8 from './sections/sec8'
-import S9 from './sections/sec9'
-import S10 from './sections/sec10'
-import S11 from './sections/sec11'
-import S12 from './sections/sec12'
-import S13 from './sections/sec13'
-import S14 from './sections/sec14'
+import Cd1 from './sections/cd1'
+import Cd2 from './sections/cd2'
+import Cd3 from './sections/cd3'
+import Cd4 from './sections/cd4'
+import Cd5 from './sections/cd5'
+import Cd6 from './sections/cd6'
+import Cd7 from './sections/cd7'
+import Cd8 from './sections/cd8'
+import Cd9 from './sections/cd9'
+import Cd10 from './sections/cd10'
+import Cd11 from './sections/cd11'
 import ReadingPage from '@/components/features/ReadingPage'
 import { findModuleByPath } from '@/router/routeRegistry'
 import type { SectionContent } from '@/types/content'
@@ -21,105 +18,90 @@ import './module.css'
 /** 该模块的元信息，缺失说明路由表与目录不同步。 */
 const meta = findModuleByPath('/comprehensive-d')
 
-/** 章节内容表：顺序即页面顺序，侧栏锚点由 ReadingPage 自动生成。 */
+/**
+ * 章节内容表：顺序即页面顺序，侧栏锚点由 ReadingPage 自动生成。
+ *
+ * @remarks 一至七节严格按《2026 明哥综应理论背诵册》七部分顺序；
+ * 八至十一节是配套的教育常识（教育学 / 教育心理学 / 教育法规 / 策略选择）。
+ * 原有的 14 节已于 2026-11 整体替换，不要再加回来。
+ */
 const sections: SectionContent[] = [
   {
-    id: 'sec1',
-    title: "考试认知 · 题型与答题模板",
-    icon: "1",
-    tag: "必看 · 决定答题框架",
-    content: <S1 />,
+    id: 'cd1',
+    title: '一、师德与职业理念',
+    icon: '①',
+    tag: '素质教育 · 新课改 · 师德 · 惩戒',
+    content: <Cd1 />,
   },
   {
-    id: 'sec2',
-    title: "素质教育与新课程改革",
-    icon: "2",
-    tag: "辨析、案例分析最高频考点",
-    content: <S2 />,
+    id: 'cd2',
+    title: '二、学生心理发展与教育',
+    icon: '②',
+    tag: '发展规律 · 差异 · 心理健康',
+    content: <Cd2 />,
   },
   {
-    id: 'sec3',
-    title: "教育学基础原理",
-    icon: "3",
-    tag: "教育本质 · 目的 · 身心发展",
-    content: <S3 />,
+    id: 'cd3',
+    title: '三、教学',
+    icon: '③',
+    tag: '概念 · 规律 · 原则 · 方法 · 环节',
+    content: <Cd3 />,
   },
   {
-    id: 'sec4',
-    title: "教学原理与教学实施",
-    icon: "4",
-    tag: "原则 · 方法 · 环节 · 好课标准",
-    content: <S4 />,
+    id: 'cd4',
+    title: '四、德育',
+    icon: '④',
+    tag: '规律 · 原则 · 方法 · 品德不良',
+    content: <Cd4 />,
   },
   {
-    id: 'sec5',
-    title: "学生心理发展 · 个别差异",
-    icon: "5",
-    tag: "皮亚杰 · 埃里克森 · 认知过程 · 气质",
-    content: <S5 />,
+    id: 'cd5',
+    title: '五、班主任与班级管理',
+    icon: '⑤',
+    tag: '八项工作 · 班集体 · 突发事件',
+    content: <Cd5 />,
   },
   {
-    id: 'sec6',
-    title: "学习心理 · 学习理论",
-    icon: "6",
-    tag: "学习动机 · 迁移 · 策略（案例分析必考）",
-    content: <S6 />,
+    id: 'cd6',
+    title: '六、家庭教育指导',
+    icon: '⑥',
+    tag: '家校沟通',
+    content: <Cd6 />,
   },
   {
-    id: 'sec7',
-    title: "德育原理与方法",
-    icon: "7",
-    tag: "品德结构 · 规律 · 原则 · 方法（高频）",
-    content: <S7 />,
+    id: 'cd7',
+    title: '七、教师自主发展',
+    icon: '⑦',
+    tag: '三阶段 · 素养结构 · 调适',
+    content: <Cd7 />,
   },
   {
-    id: 'sec8',
-    title: "班级管理与班主任工作",
-    icon: "8",
-    tag: "班集体培养 · 后进生转化 · 突发事件",
-    content: <S8 />,
+    id: 'cd8',
+    title: '八、教育常识 · 教育学',
+    icon: '🎓',
+    tag: '补充',
+    content: <Cd8 />,
   },
   {
-    id: 'sec9',
-    title: "师德与职业认知",
-    icon: "9",
-    tag: "教师劳动 · 素养 · 职业道德（三爱两人一终身）",
-    content: <S9 />,
+    id: 'cd9',
+    title: '九、教育常识 · 教育心理学',
+    icon: '🧠',
+    tag: '补充',
+    content: <Cd9 />,
   },
   {
-    id: 'sec10',
-    title: "教育法律法规",
-    icon: "10",
-    tag: "教育法 · 教师法 · 义务教育法 · 未成年人保护",
-    content: <S10 />,
+    id: 'cd10',
+    title: '十、教育常识 · 教育法律法规',
+    icon: '📕',
+    tag: '补充',
+    content: <Cd10 />,
   },
   {
-    id: 'sec11',
-    title: "心理健康教育与沟通合作",
-    icon: "11",
-    tag: "心理辅导 · 青春期教育 · 家校沟通",
-    content: <S11 />,
-  },
-  {
-    id: 'sec12',
-    title: "教师自主发展 · 教育热点",
-    icon: "12",
-    tag: "专业成长 · 双减 · 五项管理 · 教育家精神",
-    content: <S12 />,
-  },
-  {
-    id: 'sec13',
-    title: "记忆口诀速查总表",
-    icon: "13",
-    tag: "考前快速过一遍",
-    content: <S13 />,
-  },
-  {
-    id: 'sec14',
-    title: "典型真题例题精讲",
-    icon: "14",
-    tag: "三大题型实战演练 · 先自测再对答案",
-    content: <S14 />,
+    id: 'cd11',
+    title: '十一、教育常识 · 策略选择',
+    icon: '🧩',
+    tag: 'D 类特色题',
+    content: <Cd11 />,
   },
 ]
 

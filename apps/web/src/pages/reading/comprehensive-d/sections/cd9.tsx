@@ -3,13 +3,13 @@ import { Block, BlockTitle, Callout, DataTable, Example, ExampleAnswer, ExampleB
 import { Memo, Mnemonic } from '../mem'
 
 /**
- * 二十五、教育常识（二）教育心理学
+ * 教育常识 · 教育心理学
  *
  * @remarks 内容整理自「教育常识 1 / 2」讲义：注意、知觉、记忆、思维、情绪、
  * 需要动机、人格、学习理论、迁移策略、发展阶段理论。
  * @returns 该节正文。
  */
-export default function Edu2(): ReactElement {
+export default function Cd9(): ReactElement {
   return (
     <>
       <Callout variant="key">教育心理学在 D 类常识里约 <b>2–3 题</b>，考法几乎全是「<b>给一个生活/课堂场景，问体现了哪个概念</b>」。所以这节的重点不是背定义，而是<b>把概念的「分界线」记住</b>：选择性还是整体性、形成性还是诊断性、正强化还是负强化。 记这一节请套框架：<b>每个理论＝谁提出·核心概念·教育启示</b>，<b>每个阶段＝年龄·任务·启示</b>，<b>每种心理问题＝原因四方·对策五步</b>（框架表见第二十八节开头）。 记这一节请套框架：<b>每个理论＝谁提出·核心概念·教育启示</b>，<b>每个阶段＝年龄·任务·启示</b>，<b>每种心理问题＝原因四方·对策五步</b>（框架表见第二十八节开头）。</Callout>

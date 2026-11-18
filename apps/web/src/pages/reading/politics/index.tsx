@@ -24,12 +24,6 @@ import S21 from './sections/s20'
 import S22 from './sections/s21'
 import S23 from './sections/s22'
 import S24 from './sections/s23'
-import S25 from './sections/edu1'
-import S26 from './sections/edu2'
-import S27 from './sections/edu3'
-import S28 from './sections/edu4'
-import S29 from './sections/edu5'
-import S30 from './sections/edu6'
 import ReadingPage from '@/components/features/ReadingPage'
 import { findModuleByPath } from '@/router/routeRegistry'
 import type { SectionContent } from '@/types/content'
@@ -214,48 +208,6 @@ const sections: SectionContent[] = [
     icon: "🧩",
     tag: "查漏",
     content: <S24 />,
-  },
-  {
-    id: 's24',
-    title: "二十四、教育常识（一）教育学",
-    icon: "🎓",
-    tag: "D 类必考",
-    content: <S25 />,
-  },
-  {
-    id: 's25',
-    title: "二十五、教育常识（二）教育心理学",
-    icon: "🧠",
-    tag: "场景判断题",
-    content: <S26 />,
-  },
-  {
-    id: 's26',
-    title: "二十六、教育常识（三）教育法律法规",
-    icon: "📕",
-    tag: "主体 + 数字",
-    content: <S27 />,
-  },
-  {
-    id: 's27',
-    title: "二十七、教育常识（四）策略选择",
-    icon: "🧩",
-    tag: "D 类特色题",
-    content: <S28 />,
-  },
-  {
-    id: 's28',
-    title: "二十八、综应 D 理论背诵（上）：职业理念 · 师德 · 学生发展",
-    icon: "📕",
-    tag: "明哥背诵册",
-    content: <S29 />,
-  },
-  {
-    id: 's29',
-    title: "二十九、综应 D 理论背诵（下）：教学 · 德育 · 班级 · 家庭 · 教师发展",
-    icon: "📗",
-    tag: "明哥背诵册",
-    content: <S30 />,
   },
 ]
 

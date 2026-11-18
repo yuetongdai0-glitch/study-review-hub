@@ -9,6 +9,11 @@ import { test } from 'node:test'
  * @remarks `pages/` 保留为内容基线，只用于回归比对，不参与构建。
  * 这条断言的价值在于：以后改版式、抽组件时，一旦丢了正文就会立刻失败。
  */
+/**
+ * ⚠️ comprehensive-d（综应 D 类）已整体替换为「明哥综应理论背诵册 + 教育常识」，
+ * 旧基线 pages/comprehensive-d/index.html 不再对应，故从回归列表移除；
+ * 若要恢复逐节回归，需要重新生成该页的基线。
+ */
 const ROUTES = [
   'graphic-reasoning',
   'quantitative',
@@ -18,7 +23,6 @@ const ROUTES = [
   'analogy',
   'words',
   'comprehensive-a',
-  'comprehensive-d',
   'politics'
 ]
 

@@ -190,3 +190,214 @@
 }
 .legacy-comprehensive-d header { background:linear-gradient(135deg,#4f7cff 0%,#6a5acd 100%) !important; box-shadow:0 2px 12px rgba(79,124,255,.3) !important; }
 .legacy-comprehensive-d header .progress-fill { background:linear-gradient(90deg,#ffd700,#8ef0c0) !important; }
+
+.legacy-comprehensive-d .mnemonic {
+  margin: 10px 0;
+  border: 1px solid #dbe4ff;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #fff;
+}
+.legacy-comprehensive-d .mnemonic-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 11px;
+  background: linear-gradient(90deg, #eef3ff, #f7f9ff);
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--primary-dark);
+  letter-spacing: 0.3px;
+}
+.legacy-comprehensive-d .mnemonic-head::before {
+  content: '口诀';
+  flex-shrink: 0;
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: var(--primary);
+  color: #fff;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+.legacy-comprehensive-d .mnemonic-body { padding: 9px 12px 11px; }
+.legacy-comprehensive-d .mnemonic-verse {
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.85;
+  color: var(--text);
+  letter-spacing: 1px;
+  margin-bottom: 7px;
+}
+.legacy-comprehensive-d .mnemonic-verse em {
+  font-style: normal;
+  color: var(--accent);
+  font-weight: 800;
+}
+.legacy-comprehensive-d .mnemonic-note {
+  font-size: 12.5px;
+  line-height: 1.8;
+  color: var(--text-light);
+  border-top: 1px dashed var(--border);
+  padding-top: 7px;
+}
+.legacy-comprehensive-d .mnemonic-note b { color: var(--primary-dark); }
+.legacy-comprehensive-d .frame {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(104px, 1fr));
+  gap: 7px;
+  margin: 9px 0;
+  /* 5 格时按 5 列排，避免第 5 格孤零零掉到下一行 */
+  align-content: start;
+}
+.legacy-comprehensive-d .frame[data-cells="5"] { grid-template-columns: repeat(5, 1fr); }
+.legacy-comprehensive-d .frame[data-cells="4"] { grid-template-columns: repeat(4, 1fr); }
+.legacy-comprehensive-d .frame[data-cells="6"] { grid-template-columns: repeat(3, 1fr); }
+.legacy-comprehensive-d .frame-cell {
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 7px 9px;
+  background: #fafbff;
+  text-align: center;
+  line-height: 1.5;
+}
+.legacy-comprehensive-d .frame-cell .fc-k {
+  display: block;
+  font-size: 13.5px;
+  font-weight: 800;
+  color: var(--primary-dark);
+  margin-bottom: 2px;
+}
+.legacy-comprehensive-d .frame-cell .fc-v {
+  display: block;
+  font-size: 11.5px;
+  color: var(--text-light);
+  line-height: 1.6;
+}
+.legacy-comprehensive-d .frame-cell.is-hot { background: #fff6f6; border-color: #ffd6d6; }
+.legacy-comprehensive-d .frame-cell.is-hot .fc-k { color: #c0392b; }
+.legacy-comprehensive-d .frame-chain {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px 3px;
+  margin: 9px 0;
+  font-size: 13px;
+  line-height: 1.7;
+}
+.legacy-comprehensive-d .frame-chain span.node {
+  padding: 3px 9px;
+  border-radius: 7px;
+  background: var(--primary-light);
+  color: var(--primary-dark);
+  font-weight: 700;
+  white-space: nowrap;
+}
+.legacy-comprehensive-d .frame-chain span.arrow {
+  color: var(--text-muted);
+  font-weight: 700;
+}
+.legacy-comprehensive-d .frame-cap {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin: 2px 0 8px;
+  line-height: 1.7;
+}
+.legacy-comprehensive-d .skeleton {
+  margin: 8px 0;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.legacy-comprehensive-d .skeleton-row {
+  display: grid;
+  grid-template-columns: 92px 1fr;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+  line-height: 1.75;
+}
+.legacy-comprehensive-d .skeleton-row:last-child { border-bottom: 0; }
+.legacy-comprehensive-d .skeleton-key {
+  padding: 7px 9px;
+  background: #f6f8ff;
+  font-weight: 700;
+  color: var(--primary-dark);
+  border-right: 1px solid var(--border);
+}
+.legacy-comprehensive-d .skeleton-val { padding: 7px 10px; color: var(--text); }
+.legacy-comprehensive-d .skeleton-val b { color: var(--primary-dark); }
+  .legacy-comprehensive-d .skeleton-row { grid-template-columns: 74px 1fr; font-size: 12.5px; }
+  .legacy-comprehensive-d .mnemonic-verse { font-size: 14px; letter-spacing: 0.5px; }
+  .legacy-comprehensive-d .frame,
+  .legacy-comprehensive-d .frame[data-cells="4"],
+  .legacy-comprehensive-d .frame[data-cells="6"] { grid-template-columns: repeat(2, 1fr); }
+  .legacy-comprehensive-d .frame[data-cells="5"] { grid-template-columns: repeat(3, 1fr); }
+  .legacy-comprehensive-d .frame[data-cells="5"] .frame-cell:last-child { grid-column: 2 / 3; }
+  .legacy-comprehensive-d .frame-cell { padding: 6px 6px; }
+  .legacy-comprehensive-d .frame-cell .fc-k { font-size: 12.5px; }
+  .legacy-comprehensive-d .frame-cell .fc-v { font-size: 11px; }
+.legacy-comprehensive-d .memo {
+  margin: 4px 0 14px;
+  border: 1px solid #dbe4ff;
+  border-radius: 12px;
+  background: #fbfcff;
+  overflow: hidden;
+}
+.legacy-comprehensive-d .memo-head {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 12px;
+  background: linear-gradient(90deg, #eef3ff, #fbfcff);
+  border-bottom: 1px solid #e6ecff;
+}
+.legacy-comprehensive-d .memo-tag {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--primary-dark);
+  letter-spacing: 0.2px;
+  flex-shrink: 0;
+}
+.legacy-comprehensive-d .memo-title {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--text);
+}
+.legacy-comprehensive-d .memo-sub {
+  padding: 8px 12px 0;
+  font-size: 12.5px;
+  line-height: 1.8;
+  color: var(--text-light);
+}
+.legacy-comprehensive-d .memo-body { padding: 2px 12px 11px; }
+.legacy-comprehensive-d .memo-body > .mnemonic:first-child { margin-top: 8px; }
+
+/* ---- 由 politics 迁移过来的记忆层样式（口诀 / 框架 / 记忆卡 / 骨架表） ---- */
+.legacy-comprehensive-d .jingle {
+  margin: 18px 0;
+  padding: 14px 16px;
+  border-left: 4px solid #d97706;
+  background: #fffbeb;
+  border-radius: 8px;
+  font-size: 14px;
+  line-height: 1.75;
+}
+.legacy-comprehensive-d .jingle .jt {
+  font-weight: 700;
+  color: #b45309;
+  margin-bottom: 6px;
+  font-size: 13px;
+}
+.legacy-comprehensive-d .pill {
+  display: inline-block;
+  padding: 1px 8px;
+  margin-right: 6px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  vertical-align: middle;
+}
+.legacy-comprehensive-d .pill-key {
+  background: #e8efff;
+  color: #3a5fd9;
+}
