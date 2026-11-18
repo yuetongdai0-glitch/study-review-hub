@@ -76,6 +76,32 @@ export default function ExamSheet() {
   const [importOpen, setImportOpen] = useState(false)
   const [importText, setImportText] = useState('')
 
+  /**
+   * 把 state 里的正文同步回 textarea（非受控组件的「受控」补偿）。
+   *
+   * @remarks textarea 不能再用 `value={text}`：受控组件在中文输入法组合结束时，
+   * React 会把 DOM 值恢复成旧的 text，导致上屏的字被丢掉（中文完全打不出来）。
+   * 改成非受控后，程序性改动（恢复草稿、撤销、导入、补空格）只能靠这个 effect
+   * 写回 DOM；正常打字时 `ed.value` 已是最新，这里不会动手。
+   */
+  useEffect(() => {
+    const editor = editorRef.current
+    if (editor && editor.value !== text) editor.value = text
+  }, [text])
+
+  /**
+   * 把 state 里的正文同步回 textarea（非受控组件的「受控」补偿）。
+   *
+   * @remarks textarea 不能再用 `value={text}`：受控组件在中文输入法组合结束时，
+   * React 会把 DOM 值恢复成旧的 text，导致上屏的字被丢掉（中文完全打不出来）。
+   * 改成非受控后，程序性改动（恢复草稿、撤销、导入、补空格）只能靠这个 effect
+   * 写回 DOM；正常打字时 `ed.value` 已是最新，这里不会动手。
+   */
+  useEffect(() => {
+    const editor = editorRef.current
+    if (editor && editor.value !== text) editor.value = text
+  }, [text])
+
   /* ---------------- 布局 ---------------- */
 
   /**
@@ -571,7 +597,6 @@ export default function ExamSheet() {
             */}
             <textarea
               ref={editorRef}
-              value={text}
               spellCheck={false}
               autoCorrect="off"
               autoCapitalize="off"
@@ -598,9 +623,15 @@ export default function ExamSheet() {
               onCompositionStart={() => {
                 composingRef.current = true
               }}
-              onCompositionEnd={(event) => {
+              onCompositionEnd={() => {
                 composingRef.current = false
-                const next = event.currentTarget.value
+                /*
+                 * 必须读 DOM 里的真实值，不能读事件对象：
+                 * 曾经是受控组件（value={text}），React 会在 composition 结束时
+                 * 把 DOM 值恢复成旧的 text，于是这里读到的永远是「没变」，
+                 * 中文上屏被整段丢掉——表现就是「中文完全打不出来」。
+                 */
+                const next = editorRef.current?.value ?? ''
                 if (next === text) {
                   updateCaret()
                   return
@@ -614,11 +645,12 @@ export default function ExamSheet() {
                   updateCaret()
                 })
               }}
-              onChange={(event) => {
+              onInput={() => {
                 // 组合中的插入事件一律忽略，否则拼音会被当成正文写进格子。
                 if (composingRef.current) return
+                const next = editorRef.current?.value ?? ''
+                if (next === text) return
                 pushUndo(text)
-                const next = event.target.value
                 setText(next)
                 setRows((value) => Math.max(value, Math.ceil(next.length / cols) + 2))
                 updateCaret()

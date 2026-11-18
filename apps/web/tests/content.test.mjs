@@ -846,8 +846,17 @@ test('格纸：方向键按网格走、拼音组合期间不上屏、外框闭�
   // 2. 拼音组合期间不上屏
   assert.ok(/composingRef/.test(exam), '缺少输入法组合状态标记')
   assert.ok(/onCompositionStart=/.test(exam) && /onCompositionEnd=/.test(exam), '必须监听 compositionstart/end')
-  const changeBlock = exam.slice(exam.indexOf('onChange={(event) => {'), exam.indexOf('onChange={(event) => {') + 400)
-  assert.ok(/composingRef\.current\)\s*return/.test(changeBlock), 'onChange 在组合期间必须直接返回，否则拼音会被当成正文')
+  /*
+   * 输入事件从 onChange 改成了 onInput（配合非受控 textarea），
+   * 两种写法都要能通过；关键是「组合期间直接返回」这条不能丢。
+   */
+  const inputAnchor = exam.includes('onInput={() => {') ? 'onInput={() => {' : 'onChange={(event) => {'
+  const changeBlock = exam.slice(exam.indexOf(inputAnchor), exam.indexOf(inputAnchor) + 400)
+  assert.ok(/composingRef\.current\)\s*return/.test(changeBlock), '输入事件在组合期间必须直接返回，否则拼音会被当成正文')
+  // 输入层必须非受控：受控 textarea 会在 IME 上屏时被 React 用旧值覆盖，中文就「打不出来」
+  // 注释里会提到「不能再用 value={text}」，所以先剥掉注释再检测
+  const examCode = exam.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/.*$/gm, '')
+  assert.ok(!/value=\{text\}/.test(examCode), '输入层不能是受控组件（中文上屏会被旧值覆盖）')
   const keyBlock = exam.slice(exam.indexOf('onKeyDown={(event) => {'), exam.indexOf('onKeyDown={(event) => {') + 300)
   assert.ok(/if \(composingRef\.current\) return/.test(keyBlock), '输入法选词时方向键要归输入法，不能抢')
 
