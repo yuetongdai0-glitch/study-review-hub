@@ -17,11 +17,17 @@ import { useLocation } from 'react-router-dom'
  * ③ **完全不碰浏览器自身的滚动**：不拦 wheel / touchmove、不改 `overflow`、
  *    不加 `scroll-behavior: smooth`。只有「确实需要换位置」时才 `scrollTo` 一次。
  *
- * 位置存在 sessionStorage（关掉标签页就清），按 `pathname` 分键 ——
+ * 位置存在 localStorage（关掉标签页、重新打开都还在），按 `pathname` 分键 ——
  * 不同科目各记各的，互不覆盖。
  */
 
-/** 存储键前缀。 */
+/**
+ * 存储键前缀。
+ *
+ * @remarks 用 localStorage 而不是 sessionStorage：用户的要求是
+ * 「从外面进去直接就跳转到上次位置」——从微信链接、桌面图标重新打开时，
+ * 往往是新的标签页，sessionStorage 已经清空，只有 localStorage 能跨会话记住。
+ */
 const KEY_PREFIX = 'study-hub:scroll:'
 
 /**
@@ -32,7 +38,8 @@ const KEY_PREFIX = 'study-hub:scroll:'
  */
 function readPos(pathname: string): number {
   try {
-    const raw = window.sessionStorage.getItem(KEY_PREFIX + pathname)
+    // 先读 localStorage（跨会话），读不到再兼容旧的 sessionStorage 记录。
+    const raw = window.localStorage.getItem(KEY_PREFIX + pathname) ?? window.sessionStorage.getItem(KEY_PREFIX + pathname)
     if (raw === null) return -1
     const value = Number(raw)
     return Number.isFinite(value) && value >= 0 ? value : -1
@@ -50,6 +57,7 @@ function readPos(pathname: string): number {
  */
 function writePos(pathname: string, y: number): void {
   try {
+    window.localStorage.setItem(KEY_PREFIX + pathname, String(Math.round(y)))
     window.sessionStorage.setItem(KEY_PREFIX + pathname, String(Math.round(y)))
   } catch {
     // 存不下就不记，最多是下次回到顶部，不值得打断。
@@ -150,17 +158,34 @@ export default function ScrollToTop() {
      * 这不是常驻轮询：到 10 帧或到位就停。
      */
     if (target > 0) {
+      /*
+       * 等到「文档真的够长了」再落位。
+       *
+       * 只等 10 帧（约 160ms）不够：阅读页是按模块懒加载的，首次进入时
+       * 正文 chunk 还没到，scrollHeight 只有首屏高度，scrollTo 会被夹小，
+       * 于是「明明记着位置却回到了顶部」。
+       *
+       * 这里改成最多等 2 秒（120 帧），一旦高度足够就落位并立即收手；
+       * 另外在 400ms / 1200ms 各补一次检查，防止 rAF 在后台标签页被节流。
+       */
       let tries = 0
-      const settle = () => {
-        if (tries >= 10) return
-        tries += 1
-        if (Math.abs(window.scrollY - target) <= 1) return
+      const MAX_TRIES = 120
+      const apply = (): boolean => {
+        if (Math.abs(window.scrollY - target) <= 1) return true
         if (document.documentElement.scrollHeight >= target + window.innerHeight) {
           window.scrollTo({ top: target, left: 0, behavior: 'instant' as ScrollBehavior })
+          return true
         }
-        requestAnimationFrame(settle)
+        return false
+      }
+      const settle = () => {
+        if (apply()) return
+        tries += 1
+        if (tries < MAX_TRIES) requestAnimationFrame(settle)
       }
       requestAnimationFrame(settle)
+      window.setTimeout(apply, 400)
+      window.setTimeout(apply, 1200)
     }
   }, [pathname, hash])
 

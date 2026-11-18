@@ -1,5 +1,5 @@
 /**
- * 拦截页内锚点，改成平滑滚动。
+ * 拦截页内锚点，改成瞬时跳转。
  *
  * @remarks
  * 站点用 **HashRouter**，路由信息就存在 `#/xxx` 里。
@@ -8,6 +8,8 @@
  * 逐个改写不现实，所以在 document 上做一次事件委托统一拦截。
  *
  * 只拦「纯锚点」（`#foo`），`#/route` 这种交给路由器。
+ *
+ * ⚠️ 用 `instant` 而不是 `smooth`：用户明确说「不要慢慢滚动」。
  */
 export function installInPageAnchors(): void {
   document.addEventListener('click', (event) => {
@@ -30,7 +32,7 @@ export function installInPageAnchors(): void {
     if (!node) return
 
     event.preventDefault()
-    node.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    node.scrollIntoView({ behavior: 'instant' as ScrollBehavior, block: 'start' })
     // 焦点跟过去，键盘用户接着能用 Tab 继续。
     if (!node.hasAttribute('tabindex')) node.setAttribute('tabindex', '-1')
     node.focus({ preventScroll: true })
