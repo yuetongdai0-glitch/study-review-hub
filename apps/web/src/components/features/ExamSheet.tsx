@@ -1,4 +1,4 @@
-import { App, Button, Drawer, Input, Modal } from 'antd'
+import { App, Button, Drawer, Input, Modal, Segmented } from 'antd'
 import { ClipboardCopy, Download, Eraser, FileDown, RotateCcw, Save } from 'lucide-react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
@@ -46,7 +46,18 @@ function toBlanks(value: string): string {
 }
 
 /** 草稿箱条目。 */
-type DraftItem = { id: string; title: string; text: string; brief: string; savedAt: number }
+type DraftItem = {
+  id: string
+  /** 草稿名（保存时填的）。 */
+  title: string
+  text: string
+  brief: string
+  /** 这道题是什么（顶部题目栏）。 */
+  question?: string
+  /** 作答格式：辨析题 / 案例分析 / 活动设计 / 其他。 */
+  kind?: string
+  savedAt: number
+}
 
 /**
  * 去掉 Markdown 标记与紧贴中文的多余空格。
@@ -104,6 +115,12 @@ export default function ExamSheet() {
   const [box, setBox] = useState<DraftItem[]>([])
   const [exportOpen, setExportOpen] = useState(false)
   const [brief, setBrief] = useState('')
+  /** 这道题是什么：显示在顶部，也会写进导出文本，避免回头分不清答的哪道题。 */
+  const [question, setQuestion] = useState('')
+  /** 作答格式标记。 */
+  const [kind, setKind] = useState('辨析题')
+  /** 是否已经从存档恢复过：恢复前不允许回写，否则会用空值覆盖草稿。 */
+  const hydratedRef = useRef(false)
   const [importOpen, setImportOpen] = useState(false)
   const [importText, setImportText] = useState('')
 
@@ -205,12 +222,15 @@ export default function ExamSheet() {
   const save = useCallback(
     (value: string, briefValue: string) => {
       try {
-        window.localStorage.setItem(DRAFT_KEY, JSON.stringify({ v: 2, text: value, brief: briefValue, savedAt: Date.now() }))
+        window.localStorage.setItem(
+          DRAFT_KEY,
+          JSON.stringify({ v: 2, text: value, brief: briefValue, question, kind, savedAt: Date.now() }),
+        )
       } catch {
         message.error('本地保存失败（空间不足）')
       }
     },
-    [message],
+    [message, question, kind],
   )
 
   /**
@@ -229,9 +249,11 @@ export default function ExamSheet() {
     try {
       const raw = window.localStorage.getItem(DRAFT_KEY)
       if (raw) {
-        const data = JSON.parse(raw) as { text?: string; brief?: string }
+        const data = JSON.parse(raw) as { text?: string; brief?: string; question?: string; kind?: string }
         if (typeof data.text === 'string') setText(toBlanks(data.text))
         if (typeof data.brief === 'string') setBrief(data.brief)
+        if (typeof data.question === 'string') setQuestion(data.question)
+        if (typeof data.kind === 'string') setKind(data.kind)
       }
       const boxRaw = window.localStorage.getItem(BOX_KEY)
       if (boxRaw) {
@@ -241,7 +263,18 @@ export default function ExamSheet() {
     } catch {
       // 存档损坏按空白处理。
     }
+    hydratedRef.current = true
   }, [])
+
+  /*
+   * 题目 / 题型变化也要落盘：不然「只改了题目没改正文」时，刷新后题目就丢了。
+   * 恢复阶段（hydratedRef=false）直接跳过，避免用空值盖掉刚读出来的草稿。
+   */
+  useEffect(() => {
+    if (!hydratedRef.current) return
+    scheduleSave(text, brief)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [question, kind])
 
   /* ---------------- 光标与网格 ---------------- */
 
@@ -455,9 +488,14 @@ export default function ExamSheet() {
   const exportText = useMemo(() => {
     // 占位空格（U+3000）对外要换回普通空格，否则复制出去是全角空白。
     const body = text.replace(/\u3000/g, ' ').replace(/[ \t]+$/gm, '').trim()
-    const head = brief.trim() ? `【作答要求】${brief.trim()}\n\n` : ''
+    const meta: string[] = []
+    if (question.trim()) {
+      meta.push(`【题目】${question.trim()}${kind ? `　（${kind}）` : ''}`)
+    }
+    if (brief.trim()) meta.push(`【作答要求】${brief.trim()}`)
+    const head = meta.length ? `${meta.join('\n')}\n\n` : ''
     return `${head}${body}`
-  }, [text, brief])
+  }, [text, brief, question, kind])
 
   /**
    * 复制到剪贴板。
@@ -497,7 +535,7 @@ export default function ExamSheet() {
    */
   function saveToBox() {
     const title = draftName.trim() || `未命名 ${new Date().toLocaleString('zh-CN')}`
-    const item: DraftItem = { id: String(Date.now()), title, text, brief, savedAt: Date.now() }
+    const item: DraftItem = { id: String(Date.now()), title, text, brief, question, kind, savedAt: Date.now() }
     const next = [item, ...box].slice(0, 30)
     setBox(next)
     try {
@@ -519,6 +557,8 @@ export default function ExamSheet() {
   function restoreDraft(item: DraftItem) {
     setText(toBlanks(item.text))
     setBrief(item.brief)
+    setQuestion(item.question ?? '')
+    setKind(item.kind ?? '辨析题')
     if (editorRef.current) editorRef.current.value = item.text
     setBoxOpen(false)
     scheduleSave(item.text, item.brief)
@@ -529,6 +569,25 @@ export default function ExamSheet() {
 
   return (
     <div className="flex h-full min-h-0 flex-col overflow-hidden bg-sunken">
+      {/* 题目栏：先写清「这道题是什么」，回头翻草稿不会认不出 */}
+      <div className="flex flex-wrap items-center gap-2 border-b border-line bg-surface px-2 py-1.5 sm:px-3">
+        <span className="shrink-0 text-[12.5px] font-semibold text-ink-2">题目</span>
+        <Input
+          size="small"
+          value={question}
+          onChange={(event) => setQuestion(event.target.value)}
+          placeholder="这道题是什么？例：2024 联考 D 类 · 素质教育（辨析）"
+          allowClear
+          className="min-w-[160px] max-w-[520px] flex-1"
+        />
+        <Segmented
+          size="small"
+          value={kind}
+          onChange={(value) => setKind(String(value))}
+          options={['辨析题', '案例分析', '活动设计', '其他']}
+        />
+      </div>
+
       {/* 工具条：手机端必须换行，横向滚动会挡住右侧按钮 */}
       <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5 border-b border-line bg-surface px-2 py-2 text-[12.5px] sm:px-3">
         <span className="font-num tabular-nums text-ink-3">
@@ -539,8 +598,11 @@ export default function ExamSheet() {
           <Button size="small" icon={<RotateCcw size={13} />} onClick={undo}>
             撤销
           </Button>
-          <Button size="small" icon={<ClipboardCopy size={13} />} onClick={() => setExportOpen(true)}>
+          <Button size="small" icon={<ClipboardCopy size={13} />} onClick={() => copy(exportText)}>
             复制
+          </Button>
+          <Button size="small" icon={<Download size={13} />} onClick={() => setExportOpen(true)}>
+            导出
           </Button>
           <Button size="small" icon={<FileDown size={13} />} onClick={() => setImportOpen(true)}>
             导入
