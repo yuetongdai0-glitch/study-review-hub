@@ -15,6 +15,7 @@ export default function Edu6(): ReactElement {
 
       <Block>
         <BlockTitle>9. 教学：三个「不等于」+ 四条规律</BlockTitle>
+        <p><span className="pill pill-key">对比框架</span>凡「X 不等于 Y」，只背那组关系词：部分/整体、主要/唯一、中心/全部。</p>
         <DataTable>
           <tr><th>易混关系</th><th>正确表述</th></tr>
           <tr><td>教学 vs 教育</td><td><b>部分与整体</b>：教育包括教学，教学是学校教育工作的<b>中心工作</b>与基本途径</td></tr>
@@ -31,7 +32,7 @@ export default function Edu6(): ReactElement {
         <Callout variant="warn"><b>辨析题套路：</b>题干只要「只强调其中一方」，就用对应规律的<b>两端</b>去反驳——先讲这一端的合理性，再讲走极端的危害，最后给「二者统一」的结论。</Callout>
       </Block>
       <Example>
-        <ExampleHeader>📝 例题172 · 教学就是上课吗</ExampleHeader>
+        <ExampleHeader>📝 例题173 · 教学就是上课吗</ExampleHeader>
         <ExampleBody>
           <ExampleQuestion>「教学就是上课」这一说法的主要问题是（　）。</ExampleQuestion>
           <ExampleOptions>A. 扩大了教学的外延　B. 缩小了教学的外延，忽略了备课、作业、辅导与评价等环节　C. 混淆了教学与智育的关系　D. 否认了上课是中心环节</ExampleOptions>
@@ -41,6 +42,7 @@ export default function Edu6(): ReactElement {
 
       <Block>
         <BlockTitle>10. 教学原则与方法：辨析题最爱考「优缺点」</BlockTitle>
+        <p><span className="pill pill-key">框架②③</span>原则按「管内容—管学生—管过程—管合力」归位；方法按「是什么—好在哪—局限—何时用」四问。</p>
         <PointList>
           <li><b>八大原则</b>：直观性、启发性、循序渐进（系统性）、巩固性、因材施教、理论联系实际、量力性（可接受性）、科学性与思想性（教育性）统一。</li>
           <li><b>方法选用的依据</b>：教学目的与任务、课程性质与特点、学生年龄特征、教学时间与设备条件、教师自身素养。</li>
@@ -55,7 +57,7 @@ export default function Edu6(): ReactElement {
         <Callout variant="tip"><b>「讲授法就是满堂灌，应该废掉」怎么驳：</b>① 讲授法有不可替代的优点（系统、省时、利于逻辑与价值引导）；② 满堂灌的错在<b>「一讲到底、不给反馈」</b>，是<b>使用方式</b>的问题，不是方法本身的问题；③ 正确做法是<b>多种方法结合</b>，讲授与启发、讨论、练习穿插。</Callout>
       </Block>
       <Example>
-        <ExampleHeader>📝 例题173 · 谈话法的局限</ExampleHeader>
+        <ExampleHeader>📝 例题174 · 谈话法的局限</ExampleHeader>
         <ExampleBody>
           <ExampleQuestion>下列关于谈话法（问答法）的表述，<b>不正确</b>的是（　）。</ExampleQuestion>
           <ExampleOptions>A. 能活跃学生思维，便于知识的记忆与巩固　B. 有利于及时反馈，了解学生学习情况　C. 知识的系统性与连贯性较强，不会碎片化　D. 需要学生具备一定的知识基础</ExampleOptions>
@@ -65,6 +67,7 @@ export default function Edu6(): ReactElement {
 
       <Block>
         <BlockTitle>11. 教学实施：五个环节 + 四种组织形式</BlockTitle>
+        <p><span className="pill pill-key">框架⑧</span>环节按时间串（备课→上课→作业→辅导→评定）；组织形式只比「效率 vs 因材施教」这一对矛盾。</p>
         <PointList>
           <li><b>教学工作基本环节</b>：备课（<b>先决条件</b>，三备三写）→ 上课（<b>中心环节</b>）→ 作业的布置与批改 → 课外辅导 → 学业成绩检查与评定。</li>
           <li><b>上好课的标准</b>：目标明确、内容正确、方法得当、<b>组织严密</b>、表达清晰、气氛热烈。</li>
@@ -79,7 +82,7 @@ export default function Edu6(): ReactElement {
         <Callout variant="warn"><b>课堂管理三条底线：</b>不因个别学生影响全班进度、不当众羞辱、不放弃任何一个学生。处理违纪优先<b>无声提示</b>（眼神、走近、轻敲桌面），课后单独沟通。</Callout>
       </Block>
       <Example>
-        <ExampleHeader>📝 例题174 · 班级授课制的主要局限</ExampleHeader>
+        <ExampleHeader>📝 例题175 · 班级授课制的主要局限</ExampleHeader>
         <ExampleBody>
           <ExampleQuestion>班级授课制作为我国教学的基本组织形式，其最主要的局限是（　）。</ExampleQuestion>
           <ExampleOptions>A. 教学效率低、成本高　B. 不利于因材施教和学生个性发展　C. 无法传授系统的科学知识　D. 教师无法发挥主导作用</ExampleOptions>
@@ -89,6 +92,7 @@ export default function Edu6(): ReactElement {
 
       <Block>
         <BlockTitle>12. 学习培养：动机 · 兴趣 · 习惯</BlockTitle>
+        <p><span className="pill pill-key">框架⑩</span>三层递进：想不想学（动机）→ 爱不爱学（兴趣）→ 会不会学（习惯）。</p>
         <PointList>
           <li><b>学习动机的激发</b>：创设问题情境、实施启发式教学；<b>控制动机水平</b>（耶克斯-多德森：难任务低动机）；<b>归因训练</b>（引导归因于努力与方法）；利用反馈与评价；适当开展竞赛；培养自我效能感。</li>
           <li><b>学习兴趣的培养</b>：丰富教学内容、改进教学方法；<b>联系生活实际</b>；让学生获得成功体验；发挥教师的情感感染作用；开展第二课堂与实践活动。</li>
@@ -97,7 +101,7 @@ export default function Edu6(): ReactElement {
         <Callout variant="tip"><b>案例分析「学生不想学」的三层答法：</b>① 动机层（目标、归因、效能感）→ ② 兴趣层（内容、方法、成功体验）→ ③ 习惯层（计划、专注、复习）。三层写完，答案就比只写「多鼓励」高一档。</Callout>
       </Block>
       <Example>
-        <ExampleHeader>📝 例题175 · 动机水平与任务难度</ExampleHeader>
+        <ExampleHeader>📝 例题176 · 动机水平与任务难度</ExampleHeader>
         <ExampleBody>
           <ExampleQuestion>面对难度较大的学习任务，教师最应帮助学生（　）。</ExampleQuestion>
           <ExampleOptions>A. 把动机水平提到最高，背水一战　B. 保持较低动机水平，减轻焦虑　C. 完全不提要求，顺其自然　D. 用竞赛激发强烈好胜心</ExampleOptions>
@@ -107,6 +111,7 @@ export default function Edu6(): ReactElement {
 
       <Block>
         <BlockTitle>13. 德育：概念 + 四规律 + 原则 + 方法</BlockTitle>
+        <p><span className="pill pill-key">框架③②</span>规律记四个关键词（知情意行、活动交往、内部矛盾、长期反复）；方法六种记「说—示—练—熏—评—修」一个字一个。</p>
         <PointList>
           <li><b>概念</b>：德育是教育者培养受教育者<b>品德</b>的活动，包括政治教育、思想教育、道德教育、<b>心理健康教育</b>与法治教育。</li>
           <li><b>德育过程四规律</b>：① 知情意行统一发展（<b>多端性</b>：任一端都可作为开端）；② <b>活动和交往是品德形成的基础</b>；③ 促进学生思想内部矛盾转化；④ 长期、反复、逐步提高。</li>
@@ -116,7 +121,7 @@ export default function Edu6(): ReactElement {
         <Callout variant="warn"><b>最容易混的两组：</b>「论学取友、择其善者而从之」＝<b>榜样示范法</b>；「校园文化墙、绿色校园」＝<b>陶冶教育法</b>。原则里「长善救失」＝依靠积极因素克服消极因素，别写成「因材施教」。</Callout>
       </Block>
       <Example>
-        <ExampleHeader>📝 例题176 · 德育原则辨析</ExampleHeader>
+        <ExampleHeader>📝 例题177 · 德育原则辨析</ExampleHeader>
         <ExampleBody>
           <ExampleQuestion>教师发现某学生经常迟到，但他在班里乐于助人、威信较高，于是先肯定其热心，再请他担任值日组长、以自身表现带动全班守时。这主要体现了（　）。</ExampleQuestion>
           <ExampleOptions>A. 疏导性原则　B. 依靠积极因素克服消极因素原则　C. 教育影响一致性原则　D. 知行统一原则</ExampleOptions>
@@ -126,6 +131,7 @@ export default function Edu6(): ReactElement {
 
       <Block>
         <BlockTitle>14. 品德不良：原因分析 + 矫正方法</BlockTitle>
+        <p><span className="pill pill-key">框架⑨⑩</span>原因四方；矫正五步：了解—建信任—护自尊—长善救失—协同跟踪。</p>
         <DataTable>
           <tr><th>原因（答「分析」用）</th><th>具体表述</th></tr>
           <tr><td>家庭</td><td>教养方式不当（溺爱／专制／放任）、父母言行示范不良、家庭结构不完整、亲子沟通少</td></tr>
@@ -139,7 +145,7 @@ export default function Edu6(): ReactElement {
         </PointList>
       </Block>
       <Example>
-        <ExampleHeader>📝 例题177 · 矫正的第一步</ExampleHeader>
+        <ExampleHeader>📝 例题178 · 矫正的第一步</ExampleHeader>
         <ExampleBody>
           <ExampleQuestion>矫正学生品德不良行为时，教师首先应当（　）。</ExampleQuestion>
           <ExampleOptions>A. 立即公开批评，形成舆论压力　B. 了解行为产生的原因，消除其疑惧心理　C. 通知家长将其领回反省　D. 调整座位，减少其与同学接触</ExampleOptions>
@@ -149,6 +155,7 @@ export default function Edu6(): ReactElement {
 
       <Block>
         <BlockTitle>15. 班主任八项工作 + 班级管理 + 突发事件</BlockTitle>
+        <p><span className="pill pill-key">框架⑧</span>八项按三堆记：对人（了解、个别教育）· 对事（班集体、活动、评定、计划）· 对关系（协调力量）。</p>
         <PointList>
           <li><b>班主任工作八项</b>：① <b>了解和研究学生</b>（前提和基础）；② <b>组织和培养班集体</b>（<b>中心环节</b>）；③ 建立学生成长档案；④ 组织班会与课外活动；⑤ <b>协调各方面教育力量</b>；⑥ 操行评定；⑦ 工作计划与总结；⑧ 个别教育工作。</li>
           <li><b>班集体培养</b>：确定共同奋斗目标 → 建立班委会与骨干队伍 → 制定班级规范 → 开展集体活动 → 培养正确舆论与良好班风。</li>
@@ -168,7 +175,7 @@ export default function Edu6(): ReactElement {
         <Callout variant="warn"><b>「冷处理」不是不管：</b>是先冷静、不急于表态，把来龙去脉弄清楚再处理；与「置之不理」有本质区别，辨析题常拿这个做陷阱。</Callout>
       </Block>
       <Example>
-        <ExampleHeader>📝 例题178 · 班主任的中心环节</ExampleHeader>
+        <ExampleHeader>📝 例题179 · 班主任的中心环节</ExampleHeader>
         <ExampleBody>
           <ExampleQuestion>班主任工作的中心环节是（　）。</ExampleQuestion>
           <ExampleOptions>A. 了解和研究学生　B. 组织和培养班集体　C. 操行评定　D. 协调各方教育力量</ExampleOptions>
@@ -178,6 +185,7 @@ export default function Edu6(): ReactElement {
 
       <Block>
         <BlockTitle>16. 家庭教育 + 教师专业发展</BlockTitle>
+        <p><span className="pill pill-key">框架⑧④</span>家校沟通「共情—事实—方案—跟进」；教师发展「阶段（福勒）—结构（四素养）—方法（三途径）」。</p>
         <PointList>
           <li><b>家庭教育的地位</b>：家庭是学生行为习惯养成与道德品质发展的<b>重要场所</b>，父母是<b>第一任老师</b>；家庭教育具有<b>先导性、感染性、权威性、终身性</b>。</li>
           <li><b>家校沟通渠道</b>：家长会、家访、家长学校、家长委员会、班级群／电话、开放日。</li>
@@ -194,7 +202,7 @@ export default function Edu6(): ReactElement {
         <Callout variant="tip"><b>家校冲突题的万能结构：</b>① 先<b>共情</b>（理解家长情绪）→ ② 再<b>摆事实</b>（客观描述学生表现，不贴标签）→ ③ 后<b>给方案</b>（家校分工、可执行的具体做法）→ ④ 最后<b>持续跟进</b>。切忌责怪家长或把责任推给对方。</Callout>
       </Block>
       <Example>
-        <ExampleHeader>📝 例题179 · 家校沟通的第一句</ExampleHeader>
+        <ExampleHeader>📝 例题180 · 家校沟通的第一句</ExampleHeader>
         <ExampleBody>
           <ExampleQuestion>家长到校后情绪激动，指责老师「针对我家孩子」。教师最恰当的开场是（　）。</ExampleQuestion>
           <ExampleOptions>A. 「您先冷静，孩子确实问题很多，我们一件件说」　B. 「我理解您的心情，先说说您了解到的情况，我们再一起看怎么办」　C. 「这是学校的规定，您有意见可以去找校长」　D. 「别的孩子都没事，就您家孩子特殊」</ExampleOptions>

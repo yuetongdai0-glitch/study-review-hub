@@ -15,8 +15,38 @@ export default function Edu5(): ReactElement {
       <Callout variant="key">这一节来自 <b>明哥《综应理论背诵册》</b>，和前面四节是<b>互补关系</b>：前面按「考点」拆，这里按「<b>怎么背、怎么答辨析题</b>」重排。全册只有一个记忆总纲——<b>任何一育的任务，都拆成「知识 · 能力 · 情感」三层</b>。</Callout>
 
       <Block>
-        <BlockTitle>1. 【记忆总纲】三维速记：知识 — 能力 — 情感</BlockTitle>
-        <p>德智体美劳五育的任务，看上去五套说法，其实<b>一个模子</b>：<b>① 教什么知识 ② 练什么能力 ③ 养什么情感</b>。背的时候先记住这三层，再往里填具体词，比死记五段话快十倍。</p>
+        <BlockTitle>1. 【记忆总纲】十二个通用框架：先定维度，再填内容</BlockTitle>
+        <p>这一科不用一行行背。拿到任何一个知识点，先问一句「<b>它属于哪一类</b>」，套上那一类的<b>固定维度</b>，再往里填具体词——<b>维度是骨架，内容只是肉</b>。下面十二个框架能覆盖九成考点，<b>德智体美劳只是第 1 类里的一个例子</b>。</p>
+        <DataTable>
+          <tr><th>遇到这类知识点</th><th>套这个维度（按顺序背）</th><th>本页 / 上册的例子</th></tr>
+          <tr><td><b>一「育」的任务</b></td><td><b>知识 → 能力 → 情感</b></td><td>德智体美劳五育（下方示例）</td></tr>
+          <tr><td><b>一种「方法」</b></td><td><b>是什么 → 好在哪 → 局限 → 何时用</b></td><td>讲授法 / 谈话法 / 讨论法 / 德育六法</td></tr>
+          <tr><td><b>一条「原则」</b></td><td><b>管内容 → 管学生 → 管过程 → 管合力</b></td><td>教学八原则、德育八原则、班级管理四原则</td></tr>
+          <tr><td><b>一个人物 / 理论</b></td><td><b>谁提出 → 核心概念 → 教育启示</b></td><td>维果茨基、埃里克森、福勒、波斯纳</td></tr>
+          <tr><td><b>一个「发展阶段」</b></td><td><b>年龄 → 任务 / 冲突 → 启示</b></td><td>皮亚杰四阶段、科尔伯格三水平六阶段</td></tr>
+          <tr><td><b>一条法规</b></td><td><b>主体 → 数字 → 禁区</b></td><td>未保法六大保护、教育惩戒三档</td></tr>
+          <tr><td><b>一个新理念</b></td><td><b>从 X 转向 Y</b>（旧 → 新）</td><td>三观、评价六化、学习方式转变</td></tr>
+          <tr><td><b>一项工作 / 一个角色</b></td><td><b>对人 → 对事 → 对己</b></td><td>班主任八项、教师四角色、教师行为四转变</td></tr>
+          <tr><td><b>一个问题的「原因」</b></td><td><b>家庭 → 学校 → 社会 → 自身</b></td><td>网络成瘾、考试焦虑、品德不良</td></tr>
+          <tr><td><b>一个问题的「对策」</b></td><td><b>了解 → 建信任 → 给方法 → 协同 → 跟踪</b></td><td>校园欺凌干预、品德不良矫正</td></tr>
+          <tr><td><b>辨析题</b></td><td><b>亮观点 → 释概念 → 指错误 → 给做法</b></td><td>素质教育七个误区</td></tr>
+          <tr><td><b>案例分析</b></td><td><b>定性 → 依据 → 措施</b></td><td>所有案例分析题</td></tr>
+        </DataTable>
+        <Callout variant="tip"><b>为什么这样背更快：</b>零散条目一多，大脑会按「位置」记，一紧张就串行；套上维度后，你记的是<b>四个格子</b>，想起三个就能倒推第四个。<b>答辨析题卡住时，先把维度默出来，再往里填</b>，比空想快得多。</Callout>
+      </Block>
+
+      <Example>
+        <ExampleHeader>📝 例题164 · 该套哪个框架</ExampleHeader>
+        <ExampleBody>
+          <ExampleQuestion>复习「讲授法」这一知识点时，最省力的记忆维度是（　）。</ExampleQuestion>
+          <ExampleOptions>A. 知识—能力—情感　B. 是什么—好在哪—局限—何时用　C. 家庭—学校—社会—自身　D. 主体—数字—禁区</ExampleOptions>
+          <ExampleAnswer><b>解析：</b>讲授法属于「<b>方法</b>类」，套「<b>方法四问</b>」：定义是什么、优点在哪、局限在哪、什么条件下用。A 是「育的任务」、C 是「原因分析」、D 是「法规」。<br /><span className="correct">答案：B</span></ExampleAnswer>
+        </ExampleBody>
+      </Example>
+
+      <Block>
+        <BlockTitle>2. 框架示例①：五育任务＝「知识 · 能力 · 情感」</BlockTitle>
+        <p>这就是上面第 1 类框架的具体用法：<b>任何一育的任务，都是「教什么知识 → 练什么能力 → 养什么情感」</b>。五段话压成一张表，考场只需回忆三层。</p>
         <DataTable>
           <tr><th>育</th><th>① 知识 / 技能</th><th>② 能力</th><th>③ 情感 / 品质</th></tr>
           <tr><td><b>德育</b></td><td>正确的人生观世界观、政治方向、道德规范</td><td>道德判断与践行能力</td><td>道德情操、良好道德行为习惯、良好心理品质</td></tr>
@@ -25,10 +55,10 @@ export default function Edu5(): ReactElement {
           <tr><td><b>美育</b></td><td>正确的<b>审美观点</b></td><td>审美能力、<b>表现美和创造美</b>的能力</td><td><b>健康的审美情趣</b>、对美的热爱和追求</td></tr>
           <tr><td><b>劳育</b></td><td>基本生产知识、劳动技能</td><td><b>创新精神和创新能力</b></td><td><b>劳动观念、劳动态度、劳动习惯</b></td></tr>
         </DataTable>
-        <Callout variant="tip"><b>怎么用这张表：</b>辨析题说「某育就是让学生学会××知识」→ 你立刻能回「只做到了第一层，还缺能力层和情感层」。案例分析要写「该教师落实了××育」→ 按三层各写一句，答案立刻饱满。<br /><b>五育关系一句话：</b>不可分割（相互联系、相互促进）、不能相互代替（各有特定任务与价值）；全面发展 ≠ 平均发展。</Callout>
+        <Callout variant="warn"><b>怎么用：</b>辨析题说「某育就是让学生学会××知识」→ 立刻能回「只做到第一层，缺能力层和情感层」。案例分析写「该教师落实了××育」→ 按三层各写一句，答案立刻饱满。<br /><b>五育关系一句话：</b>不可分割（相互联系、相互促进）、不能相互代替（各有特定任务与价值）；全面发展 ≠ 平均发展。</Callout>
       </Block>
       <Example>
-        <ExampleHeader>📝 例题164 · 三维拆解五育任务</ExampleHeader>
+        <ExampleHeader>📝 例题165 · 用三维拆五育任务</ExampleHeader>
         <ExampleBody>
           <ExampleQuestion>下列任务中，属于<b>美育</b>「情感层」的是（　）。</ExampleQuestion>
           <ExampleOptions>A. 帮助学生树立正确的审美观点　B. 发展学生表现美和创造美的能力　C. 培养学生健康的审美情趣，激发对美的热爱　D. 配齐配好美育教师，开齐开足美育课</ExampleOptions>
@@ -37,7 +67,8 @@ export default function Edu5(): ReactElement {
       </Example>
 
       <Block>
-        <BlockTitle>2. 素质教育：五内涵「提素个性创两全」+ 七个误区</BlockTitle>
+        <BlockTitle>3. 素质教育：五内涵「提素个性创两全」+ 七个误区</BlockTitle>
+        <p><span className="pill pill-key">框架⑦ × 辨析四步</span>五内涵＝五个「是」（想成「从应试转向素质」的五个转向）；七个误区一律按辨析四步答：亮观点—释概念—指错误—给做法。</p>
         <Memo title="素质教育五内涵" sub="口诀：提素个性创两全。">
           <Mnemonic
             title="提素个性创两全"
@@ -59,7 +90,7 @@ export default function Edu5(): ReactElement {
         <Callout variant="warn"><b>辨析题万能结构：</b>① 亮明观点（这个说法是错的）→ ② 解释概念真义 → ③ 分析题干错在哪（漏了哪一层）→ ④ 给出正确做法。七个误区的小标题<b>就是出题方向</b>，上面「错在哪」那列就是答题话术。</Callout>
       </Block>
       <Example>
-        <ExampleHeader>📝 例题165 · 「素质教育就是多搞活动」</ExampleHeader>
+        <ExampleHeader>📝 例题166 · 「素质教育就是多搞活动」</ExampleHeader>
         <ExampleBody>
           <ExampleQuestion>有人主张「素质教育就是多开展课外活动、多上文体课」。这一观点的主要错误在于（　）。</ExampleQuestion>
           <ExampleOptions>A. 忽视了课外活动的作用　B. 误解了素质教育的实施途径，忽略了课堂教学才是主渠道　C. 否认了学生个性的发展　D. 混淆了素质教育与应试教育的评价标准</ExampleOptions>
@@ -68,7 +99,8 @@ export default function Edu5(): ReactElement {
       </Example>
 
       <Block>
-        <BlockTitle>3. 新课改：目标六条 + 三观口诀</BlockTitle>
+        <BlockTitle>4. 新课改：目标六条 + 三观口诀</BlockTitle>
+        <p><span className="pill pill-key">框架⑦</span>三观都是「旧 → 新」的转向，记两端比记整句快；六条目标按「功能—结构—内容—方式—评价—管理」一排背。</p>
         <PointList>
           <li><b>具体目标六条</b>：① 课程功能的转变（<b>核心目标</b>）；② 课程结构的<b>均衡性、综合性、选择性</b>；③ 密切课程内容与生活和时代的联系；④ 改善学生的学习方式；⑤ 建立与素质教育一致的评价与考试制度（<b>发展性评价</b>）；⑥ 实行<b>三级课程管理</b>。</li>
           <li><b>均衡 ≠ 平均</b>；<b>选择性 ≠ 学生自由选择</b>（学生发展不成熟，需要教师引导）。</li>
@@ -87,7 +119,7 @@ export default function Edu5(): ReactElement {
         <Callout variant="warn"><b>「容错教育」的辨析陷阱：</b>学生是发展的人 → 要容错，<b>但容错 ≠ 不批评、不惩戒</b>。学生屡教不改时仍要批评教育；批评有助于认识错误、唤起改正勇气，只是<b>切忌体罚或变相体罚</b>。</Callout>
       </Block>
       <Example>
-        <ExampleHeader>📝 例题166 · 教师是研究者</ExampleHeader>
+        <ExampleHeader>📝 例题167 · 教师是研究者</ExampleHeader>
         <ExampleBody>
           <ExampleQuestion>新课改要求教师从「教书匠」转变为「教育教学的研究者」，其主要意义不包括（　）。</ExampleQuestion>
           <ExampleOptions>A. 是教师由「教书匠」转变为「教育家」的前提条件　B. 是教师持续进步的基础、提高教学水平的关键　C. 可以保证教师的科研成果直接转化为学校收入　D. 是创造性实施新课程的保证</ExampleOptions>
@@ -96,7 +128,8 @@ export default function Edu5(): ReactElement {
       </Example>
 
       <Block>
-        <BlockTitle>4. 师德六条「三爱两人一终身」+ 教育家精神</BlockTitle>
+        <BlockTitle>5. 师德六条「三爱两人一终身」+ 教育家精神</BlockTitle>
+        <p><span className="pill pill-key">框架⑧</span>对人（关爱学生）· 对事（爱岗敬业、教书育人）· 对己（为人师表、终身学习）；教育家精神按「理想—情操—智慧—态度—仁心—追求」六词串。</p>
         <DataTable>
           <tr><th>条目</th><th>定位</th><th>关键做法</th></tr>
           <tr><td>爱国守法</td><td>教师职业的<b>基本要求</b></td><td>贯彻国家教育方针，自觉遵守教育法律法规</td></tr>
@@ -112,7 +145,7 @@ export default function Edu5(): ReactElement {
         </PointList>
       </Block>
       <Example>
-        <ExampleHeader>📝 例题167 · 师德的灵魂</ExampleHeader>
+        <ExampleHeader>📝 例题168 · 师德的灵魂</ExampleHeader>
         <ExampleBody>
           <ExampleQuestion>在教师职业道德规范中，被称为「师德的灵魂」的是（　）。</ExampleQuestion>
           <ExampleOptions>A. 爱国守法　B. 爱岗敬业　C. 关爱学生　D. 终身学习</ExampleOptions>
@@ -121,7 +154,8 @@ export default function Edu5(): ReactElement {
       </Example>
 
       <Block>
-        <BlockTitle>5. 时政三件套：双减 · 五项管理 · 教育惩戒</BlockTitle>
+        <BlockTitle>6. 时政三件套：双减 · 五项管理 · 教育惩戒</BlockTitle>
+        <p><span className="pill pill-key">框架⑥</span>政策法规一律「主体—数字—禁区」：谁执行、几个小时几天、不许做什么。</p>
         <DataTable>
           <tr><th>政策</th><th>必背数字 / 要点</th></tr>
           <tr><td><b>双减</b>（作业与校外培训）</td><td>小学一二年级<b>不布置家庭书面作业</b>；三至六年级书面作业<b>不超过 60 分钟</b>；初中<b>不超过 90 分钟</b>；<b>不得利用课后服务时间讲新课</b>；考试成绩<b>等级制</b>呈现</td></tr>
@@ -131,7 +165,7 @@ export default function Edu5(): ReactElement {
         <Callout variant="warn"><b>告知家长的三档别混：</b>情节<b>轻微</b>→「以适当方式告知」；情节<b>较重或拒不改正</b>→「<b>及时</b>告知」；违纪<b>严重或影响恶劣</b>→「<b>事先</b>告知」。纪律处分：警告、严重警告、记过、留校察看；<b>只有高中阶段</b>才可开除学籍。</Callout>
       </Block>
       <Example>
-        <ExampleHeader>📝 例题168 · 停课最多几天</ExampleHeader>
+        <ExampleHeader>📝 例题169 · 停课最多几天</ExampleHeader>
         <ExampleBody>
           <ExampleQuestion>依据《中小学教育惩戒规则（试行）》，对违纪情节严重的学生给予停课、停学惩戒，一般不超过（　）。</ExampleQuestion>
           <ExampleOptions>A. 三天　B. 一周　C. 两周　D. 一个月</ExampleOptions>
@@ -140,7 +174,8 @@ export default function Edu5(): ReactElement {
       </Example>
 
       <Block>
-        <BlockTitle>6. 学生身心发展：五规律 + 四因素 + 两个理论</BlockTitle>
+        <BlockTitle>7. 学生身心发展：五规律 + 四因素 + 两个理论</BlockTitle>
+        <p><span className="pill pill-key">框架⑤</span>每条规律只背「含义 + 启示」两格；四因素背四个定位词：可能性—现实性—主导—决定。</p>
         <DataTable>
           <tr><th>规律</th><th>含义</th><th>教育启示</th></tr>
           <tr><td>顺序性</td><td>由低到高、方向不可逆</td><td><b>不陵节而施</b>、不拔苗助长、循序渐进</td></tr>
@@ -157,7 +192,7 @@ export default function Edu5(): ReactElement {
         <Callout variant="warn"><b>「超过现有水平就是拔苗助长」这个辨析题：</b>错。要分两种——超出<b>最近发展区</b>（怎么帮都达不到）才是拔苗助长；落在最近发展区内、需要帮助才能达到的，正是<b>教学应该做的</b>。</Callout>
       </Block>
       <Example>
-        <ExampleHeader>📝 例题169 · 「抓关键期」对应哪条规律</ExampleHeader>
+        <ExampleHeader>📝 例题170 · 「抓关键期」对应哪条规律</ExampleHeader>
         <ExampleBody>
           <ExampleQuestion>教育要抓住学生发展的关键期，「过了这个村就没这个店」，这体现了个体身心发展的（　）。</ExampleQuestion>
           <ExampleOptions>A. 顺序性　B. 阶段性　C. 不平衡性　D. 个别差异性</ExampleOptions>
@@ -166,7 +201,8 @@ export default function Edu5(): ReactElement {
       </Example>
 
       <Block>
-        <BlockTitle>7. 学生差异：气质四型 + 两种认知风格</BlockTitle>
+        <BlockTitle>8. 学生差异：气质四型 + 两种认知风格</BlockTitle>
+        <p><span className="pill pill-key">框架④</span>每型只背「特点—教育方式」两格，不背整段描述。</p>
         <DataTable>
           <tr><th>气质</th><th>特点</th><th>教育方式</th></tr>
           <tr><td><b>胆汁质</b></td><td>直率热情、精力旺盛、好冲动、暴躁易怒</td><td>可以有<b>说服力的严厉批评</b>，但<b>不能激怒</b>；锻炼自制力</td></tr>
@@ -181,7 +217,7 @@ export default function Edu5(): ReactElement {
         </PointList>
       </Block>
       <Example>
-        <ExampleHeader>📝 例题170 · 抑郁质的批评方式</ExampleHeader>
+        <ExampleHeader>📝 例题171 · 抑郁质的批评方式</ExampleHeader>
         <ExampleBody>
           <ExampleQuestion>某学生行为孤僻、多愁善感、反应迟缓，自尊心强且容易受挫。对这名学生，教师最恰当的做法是（　）。</ExampleQuestion>
           <ExampleOptions>A. 在班会上公开指出其问题，督促改正　B. 给予更多关怀，避免在公开场合批评，鼓励其参加集体活动　C. 用严厉批评激发其斗志　D. 与胆汁质学生同等要求，锻炼其抗压能力</ExampleOptions>
@@ -190,7 +226,8 @@ export default function Edu5(): ReactElement {
       </Example>
 
       <Block>
-        <BlockTitle>8. 小学生 / 中学生特点 + 三类心理健康问题</BlockTitle>
+        <BlockTitle>9. 小学生 / 中学生特点 + 三类心理健康问题</BlockTitle>
+        <p><span className="pill pill-key">框架⑨⑩</span>特点用口诀（快协开可）；心理问题一律「原因四方 + 对策五步」。</p>
         <PointList>
           <li><b>小学生四特点</b>（口诀：快协开可）：<b>快速性</b>、<b>协调性</b>、<b>开放性</b>、<b>可塑性</b>。注意发展：<b>无意注意占优势</b>、直观形象的事物更易吸引、注意有明显情绪色彩、品质仍在发展。</li>
           <li><b>中学生思维</b>：创造性与批判性日益明显，但<b>片面性与表面性</b>依然存在；<b>自我中心</b>（假想观众、独特自我）。</li>
@@ -206,7 +243,7 @@ export default function Edu5(): ReactElement {
         <Callout variant="warn"><b>校园欺凌的答题框架：</b>预防＝教常识（结伴、不自暴自弃、临危不乱、及时报告）+ 营造反欺凌班级氛围（相互尊重、班级规范、同伴互助、一视同仁）。<br />干预＝<b>被欺凌者</b>（了解事态+心理疏导、鼓励求助、教自护方法、多方援助、关注长远）＋<b>欺凌者</b>（惩戒并讲明危害、了解心理找原因、教合理交往策略如角色互换共情）。</Callout>
       </Block>
       <Example>
-        <ExampleHeader>📝 例题171 · 校园欺凌干预的重点</ExampleHeader>
+        <ExampleHeader>📝 例题172 · 校园欺凌干预的重点</ExampleHeader>
         <ExampleBody>
           <ExampleQuestion>处理校园欺凌事件时，下列做法<b>不恰当</b>的是（　）。</ExampleQuestion>
           <ExampleOptions>A. 先了解事件经过与被欺凌者的感受，提供情感支持　B. 让双方当众对质，辨明谁对谁错　C. 对欺凌者讲明行为危害，并了解其行为背后的原因　D. 通过角色互换、共情等方式引导欺凌者采用非攻击性的解决方式</ExampleOptions>
