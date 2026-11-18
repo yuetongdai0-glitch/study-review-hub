@@ -14,6 +14,37 @@ const CELL_IDEAL_DESKTOP = 30
 const COLS_MIN = 12
 const COLS_MAX = 32
 
+/**
+ * 占位空格用全角空格（U+3000）。
+ *
+ * @remarks 输入层是铺满整张纸的 textarea，输入法候选框跟着它的「内部光标」走。
+ * 半角空格只有半个字宽，64 个占位空格在 textarea 里只排两行多一点，
+ * 而网格里它们是两整行——候选框就会飘到很远的地方（用户反馈「隔了这么远」）。
+ * 全角空格宽度等于一个汉字，textarea 的换行才与 cols 列网格一致。
+ * 对外（复制、导出）再统一换回普通空格。
+ */
+const BLANK = '\u3000'
+
+/**
+ * 判断是否是占位空格（兼容旧草稿里的半角空格）。
+ *
+ * @param ch 单个字符。
+ * @returns 是空格返回 true。
+ */
+function isBlank(ch: string | undefined): boolean {
+  return ch === BLANK || ch === ' '
+}
+
+/**
+ * 把普通空格换成占位空格，保证 textarea 内部与网格同样「一字一格」。
+ *
+ * @param value 原始文本。
+ * @returns 归一化后的文本。
+ */
+function toBlanks(value: string): string {
+  return value.replace(/ /g, BLANK)
+}
+
 /** 草稿箱条目。 */
 type DraftItem = { id: string; title: string; text: string; brief: string; savedAt: number }
 
@@ -199,7 +230,7 @@ export default function ExamSheet() {
       const raw = window.localStorage.getItem(DRAFT_KEY)
       if (raw) {
         const data = JSON.parse(raw) as { text?: string; brief?: string }
-        if (typeof data.text === 'string') setText(data.text)
+        if (typeof data.text === 'string') setText(toBlanks(data.text))
         if (typeof data.brief === 'string') setBrief(data.brief)
       }
       const boxRaw = window.localStorage.getItem(BOX_KEY)
@@ -226,7 +257,7 @@ export default function ExamSheet() {
     let next = text
     if (index > next.length) {
       // 占位空格是位置数据，不能省。
-      next = next + ' '.repeat(index - next.length)
+      next = next + BLANK.repeat(index - next.length)
       setText(next)
       editor.value = next
     }
@@ -365,12 +396,12 @@ export default function ExamSheet() {
       if (pos === 0) return false
       target = pos - 1
       // 跳过占位空格（但不删除它本身）
-      while (target > 0 && text[target] === ' ') target -= 1
-      if (text[target] === ' ') return false
+      while (target > 0 && isBlank(text[target])) target -= 1
+      if (isBlank(text[target])) return false
     } else {
       if (pos >= text.length) return false
       target = pos
-      if (text[target] === ' ') return false
+      if (isBlank(text[target])) return false
     }
     pushUndo(text)
     const next = text.slice(0, target) + text.slice(target + 1)
@@ -390,7 +421,7 @@ export default function ExamSheet() {
    * @returns 无返回。
    */
   function fillFromText(value: string, replace: boolean) {
-    const cleaned = cleanText(value)
+    const cleaned = toBlanks(cleanText(value))
     const base = replace ? '' : text
     const next = base + (base && !base.endsWith('\n') ? '\n' : '') + cleaned
     pushUndo(text)
@@ -407,7 +438,8 @@ export default function ExamSheet() {
    * @returns 带作答要求的纯文本。
    */
   const exportText = useMemo(() => {
-    const body = text.replace(/[ \t]+$/gm, '').trim()
+    // 占位空格（U+3000）对外要换回普通空格，否则复制出去是全角空白。
+    const body = text.replace(/\u3000/g, ' ').replace(/[ \t]+$/gm, '').trim()
     const head = brief.trim() ? `【作答要求】${brief.trim()}\n\n` : ''
     return `${head}${body}`
   }, [text, brief])
@@ -470,7 +502,7 @@ export default function ExamSheet() {
    * @returns 无返回。
    */
   function restoreDraft(item: DraftItem) {
-    setText(item.text)
+    setText(toBlanks(item.text))
     setBrief(item.brief)
     if (editorRef.current) editorRef.current.value = item.text
     setBoxOpen(false)
@@ -606,7 +638,7 @@ export default function ExamSheet() {
                * 换行位置才与 cols 列网格一致，输入法候选框才会浮在「当前格子」上方。
                * 之前用 cell*0.5，一行能塞两倍的字，候选框会跑到半行外。
                */
-              style={{ fontSize: cell, lineHeight: 1, letterSpacing: 0, opacity: 0, caretColor: 'transparent' }}
+              style={{ fontSize: cell, lineHeight: 1, letterSpacing: 0, wordBreak: 'break-all', opacity: 0, caretColor: 'transparent' }}
               aria-label="答题纸输入区"
               data-exam-editor="true"
               onMouseDown={(event) => {
@@ -631,7 +663,7 @@ export default function ExamSheet() {
                  * 把 DOM 值恢复成旧的 text，于是这里读到的永远是「没变」，
                  * 中文上屏被整段丢掉——表现就是「中文完全打不出来」。
                  */
-                const next = editorRef.current?.value ?? ''
+                const next = toBlanks(editorRef.current?.value ?? '')
                 if (next === text) {
                   updateCaret()
                   return
@@ -648,7 +680,7 @@ export default function ExamSheet() {
               onInput={() => {
                 // 组合中的插入事件一律忽略，否则拼音会被当成正文写进格子。
                 if (composingRef.current) return
-                const next = editorRef.current?.value ?? ''
+                const next = toBlanks(editorRef.current?.value ?? '')
                 if (next === text) return
                 pushUndo(text)
                 setText(next)
