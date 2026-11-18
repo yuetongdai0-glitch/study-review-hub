@@ -45,6 +45,9 @@ function toBlanks(value: string): string {
   return value.replace(/ /g, BLANK)
 }
 
+/** 四种作答格式，同时也是草稿箱里的四个「文件夹」。 */
+const DRAFT_KINDS = ['辨析题', '案例分析', '活动设计', '其他']
+
 /** 草稿箱条目。 */
 type DraftItem = {
   id: string
@@ -109,8 +112,6 @@ export default function ExamSheet() {
   const [focused, setFocused] = useState(false)
   const [caret, setCaret] = useState<{ row: number; col: number } | null>(null)
 
-  const [nameOpen, setNameOpen] = useState(false)
-  const [draftName, setDraftName] = useState('')
   const [boxOpen, setBoxOpen] = useState(false)
   const [box, setBox] = useState<DraftItem[]>([])
   const [exportOpen, setExportOpen] = useState(false)
@@ -534,18 +535,20 @@ export default function ExamSheet() {
    * @returns 无返回。
    */
   function saveToBox() {
-    const title = draftName.trim() || `未命名 ${new Date().toLocaleString('zh-CN')}`
-    const item: DraftItem = { id: String(Date.now()), title, text, brief, question, kind, savedAt: Date.now() }
-    const next = [item, ...box].slice(0, 30)
+    /*
+     * 不弹窗问名字：按题型归档（辨析题 / 案例分析 / 活动设计 / 其他），
+     * 名字优先用顶部题目栏的内容，没有就按「题型 + 时间」生成。
+     */
+    const name = question.trim() || `${kind} · ${new Date().toLocaleString('zh-CN')}`
+    const item: DraftItem = { id: String(Date.now()), title: name, text, brief, question, kind, savedAt: Date.now() }
+    const next = [item, ...box].slice(0, 60)
     setBox(next)
     try {
       window.localStorage.setItem(BOX_KEY, JSON.stringify(next))
     } catch {
       message.error('草稿箱已满')
     }
-    setNameOpen(false)
-    setDraftName('')
-    message.success('已存入草稿箱')
+    message.success(`已保存到「${kind}」`)
   }
 
   /**
@@ -584,7 +587,7 @@ export default function ExamSheet() {
           size="small"
           value={kind}
           onChange={(value) => setKind(String(value))}
-          options={['辨析题', '案例分析', '活动设计', '其他']}
+          options={DRAFT_KINDS}
         />
       </div>
 
@@ -607,7 +610,7 @@ export default function ExamSheet() {
           <Button size="small" icon={<FileDown size={13} />} onClick={() => setImportOpen(true)}>
             导入
           </Button>
-          <Button size="small" icon={<Save size={13} />} onClick={() => setNameOpen(true)}>
+          <Button size="small" icon={<Save size={13} />} onClick={saveToBox}>
             保存
           </Button>
           <Button size="small" onClick={() => setBoxOpen(true)}>
@@ -801,13 +804,30 @@ export default function ExamSheet() {
                 }
                 if (event.key === 'Enter') {
                   /*
-                   * 回车＝换行，不是「插入一个换行符」。
-                   * 格纸是一维字符序列，插一个换行符只占一格、后面的字整体右移一格，
-                   * 看起来像「没换行」。这里把光标直接送到下一行第一格（空格由 placeCaret 补齐）。
+                   * 回车＝换行：把光标后面的内容整体推到下一行行首。
+                   *
+                   * 格纸是一维字符序列，没有「行」这个对象，所以换行只能靠插入占位空格实现：
+                   *   · 只把光标移到下一行（旧做法）→ 后面的字不动，看起来「没换行」；
+                   *   · 插一个换行符 → 只占一格，后面的字只右移一格，还是不像换行。
+                   * 正解是在光标处插入「本行剩余格数」个占位空格，光标后的内容自然落到下一行。
+                   * 光标正好在行首时 pad = cols，相当于空出一整行。
                    */
                   event.preventDefault()
-                  const pos = editorRef.current?.selectionStart ?? 0
-                  placeCaret((Math.floor(pos / cols) + 1) * cols)
+                  const editor = editorRef.current
+                  if (!editor) return
+                  const pos = editor.selectionStart ?? 0
+                  const pad = cols - (pos % cols)
+                  /*
+                   * 用 DOM 里的真实文本切，不用 state：刚打完字立刻回车时，
+                   * React 的 text 可能还差一帧，用旧值切会把后面的字吃掉。
+                   */
+                  const current = editor.value
+                  const next = current.slice(0, pos) + BLANK.repeat(pad) + current.slice(pos)
+                  pushUndo(text)
+                  setText(next)
+                  editor.value = next
+                  scheduleSave(next, brief)
+                  placeCaret(pos + pad)
                   return
                 }
                 if (event.key === 'Backspace' && deleteSmart(-1)) {
@@ -843,58 +863,55 @@ export default function ExamSheet() {
         </div>
       </div>
 
-      {/* 保存命名 */}
-      <Modal
-        open={nameOpen}
-        title="保存草稿"
-        onCancel={() => setNameOpen(false)}
-        onOk={saveToBox}
-        okText="保存"
-        cancelText="取消"
-      >
-        <p className="mb-2 mt-0 text-[13px] text-ink-3">给这份练习起个名字，方便在草稿箱里找到。</p>
-        <Input
-          value={draftName}
-          maxLength={60}
-          placeholder="例：2024年11月联考·第3题"
-          onChange={(event) => setDraftName(event.target.value)}
-        />
-      </Modal>
-
       {/* 草稿箱 */}
       <Drawer open={boxOpen} title="草稿箱" width={380} onClose={() => setBoxOpen(false)}>
         {box.length === 0 ? (
           <p className="text-[13px] text-ink-3">还没有草稿。答题后点「保存」即可存进来。</p>
         ) : (
-          <ul className="m-0 list-none p-0">
-            {box.map((item) => (
-              <li key={item.id} className="mb-2 rounded-lg border border-line p-2.5">
-                <div className="flex items-start justify-between gap-2">
-                  <b className="text-[13.5px]">{item.title}</b>
-                  <span className="shrink-0 font-num text-[11px] text-ink-3">
-                    {new Date(item.savedAt).toLocaleDateString('zh-CN')}
-                  </span>
-                </div>
-                <p className="mt-1 line-clamp-2 text-[12.5px] text-ink-3">{item.text.slice(0, 60) || '（空）'}</p>
-                <div className="mt-1.5 flex gap-1.5">
-                  <Button size="small" type="primary" onClick={() => restoreDraft(item)}>
-                    载入
-                  </Button>
-                  <Button
-                    size="small"
-                    danger
-                    onClick={() => {
-                      const next = box.filter((entry) => entry.id !== item.id)
-                      setBox(next)
-                      window.localStorage.setItem(BOX_KEY, JSON.stringify(next))
-                    }}
-                  >
-                    删除
-                  </Button>
-                </div>
-              </li>
-            ))}
-          </ul>
+          <div>
+            {DRAFT_KINDS.map((groupKind) => {
+              const list = box.filter((item) => (item.kind ?? '其他') === groupKind)
+              if (list.length === 0) return null
+              return (
+                <section key={groupKind} className="mb-4">
+                  {/* 题型就是「文件夹」：当前作答的题型会直接存进对应那一组 */}
+                  <div className="mb-1.5 flex items-center gap-1.5 text-[12.5px] font-semibold text-ink-2">
+                    <span>{groupKind}</span>
+                    <span className="font-num text-[11px] font-normal text-ink-3">{list.length}</span>
+                  </div>
+                  <ul className="m-0 list-none p-0">
+                    {list.map((item) => (
+                      <li key={item.id} className="mb-2 rounded-lg border border-line p-2.5">
+                        <div className="flex items-start justify-between gap-2">
+                          <b className="text-[13.5px]">{item.title}</b>
+                          <span className="shrink-0 font-num text-[11px] text-ink-3">
+                            {new Date(item.savedAt).toLocaleDateString('zh-CN')}
+                          </span>
+                        </div>
+                        <p className="mt-1 line-clamp-2 text-[12.5px] text-ink-3">{item.text.slice(0, 60) || '（空）'}</p>
+                        <div className="mt-1.5 flex gap-1.5">
+                          <Button size="small" type="primary" onClick={() => restoreDraft(item)}>
+                            载入
+                          </Button>
+                          <Button
+                            size="small"
+                            danger
+                            onClick={() => {
+                              const next = box.filter((entry) => entry.id !== item.id)
+                              setBox(next)
+                              window.localStorage.setItem(BOX_KEY, JSON.stringify(next))
+                            }}
+                          >
+                            删除
+                          </Button>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              )
+            })}
+          </div>
         )}
       </Drawer>
 
