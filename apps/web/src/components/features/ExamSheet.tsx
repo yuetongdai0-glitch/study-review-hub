@@ -555,10 +555,12 @@ export default function ExamSheet() {
             {/*
               输入层：透明 textarea，承载全部输入（IME 只在单一 textarea 里才不丢字）。
 
-              `pointerEvents: 'none'` 是关键：它铺满整块纸，如果可点，
-              所有点击都会被它吃掉，格子的 onPointerDown 永远不触发，
-              表现为「点格子没反应、字只会加在开头」。键盘输入不受影响——
-              焦点由格子的 placeCaret 主动 focus() 给到它。
+              ⚠️ **不要设 `pointerEvents: 'none'`**（曾经设过，导致「完全打不出字」）：
+              部分浏览器 / 中文输入法在元素不可点击时，会把候选窗关掉或直接吞掉按键，
+              表现就是「点得到光标、但怎么打字都没反应」。
+              现在让它真正可点、只是 `opacity: 0`，点击坐标换算成格子位置，
+              输入法就能正常工作；`preventDefault` 阻止浏览器按像素定位光标，
+              再由 placeCaret 精确落到格子上。
 
               另外两条也是硬约束：
               · 输入法（拼音）组合期间**绝不能上屏**：DOM 里会依次出现 n/i/h/a/o，
@@ -573,10 +575,26 @@ export default function ExamSheet() {
               spellCheck={false}
               autoCorrect="off"
               autoCapitalize="off"
-              className="absolute inset-0 h-full w-full resize-none border-0 bg-transparent p-0 text-transparent caret-transparent outline-none"
-              style={{ fontSize: cell * 0.5, lineHeight: 1, pointerEvents: 'none' }}
+              className="absolute inset-0 h-full w-full resize-none border-0 bg-transparent p-0 outline-none"
+              /*
+               * fontSize 必须等于格宽：中文一个字符占一格，这样 textarea 内部的
+               * 换行位置才与 cols 列网格一致，输入法候选框才会浮在「当前格子」上方。
+               * 之前用 cell*0.5，一行能塞两倍的字，候选框会跑到半行外。
+               */
+              style={{ fontSize: cell, lineHeight: 1, letterSpacing: 0, opacity: 0, caretColor: 'transparent' }}
               aria-label="答题纸输入区"
               data-exam-editor="true"
+              onMouseDown={(event) => {
+                /*
+                 * 点在纸上 = 点在某个格子：把像素坐标换成行列，落到对应格子。
+                 * preventDefault 是为了不让浏览器按「textarea 的像素换行」定位光标
+                 * （那套换行与 cols 列网格完全无关，会跑到上一行或开头）。
+                 */
+                const box = event.currentTarget.getBoundingClientRect()
+                const col = Math.max(0, Math.min(cols - 1, Math.floor((event.clientX - box.left) / cell)))
+                const row = Math.max(0, Math.floor((event.clientY - box.top) / cell))
+                placeCaret(Math.min(row * cols + col, rows * cols - 1))
+              }}
               onCompositionStart={() => {
                 composingRef.current = true
               }}
