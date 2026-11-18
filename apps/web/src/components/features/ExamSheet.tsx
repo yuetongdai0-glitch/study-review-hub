@@ -421,9 +421,24 @@ export default function ExamSheet() {
    * @returns 无返回。
    */
   function fillFromText(value: string, replace: boolean) {
-    const cleaned = toBlanks(cleanText(value))
-    const base = replace ? '' : text
-    const next = base + (base && !base.endsWith('\n') ? '\n' : '') + cleaned
+    const cleaned = cleanText(value)
+    /*
+     * 段落换行要「补满当前行」，不能塞一个换行符：
+     * 格纸按 index 定位，换行符只占一格，段落会整体错位。
+     */
+    let out = replace ? '' : text
+    if (!replace && out.length % cols !== 0) out += BLANK.repeat(cols - (out.length % cols))
+    for (const ch of cleaned) {
+      if (ch === '\n') {
+        const pad = cols - (out.length % cols)
+        if (pad < cols) out += BLANK.repeat(pad)
+      } else if (ch === ' ') {
+        out += BLANK
+      } else {
+        out += ch
+      }
+    }
+    const next = out
     pushUndo(text)
     setText(next)
     if (editorRef.current) editorRef.current.value = next
@@ -720,6 +735,17 @@ export default function ExamSheet() {
                 ) {
                   event.preventDefault()
                   moveCaret(event.key)
+                  return
+                }
+                if (event.key === 'Enter') {
+                  /*
+                   * 回车＝换行，不是「插入一个换行符」。
+                   * 格纸是一维字符序列，插一个换行符只占一格、后面的字整体右移一格，
+                   * 看起来像「没换行」。这里把光标直接送到下一行第一格（空格由 placeCaret 补齐）。
+                   */
+                  event.preventDefault()
+                  const pos = editorRef.current?.selectionStart ?? 0
+                  placeCaret((Math.floor(pos / cols) + 1) * cols)
                   return
                 }
                 if (event.key === 'Backspace' && deleteSmart(-1)) {
