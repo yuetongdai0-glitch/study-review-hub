@@ -26,16 +26,6 @@ const COLS_MAX = 32
 const BLANK = '\u3000'
 
 /**
- * 判断是否是占位空格（兼容旧草稿里的半角空格）。
- *
- * @param ch 单个字符。
- * @returns 是空格返回 true。
- */
-function isBlank(ch: string | undefined): boolean {
-  return ch === BLANK || ch === ' '
-}
-
-/**
  * 把普通空格换成占位空格，保证 textarea 内部与网格同样「一字一格」。
  *
  * @param value 原始文本。
@@ -426,16 +416,19 @@ export default function ExamSheet() {
     const pos = editor.selectionStart ?? 0
     if (pos !== (editor.selectionEnd ?? 0)) return false
     let target = pos
+    /*
+     * 退格/删除就删「光标前/后的那一个字符」，空格也照删。
+     *
+     * 曾经这里会跳过占位空格、去删空格前面的那个字——
+     * 结果用户站在段首按退格，想减掉缩进，却把上一行最后一个字吃掉了（报过 bug）。
+     * 缩进是靠占位空格撑出来的，删空格才是符合直觉的「退一格」。
+     */
     if (dir === -1) {
       if (pos === 0) return false
       target = pos - 1
-      // 跳过占位空格（但不删除它本身）
-      while (target > 0 && isBlank(text[target])) target -= 1
-      if (isBlank(text[target])) return false
     } else {
       if (pos >= text.length) return false
       target = pos
-      if (isBlank(text[target])) return false
     }
     pushUndo(text)
     const next = text.slice(0, target) + text.slice(target + 1)
