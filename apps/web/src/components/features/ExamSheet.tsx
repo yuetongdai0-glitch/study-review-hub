@@ -586,7 +586,7 @@ export default function ExamSheet() {
     if (editorRef.current) editorRef.current.value = body
     setBoxOpen(false)
     scheduleSave(body, item.brief)
-    message.success(`正在编辑「${item.title}」`)
+    message.success('已载入，可直接修改')
   }
 
   /**
@@ -646,23 +646,6 @@ export default function ExamSheet() {
       ) : null}
 
       {/* 编辑态提示：正在改哪一份、能直接存回去、能退出 */}
-      {editingId ? (
-        <div className="flex flex-wrap items-center gap-2 border-b border-line bg-sunken px-2 py-1 text-[12px] text-ink-3 sm:px-3">
-          <span>
-            正在编辑：<b className="font-normal text-ink-2">{editingTitle}</b>
-          </span>
-          <span className="hidden sm:inline">保存会覆盖草稿箱里的这一份</span>
-          <div className="ml-auto flex items-center gap-1.5">
-            <Button size="small" type="primary" icon={<Save size={12} />} onClick={saveToBox}>
-              保存
-            </Button>
-            <Button size="small" onClick={exitEdit}>
-              退出编辑
-            </Button>
-          </div>
-        </div>
-      ) : null}
-
       {/* 题目栏：先写清「这道题是什么」，回头翻草稿不会认不出 */}
       <div className="flex flex-wrap items-center gap-2 border-b border-line bg-surface px-2 py-1.5 sm:px-3">
         <span className="shrink-0 text-[12.5px] font-semibold text-ink-2">题目</span>
