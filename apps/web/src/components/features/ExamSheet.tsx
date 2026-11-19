@@ -8,11 +8,16 @@ const DRAFT_KEY = 'exam-grid:v2'
 const BOX_KEY = 'exam-grid:box:v2'
 /** 撤销步数上限。 */
 const UNDO_MAX = 20
-/** 每格理想宽度。 */
-const CELL_IDEAL_MOBILE = 24
+/** 每格理想宽度（仅用于初次估高，实际格宽由列数与纸宽算出）。 */
 const CELL_IDEAL_DESKTOP = 30
-const COLS_MIN = 12
-const COLS_MAX = 32
+/**
+ * 固定每行格数。
+ *
+ * @remarks 用户反馈「换个屏幕大小格式就乱了」：以前 cols 是按屏宽算的（24、30 都可能），
+ * 而正文是「用占位空格撑出换行位置」的一维字符串——列数一换，所有段落的起点全错位。
+ * 改成固定列数后，屏幕只影响格子的**物理宽度**，不影响断行位置，格式永远稳定。
+ */
+const COLS_FIXED = 25
 
 /**
  * 占位空格用全角空格（U+3000）。
@@ -35,6 +40,34 @@ function toBlanks(value: string): string {
   return value.replace(/ /g, BLANK)
 }
 
+/**
+ * 把旧列数下保存的正文，按「段落」重新铺到新列数上。
+ *
+ * @param raw 旧正文（一维字符 + 占位空格）。
+ * @param oldCols 保存时的列数。
+ * @param newCols 现在的列数。
+ * @returns 重排后的正文。
+ * @remarks 旧正文里没有「段」这个字段，只能按 oldCols 切行、去掉行尾占位空格，
+ * 得到若干段落，再逐段从新行首铺开。这正是用户要的「一段一段单独起行」。
+ */
+function reflow(raw: string, oldCols: number, newCols: number): string {
+  if (!oldCols || oldCols === newCols || !raw) return raw
+  const paragraphs: string[] = []
+  for (let i = 0; i < raw.length; i += oldCols) {
+    const line = raw.slice(i, i + oldCols).replace(/[\s\u3000]+$/, '')
+    if (line) paragraphs.push(line)
+  }
+  let out = ''
+  for (const p of paragraphs) {
+    if (out) {
+      const pad = newCols - (out.length % newCols)
+      if (pad < newCols) out += BLANK.repeat(pad)
+    }
+    out += p
+  }
+  return out
+}
+
 /** 四种作答格式，同时也是草稿箱里的四个「文件夹」。 */
 const DRAFT_KINDS = ['辨析题', '案例分析', '活动设计', '其他']
 
@@ -49,6 +82,8 @@ type DraftItem = {
   question?: string
   /** 作答格式：辨析题 / 案例分析 / 活动设计 / 其他。 */
   kind?: string
+  /** 保存时的列数，载入时用来把段落重排到当前列数。 */
+  cols?: number
   savedAt: number
 }
 
@@ -110,6 +145,13 @@ export default function ExamSheet() {
   const [question, setQuestion] = useState('')
   /** 作答格式标记。 */
   const [kind, setKind] = useState('辨析题')
+  /**
+   * 当前选区（字符下标区间）。
+   *
+   * @remarks 输入层是 opacity:0 的 textarea，原生选区高亮看不见，
+   * 所以按 selectionStart/End 在网格上自绘一层浅蓝底，用户才知道自己选中了哪些字。
+   */
+  const [sel, setSel] = useState<{ start: number; end: number } | null>(null)
   /** 正在编辑的草稿 id（null = 全新作答）。 */
   const [editingId, setEditingId] = useState<string | null>(null)
   /** 正在编辑的草稿标题，显示在顶部提示条。 */
@@ -120,19 +162,6 @@ export default function ExamSheet() {
   const hydratedRef = useRef(false)
   const [importOpen, setImportOpen] = useState(false)
   const [importText, setImportText] = useState('')
-
-  /**
-   * 把 state 里的正文同步回 textarea（非受控组件的「受控」补偿）。
-   *
-   * @remarks textarea 不能再用 `value={text}`：受控组件在中文输入法组合结束时，
-   * React 会把 DOM 值恢复成旧的 text，导致上屏的字被丢掉（中文完全打不出来）。
-   * 改成非受控后，程序性改动（恢复草稿、撤销、导入、补空格）只能靠这个 effect
-   * 写回 DOM；正常打字时 `ed.value` 已是最新，这里不会动手。
-   */
-  useEffect(() => {
-    const editor = editorRef.current
-    if (editor && editor.value !== text) editor.value = text
-  }, [text])
 
   /**
    * 把 state 里的正文同步回 textarea（非受控组件的「受控」补偿）。
@@ -171,9 +200,8 @@ export default function ExamSheet() {
       parseFloat(paperStyle.paddingLeft || '0') -
       parseFloat(paperStyle.paddingRight || '0')
     const avail = Math.max(120, Math.floor(inner))
-    const mobile = window.innerWidth <= 640
-    let next = Math.round(avail / (mobile ? CELL_IDEAL_MOBILE : CELL_IDEAL_DESKTOP))
-    next = Math.min(COLS_MAX, Math.max(COLS_MIN, next))
+    // 列数固定，屏宽只决定格子物理尺寸
+    const next = COLS_FIXED
     const cellSize = Math.floor((avail / next) * 100) / 100
     setCols(next)
     setCell(cellSize)
@@ -221,13 +249,13 @@ export default function ExamSheet() {
       try {
         window.localStorage.setItem(
           DRAFT_KEY,
-          JSON.stringify({ v: 2, text: value, brief: briefValue, question, kind, savedAt: Date.now() }),
+          JSON.stringify({ v: 2, text: value, brief: briefValue, question, kind, cols, savedAt: Date.now() }),
         )
       } catch {
         message.error('本地保存失败（空间不足）')
       }
     },
-    [message, question, kind],
+    [message, question, kind, cols],
   )
 
   /**
@@ -246,8 +274,11 @@ export default function ExamSheet() {
     try {
       const raw = window.localStorage.getItem(DRAFT_KEY)
       if (raw) {
-        const data = JSON.parse(raw) as { text?: string; brief?: string; question?: string; kind?: string }
-        if (typeof data.text === 'string') setText(toBlanks(data.text))
+        const data = JSON.parse(raw) as { text?: string; brief?: string; question?: string; kind?: string; cols?: number }
+        if (typeof data.text === 'string') {
+          const savedCols = typeof data.cols === 'number' ? data.cols : COLS_FIXED
+          setText(toBlanks(reflow(data.text, savedCols, COLS_FIXED)))
+        }
         if (typeof data.brief === 'string') setBrief(data.brief)
         if (typeof data.question === 'string') setQuestion(data.question)
         if (typeof data.kind === 'string') setKind(data.kind)
@@ -557,7 +588,7 @@ export default function ExamSheet() {
       message.success(`已更新「${name}」`)
       return
     }
-    const item: DraftItem = { id: String(Date.now()), title: name, text, brief, question, kind, savedAt: Date.now() }
+    const item: DraftItem = { id: String(Date.now()), title: name, text, brief, question, kind, cols, savedAt: Date.now() }
     const next = [item, ...box].slice(0, 60)
     setBox(next)
     try {
@@ -575,7 +606,7 @@ export default function ExamSheet() {
    * @returns 无返回。
    */
   function restoreDraft(item: DraftItem) {
-    const body = toBlanks(item.text)
+    const body = toBlanks(reflow(item.text, item.cols ?? COLS_FIXED, COLS_FIXED))
     setEditingId(item.id)
     setEditingTitle(item.title)
     setOriginalText(body)
@@ -742,6 +773,7 @@ export default function ExamSheet() {
                  */
                 const firstRow = index < cols
                 const firstCol = index % cols === 0
+                const selected = !!sel && index >= sel.start && index < sel.end
                 return (
                   <div
                     key={index}
@@ -749,6 +781,7 @@ export default function ExamSheet() {
                       'grid place-items-center border-b border-r border-line text-ink',
                       firstRow ? 'border-t-[1.5px]' : '',
                       firstCol ? 'border-l-[1.5px]' : '',
+                      selected ? 'bg-[#dbeafe]' : '',
                     ]
                       .filter(Boolean)
                       .join(' ')}
@@ -834,6 +867,7 @@ export default function ExamSheet() {
               onInput={() => {
                 // 组合中的插入事件一律忽略，否则拼音会被当成正文写进格子。
                 if (composingRef.current) return
+                setSel(null)
                 const next = toBlanks(editorRef.current?.value ?? '')
                 if (next === text) return
                 pushUndo(text)
@@ -843,10 +877,16 @@ export default function ExamSheet() {
                 scheduleSave(next, brief)
               }}
               onSelect={() => {
-                // 组合期间光标位置在拼音里跳，别拿它当格子位置。
-                if (composingRef.current) return
-                // 有选区就折起来：格纸只做单点插入，留着选区会显示成「第二个光标」。
-                collapseSelection()
+                const editor = editorRef.current
+                if (!editor || composingRef.current) return
+                const start = editor.selectionStart ?? 0
+                const end = editor.selectionEnd ?? 0
+                if (start !== end) {
+                  // 有选区：记下来给网格画高亮，别急着折叠（否则 shift+方向键选不了）。
+                  setSel({ start, end })
+                  return
+                }
+                setSel(null)
                 updateCaret()
               }}
               onClick={() => {
@@ -864,6 +904,19 @@ export default function ExamSheet() {
                   return
                 }
                 if (meta) return
+                /*
+                 * Shift + 方向键 / Home / End：交给浏览器扩展选区，
+                 * 我们自己那套「按列移动」会把光标直接挪走，根本选不中。
+                 */
+                if (event.shiftKey) return
+                const editorNow = editorRef.current
+                const hasSelection =
+                  !!editorNow && (editorNow.selectionStart ?? 0) !== (editorNow.selectionEnd ?? 0)
+                /*
+                 * 有选区时按退格/删除：让浏览器删掉选区（含其中的占位空格），
+                 * onInput 会把结果同步回 state。
+                 */
+                if (hasSelection && (event.key === 'Backspace' || event.key === 'Delete')) return
                 if (
                   event.key === 'ArrowLeft' ||
                   event.key === 'ArrowRight' ||
