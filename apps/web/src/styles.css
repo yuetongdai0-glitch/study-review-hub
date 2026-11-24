@@ -757,10 +757,396 @@ html.dark [class*='legacy-'] pre {
   color: var(--text);
 }
 
+/* ------------------------------------------------------------
+   深色下的「白块」与「高亮色块」
+   ------------------------------------------------------------
+   例题卡的解析区（.example-answer）和部分标签是硬编码浅色
+   （#f0f9ff / #e6fbf8 / #7bed9f …），变量翻转救不到它们，
+   在深色页面上就是一块刺眼的白斑。这里逐类压暗。
+   ------------------------------------------------------------ */
+html.dark [class*='legacy-'] .example {
+  border-color: #2c3038;
+}
+
+html.dark [class*='legacy-'] .example-answer {
+  background: #16233a;
+  border-left-color: #38bdf8;
+  color: #cfe3f6;
+}
+
+html.dark [class*='legacy-'] .example-answer b {
+  color: #7dd3fc;
+}
+
+html.dark [class*='legacy-'] .example-answer .correct {
+  color: #4ade80;
+}
+
+/* 例题标题的紫蓝渐变在黑底上过亮，压一档。 */
+html.dark [class*='legacy-'] .example-header {
+  filter: brightness(0.82) saturate(0.85);
+}
+
+/* 强调盒：底色随变量翻转了，但字色写死了深色，暗底上糊成一片。 */
+html.dark [class*='legacy-'] .key-box {
+  color: #6ee7b7;
+}
+
+html.dark [class*='legacy-'] .tip-box {
+  color: #fcd34d;
+}
+
+html.dark [class*='legacy-'] .warn-box {
+  color: #fca5a5;
+}
+
+html.dark [class*='legacy-'] .formula-box .formula {
+  color: #93c5fd;
+}
+
+/* 少数分节主题直接写死了浅底的强调盒。 */
+html.dark [class*='legacy-'] .c-teal .key-box {
+  background: #11312f;
+  border-left-color: #14b8a6;
+  color: #5eead4;
+}
+
+/* 难度标签：中/低两档原来是亮绿、亮灰。 */
+html.dark [class*='legacy-'] .tag-mid {
+  background: #1f3b2a !important;
+  color: #86efac !important;
+}
+
+html.dark [class*='legacy-'] .tag-low {
+  background: #262a31 !important;
+  color: #9aa3b2 !important;
+}
+
+/* ------------------------------------------------------------
+   深色下的「白块」与「高亮色块」
+   ------------------------------------------------------------
+   例题卡的解析区（.example-answer）和部分标签是硬编码浅色
+   （#f0f9ff / #e6fbf8 / #7bed9f …），变量翻转救不到它们，
+   在深色页面上就是一块刺眼的白斑。这里逐类压暗。
+   ------------------------------------------------------------ */
+html.dark [class*='legacy-'] .example {
+  border-color: #2c3038;
+}
+
+html.dark [class*='legacy-'] .example-answer {
+  background: #16233a;
+  border-left-color: #38bdf8;
+  color: #cfe3f6;
+}
+
+html.dark [class*='legacy-'] .example-answer b {
+  color: #7dd3fc;
+}
+
+html.dark [class*='legacy-'] .example-answer .correct {
+  color: #4ade80;
+}
+
+/* 例题标题的紫蓝渐变在黑底上过亮，压一档。 */
+html.dark [class*='legacy-'] .example-header {
+  filter: brightness(0.82) saturate(0.85);
+}
+
+/* 强调盒：底色随变量翻转了，但字色写死了深色，暗底上糊成一片。 */
+html.dark [class*='legacy-'] .key-box {
+  color: #6ee7b7;
+}
+
+html.dark [class*='legacy-'] .tip-box {
+  color: #fcd34d;
+}
+
+html.dark [class*='legacy-'] .warn-box {
+  color: #fca5a5;
+}
+
+html.dark [class*='legacy-'] .formula-box .formula {
+  color: #93c5fd;
+}
+
+/* 少数分节主题直接写死了浅底的强调盒。 */
+html.dark [class*='legacy-'] .c-teal .key-box {
+  background: #11312f;
+  border-left-color: #14b8a6;
+  color: #5eead4;
+}
+
+/* 难度标签：中/低两档原来是亮绿、亮灰。 */
+html.dark [class*='legacy-'] .tag-mid {
+  background: #1f3b2a !important;
+  color: #86efac !important;
+}
+
+html.dark [class*='legacy-'] .tag-low {
+  background: #262a31 !important;
+  color: #9aa3b2 !important;
+}
+
 /* 深色下阴影几乎没有意义，用描边代替层级。 */
 html.dark [class*='legacy-'] .section {
   border: 1px solid var(--border);
   box-shadow: none;
+}
+
+/* ------------------------------------------------------------
+   深色：通用色块批量压暗
+   ------------------------------------------------------------
+   各模块的标签、徽章、记忆卡、推导块都写死了浅底（#f0f9ff / #eafaf1 /
+   #fff8e1 / #faf7fd …），暗色下全变成亮斑。这里按语义统一换成深底亮字：
+   红→暗红、绿→暗绿、蓝→暗蓝、黄→暗黄、紫→暗紫、灰→暗灰。
+   ------------------------------------------------------------ */
+html.dark [class*='legacy-'] :is(.pill-hot, .badge-red, .danger, .t-bian, .flaw) {
+  background: #351d1d;
+  border-color: #5a2a2a;
+  color: #fca5a5;
+}
+
+html.dark [class*='legacy-'] :is(.pill-freq, .badge-blue, .pill-key) {
+  background: #1e2a44;
+  border-color: #2c3f66;
+  color: #93c5fd;
+}
+
+html.dark [class*='legacy-'] :is(.pill-low, .badge-purple, .t-obj) {
+  background: #271e33;
+  border-color: #3d2c50;
+  color: #d8b4fe;
+}
+
+html.dark [class*='legacy-'] :is(.highlight, .tip, .example-analysis) {
+  background: #33260f;
+  border-color: #4a3413;
+  color: #fde68a;
+}
+
+html.dark [class*='legacy-'] :is(.badge-green, .t-bao) {
+  background: #16301f;
+  border-color: #1f4a33;
+  color: #86efac;
+}
+
+html.dark [class*='legacy-'] .t-zhong {
+  background: #22252d;
+  color: #9aa3b2;
+}
+
+/* 记忆卡、事实卡、对比块、推导块：统一成「卡片色 + 描边」。 */
+html.dark [class*='legacy-'] :is(.fact, .elem, .bc-ov, .cmp-e, .memo, .derive, .wg, .ex-block) {
+  background: #1c1f26;
+  border-color: #2c3038;
+  color: var(--text);
+}
+
+html.dark [class*='legacy-'] :is(.cmp-h, .bc-head) {
+  background: #23262e;
+  color: #d7dbe4;
+}
+
+/* 例题里的备选/图示容器。 */
+html.dark [class*='legacy-'] :is(.fig, .skeleton-key, .chip) {
+  background: #1c1f26;
+  border-color: #2c3038;
+}
+
+/* 四色小标签（综合 D 类的考察角度 / 记忆 / 警示）。 */
+html.dark [class*='legacy-'] .kt {
+  background: #33260f;
+  border-color: #4a3413;
+  color: #fcd34d;
+}
+
+html.dark [class*='legacy-'] .km {
+  background: #16301f;
+  border-color: #1f4a33;
+  color: #86efac;
+}
+
+html.dark [class*='legacy-'] .kw {
+  background: #332a12;
+  border-color: #4a3d18;
+  color: #fde68a;
+}
+
+/* 口诀卡（.mnemonic）：整块是纯白 #fff，暗色下是最大的白斑。 */
+html.dark [class*='legacy-'] .mnemonic {
+  background: #1c1f26;
+  border-color: #2c3038;
+}
+
+html.dark [class*='legacy-'] .mnemonic-head {
+  background: linear-gradient(90deg, #202a3d, #1c1f26);
+  border-bottom: 1px solid #2c3038;
+  color: #b9c6e0;
+}
+
+html.dark [class*='legacy-'] .mnemonic-note {
+  color: #b9bfc9;
+}
+
+/* 口诀卡（.mnemonic）：整块是纯白 #fff，暗色下是最大的白斑。 */
+html.dark [class*='legacy-'] .mnemonic {
+  background: #1c1f26;
+  border-color: #2c3038;
+}
+
+html.dark [class*='legacy-'] .mnemonic-head {
+  background: linear-gradient(90deg, #202a3d, #1c1f26);
+  border-bottom: 1px solid #2c3038;
+  color: #b9c6e0;
+}
+
+html.dark [class*='legacy-'] .mnemonic-note {
+  color: #b9bfc9;
+}
+
+/* 口诀框：原来是浅米黄，暗色下改成深琥珀。 */
+html.dark [class*='legacy-'] .jingle {
+  background: #2a2113;
+  border-color: #7c5a12;
+  color: #fde68a;
+}
+
+html.dark [class*='legacy-'] .jingle .jt {
+  color: #fbbf24;
+}
+
+/* 框架图里被标红的格子。 */
+html.dark [class*='legacy-'] .frame-cell.is-hot {
+  background: #35202a;
+  border-color: #5a2a3a;
+}
+
+/* 公式块与例句块。 */
+html.dark [class*='legacy-'] .formula {
+  background: #1e2a44 !important;
+  color: #93c5fd !important;
+}
+
+html.dark [class*='legacy-'] .wg-e {
+  background: #16233a;
+  color: #cfe3f6;
+}
+
+/* 斑马纹表格：奇数行压暗，避免整张表发白。 */
+html.dark [class*='legacy-'] tr:nth-child(even) td {
+  background: #191c22;
+}
+
+/* ------------------------------------------------------------
+   深色：通用色块批量压暗
+   ------------------------------------------------------------
+   各模块的标签、徽章、记忆卡、推导块都写死了浅底（#f0f9ff / #eafaf1 /
+   #fff8e1 / #faf7fd …），暗色下全变成亮斑。这里按语义统一换成深底亮字：
+   红→暗红、绿→暗绿、蓝→暗蓝、黄→暗黄、紫→暗紫、灰→暗灰。
+   ------------------------------------------------------------ */
+html.dark [class*='legacy-'] :is(.pill-hot, .badge-red, .danger, .t-bian, .flaw) {
+  background: #351d1d;
+  border-color: #5a2a2a;
+  color: #fca5a5;
+}
+
+html.dark [class*='legacy-'] :is(.pill-freq, .badge-blue, .pill-key) {
+  background: #1e2a44;
+  border-color: #2c3f66;
+  color: #93c5fd;
+}
+
+html.dark [class*='legacy-'] :is(.pill-low, .badge-purple, .t-obj) {
+  background: #271e33;
+  border-color: #3d2c50;
+  color: #d8b4fe;
+}
+
+html.dark [class*='legacy-'] :is(.highlight, .tip, .example-analysis) {
+  background: #33260f;
+  border-color: #4a3413;
+  color: #fde68a;
+}
+
+html.dark [class*='legacy-'] :is(.badge-green, .t-bao) {
+  background: #16301f;
+  border-color: #1f4a33;
+  color: #86efac;
+}
+
+html.dark [class*='legacy-'] .t-zhong {
+  background: #22252d;
+  color: #9aa3b2;
+}
+
+/* 记忆卡、事实卡、对比块、推导块：统一成「卡片色 + 描边」。 */
+html.dark [class*='legacy-'] :is(.fact, .elem, .bc-ov, .cmp-e, .memo, .derive, .wg, .ex-block) {
+  background: #1c1f26;
+  border-color: #2c3038;
+  color: var(--text);
+}
+
+html.dark [class*='legacy-'] :is(.cmp-h, .bc-head) {
+  background: #23262e;
+  color: #d7dbe4;
+}
+
+/* 例题里的备选/图示容器。 */
+html.dark [class*='legacy-'] :is(.fig, .skeleton-key, .chip) {
+  background: #1c1f26;
+  border-color: #2c3038;
+}
+
+/* 四色小标签（综合 D 类的考察角度 / 记忆 / 警示）。 */
+html.dark [class*='legacy-'] .kt {
+  background: #33260f;
+  border-color: #4a3413;
+  color: #fcd34d;
+}
+
+html.dark [class*='legacy-'] .km {
+  background: #16301f;
+  border-color: #1f4a33;
+  color: #86efac;
+}
+
+html.dark [class*='legacy-'] .kw {
+  background: #332a12;
+  border-color: #4a3d18;
+  color: #fde68a;
+}
+
+/* 口诀框：原来是浅米黄，暗色下改成深琥珀。 */
+html.dark [class*='legacy-'] .jingle {
+  background: #2a2113;
+  border-color: #7c5a12;
+  color: #fde68a;
+}
+
+html.dark [class*='legacy-'] .jingle .jt {
+  color: #fbbf24;
+}
+
+/* 框架图里被标红的格子。 */
+html.dark [class*='legacy-'] .frame-cell.is-hot {
+  background: #35202a;
+  border-color: #5a2a3a;
+}
+
+/* 公式块与例句块。 */
+html.dark [class*='legacy-'] .formula {
+  background: #1e2a44 !important;
+  color: #93c5fd !important;
+}
+
+html.dark [class*='legacy-'] .wg-e {
+  background: #16233a;
+  color: #cfe3f6;
+}
+
+/* 斑马纹表格：奇数行压暗，避免整张表发白。 */
+html.dark [class*='legacy-'] tr:nth-child(even) td {
+  background: #191c22;
 }
 
 /* 顶栏与横幅在深色下降低亮度，避免大片高饱和色刺眼。 */

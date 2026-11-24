@@ -434,10 +434,19 @@ test('内容原语集中定义，页面不再自定义视觉', async () => {
    */
   const style = await readFile(new URL('../src/styles.css', import.meta.url), 'utf8')
   assert.match(style, /--accent/, '样式层缺少强调色变量')
+  /*
+   * 例外：\`html.dark\` 作用域下的规则是「深色主题覆盖」——旧站把颜色写死成浅色，
+   * 只能在这一层压暗，不算重复定义正文样式。因此只检查非 dark 的规则块。
+   */
+  const ruleBlocks = [...style.matchAll(/([^{}]+)\{([^{}]*)\}/g)].map(([, sel]) => sel)
   for (const legacyClass of ['.example-answer', '.block-title', '.formula-box']) {
-    assert.ok(
-      !new RegExp(`\\${legacyClass}\\s*\\{`).test(style),
-      `styles.css 不应重复定义 ${legacyClass}（正文样式归 module.css）`
+    const dup = ruleBlocks.filter(
+      (sel) => !sel.includes('html.dark') && new RegExp(`\\${legacyClass}\\b`).test(sel)
+    )
+    assert.equal(
+      dup.length,
+      0,
+      `styles.css 不应重复定义 ${legacyClass}（正文样式归 module.css，深色覆盖除外）`
     )
   }
 
