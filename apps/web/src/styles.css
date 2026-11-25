@@ -757,6 +757,44 @@ html.dark [class*='legacy-'] pre {
   color: var(--text);
 }
 
+/*
+ * 首页用的是另一套变量（legacy-home.css 的 :root），
+ * 之前只重设了正文那批 legacy-* 变量，所以首页卡片一 hover 就变成纯白
+ * （.subject:hover 取的是 --surface: #ffffff），在暗色下是一块刺眼的白板。
+ */
+/* 首页大字标题在深色下没有跟随 --ink（实测仍是 #17191d），单独兜一条。 */
+html.dark .intro h1,
+html.dark .intro-copy h1 {
+  color: var(--ink);
+}
+
+/* 首页大字标题在深色下没有跟随 --ink（实测仍是 #17191d），单独兜一条。 */
+html.dark .intro h1,
+html.dark .intro-copy h1 {
+  color: var(--ink);
+}
+
+html.dark {
+  --paper: #0f1116;
+  --surface: #1c1f26;
+  --ink: #e6e8ec;
+  --muted: #9aa3b2;
+  --line: #2c3038;
+}
+
+/*
+ * 首页用的是另一套变量（legacy-home.css 的 :root），
+ * 之前只重设了正文那批 legacy-* 变量，所以首页卡片一 hover 就变成纯白
+ * （.subject:hover 取的是 --surface: #ffffff），在暗色下是一块刺眼的白板。
+ */
+html.dark {
+  --paper: #0f1116;
+  --surface: #1c1f26;
+  --ink: #e6e8ec;
+  --muted: #9aa3b2;
+  --line: #2c3038;
+}
+
 /* ------------------------------------------------------------
    深色下的「白块」与「高亮色块」
    ------------------------------------------------------------
