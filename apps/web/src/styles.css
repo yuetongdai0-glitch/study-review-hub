@@ -762,6 +762,104 @@ html.dark [class*='legacy-'] pre {
  * 之前只重设了正文那批 legacy-* 变量，所以首页卡片一 hover 就变成纯白
  * （.subject:hover 取的是 --surface: #ffffff），在暗色下是一块刺眼的白板。
  */
+/*
+ * 综合应用 A/D 两个模块自带一套变量（--card / --bg / --ink / --teal-soft…），
+ * 并且只写了 @media (prefers-color-scheme: dark) 分支，
+ * 站内手动切暗色（html.dark）时它们不会跟着走，整节 .section / .ex 还是白的。
+ * 这里在 html.dark 下把同名变量一并重设。
+ */
+html.dark [class*='legacy-'] {
+  --bg: #0f1116;
+  --card: #1c1f26;
+  --card-bg: #1c1f26;
+  --ink: #e6e8ec;
+  --ink2: #b9bfc9;
+  --ink3: #8b93a1;
+  --line: #2c3038;
+  --border: #2c3038;
+  --teal-soft: #11312f;
+  --gold-soft: #332a12;
+  --red-soft: #351d1d;
+  --blue-soft: #1e2a44;
+}
+
+/* 兜底：少数整块白底容器没走变量 */
+html.dark [class*='legacy-'] :is(.section, .ex, .card, .kp, .example) {
+  background: #1c1f26;
+}
+
+html.dark [class*='legacy-'] :is(.ans, .callout.teal) {
+  background: #11312f;
+  border-color: #1f4a44;
+  color: #a7f3d0;
+}
+
+html.dark [class*='legacy-'] .warn {
+  background: #1e2a44;
+  border-color: #2c3f66;
+  color: #93c5fd;
+}
+
+/*
+ * 综合应用 A/D 两个模块自带一套变量（--card / --bg / --ink / --teal-soft…），
+ * 并且只写了 @media (prefers-color-scheme: dark) 分支，
+ * 站内手动切暗色（html.dark）时它们不会跟着走，整节 .section / .ex 还是白的。
+ * 这里在 html.dark 下把同名变量一并重设。
+ */
+html.dark [class*='legacy-'] {
+  --bg: #0f1116;
+  --card: #1c1f26;
+  --card-bg: #1c1f26;
+  --ink: #e6e8ec;
+  --ink2: #b9bfc9;
+  --ink3: #8b93a1;
+  --line: #2c3038;
+  --border: #2c3038;
+  --teal-soft: #11312f;
+  --gold-soft: #332a12;
+  --red-soft: #351d1d;
+  --blue-soft: #1e2a44;
+}
+
+/* 兜底：少数整块白底容器没走变量 */
+html.dark [class*='legacy-'] :is(.section, .ex, .card, .kp, .example) {
+  background: #1c1f26;
+}
+
+html.dark [class*='legacy-'] :is(.ans, .callout.teal) {
+  background: #11312f;
+  border-color: #1f4a44;
+  color: #a7f3d0;
+}
+
+html.dark [class*='legacy-'] .warn {
+  background: #1e2a44;
+  border-color: #2c3f66;
+  color: #93c5fd;
+}
+
+/*
+ * 第三套变量：右下角「科目切换」浮层（legacy-hub-nav.css 的 --hub-*）。
+ * 面板底是 --hub-surface: #ffffff，不重设的话点开就是一块白板。
+ */
+html.dark .study-hub-shell {
+  --hub-ink: #e6e8ec;
+  --hub-surface: #1c1f26;
+  --hub-muted: #9aa3b2;
+  --hub-line: #2c3038;
+}
+
+/*
+ * 第三套变量：右下角「科目切换」浮层（legacy-hub-nav.css 的 --hub-*）。
+ * 面板底是 --hub-surface: #ffffff，不重设的话点开就是一块白板。
+ */
+html.dark .study-hub-shell {
+  --hub-ink: #e6e8ec;
+  --hub-surface: #1c1f26;
+  --hub-muted: #9aa3b2;
+  --hub-line: #2c3038;
+}
+
 /* 首页大字标题在深色下没有跟随 --ink（实测仍是 #17191d），单独兜一条。 */
 html.dark .intro h1,
 html.dark .intro-copy h1 {
@@ -1240,3 +1338,149 @@ html.dark [class*='legacy-'] :is(.kp-t, .callout.blue, .chip.blue, th) {
 html.dark [class*='legacy-'] b {
   color: #eef0f4;
 }
+
+/* ===== 自动生成：所有模块浅色块的暗色覆盖 ===== */
+html.dark [class*='legacy-'] .example-answer { background: #16233a; color: #93c5fd; }
+html.dark [class*='legacy-'] .tag-low { background: #1c1f26; color: #d7dbe4; }
+html.dark [class*='legacy-'] .card { background: #1c1f26; }
+html.dark [class*='legacy-'] tr:nth-child(even) td { background: #1c1f26; }
+html.dark [class*='legacy-'] .chip { background: #1c1f26; }
+html.dark [class*='legacy-'] .think .line { background: #1c1f26; color: #93c5fd; }
+html.dark [class*='legacy-'] .skill { background: #1c1f26; }
+html.dark [class*='legacy-'] .ex-block { background: #1c1f26; }
+html.dark [class*='legacy-'] .derive { background: #1c1f26; }
+html.dark [class*='legacy-'] .dstep .db .kb { background: #16301f; color: #5eead4; }
+html.dark [class*='legacy-'] .kp { background: #1c1f26; }
+html.dark [class*='legacy-'] .hero .tags span { background: #1c1f26; }
+html.dark [class*='legacy-'] .kt { background: #33260f; color: #fca5a5; }
+html.dark [class*='legacy-'] .km { background: #16301f; color: #86efac; }
+html.dark [class*='legacy-'] .kw { background: #332a12; color: #fcd34d; }
+html.dark [class*='legacy-'] .q-mat { background: #1c1f26; }
+html.dark [class*='legacy-'] .qa-in .ans-tag { background: #16301f; color: #86efac; }
+html.dark [class*='legacy-'] .mnemonic { background: #1c1f26; }
+html.dark [class*='legacy-'] .frame-cell { background: #1c1f26; }
+html.dark [class*='legacy-'] .frame-cell.is-hot { background: #1c1f26; }
+html.dark [class*='legacy-'] .skeleton-key { background: #1c1f26; }
+html.dark [class*='legacy-'] .memo { background: #1c1f26; }
+html.dark [class*='legacy-'] .jingle { background: #332a12; }
+html.dark [class*='legacy-'] .pill-key { background: #16233a; color: #93c5fd; }
+html.dark [class*='legacy-'] .c-teal .section-icon { background: #11312f; color: #5eead4; }
+html.dark [class*='legacy-'] .c-teal .section-tag { background: #11312f; color: #5eead4; }
+html.dark [class*='legacy-'] .c-teal .key-box { background: #11312f; color: #5eead4; }
+html.dark [class*='legacy-'] .section-lead { background: #1c1f26; }
+html.dark [class*='legacy-'] .tw::-webkit-scrollbar-thumb { background: #16233a; }
+html.dark [class*='legacy-'] .example { background: #1c1f26; }
+html.dark [class*='legacy-'] .fig { background: #1c1f26; }
+html.dark [class*='legacy-'] .pill-hot { background: #351d1d; color: #fca5a5; }
+html.dark [class*='legacy-'] .pill-freq { background: #11312f; color: #5eead4; }
+html.dark [class*='legacy-'] .pill-low { background: #1c1f26; color: #d7dbe4; }
+html.dark [class*='legacy-'] th { background: #33260f; }
+html.dark [class*='legacy-'] .fact { background: #1c1f26; }
+html.dark [class*='legacy-'] .elem { background: #1c1f26; }
+html.dark [class*='legacy-'] .bigcat { background: #1c1f26; }
+html.dark [class*='legacy-'] .bc-head { background: #271e33; color: #d8b4fe; }
+html.dark [class*='legacy-'] .si-e { background: #1c1f26; }
+html.dark [class*='legacy-'] .bc-ov { background: #1c1f26; }
+html.dark [class*='legacy-'] .bc-ov-n { background: #271e33; color: #d8b4fe; }
+html.dark [class*='legacy-'] .cmp { background: #1c1f26; }
+html.dark [class*='legacy-'] .cmp-h { background: #271e33; color: #d8b4fe; }
+html.dark [class*='legacy-'] .cmp-e { background: #1c1f26; }
+html.dark [class*='legacy-'] .flaw { background: #1c1f26; }
+html.dark [class*='legacy-'] details.kd { background: #1c1f26; }
+html.dark [class*='legacy-'] details.kd summary { background: #1c1f26; }
+html.dark [class*='legacy-'] details.kd summary:hover { background: #33260f; }
+html.dark [class*='legacy-'] .mnemo { background: #1c1f26; }
+html.dark [class*='legacy-'] .flow .node { background: #1c1f26; }
+html.dark [class*='legacy-'] .formula { background: #16233a; color: #93c5fd; }
+html.dark [class*='legacy-'] .badge-red { background: #351d1d; color: #fca5a5; }
+html.dark [class*='legacy-'] .badge-green { background: #16301f; }
+html.dark [class*='legacy-'] .badge-blue { background: #16233a; }
+html.dark [class*='legacy-'] .badge-purple { background: #271e33; color: #d8b4fe; }
+html.dark [class*='legacy-'] .highlight { background: #332a12; }
+html.dark [class*='legacy-'] .danger { background: #351d1d; }
+html.dark [class*='legacy-'] .tip { background: #16301f; }
+html.dark [class*='legacy-'] .example-q { background: #1c1f26; }
+html.dark [class*='legacy-'] .example-analysis { background: #33260f; }
+html.dark [class*='legacy-'] .answer-toggle { background: #1c1f26; }
+html.dark [class*='legacy-'] .answer-toggle:hover { background: #16233a; }
+html.dark [class*='legacy-'] .wg { background: #1c1f26; }
+html.dark [class*='legacy-'] .t-bao { background: #16301f; color: #86efac; }
+html.dark [class*='legacy-'] .t-bian { background: #351d1d; color: #fca5a5; }
+html.dark [class*='legacy-'] .t-zhong { background: #1c1f26; color: #93c5fd; }
+html.dark [class*='legacy-'] .t-obj { background: #1c1f26; color: #d8b4fe; }
+html.dark [class*='legacy-'] .wg-e { background: #16233a; color: #93c5fd; }
+html.dark [class*='legacy-'] .wg-cmp { background: #332a12; color: #fcd34d; }
+html.dark [class*='legacy-'] .idx-go { background: #16233a; }
+
+/* ===== 自动生成：所有模块浅色块的暗色覆盖 ===== */
+html.dark [class*='legacy-'] .example-answer { background: #16233a; color: #93c5fd; }
+html.dark [class*='legacy-'] .tag-low { background: #1c1f26; color: #d7dbe4; }
+html.dark [class*='legacy-'] .card { background: #1c1f26; }
+html.dark [class*='legacy-'] tr:nth-child(even) td { background: #1c1f26; }
+html.dark [class*='legacy-'] .chip { background: #1c1f26; }
+html.dark [class*='legacy-'] .think .line { background: #1c1f26; color: #93c5fd; }
+html.dark [class*='legacy-'] .skill { background: #1c1f26; }
+html.dark [class*='legacy-'] .ex-block { background: #1c1f26; }
+html.dark [class*='legacy-'] .derive { background: #1c1f26; }
+html.dark [class*='legacy-'] .dstep .db .kb { background: #16301f; color: #5eead4; }
+html.dark [class*='legacy-'] .kp { background: #1c1f26; }
+html.dark [class*='legacy-'] .hero .tags span { background: #1c1f26; }
+html.dark [class*='legacy-'] .kt { background: #33260f; color: #fca5a5; }
+html.dark [class*='legacy-'] .km { background: #16301f; color: #86efac; }
+html.dark [class*='legacy-'] .kw { background: #332a12; color: #fcd34d; }
+html.dark [class*='legacy-'] .q-mat { background: #1c1f26; }
+html.dark [class*='legacy-'] .qa-in .ans-tag { background: #16301f; color: #86efac; }
+html.dark [class*='legacy-'] .mnemonic { background: #1c1f26; }
+html.dark [class*='legacy-'] .frame-cell { background: #1c1f26; }
+html.dark [class*='legacy-'] .frame-cell.is-hot { background: #1c1f26; }
+html.dark [class*='legacy-'] .skeleton-key { background: #1c1f26; }
+html.dark [class*='legacy-'] .memo { background: #1c1f26; }
+html.dark [class*='legacy-'] .jingle { background: #332a12; }
+html.dark [class*='legacy-'] .pill-key { background: #16233a; color: #93c5fd; }
+html.dark [class*='legacy-'] .c-teal .section-icon { background: #11312f; color: #5eead4; }
+html.dark [class*='legacy-'] .c-teal .section-tag { background: #11312f; color: #5eead4; }
+html.dark [class*='legacy-'] .c-teal .key-box { background: #11312f; color: #5eead4; }
+html.dark [class*='legacy-'] .section-lead { background: #1c1f26; }
+html.dark [class*='legacy-'] .tw::-webkit-scrollbar-thumb { background: #16233a; }
+html.dark [class*='legacy-'] .example { background: #1c1f26; }
+html.dark [class*='legacy-'] .fig { background: #1c1f26; }
+html.dark [class*='legacy-'] .pill-hot { background: #351d1d; color: #fca5a5; }
+html.dark [class*='legacy-'] .pill-freq { background: #11312f; color: #5eead4; }
+html.dark [class*='legacy-'] .pill-low { background: #1c1f26; color: #d7dbe4; }
+html.dark [class*='legacy-'] th { background: #33260f; }
+html.dark [class*='legacy-'] .fact { background: #1c1f26; }
+html.dark [class*='legacy-'] .elem { background: #1c1f26; }
+html.dark [class*='legacy-'] .bigcat { background: #1c1f26; }
+html.dark [class*='legacy-'] .bc-head { background: #271e33; color: #d8b4fe; }
+html.dark [class*='legacy-'] .si-e { background: #1c1f26; }
+html.dark [class*='legacy-'] .bc-ov { background: #1c1f26; }
+html.dark [class*='legacy-'] .bc-ov-n { background: #271e33; color: #d8b4fe; }
+html.dark [class*='legacy-'] .cmp { background: #1c1f26; }
+html.dark [class*='legacy-'] .cmp-h { background: #271e33; color: #d8b4fe; }
+html.dark [class*='legacy-'] .cmp-e { background: #1c1f26; }
+html.dark [class*='legacy-'] .flaw { background: #1c1f26; }
+html.dark [class*='legacy-'] details.kd { background: #1c1f26; }
+html.dark [class*='legacy-'] details.kd summary { background: #1c1f26; }
+html.dark [class*='legacy-'] details.kd summary:hover { background: #33260f; }
+html.dark [class*='legacy-'] .mnemo { background: #1c1f26; }
+html.dark [class*='legacy-'] .flow .node { background: #1c1f26; }
+html.dark [class*='legacy-'] .formula { background: #16233a; color: #93c5fd; }
+html.dark [class*='legacy-'] .badge-red { background: #351d1d; color: #fca5a5; }
+html.dark [class*='legacy-'] .badge-green { background: #16301f; }
+html.dark [class*='legacy-'] .badge-blue { background: #16233a; }
+html.dark [class*='legacy-'] .badge-purple { background: #271e33; color: #d8b4fe; }
+html.dark [class*='legacy-'] .highlight { background: #332a12; }
+html.dark [class*='legacy-'] .danger { background: #351d1d; }
+html.dark [class*='legacy-'] .tip { background: #16301f; }
+html.dark [class*='legacy-'] .example-q { background: #1c1f26; }
+html.dark [class*='legacy-'] .example-analysis { background: #33260f; }
+html.dark [class*='legacy-'] .answer-toggle { background: #1c1f26; }
+html.dark [class*='legacy-'] .answer-toggle:hover { background: #16233a; }
+html.dark [class*='legacy-'] .wg { background: #1c1f26; }
+html.dark [class*='legacy-'] .t-bao { background: #16301f; color: #86efac; }
+html.dark [class*='legacy-'] .t-bian { background: #351d1d; color: #fca5a5; }
+html.dark [class*='legacy-'] .t-zhong { background: #1c1f26; color: #93c5fd; }
+html.dark [class*='legacy-'] .t-obj { background: #1c1f26; color: #d8b4fe; }
+html.dark [class*='legacy-'] .wg-e { background: #16233a; color: #93c5fd; }
+html.dark [class*='legacy-'] .wg-cmp { background: #332a12; color: #fcd34d; }
+html.dark [class*='legacy-'] .idx-go { background: #16233a; }
