@@ -33,6 +33,8 @@ export default function SettingsDialog() {
   const setOpen = useAppStore((state) => state.setSettingsOpen)
   const themeMode = useAppStore((state) => state.themeMode)
   const setThemeMode = useAppStore((state) => state.setThemeMode)
+  const eyeCare = useAppStore((state) => state.eyeCare)
+  const setEyeCare = useAppStore((state) => state.setEyeCare)
   const resolved = useResolvedTheme()
   const { currentBuild, reloadPage, rebuildApp, nativeAvailable, nativeVersion, upgrade, busy, progress } = useUpdate()
   const [status, setStatus] = useState('')
@@ -184,6 +186,24 @@ export default function SettingsDialog() {
             当前渲染为{resolved === 'dark' ? '深色' : '浅色'}
             {themeMode === 'system' ? '（随系统自动切换）' : ''}
           </p>
+
+          <label className="hub-settings-check hub-eye-row">
+            <input
+              type="checkbox"
+              checked={eyeCare}
+              onChange={(event) => setEyeCare(event.target.checked)}
+            />
+            <span>
+              <strong>护眼模式</strong>
+              <em>暖色底 + 降低对比，减少蓝光与眩光；可与深浅色任意叠加</em>
+            </span>
+          </label>
+          {eyeCare ? (
+            <p className="hub-settings-hint">
+              已开启：底色改为{resolved === 'dark' ? '暖夜（暗褐）' : '羊皮纸'}，
+              正文对比度从约 15:1 降到 9:1，整页再叠一层极淡暖色滤镜。
+            </p>
+          ) : null}
         </section>
 
         {/* ---------- 启动密码 ---------- */}

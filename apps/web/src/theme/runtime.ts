@@ -9,11 +9,16 @@ const ACCENT_INK_PROPERTY = '--accent-ink'
  * 把主题语义色写入根元素 CSS 变量。
  *
  * @param theme 主题名。
+ * @param override 可选的颜色覆盖（护眼模式用）。
  * @returns 无返回值。
  * @remarks 只在 App 根 effect 里调用一次，页面组件不允许各写一套变量。
  */
-export function applyThemeToDocument(theme: ThemeName): void {
-  const tokens = themeColorTokens[theme]
+export function applyThemeToDocument(
+  theme: ThemeName,
+  override?: Partial<Record<keyof (typeof themeColorTokens)['light'], string>>,
+): void {
+  // 护眼模式只换底色与文字，强调色保持原样，所以这里用覆盖而非替换。
+  const tokens = { ...themeColorTokens[theme], ...(override ?? {}) }
   const root = document.documentElement
   for (const [name, value] of Object.entries(tokens)) root.style.setProperty(`--c-${name}`, value)
   root.classList.toggle('dark', theme === 'dark')

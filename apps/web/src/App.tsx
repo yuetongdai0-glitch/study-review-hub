@@ -7,8 +7,9 @@ import LockScreen from '@/components/features/LockScreen'
 import { useResolvedTheme } from '@/hooks/useResolvedTheme'
 import { useAutoLock } from '@/hooks/useAutoLock'
 import { useLockStore } from '@/store/lockStore'
+import { useAppStore } from '@/store/appStore'
 import { applyThemeToDocument } from '@/theme/runtime'
-import { themeColorTokens } from '@/theme/tokens'
+import { eyeCareTokens, themeColorTokens } from '@/theme/tokens'
 
 /**
  * 应用根组件：主题、Ant Design 令牌、路由容器。
@@ -18,17 +19,21 @@ import { themeColorTokens } from '@/theme/tokens'
 export default function App() {
   // 偏好可能是「跟随系统」，这里拿到实际渲染的明暗。
   const theme = useResolvedTheme()
+  const eyeCare = useAppStore((state) => state.eyeCare)
 
   useLayoutEffect(() => {
     // 在首帧前落 DOM，避免刷新时先亮后暗。
-    applyThemeToDocument(theme)
-  }, [theme])
+    applyThemeToDocument(theme, eyeCare ? eyeCareTokens[theme] : undefined)
+    // 护眼是独立维度：浅色护眼＝羊皮纸，深色护眼＝暖夜，所以单独挂一个类。
+    document.documentElement.classList.toggle('eye-care', eyeCare)
+  }, [theme, eyeCare])
 
   useEffect(() => {
     document.documentElement.lang = 'zh-CN'
   }, [])
 
-  const tokens = themeColorTokens[theme]
+  // 护眼时把底色与文字整体换成暖色板（antd 弹层/按钮也跟着走）。
+  const tokens = { ...themeColorTokens[theme], ...(eyeCare ? eyeCareTokens[theme] : {}) }
 
   const themeConfig = useMemo(
     () => ({
@@ -58,7 +63,7 @@ export default function App() {
         Modal: { contentBg: `rgb(${tokens.surface})`, headerBg: `rgb(${tokens.surface})` },
       },
     }),
-    [theme, tokens],
+    [theme, tokens, eyeCare],
   )
 
   /*

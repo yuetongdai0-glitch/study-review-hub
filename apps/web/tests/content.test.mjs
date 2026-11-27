@@ -440,8 +440,10 @@ test('内容原语集中定义，页面不再自定义视觉', async () => {
    */
   const ruleBlocks = [...style.matchAll(/([^{}]+)\{([^{}]*)\}/g)].map(([, sel]) => sel)
   for (const legacyClass of ['.example-answer', '.block-title', '.formula-box']) {
+    // 深色 / 护眼都属于「主题覆盖层」，允许在同一处集中声明。
+    const isThemeLayer = (sel) => sel.includes('html.dark') || sel.includes('eye-care')
     const dup = ruleBlocks.filter(
-      (sel) => !sel.includes('html.dark') && new RegExp(`\\${legacyClass}\\b`).test(sel)
+      (sel) => !isThemeLayer(sel) && new RegExp(`\\${legacyClass}\\b`).test(sel)
     )
     assert.equal(
       dup.length,

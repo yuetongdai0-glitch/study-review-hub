@@ -709,6 +709,306 @@
 }
 
 /* ============================================================
+   1.5 护眼模式
+   ------------------------------------------------------------
+   用户要求的三条依据，逐条落地：
+   1) 降蓝光：底色改暖黄（浅色＝羊皮纸 #f3efe3，深色＝暖褐 #14120e），
+      并在 body 上叠一层极淡琥珀色 multiply，把剩余白点再压暖；
+   2) 降对比：正文不用纯黑/纯白。浅色护眼 文字 #3a3833 对底 #f3efe3
+      约 9:1（原来 #17191d 对 #f6f7f9 约 15:1），深色护眼 #d8d2c4 对 #14120e 同档；
+   3) 降亮度：那层 multiply 同时把整体亮度压低约 6%。
+   与明暗主题正交：.eye-care 单独一个类，四种组合都成立。
+   ============================================================ */
+
+/* —— 浅色 + 护眼：羊皮纸 —— */
+html.eye-care:not(.dark) {
+  --paper: #f3efe3;
+  --surface: #faf6ea;
+  --ink: #3a3833;
+  --muted: #6b6558;
+  --line: #ded6c3;
+}
+
+html.eye-care:not(.dark) [class*='legacy-'] {
+  --bg: #f3efe3;
+  --card-bg: #faf6ea;
+  --card: #faf6ea;
+  --text: #3a3833;
+  --text-light: #5c5648;
+  --text-muted: #837c6c;
+  --ink: #3a3833;
+  --ink2: #5c5648;
+  --ink3: #837c6c;
+  --border: #ded6c3;
+  --line: #ded6c3;
+  --code-bg: #efe9da;
+  --primary-light: #e9e2cd;
+  --accent-light: #f0dcd2;
+  --green-light: #dfe8d6;
+  --orange-light: #f2e5cb;
+  --purple-light: #e8e0ea;
+  --blue-soft: #dfe6ef;
+  --gold-soft: #f1e6ca;
+  --red-soft: #f0dcd6;
+}
+
+/* —— 深色 + 护眼：暖夜（不是纯黑，底偏褐，字不用死白） —— */
+html.eye-care.dark {
+  --paper: #14120e;
+  --surface: #1d1a15;
+  --ink: #d8d2c4;
+  --muted: #9a917f;
+  --line: #2c2820;
+}
+
+html.eye-care.dark [class*='legacy-'] {
+  --bg: #14120e;
+  --card-bg: #1d1a15;
+  --card: #1d1a15;
+  --text: #d8d2c4;
+  --text-light: #b3ab9a;
+  --text-muted: #857d6d;
+  --ink: #d8d2c4;
+  --ink2: #b3ab9a;
+  --ink3: #857d6d;
+  --border: #2c2820;
+  --line: #2c2820;
+  --code-bg: #241f18;
+}
+
+/* —— 色温滤镜：整页一层极淡暖色，压蓝光也压亮度 —— */
+html.eye-care body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  /* 压在右下角浮层（2147483000）之下，不挡交互也不挡它的阴影 */
+  z-index: 2147482999;
+  background: rgba(214, 158, 46, 0.07);
+  mix-blend-mode: multiply;
+}
+
+html.eye-care.dark body::after {
+  background: rgba(214, 158, 46, 0.05);
+}
+
+/* 深色护眼的页面底：styles.css 里有一条 `html.dark body` 硬编码 #14161b，
+   变量盖不住它，这里单独指定暖褐。 */
+html.eye-care.dark body {
+  background: #14120e;
+}
+
+/* 浅色护眼的页面底同理（legacy-home.css 的 body 读 --paper，但保险起见也写死）。 */
+html.eye-care:not(.dark) body {
+  background: #f3efe3;
+}
+
+/* 深色护眼的页面底：styles.css 里有一条 `html.dark body` 硬编码 #14161b，
+   变量盖不住它，这里单独指定暖褐。 */
+html.eye-care.dark body {
+  background: #14120e;
+}
+
+/* 浅色护眼的页面底同理（legacy-home.css 的 body 读 --paper，但保险起见也写死）。 */
+html.eye-care:not(.dark) body {
+  background: #f3efe3;
+}
+
+/* 首页卡片悬停底色跟着暖色板走（首页用的是另一套变量）。 */
+html.eye-care:not(.dark) .subject:hover,
+html.eye-care:not(.dark) .subject:focus-visible {
+  background: #f0ebdb;
+}
+
+html.eye-care.dark .subject:hover,
+html.eye-care.dark .subject:focus-visible {
+  background: #26221b;
+}
+
+/*
+ * 护眼下要额外处理的三块：
+ * 1) 顶部横幅是高饱和红，暖底上尤其扎眼 → 降饱和 + 压亮度；
+ * 2) 左侧栏用的是 --shell-*（第四套变量！），改成暖灰；
+ * 3) 色温滤镜从 7% 提到 8%，肉眼能感觉到「偏暖」但不影响辨色。
+ */
+html.eye-care .banner {
+  filter: saturate(0.72) brightness(0.94);
+}
+
+/* 右下角「科目切换」浮层：第四套变量，护眼下改成羊皮纸 / 暖夜。 */
+html.eye-care:not(.dark) .study-hub-shell {
+  --hub-ink: #3a3833;
+  --hub-surface: #faf6ea;
+  --hub-muted: #6b6558;
+  --hub-line: #ded6c3;
+}
+
+html.eye-care.dark .study-hub-shell {
+  --hub-ink: #d8d2c4;
+  --hub-surface: #1d1a15;
+  --hub-muted: #9a917f;
+  --hub-line: #2c2820;
+}
+
+/* 右下角「科目切换」浮层：第四套变量，护眼下改成羊皮纸 / 暖夜。 */
+html.eye-care:not(.dark) .study-hub-shell {
+  --hub-ink: #3a3833;
+  --hub-surface: #faf6ea;
+  --hub-muted: #6b6558;
+  --hub-line: #ded6c3;
+}
+
+html.eye-care.dark .study-hub-shell {
+  --hub-ink: #d8d2c4;
+  --hub-surface: #1d1a15;
+  --hub-muted: #9a917f;
+  --hub-line: #2c2820;
+}
+
+html.eye-care {
+  --shell-bg: #241f18;
+  --shell-bg2: #1b1712;
+  --shell-line: #362f25;
+  --shell-fg: #d2cab8;
+  --shell-dim: #8f8676;
+}
+
+html.eye-care body::after {
+  background: rgba(214, 158, 46, 0.08);
+}
+
+/*
+ * 护眼下要额外处理的三块：
+ * 1) 顶部横幅是高饱和红，暖底上尤其扎眼 → 降饱和 + 压亮度；
+ * 2) 左侧栏用的是 --shell-*（第四套变量！），改成暖灰；
+ * 3) 色温滤镜从 7% 提到 8%，肉眼能感觉到「偏暖」但不影响辨色。
+ */
+html.eye-care .banner {
+  filter: saturate(0.72) brightness(0.94);
+}
+
+html.eye-care {
+  --shell-bg: #241f18;
+  --shell-bg2: #1b1712;
+  --shell-line: #362f25;
+  --shell-fg: #d2cab8;
+  --shell-dim: #8f8676;
+}
+
+html.eye-care body::after {
+  background: rgba(214, 158, 46, 0.08);
+}
+
+/* 设置面板里的护眼开关：与自动锁屏那个复选框同一视觉。 */
+.hub-eye-row {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--c-line-subtle, #e6e9ee);
+}
+
+/* ============================================================
+   1.5 护眼模式
+   ------------------------------------------------------------
+   用户要求的三条依据，逐条落地：
+   1) 降蓝光：底色改暖黄（浅色＝羊皮纸 #f3efe3，深色＝暖褐 #14120e），
+      并在 body 上叠一层极淡琥珀色 multiply，把剩余白点再压暖；
+   2) 降对比：正文不用纯黑/纯白。浅色护眼 文字 #3a3833 对底 #f3efe3
+      约 9:1（原来 #17191d 对 #f6f7f9 约 15:1），深色护眼 #d8d2c4 对 #14120e 同档；
+   3) 降亮度：那层 multiply 同时把整体亮度压低约 6%。
+   与明暗主题正交：.eye-care 单独一个类，四种组合都成立。
+   ============================================================ */
+
+/* —— 浅色 + 护眼：羊皮纸 —— */
+html.eye-care:not(.dark) {
+  --paper: #f3efe3;
+  --surface: #faf6ea;
+  --ink: #3a3833;
+  --muted: #6b6558;
+  --line: #ded6c3;
+}
+
+html.eye-care:not(.dark) [class*='legacy-'] {
+  --bg: #f3efe3;
+  --card-bg: #faf6ea;
+  --card: #faf6ea;
+  --text: #3a3833;
+  --text-light: #5c5648;
+  --text-muted: #837c6c;
+  --ink: #3a3833;
+  --ink2: #5c5648;
+  --ink3: #837c6c;
+  --border: #ded6c3;
+  --line: #ded6c3;
+  --code-bg: #efe9da;
+  --primary-light: #e9e2cd;
+  --accent-light: #f0dcd2;
+  --green-light: #dfe8d6;
+  --orange-light: #f2e5cb;
+  --purple-light: #e8e0ea;
+  --blue-soft: #dfe6ef;
+  --gold-soft: #f1e6ca;
+  --red-soft: #f0dcd6;
+}
+
+/* —— 深色 + 护眼：暖夜（不是纯黑，底偏褐，字不用死白） —— */
+html.eye-care.dark {
+  --paper: #14120e;
+  --surface: #1d1a15;
+  --ink: #d8d2c4;
+  --muted: #9a917f;
+  --line: #2c2820;
+}
+
+html.eye-care.dark [class*='legacy-'] {
+  --bg: #14120e;
+  --card-bg: #1d1a15;
+  --card: #1d1a15;
+  --text: #d8d2c4;
+  --text-light: #b3ab9a;
+  --text-muted: #857d6d;
+  --ink: #d8d2c4;
+  --ink2: #b3ab9a;
+  --ink3: #857d6d;
+  --border: #2c2820;
+  --line: #2c2820;
+  --code-bg: #241f18;
+}
+
+/* —— 色温滤镜：整页一层极淡暖色，压蓝光也压亮度 —— */
+html.eye-care body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  /* 压在右下角浮层（2147483000）之下，不挡交互也不挡它的阴影 */
+  z-index: 2147482999;
+  background: rgba(214, 158, 46, 0.07);
+  mix-blend-mode: multiply;
+}
+
+html.eye-care.dark body::after {
+  background: rgba(214, 158, 46, 0.05);
+}
+
+/* 首页卡片悬停底色跟着暖色板走（首页用的是另一套变量）。 */
+html.eye-care:not(.dark) .subject:hover,
+html.eye-care:not(.dark) .subject:focus-visible {
+  background: #f0ebdb;
+}
+
+html.eye-care.dark .subject:hover,
+html.eye-care.dark .subject:focus-visible {
+  background: #26221b;
+}
+
+/* 设置面板里的护眼开关：与自动锁屏那个复选框同一视觉。 */
+.hub-eye-row {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--c-line-subtle, #e6e9ee);
+}
+
+/* ============================================================
    2. 深色模式适配
    ------------------------------------------------------------
    旧站每个模块用同一批 CSS 变量描述配色（--bg / --card-bg / --text / …），
@@ -1418,3 +1718,83 @@ html.dark [class*='legacy-'] .wg-e { background: #16233a; color: #93c5fd; }
 html.dark [class*='legacy-'] .wg-cmp { background: #332a12; color: #fcd34d; }
 html.dark [class*='legacy-'] .diff { background: linear-gradient(135deg, #33260f, #351d1d); color: #fcd34d; }
 html.dark [class*='legacy-'] .idx-go { background: #16233a; }
+
+/* ===== 自动生成：护眼（浅色）下的暖色块覆盖 ===== */
+html.eye-care:not(.dark) [class*='legacy-'] .example-answer { background: #e8e8dc; color: #3a5a80; }
+html.eye-care:not(.dark) [class*='legacy-'] .tag-low { background: #faf6ea; color: #4a4132; }
+html.eye-care:not(.dark) [class*='legacy-'] .card { background: #faf6ea; }
+html.eye-care:not(.dark) [class*='legacy-'] tr:nth-child(even) td { background: #faf6ea; }
+html.eye-care:not(.dark) [class*='legacy-'] .chip { background: #faf6ea; }
+html.eye-care:not(.dark) [class*='legacy-'] .think { background: linear-gradient(135deg,#e8e8dc,#e8e8dc); }
+html.eye-care:not(.dark) [class*='legacy-'] .think .line { background: #faf6ea; color: #3a5a80; }
+html.eye-care:not(.dark) [class*='legacy-'] .skill { background: #faf6ea; }
+html.eye-care:not(.dark) [class*='legacy-'] .ex-block { background: #faf6ea; }
+html.eye-care:not(.dark) [class*='legacy-'] .derive { background: #faf6ea; }
+html.eye-care:not(.dark) [class*='legacy-'] .dstep .db .kb { background: #e6ecd8; color: #2f6b62; }
+html.eye-care:not(.dark) [class*='legacy-'] .kp { background: #faf6ea; }
+html.eye-care:not(.dark) [class*='legacy-'] .fig { background: #faf6ea; }
+html.eye-care:not(.dark) [class*='legacy-'] .hero { background: linear-gradient(135deg,#e8e8dc,#eae2e6); }
+html.eye-care:not(.dark) [class*='legacy-'] .hero .tags span { background: #faf6ea; }
+html.eye-care:not(.dark) [class*='legacy-'] .kt { background: #f6e6cb; color: #8a3f33; }
+html.eye-care:not(.dark) [class*='legacy-'] .km { background: #e6ecd8; color: #3f6b46; }
+html.eye-care:not(.dark) [class*='legacy-'] .kw { background: #f7edd2; color: #7d5a1e; }
+html.eye-care:not(.dark) [class*='legacy-'] .mk { background: linear-gradient(135deg,#f7edd2,#f6e6cb); color: #7d5a1e; }
+html.eye-care:not(.dark) [class*='legacy-'] .q-mat { background: #faf6ea; }
+html.eye-care:not(.dark) [class*='legacy-'] details.qa[open] summary { background: linear-gradient(135deg,#e8e8dc,#eae2e6); color: #3a5a80; }
+html.eye-care:not(.dark) [class*='legacy-'] .qa-in .ans-tag { background: #e6ecd8; color: #3f6b46; }
+html.eye-care:not(.dark) [class*='legacy-'] .mnemonic { background: #faf6ea; }
+html.eye-care:not(.dark) [class*='legacy-'] .mnemonic-head { background: linear-gradient(90deg, #e8e8dc, #faf6ea); }
+html.eye-care:not(.dark) [class*='legacy-'] .frame-cell { background: #faf6ea; }
+html.eye-care:not(.dark) [class*='legacy-'] .frame-cell.is-hot { background: #faf6ea; }
+html.eye-care:not(.dark) [class*='legacy-'] .skeleton-key { background: #faf6ea; }
+html.eye-care:not(.dark) [class*='legacy-'] .memo { background: #faf6ea; }
+html.eye-care:not(.dark) [class*='legacy-'] .memo-head { background: linear-gradient(90deg, #e8e8dc, #faf6ea); }
+html.eye-care:not(.dark) [class*='legacy-'] .jingle { background: #f7edd2; }
+html.eye-care:not(.dark) [class*='legacy-'] .pill-key { background: #e8e8dc; color: #3a5a80; }
+html.eye-care:not(.dark) [class*='legacy-'] .c-teal .section-icon { background: #e2eadd; color: #2f6b62; }
+html.eye-care:not(.dark) [class*='legacy-'] .c-teal .section-tag { background: #e2eadd; color: #2f6b62; }
+html.eye-care:not(.dark) [class*='legacy-'] .c-teal .key-box { background: #e2eadd; color: #2f6b62; }
+html.eye-care:not(.dark) [class*='legacy-'] .section-lead { background: #faf6ea; }
+html.eye-care:not(.dark) [class*='legacy-'] .tw::-webkit-scrollbar-thumb { background: #e8e8dc; }
+html.eye-care:not(.dark) [class*='legacy-'] .example { background: #faf6ea; }
+html.eye-care:not(.dark) [class*='legacy-'] .pill-hot { background: #f4e0d6; color: #8a3f33; }
+html.eye-care:not(.dark) [class*='legacy-'] .pill-freq { background: #e2eadd; color: #2f6b62; }
+html.eye-care:not(.dark) [class*='legacy-'] .pill-low { background: #faf6ea; color: #4a4132; }
+html.eye-care:not(.dark) [class*='legacy-'] th { background: #f6e6cb; }
+html.eye-care:not(.dark) [class*='legacy-'] .fact { background: #faf6ea; }
+html.eye-care:not(.dark) [class*='legacy-'] .elem { background: #faf6ea; }
+html.eye-care:not(.dark) [class*='legacy-'] .bigcat { background: #faf6ea; }
+html.eye-care:not(.dark) [class*='legacy-'] .bc-head { background: #eae2e6; color: #5f3f70; }
+html.eye-care:not(.dark) [class*='legacy-'] .si-e { background: #faf6ea; }
+html.eye-care:not(.dark) [class*='legacy-'] .bc-ov { background: #faf6ea; }
+html.eye-care:not(.dark) [class*='legacy-'] .bc-ov-n { background: #eae2e6; color: #5f3f70; }
+html.eye-care:not(.dark) [class*='legacy-'] .cmp { background: #faf6ea; }
+html.eye-care:not(.dark) [class*='legacy-'] .cmp-h { background: #eae2e6; color: #5f3f70; }
+html.eye-care:not(.dark) [class*='legacy-'] .cmp-e { background: #faf6ea; }
+html.eye-care:not(.dark) [class*='legacy-'] .flaw { background: #faf6ea; }
+html.eye-care:not(.dark) [class*='legacy-'] details.kd { background: #faf6ea; }
+html.eye-care:not(.dark) [class*='legacy-'] details.kd summary { background: #faf6ea; }
+html.eye-care:not(.dark) [class*='legacy-'] details.kd summary:hover { background: #f6e6cb; }
+html.eye-care:not(.dark) [class*='legacy-'] .mnemo { background: #faf6ea; }
+html.eye-care:not(.dark) [class*='legacy-'] .flow .node { background: #faf6ea; }
+html.eye-care:not(.dark) [class*='legacy-'] .formula { background: #e8e8dc; color: #3a5a80; }
+html.eye-care:not(.dark) [class*='legacy-'] .badge-red { background: #f4e0d6; color: #8a3f33; }
+html.eye-care:not(.dark) [class*='legacy-'] .badge-green { background: #e6ecd8; }
+html.eye-care:not(.dark) [class*='legacy-'] .badge-blue { background: #e8e8dc; }
+html.eye-care:not(.dark) [class*='legacy-'] .badge-purple { background: #eae2e6; color: #5f3f70; }
+html.eye-care:not(.dark) [class*='legacy-'] .highlight { background: #f7edd2; }
+html.eye-care:not(.dark) [class*='legacy-'] .danger { background: #f4e0d6; }
+html.eye-care:not(.dark) [class*='legacy-'] .tip { background: #e6ecd8; }
+html.eye-care:not(.dark) [class*='legacy-'] .example-q { background: #faf6ea; }
+html.eye-care:not(.dark) [class*='legacy-'] .example-analysis { background: #f6e6cb; }
+html.eye-care:not(.dark) [class*='legacy-'] .answer-toggle { background: #faf6ea; }
+html.eye-care:not(.dark) [class*='legacy-'] .answer-toggle:hover { background: #e8e8dc; }
+html.eye-care:not(.dark) [class*='legacy-'] .wg { background: #faf6ea; }
+html.eye-care:not(.dark) [class*='legacy-'] .t-bao { background: #e6ecd8; color: #3f6b46; }
+html.eye-care:not(.dark) [class*='legacy-'] .t-bian { background: #f4e0d6; color: #8a3f33; }
+html.eye-care:not(.dark) [class*='legacy-'] .t-zhong { background: #faf6ea; color: #3a5a80; }
+html.eye-care:not(.dark) [class*='legacy-'] .t-obj { background: #faf6ea; color: #5f3f70; }
+html.eye-care:not(.dark) [class*='legacy-'] .wg-e { background: #e8e8dc; color: #3a5a80; }
+html.eye-care:not(.dark) [class*='legacy-'] .wg-cmp { background: #f7edd2; color: #7d5a1e; }
+html.eye-care:not(.dark) [class*='legacy-'] .diff { background: linear-gradient(135deg, #f6e6cb, #f4e0d6); color: #7d5a1e; }
+html.eye-care:not(.dark) [class*='legacy-'] .idx-go { background: #e8e8dc; }

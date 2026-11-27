@@ -9,6 +9,24 @@ const THEME_STORAGE_KEY = 'study-hub:theme'
 /** 折叠状态缓存键。 */
 const COLLAPSE_STORAGE_KEY = 'study-hub:collapsed'
 
+/** 护眼模式缓存键。 */
+const EYE_CARE_STORAGE_KEY = 'study-hub:eye-care'
+
+/**
+ * 读取护眼模式开关。
+ *
+ * @returns 开启返回 true。
+ * @remarks 与主题分开存：主题是「明暗」，护眼是「暖色 + 低对比」，
+ * 两者可以任意组合（浅色护眼＝羊皮纸，深色护眼＝暖夜）。
+ */
+function readEyeCare(): boolean {
+  try {
+    return window.localStorage.getItem(EYE_CARE_STORAGE_KEY) === '1'
+  } catch {
+    return false
+  }
+}
+
 /**
  * 应用级偏好状态。
  *
@@ -18,6 +36,8 @@ const COLLAPSE_STORAGE_KEY = 'study-hub:collapsed'
 export type AppStoreState = {
   /** 主题偏好（跟随系统 / 浅色 / 深色）。 */
   themeMode: ThemePreference
+  /** 护眼模式：暖色底 + 低对比，可与明暗主题任意组合。 */
+  eyeCare: boolean
   /** 移动端侧栏是否展开。 */
   sidebarOpen: boolean
   /** 设置弹层是否打开。 */
@@ -26,6 +46,8 @@ export type AppStoreState = {
   collapsed: Record<string, string[]>
   /** 设置主题偏好并写入本地缓存。 */
   setThemeMode: (mode: ThemePreference) => void
+  /** 开关护眼模式并写入本地缓存。 */
+  setEyeCare: (on: boolean) => void
   /** 展开或收起移动端侧栏。 */
   setSidebarOpen: (open: boolean) => void
   /** 打开或关闭设置弹层。 */
@@ -60,6 +82,7 @@ export const useAppStore = create<AppStoreState>()(
   persist(
     (set, get) => ({
       themeMode: getInitialTheme(THEME_STORAGE_KEY),
+      eyeCare: readEyeCare(),
       sidebarOpen: false,
       settingsOpen: false,
       collapsed: readCollapsed(),
@@ -67,6 +90,15 @@ export const useAppStore = create<AppStoreState>()(
       setThemeMode: (mode) => {
         persistTheme(THEME_STORAGE_KEY, mode)
         set({ themeMode: mode })
+      },
+
+      setEyeCare: (on) => {
+        try {
+          window.localStorage.setItem(EYE_CARE_STORAGE_KEY, on ? '1' : '0')
+        } catch {
+          // 隐私模式下写不进去也不影响本次会话。
+        }
+        set({ eyeCare: on })
       },
 
       setSidebarOpen: (open) => set({ sidebarOpen: open }),
